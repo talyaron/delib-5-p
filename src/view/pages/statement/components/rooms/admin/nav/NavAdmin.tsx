@@ -18,7 +18,7 @@ export const navArray: NavObject[] = [
 ]
 
 
-const StatementNav: FC<Props> = ({ roomSelectionFn }) => {
+const NavAdmin: FC<Props> = ({ roomSelectionFn }) => {
 
     const { page } = useParams();
     // const _navArray = showNavElements(statement, navArray);
@@ -88,4 +88,4 @@ const StatementNav: FC<Props> = ({ roomSelectionFn }) => {
 //     }
 // }
 
-export default StatementNav;
+export default NavAdmin;

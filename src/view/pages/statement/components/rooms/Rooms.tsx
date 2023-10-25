@@ -44,13 +44,15 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     }
 
     const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
+    const isAdmin = auth.currentUser?.uid === statement.creatorId;
+
     return (
         <div className='page__main--full'>
         <>
             {switchRoomScreens(statement.roomsState, __substatements, statement,setShowModal)}
-            <div className="wrapper">
-                <RoomsAdmin statement={statement} />
-            </div>
+            
+            {isAdmin?<RoomsAdmin statement={statement} />:null}
+            
          
             {showModal ? <Modal>
                 <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
