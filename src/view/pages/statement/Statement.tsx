@@ -29,7 +29,7 @@ import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { SetStatementComp } from './components/set/SetStatementComp';
-import StatmentRooms from './components/rooms/StatmentRooms';
+import StatmentRooms from './components/rooms/Rooms';
 import { getUserPermissionToNotifications } from '../../../functions/notifications';
 import AskPermisssion from '../../components/askPermission/AskPermisssion';
 

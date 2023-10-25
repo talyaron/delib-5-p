@@ -1,12 +1,12 @@
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
-import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { userSelectedRoomSelector, userSelectedTopicSelector } from '../../../../../model/statements/statementsSlice';
-import { auth } from '../../../../../functions/db/auth';
-import AdminSeeAllGroups from './admin/AdminSeeAllGroups';
-import LoaderGlass from '../../../../components/loaders/LoaderGlass';
+import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
+import { userSelectedRoomSelector, userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
+import { auth } from '../../../../../../../functions/db/auth';
+import AdminSeeAllGroups from '../../admin/AdminSeeAllGroups';
+import LoaderGlass from '../../../../../../components/loaders/LoaderGlass';
 import styles from './roomDivide.module.scss';
-import Text from '../../../../components/text/Text';
+import Text from '../../../../../../components/text/Text';
 
 
 

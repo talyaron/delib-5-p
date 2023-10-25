@@ -6,8 +6,8 @@ import { listenToAllRoomsRquest, listenToLobbyRoomJoiners, listenToRoomsRquest }
 import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks'
 import { setAskToJoinRooms, setLobbyRooms } from '../../../../../model/statements/statementsSlice'
 import RoomsAdmin from './admin/RoomsAdmin'
-import SelectRoom from './SelectRoom'
-import RoomQuestions from './RoomDivide'
+import SelectRoom from './comp/choose/ChooseRoom'
+import RoomQuestions from './comp/divide/RoomDivide'
 import { auth } from '../../../../../functions/db/auth'
 interface Props {
     statement: Statement

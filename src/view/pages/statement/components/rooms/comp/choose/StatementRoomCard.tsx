@@ -1,9 +1,9 @@
 import { LobbyRooms, Statement } from 'delib-npm';
 import { FC } from 'react';
-import Text from '../../../../components/text/Text';
-import { askToJoinRoomDB } from '../../../../../functions/db/rooms/setRooms';
-import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { askToJoinRoomSelector, lobbyRoomSelector } from '../../../../../model/statements/statementsSlice';
+import Text from '../../../../../../components/text/Text';
+import { askToJoinRoomDB } from '../../../../../../../functions/db/rooms/setRooms';
+import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
+import { askToJoinRoomSelector, lobbyRoomSelector } from '../../../../../../../model/statements/statementsSlice';
 
 interface Props {
   statement: Statement

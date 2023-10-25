@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import RoomParticpantBadge from '../RoomParticpantBadge'
+import RoomParticpantBadge from '../comp/general/RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
