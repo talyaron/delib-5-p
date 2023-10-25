@@ -1,0 +1,30 @@
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.374);
+    z-index: 300;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &__box{
+        padding: 1.3rem;
+        background-color: var(--white);
+        border-radius: 10px;
+        box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.66);
+
+        form{
+            input, select, textarea{
+                // width: 100%;
+                padding: 0.5rem;
+                border: 1px solid var(--accent);
+                border-radius: 5px;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}

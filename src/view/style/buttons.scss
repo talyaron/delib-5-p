@@ -1,0 +1,173 @@
+.btnBox {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+button, .btn {
+    width: max-content;
+    padding: 12px 25px;
+    margin: 5px 10px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    &--small {
+        font-size: var(--size11);
+        padding: 5px 7px;
+    }
+    &--cancel {
+
+        background: orange;
+    
+    }
+    &--danger {
+
+        background: red;
+    
+    }
+
+    &--default{
+        background-color: var(--accent);
+    }
+
+    &--secondry{
+        background-color: var(--secondry);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+    }
+
+    &--nonactive {
+        opacity: .3;
+    }
+
+    &:active {
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+}
+
+
+.buttonOutlineWhite {
+    background: none;
+    border: 1px solid white;
+}
+
+.buttonOutlineWhite:active {
+    background: rgba(255, 255, 255, 0.191);
+}
+
+.buttonOutlineGray {
+    background: rgba(255, 255, 255, 0);
+    border: 1px solid rgb(63, 63, 63);
+    color: rgb(63, 63, 63);
+}
+
+.buttonOutlineGray:hover {
+    background: rgb(126 122 122 / 21%);
+}
+
+.confirm {
+    background: #51d051 !important;
+}
+
+.cancel {
+    background: #e85353;
+}
+
+.negative {
+    color: red;
+}
+
+.fav {
+    background: var(--halfPrimary);
+
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border-radius: 50%;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    cursor: pointer;
+    z-index: 200;
+
+    &:active {
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    &--blink {
+        /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+        animation: blinkFav 200ms ease-in-out 0s 35 alternate;
+    }
+
+    &--fixed {
+        position: fixed;
+        right:  calc(50vw - 37ch);
+        bottom: 8vh;
+
+        @media (max-width: 500px) {
+            right:  calc(50vw - 22ch);
+           
+        }
+        @media (max-width: 300px) {
+            right:  calc(50vw - 15ch);
+           
+        }
+    }
+
+    &--up{
+        bottom: 13vh !important;
+    }
+
+    &>div {
+        z-index: 100;
+        transform: scale(1);
+        color: white;
+        text-align: center;
+        font-size: 3rem;
+        background: var(--accent);
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        // position: absolute;
+        // left: 50%;
+        /* right: 50%; */
+        // top: 50%;
+        // transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        svg {
+            transform: rotate(180deg) translateX(16px);
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+}
+
+
+
+
+
+
+@keyframes blinkFav {
+    from {
+
+        transform: scale(1);
+
+    }
+
+    to {
+        transform: scale(.9);
+    }
+}

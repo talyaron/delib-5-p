@@ -1,0 +1,71 @@
+.roomsCards {
+
+    &__admin {
+        max-width: 75ch;
+        margin-bottom: 100px;
+
+    }
+
+    &__wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 120px;
+        gap: .7rem;
+        width: 75ch;
+        margin: 0 auto;
+
+        //on mobile
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 100px;
+            width: 100%;
+        }
+
+        .roomCard {
+            position: relative;
+            background-color: rgb(255, 255, 255);
+            color: var(--black);
+            padding: .7rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: all 100ms ease-in-out;
+            transform: scale(.9);
+
+            &__fill {
+                transition: all 100ms ease-in-out;
+                background-color: rgba(2, 197, 2, 0.294);
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+                width: 100%;
+                border-radius: 0px 0px 1rem 1rem;
+            }
+
+            &--selected {
+                transform: scale(1.1);
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+                //on mobile
+                @media (max-width: 768px) {
+                    transform: scale(.98);
+                }
+            }
+        }
+    }
+
+    &__particpantsBadges {
+        display: flex;
+        gap: .3rem;
+    }
+
+    &__solutionCard {
+        padding: 10px;
+        border-radius: .5rem;
+        background-color: white;
+    }
+}

@@ -1,0 +1,35 @@
+.profileImage{
+    width:100vw;
+    height:100vh;
+    position: fixed;
+    top:0;
+    left:0;
+    background-color: rgba(117, 117, 117, 0.763);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 299;
+    &__box{
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        height: fit-content;
+    }
+    &__img{
+        width: 400px;
+        height: 400px;
+        border-radius:10px;
+        background-position: center;
+        background-size: cover;
+        z-index: 300;
+        //on mobile make the img smaller
+        @media only screen and (max-width: 600px) {
+            width: 200px;
+            height: 200px;
+        }
+    }
+    h3{
+        text-align: center;
+        margin-top: 20px;
+    }
+}

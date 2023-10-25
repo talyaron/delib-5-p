@@ -1,0 +1,44 @@
+.popupHeader {
+    background: var(--subBackground);
+    padding: 5px;
+    border-radius: 5px 5px 0px 0px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.popup{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__box{
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 90%;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        >*{
+            text-align: center;
+        }
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        &::-webkit-scrollbar-track {
+            background: var(--subBackground);
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--subBackground);
+        }
+    }
+}
