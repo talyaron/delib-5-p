@@ -25,14 +25,14 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     useEffect(() => {
         unsub = listenToRoomsRquest(statement.statementId, updateRequestForRooms);
         unsub2 = listenToLobbyRoomJoiners(statement.statementId, updateLobbyRoomJoinersCounts);
-       
-        if(statement.creatorId === auth.currentUser?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
+
+        if (statement.creatorId === auth.currentUser?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
         return () => {
             unsub();
             unsub2();
             unsub3();
         }
-        
+
     }, [])
 
     function updateRequestForRooms(roomAsked: RoomAskToJoin) {
@@ -47,24 +47,24 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const isAdmin = auth.currentUser?.uid === statement.creatorId;
 
     return (
-        <div className='page__main--full'>
-        <>
-            {switchRoomScreens(statement.roomsState, __substatements, statement,setShowModal)}
-            
-            {isAdmin?<RoomsAdmin statement={statement} />:null}
-            
-         
-            {showModal ? <Modal>
-                <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
-            </Modal> : null}
-            </>
-        </div>
+        <div className='page__main wrapper'>
+            {/* <div className='wrapper'> */}
+                {switchRoomScreens(statement.roomsState, __substatements, statement, setShowModal)}
+
+                {isAdmin ? <RoomsAdmin statement={statement} /> : null}
+
+
+                {showModal ? <Modal>
+                    <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
+                </Modal> : null}
+            </div>
+        // </div>
     )
 }
 
 export default StatmentRooms;
 
-function switchRoomScreens(roomState: RoomsStateSelection|undefined, subStatements: Statement[], statement: Statement,setShowModal:Function) {
+function switchRoomScreens(roomState: RoomsStateSelection | undefined, subStatements: Statement[], statement: Statement, setShowModal: Function) {
     switch (roomState) {
         case RoomsStateSelection.SELECT_ROOMS:
             return <SelectRoom subStatements={subStatements} setShowModal={setShowModal} />

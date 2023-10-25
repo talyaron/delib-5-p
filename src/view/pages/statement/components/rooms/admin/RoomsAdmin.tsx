@@ -19,14 +19,17 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
         }
     }
 
-    
+
 
 
     return (
-        <div className={styles.admin}>
-            <AdminChoose statement={statement} />
-            <NavAdmin roomSelectionFn={handleRoomSelectionState} />
-        </div>
+        <>
+            <div className={styles.admin}>
+                <AdminChoose statement={statement} />
+
+            </div>
+            <NavAdmin roomSelectionFn={handleRoomSelectionState} statement={statement} />
+        </>
     )
 }
 

@@ -1,37 +1,43 @@
 import { FC } from "react"
-import { Link, useParams } from "react-router-dom"
-import { Statement,NavObject, Screen} from "delib-npm";
-
+import { RoomsStateSelection, Statement } from "delib-npm";
+import styles from '../admin.module.scss';
 
 
 
 interface Props {
     roomSelectionFn: Function;
+    statement: Statement;
 
 }
 
+interface AdminNav {
+    link: RoomsStateSelection;
+    name: string;
+    id: string;
+}
 
 
-export const navArray: NavObject[] = [
-    { link: Screen.ADMIN_CHOOSE, name: "בחירת חדרים", id: "choose" },
-    { link: Screen.ADMIN_DIVIDE, name: "חלוקה לחדרים", id: "divide" },
+export const navArray: AdminNav[] = [
+    { link: RoomsStateSelection.SELECT_ROOMS, name: "בחירת חדרים", id: "choose" },
+    { link: RoomsStateSelection.DIVIDE, name: "חלוקה לחדרים", id: "divide" },
 ]
 
 
-const NavAdmin: FC<Props> = ({ roomSelectionFn }) => {
+const NavAdmin: FC<Props> = ({ roomSelectionFn, statement }) => {
 
-    const { page } = useParams();
+    // const { page } = useParams();
     // const _navArray = showNavElements(statement, navArray);
 
     return (
-        <nav className="admin__nav">
+        <nav className={styles.nav}>
 
-            {navArray.map((navObject: NavObject) =>
-                //@ts-ignore
-                <div onClick={roomSelectionFn} className={(page === navObject.link) || (navObject.link === "" && page === undefined) ?
-                    "admin__nav__item"
-                    :
-                    "admin__nav__item btn--danger"}>
+            {navArray.map((navObject: AdminNav) =>
+
+                <div onClick={() => roomSelectionFn(navObject.link)}
+                    className={statement.roomsState === navObject.link ?
+                        styles.item__selected :
+                        styles.item
+                    }>
 
                     {navObject.name}
 
@@ -45,15 +51,15 @@ const NavAdmin: FC<Props> = ({ roomSelectionFn }) => {
 //     try {
 //         if (!statement) return navArray;
 //         let _navArray = [...navArray];
-      
-    
+
+
 //         const { subScreens } = statement;
-          
+
 //         //show setting page if admin of statement
 //         if (!isAdmin(statement.creatorId)) {
 //             _navArray = navArray.filter((navObj: NavObject) => navObj.link !== Screen.SETTINGS)
 //         }
-        
+
 //         if (subScreens === undefined) {
 //             return _navArray
 //         }
@@ -61,12 +67,12 @@ const NavAdmin: FC<Props> = ({ roomSelectionFn }) => {
 //             _navArray = _navArray
 //             //@ts-ignore
 //             .filter((navObj: NavObject) => subScreens.includes(navObj.link))
-            
+
 //             if(isAdmin(statement.creatorId)){
 //                 const adminTab = navArray.find(navObj => navObj.link === Screen.SETTINGS);
 //                 if(adminTab) _navArray.push(adminTab);
 //             }
-            
+
 //             return _navArray
 //         } else {
 //             return _navArray
