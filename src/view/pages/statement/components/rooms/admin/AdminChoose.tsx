@@ -30,9 +30,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     function handleDivideIntoRooms() {
         try {
-            const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
-            console.log(topicsParticipants)
-            console.log(rooms)
+            const { rooms } = divideIntoTopics(participants, 2);
+           
             const roomsAdmin: RoomsAdmin = {};
             rooms.forEach((room) => {
                 room.room.forEach((participant: RoomAskToJoin) => {
@@ -49,8 +48,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
         }
     }
 
-    console.log(roomsAdmin)
-
+   
     return (
         <div>
            <p className={styles.title}>לוח ניהול</p>
