@@ -1,12 +1,12 @@
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
 import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
-import { userSelectedRoomSelector, userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
-import { auth } from '../../../../../../../functions/db/auth';
-import AdminSeeAllGroups from '../../admin/AdminChoose';
+import { userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
+
 import LoaderGlass from '../../../../../../components/loaders/LoaderGlass';
-import styles from './roomDivide.module.scss';
+import _styles from './roomDivide.module.scss';
 import Text from '../../../../../../components/text/Text';
+const styles = _styles as any;
 
 
 
@@ -18,10 +18,9 @@ interface Props {
 const RoomQuestions: FC<Props> = ({ statement }) => {
 
   const userTopic = useAppSelector(userSelectedTopicSelector(statement.statementId));
-  const userRoom = useAppSelector(userSelectedRoomSelector(statement.statementId));
+  // const userRoom = useAppSelector(userSelectedRoomSelector(statement.statementId));
 
-  const isAdmin = statement.creatorId === auth.currentUser?.uid;
-
+ 
   try {
 
     return (

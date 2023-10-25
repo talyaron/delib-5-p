@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { RoomsStateSelection, Statement } from "delib-npm";
-import styles from '../admin.module.scss';
+import _styles from '../admin.module.css';
+const styles = _styles as any;
 
 
 
@@ -33,7 +34,7 @@ const NavAdmin: FC<Props> = ({ roomSelectionFn, statement }) => {
 
             {navArray.map((navObject: AdminNav) =>
 
-                <div onClick={() => roomSelectionFn(navObject.link)}
+                <div key={`admin-${navObject.id}`} onClick={() => roomSelectionFn(navObject.link)}
                     className={statement.roomsState === navObject.link ?
                         styles.item__selected :
                         styles.item

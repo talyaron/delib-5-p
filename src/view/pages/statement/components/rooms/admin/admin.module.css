@@ -14,8 +14,8 @@
     justify-content: center;
     background-color: yellow;
     position: sticky;
-    bottom:30px;
-    left:0px;
+    bottom: 30px;
+    left: 0px;
 }
 
 .item {
@@ -28,11 +28,11 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     box-sizing: border-box;
-    
+
 }
 
 .item__selected {
-font-weight: 700;
+    font-weight: 700;
     background-color: white;
     border-top: 2px solid var(--accent);
     color: var(--accent);
@@ -43,7 +43,7 @@ font-weight: 700;
     transition: all 0.3s ease-in-out;
     box-sizing: border-box;
 
-   
+
 
 }
 

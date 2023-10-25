@@ -4,7 +4,8 @@ import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
 import { approveToJoinRoomDB } from '../../../../../../functions/db/rooms/setRooms';
-import styles from './admin.module.scss';
+import _styles from './admin.module.css?inline';
+const styles = _styles as any;
 
 
 interface Props {

@@ -3,7 +3,8 @@ import { FC } from 'react';
 import { setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
 import NavAdmin from './nav/NavAdmin';
 import AdminChoose from './AdminChoose'
-import styles from './admin.module.scss';
+import _styles from './admin.module.css?inline';
+const styles = _styles as any;
 
 interface Props {
     statement: Statement;
