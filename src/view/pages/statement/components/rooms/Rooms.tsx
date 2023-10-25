@@ -9,6 +9,8 @@ import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
 import { auth } from '../../../../../functions/db/auth'
+import NavAdmin from './admin/nav/NavAdmin'
+import { setRoomsStateToDB } from '../../../../../functions/db/rooms/setRooms'
 interface Props {
     statement: Statement
     subStatements: Statement[]
@@ -43,12 +45,20 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
         dispatch(setLobbyRooms({ lobbyRooms }))
     }
 
+    function handleRoomSelectionState(roomsStatus: RoomsStateSelection) {
+        try {
+            setRoomsStateToDB(statement, roomsStatus);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
     const isAdmin = auth.currentUser?.uid === statement.creatorId;
 
     return (
-        <div className='page__main wrapper'>
-            {/* <div className='wrapper'> */}
+        <div className='page__main'>
+            <div className='wrapper'>
                 {switchRoomScreens(statement.roomsState, __substatements, statement, setShowModal)}
 
                 {isAdmin ? <RoomsAdmin statement={statement} /> : null}
@@ -58,7 +68,8 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
                     <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
                 </Modal> : null}
             </div>
-        // </div>
+            {isAdmin?<NavAdmin roomSelectionFn={handleRoomSelectionState} statement={statement} />:null}
+        </div>
     )
 }
 

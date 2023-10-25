@@ -10,7 +10,7 @@ const Text: FC<Props> = ({ text, onlyTitle }) => {
     //convert sentences, devided by /n to paragraphs
     const paragraphs = text.split('\n').filter(p => p).map((paragraph: string, i: number) => {
        
-        if (paragraph.startsWith('*')) return <p key={`${textId}--${i}`}><b>{paragraph.replace('*', '')}</b></p>
+        if (paragraph.startsWith('*')) return <span key={`${textId}--${i}`}><b>{paragraph.replace('*', '')}</b></span>
 
         //if paragraph has * at some point and has some * at some other point make the string between the * bold
         if (paragraph.includes('*')) {
@@ -26,9 +26,9 @@ const Text: FC<Props> = ({ text, onlyTitle }) => {
         return <p key={`${textId}--${i}`}>{paragraph}</p>
     })
 
-    if(onlyTitle) return (<>{paragraphs[0]}</>)
+    if(onlyTitle) return (<span>{paragraphs[0]}</span>)
     return (
-        <>{paragraphs}</>
+        <span>{paragraphs}</span>
     )
 }
 
