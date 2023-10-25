@@ -4,7 +4,8 @@ import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
 import { approveToJoinRoomDB } from '../../../../../../functions/db/rooms/setRooms';
-import _styles from './admin.module.css?inline';
+import _styles from './admin.module.css';
+import Text from '../../../../../components/text/Text'
 const styles = _styles as any;
 
 
@@ -29,9 +30,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     function handleDivideIntoRooms() {
         try {
-            const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
-            console.log(topicsParticipants)
-            console.log(rooms)
+            const { rooms } = divideIntoTopics(participants, 2);
+           
             const roomsAdmin: RoomsAdmin = {};
             rooms.forEach((room) => {
                 room.room.forEach((participant: RoomAskToJoin) => {
@@ -48,37 +48,42 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
         }
     }
 
-
-
+   
     return (
         <div>
-            <h1>חלק לחדרים בלחיצה</h1>
+           <p className={styles.title}>לוח ניהול</p>
             <div className="wrapper">
-                <h3>משתתפים</h3>
+               
                 <div className="btns">
                     {setRooms ? <button onClick={handleDivideIntoRooms}>חלק/י לחדרים</button> : <button className='btn--cancel' onClick={handleDivideIntoRooms}>ביטול חלוקה</button>}
 
                 </div>
-                <div>
+                {setRooms ? <div>
+                    <h3>משתתפים</h3>
                     {participants.map((request) => (
                         <RoomParticpantBadge key={request.participant.uid} participant={request.participant} />
                     ))}
-                </div>
-                <h3>חלוקה לחדרים</h3>
-                <div className={styles.adminWrapper}></div>
-                {Object.keys(roomsAdmin).map((statementId) => {
-                    const room = roomsAdmin[statementId];
-                    return (
-                        <div key={room.roomNumber} className={styles.room}>
-                            <h4>חדר {room.roomNumber} - {room.statement.statement}</h4>
-                            <div>
-                                {room.participants.map((participant) => (
-                                    <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
-                                ))}
-                            </div>
+                </div> :
+                    <>
+                        <h3>חלוקה לחדרים</h3>
+                        <div className={styles.roomWrapper}>
+                        {Object.keys(roomsAdmin).map((statementId) => {
+                            const room = roomsAdmin[statementId];
+                            return (
+                                <div key={room.roomNumber} className={styles.room}>
+                                    <h4>חדר {room.roomNumber} - <Text text={room.statement.statement} onlyTitle={true} /></h4>
+                                    <div>
+                                        {room.participants.map((participant) => (
+                                            <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )
+                        
+                        })}
                         </div>
-                    )
-                })}            
+                    </>
+                }
             </div>
         </div>
     )

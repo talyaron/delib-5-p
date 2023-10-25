@@ -19,8 +19,8 @@ interface AdminNav {
 
 
 export const navArray: AdminNav[] = [
-    { link: RoomsStateSelection.SELECT_ROOMS, name: "בחירת חדרים", id: "choose" },
-    { link: RoomsStateSelection.DIVIDE, name: "חלוקה לחדרים", id: "divide" },
+    { link: RoomsStateSelection.SELECT_ROOMS, name: "משתתפים בוחרים חדרים", id: "choose" },
+    { link: RoomsStateSelection.DIVIDE, name: "הציג/י  חלוקה לחדרים", id: "divide" },
 ]
 
 
