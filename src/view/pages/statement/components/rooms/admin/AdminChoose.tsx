@@ -32,7 +32,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     function handleDivideIntoRooms() {
         try {
             const { rooms } = divideIntoTopics(participants, 2);
-           
+
             const roomsAdmin: RoomsAdmin = {};
             rooms.forEach((room) => {
                 room.room.forEach((participant: RoomAskToJoin) => {
@@ -43,21 +43,21 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                 })
             })
             setRoomsAdmin(roomsAdmin)
-            const roomsState =  setRooms? RoomsStateSelection.DIVIDE : RoomsStateSelection.SELECT_ROOMS;
+            const roomsState = setRooms ? RoomsStateSelection.DIVIDE : RoomsStateSelection.SELECT_ROOMS;
             setSetRooms(state => !state);
-            
+
             setRoomsStateToDB(statement, roomsState);
         } catch (error) {
             console.error(error);
         }
     }
 
-   
+
     return (
         <div>
-           <p className={styles.title}>לוח ניהול</p>
-            <div className="wrapper">
-               
+            <p className={styles.title}>לוח ניהול</p>
+            <div >
+
                 <div className="btns">
                     {setRooms ? <button onClick={handleDivideIntoRooms}>חלק/י לחדרים</button> : <button className='btn--cancel' onClick={handleDivideIntoRooms}>ביטול חלוקה</button>}
 
@@ -65,28 +65,28 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                 {setRooms ? <div>
                     <h3>משתתפים</h3>
                     <div className='badge__wrapper'>
-                    {participants.map((request) => (
-                        <RoomParticpantBadge key={request.participant.uid} participant={request.participant} />
-                    ))}
+                        {participants.map((request) => (
+                            <RoomParticpantBadge key={request.participant.uid} participant={request.participant} />
+                        ))}
                     </div>
                 </div> :
                     <>
                         <h3>חלוקה לחדרים</h3>
                         <div className={styles.roomWrapper}>
-                        {Object.keys(roomsAdmin).map((statementId) => {
-                            const room = roomsAdmin[statementId];
-                            return (
-                                <div key={room.roomNumber} className={styles.room}>
-                                    <h4>חדר {room.roomNumber} - <Text text={room.statement.statement} onlyTitle={true} /></h4>
-                                    <div className={styles.room__badges} >
-                                        {room.participants.map((participant) => (
-                                            <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
-                                        ))}
+                            {Object.keys(roomsAdmin).map((statementId) => {
+                                const room = roomsAdmin[statementId];
+                                return (
+                                    <div key={room.roomNumber} className={styles.room}>
+                                        <h4>חדר {room.roomNumber} - <Text text={room.statement.statement} onlyTitle={true} /></h4>
+                                        <div className={styles.room__badges} >
+                                            {room.participants.map((participant) => (
+                                                <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        
-                        })}
+                                )
+
+                            })}
                         </div>
                     </>
                 }
