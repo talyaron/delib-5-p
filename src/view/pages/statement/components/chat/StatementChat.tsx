@@ -8,6 +8,7 @@ import StatementChatMore from '../StatementChatMore';
 import Text from '../../../../components/text/Text';
 import StatementChatSetOption from '../StatementChatSetOption';
 import ProfileImage from './ProfileImage';
+import { updateStatementText } from '../../../../../functions/db/statements/setStatments';
 
 
 
@@ -23,7 +24,8 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
   // const evaluation = useAppSelector(evaluationSelector(statement.statementId))
 
 
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const userId = auth.currentUser?.uid;
   const creatorId = statement.creatorId;
@@ -31,7 +33,17 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
   const isMe = userId === creatorId;
   const { isOption } = statement;
 
+  function handleEdit() {
+    if(userId === creatorId) setIsEdit(true);
+  }
 
+function handleInput(e:any){
+  
+  if(e.key === 'Enter'  && e.shiftKey === false && e.target.value !== ''){
+    setIsEdit(false);
+    updateStatementText(statement, e.target.value)
+  }
+}
 
 
   return (
@@ -48,7 +60,7 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text">
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null} */}
-              <div onClick={() => setShow(!show)}><Text text={statement.statement}/></div>
+              {!isEdit?<div onClick={handleEdit}><Text text={statement.statement}/></div>:<textarea className='statement__edit' defaultValue={statement.statement} onKeyUp={handleInput} />}
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null} */}
             </div>
             <div className="statement__bubble__more">

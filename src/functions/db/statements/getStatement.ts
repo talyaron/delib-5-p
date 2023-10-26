@@ -60,7 +60,7 @@ export function listenStatmentsSubsciptions(cb: Function): Function {
         if (!user.uid) throw new Error("User not logged in");
         
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("statement.type", "==", StatementType.GROUP), where("userId", "==", user.uid), orderBy("lastUpdate", "desc"));
+        const q = query(statementsSubscribeRef, where("statement.type", "==", StatementType.GROUP), where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), limit(20));
         // const querySnapshot = await getDocs(q);
         // const statementsSubscriptions: StatementSubscription[] = [];
         return onSnapshot(q, (subsDB) => {

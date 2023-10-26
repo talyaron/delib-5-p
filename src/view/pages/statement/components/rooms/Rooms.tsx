@@ -45,13 +45,6 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
         dispatch(setLobbyRooms({ lobbyRooms }))
     }
 
-    function handleRoomSelectionState(roomsStatus: RoomsStateSelection) {
-        try {
-            setRoomsStateToDB(statement, roomsStatus);
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
     const isAdmin = auth.currentUser?.uid === statement.creatorId;
@@ -68,7 +61,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
                     <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
                 </Modal> : null}
             </div>
-            {isAdmin?<NavAdmin roomSelectionFn={handleRoomSelectionState} statement={statement} />:null}
+          
         </div>
     )
 }

@@ -89,6 +89,14 @@
     padding: 1rem;
     border-radius: .6rem;
    
+   
+}
+
+.room__badges{
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
+    flex-wrap: wrap;
 }
 .room h4{
     color:gray;
@@ -96,3 +104,4 @@
     font-weight: bold;
     margin: 0px 0rem .6rem 0px;
 }
+

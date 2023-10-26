@@ -62,6 +62,20 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
     }
 }
 
+export async function updateStatementText(statement:Statement, newText:string){
+    try {
+        if(!newText) throw new Error("New text is undefined");
+        if(statement.statement === newText) return;
+
+        StatementSchema.parse(statement);
+        const statementRef = doc(DB, Collections.statements, statement.statementId);
+        const newStatement = { statement: newText, lastUpdate: Timestamp.now().toMillis() };
+        await updateDoc(statementRef, newStatement);
+    } catch (error) {
+        
+    }
+}
+
 export async function setStatmentSubscriptionNotificationToDB(statement: Statement | undefined, role: Role = Role.member) {
     try {
 
