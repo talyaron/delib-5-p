@@ -5,7 +5,9 @@ import { RoomAskToJoin, RoomDivied, RoomsStateSelection, Statement } from 'delib
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
 import { approveToJoinRoomDB, setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
 import _styles from './admin.module.css';
-import Text from '../../../../../components/text/Text'
+import Text from '../../../../../components/text/Text';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
 const styles = _styles as any;
 
@@ -28,10 +30,11 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     const participants = useAppSelector(participantsSelector(statement.statementId));
     const [setRooms, setSetRooms] = useState<boolean>(true);
     const [roomsAdmin, setRoomsAdmin] = useState<RoomsAdmin>({} as RoomsAdmin);
+    const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] = useState<number>(7);
 
     function handleDivideIntoRooms() {
         try {
-            const { rooms } = divideIntoTopics(participants, 2);
+            const { rooms } = divideIntoTopics(participants, maxParticipantsPerRoom);
 
             const roomsAdmin: RoomsAdmin = {};
             rooms.forEach((room) => {
@@ -52,6 +55,12 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
         }
     }
 
+    function handleRoomSize(ev: any) {
+        const value = ev.target.value;
+        const valueAsNumber = Number(value);
+        setMaxParticipantsPerRoom(valueAsNumber)
+    }
+
 
     return (
         <div>
@@ -64,6 +73,14 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                 </div>
                 {setRooms ? <div>
                     <h3>משתתפים</h3>
+                    <p>מספר משתתפים מקסימלי בחדר {maxParticipantsPerRoom}</p>
+              
+                    <div className="btns" style={{padding:'1.5rem', boxSizing:"border-box"}}>
+                    <Slider defaultValue={7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize}/>
+                        
+                    </div>
+                    <br />
+                    <br />
                     <div className='badge__wrapper'>
                         {participants.map((request) => (
                             <RoomParticpantBadge key={request.participant.uid} participant={request.participant} />
