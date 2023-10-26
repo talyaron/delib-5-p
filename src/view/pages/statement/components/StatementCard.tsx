@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Statement } from 'delib-npm'
 import Text from '../../../components/text/Text'
 import Edit from '../../../components/edit/Edit'
+import StatementChat from './StatementChatMore'
 
 interface Props {
     statement: Statement
@@ -12,12 +13,14 @@ interface Props {
 const StatementCard: FC<Props> = ({ statement }) => {
     return (
 
-        <div className='card statementCard' >
-            <Link className='href--undecorated' to={`/home/statement/${statement.statementId}`}>
-                <Text text={statement.statement} />
-                {statement.lastMessage ? <p className='statementCard__next'>{statement.lastMessage}</p> : null}
-            </Link>
+        <div className='statementCard' >
+            <div className="statementCard__main">
+                <Link className='href--undecorated' to={`/home/statement/${statement.statementId}`}>
+                    <Text text={statement.statement} />
+                </Link>
+            </div>
             <div className="statementCard__more">
+                <StatementChat statement={statement} />
                 <Edit statement={statement} />
             </div>
         </div>

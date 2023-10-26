@@ -11,7 +11,7 @@ interface Props {
     page?:any;
 }
 
-const StatementChatIcon: FC<Props> = ({ statement, page }) => {
+const StatementChatMore: FC<Props> = ({ statement, page }) => {
     const statementSubscription:StatementSubscription|undefined = useAppSelector(statementSubscriptionSelector(statement.statementId))
     let   messagesRead = 0;
     if(statementSubscription) messagesRead = statementSubscription.totalSubStatementsRead ||0;
@@ -32,7 +32,7 @@ const StatementChatIcon: FC<Props> = ({ statement, page }) => {
     )
 }
 
-export default StatementChatIcon;
+export default StatementChatMore;
 
 export function handleCreateSubStatements(statement: Statement, navigate: Function, page?:any) {
     try {

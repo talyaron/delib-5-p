@@ -6,7 +6,7 @@ import { evaluationSelector } from '../../../../../model/evaluations/evaluations
 
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import { setStatementElementHight } from '../../../../../model/statements/statementsSlice';
-import StatementChatIcon from '../StatementChatIcon';
+import StatementChatIcon from '../StatementChatMore';
 import StatementChatSetOption from '../StatementChatSetOption';
 import Text from '../../../../components/text/Text';
 import Edit from '../../../../components/edit/Edit';

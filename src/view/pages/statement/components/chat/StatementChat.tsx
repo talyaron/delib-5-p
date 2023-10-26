@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Statement } from 'delib-npm'
 import { auth } from '../../../../../functions/db/auth';
-import StatementChatIcon from '../StatementChatIcon';
+import StatementChatMore from '../StatementChatMore';
 
 //icons
 
@@ -53,7 +53,7 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
             </div>
             <div className="statement__bubble__more">
               
-              <StatementChatIcon statement={statement} page={page} />
+              <StatementChatMore statement={statement} page={page} />
             </div>
           </div>
         </div>
