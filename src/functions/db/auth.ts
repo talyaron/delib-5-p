@@ -1,9 +1,10 @@
 
-import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInAnonymously, Unsubscribe } from "firebase/auth";
 import { app } from "./config";
 import { parseUserFromFirebase, User } from "delib-npm";
 import { setUserToDB } from "./users/setUsersDB";
 import { getUserFromDB } from "./users/getUserDB";
+import { store } from "../../model/store";
 
 
 const provider = new GoogleAuthProvider();
@@ -39,31 +40,32 @@ export function googleLogin() {
             // ...
         });
 }
-export function listenToAuth(cb: Function, cbFontSize: Function) {
+export function listenToAuth(cb: Function, fontSizeCB:Function): Unsubscribe {
 
-    onAuthStateChanged(auth, async (userFB) => {
+    return onAuthStateChanged(auth, async (userFB) => {
         try {
 
             if (userFB) {
-                const user = {...userFB};
+                // User is signed in
+                const user = { ...userFB };
                 if (!user.displayName) user.displayName = localStorage.getItem('displayName') || 'anonymous';
                 const _user = parseUserFromFirebase(user);
-                                              
+
                 console.info('User is signed in')
                 if (!_user) throw new Error('user is undefined')
-               
-               
 
-                //get font size from db
-                const { fontSize } = await getUserFromDB() || { fontSize: 14 };
-               
-                document.documentElement.style.fontSize = fontSize + 'px';
-                document.body.style.fontSize = fontSize + 'px';
-                cbFontSize(fontSize);
 
                 const userDB = await setUserToDB(_user) as User;
-         
-                if(!userDB) throw new Error('userDB is undefined');
+
+
+                const { fontSize } = userDB || { fontSize: 14 };
+
+                fontSizeCB(fontSize);
+
+                document.documentElement.style.fontSize = fontSize + 'px';
+                document.body.style.fontSize = fontSize + 'px';
+
+                if (!userDB) throw new Error('userDB is undefined');
                 cb(userDB)
 
             } else {
@@ -71,10 +73,16 @@ export function listenToAuth(cb: Function, cbFontSize: Function) {
                 console.info('User is signed out')
                 cb(null)
             }
+
+
         } catch (error) {
+            console.error(error);
+
 
         }
+
     });
+   
 }
 
 export function logOut() {
@@ -95,7 +103,7 @@ export function logOut() {
 export function signAnonymously() {
     signInAnonymously(auth)
         .then(() => {
-          
+
             console.info('user signed in anounymously')
         })
         .catch((error) => {

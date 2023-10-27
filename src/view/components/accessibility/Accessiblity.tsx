@@ -4,9 +4,11 @@ import { fontSizeSelector, increaseFontSize } from '../../../model/accessibility
 import { useEffect, useState } from 'react';
 import { updateUserFontSize } from '../../../functions/db/users/setUsersDB';
 
+
 const Accessiblity = () => {
     const dispatch = useAppDispatch();
-    const fontSize = useAppSelector(fontSizeSelector);
+   const fontSize = useAppSelector(fontSizeSelector);
+   
     const [isOpen, setIsOpen] = useState(false);
 
 

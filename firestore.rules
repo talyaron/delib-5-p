@@ -9,6 +9,11 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
+
+      match /admins/{adminStatementId=**}{
+     
+      allow write: if request.auth.uid == request.resource.data.user.uid;
+    }
     match /statementsSubscribe/{statementSubId=**}{
       allow read;
       allow write: if request.auth.uid != null;

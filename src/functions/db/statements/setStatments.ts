@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { Statement, StatementSchema, StatementSubscription, StatementType, UserSchema } from "delib-npm";
+import { Admin, AdminRolesEnum, Statement, StatementSchema, StatementSubscription, StatementType, UserSchema } from "delib-npm";
 import { DB, deviceToken } from "../config";
 import { Collections } from "delib-npm";
 import { Role } from "../../../model/role";
@@ -22,7 +22,15 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
 
         //set statement
         const statementRef = doc(DB, Collections.statements, statement.statementId);
-        await setDoc(statementRef, statement, { merge: true });
+        // await setDoc(statementRef, statement, { merge: true });
+
+        //add admin
+        const adminRefId = `${statement.creator.uid}--${statement.statementId}`;
+        const adminRef = doc(DB, Collections.admins, adminRefId);
+        const admin:Admin = { statementId: statement.statementId, user: statement.creator, role: AdminRolesEnum.admin };
+        // await setDoc(adminRef, admin);
+
+        await Promise.all([ setDoc(adminRef, admin), setDoc(statementRef, statement, { merge: true })]);
 
         //add subscription
         if (addSubscription) {
@@ -34,6 +42,10 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
                 await setStatmentSubscriptionNotificationToDB(statement, Role.admin);
 
         }
+
+        
+
+
         return statement.statementId;
 
     } catch (error) {
