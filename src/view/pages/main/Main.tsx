@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
-import { getSubscriptions, listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
+import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
 import { StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { deleteStatement, lastUpdateStatementSubscriptionSelector, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
+import { deleteSubscribedStatement, lastUpdateStatementSubscriptionSelector, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
@@ -31,26 +31,19 @@ const Main = () => {
         dispatch(setStatementSubscription(statementSubscription));
     }
     function deleteStoreStSubCB(statementId: string) {
-        dispatch(deleteStatement(statementId));
+        dispatch(deleteSubscribedStatement(statementId));
     }
 
     useEffect(() => {
 
         setDeferredPrompt(install.deferredPrompt);
 
-        // (async () => {
-        //     const subscriptions = await getSubscriptions();
-        //     subscriptions.forEach((subscription: StatementSubscription) => {
-        //         dispatch(setStatementSubscription(subscription));
-        //     });
-        // })();
-
     }, [])
 
     useEffect(() => {
 
         if (isLgged) {
-            console.log("Main is logged")
+         
             unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB, lastUpdate);
         }
         return () => {

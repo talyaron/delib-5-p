@@ -2,7 +2,7 @@ import { FC, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
+import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
@@ -67,6 +67,9 @@ const Statement: FC = () => {
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))
+    }
+    function deleteStatementCB(statementId: string) {
+        dispatch(deleteStatement(statementId))
     }
     function updateStatementSubscriptionCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription))
@@ -138,7 +141,7 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (user && statementId) {
-            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
+            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB,deleteStatementCB);
             unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
             unsubEvaluations = listenToEvaluations(statementId, updateEvaluationsCB)
         }

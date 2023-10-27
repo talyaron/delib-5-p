@@ -5,7 +5,6 @@ import { RootState } from '../store'
 import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from 'delib-npm';
 import { updateArray } from '../../functions/general/helpers';
 import { LobbyRooms, RoomAskToJoin } from 'delib-npm';
-import { auth } from '../../functions/db/auth';
 
 
 enum StatementScreen {
@@ -53,10 +52,20 @@ export const statementsSlicer = createSlice({
         if (!isEqualStatements)
           state.statements = updateArray(state.statements, action.payload, "statementId");
 
-            //update last update if bigger than current
-            if(newStatement.lastUpdate > state.statementSubscriptionLastUpdate){
-              state.statementSubscriptionLastUpdate = newStatement.lastUpdate;
-            }
+        //update last update if bigger than current
+        if (newStatement.lastUpdate > state.statementSubscriptionLastUpdate) {
+          state.statementSubscriptionLastUpdate = newStatement.lastUpdate;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    deleteStatement: (state, action: PayloadAction<string>) => {
+
+      try {
+        const statementId = action.payload;
+
+        state.statements = state.statements.filter(statement => statement.statementId !== statementId);
       } catch (error) {
         console.error(error);
       }
@@ -72,19 +81,19 @@ export const statementsSlicer = createSlice({
         if (!isEqualStatements)
           state.statementSubscription = updateArray(state.statementSubscription, action.payload, "statementsSubscribeId");
 
-          //update last update if bigger than current
-          if(newStatement.lastUpdate > state.statementSubscriptionLastUpdate){
-            state.statementSubscriptionLastUpdate = newStatement.lastUpdate;
-          }
+        //update last update if bigger than current
+        if (newStatement.lastUpdate > state.statementSubscriptionLastUpdate) {
+          state.statementSubscriptionLastUpdate = newStatement.lastUpdate;
+        }
       } catch (error) {
         console.error(error);
       }
     },
-    deleteStatement: (state, action: PayloadAction<string>) => {
+    deleteSubscribedStatement: (state, action: PayloadAction<string>) => {
       try {
         const statementId = action.payload;
 
-        state.statementSubscription= state.statementSubscription.filter(statement => statement.statementId !== statementId);
+        state.statementSubscription = state.statementSubscription.filter(statement => statement.statementId !== statementId);
       } catch (error) {
         console.error(error);
       }
@@ -120,12 +129,12 @@ export const statementsSlicer = createSlice({
     },
     setAskToJoinRooms: (state, action: PayloadAction<{ request: RoomAskToJoin | undefined, parentId: string }>) => {
       try {
-       
+
         const { request, parentId } = action.payload;
 
         if (!request) {
           //remove preivous room request
-      
+
           state.askToJoinRooms = state.askToJoinRooms.filter(room => room.parentId !== parentId);
           return;
         }
@@ -151,7 +160,7 @@ export const statementsSlicer = createSlice({
   }
 });
 
-export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
+export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
@@ -169,10 +178,10 @@ export const lastUpdateStatementSubscriptionSelector = (state: RootState) => sta
 export const participantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.parentId === statementId);
 export const askToJoinRoomsSelector = (state: RootState) => state.statements.askToJoinRooms;
 export const askToJoinRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.statementId === statementId);
-export const userSelectedRoomSelector =(statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === auth.currentUser?.uid && room.parentId === statementId);
+export const userSelectedRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
 export const topicParticipantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.statementId === statementId);
 //find the user selected topic
-export const userSelectedTopicSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === auth.currentUser?.uid && room.parentId === statementId);
+export const userSelectedTopicSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.statements.lobbyRooms;
 export const lobbyRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.lobbyRooms.find(room => room.statementId === statementId);

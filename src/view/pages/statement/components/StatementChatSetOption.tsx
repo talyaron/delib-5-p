@@ -2,9 +2,9 @@ import {FC} from 'react'
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { Statement } from 'delib-npm';
 import { setStatementisOption } from '../../../../functions/db/statements/setStatments';
-import { auth } from '../../../../functions/db/auth';
 import { useAppSelector } from '../../../../functions/hooks/reduxHooks';
 import { statementSelector } from '../../../../model/statements/statementsSlice';
+import { store } from '../../../../model/store';
 
 interface Props {
     statement: Statement
@@ -15,7 +15,7 @@ const StatementChatSetOption:FC<Props> = ({statement}) => {
 
   function handleSetOption(){
     try {
-      const user = auth.currentUser;
+      const user = store.getState().user.user;
       const statementsManagerId = parentStatement?.creatorId;
       const statementManagerId = statement.creatorId;
       if(user?.uid === statementsManagerId || user?.uid === statementManagerId || !statement.isOption){

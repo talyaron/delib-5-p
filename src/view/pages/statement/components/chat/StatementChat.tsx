@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import { Statement } from 'delib-npm'
-import { auth } from '../../../../../functions/db/auth';
 import StatementChatMore from '../StatementChatMore';
 
 //icons
@@ -9,6 +8,7 @@ import Text from '../../../../components/text/Text';
 import StatementChatSetOption from '../StatementChatSetOption';
 import ProfileImage from './ProfileImage';
 import { updateStatementText } from '../../../../../functions/db/statements/setStatments';
+import { store } from '../../../../../model/store';
 
 
 
@@ -27,7 +27,7 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
   // const [show, setShow] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const userId = auth.currentUser?.uid;
+  const userId = store.getState().user.user?.uid;
   const creatorId = statement.creatorId;
 
   const isMe = userId === creatorId;

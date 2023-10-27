@@ -1,9 +1,9 @@
 import { collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { Collections, Statement, StatementSubscription, StatementSubscriptionSchema, StatementType } from "delib-npm";
+import { Collections, Statement, StatementSubscription, StatementSubscriptionSchema } from "delib-npm";
 import { DB } from "../config";
-import { auth } from "../auth";
 import { Unsubscribe } from "firebase/auth";
-import { get } from "lodash";
+import { store } from "../../../model/store";
+
 
 
 
@@ -11,7 +11,7 @@ import { get } from "lodash";
 
 export async function getStatmentsSubsciptions(): Promise<StatementSubscription[]> {
     try {
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
@@ -33,7 +33,7 @@ export async function getStatmentsSubsciptions(): Promise<StatementSubscription[
 export function listenToStatementSubscription(statementId: string, updateStore: Function) {
     try {
         if (!statementId) throw new Error("Statement id is undefined");
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
@@ -54,7 +54,7 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
 export async function getSubscriptions(): Promise<StatementSubscription[]> {
     try {
 
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
@@ -82,43 +82,38 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
 
 export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function, lastUpdate: number): Unsubscribe {
     try {
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
-        console.log("listenStatmentsSubsciptions", lastUpdate)
-        console.log(user.uid)
-
-        //where("lastUpdate",">=", lastUpdate)
-        // where("statement.type", "==", StatementType.GROUP)
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), where("lastUpdate",">", lastUpdate), limit(20));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), where("lastUpdate", ">", lastUpdate), limit(20));
 
 
 
         return onSnapshot(q, (subsDB) => {
-            console.log("started snapshot")
+
             subsDB.docChanges().forEach((change) => {
-                console.log('change', change.type);
+
                 if (change.type === "added") {
                     const statementSubscription = change.doc.data() as any;
-                    console.log("added", statementSubscription.statement.statement)
+
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                     cb(statementSubscription);
                 }
 
                 if (change.type === "modified") {
                     const statementSubscription = change.doc.data() as any;
-                    console.log("modified", statementSubscription.statement.statement)
+
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                     cb(statementSubscription);
                 }
 
                 if (change.type === "removed") {
                     const statementSubscription = change.doc.data() as any;
-                    console.log("removed", statementSubscription.statement.statement)
+
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
-                    console.log("deleteCB", statementSubscription.statement.statementId)
+
                     deleteCB(statementSubscription.statement.statementId);
                 }
 
@@ -136,7 +131,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function, la
 export async function getIsSubscribed(statementId: string | undefined): Promise<boolean> {
     try {
         if (!statementId) throw new Error("Statement id is undefined");
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
 
         const subscriptionRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
@@ -178,19 +173,37 @@ export async function getStatementFromDB(statementId: string): Promise<Statement
     }
 }
 
-export function listenToStatementsOfStatment(statementId: string | undefined, updateStore: Function) {
+export function listenToStatementsOfStatment(statementId: string | undefined, updateStore: Function, deleteStatementCB: Function) {
     try {
         if (!statementId) throw new Error("Statement id is undefined");
         const statementsRef = collection(DB, Collections.statements);
         const q = query(statementsRef, where("parentId", "==", statementId), orderBy("createdAt", "desc"), limit(20));
-        return onSnapshot(q, (statementsDB) => {
+       
+        return onSnapshot(q, (subsDB) => {
 
-            statementsDB.forEach((statementDB) => {
-                const statement = statementDB.data() as Statement;
+            subsDB.docChanges().forEach((change) => {
+                const statement = change.doc.data() as any;
 
-                updateStore(statement);
+                if (change.type === "added") {
+                    console.log('added', statement.statement)
+                    updateStore(statement);
+                }
+
+                if (change.type === "modified") {
+                    console.log('modified', statement.statement)
+                    updateStore(statement);
+                }
+
+                if (change.type === "removed") {
+                    console.log('removed', statement.statement)
+                    deleteStatementCB(statement.statementId);
+                }
+
+
+
             });
-        });
+        })
+
     } catch (error) {
         console.error(error);
         return () => { };
