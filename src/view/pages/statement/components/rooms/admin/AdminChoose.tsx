@@ -6,7 +6,6 @@ import { participantsSelector } from '../../../../../../model/statements/stateme
 import { approveToJoinRoomDB, setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
 import _styles from './admin.module.css';
 import Text from '../../../../../components/text/Text';
-import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 
 const styles = _styles as any;

@@ -9,8 +9,7 @@ import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
 import { auth } from '../../../../../functions/db/auth'
-import NavAdmin from './admin/nav/NavAdmin'
-import { setRoomsStateToDB } from '../../../../../functions/db/rooms/setRooms'
+
 interface Props {
     statement: Statement
     subStatements: Statement[]

@@ -189,6 +189,12 @@ const Statement: FC = () => {
 
     }
 
+    const hasNotificationPermission = (()=>{
+        if(window.hasOwnProperty('Notification') === false) return false;   
+        if(Notification.permission === 'denied') return false;
+        if(Notification.permission === 'granted') return true;
+        return false;
+    })()
 
 
     //JSX
@@ -207,7 +213,7 @@ const Statement: FC = () => {
                         <HomeOutlinedIcon />
                     </Link>
                     <div onClick={handleRegisterToNotifications}>
-                        {hasNotifications && Notification.permission === "granted" ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
+                        {hasNotificationPermission && hasNotifications  ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
                     <h1>{title}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
