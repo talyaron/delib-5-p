@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
-import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
+import { getSubscriptions, listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
 import { StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { deleteStatement, lastUpdateStatementSubscriptionSelector, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
@@ -31,32 +31,39 @@ const Main = () => {
         dispatch(setStatementSubscription(statementSubscription));
     }
     function deleteStoreStSubCB(statementId: string) {
-         dispatch(deleteStatement(statementId));
+        dispatch(deleteStatement(statementId));
     }
 
     useEffect(() => {
 
-       setDeferredPrompt(install.deferredPrompt);
-      
+        setDeferredPrompt(install.deferredPrompt);
+
+        // (async () => {
+        //     const subscriptions = await getSubscriptions();
+        //     subscriptions.forEach((subscription: StatementSubscription) => {
+        //         dispatch(setStatementSubscription(subscription));
+        //     });
+        // })();
+
     }, [])
 
     useEffect(() => {
 
         if (isLgged) {
             console.log("Main is logged")
-            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB,lastUpdate);
+            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB, lastUpdate);
         }
         return () => {
             unsubscribe()
         }
     }, [isLgged])
-   
+
 
 
     function handleInstallApp() {
         try {
             const deferredPrompt = install.deferredPrompt;
-           
+
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult: any) => {
@@ -86,7 +93,7 @@ const Main = () => {
                 <h2> יוצרים הסכמות </h2>
                 <div className="btns">
                     <button onClick={handleLogout}>התנתקות</button>
-                    {deferredPrompt?<button onClick={handleInstallApp}>התקנת האפליקציה</button>:null}
+                    {deferredPrompt ? <button onClick={handleInstallApp}>התקנת האפליקציה</button> : null}
                 </div>
             </div>
             <div className="page__main">

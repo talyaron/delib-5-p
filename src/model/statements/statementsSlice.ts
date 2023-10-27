@@ -52,6 +52,11 @@ export const statementsSlicer = createSlice({
         const isEqualStatements = equal(oldStatement, newStatement);
         if (!isEqualStatements)
           state.statements = updateArray(state.statements, action.payload, "statementId");
+
+            //update last update if bigger than current
+            if(newStatement.lastUpdate > state.statementSubscriptionLastUpdate){
+              state.statementSubscriptionLastUpdate = newStatement.lastUpdate;
+            }
       } catch (error) {
         console.error(error);
       }

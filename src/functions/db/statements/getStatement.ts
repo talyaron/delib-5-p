@@ -3,6 +3,7 @@ import { Collections, Statement, StatementSubscription, StatementSubscriptionSch
 import { DB } from "../config";
 import { auth } from "../auth";
 import { Unsubscribe } from "firebase/auth";
+import { get } from "lodash";
 
 
 
@@ -37,7 +38,7 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
         if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
-        
+
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
@@ -50,17 +51,53 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
         return () => { };
     }
 }
+export async function getSubscriptions(): Promise<StatementSubscription[]> {
+    try {
 
-export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function,lastUpdate: number): Unsubscribe {
+        const user = auth.currentUser;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+        const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), limit(20));
+
+        const subscriptionsDB = await getDocs(q);
+        console.log("subscriptionsDB", subscriptionsDB.size)
+        const subscriptions: StatementSubscription[] = [];
+        subscriptionsDB.forEach((doc) => {
+            const statementSubscription = doc.data() as StatementSubscription;
+            console.log("doc", statementSubscription.statement.statement)
+            StatementSubscriptionSchema.parse(statementSubscription);
+
+            subscriptions.push(statementSubscription);
+        });
+
+        return subscriptions;
+
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+
+export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function, lastUpdate: number): Unsubscribe {
     try {
         const user = auth.currentUser;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
+        console.log("listenStatmentsSubsciptions", lastUpdate)
+        console.log(user.uid)
+
+        //where("lastUpdate",">=", lastUpdate)
+        // where("statement.type", "==", StatementType.GROUP)
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("statement.type", "==", StatementType.GROUP), where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), where("lastUpdate",">", lastUpdate), limit(20));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), where("lastUpdate",">", lastUpdate), limit(20));
+
+
 
         return onSnapshot(q, (subsDB) => {
+            console.log("started snapshot")
             subsDB.docChanges().forEach((change) => {
                 console.log('change', change.type);
                 if (change.type === "added") {
