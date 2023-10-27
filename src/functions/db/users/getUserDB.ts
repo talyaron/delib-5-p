@@ -6,7 +6,7 @@ import { store } from "../../../model/store";
 // get user font size and update document and html with the size in the DB
 export async function getUserFromDB(): Promise<User |undefined> {
     try {
-        console.log("get user from DB")
+      
         const user = store.getState().user.user;
         if (!user) throw new Error('user is not logged in');
 

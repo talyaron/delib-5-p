@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from 'react';
+import { FC, useEffect, useState, useRef, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
@@ -32,6 +32,8 @@ import { SetStatementComp } from './components/set/SetStatementComp';
 import StatmentRooms from './components/rooms/Rooms';
 import { getUserPermissionToNotifications } from '../../../functions/notifications';
 import AskPermisssion from '../../components/askPermission/AskPermisssion';
+import { store } from '../../../model/store';
+import { useSelector } from 'react-redux';
 
 
 
@@ -58,10 +60,11 @@ const Statement: FC = () => {
     //check if the user is registered
 
     const statement = useAppSelector(statementSelector(statementId));
-    const subStatements = useAppSelector(statementSubsSelector(statementId));
+    const subStatements = useSelector(statementSubsSelector(statementId));   
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
+  
     const role: any = statementSubscription?.role || Role.member;
-    const user = useAppSelector(userSelector);
+    const user = store.getState().user.user;
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
     //store callbacks

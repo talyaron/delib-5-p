@@ -61,11 +61,11 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
         const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), limit(20));
 
         const subscriptionsDB = await getDocs(q);
-        console.log("subscriptionsDB", subscriptionsDB.size)
+
         const subscriptions: StatementSubscription[] = [];
         subscriptionsDB.forEach((doc) => {
             const statementSubscription = doc.data() as StatementSubscription;
-            console.log("doc", statementSubscription.statement.statement)
+
             StatementSubscriptionSchema.parse(statementSubscription);
 
             subscriptions.push(statementSubscription);
@@ -87,7 +87,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function, la
         if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), where("lastUpdate", ">", lastUpdate), limit(20));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), limit(20));
 
 
 
@@ -178,24 +178,24 @@ export function listenToStatementsOfStatment(statementId: string | undefined, up
         if (!statementId) throw new Error("Statement id is undefined");
         const statementsRef = collection(DB, Collections.statements);
         const q = query(statementsRef, where("parentId", "==", statementId), orderBy("createdAt", "desc"), limit(20));
-       
+
         return onSnapshot(q, (subsDB) => {
 
             subsDB.docChanges().forEach((change) => {
                 const statement = change.doc.data() as any;
 
                 if (change.type === "added") {
-                    console.log('added', statement.statement)
+
                     updateStore(statement);
                 }
 
                 if (change.type === "modified") {
-                    console.log('modified', statement.statement)
+
                     updateStore(statement);
                 }
 
                 if (change.type === "removed") {
-                    console.log('removed', statement.statement)
+
                     deleteStatementCB(statement.statementId);
                 }
 

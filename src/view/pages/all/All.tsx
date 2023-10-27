@@ -25,7 +25,7 @@ const All = () => {
     useEffect(() => {
         const usub:Unsubscribe = listenToAuth(updateUserToStore,updateFonSize);
         setIntialLocationSessionStorage(location.pathname);
-        console.log('firstTime');
+      
         return () => {
             usub();
         }
