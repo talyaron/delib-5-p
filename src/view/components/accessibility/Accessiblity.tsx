@@ -1,6 +1,6 @@
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { fontSizeSelector, increaseFontSize } from '../../../model/accessibility/accessibiliySlice';
+import { fontSizeSelector, increaseFontSize } from '../../../model/users/userSlice';
 import { useEffect, useState } from 'react';
 import { updateUserFontSize } from '../../../functions/db/users/setUsersDB';
 

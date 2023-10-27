@@ -7,7 +7,7 @@ import { User } from '../../../model/users/userModel';
 import { setIntialLocationSessionStorage } from '../../../functions/general/helpers';
 import Accessiblity from '../../components/accessibility/Accessiblity';
 import { Unsubscribe } from 'firebase/auth';
-import { setFontSize } from '../../../model/accessibility/accessibiliySlice';
+import { setFontSize } from '../../../model/users/userSlice';
 
 
 const All = () => {
