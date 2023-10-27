@@ -5,7 +5,8 @@ import { store } from "../../../model/store";
 
 export async function setUserToDB(user:User) {
     try {
-       
+        if(!user) throw new Error('user is undefined');
+       console.log("setUserToDB")
         UserSchema.parse(user);
         const userRef = doc(DB, Collections.users, user.uid);
         await setDoc(userRef, user, { merge: true });
@@ -18,6 +19,7 @@ export async function setUserToDB(user:User) {
 
 export async function updateUserFontSize(size:number) {
     try {
+        console.log("update user fontsize")
         const user = store.getState().user.user;
         if(!user) throw new Error('user is not logged in');
         if(typeof size !== 'number') throw new Error('size must be a number');

@@ -21,7 +21,7 @@ interface UserState {
 // Define the initial state using that type
 const initialState: UserState = {
   user: null,
-  askToSubscribeToNotifications:{
+  askToSubscribeToNotifications: {
     show: false,
   },
   status: Status.idle
@@ -33,9 +33,12 @@ export const userSlicer = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
       try {
-        if (action.payload){
-        UserSchema.parse(action.payload);
-        state.user = action.payload;
+        if (action.payload) {
+          const user = action.payload as User;
+          if(!user.fontSize || typeof user.fontSize !== 'number' || isNaN(user.fontSize)) user.fontSize = 14;
+
+          UserSchema.parse(action.payload);
+          state.user = action.payload;
         } else {
           state.user = null;
         }
