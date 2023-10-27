@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef, useMemo } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
@@ -8,7 +8,6 @@ import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User, Screen } from 'delib-npm';
-import { userSelector } from '../../../model/users/userSlice';
 
 import { Evaluation } from '../../../model/evaluations/evaluationModel';
 import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';

@@ -80,7 +80,7 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
 }
 
 
-export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function, lastUpdate: number): Unsubscribe {
+export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): Unsubscribe {
     try {
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
