@@ -5,7 +5,7 @@ import Fav from '../../components/fav/Fav';
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
 import { StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
+import { deleteStatement, lastUpdateStatementSubscriptionSelector, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
@@ -19,6 +19,7 @@ let unsubscribe: Function = () => { };
 
 const Main = () => {
     const navigate = useNavigate();
+    const lastUpdate = useAppSelector(lastUpdateStatementSubscriptionSelector);
     const statements = [...useAppSelector(statementsSubscriptionsSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
@@ -28,6 +29,9 @@ const Main = () => {
 
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
+    }
+    function deleteStoreStSubCB(statementId: string) {
+         dispatch(deleteStatement(statementId));
     }
 
     useEffect(() => {
@@ -39,7 +43,8 @@ const Main = () => {
     useEffect(() => {
 
         if (isLgged) {
-            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB);
+            console.log("Main is logged")
+            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB,lastUpdate);
         }
         return () => {
             unsubscribe()

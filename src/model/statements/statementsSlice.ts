@@ -17,6 +17,7 @@ enum StatementScreen {
 interface StatementsState {
   statements: Statement[];
   statementSubscription: StatementSubscription[],
+  statementSubscriptionLastUpdate: number,
   screen: StatementScreen,
   askToJoinRooms: RoomAskToJoin[],
   lobbyRooms: LobbyRooms[]
@@ -31,6 +32,7 @@ interface StatementOrder {
 const initialState: StatementsState = {
   statements: [],
   statementSubscription: [],
+  statementSubscriptionLastUpdate: 0,
   screen: StatementScreen.chat,
   askToJoinRooms: [],
   lobbyRooms: []
@@ -64,6 +66,20 @@ export const statementsSlicer = createSlice({
         const isEqualStatements = equal(oldStatement, newStatement);
         if (!isEqualStatements)
           state.statementSubscription = updateArray(state.statementSubscription, action.payload, "statementsSubscribeId");
+
+          //update last update if bigger than current
+          if(newStatement.lastUpdate > state.statementSubscriptionLastUpdate){
+            state.statementSubscriptionLastUpdate = newStatement.lastUpdate;
+          }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    deleteStatement: (state, action: PayloadAction<string>) => {
+      try {
+        const statementId = action.payload;
+
+        state.statementSubscription= state.statementSubscription.filter(statement => statement.statementId !== statementId);
       } catch (error) {
         console.error(error);
       }
@@ -130,7 +146,7 @@ export const statementsSlicer = createSlice({
   }
 });
 
-export const { setLobbyRooms, setAskToJoinRooms, setStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
+export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
@@ -143,6 +159,7 @@ export const statementNotificationSelector = (statementId: string | undefined) =
 export const statementSubscriptionSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId) || undefined;
 export const statementOrderSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.order || 0;
 export const statementElementHightSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.elementHight || 0;
+export const lastUpdateStatementSubscriptionSelector = (state: RootState) => state.statements.statementSubscriptionLastUpdate;
 //rooms
 export const participantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.parentId === statementId);
 export const askToJoinRoomsSelector = (state: RootState) => state.statements.askToJoinRooms;
