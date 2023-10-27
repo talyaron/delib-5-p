@@ -1,11 +1,11 @@
 import { Collections, RoomAskToJoin, getRequestIdToJoinRoom, LobbyRooms, Statement, StatementSchema, StatementType } from "delib-npm";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
-import { auth } from "../auth";
 import { DB } from "../config";
+import { store } from "../../../model/store";
 
 export function listenToRoomsRquest(parentId: string, cb: Function) {
     try {
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const userId = user.uid
         const requestId = getRequestIdToJoinRoom(userId, parentId)
@@ -59,7 +59,7 @@ export function listenToLobbyRoomJoiners(parentId: string, cb: Function) {
 export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
     try {
       
-        const user = auth.currentUser;
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const userId = user.uid
         if (userId !== statement.creatorId) throw new Error("User is not the creator of the statement");

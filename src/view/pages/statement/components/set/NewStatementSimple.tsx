@@ -2,11 +2,11 @@ import { FC, useState } from 'react';
 import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 
-import { auth } from '../../../../../functions/db/auth';
 import { UserSchema } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 
 import {Statement, parseUserFromFirebase } from 'delib-npm';
+import { store } from '../../../../../model/store';
 
 interface Props {
     parentStatement: Statement;
@@ -35,7 +35,7 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
             const _statement = `${title}\n${description}`;
-            const _user = auth.currentUser;
+            const _user = store.getState().user.user;
             if (!_user) throw new Error("user not found");
             const { displayName, email, photoURL, uid } = _user;
             const user = { displayName, email, photoURL, uid };

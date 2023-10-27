@@ -5,7 +5,7 @@ import Fav from '../../components/fav/Fav';
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
 import { StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
+import { deleteSubscribedStatement, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
@@ -29,29 +29,33 @@ const Main = () => {
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
     }
+    function deleteStoreStSubCB(statementId: string) {
+        dispatch(deleteSubscribedStatement(statementId));
+    }
 
     useEffect(() => {
 
-       setDeferredPrompt(install.deferredPrompt);
-      
+        setDeferredPrompt(install.deferredPrompt);
+
     }, [])
 
     useEffect(() => {
 
         if (isLgged) {
-            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB);
+         
+            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB);
         }
         return () => {
             unsubscribe()
         }
     }, [isLgged])
-   
+
 
 
     function handleInstallApp() {
         try {
             const deferredPrompt = install.deferredPrompt;
-           
+
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult: any) => {
@@ -81,7 +85,7 @@ const Main = () => {
                 <h2> יוצרים הסכמות </h2>
                 <div className="btns">
                     <button onClick={handleLogout}>התנתקות</button>
-                    {deferredPrompt?<button onClick={handleInstallApp}>התקנת האפליקציה</button>:null}
+                    {deferredPrompt ? <button onClick={handleInstallApp}>התקנת האפליקציה</button> : null}
                 </div>
             </div>
             <div className="page__main">

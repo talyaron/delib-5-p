@@ -3,8 +3,7 @@ import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChang
 import { app } from "./config";
 import { parseUserFromFirebase, User } from "delib-npm";
 import { setUserToDB } from "./users/setUsersDB";
-import { getUserFromDB } from "./users/getUserDB";
-import { store } from "../../model/store";
+
 
 
 const provider = new GoogleAuthProvider();

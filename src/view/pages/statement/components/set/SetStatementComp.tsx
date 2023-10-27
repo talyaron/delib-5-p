@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 import { useNavigate, useParams } from 'react-router-dom';
-import { auth } from '../../../../../functions/db/auth';
+
 import { UserSchema, User } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
@@ -15,6 +15,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { navArray } from '../nav/StatementNav';
 import { NavObject, Screen, Statement } from 'delib-npm';
 import { userSelector } from '../../../../../model/users/userSlice';
+import { store } from '../../../../../model/store';
 
 interface Props {
     simple?: boolean
@@ -66,7 +67,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;
             newStatement.statementId = statement?.statementId || crypto.randomUUID();
-            newStatement.creatorId = statement?.creator.uid || auth.currentUser?.uid;
+            newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;

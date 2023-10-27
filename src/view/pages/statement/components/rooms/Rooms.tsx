@@ -8,7 +8,7 @@ import { setAskToJoinRooms, setLobbyRooms } from '../../../../../model/statement
 import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
-import { auth } from '../../../../../functions/db/auth'
+import { store } from '../../../../../model/store'
 
 interface Props {
     statement: Statement
@@ -27,7 +27,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
         unsub = listenToRoomsRquest(statement.statementId, updateRequestForRooms);
         unsub2 = listenToLobbyRoomJoiners(statement.statementId, updateLobbyRoomJoinersCounts);
 
-        if (statement.creatorId === auth.currentUser?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
+        if (statement.creatorId === store.getState().user.user?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
         return () => {
             unsub();
             unsub2();
@@ -46,7 +46,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
 
 
     const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
-    const isAdmin = auth.currentUser?.uid === statement.creatorId;
+    const isAdmin = store.getState().user.user?.uid === statement.creatorId;
 
     return (
         <div className='page__main'>
@@ -60,7 +60,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
                     <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
                 </Modal> : null}
             </div>
-          
+
         </div>
     )
 }

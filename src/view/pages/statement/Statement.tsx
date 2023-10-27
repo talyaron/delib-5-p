@@ -2,13 +2,12 @@ import { FC, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
+import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User, Screen } from 'delib-npm';
-import { userSelector } from '../../../model/users/userSlice';
 
 import { Evaluation } from '../../../model/evaluations/evaluationModel';
 import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
@@ -32,6 +31,8 @@ import { SetStatementComp } from './components/set/SetStatementComp';
 import StatmentRooms from './components/rooms/Rooms';
 import { getUserPermissionToNotifications } from '../../../functions/notifications';
 import AskPermisssion from '../../components/askPermission/AskPermisssion';
+import { store } from '../../../model/store';
+import { useSelector } from 'react-redux';
 
 
 
@@ -58,15 +59,19 @@ const Statement: FC = () => {
     //check if the user is registered
 
     const statement = useAppSelector(statementSelector(statementId));
-    const subStatements = useAppSelector(statementSubsSelector(statementId));
+    const subStatements = useSelector(statementSubsSelector(statementId));   
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
+  
     const role: any = statementSubscription?.role || Role.member;
-    const user = useAppSelector(userSelector);
+    const user = store.getState().user.user;
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))
+    }
+    function deleteStatementCB(statementId: string) {
+        dispatch(deleteStatement(statementId))
     }
     function updateStatementSubscriptionCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription))
@@ -138,7 +143,7 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (user && statementId) {
-            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
+            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB,deleteStatementCB);
             unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
             unsubEvaluations = listenToEvaluations(statementId, updateEvaluationsCB)
         }

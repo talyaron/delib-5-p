@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Statement,NavObject, Screen} from "delib-npm";
-import { auth } from "../../../../../functions/db/auth";
+import { store } from "../../../../../model/store";
 
 
 
@@ -78,7 +78,7 @@ export function showNavElements(statement:Statement|undefined, navArray: NavObje
         function isAdmin(creatorId:string|undefined){
             try {
                 if(!creatorId) return false;
-                const userUid = auth.currentUser?.uid;
+                const userUid = store.getState().user.user?.uid;
                 if(userUid === creatorId) return true;
             } catch (error) {
                 console.error(error);

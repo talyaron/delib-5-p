@@ -22,17 +22,19 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
 
         //set statement
         const statementRef = doc(DB, Collections.statements, statement.statementId);
-        // await setDoc(statementRef, statement, { merge: true });
+        const statmentPromise = setDoc(statementRef, statement, { merge: true });
 
         //add admin
         const adminRefId = `${statement.creator.uid}--${statement.statementId}`;
         const adminRef = doc(DB, Collections.admins, adminRefId);
         const admin:Admin = { statementId: statement.statementId, user: statement.creator, role: AdminRolesEnum.admin };
         // await setDoc(adminRef, admin);
+       const adminPromise = setDoc(adminRef, admin);
 
-        await Promise.all([ setDoc(adminRef, admin), setDoc(statementRef, statement, { merge: true })]);
+        await Promise.all([ adminPromise, statmentPromise]);
 
         //add subscription
+    
         if (addSubscription) {
             await setStatmentSubscriptionToDB(statement, Role.admin, true);
          
