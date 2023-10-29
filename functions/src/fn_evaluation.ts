@@ -1,11 +1,13 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
+import { Statement } from "delib-npm";
 
 
 export async function updateEvaluation(event: any) {
     try {
 
         // get data from event
+        const statement = event.data.after.data() as Statement;
 
         const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getEvaluationInfo();
         if (error) throw error;
@@ -23,14 +25,26 @@ export async function updateEvaluation(event: any) {
 
         const consensus = await calculateConsensus(_totalEvaluations, totalEvaluators);
 
+        //get maxConsensus of sibbling statements unther the parent
+        const parentStatementsQuery = db.collection("statements").where("parentId", "==", parentId).orderBy("consensus", "desc").limit(1);
+        const parentStatementsDB = await parentStatementsQuery.get();
+
+        const maxConsensusStatement = parentStatementsDB.docs[0].data();
+        let maxConsensus = 0;
+        if (!parentStatementsDB.empty) {
+            maxConsensus = maxConsensusStatement.consensus;
+        }
+
+        if (consensus > maxConsensus) {
+            //set parent consensus to maxConsensus
+            await parentRef.update({ maxConsesusStatement: statement, maxConsensus });
+        } else {
+            //set parent consensus to maxConsensus
+            await parentRef.update({ maxConsesusStatement: maxConsensusStatement, maxConsensus });
+        }
+
         //set consensus to statement in DB
         await statementRef.update({ consensus });
-
-
-
-
-
-
 
     } catch (error) {
         logger.error(error);
@@ -68,7 +82,7 @@ export async function updateEvaluation(event: any) {
         }
     }
 
-    async function calculateConsensus(_totalEvaluations: number, totalEvaluatorEvaluations: any) {
+    async function calculateConsensus(_totalEvaluations: number, totalEvaluatorEvaluations: any):Promise<number>{
         //(pst-neg, 1, -1)(log1.3(abs(atLeast 1(positive_evaluators_evaluation - negative_evaluators_evaluation)))) / total_evaluators
         try {
 
@@ -90,7 +104,7 @@ export async function updateEvaluation(event: any) {
             return consensus;
         } catch (error) {
             logger.error(error);
-            return { consensus: 0, _totalEvaluations: 0 };
+            return 0;
         }
     }
 

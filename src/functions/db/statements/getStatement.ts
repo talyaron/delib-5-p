@@ -42,6 +42,7 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
+        
             StatementSubscriptionSchema.parse(statementSubscription);
 
             updateStore(statementSubscription);

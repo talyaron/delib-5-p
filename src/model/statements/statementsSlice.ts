@@ -204,5 +204,7 @@ export const userSelectedTopicSelector = (statementId: string | undefined) => (s
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.statements.lobbyRooms;
 export const lobbyRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.lobbyRooms.find(room => room.statementId === statementId);
+//membeship
+export const statementMembershipSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementMembership.filter((statement:StatementSubscription) => statement.statementId === statementId);
 
 export default statementsSlicer.reducer

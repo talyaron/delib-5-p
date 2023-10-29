@@ -31,7 +31,7 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
             const canGetNotifications = await getUserPermissionToNotifications();
 
             if (canGetNotifications)
-                await setStatmentSubscriptionNotificationToDB(statement, Role.admin);
+                await setStatmentSubscriptionNotificationToDB(statement);
 
         }
 
@@ -60,7 +60,8 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
         if (role === Role.admin) setNotifications = true;
 
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
-        await setDoc(statementsSubscribeRef, { notification: setNotifications, statement, statementsSubscribeId, role, userId: user.uid, statementId, lastUpdate: Timestamp.now().toMillis(), createdAt: Timestamp.now().toMillis() }, { merge: true });
+        
+        await setDoc(statementsSubscribeRef,{user,  notification: setNotifications, statement, statementsSubscribeId, role, userId: user.uid, statementId, lastUpdate: Timestamp.now().toMillis(), createdAt: Timestamp.now().toMillis() } , { merge: true });
     } catch (error) {
         console.error(error);
     }
@@ -80,7 +81,7 @@ export async function updateStatementText(statement:Statement, newText:string){
     }
 }
 
-export async function setStatmentSubscriptionNotificationToDB(statement: Statement | undefined, role: Role = Role.member) {
+export async function setStatmentSubscriptionNotificationToDB(statement: Statement | undefined) {
     try {
 
         const token = deviceToken;
@@ -106,8 +107,8 @@ export async function setStatmentSubscriptionNotificationToDB(statement: Stateme
 
         if (!statementSubscriptionDB.exists()) {
             //set new subscription
-            const newSubscription: StatementSubscription = { userId: user.uid, statementId, token, notification: true, lastUpdate: Timestamp.now().toMillis(), statementsSubscribeId, role, statement };
-            await setDoc(statementsSubscribeRef, newSubscription, { merge: true });
+           
+            await setDoc(statementsSubscribeRef, { user, userId: user.uid, statementId, token, notification: true, lastUpdate: Timestamp.now().toMillis(), statementsSubscribeId, statement }, { merge: true });
         } else {
             //update subscription
             const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;

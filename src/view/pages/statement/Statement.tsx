@@ -60,9 +60,9 @@ const Statement: FC = () => {
 
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
-    const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
+    // const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
 
-    const role: any = statementSubscription?.role || Role.member;
+    // const role: any = statementSubscription?.role || Role.member;
     const user = store.getState().user.user;
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
@@ -106,7 +106,7 @@ const Statement: FC = () => {
             setShowAskPermission(true)
             return;
         }
-        setStatmentSubscriptionNotificationToDB(statement, role)
+        setStatmentSubscriptionNotificationToDB(statement)
     }
 
 

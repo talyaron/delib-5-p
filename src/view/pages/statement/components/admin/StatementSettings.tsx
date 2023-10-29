@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { UserSchema, User, StatementSubscription } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { removeMembership, setMembership, setStatement, statementSelector } from '../../../../../model/statements/statementsSlice';
+import { removeMembership, setMembership, setStatement, statementMembershipSelector, statementSelector } from '../../../../../model/statements/statementsSlice';
 import { getStatementFromDB, listenToMembers } from '../../../../../functions/db/statements/getStatement';
 
 import FormGroup from '@mui/material/FormGroup';
@@ -16,6 +16,7 @@ import { navArray } from '../nav/StatementNav';
 import { NavObject, Screen, Statement } from 'delib-npm';
 import { userSelector } from '../../../../../model/users/userSlice';
 import { store } from '../../../../../model/store';
+import MembershipLine from './MembershipLine';
 
 
 interface Props {
@@ -29,6 +30,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
     const statement = useAppSelector(statementSelector(statementId));
+    const membership: StatementSubscription[] = useAppSelector(statementMembershipSelector(statementId));
     const user: User | null = useAppSelector(userSelector);
     const dispatch = useAppDispatch();
 
@@ -38,7 +40,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         let unsubscribe: Function = () => { };
         if (statementId) {
 
-            unsubscribe = listenToMembers(statementId,setMembershipCB,removeMembershipCB);
+            unsubscribe = listenToMembers(statementId, setMembershipCB, removeMembershipCB);
 
 
             if (!statement)
@@ -57,11 +59,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     }, [statementId]);
 
     //CBs
-    function setMembershipCB(membership:StatementSubscription) {
+    function setMembershipCB(membership: StatementSubscription) {
         dispatch(setMembership(membership));
     }
 
-    function removeMembershipCB(membership:StatementSubscription) {
+    function removeMembershipCB(membership: StatementSubscription) {
         dispatch(removeMembership(membership.statementsSubscribeId));
     }
 
@@ -77,7 +79,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
             const _statement = `${title}\n${description}`;
-
 
             UserSchema.parse(user);
 
@@ -149,7 +150,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </form>
                     <h2>חברים בקבוצה</h2>
                     <div className="wrapper">
-
+                        {membership ? membership.map(member => <MembershipLine key={member.userId} member={member} />) : null}
                     </div>
                 </> :
                 <div className="center">
@@ -195,3 +196,5 @@ function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
         return [];
     }
 }
+
+
