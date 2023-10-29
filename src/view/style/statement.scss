@@ -52,10 +52,13 @@
         &__text {
             
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
             justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+         
             word-break: break-word;
+           margin-bottom: .2rem;
         }
 
         &__more {

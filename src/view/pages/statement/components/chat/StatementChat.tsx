@@ -9,6 +9,7 @@ import StatementChatSetOption from '../StatementChatSetOption';
 import ProfileImage from './ProfileImage';
 import { updateStatementText } from '../../../../../functions/db/statements/setStatments';
 import { store } from '../../../../../model/store';
+import Solution from '../general/Solution';
 
 
 
@@ -62,6 +63,7 @@ function handleInput(e:any){
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null} */}
               {!isEdit?<div onClick={handleEdit}><Text text={statement.statement}/></div>:<textarea className='statement__edit' defaultValue={statement.statement} onKeyUp={handleInput} />}
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null} */}
+              <Solution statement={statement} />
             </div>
             <div className="statement__bubble__more">
               
