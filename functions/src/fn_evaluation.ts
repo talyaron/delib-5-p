@@ -1,6 +1,8 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { Statement, SimpleStatement } from "delib-npm";
+import { SimpleStatement } from "delib-npm";
+
+
 
 
 export async function updateEvaluation(event: any) {
@@ -24,32 +26,30 @@ export async function updateEvaluation(event: any) {
 
         const consensus = await calculateConsensus(_totalEvaluations, totalEvaluators);
 
+        //set consensus to statement in DB
+        await statementRef.update({ consensus });
+
         //get maxConsensus of sibbling statements under the parent
         const parentStatementsQuery = db.collection("statements").where("parentId", "==", parentId).orderBy("consensus", "desc").limit(1);
         const parentStatementsDB = await parentStatementsQuery.get();
+        const maxConsensusStatement =  parentStatementsDB.docs[0].data()
+     
+        const { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus }: SimpleStatement = maxConsensusStatement;
+        const maxConsensusStatementSimple: SimpleStatement = { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus };
+        // let maxConsensus = 0;
 
-        const { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus }: SimpleStatement = parentStatementsDB.docs[0].data();
-        const maxConsensusStatement: SimpleStatement = { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus };
-        let maxConsensus = 0;
-        if (!parentStatementsDB.empty) {
-            maxConsensus = maxConsensusStatement.consensus;
-        }
+        //get max consensus statement
+        // const statementDB = await parentRef.get();
+        // const statement = statementDB.data() as Statement;
+        // if (!parentStatementsDB.empty) {
+        //     maxConsensus = maxConsensusStatement.consensus;
+        // }
 
-        if (consensus > maxConsensus) {
-
-            // get parent statement
-            const statementDB = await parentRef.get();
-            const statement = statementDB.data() as Statement;
-
-            //set parent consensus to maxConsensus
-            await parentRef.update({ maxConsesusStatement: statement, maxConsensus });
-        } else {
-            //set parent consensus to maxConsensus
-            await parentRef.update({ maxConsesusStatement: maxConsensusStatement, maxConsensus });
-        }
-
-        //set consensus to statement in DB
-        await statementRef.update({ consensus });
+        //save max consesnsus statement to parent on DB
+       
+        await parentRef.update({ maxConsesusStatement: maxConsensusStatementSimple });
+        
+        
 
     } catch (error) {
         logger.error(error);

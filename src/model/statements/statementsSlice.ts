@@ -46,7 +46,7 @@ export const statementsSlicer = createSlice({
   reducers: {
     setStatement: (state, action: PayloadAction<Statement>) => {
       try {
-        console.log(action.payload)
+   
         StatementSchema.parse(action.payload);
         const newStatement = action.payload;
         newStatement.order = 0;
