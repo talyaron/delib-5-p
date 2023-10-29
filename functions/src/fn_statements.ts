@@ -2,6 +2,7 @@ const { logger } = require("firebase-functions");
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
 import admin = require('firebase-admin');
+import { Collections } from "delib-npm";
 
 export async function updateSubscribedListnersCB(event: any) {
 
@@ -32,7 +33,7 @@ export async function updateSubscribedListnersCB(event: any) {
 
 export async function updateParentWithNewMessageCB(e: any) {
   try {
-   
+
     //get parentId
     const statement = e.data.data();
     const parentId = statement.parentId;
@@ -47,9 +48,9 @@ export async function updateParentWithNewMessageCB(e: any) {
       //update parent
       const lastMessage = statement.statement;
       const lastUpdate = Timestamp.now().toMillis();
-      parentRef.update({ lastMessage, lastUpdate, totalSubStatements:FieldValue.increment(1) });
+      parentRef.update({ lastMessage, lastUpdate, totalSubStatements: FieldValue.increment(1) });
       //increment totalSubStatements
-    
+
     }
     return
   } catch (error) {
@@ -61,32 +62,38 @@ export async function updateParentWithNewMessageCB(e: any) {
 
 export async function sendNotificationsCB(e: any) {
   try {
-  
+
     const statement = e.data.data();
-   
+
     const parentId = statement.parentId;
-   
+
     if (!parentId) throw new Error("parentId not found");
+    logger.log("parentId", parentId);
+    let title: string = "", parent;
 
     //get parent statement
-    const parentRef = db.doc(`statements/${parentId}`);
-    const parentDB = await parentRef.get();
-    const parent = parentDB.data();
-    //remove * from statement and bring only the fiest paragraph (pargraph are created by /n)
+    if (parentId === "top") { title = "הודעה חדשה" }
+    else {
+      const parentRef = db.doc(`statements/${parentId}`);
+      const parentDB = await parentRef.get();
+      parent = parentDB.data();
+      const _title = parent.statement.replace(/\*/g, "");
 
-    const _title  = parent.statement.replace(/\*/g, "");
+      //bring only the first pargarpah
+      const _titleArr = _title.split("\n");
+      const _titleFirstParagraph = _titleArr[0];
 
-    //bring only the first pargarpah
-    const _titleArr = _title.split("\n");
-    const _titleFirstParagraph = _titleArr[0];
+      //limit to 20 chars
+      const __first20Chars = _titleFirstParagraph.substring(0, 20);
 
-    //limit to 20 chars
-    const __first20Chars = _titleFirstParagraph.substring(0, 20);
+      title = parent && parent.statement ? `בשיחה: ${__first20Chars}` : `הודעה חדשה`;
+    }
+    //remove * from statement and bring only the first paragraph (pargraph are created by /n)
 
-    const title = parent && parent.statement?`בשיחה: ${__first20Chars}`:`הודעה חדשה`;
+
 
     //get all subscribers to this statement
-    const subscribersRef = db.collection("statementsSubscribe");
+    const subscribersRef = db.collection(Collections.statementsSubscribe);
     const q = subscribersRef.where("statementId", "==", parentId).where("notification", "==", true);
 
     const subscribersDB = await q.get();
@@ -97,7 +104,7 @@ export async function sendNotificationsCB(e: any) {
       const token = doc.data().token;
       logger.log("token:", token);
 
-      if(token){
+      if (token) {
         // const notifications = {
         //   notification: {
         //     title: 'הודעה חדשה',
@@ -108,9 +115,9 @@ export async function sendNotificationsCB(e: any) {
         //     link: "http://delib.org"
         //   }
         // };
-       
-        const message:any = {
-          data:{
+
+        const message: any = {
+          data: {
             title,
             body: statement.statement,
             url: `https://delib-5.web.app/home/statement/${parentId}`
@@ -119,7 +126,7 @@ export async function sendNotificationsCB(e: any) {
         };
         admin.messaging().send(message)
           .then((response: any) => {
-            
+
             // Response is a message ID string.
             logger.log('Successfully sent message:', response);
           })

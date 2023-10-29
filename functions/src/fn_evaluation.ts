@@ -1,13 +1,12 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { Statement } from "delib-npm";
+import { Statement, SimpleStatement } from "delib-npm";
 
 
 export async function updateEvaluation(event: any) {
     try {
 
-        // get data from event
-        const statement = event.data.after.data() as Statement;
+
 
         const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getEvaluationInfo();
         if (error) throw error;
@@ -20,22 +19,28 @@ export async function updateEvaluation(event: any) {
 
         //calculate and update
         const totalEvaluators = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
-    
+
         const _totalEvaluations = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
 
         const consensus = await calculateConsensus(_totalEvaluations, totalEvaluators);
 
-        //get maxConsensus of sibbling statements unther the parent
+        //get maxConsensus of sibbling statements under the parent
         const parentStatementsQuery = db.collection("statements").where("parentId", "==", parentId).orderBy("consensus", "desc").limit(1);
         const parentStatementsDB = await parentStatementsQuery.get();
 
-        const maxConsensusStatement = parentStatementsDB.docs[0].data();
+        const { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus }: SimpleStatement = parentStatementsDB.docs[0].data();
+        const maxConsensusStatement: SimpleStatement = { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus };
         let maxConsensus = 0;
         if (!parentStatementsDB.empty) {
             maxConsensus = maxConsensusStatement.consensus;
         }
 
         if (consensus > maxConsensus) {
+
+            // get parent statement
+            const statementDB = await parentRef.get();
+            const statement = statementDB.data() as Statement;
+
             //set parent consensus to maxConsensus
             await parentRef.update({ maxConsesusStatement: statement, maxConsensus });
         } else {
@@ -71,7 +76,7 @@ export async function updateEvaluation(event: any) {
             const statementId = dataAfter.statementId;
             if (!statementId) throw new Error("statementId is not defined");
             const statementRef = db.collection("statements").doc(statementId);
-        
+
             const parentId = dataAfter.parentId;
             if (!parentId)
                 throw new Error("parentId is not defined");
@@ -82,7 +87,7 @@ export async function updateEvaluation(event: any) {
         }
     }
 
-    async function calculateConsensus(_totalEvaluations: number, totalEvaluatorEvaluations: any):Promise<number>{
+    async function calculateConsensus(_totalEvaluations: number, totalEvaluatorEvaluations: any): Promise<number> {
         //(pst-neg, 1, -1)(log1.3(abs(atLeast 1(positive_evaluators_evaluation - negative_evaluators_evaluation)))) / total_evaluators
         try {
 
@@ -95,11 +100,11 @@ export async function updateEvaluation(event: any) {
             })();
 
             const totalEvaluations = beforeLogCalculation(Math.abs(_totalEvaluations));
-      
+
             const totalLogEvaluations = Math.log2(totalEvaluations);
-      
+
             const consensus = proEvaluation * (totalLogEvaluations / totalEvaluatorEvaluations);
-        
+
 
             return consensus;
         } catch (error) {
@@ -109,7 +114,7 @@ export async function updateEvaluation(event: any) {
     }
 
     async function setNewEvaluation(statementRef: any, evaluationDeferneces: number | undefined, evaluation: number, previousEvaluation: number | undefined): Promise<number> {
-      
+
         let newTotalEvaluations: number = 0;
         await db.runTransaction(async (t: any) => {
             try {
@@ -126,10 +131,10 @@ export async function updateEvaluation(event: any) {
                 newTotalEvaluations = statementDB.data().totalEvaluations;
                 const oldPro = statementDB.data().pro || 0;
                 const oldCon = statementDB.data().con || 0;
-              
+
 
                 const { newCon, newPro } = updateProCon(oldPro, oldCon, evaluation, previousEvaluation);
-            
+
 
                 if (newTotalEvaluations === undefined)
                     newTotalEvaluations = 0;
@@ -153,7 +158,7 @@ export async function updateEvaluation(event: any) {
                 let newPro = oldPro;
                 let newCon = oldCon;
 
-                const { pro, con } = clacProCon( previousEvaluation,evaluation);
+                const { pro, con } = clacProCon(previousEvaluation, evaluation);
                 logger.info(`pro: ${pro}, con: ${con}`);
                 newPro += pro;
                 newCon += con;

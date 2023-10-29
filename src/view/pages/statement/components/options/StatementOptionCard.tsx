@@ -64,7 +64,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                     <div className='options__card__text text' onClick={() => setShow(!show)}>
                         <Text text={statement.statement} />
                     </div>
-
+                    {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
 
 
                 </div>

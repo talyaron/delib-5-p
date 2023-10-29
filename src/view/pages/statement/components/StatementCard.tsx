@@ -5,6 +5,7 @@ import { Statement } from 'delib-npm'
 import Text from '../../../components/text/Text'
 import Edit from '../../../components/edit/Edit'
 import StatementChat from './StatementChatMore'
+import Solution from './general/Solution'
 
 interface Props {
     statement: Statement
@@ -14,11 +15,14 @@ const StatementCard: FC<Props> = ({ statement }) => {
     return (
 
         <div className='statementCard' >
-            <div className="statementCard__main">
-                <Link className='href--undecorated' to={`/home/statement/${statement.statementId}`}>
+            <Link className='href--undecorated' to={`/home/statement/${statement.statementId}`}>
+                <div className="statementCard__main">
+
                     <Text text={statement.statement} />
-                </Link>
-            </div>
+                   <Solution statement={statement} />
+
+                </div>
+            </Link>
             <div className="statementCard__more">
                 <StatementChat statement={statement} />
                 <Edit statement={statement} />
