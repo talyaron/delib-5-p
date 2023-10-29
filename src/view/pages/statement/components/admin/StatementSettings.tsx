@@ -3,11 +3,11 @@ import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { UserSchema, User } from 'delib-npm';
+import { UserSchema, User, StatementSubscription } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { setStatement, statementSelector } from '../../../../../model/statements/statementsSlice';
-import { getStatementFromDB } from '../../../../../functions/db/statements/getStatement';
+import { removeMembership, setMembership, setStatement, statementSelector } from '../../../../../model/statements/statementsSlice';
+import { getStatementFromDB, listenToMembers } from '../../../../../functions/db/statements/getStatement';
 
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -17,24 +17,30 @@ import { NavObject, Screen, Statement } from 'delib-npm';
 import { userSelector } from '../../../../../model/users/userSlice';
 import { store } from '../../../../../model/store';
 
+
 interface Props {
     simple?: boolean
     new?: boolean
 }
 
 
-export const SetStatementComp: FC<Props> = ({ simple }) => {
-    
+export const StatementSettings: FC<Props> = ({ simple }) => {
+
     const navigate = useNavigate();
     const { statementId } = useParams();
     const statement = useAppSelector(statementSelector(statementId));
-    const user:User|null = useAppSelector(userSelector);
+    const user: User | null = useAppSelector(userSelector);
     const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        let unsubscribe: Function = () => { };
         if (statementId) {
+
+            unsubscribe = listenToMembers(statementId,setMembershipCB,removeMembershipCB);
+
+
             if (!statement)
                 (async () => {
                     const statementDB = await getStatementFromDB(statementId);
@@ -42,7 +48,22 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
                 })();
 
         }
+        return () => {
+
+
+            unsubscribe();
+
+        }
     }, [statementId]);
+
+    //CBs
+    function setMembershipCB(membership:StatementSubscription) {
+        dispatch(setMembership(membership));
+    }
+
+    function removeMembershipCB(membership:StatementSubscription) {
+        dispatch(removeMembership(membership.statementsSubscribeId));
+    }
 
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
@@ -50,19 +71,19 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
             ev.preventDefault();
             setIsLoading(true);
             const data = new FormData(ev.currentTarget);
-          
+
             let title: any = data.get('statement');
             const description = data.get('description');
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
             const _statement = `${title}\n${description}`;
-           
-            
+
+
             UserSchema.parse(user);
 
 
             const newStatement: any = Object.fromEntries(data.entries());
-         
+
 
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;
@@ -102,28 +123,35 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
     return (
         <div className='wrapper'>
 
-            {!isLoading ? <form onSubmit={handleSetStatment} className='setStatement__form'>
-                <label htmlFor="statement">כותרת</label>
-                <input type="text" name="statement" placeholder='כותרת הקבוצה' defaultValue={arrayOfStatementParagrphs[0]} />
-                <textarea name="description" placeholder='תיאור הקבוצה' defaultValue={description}></textarea>
-                {!simple ? <section>
+            {!isLoading ?
+                <>
+                    <form onSubmit={handleSetStatment} className='setStatement__form'>
+                        <label htmlFor="statement">כותרת</label>
+                        <input type="text" name="statement" placeholder='כותרת הקבוצה' defaultValue={arrayOfStatementParagrphs[0]} />
+                        <textarea name="description" placeholder='תיאור הקבוצה' defaultValue={description}></textarea>
+                        {!simple ? <section>
 
-                    <label htmlFor="subPages">תת עמודים</label>
-                    <FormGroup>
-                        {navArray
-                            .filter(navObj => navObj.link !== Screen.SETTINGS)
-                            .map((navObj) =>
-                                <FormControlLabel key={navObj.id} control={<Checkbox name={navObj.link} defaultChecked={isSubPageChecked(statement, navObj)} />} label={navObj.name} />
-                            )}
+                            <label htmlFor="subPages">תת עמודים</label>
+                            <FormGroup>
+                                {navArray
+                                    .filter(navObj => navObj.link !== Screen.SETTINGS)
+                                    .map((navObj) =>
+                                        <FormControlLabel key={navObj.id} control={<Checkbox name={navObj.link} defaultChecked={isSubPageChecked(statement, navObj)} />} label={navObj.name} />
+                                    )}
 
-                    </FormGroup>
-                </section> : null}
+                            </FormGroup>
+                        </section> : null}
 
-                <div className="btnBox">
-                    <button type="submit">{!statementId ? "הוספה" : "עדכון"}</button>
-                </div>
+                        <div className="btnBox">
+                            <button type="submit">{!statementId ? "הוספה" : "עדכון"}</button>
+                        </div>
 
-            </form> :
+                    </form>
+                    <h2>חברים בקבוצה</h2>
+                    <div className="wrapper">
+
+                    </div>
+                </> :
                 <div className="center">
                     <h2>מעדכן...</h2>
                     <Loader />
@@ -136,15 +164,15 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
 function isSubPageChecked(statement: Statement | undefined, navObj: NavObject) {
     try {
         //in case of a new statement
-        if (!statement){
-            if(navObj.default === false) return false;
+        if (!statement) {
+            if (navObj.default === false) return false;
             else return true;
         }
         //in case of an existing statement
         const subScreens = statement.subScreens as Screen[];
         if (subScreens === undefined) return true;
         if (subScreens?.includes(navObj.link)) return true;
-        
+
     } catch (error) {
         console.error(error);
         return true;

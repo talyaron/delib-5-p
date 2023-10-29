@@ -1,9 +1,8 @@
 import { z } from "zod";
 import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { Admin, AdminRolesEnum, Statement, StatementSchema, StatementSubscription, StatementType, UserSchema } from "delib-npm";
+import {  Statement, StatementSchema, StatementSubscription, StatementType, UserSchema } from "delib-npm";
 import { DB, deviceToken } from "../config";
-import { Collections } from "delib-npm";
-import { Role } from "../../../model/role";
+import { Collections,Role } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 
 import { getUserPermissionToNotifications } from "../../notifications";
@@ -22,21 +21,12 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
 
         //set statement
         const statementRef = doc(DB, Collections.statements, statement.statementId);
-        const statmentPromise = setDoc(statementRef, statement, { merge: true });
-
-        //add admin
-        const adminRefId = `${statement.creator.uid}--${statement.statementId}`;
-        const adminRef = doc(DB, Collections.admins, adminRefId);
-        const admin:Admin = { statementId: statement.statementId, user: statement.creator, role: AdminRolesEnum.admin };
-        // await setDoc(adminRef, admin);
-       const adminPromise = setDoc(adminRef, admin);
-
-        await Promise.all([ adminPromise, statmentPromise]);
-
+        await setDoc(statementRef, statement, { merge: true });
+  
         //add subscription
     
         if (addSubscription) {
-            await setStatmentSubscriptionToDB(statement, Role.admin, true);
+            await setStatmentSubscriptionToDB(statement, Role.statementCreator, true);
          
             const canGetNotifications = await getUserPermissionToNotifications();
 

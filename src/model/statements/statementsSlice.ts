@@ -17,6 +17,7 @@ interface StatementsState {
   statements: Statement[];
   statementSubscription: StatementSubscription[],
   statementSubscriptionLastUpdate: number,
+  statementMembership: StatementSubscription[],
   screen: StatementScreen,
   askToJoinRooms: RoomAskToJoin[],
   lobbyRooms: LobbyRooms[]
@@ -32,6 +33,7 @@ const initialState: StatementsState = {
   statements: [],
   statementSubscription: [],
   statementSubscriptionLastUpdate: 0,
+  statementMembership: [],
   screen: StatementScreen.chat,
   askToJoinRooms: [],
   lobbyRooms: []
@@ -157,10 +159,27 @@ export const statementsSlicer = createSlice({
         console.error(error);
       }
     },
+    setMembership: (state, action: PayloadAction<StatementSubscription>) => {
+      try {
+        const newMembership = action.payload;
+        StatementSubscriptionSchema.parse(newMembership);
+        state.statementMembership = updateArray(state.statementMembership, newMembership, "statementsSubscribeId");
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    removeMembership: (state, action: PayloadAction<string>) => {
+      try {
+        const statementsSubscribeId = action.payload;
+        state.statementMembership = state.statementMembership.filter(statement => statement.statementsSubscribeId !== statementsSubscribeId);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 });
 
-export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
+export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;

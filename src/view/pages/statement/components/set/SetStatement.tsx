@@ -3,7 +3,7 @@
 
 //icons
 import { Link, useParams } from 'react-router-dom';
-import { SetStatementComp } from './SetStatementComp';
+import { StatementSettings } from '../admin/StatementSettings';
 import ArrowBackIosIcon from '../../../../icons/ArrowBackIosIcon';
 
 export const SetStatement = () => {
@@ -17,7 +17,7 @@ export const SetStatement = () => {
             </div>
             <div className="page__main">
                 <div className="wrapper">
-                    <SetStatementComp />
+                    <StatementSettings />
                 </div>
             </div>
         </div>

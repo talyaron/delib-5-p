@@ -209,3 +209,31 @@ export function listenToStatementsOfStatment(statementId: string | undefined, up
         return () => { };
     }
 }
+
+export function listenToMembers(statementId: string, setMembershipCB: Function, removeMembership: Function): Function {
+    try {
+        const membersRef = collection(DB, Collections.statementsSubscribe);
+        const q = query(membersRef, where("statementId", "==", statementId), orderBy("createdAt", "desc"));
+
+        return onSnapshot(q, (subsDB) => {
+
+            subsDB.docChanges().forEach((change) => {
+                const member = change.doc.data() as StatementSubscription;
+                if (change.type === "added") {
+                    setMembershipCB(member)
+                }
+
+                if (change.type === "modified") {
+                    setMembershipCB(member)
+                }
+
+                if (change.type === "removed") {
+                    removeMembership(member);
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        return () => { };
+    }
+}

@@ -4,7 +4,7 @@ import { getIsSubscribed, listenToStatement, listenToStatementSubscription, list
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from 'delib-npm';
-import { Role } from '../../../model/role';
+import { Role } from 'delib-npm';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User, Screen } from 'delib-npm';
@@ -27,7 +27,7 @@ import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { SetStatementComp } from './components/set/SetStatementComp';
+import { StatementSettings } from './components/admin/StatementSettings';
 import StatmentRooms from './components/rooms/Rooms';
 import { getUserPermissionToNotifications } from '../../../functions/notifications';
 import AskPermisssion from '../../components/askPermission/AskPermisssion';
@@ -59,9 +59,9 @@ const Statement: FC = () => {
     //check if the user is registered
 
     const statement = useAppSelector(statementSelector(statementId));
-    const subStatements = useSelector(statementSubsSelector(statementId));   
+    const subStatements = useSelector(statementSubsSelector(statementId));
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
-  
+
     const role: any = statementSubscription?.role || Role.member;
     const user = store.getState().user.user;
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
@@ -101,8 +101,8 @@ const Statement: FC = () => {
 
     async function handleRegisterToNotifications() {
         const isPermited = await getUserPermissionToNotifications();
-      
-        if(!isPermited){
+
+        if (!isPermited) {
             setShowAskPermission(true)
             return;
         }
@@ -113,7 +113,7 @@ const Statement: FC = () => {
     useEffect(() => {
         const page = pageRef.current;
         const animationDireaction = navigationDirection(statement, prevStId);
-      
+
         if (animationDireaction == 'forward') {
 
             page.classList.add('page--anima__forwardInScreen');
@@ -143,7 +143,7 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (user && statementId) {
-            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB,deleteStatementCB);
+            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB, deleteStatementCB);
             unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
             unsubEvaluations = listenToEvaluations(statementId, updateEvaluationsCB)
         }
@@ -173,18 +173,17 @@ const Statement: FC = () => {
                 if (!isSubscribed) {
                     // subscribe
                     setStatmentSubscriptionToDB(statement, Role.member, true)
+                } else {
+                    //update subscribed field
+                    updateSubscriberForStatementSubStatements(statement);
                 }
             })();
-
-
-            //update subscribed field
-            updateSubscriberForStatementSubStatements(statement);
 
         }
     }, [statement])
 
     function handleBack() {
-  
+
         const page = pageRef.current;
         page.classList.add('page--anima__backOutScreen');
         page.onanimationend = () => {
@@ -194,10 +193,10 @@ const Statement: FC = () => {
 
     }
 
-    const hasNotificationPermission = (()=>{
-        if(window.hasOwnProperty('Notification') === false) return false;   
-        if(Notification.permission === 'denied') return false;
-        if(Notification.permission === 'granted') return true;
+    const hasNotificationPermission = (() => {
+        if (window.hasOwnProperty('Notification') === false) return false;
+        if (Notification.permission === 'denied') return false;
+        if (Notification.permission === 'granted') return true;
         return false;
     })()
 
@@ -205,7 +204,7 @@ const Statement: FC = () => {
     //JSX
     return (
         <div ref={pageRef} className='page'>
-            {showAskPermission?<AskPermisssion showFn={setShowAskPermission} />:null}
+            {showAskPermission ? <AskPermisssion showFn={setShowAskPermission} /> : null}
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
@@ -218,7 +217,7 @@ const Statement: FC = () => {
                         <HomeOutlinedIcon />
                     </Link>
                     <div onClick={handleRegisterToNotifications}>
-                        {hasNotificationPermission && hasNotifications  ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
+                        {hasNotificationPermission && hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
                     <h1>{title}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
@@ -249,7 +248,7 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
             case Screen.GROUPS:
                 return <StatmentRooms statement={statement} subStatements={subStatements} />
             case Screen.SETTINGS:
-                return <SetStatementComp />
+                return <StatementSettings />
             default:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
         }
