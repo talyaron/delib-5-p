@@ -33,6 +33,7 @@ import { getUserPermissionToNotifications } from '../../../functions/notificatio
 import AskPermisssion from '../../components/askPermission/AskPermisssion';
 import { store } from '../../../model/store';
 import { useSelector } from 'react-redux';
+import Document from './components/doc/Document';
 
 
 
@@ -237,6 +238,8 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
         if (!statement) return null;
 
         switch (screen) {
+            case Screen.DOC:
+                return <Document statement={statement} />
             case Screen.HOME:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
             case Screen.CHAT:
