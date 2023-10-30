@@ -3,7 +3,7 @@ import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { UserSchema, User, StatementSubscription } from 'delib-npm';
+import { UserSchema, User, StatementSubscription, ResultsBy } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { removeMembership, setMembership, setStatement, statementMembershipSelector, statementSelector } from '../../../../../model/statements/statementsSlice';
@@ -93,6 +93,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
+            newStatement.resultsBy = newStatement.resultsBy || ResultsBy.topOne;
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
             }
@@ -101,6 +102,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.consensus = statement?.consensus || 0;
 
             const setSubsciption: boolean = statementId === undefined ? true : false;
+            console.log(newStatement)
 
             const _statementId = await setStatmentToDB(newStatement, setSubsciption);
 
@@ -119,7 +121,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const arrayOfStatementParagrphs = statement?.statement.split('\n') || [];
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join('\n');
-
+    const resultsBy: ResultsBy = statement?.resultsBy || ResultsBy.topOne;
 
     return (
         <div className='wrapper'>
@@ -142,6 +144,15 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
                             </FormGroup>
                         </section> : null}
+                        <select name="resultsBy" defaultValue={resultsBy}>
+                            <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
+                            <option value={ResultsBy.topOption}>אופציה מועדפת</option>
+                            <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
+                            <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
+                            <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
+                            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option>
+                           
+                        </select>
 
                         <div className="btnBox">
                             <button type="submit">{!statementId ? "הוספה" : "עדכון"}</button>

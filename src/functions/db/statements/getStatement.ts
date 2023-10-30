@@ -42,9 +42,9 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
-     
+            if (!statementSubscription) return;
             StatementSubscriptionSchema.parse(statementSubscription);
-
+          
             updateStore(statementSubscription);
         });
     } catch (error) {
