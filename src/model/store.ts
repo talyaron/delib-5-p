@@ -3,6 +3,7 @@ import { statementsSlicer } from './statements/statementsSlice'
 import { userSlicer } from './users/userSlice'
 import { evaluationsSlicer } from './evaluations/evaluationsSlice'
 import { votesSlicer } from './vote/votesSlice'
+import {resultsSlice} from './results/resultsSlice'
 
 
 export const store = configureStore({
@@ -10,7 +11,8 @@ export const store = configureStore({
     statements: statementsSlicer.reducer,
     evaluations: evaluationsSlicer.reducer,
     user: userSlicer.reducer,
-    votes: votesSlicer.reducer
+    votes: votesSlicer.reducer,
+    results: resultsSlice.reducer,
   },
 })
 

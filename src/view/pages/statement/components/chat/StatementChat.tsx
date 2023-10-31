@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import { Statement } from 'delib-npm'
-import StatementChatMore from '../StatementChatMore';
+import StatementChatMore, { handleCreateSubStatements } from '../StatementChatMore';
 
 //icons
 
@@ -10,6 +10,7 @@ import ProfileImage from './ProfileImage';
 import { updateStatementText } from '../../../../../functions/db/statements/setStatments';
 import { store } from '../../../../../model/store';
 import Solution from '../general/Solution';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
-  // const evaluation = useAppSelector(evaluationSelector(statement.statementId))
+ const navigate = useNavigate();
 
 
   // const [show, setShow] = useState(false);
@@ -36,6 +37,9 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
 
   function handleEdit() {
     if(userId === creatorId) setIsEdit(true);
+    else{
+      handleCreateSubStatements(statement, navigate, page)
+    }
   }
 
 function handleInput(e:any){
@@ -59,9 +63,9 @@ function handleInput(e:any){
       
         <div className={isOption ? "statement__bubble statement__bubble--option" : "statement__bubble"}>
           <div className={isMe ? "bubble right" : "bubble left"}>
-            <div className="statement__bubble__text">
+            <div className="statement__bubble__text" onClick={handleEdit}>
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null} */}
-              {!isEdit?<div onClick={handleEdit}><Text text={statement.statement}/></div>:<textarea className='statement__edit' defaultValue={statement.statement} onKeyUp={handleInput} />}
+              {!isEdit?<div><Text text={statement.statement}/></div>:<textarea className='statement__edit' defaultValue={statement.statement} onKeyUp={handleInput} />}
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null} */}
               <Solution statement={statement} />
             </div>

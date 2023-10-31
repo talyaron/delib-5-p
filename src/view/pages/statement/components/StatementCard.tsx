@@ -12,13 +12,18 @@ interface Props {
 }
 
 const StatementCard: FC<Props> = ({ statement }) => {
+    const title = statement.statement.split('\n')[0];
+    //get only 140 charcters from the statment
+    const _description = statement.statement.split('\n').slice(1).join('\n');
+    const description = _description.slice(0, 256) + '...';
     return (
 
         <div className='statementCard' >
             <Link className='href--undecorated' to={`/home/statement/${statement.statementId}`}>
                 <div className="statementCard__main">
 
-                    <Text text={statement.statement} />
+                    <Text text={title} />
+                    {_description?<Text text={description} />:null}
                    <Solution statement={statement} />
 
                 </div>
