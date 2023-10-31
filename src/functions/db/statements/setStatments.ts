@@ -74,9 +74,10 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
     }
 }
 
-export async function updateStatementText(statement: Statement, newText: string) {
+export async function updateStatementText(statement: Statement |undefined, newText: string) {
     try {
         if (!newText) throw new Error("New text is undefined");
+        if(!statement) throw new Error("Statement is undefined");
         if (statement.statement === newText) return;
 
         StatementSchema.parse(statement);

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHo
 import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from 'delib-npm';
-import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
+import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateStatementText, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User, Screen } from 'delib-npm';
 
@@ -49,6 +49,7 @@ const Statement: FC = () => {
     const [title, setTitle] = useState<string>('קבוצה');
     const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null);
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
+    const [editHeader, setEditHeader] = useState<boolean>(false);
 
     const dispatch: any = useAppDispatch();
     const navigate = useNavigate();
@@ -199,7 +200,35 @@ const Statement: FC = () => {
         if (Notification.permission === 'denied') return false;
         if (Notification.permission === 'granted') return true;
         return false;
-    })()
+    })();
+
+    const isAdmin = statement?.creatorId === user?.uid;
+
+    function handleEditTitle() {
+        if (isAdmin) {
+            setEditHeader(true);
+        }
+    }
+
+    function handleSetTitle(e: any) {
+        try {
+            if (e.type === 'blur' || e.key === 'Enter') {
+                const _title = e.target.value;
+                if (_title === title) return;
+                if (!_title) return;
+                setTitle(_title);
+
+                //update title in db
+                if (!statement) throw new Error('statement is undefined');
+                updateStatementText(statement, _title);
+
+                setEditHeader(false);
+            }
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
 
 
     //JSX
@@ -220,7 +249,7 @@ const Statement: FC = () => {
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotificationPermission && hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
-                    <h1>{title}</h1>
+                    {!editHeader ? <h1 className={isAdmin ? "clickable" : ""} onClick={handleEditTitle}>{title}</h1> : <input type="text" defaultValue={title} onBlur={handleSetTitle} onKeyUp={handleSetTitle} />}
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
                 {statement ? <StatementNav statement={statement} /> : null}
