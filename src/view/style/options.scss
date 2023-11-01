@@ -37,8 +37,7 @@
         &__main {
             display: flex;
             width: 100%;
-            grid-template-columns: auto;
-            // grid-template-rows: 40px;
+            justify-content: space-between;
             align-items: center;
             gap: 10px;
         }

@@ -15,6 +15,7 @@ import Text from '../../../../components/text/Text';
 import EditTitle from '../../../../components/edit/EditTitle';
 import { userSelector } from '../../../../../model/users/userSlice';
 import Thumbs from '../../../../components/thumbs/Thumbs';
+import Evaluation from '../../../../components/evaluation/Evaluation';
 
 
 
@@ -38,7 +39,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
 
-    const { isOption } = statement;
+
 
     useEffect(() => {
 
@@ -64,35 +65,23 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                 ref={elementRef}
             >
                 <div className="options__card__main">
-
+                   
 
                     <div className='options__card__text text' onClick={() => setShow(!show)}>
                         {!edit ? <div onClick={handleEdit}><Text text={statement.statement} /></div> : <EditTitle statement={statement} setEdit={setEdit} isTextArea={true} />}
                     </div>
-                    {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
+                    
+                    <Evaluation statement={statement} evaluation={evaluation} />
 
 
                 </div>
-                {true ? <div className="options__card__more">
-                    <div className="options__card__more__vote">
-                        <div className="options__card__more__vote__up">
-                            <span>{statement.pro ? statement.pro : 0}</span>
-                            {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
-
-                        </div>
-                        <div className="options__card__more__vote__down">
-                            {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
-                            <span>{statement.con ? statement.con : 0}</span>
-                        </div>
-                    </div>
+               
+                <div className="options__card__chat">
+                    <StatementChatIcon statement={statement} />
+                    {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
                     <div className="press">
                         <StatementChatSetOption statement={statement} />
                     </div>
-
-
-                </div> : null}
-                <div className="options__card__chat">
-                    <StatementChatIcon statement={statement} />
                 </div>
 
             </div>
