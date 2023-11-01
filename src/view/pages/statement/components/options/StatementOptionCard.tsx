@@ -1,7 +1,6 @@
 import { FC, useEffect, useState, useRef } from 'react'
 import { Statement } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
 
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import { setStatementElementHight } from '../../../../../model/statements/statementsSlice';
@@ -14,7 +13,6 @@ import Text from '../../../../components/text/Text';
 
 import EditTitle from '../../../../components/edit/EditTitle';
 import { userSelector } from '../../../../../model/users/userSlice';
-import Thumbs from '../../../../components/thumbs/Thumbs';
 import Evaluation from '../../../../components/evaluation/Evaluation';
 
 
@@ -30,7 +28,7 @@ interface Props {
 
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch();
-    const evaluation = useAppSelector(evaluationSelector(statement.statementId))
+  
     const user = useAppSelector(userSelector)
     // const order = useAppSelector(statementOrderSelector(statement.statementId))
     const elementRef = useRef<HTMLDivElement>(null);
@@ -71,7 +69,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                         {!edit ? <div onClick={handleEdit}><Text text={statement.statement} /></div> : <EditTitle statement={statement} setEdit={setEdit} isTextArea={true} />}
                     </div>
                     
-                    <Evaluation statement={statement} evaluation={evaluation} />
+                    <Evaluation statement={statement} />
 
 
                 </div>

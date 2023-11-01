@@ -52,13 +52,16 @@
         &__text {
             
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: space-between;
             align-items: flex-start;
             gap: 10px;
          
             word-break: break-word;
            margin-bottom: .2rem;
+           .options__card__more__vote{
+            transform: scale(.7);
+           }
         }
 
         &__more {

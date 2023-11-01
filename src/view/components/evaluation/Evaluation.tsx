@@ -1,14 +1,18 @@
 import { Statement } from 'delib-npm'
 import {FC} from 'react'
 import Thumbs from '../thumbs/Thumbs';
+import { useAppSelector } from '../../../functions/hooks/reduxHooks';
+import { evaluationSelector } from '../../../model/evaluations/evaluationsSlice';
 
 interface Props {
-    statement:Statement,
-    evaluation:number
+    statement:Statement
 }
 
-const Evaluation:FC<Props> = ({statement, evaluation}) => {
+const Evaluation:FC<Props> = ({statement}) => {
     const {isOption} = statement;
+
+    const evaluation = useAppSelector(evaluationSelector(statement.statementId))
+
   return (
     <div className="options__card__more__vote">
                         <div className="options__card__more__vote__up">
