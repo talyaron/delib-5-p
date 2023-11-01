@@ -35,7 +35,7 @@
         }
 
         &__main {
-            display: grid;
+            display: flex;
             width: 100%;
             grid-template-columns: auto;
             // grid-template-rows: 40px;
@@ -45,8 +45,9 @@
 
         &__more {
             margin-top: 0px;
-            display: grid;
-            grid-template-columns: 7.14rem 4.3rem 4.3rem;
+            display: flex;
+            // grid-template-columns: 7.14rem 4.3rem 4.3rem;
+            justify-content: space-around;
             align-items: center;
 
 
@@ -140,4 +141,15 @@
             }
         }
     }
+}
+.press{
+    background-color: var(--press);
+    border-radius: 4rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all .2s ease-in-out;
 }

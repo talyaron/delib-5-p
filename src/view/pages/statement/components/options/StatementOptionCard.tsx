@@ -1,6 +1,5 @@
 import { FC, useEffect, useState, useRef } from 'react'
 import { Statement } from 'delib-npm';
-import { setEvaluation } from '../../../../../functions/db/evaluation/setEvaluation';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
 
@@ -12,10 +11,10 @@ import Text from '../../../../components/text/Text';
 
 
 //images
-import ThumbDown from '../../../../../assets/voteDown.svg';
-import ThumbUp from '../../../../../assets/voteUp.svg';
+
 import EditTitle from '../../../../components/edit/EditTitle';
 import { userSelector } from '../../../../../model/users/userSlice';
+import Thumbs from '../../../../components/thumbs/Thumbs';
 
 
 
@@ -68,7 +67,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
 
                     <div className='options__card__text text' onClick={() => setShow(!show)}>
-                        {!edit?<div onClick={handleEdit}><Text text={statement.statement} /></div>:<EditTitle statement={statement} setEdit={setEdit} isTextArea={true} />}
+                        {!edit ? <div onClick={handleEdit}><Text text={statement.statement} /></div> : <EditTitle statement={statement} setEdit={setEdit} isTextArea={true} />}
                     </div>
                     {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
 
@@ -86,9 +85,10 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                             <span>{statement.con ? statement.con : 0}</span>
                         </div>
                     </div>
+                    <div className="press">
+                        <StatementChatSetOption statement={statement} />
+                    </div>
 
-                    <StatementChatSetOption statement={statement} />
-                   
 
                 </div> : null}
                 <div className="options__card__chat">
@@ -101,33 +101,5 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     )
 }
 
-interface ThumbsProps {
-    evaluation: number
-    upDown: "up" | "down";
-    statement: Statement
-}
-
-const Thumbs: FC<ThumbsProps> = ({ evaluation, upDown, statement }) => {
-    if (upDown === "up") {
-        if (evaluation > 0) {
-            return (
-                <div className="icon" onClick={() => setEvaluation(statement, 0)} >
-                    <img src={ThumbUp} alt="vote up" />
-                </div>
-            )
-        } else {
-            return <div className="icon" style={{ opacity: 0.5 }} onClick={() => setEvaluation(statement, 1)}> <img src={ThumbUp} alt="vote up" /></div>
-        }
-    }
-    else {
-        if (evaluation < 0) {
-            return (<div className="icon" onClick={() => setEvaluation(statement, 0)} ><img src={ThumbDown} alt="vote down" /></div>)
-        }
-        else {
-            return <div className="icon" style={{ opacity: 0.5 }} onClick={() => setEvaluation(statement, -1)} ><img src={ThumbDown} alt="vote down" /></div>
-        }
-
-    }
-}
 
 export default StatementOptionCard;
