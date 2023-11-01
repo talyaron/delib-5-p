@@ -9,7 +9,7 @@ interface Props {
     isTextArea?: boolean;
 }
 
-const EditTitle: FC<Props> = ({ statement, setEdit,isTextArea }) => {
+const EditTitle: FC<Props> = ({ statement, setEdit, isTextArea }) => {
     try {
 
         if (!statement) return null;
@@ -27,10 +27,14 @@ const EditTitle: FC<Props> = ({ statement, setEdit,isTextArea }) => {
 
                     if (!statement) throw new Error('statement is undefined');
 
-                    //join title and description
-                    const _statement = _title + '\n' + description;
-                    //update title in db
-                    updateStatementText(statement, _statement);
+                    if (isTextArea) {
+                        updateStatementText(statement, e.target.value);
+                    } else {
+
+                        const _statement = _title + '\n' + description;
+                        //update title in db
+                        updateStatementText(statement, _statement);
+                    }
 
                     setEdit(false);
                 }
@@ -40,8 +44,8 @@ const EditTitle: FC<Props> = ({ statement, setEdit,isTextArea }) => {
             }
         }
 
-        if(isTextArea) return (
-            <textarea className={styles.input} defaultValue={title} onBlur={handleSetTitle} onKeyUp={handleSetTitle} />
+        if (isTextArea) return (
+            <textarea className={styles.textarea} defaultValue={statement.statement} onBlur={handleSetTitle} onKeyUp={handleSetTitle} />
         )
 
         return (

@@ -9,11 +9,13 @@ import { setStatementElementHight } from '../../../../../model/statements/statem
 import StatementChatIcon from '../StatementChatMore';
 import StatementChatSetOption from '../StatementChatSetOption';
 import Text from '../../../../components/text/Text';
-import Edit from '../../../../components/edit/Edit';
+
 
 //images
 import ThumbDown from '../../../../../assets/voteDown.svg';
 import ThumbUp from '../../../../../assets/voteUp.svg';
+import EditTitle from '../../../../components/edit/EditTitle';
+import { userSelector } from '../../../../../model/users/userSlice';
 
 
 
@@ -29,11 +31,13 @@ interface Props {
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch();
     const evaluation = useAppSelector(evaluationSelector(statement.statementId))
+    const user = useAppSelector(userSelector)
     // const order = useAppSelector(statementOrderSelector(statement.statementId))
     const elementRef = useRef<HTMLDivElement>(null);
 
     const [show, setShow] = useState(false)
     const [newTop, setNewTop] = useState(top);
+    const [edit, setEdit] = useState(false);
 
     const { isOption } = statement;
 
@@ -49,7 +53,9 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
     }, [])
 
-    //get element height
+    function handleEdit() {
+        if (statement.creatorId === user?.uid) setEdit(true);
+    }
 
     return (
         <>
@@ -62,7 +68,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
 
                     <div className='options__card__text text' onClick={() => setShow(!show)}>
-                        <Text text={statement.statement} />
+                        {!edit?<div onClick={handleEdit}><Text text={statement.statement} /></div>:<EditTitle statement={statement} setEdit={setEdit} isTextArea={true} />}
                     </div>
                     {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
 
@@ -82,7 +88,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                     </div>
 
                     <StatementChatSetOption statement={statement} />
-                    <Edit statement={statement} />
+                   
 
                 </div> : null}
                 <div className="options__card__chat">
