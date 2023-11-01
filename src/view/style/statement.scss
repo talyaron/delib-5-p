@@ -48,20 +48,22 @@
     }
 
     &__bubble {
+        width: fit-content;
 
         &__text {
-            
+
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: flex-start;
             gap: 10px;
-         
+
             word-break: break-word;
-           margin-bottom: .2rem;
-           .options__card__more__vote{
-            transform: scale(.7);
-           }
+            margin-bottom: .2rem;
+            width:fit-content;
+        
+
+          
         }
 
         &__more {
@@ -71,8 +73,8 @@
             align-items: center;
             margin-bottom: -3px;
             opacity: 0.7;
-            border-top:1px solid #e0e0e0;
-          
+            border-top: 1px solid #e0e0e0;
+
 
 
             .icon {
@@ -145,7 +147,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color:black;
+            color: black;
             text-align: center;
         }
     }
@@ -287,26 +289,25 @@
     --t: 30px;
     /* the size of the tail */
     border-radius: 10px 10px 10px 0px;
-    max-width: 300px;
+  
     padding: calc(2*var(--r)/3);
-    background-color: aqua;
+    background-color: #ffffff;
     color: #464646;
 
     //on mobile max width should be limeted
     @media only screen and (max-width: 600px) {
-        max-width: 200px;
+        max-width: 70vw;
     }
 }
 
 .left {
     border-radius: 15px 15px 15px 0px;
-    background-color: white;
+   
 }
 
 .right {
 
 
     border-radius: 15px 15px 0px 15px;
-    background-color: #ffffff;
+   
 }
-

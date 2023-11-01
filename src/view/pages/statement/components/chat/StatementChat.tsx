@@ -59,8 +59,8 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text" onClick={handleEdit}>
             
-              {!isEdit ? <div><Text text={statement.statement} /></div> : <EditTitle statement={statement} setEdit={setIsEdit} isTextArea={true} />}
-              <Evaluation statement={statement} />
+               <div className='statement__bubble__text__text'>{!isEdit ?<Text text={statement.statement} /> : <EditTitle statement={statement} setEdit={setIsEdit} isTextArea={true} />}</div>
+            
               <Solution statement={statement} />
             </div>
             <div className="statement__bubble__more">
