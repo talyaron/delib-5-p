@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHo
 import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from 'delib-npm';
-import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateStatementText, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
+import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User, Screen } from 'delib-npm';
 
@@ -34,6 +34,7 @@ import AskPermisssion from '../../components/askPermission/AskPermisssion';
 import { store } from '../../../model/store';
 import { useSelector } from 'react-redux';
 import Document from './components/doc/Document';
+import EditTitle from '../../components/edit/EditTitle';
 
 
 
@@ -210,28 +211,7 @@ const Statement: FC = () => {
         }
     }
 
-    function handleSetTitle(e: any) {
-        try {
-            if (e.type === 'blur' || e.key === 'Enter') {
-                const _title = e.target.value;
-                if (_title === title) return;
-                if (!_title) return;
-                setTitle(_title);
 
-                //update title in db
-                if (!statement) throw new Error('statement is undefined');
-                updateStatementText(statement, _title);
-
-                setEditHeader(false);
-            }
-        } catch (error) {
-            console.error(error);
-
-        }
-    }
-
-
-    //JSX
     return (
         <div ref={pageRef} className='page'>
             {showAskPermission ? <AskPermisssion showFn={setShowAskPermission} /> : null}
@@ -249,7 +229,7 @@ const Statement: FC = () => {
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotificationPermission && hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
-                    {!editHeader ? <h1 className={isAdmin ? "clickable" : ""} onClick={handleEditTitle}>{title}</h1> : <input type="text" defaultValue={title} onBlur={handleSetTitle} onKeyUp={handleSetTitle} />}
+                    {!editHeader ? <h1 className={isAdmin ? "clickable" : ""} onClick={handleEditTitle}>{title}</h1> : <EditTitle statement={statement} setEdit={setEditHeader}/>}
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
                 {statement ? <StatementNav statement={statement} /> : null}

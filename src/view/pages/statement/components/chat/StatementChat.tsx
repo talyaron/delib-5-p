@@ -7,10 +7,10 @@ import StatementChatMore, { handleCreateSubStatements } from '../StatementChatMo
 import Text from '../../../../components/text/Text';
 import StatementChatSetOption from '../StatementChatSetOption';
 import ProfileImage from './ProfileImage';
-import { updateStatementText } from '../../../../../functions/db/statements/setStatments';
 import { store } from '../../../../../model/store';
 import Solution from '../general/Solution';
 import { useNavigate } from 'react-router-dom';
+import EditTitle from '../../../../components/edit/EditTitle';
 
 
 
@@ -42,13 +42,6 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
     }
   }
 
-function handleInput(e:any){
-  
-  if(e.key === 'Enter'  && e.shiftKey === false && e.target.value !== ''){
-    setIsEdit(false);
-    updateStatementText(statement, e.target.value)
-  }
-}
 
 
   return (
@@ -65,7 +58,7 @@ function handleInput(e:any){
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text" onClick={handleEdit}>
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null} */}
-              {!isEdit?<div><Text text={statement.statement}/></div>:<textarea className='statement__edit' defaultValue={statement.statement} onKeyUp={handleInput} />}
+              {!isEdit?<div><Text text={statement.statement}/></div>:<EditTitle statement={statement} setEdit={setIsEdit} isTextArea={true} />}
               {/* {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null} */}
               <Solution statement={statement} />
             </div>

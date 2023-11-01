@@ -2,13 +2,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { Statement } from 'delib-npm';
+import {Result} from "delib-npm";
 
 
-interface Result {
-    statementId: string;
-    [key: string]: Statement[] | string;
-}
 
 // Define a type for the slice state
 interface ResultsState {

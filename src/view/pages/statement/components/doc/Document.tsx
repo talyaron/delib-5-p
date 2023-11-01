@@ -23,11 +23,11 @@ const Document: FC<Props> = ({ statement }) => {
     return (
         <div className='page__main'>
             <div className="wrapper">
-                <div className={styles.document}>
+                <section className={styles.document}>
                     <h2><Text text={statement.statement} onlyTitle={true} /></h2>
                     <Text text={description} />
 
-                </div>
+                </section>
                 <section className={styles.results}>
                     <h2>תוצאות</h2>
                     <div className="btns">
