@@ -12,15 +12,14 @@ const styles = _styles as any;
 
 
 interface Props {
-    statement: Statement
+    statement: Statement;
+
 }
 
-interface RoomsAdmin {
-    [statementId: string]: {
-        participants: Array<RoomAskToJoin>,
-        roomNumber: number,
-        statement: Statement
-    }
+interface RoomAdmin {
+    room: Array<RoomAskToJoin>;
+    roomNumber: number;
+    statement: Statement;
 }
 
 
@@ -28,23 +27,24 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     const participants = useAppSelector(participantsSelector(statement.statementId));
     const [setRooms, setSetRooms] = useState<boolean>(true);
-    const [roomsAdmin, setRoomsAdmin] = useState<RoomsAdmin>({} as RoomsAdmin);
+    const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
     const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] = useState<number>(7);
 
     function handleDivideIntoRooms() {
         try {
             const { rooms } = divideIntoTopics(participants, maxParticipantsPerRoom);
+            console.log('rooms', rooms)
+            setRoomsAdmin(rooms);
+            // const roomsAdmin: RoomsAdmin = {};
+            // rooms.forEach((room) => {
+            //     room.room.forEach((participant: RoomAskToJoin) => {
+            //         approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
 
-            const roomsAdmin: RoomsAdmin = {};
-            rooms.forEach((room) => {
-                room.room.forEach((participant: RoomAskToJoin) => {
-                    approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
-
-                    if (!(room.statement.statementId in roomsAdmin)) roomsAdmin[room.statement.statementId] = { participants: [], roomNumber: room.roomNumber, statement: room.statement };
-                    roomsAdmin[room.statement.statementId].participants.push(participant)
-                })
-            })
-            setRoomsAdmin(roomsAdmin)
+            //         if (!(room.statement.statementId in roomsAdmin)) roomsAdmin[room.statement.statementId] = { participants: [], roomNumber: room.roomNumber, statement: room.statement };
+            //         roomsAdmin[room.statement.statementId].participants.push(participant)
+            //     })
+            // })
+            // setRoomsAdmin(rooms)
             const roomsState = setRooms ? RoomsStateSelection.DIVIDE : RoomsStateSelection.SELECT_ROOMS;
             setSetRooms(state => !state);
 
@@ -73,10 +73,10 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                 {setRooms ? <div>
                     <h3>משתתפים</h3>
                     <p>מספר משתתפים מקסימלי בחדר {maxParticipantsPerRoom}</p>
-              
-                    <div className="btns" style={{padding:'1.5rem', boxSizing:"border-box"}}>
-                    <Slider defaultValue={7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize}/>
-                        
+
+                    <div className="btns" style={{ padding: '1.5rem', boxSizing: "border-box" }}>
+                        <Slider defaultValue={7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize} />
+
                     </div>
                     <br />
                     <br />
@@ -89,13 +89,13 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     <>
                         <h3>חלוקה לחדרים</h3>
                         <div className={styles.roomWrapper}>
-                            {Object.keys(roomsAdmin).map((statementId) => {
-                                const room = roomsAdmin[statementId];
+                            {roomsAdmin.map((room:RoomAdmin) => {
+                               
                                 return (
                                     <div key={room.roomNumber} className={styles.room}>
                                         <h4>חדר {room.roomNumber} - <Text text={room.statement.statement} onlyTitle={true} /></h4>
                                         <div className={styles.room__badges} >
-                                            {room.participants.map((participant) => (
+                                            {room.room.map((participant:RoomAskToJoin) => (
                                                 <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
                                             ))}
                                         </div>
@@ -145,6 +145,7 @@ function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7)
         }
 
         const rooms = divideIntoGeneralRooms(topicsParticipants);
+
 
         return { rooms, topicsParticipants };
 
