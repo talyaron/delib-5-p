@@ -2,7 +2,7 @@ import { FC, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
+import { deleteStatement, setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from 'delib-npm';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
@@ -33,6 +33,8 @@ import { getUserPermissionToNotifications } from '../../../functions/notificatio
 import AskPermisssion from '../../components/askPermission/AskPermisssion';
 import { store } from '../../../model/store';
 import { useSelector } from 'react-redux';
+import Document from './components/doc/Document';
+import EditTitle from '../../components/edit/EditTitle';
 
 
 
@@ -48,6 +50,7 @@ const Statement: FC = () => {
     const [title, setTitle] = useState<string>('קבוצה');
     const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null);
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
+    const [editHeader, setEditHeader] = useState<boolean>(false);
 
     const dispatch: any = useAppDispatch();
     const navigate = useNavigate();
@@ -60,9 +63,9 @@ const Statement: FC = () => {
 
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
-    const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
+    // const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
 
-    const role: any = statementSubscription?.role || Role.member;
+    // const role: any = statementSubscription?.role || Role.member;
     const user = store.getState().user.user;
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
@@ -106,7 +109,7 @@ const Statement: FC = () => {
             setShowAskPermission(true)
             return;
         }
-        setStatmentSubscriptionNotificationToDB(statement, role)
+        setStatmentSubscriptionNotificationToDB(statement)
     }
 
 
@@ -198,10 +201,17 @@ const Statement: FC = () => {
         if (Notification.permission === 'denied') return false;
         if (Notification.permission === 'granted') return true;
         return false;
-    })()
+    })();
+
+    const isAdmin = statement?.creatorId === user?.uid;
+
+    function handleEditTitle() {
+        if (isAdmin) {
+            setEditHeader(true);
+        }
+    }
 
 
-    //JSX
     return (
         <div ref={pageRef} className='page'>
             {showAskPermission ? <AskPermisssion showFn={setShowAskPermission} /> : null}
@@ -219,7 +229,7 @@ const Statement: FC = () => {
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotificationPermission && hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
-                    <h1>{title}</h1>
+                    {!editHeader ? <h1 className={isAdmin ? "clickable" : ""} onClick={handleEditTitle}>{title}</h1> : <EditTitle statement={statement} setEdit={setEditHeader}/>}
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
                 {statement ? <StatementNav statement={statement} /> : null}
@@ -237,6 +247,8 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
         if (!statement) return null;
 
         switch (screen) {
+            case Screen.DOC:
+                return <Document statement={statement} />
             case Screen.HOME:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
             case Screen.CHAT:

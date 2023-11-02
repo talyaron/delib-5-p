@@ -8,6 +8,7 @@
  */
 
 import { updateEvaluation } from "./fn_evaluation";
+import { updateResults } from "./fn_results";
 import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
 import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
@@ -46,3 +47,6 @@ exports.deleteSignature = onDocumentDeleted('/statementsSignatures/{signatureId}
 
 //rooms
 exports.countRoomJoiners = onDocumentWritten(`${Collections.statementRoomsAsked}/{requestId}`, countRoomJoiners);
+
+//results
+exports.updateResults = onDocumentWritten(`${Collections.resultsTriggers}/{statementId}`, updateResults);

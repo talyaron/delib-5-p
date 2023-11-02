@@ -46,6 +46,7 @@ export const statementsSlicer = createSlice({
   reducers: {
     setStatement: (state, action: PayloadAction<Statement>) => {
       try {
+   
         StatementSchema.parse(action.payload);
         const newStatement = action.payload;
         newStatement.order = 0;
@@ -204,5 +205,7 @@ export const userSelectedTopicSelector = (statementId: string | undefined) => (s
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.statements.lobbyRooms;
 export const lobbyRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.lobbyRooms.find(room => room.statementId === statementId);
+//membeship
+export const statementMembershipSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementMembership.filter((statement:StatementSubscription) => statement.statementId === statementId);
 
 export default statementsSlicer.reducer

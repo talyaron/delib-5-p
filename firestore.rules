@@ -29,6 +29,11 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
 
+      match /resultsTriggers/{statementId=**}{
+    
+      allow write: if request.auth.uid != null;
+    }
+
     match /statementLobbyRooms/{statementId=**}{
     	allow read: if request.auth.uid != null;
 

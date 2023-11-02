@@ -26,7 +26,7 @@ const StatementChatSetOption:FC<Props> = ({statement}) => {
     }
   }
   return (
-    <div className="icon" onClick={handleSetOption}> <LightbulbIcon htmlColor={statement.isOption?'orange':'lightgray'}/></div>
+    <div className='clickable' onClick={handleSetOption}> <LightbulbIcon htmlColor={statement.isOption?'orange':'lightgray'}/></div>
   )
 }
 

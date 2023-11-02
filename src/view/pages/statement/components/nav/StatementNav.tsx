@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { Link, useParams } from "react-router-dom"
-import { Statement,NavObject, Screen} from "delib-npm";
+import { Statement, NavObject, Screen } from "delib-npm";
 import { store } from "../../../../../model/store";
 
 
@@ -13,11 +13,12 @@ interface Props {
 
 
 export const navArray: NavObject[] = [
+    { link: Screen.DOC, name: "ראשי", id: "doc", default: true },
     { link: Screen.CHAT, name: "שיחה", id: "main" },
     { link: Screen.OPTIONS, name: "פתרונות", id: "options" },
     { link: Screen.VOTE, name: "הצבעה", id: "vote" },
-    { link: Screen.GROUPS, name: "חדרים", id: "rooms", default: false},
-    { link: Screen.SETTINGS, name: "הגדרות", id: "settings"}
+    { link: Screen.GROUPS, name: "חדרים", id: "rooms", default: false },
+    { link: Screen.SETTINGS, name: "הגדרות", id: "settings" }
 ]
 
 
@@ -44,42 +45,42 @@ const StatementNav: FC<Props> = ({ statement }) => {
     )
 }
 
-export function showNavElements(statement:Statement|undefined, navArray: NavObject[]) {
+export function showNavElements(statement: Statement | undefined, navArray: NavObject[]) {
     try {
         if (!statement) return navArray;
         let _navArray = [...navArray];
-      
-    
+
+
         const { subScreens } = statement;
-          
+
         //show setting page if admin of statement
         if (!isAdmin(statement.creatorId)) {
             _navArray = navArray.filter((navObj: NavObject) => navObj.link !== Screen.SETTINGS)
         }
-        
+
         if (subScreens === undefined) {
             return _navArray
         }
         if (subScreens.length > 0) {
             _navArray = _navArray
-            //@ts-ignore
-            .filter((navObj: NavObject) => subScreens.includes(navObj.link))
-            
-            if(isAdmin(statement.creatorId)){
+                //@ts-ignore
+                .filter((navObj: NavObject) => subScreens.includes(navObj.link))
+
+            if (isAdmin(statement.creatorId)) {
                 const adminTab = navArray.find(navObj => navObj.link === Screen.SETTINGS);
-                if(adminTab) _navArray.push(adminTab);
+                if (adminTab) _navArray.push(adminTab);
             }
-            
+
             return _navArray
         } else {
             return _navArray
         }
 
-        function isAdmin(creatorId:string|undefined){
+        function isAdmin(creatorId: string | undefined) {
             try {
-                if(!creatorId) return false;
+                if (!creatorId) return false;
                 const userUid = store.getState().user.user?.uid;
-                if(userUid === creatorId) return true;
+                if (userUid === creatorId) return true;
             } catch (error) {
                 console.error(error);
                 return false;
