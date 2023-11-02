@@ -3,6 +3,29 @@ import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 
+export function enterRoomsDB(parentStatement: Statement) {
+    try {
+        const userId = getUserFromFirebase()?.uid;
+        if(!userId) throw new Error("User not logged in");
+
+        const requestId = getRequestIdToJoinRoom(userId, parentStatement.statementId);
+        if(!requestId) throw new Error("Request-id is undefined");
+
+        const statementRef = doc(DB, Collections.statementRoomsAsked, requestId);
+        const user = getUserFromFirebase();
+        if(!user) throw new Error("User not logged in" );
+        const room:RoomAskToJoin = {
+            participant: user,
+            parentId: parentStatement.statementId,
+            requestId: requestId,
+            lastUpdate: new Date().getTime()  
+        }
+        setDoc(statementRef, room, {merge: true});
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 
 export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
     try {

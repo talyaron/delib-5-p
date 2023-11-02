@@ -9,6 +9,7 @@ import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
 import { store } from '../../../../../model/store'
+import { enterRoomsDB } from '../../../../../functions/db/rooms/setRooms'
 
 interface Props {
     statement: Statement
@@ -24,10 +25,14 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
+        enterRoomsDB(statement);
         unsub = listenToRoomsRquest(statement.statementId, updateRequestForRooms);
         unsub2 = listenToLobbyRoomJoiners(statement.statementId, updateLobbyRoomJoinersCounts);
 
         if (statement.creatorId === store.getState().user.user?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
+
+        //enter the room
+
         return () => {
             unsub();
             unsub2();

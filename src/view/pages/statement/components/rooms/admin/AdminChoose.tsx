@@ -35,16 +35,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             const { rooms } = divideIntoTopics(participants, maxParticipantsPerRoom);
             console.log('rooms', rooms)
             setRoomsAdmin(rooms);
-            // const roomsAdmin: RoomsAdmin = {};
-            // rooms.forEach((room) => {
-            //     room.room.forEach((participant: RoomAskToJoin) => {
-            //         approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
 
-            //         if (!(room.statement.statementId in roomsAdmin)) roomsAdmin[room.statement.statementId] = { participants: [], roomNumber: room.roomNumber, statement: room.statement };
-            //         roomsAdmin[room.statement.statementId].participants.push(participant)
-            //     })
-            // })
-            // setRoomsAdmin(rooms)
             const roomsState = setRooms ? RoomsStateSelection.DIVIDE : RoomsStateSelection.SELECT_ROOMS;
             setSetRooms(state => !state);
 
@@ -89,13 +80,13 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     <>
                         <h3>חלוקה לחדרים</h3>
                         <div className={styles.roomWrapper}>
-                            {roomsAdmin.map((room:RoomAdmin) => {
-                               
+                            {roomsAdmin.map((room: RoomAdmin) => {
+
                                 return (
                                     <div key={room.roomNumber} className={styles.room}>
                                         <h4>חדר {room.roomNumber} - <Text text={room.statement.statement} onlyTitle={true} /></h4>
                                         <div className={styles.room__badges} >
-                                            {room.room.map((participant:RoomAskToJoin) => (
+                                            {room.room.map((participant: RoomAskToJoin) => (
                                                 <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
                                             ))}
                                         </div>
@@ -122,7 +113,10 @@ function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7)
         participants.forEach((participant) => {
 
             try {
-                if (!(participant.statementId in topicsParticipants)) {
+                if (!participant.statementId) {
+                    topicsParticipants['general'] = { statementId: 'general', statement: 'כללי', participants: [participant] };
+                }
+                else if (!(participant.statementId in topicsParticipants)) {
                     topicsParticipants[participant.statementId] = { statementId: participant.statementId, statement: participant.statement, participants: [participant] };
                 } else {
                     topicsParticipants[participant.statementId].participants.push(participant);
