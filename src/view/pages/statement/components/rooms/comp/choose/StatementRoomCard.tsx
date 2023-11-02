@@ -1,9 +1,9 @@
-import { LobbyRooms, Statement } from 'delib-npm';
+import {  RoomAskToJoin, Statement } from 'delib-npm';
 import { FC } from 'react';
 import Text from '../../../../../../components/text/Text';
 import { askToJoinRoomDB } from '../../../../../../../functions/db/rooms/setRooms';
 import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
-import { askToJoinRoomSelector, lobbyRoomSelector } from '../../../../../../../model/statements/statementsSlice';
+import { askToJoinRoomSelector, topicParticipantsSelector } from '../../../../../../../model/statements/statementsSlice';
 
 interface Props {
   statement: Statement
@@ -12,7 +12,7 @@ interface Props {
 const StatementRoomCard: FC<Props> = ({ statement }) => {
   const request = useAppSelector(askToJoinRoomSelector(statement.statementId));
 
-  const LobbyRoomJoiners = useAppSelector(lobbyRoomSelector(statement.statementId)) as LobbyRooms;
+  const topicJoiners = useAppSelector(topicParticipantsSelector(statement.statementId)) as RoomAskToJoin[];
 
 
   function handleAskToJoinRoom() {
@@ -24,7 +24,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
     }
   }
 
-  const fill = fillHieght(LobbyRoomJoiners);
+  const fill = fillHieght(topicJoiners);
   const borderRadius = fill > .9 ? `1rem` : '0px 0px 1rem 1rem';
 
   return (
@@ -33,7 +33,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
         <Text text={statement.statement} />
       </div>
       <div className="roomCard__count">
-        <span>{LobbyRoomJoiners?LobbyRoomJoiners.joinersCount:0}</span>/4
+        <span>{topicJoiners?topicJoiners.length:0}</span>/4
       </div>
       <div className="roomCard__fill" style={{height:`${fill*100}%`, borderRadius, backgroundColor:fillColor(fill)}}></div>
     </div>
@@ -42,11 +42,11 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
 
 export default StatementRoomCard
 
-function fillHieght(LobbyRoomJoiners:LobbyRooms, maxRoomJoiners:number = 3) {
+function fillHieght(topicJoiners:RoomAskToJoin[], maxRoomJoiners:number = 7) {
   try {
-    if(!LobbyRoomJoiners) return 0;
+    if(!topicJoiners) return 0;
 
-    const {joinersCount} = LobbyRoomJoiners;
+    const joinersCount = topicJoiners.length;
     const fill = joinersCount/maxRoomJoiners;
     if(fill > 1) return 1;
     return fill;

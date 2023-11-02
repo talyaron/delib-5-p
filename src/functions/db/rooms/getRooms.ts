@@ -33,47 +33,26 @@ export function listenToRoomsRquest(parentId: string, cb: Function) {
     }
 }
 
-export function listenToLobbyRoomJoiners(parentId: string, cb: Function) {
+
+
+export function listenToAllRoomsRquest(statement: Statement, cb: Function, cbRemove: Function) {
     try {
-    
-        const lobbyRoomsRef = collection(DB, Collections.statementLobbyRooms);
-        const q = query(lobbyRoomsRef, where("parentId", "==", parentId));
-        return onSnapshot(q, lobbyRoomsDB => {
-            try {
-                const lobbyRooms: LobbyRooms[] = lobbyRoomsDB.docs.map(lobbyRoomDB => {
-                    return lobbyRoomDB.data() as LobbyRooms;
-                })
-                cb(lobbyRooms)
-            } catch (error) {
-                console.error(error)
-
-            };
-        })
-
-    } catch (error) {
-        console.error(error)
-        return () => { };
-    }
-}
-
-export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
-    try {
-      
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
-        const userId = user.uid
-        if (userId !== statement.creatorId) throw new Error("User is not the creator of the statement");
 
         const requestRef = collection(DB, Collections.statementRoomsAsked);
         const q = query(requestRef, where("parentId", "==", statement.statementId));
         return onSnapshot(q, requestDB => {
             try {
-                const requests = requestDB.docs.map(requestDB => {
-                    return requestDB.data() as RoomAskToJoin;
+                requestDB.docChanges().forEach(change => {
+                    const request = change.doc.data() as RoomAskToJoin;
+                    if (change.type === "added" || change.type === "modified") {
+                        cb(request)
+                    } else if (change.type === "removed") {
+                        cbRemove(request.requestId)
+                    }
+
+
                 })
-                requests.forEach(request => {
-                    cb(request)
-                })
+
             } catch (error) {
                 console.error(error)
                 cb([])
@@ -86,26 +65,26 @@ export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
     }
 }
 
-export function listenToRoomSolutions(statementId:string, cb: Function) {
+export function listenToRoomSolutions(statementId: string, cb: Function) {
     try {
-     
+
 
         const statementSolutionsRef = collection(DB, Collections.statements);
-        const q = query(statementSolutionsRef,where("parentId", "==", statementId), where("type", "==", StatementType.SOLUTION));
+        const q = query(statementSolutionsRef, where("parentId", "==", statementId), where("type", "==", StatementType.SOLUTION));
         return onSnapshot(q, roomSolutionsDB => {
             try {
-        
+
                 roomSolutionsDB.forEach(roomSolutionDB => {
                     try {
                         const roomSolution = roomSolutionDB.data() as Statement;
                         StatementSchema.parse(roomSolution);
-                       
+
                         cb(roomSolution as Statement);
                     } catch (error) {
                         console.error(error)
                     }
                 })
-               
+
             } catch (error) {
                 console.error(error)
                 cb([])

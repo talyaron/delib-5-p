@@ -149,13 +149,10 @@ export const statementsSlicer = createSlice({
         console.error(error);
       }
     },
-    setLobbyRooms: (state, action: PayloadAction<{ lobbyRooms: LobbyRooms[] }>) => {
+    removeFromAskToJoinRooms: (state, action: PayloadAction<string>) => {
       try {
-        const { lobbyRooms } = action.payload;
-        lobbyRooms.forEach(lobbyRoom => {
-          state.lobbyRooms = updateArray(state.lobbyRooms, lobbyRoom, "statementId");
-        })
-
+        const requestId = action.payload;
+        state.askToJoinRooms = state.askToJoinRooms.filter(room => room.requestId !== requestId);
       } catch (error) {
         console.error(error);
       }
@@ -180,7 +177,7 @@ export const statementsSlicer = createSlice({
   }
 });
 
-export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions
+export const { removeFromAskToJoinRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
@@ -200,6 +197,7 @@ export const askToJoinRoomsSelector = (state: RootState) => state.statements.ask
 export const askToJoinRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.statementId === statementId);
 export const userSelectedRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
 export const topicParticipantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.statementId === statementId);
+
 //find the user selected topic
 export const userSelectedTopicSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
 //loby rooms

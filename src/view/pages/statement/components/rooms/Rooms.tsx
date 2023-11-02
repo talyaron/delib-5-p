@@ -1,10 +1,10 @@
-import { LobbyRooms, RoomAskToJoin, RoomsStateSelection, Statement } from 'delib-npm'
+import { RoomAskToJoin, RoomsStateSelection, Statement } from 'delib-npm'
 import { FC, useState, useEffect } from 'react'
 import Modal from '../../../../components/modal/Modal'
 import NewSetStatementSimple from '../set/NewStatementSimple'
-import { listenToAllRoomsRquest, listenToLobbyRoomJoiners, listenToRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
+import { listenToAllRoomsRquest, listenToRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
 import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks'
-import { setAskToJoinRooms, setLobbyRooms } from '../../../../../model/statements/statementsSlice'
+import { removeFromAskToJoinRooms, setAskToJoinRooms } from '../../../../../model/statements/statementsSlice'
 import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
@@ -27,9 +27,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     useEffect(() => {
         enterRoomsDB(statement);
         unsub = listenToRoomsRquest(statement.statementId, updateRequestForRooms);
-        unsub2 = listenToLobbyRoomJoiners(statement.statementId, updateLobbyRoomJoinersCounts);
-
-        if (statement.creatorId === store.getState().user.user?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
+        unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms,removeFromAskToJoinRoomsCB);
 
         //enter the room
 
@@ -45,10 +43,9 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
         dispatch(setAskToJoinRooms({ request: roomAsked, parentId: statement.statementId }))
     }
 
-    function updateLobbyRoomJoinersCounts(lobbyRooms: LobbyRooms[]) {
-        dispatch(setLobbyRooms({ lobbyRooms }))
+    function removeFromAskToJoinRoomsCB(requestId: string) {
+        dispatch(removeFromAskToJoinRooms(requestId))
     }
-
 
     const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
