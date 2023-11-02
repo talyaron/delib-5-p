@@ -3,14 +3,15 @@ import { FC } from 'react';
 import Text from '../../../../../../components/text/Text';
 import { askToJoinRoomDB } from '../../../../../../../functions/db/rooms/setRooms';
 import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
-import { askToJoinRoomSelector, topicParticipantsSelector } from '../../../../../../../model/statements/statementsSlice';
+import { topicParticipantsSelector, userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
 
 interface Props {
   statement: Statement
 }
 
 const StatementRoomCard: FC<Props> = ({ statement }) => {
-  const request = useAppSelector(askToJoinRoomSelector(statement.statementId));
+  const request = useAppSelector(userSelectedTopicSelector(statement.parentId));
+  const statementId = request?.statement?.statementId;
 
   const topicJoiners = useAppSelector(topicParticipantsSelector(statement.statementId)) as RoomAskToJoin[];
 
@@ -28,7 +29,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
   const borderRadius = fill > .9 ? `1rem` : '0px 0px 1rem 1rem';
 
   return (
-    <div className={request ? "roomCard roomCard--selected" : "roomCard"} onClick={handleAskToJoinRoom}>
+    <div className={statementId === statement.statementId ? "roomCard roomCard--selected" : "roomCard"} onClick={handleAskToJoinRoom}>
       <div className="roomCard__title">
         <Text text={statement.statement} />
       </div>

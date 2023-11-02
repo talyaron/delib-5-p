@@ -177,7 +177,9 @@ export const statementsSlicer = createSlice({
   }
 });
 
-export const { removeFromAskToJoinRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions
+export const { removeFromAskToJoinRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions;
+
+
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
@@ -199,7 +201,7 @@ export const userSelectedRoomSelector = (statementId: string | undefined) => (st
 export const topicParticipantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.statementId === statementId);
 
 //find the user selected topic
-export const userSelectedTopicSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
+export const userSelectedTopicSelector = (parentId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === parentId);
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.statements.lobbyRooms;
 export const lobbyRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.lobbyRooms.find(room => room.statementId === statementId);
