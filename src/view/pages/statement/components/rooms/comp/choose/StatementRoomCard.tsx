@@ -11,7 +11,7 @@ interface Props {
 
 const StatementRoomCard: FC<Props> = ({ statement }) => {
   const request = useAppSelector(userSelectedTopicSelector(statement.parentId));
-  const statementId = request?.statement?.statementId;
+  const requestStatementId = request?.statement?.statementId;
 
   const topicJoiners = useAppSelector(topicParticipantsSelector(statement.statementId)) as RoomAskToJoin[];
 
@@ -27,9 +27,10 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
 
   const fill = fillHieght(topicJoiners);
   const borderRadius = fill > .9 ? `1rem` : '0px 0px 1rem 1rem';
+ 
 
   return (
-    <div className={statementId === statement.statementId ? "roomCard roomCard--selected" : "roomCard"} onClick={handleAskToJoinRoom}>
+    <div className={requestStatementId === statement.statementId ? "roomCard roomCard--selected" : "roomCard"} onClick={handleAskToJoinRoom}>
       <div className="roomCard__title">
         <Text text={statement.statement} />
       </div>

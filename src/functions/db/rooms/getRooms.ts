@@ -1,58 +1,21 @@
-import { Collections, RoomAskToJoin, getRequestIdToJoinRoom, LobbyRooms, Statement, StatementSchema, StatementType } from "delib-npm";
-import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
+import { Collections, RoomAskToJoin,  Statement, StatementSchema, StatementType } from "delib-npm";
+import { collection,  onSnapshot, query, where } from "firebase/firestore";
 import { DB } from "../config";
-import { store } from "../../../model/store";
-
-export function listenToRoomsRquest(parentId: string, cb: Function) {
-    try {
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
-        const userId = user.uid
-        const requestId = getRequestIdToJoinRoom(userId, parentId)
-        if (!requestId) throw new Error("Request id is undefined");
-
-        const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
-        return onSnapshot(requestRef, requestDB => {
-            try {
-                if (!requestDB.exists()) {
-                    cb(undefined);
-                    return;
-                }
-                const request = requestDB.data() as RoomAskToJoin;
-
-                cb(request)
-            } catch (error) {
-                console.error(error)
-                cb(undefined)
-            };
-        })
-
-    } catch (error) {
-        console.error(error)
-        return () => { };
-    }
-}
+ 
 
 
-
-export function listenToAllRoomsRquest(statement: Statement, cb: Function, cbRemove: Function) {
+export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
     try {
 
         const requestRef = collection(DB, Collections.statementRoomsAsked);
         const q = query(requestRef, where("parentId", "==", statement.statementId));
-        return onSnapshot(q, requestDB => {
+
+        return onSnapshot(q, (requestsDB:any) => {
             try {
-                requestDB.docChanges().forEach(change => {
-                    const request = change.doc.data() as RoomAskToJoin;
-                    if (change.type === "added" || change.type === "modified") {
-                        cb(request)
-                    } else if (change.type === "removed") {
-                        cbRemove(request.requestId)
-                    }
-
-
-                })
-
+              const requests = requestsDB.docs.map((requestDB:any) =>requestDB.data() as RoomAskToJoin);
+              console.log(requests)
+              cb(requests)
+              
             } catch (error) {
                 console.error(error)
                 cb([])

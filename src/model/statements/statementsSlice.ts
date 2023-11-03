@@ -2,9 +2,10 @@ import equal from 'fast-deep-equal';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from 'delib-npm';
+import { RoomAskToJoinSchema, Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from 'delib-npm';
 import { updateArray } from '../../functions/general/helpers';
 import { LobbyRooms, RoomAskToJoin } from 'delib-npm';
+import{z} from 'zod';
 
 
 enum StatementScreen {
@@ -46,7 +47,7 @@ export const statementsSlicer = createSlice({
   reducers: {
     setStatement: (state, action: PayloadAction<Statement>) => {
       try {
-   
+
         StatementSchema.parse(action.payload);
         const newStatement = action.payload;
         newStatement.order = 0;
@@ -149,6 +150,18 @@ export const statementsSlicer = createSlice({
         console.error(error);
       }
     },
+    setRoomRequests: (state, action: PayloadAction<RoomAskToJoin[]>) => {
+      try {
+
+        const requests = action.payload;
+        console.log(requests)
+        z.array(z.any()).parse(requests);
+
+        state.askToJoinRooms = requests;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     removeFromAskToJoinRooms: (state, action: PayloadAction<string>) => {
       try {
         const requestId = action.payload;
@@ -177,7 +190,7 @@ export const statementsSlicer = createSlice({
   }
 });
 
-export const { removeFromAskToJoinRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions;
+export const {setRoomRequests, removeFromAskToJoinRooms, setAskToJoinRooms, setStatement, deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight, setMembership, removeMembership } = statementsSlicer.actions;
 
 
 
@@ -206,6 +219,6 @@ export const userSelectedTopicSelector = (parentId: string | undefined) => (stat
 export const lobbyRoomsSelector = (state: RootState) => state.statements.lobbyRooms;
 export const lobbyRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.lobbyRooms.find(room => room.statementId === statementId);
 //membeship
-export const statementMembershipSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementMembership.filter((statement:StatementSubscription) => statement.statementId === statementId);
+export const statementMembershipSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementMembership.filter((statement: StatementSubscription) => statement.statementId === statementId);
 
 export default statementsSlicer.reducer

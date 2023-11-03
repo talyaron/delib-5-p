@@ -2,9 +2,9 @@ import { RoomAskToJoin, RoomsStateSelection, Statement } from 'delib-npm'
 import { FC, useState, useEffect } from 'react'
 import Modal from '../../../../components/modal/Modal'
 import NewSetStatementSimple from '../set/NewStatementSimple'
-import { listenToAllRoomsRquest, listenToRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
+import { listenToAllRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
 import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks'
-import { removeFromAskToJoinRooms, setAskToJoinRooms } from '../../../../../model/statements/statementsSlice'
+import { setRoomRequests } from '../../../../../model/statements/statementsSlice'
 import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
@@ -16,7 +16,7 @@ interface Props {
     subStatements: Statement[]
 }
 
-let unsub = () => { }, unsub2 = () => { }, unsub3 = () => { };
+let unsub = () => { }, unsub3 = () => { };
 
 
 const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
@@ -26,26 +26,22 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
 
     useEffect(() => {
         enterRoomsDB(statement);
-        unsub = listenToRoomsRquest(statement.statementId, updateRequestForRooms);
-        unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms,removeFromAskToJoinRoomsCB);
+    
+        unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
 
         //enter the room
 
         return () => {
             unsub();
-            unsub2();
             unsub3();
         }
 
     }, [])
 
-    function updateRequestForRooms(roomAsked: RoomAskToJoin) {
-        dispatch(setAskToJoinRooms({ request: roomAsked, parentId: statement.statementId }))
+    function updateRequestForRooms(roomsAsked: RoomAskToJoin[]) {
+        dispatch(setRoomRequests(roomsAsked));
     }
 
-    function removeFromAskToJoinRoomsCB(requestId: string) {
-        dispatch(removeFromAskToJoinRooms(requestId))
-    }
 
     const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
