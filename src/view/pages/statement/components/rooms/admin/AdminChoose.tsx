@@ -3,7 +3,7 @@ import RoomParticpantBadge from '../comp/general/RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, RoomsStateSelection, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
-import { approveToJoinRoomDB, setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
+import { setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
 import _styles from './admin.module.css';
 import Text from '../../../../../components/text/Text';
 import Slider from '@mui/material/Slider';

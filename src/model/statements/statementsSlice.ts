@@ -2,7 +2,7 @@ import equal from 'fast-deep-equal';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { RoomAskToJoinSchema, Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from 'delib-npm';
+import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from 'delib-npm';
 import { updateArray } from '../../functions/general/helpers';
 import { LobbyRooms, RoomAskToJoin } from 'delib-npm';
 import{z} from 'zod';
