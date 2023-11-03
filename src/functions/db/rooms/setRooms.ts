@@ -45,6 +45,7 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
         const request = requestDB.data() as RoomAskToJoin;
 
         if (!requestDB.exists()) {
+            console.log("statement do not exists on request")
             await saveToDB(requestId, requestRef, statement);
 
 
@@ -56,15 +57,20 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
 
             if (request.statement === undefined) {
 
-                console.log("saving")
+
                 await saveToDB(requestId, requestRef, statement);
                 return true;
 
 
+            } else if (request.statement.statementId !== statement.statementId) {
+
+                await saveToDB(requestId, requestRef, statement);
+                return true;
+
             } else {
                 const { parentId, participant, requestId } = request;
                 const _request = { parentId, participant, requestId, lastUpdate: new Date().getTime() };
-                console.log("delteing", request.requestId)
+
                 //set to undefined to show that the user is not in the room
                 await setDoc(requestRef, _request);
                 return false;

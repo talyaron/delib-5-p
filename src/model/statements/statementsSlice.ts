@@ -154,7 +154,6 @@ export const statementsSlicer = createSlice({
       try {
 
         const requests = action.payload;
-        console.log(requests)
         z.array(z.any()).parse(requests);
 
         state.askToJoinRooms = requests;

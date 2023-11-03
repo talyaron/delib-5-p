@@ -13,7 +13,7 @@ export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
         return onSnapshot(q, (requestsDB:any) => {
             try {
               const requests = requestsDB.docs.map((requestDB:any) =>requestDB.data() as RoomAskToJoin);
-              console.log(requests)
+          
               cb(requests)
               
             } catch (error) {
