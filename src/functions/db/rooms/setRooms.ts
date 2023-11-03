@@ -2,6 +2,7 @@ import { Collections, Statement, RoomAskToJoin, getRequestIdToJoinRoom, RoomsSta
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
+import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/admin/AdminChoose";
 
 export function enterRoomsDB(parentStatement: Statement) {
     try {
@@ -109,14 +110,16 @@ export async function setRoomsStateToDB(statement: Statement, roomsState: RoomsS
     }
 }
 
-export function approveToJoinRoomDB(participantId: string, statement: Statement, roomNumber: number, approved: boolean = true) {
+export function setParticipantInRoom(participant: ParticipantInRoom) {
     try {
+        const { uid, topic, roomNumber } = participant;
+        if (!topic) return;
 
-        const requestId = getRequestIdToJoinRoom(participantId, statement.parentId);
+        const requestId = getRequestIdToJoinRoom(uid, topic.parentId);
         if (!requestId) throw new Error("Request id is undefined");
 
         const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
-        if (approved) updateDoc(requestRef, { approved: true, roomNumber });
+        if (topic.statementId) updateDoc(requestRef, { approved: true, roomNumber });
         else updateDoc(requestRef, { approved: false, roomNumber });
 
 

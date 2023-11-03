@@ -3,7 +3,7 @@ import RoomParticpantBadge from '../comp/general/RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, RoomsStateSelection, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
-import { setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
+import { setParticipantInRoom, setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
 import _styles from './admin.module.css';
 import Text from '../../../../../components/text/Text';
 import Slider from '@mui/material/Slider';
@@ -21,6 +21,7 @@ interface RoomAdmin {
     roomNumber: number;
     statement: Statement;
 }
+export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
 
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
@@ -35,6 +36,13 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             const { rooms } = divideIntoTopics(participants, maxParticipantsPerRoom);
             console.log('rooms', rooms)
             setRoomsAdmin(rooms);
+
+            rooms.forEach((room) => {
+                room.room.forEach((participant) => {
+                    const participantInRoom: ParticipantInRoom = { uid: participant.participant.uid, room: room.roomNumber, roomNumber: room.roomNumber, topic: room.statement, statementId: room.statement.statementId };
+                    setParticipantInRoom(participantInRoom);
+                })
+            });
 
             const roomsState = setRooms ? RoomsStateSelection.DIVIDE : RoomsStateSelection.SELECT_ROOMS;
             setSetRooms(state => !state);
@@ -103,7 +111,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 }
 
 export default AdminSeeAllGroups
-export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
+
 
 function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<RoomDivied>, topicsParticipants: any } {
     try {
