@@ -11,7 +11,7 @@ import { store } from '../../../../../model/store';
 import Solution from '../general/Solution';
 import { useNavigate } from 'react-router-dom';
 import EditTitle from '../../../../components/edit/EditTitle';
-import Evaluation from '../../../../components/evaluation/Evaluation';
+
 
 
 
