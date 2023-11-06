@@ -26,6 +26,8 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
         const { sort } = useParams();
         const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
         const _subStatements = sortSubStatements(__substatements, sort);
+        const {hasChildren} = statement;
+        console.log('hasChildren',hasChildren)
 
         function dispatchCB(statement: Statement, order: number) {
             dispatch(setStatementOrder({ statementId: statement.statementId, order: order }))
@@ -53,7 +55,7 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
 
                         }
 
-                        return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={tops[i]} />
+                        return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={tops[i]} hasChildren={hasChildren} />
                     })}
 
                 </div>

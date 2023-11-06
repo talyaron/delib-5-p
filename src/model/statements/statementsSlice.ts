@@ -5,6 +5,7 @@ import { RootState } from '../store'
 import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from 'delib-npm';
 import { updateArray } from '../../functions/general/helpers';
 import { LobbyRooms, RoomAskToJoin } from 'delib-npm';
+import{z} from 'zod';
 
 
 enum StatementScreen {
@@ -46,7 +47,7 @@ export const statementsSlicer = createSlice({
   reducers: {
     setStatement: (state, action: PayloadAction<Statement>) => {
       try {
-   
+
         StatementSchema.parse(action.payload);
         const newStatement = action.payload;
         newStatement.order = 0;
@@ -149,13 +150,21 @@ export const statementsSlicer = createSlice({
         console.error(error);
       }
     },
-    setLobbyRooms: (state, action: PayloadAction<{ lobbyRooms: LobbyRooms[] }>) => {
+    setRoomRequests: (state, action: PayloadAction<RoomAskToJoin[]>) => {
       try {
-        const { lobbyRooms } = action.payload;
-        lobbyRooms.forEach(lobbyRoom => {
-          state.lobbyRooms = updateArray(state.lobbyRooms, lobbyRoom, "statementId");
-        })
 
+        const requests = action.payload;
+        z.array(z.any()).parse(requests);
+
+        state.askToJoinRooms = requests;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    removeFromAskToJoinRooms: (state, action: PayloadAction<string>) => {
+      try {
+        const requestId = action.payload;
+        state.askToJoinRooms = state.askToJoinRooms.filter(room => room.requestId !== requestId);
       } catch (error) {
         console.error(error);
       }
@@ -180,7 +189,9 @@ export const statementsSlicer = createSlice({
   }
 });
 
-export const { setLobbyRooms, setAskToJoinRooms, setStatement,deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight,setMembership, removeMembership } = statementsSlicer.actions
+export const {setRoomRequests, removeFromAskToJoinRooms, setAskToJoinRooms, setStatement, deleteStatement, deleteSubscribedStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight, setMembership, removeMembership } = statementsSlicer.actions;
+
+
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
@@ -200,12 +211,13 @@ export const askToJoinRoomsSelector = (state: RootState) => state.statements.ask
 export const askToJoinRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.statementId === statementId);
 export const userSelectedRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
 export const topicParticipantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.statementId === statementId);
+
 //find the user selected topic
-export const userSelectedTopicSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === statementId);
+export const userSelectedTopicSelector = (parentId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === state.user.user?.uid && room.parentId === parentId);
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.statements.lobbyRooms;
 export const lobbyRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.lobbyRooms.find(room => room.statementId === statementId);
 //membeship
-export const statementMembershipSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementMembership.filter((statement:StatementSubscription) => statement.statementId === statementId);
+export const statementMembershipSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementMembership.filter((statement: StatementSubscription) => statement.statementId === statementId);
 
 export default statementsSlicer.reducer

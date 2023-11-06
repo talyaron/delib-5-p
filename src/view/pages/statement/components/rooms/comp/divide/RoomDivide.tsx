@@ -1,4 +1,4 @@
-import { Statement } from 'delib-npm';
+import { RoomAskToJoin, Statement } from 'delib-npm';
 import { FC } from 'react';
 import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
 import { userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
@@ -15,7 +15,7 @@ interface Props {
 
 const RoomQuestions: FC<Props> = ({ statement }) => {
 
-  const userTopic = useAppSelector(userSelectedTopicSelector(statement.statementId));
+  const userTopic:RoomAskToJoin|undefined = useAppSelector(userSelectedTopicSelector(statement.statementId));
 
   try {
 
@@ -24,7 +24,7 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
         <h1>חלוקה לחדרים</h1>
         {/* {userTopic && userTopic.approved ? */}
         <div className={styles.message}>
-          {userTopic ?
+          {userTopic && userTopic.statement ?
             <>
               <h2><Text text={`נושא הדיון: ${userTopic.statement.statement}`} onlyTitle={true} /></h2>
               <div className={styles.text}>מוזמן/ת לחדר מספר <span>{userTopic.roomNumber}</span> בזום</div>

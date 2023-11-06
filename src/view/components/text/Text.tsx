@@ -1,12 +1,17 @@
-import { FC } from 'react'
+import { FC } from 'react';
+import {z} from 'zod';
 
 interface Props {
     text: string;
     onlyTitle?: boolean;
 }
 const Text: FC<Props> = ({ text, onlyTitle }) => {
-
+    try{
+        if(!text) return <></>
+        z.string().parse(text);
+        
     const textId = `${Math.random()}`.replace('.', '')
+
     //convert sentences, devided by /n to paragraphs
     const paragraphs = text.split('\n').filter(p => p).map((paragraph: string, i: number) => {
        
@@ -30,6 +35,10 @@ const Text: FC<Props> = ({ text, onlyTitle }) => {
     return (
         <span>{paragraphs}</span>
     )
+    }catch(error:any){
+        console.error(error);
+        return (<div>error: {error.message}</div>)
+    }
 }
 
 export default Text

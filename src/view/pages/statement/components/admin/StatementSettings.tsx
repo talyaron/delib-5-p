@@ -75,6 +75,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get('statement');
+            console.log(data)
             const description = data.get('description');
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
@@ -84,7 +85,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
 
             const newStatement: any = Object.fromEntries(data.entries());
-
+       
 
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;
@@ -94,6 +95,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
             newStatement.resultsBy = newStatement.resultsBy || ResultsBy.topOne;
+            newStatement.hasChildren = newStatement.hasChildren === "on" ? true : false;
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
             }
@@ -102,7 +104,13 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.consensus = statement?.consensus || 0;
 
             const setSubsciption: boolean = statementId === undefined ? true : false;
-            console.log(newStatement)
+
+            //remove all "on" values
+            for (const key in newStatement) {
+                if (newStatement[key] === "on") delete newStatement[key];
+            }
+
+        
 
             const _statementId = await setStatmentToDB(newStatement, setSubsciption);
 
@@ -134,7 +142,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         <textarea name="description" placeholder='תיאור הקבוצה' defaultValue={description}></textarea>
                         {!simple ? <section>
 
-                            <label htmlFor="subPages">תת עמודים</label>
+                            <label htmlFor="subPages">לשוניות</label>
                             <FormGroup>
                                 {navArray
                                     .filter(navObj => navObj.link !== Screen.SETTINGS)
@@ -143,7 +151,13 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                     )}
 
                             </FormGroup>
+                            <label htmlFor="subPages"> מתקדם</label>
+                            <FormGroup>
+                            <FormControlLabel key={"sub-statements"} control={<Checkbox name="hasChildren" defaultChecked={statement?.hasChildren} />} label={"לאפשר תת-שיחות"} />
+                               
+                            </FormGroup>
                         </section> : null}
+
                         <select name="resultsBy" defaultValue={resultsBy}>
                             <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
                             <option value={ResultsBy.topOption}>אופציה מועדפת</option>
@@ -151,7 +165,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
                             <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
                             <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option>
-                           
+
                         </select>
 
                         <div className="btnBox">
