@@ -21,16 +21,16 @@ export async function updateEvaluation(event: any) {
         const statementEvaluatorDB = await statementEvaluatorsRef.doc(`${dataAfter.evaluatorId}--${parentId}`).get();
 
         //calculate and update
-        const totalEvaluators:number = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
-     
+        const totalAllEvaluators: number = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
 
-        const {newPro, newCon} = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
-      
+
+        const { newPro, newCon } = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
+
         const sumEvaluation = newPro - newCon;
         const n = newPro + Math.abs(newCon);
-       
-        const consensus = await calculateConsensus(sumEvaluation, n);
-      
+
+        const consensus = await calculateConsensus(sumEvaluation, n, totalAllEvaluators);
+
         //set consensus to statement in DB
         await statementRef.update({ consensus });
 
@@ -41,9 +41,11 @@ export async function updateEvaluation(event: any) {
 
         const { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus }: SimpleStatement = maxConsensusStatement;
         const maxConsensusStatementSimple: SimpleStatement = { statement: _statement, statementId, parentId: _parentId, creatorId, creator, consensus: _consesus };
-      
 
-        await parentRef.update({ maxConsesusStatement: maxConsensusStatementSimple, totalSubEvaluators:totalEvaluators });
+
+        await parentRef.update({ maxConsesusStatement: maxConsensusStatementSimple, totalSubEvaluators: totalEvaluators });
+
+        //send to parent the 
 
 
 
@@ -83,18 +85,21 @@ export async function updateEvaluation(event: any) {
         }
     }
 
-    async function calculateConsensus(sumEvaluations: number, totalEvaluators: number): Promise<number> {
+    async function calculateConsensus(sumEvaluations: number, totalEvaluators: number, totalAllEvaluators: number): Promise<number> {
         //(pst-neg, 1, -1)(log1.3(abs(atLeast 1(positive_evaluators_evaluation - negative_evaluators_evaluation)))) / total_evaluators
         try {
 
-            //consesnsu is calculated as follwing:
+            //Consesnsu is calculated as follwing:
             //on spesific statement:, n would be the number of evaluators of this statement.
             //sum of all evaluations on this statement is calculated as follows:
             //Sum of all evaluation * log4(n)
 
             const groupInfulance = logBase(totalEvaluators, 4);
+            const maxGroupInfluance = logBase(totalAllEvaluators, 4);
 
-            const consensus = sumEvaluations * groupInfulance;
+            // const consensus = sumEvaluations * groupInfulance;
+            const maxScore = maxGroupInfluance * totalAllEvaluators;
+            const consensus = (sumEvaluations * groupInfulance) / maxScore;
 
 
             return consensus;
@@ -109,9 +114,9 @@ export async function updateEvaluation(event: any) {
         }
     }
 
-    async function setNewEvaluation(statementRef: any, evaluationDeferneces: number | undefined, evaluation: number, previousEvaluation: number | undefined): Promise<{newCon:number, newPro:number, totalEvaluators:number}> {
+    async function setNewEvaluation(statementRef: any, evaluationDeferneces: number | undefined, evaluation: number, previousEvaluation: number | undefined): Promise<{ newCon: number, newPro: number, totalEvaluators: number }> {
 
-       const results = {newCon:0, newPro:0, totalEvaluators:0}; 
+        const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
         await db.runTransaction(async (t: any) => {
             try {
                 if (!evaluationDeferneces) throw new Error("evaluationDeferneces is not defined");
@@ -124,7 +129,7 @@ export async function updateEvaluation(event: any) {
                     throw new Error("statement does not exist");
                 }
 
-             
+
                 const oldPro = statementDB.data().pro || 0;
                 const oldCon = statementDB.data().con || 0;
 
@@ -134,8 +139,8 @@ export async function updateEvaluation(event: any) {
                 results.newPro = newPro;
                 results.totalEvaluators = totalEvaluators;
 
-            
-                t.update(statementRef, { totalEvaluations: newCon+newPro, con: newCon, pro: newPro });
+
+                t.update(statementRef, { totalEvaluations: newCon + newPro, con: newCon, pro: newPro });
 
                 return results;
             } catch (error) {
@@ -145,9 +150,9 @@ export async function updateEvaluation(event: any) {
         });
 
         return results
-    
 
-        function updateProCon(oldPro: number, oldCon: number, evaluation: number, previousEvaluation: number): { newPro: number, newCon: number,totalEvaluators:number} {
+
+        function updateProCon(oldPro: number, oldCon: number, evaluation: number, previousEvaluation: number): { newPro: number, newCon: number, totalEvaluators: number } {
             try {
                 logger.info(`oldPro: ${oldPro}, oldCon: ${oldCon}`);
                 let newPro = oldPro;
@@ -157,14 +162,14 @@ export async function updateEvaluation(event: any) {
                 logger.info(`pro: ${pro}, con: ${con}`);
                 newPro += pro;
                 newCon += con;
-                const totalEvaluators:number = newPro + newCon;
+                const totalEvaluators: number = newPro + newCon;
 
                 logger.info(`newPro: ${newPro}, newCon: ${newCon}`);
 
-                return { newPro, newCon,totalEvaluators };
+                return { newPro, newCon, totalEvaluators };
             } catch (error) {
                 logger.error(error);
-                return { newPro: oldPro, newCon: oldCon,totalEvaluators:0 };
+                return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
             }
         }
     }
