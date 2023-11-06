@@ -7,6 +7,7 @@ import { setParticipantInRoom, setRoomsStateToDB } from '../../../../../../funct
 import _styles from './admin.module.css';
 import Text from '../../../../../components/text/Text';
 import Slider from '@mui/material/Slider';
+import { setRoomSizeInStatement } from '../../../../../../functions/db/statements/setStatments'
 
 const styles = _styles as any;
 
@@ -29,7 +30,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     const participants = useAppSelector(participantsSelector(statement.statementId));
     const [setRooms, setSetRooms] = useState<boolean>(true);
     const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
-    const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] = useState<number>(7);
+    const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] = useState<number>(statement.roomSize || 5);
 
     function handleDivideIntoRooms() {
         try {
@@ -56,7 +57,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     function handleRoomSize(ev: any) {
         const value = ev.target.value;
         const valueAsNumber = Number(value);
-        setMaxParticipantsPerRoom(valueAsNumber)
+        setMaxParticipantsPerRoom(valueAsNumber);
+        setRoomSizeInStatement(statement, valueAsNumber);
     }
 
 
@@ -74,7 +76,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     <p>מספר משתתפים מקסימלי בחדר {maxParticipantsPerRoom}</p>
 
                     <div className="btns" style={{ padding: '1.5rem', boxSizing: "border-box" }}>
-                        <Slider defaultValue={7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize} />
+                        <Slider defaultValue={statement.roomSize || 7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize} />
 
                     </div>
                     <br />

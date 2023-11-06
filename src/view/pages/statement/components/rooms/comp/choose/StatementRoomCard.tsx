@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Text from '../../../../../../components/text/Text';
 import { askToJoinRoomDB } from '../../../../../../../functions/db/rooms/setRooms';
 import { useAppSelector } from '../../../../../../../functions/hooks/reduxHooks';
-import { topicParticipantsSelector, userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
+import { statementSelector, topicParticipantsSelector, userSelectedTopicSelector } from '../../../../../../../model/statements/statementsSlice';
 
 interface Props {
   statement: Statement
@@ -11,6 +11,7 @@ interface Props {
 
 const StatementRoomCard: FC<Props> = ({ statement }) => {
   const request = useAppSelector(userSelectedTopicSelector(statement.parentId));
+  const roomSize = useAppSelector(statementSelector(statement.parentId))?.roomSize || 5;
   const requestStatementId = request?.statement?.statementId;
 
   const topicJoiners = useAppSelector(topicParticipantsSelector(statement.statementId)) as RoomAskToJoin[];
@@ -25,7 +26,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
     }
   }
 
-  const fill = fillHieght(topicJoiners);
+  const fill = fillHieght(topicJoiners, roomSize);
   const borderRadius = fill > .9 ? `1rem` : '0px 0px 1rem 1rem';
  
 
@@ -35,7 +36,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
         <Text text={statement.statement} />
       </div>
       <div className="roomCard__count">
-        <span>{topicJoiners?topicJoiners.length:0}</span>/4
+        <span>{topicJoiners?topicJoiners.length:0}</span>/{roomSize || 7}
       </div>
       <div className="roomCard__fill" style={{height:`${fill*100}%`, borderRadius, backgroundColor:fillColor(fill)}}></div>
     </div>
@@ -44,7 +45,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
 
 export default StatementRoomCard
 
-function fillHieght(topicJoiners:RoomAskToJoin[], maxRoomJoiners:number = 7) {
+function fillHieght(topicJoiners:RoomAskToJoin[], maxRoomJoiners:number = 5) {
   try {
     if(!topicJoiners) return 0;
 
