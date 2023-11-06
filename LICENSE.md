@@ -1,2 +1,2 @@
 
-Copyright (C) 2023 Tal
+Copyright (C) 2023 Tal Yaron (tal.yaron@gmail.com)

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/r
 
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import { setStatementElementHight } from '../../../../../model/statements/statementsSlice';
-import StatementChatIcon from '../StatementChatMore';
+import StatementChatMore from '../StatementChatMore';
 import StatementChatSetOption from '../StatementChatSetOption';
 import Text from '../../../../components/text/Text';
 
@@ -22,11 +22,12 @@ interface Props {
     statement: Statement;
     showImage: Function;
     top: number;
+    hasChildren: boolean;
 }
 
 
 
-const StatementOptionCard: FC<Props> = ({ statement, top }) => {
+const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
     const dispatch = useAppDispatch();
   
     const user = useAppSelector(userSelector)
@@ -75,7 +76,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                 </div>
                
                 <div className="options__card__chat">
-                    <StatementChatIcon statement={statement} />
+                    <StatementChatMore statement={statement} hasChildren={hasChildren}/>
                     {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
                     <div className="press">
                         <StatementChatSetOption statement={statement} />

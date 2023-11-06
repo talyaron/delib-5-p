@@ -11,7 +11,7 @@ import { store } from '../../../../../model/store';
 import Solution from '../general/Solution';
 import { useNavigate } from 'react-router-dom';
 import EditTitle from '../../../../components/edit/EditTitle';
-import Evaluation from '../../../../components/evaluation/Evaluation';
+
 
 
 
@@ -20,10 +20,11 @@ import Evaluation from '../../../../components/evaluation/Evaluation';
 interface Props {
   statement: Statement
   showImage: Function
-  page: any
+  page: any,
+  hasChildren:boolean
 }
 
-const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
+const StatementChat: FC<Props> = ({ statement, showImage, page, hasChildren }) => {
   const navigate = useNavigate();
 
 
@@ -63,10 +64,10 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
             
               <Solution statement={statement} />
             </div>
-            <div className="statement__bubble__more">
+            {hasChildren?<div className="statement__bubble__more">
 
-              <StatementChatMore statement={statement} page={page} />
-            </div>
+              <StatementChatMore statement={statement} page={page} hasChildren={hasChildren} />
+            </div>:null}
           </div>
         </div>
       </div>
