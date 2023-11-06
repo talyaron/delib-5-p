@@ -1,26 +1,27 @@
 import { Collections, Statement, RoomAskToJoin, getRequestIdToJoinRoom, RoomsStateSelection } from "delib-npm";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
+import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/admin/AdminChoose";
 
 export function enterRoomsDB(parentStatement: Statement) {
     try {
         const userId = getUserFromFirebase()?.uid;
-        if(!userId) throw new Error("User not logged in");
+        if (!userId) throw new Error("User not logged in");
 
         const requestId = getRequestIdToJoinRoom(userId, parentStatement.statementId);
-        if(!requestId) throw new Error("Request-id is undefined");
+        if (!requestId) throw new Error("Request-id is undefined");
 
         const statementRef = doc(DB, Collections.statementRoomsAsked, requestId);
         const user = getUserFromFirebase();
-        if(!user) throw new Error("User not logged in" );
-        const room:RoomAskToJoin = {
+        if (!user) throw new Error("User not logged in");
+        const room: RoomAskToJoin = {
             participant: user,
             parentId: parentStatement.statementId,
             requestId: requestId,
-            lastUpdate: new Date().getTime()  
+            lastUpdate: new Date().getTime()
         }
-        setDoc(statementRef, room, {merge: true});
+        setDoc(statementRef, room, { merge: true });
     } catch (error) {
         console.error(error)
     }
@@ -42,22 +43,40 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
         const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
 
         const requestDB = await getDoc(requestRef);
+        const request = requestDB.data() as RoomAskToJoin;
 
         if (!requestDB.exists()) {
+            console.log("statement do not exists on request")
             await saveToDB(requestId, requestRef, statement);
 
 
             return true;
         } else {
 
-            const request = requestDB.data() as RoomAskToJoin;
-            if (request.statementId === statement.statementId) {
-                await deleteDoc(requestRef);
-                return false;
-            } else {
+
+
+
+            if (request.statement === undefined) {
+
+
                 await saveToDB(requestId, requestRef, statement);
                 return true;
+
+
+            } else if (request.statement.statementId !== statement.statementId) {
+
+                await saveToDB(requestId, requestRef, statement);
+                return true;
+
+            } else {
+                const { parentId, participant, requestId } = request;
+                const _request = { parentId, participant, requestId, lastUpdate: new Date().getTime() };
+
+                //set to undefined to show that the user is not in the room
+                await setDoc(requestRef, _request);
+                return false;
             }
+
 
         }
 
@@ -91,14 +110,16 @@ export async function setRoomsStateToDB(statement: Statement, roomsState: RoomsS
     }
 }
 
-export function approveToJoinRoomDB(participantId: string, statement: Statement, roomNumber: number, approved: boolean =true) {
+export function setParticipantInRoom(participant: ParticipantInRoom) {
     try {
+        const { uid, topic, roomNumber } = participant;
+        if (!topic) return;
 
-        const requestId = getRequestIdToJoinRoom(participantId, statement.parentId);
+        const requestId = getRequestIdToJoinRoom(uid, topic.parentId);
         if (!requestId) throw new Error("Request id is undefined");
 
         const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
-        if(approved) updateDoc(requestRef, { approved: true, roomNumber });
+        if (topic.statementId) updateDoc(requestRef, { approved: true, roomNumber });
         else updateDoc(requestRef, { approved: false, roomNumber });
 
 

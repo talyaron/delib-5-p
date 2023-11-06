@@ -1,10 +1,10 @@
-import { LobbyRooms, RoomAskToJoin, RoomsStateSelection, Statement } from 'delib-npm'
+import { RoomAskToJoin, RoomsStateSelection, Statement } from 'delib-npm'
 import { FC, useState, useEffect } from 'react'
 import Modal from '../../../../components/modal/Modal'
 import NewSetStatementSimple from '../set/NewStatementSimple'
-import { listenToAllRoomsRquest, listenToLobbyRoomJoiners, listenToRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
+import { listenToAllRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
 import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks'
-import { setAskToJoinRooms, setLobbyRooms } from '../../../../../model/statements/statementsSlice'
+import { setRoomRequests } from '../../../../../model/statements/statementsSlice'
 import RoomsAdmin from './admin/RoomsAdmin'
 import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
@@ -16,7 +16,7 @@ interface Props {
     subStatements: Statement[]
 }
 
-let unsub = () => { }, unsub2 = () => { }, unsub3 = () => { };
+let unsub = () => { }, unsub3 = () => { };
 
 
 const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
@@ -26,27 +26,20 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
 
     useEffect(() => {
         enterRoomsDB(statement);
-        unsub = listenToRoomsRquest(statement.statementId, updateRequestForRooms);
-        unsub2 = listenToLobbyRoomJoiners(statement.statementId, updateLobbyRoomJoinersCounts);
-
-        if (statement.creatorId === store.getState().user.user?.uid) unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
+    
+        unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
 
         //enter the room
 
         return () => {
             unsub();
-            unsub2();
             unsub3();
         }
 
     }, [])
 
-    function updateRequestForRooms(roomAsked: RoomAskToJoin) {
-        dispatch(setAskToJoinRooms({ request: roomAsked, parentId: statement.statementId }))
-    }
-
-    function updateLobbyRoomJoinersCounts(lobbyRooms: LobbyRooms[]) {
-        dispatch(setLobbyRooms({ lobbyRooms }))
+    function updateRequestForRooms(roomsAsked: RoomAskToJoin[]) {
+        dispatch(setRoomRequests(roomsAsked));
     }
 
 

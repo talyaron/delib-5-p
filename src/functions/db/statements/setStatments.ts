@@ -182,3 +182,15 @@ export async function updateSubscriberForStatementSubStatements(statement: State
         console.error(error);
     }
 } 
+
+export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
+    try {
+        z.number().parse(roomSize);
+        StatementSchema.parse(statement);
+        const statementRef = doc(DB, Collections.statements, statement.statementId);
+        const newRoomSize = { roomSize };
+        updateDoc(statementRef, newRoomSize);
+    } catch (error) {
+        console.error(error);
+    }
+}

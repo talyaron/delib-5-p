@@ -3,10 +3,11 @@ import RoomParticpantBadge from '../comp/general/RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, RoomsStateSelection, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
-import { approveToJoinRoomDB, setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
+import { setParticipantInRoom, setRoomsStateToDB } from '../../../../../../functions/db/rooms/setRooms';
 import _styles from './admin.module.css';
 import Text from '../../../../../components/text/Text';
 import Slider from '@mui/material/Slider';
+import { setRoomSizeInStatement } from '../../../../../../functions/db/statements/setStatments'
 
 const styles = _styles as any;
 
@@ -21,6 +22,7 @@ interface RoomAdmin {
     roomNumber: number;
     statement: Statement;
 }
+export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
 
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
@@ -28,13 +30,20 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     const participants = useAppSelector(participantsSelector(statement.statementId));
     const [setRooms, setSetRooms] = useState<boolean>(true);
     const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
-    const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] = useState<number>(7);
+    const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] = useState<number>(statement.roomSize || 5);
 
     function handleDivideIntoRooms() {
         try {
             const { rooms } = divideIntoTopics(participants, maxParticipantsPerRoom);
             console.log('rooms', rooms)
             setRoomsAdmin(rooms);
+
+            rooms.forEach((room) => {
+                room.room.forEach((participant) => {
+                    const participantInRoom: ParticipantInRoom = { uid: participant.participant.uid, room: room.roomNumber, roomNumber: room.roomNumber, topic: room.statement, statementId: room.statement.statementId };
+                    setParticipantInRoom(participantInRoom);
+                })
+            });
 
             const roomsState = setRooms ? RoomsStateSelection.DIVIDE : RoomsStateSelection.SELECT_ROOMS;
             setSetRooms(state => !state);
@@ -48,7 +57,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     function handleRoomSize(ev: any) {
         const value = ev.target.value;
         const valueAsNumber = Number(value);
-        setMaxParticipantsPerRoom(valueAsNumber)
+        setMaxParticipantsPerRoom(valueAsNumber);
+        setRoomSizeInStatement(statement, valueAsNumber);
     }
 
 
@@ -66,7 +76,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     <p>מספר משתתפים מקסימלי בחדר {maxParticipantsPerRoom}</p>
 
                     <div className="btns" style={{ padding: '1.5rem', boxSizing: "border-box" }}>
-                        <Slider defaultValue={7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize} />
+                        <Slider defaultValue={statement.roomSize || 7} min={2} max={30} aria-label="Default" valueLabelDisplay="auto" onChange={handleRoomSize} />
 
                     </div>
                     <br />
@@ -103,7 +113,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 }
 
 export default AdminSeeAllGroups
-export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
+
 
 function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<RoomDivied>, topicsParticipants: any } {
     try {
