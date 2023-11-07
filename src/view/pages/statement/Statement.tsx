@@ -248,7 +248,7 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
 
         switch (screen) {
             case Screen.DOC:
-                return <Document statement={statement} />
+                return <Document statement={statement} subStatements={subStatements}/>
             case Screen.HOME:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
             case Screen.CHAT:

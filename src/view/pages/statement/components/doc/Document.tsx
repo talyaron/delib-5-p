@@ -4,17 +4,21 @@ import Text from '../../../../components/text/Text';
 import styles from './Document.module.scss';
 import { updateResults } from '../../../../../functions/db/results/setResults';
 
+
 interface Props {
-    statement: Statement
+    statement: Statement,
+    subStatements: Statement[]
 }
 
-const Document: FC<Props> = ({ statement }) => {
-    const [resultsBy, setResultsBy] = useState<ResultsBy>(ResultsBy.topOption)
-
+const Document: FC<Props> = ({ statement, subStatements }) => {
+    const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.resultsBy || ResultsBy.topOption)
+    const [results, setResults] = useState<Statement[]>([]);
     const description = statement.statement.split('\n').slice(1).join('\n');
 
     function handleGetResults() {
         updateResults(statement.statementId, resultsBy)
+        setResults(getResults(statement, subStatements));
+        console.log(top)
     }
 
 
@@ -38,9 +42,36 @@ const Document: FC<Props> = ({ statement }) => {
                         <option value={ResultsBy.topVote}>הצבעות</option>
                     </select>
                 </section>
+                <section className={styles.subStatements}>
+                    <h2>תוצאות</h2>
+                    {results.map(result => <Text key={result.statementId} text={result.statement} />)}
+                </section>
             </div>
         </div>
     )
 }
 
-export default Document
+export default Document;
+
+function getResults(statement: Statement, subStatements: Statement[]): Statement[] {
+    try {
+        console.log(statement.resultsBy)
+        console.log(subStatements)
+        switch (statement.resultsBy) {
+            case ResultsBy.topVote:
+                const { selections } = statement;
+                if (!selections) throw new Error('No selections (votes) in statement');
+                const maxVoteKey = Object.keys(selections).reduce((a, b) => selections[a] > selections[b] ? a : b);
+                const maxVoteStatement: Statement | undefined = subStatements.find(subStatement => subStatement.statementId === maxVoteKey);
+                if (!maxVoteStatement) throw new Error('No statement found with max vote key');
+                return [maxVoteStatement];
+
+
+            default:
+                return []
+        }
+    } catch (error) {
+        console.error(error);
+        return []
+    }
+}
