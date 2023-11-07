@@ -1,0 +1,12 @@
+.evaluation{
+    display: flex;
+    flex-direction: column;
+}
+.consensus{
+    direction: ltr;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: .3rem;
+    color:gray;
+}
