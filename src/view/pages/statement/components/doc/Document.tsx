@@ -4,6 +4,11 @@ import Text from '../../../../components/text/Text';
 import styles from './Document.module.scss';
 import { updateResults } from '../../../../../functions/db/results/setResults';
 
+import { maxKeyInObject } from '../../../../../functions/general/helpers';
+import { getResultsFromDB } from '../../../../../functions/db/results/getResults';
+import Slider from '@mui/material/Slider';
+
+
 
 interface Props {
     statement: Statement,
@@ -11,14 +16,34 @@ interface Props {
 }
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
-    const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.resultsBy || ResultsBy.topOption)
+    const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.results?.resultsBy || ResultsBy.topOptions)
     const [results, setResults] = useState<Statement[]>([]);
     const description = statement.statement.split('\n').slice(1).join('\n');
 
-    function handleGetResults() {
-        updateResults(statement.statementId, resultsBy)
-        setResults(getResults(statement, subStatements));
-        console.log(top)
+    async function handleGetResults(ev: any) {
+        try {
+            console.dir(ev.target)
+            //get form data with formData
+            ev.preventDefault();
+
+            const data = new FormData(ev.target);
+            const resultsBy = data.get('results') as ResultsBy;
+            const numberOfResults = Number(data.get('numberOfResults'));
+            const deep = Number(data.get('deep'));
+
+
+            setResultsBy(resultsBy)
+
+            console.log("updateResults", resultsBy, numberOfResults, deep)
+            updateResults(statement.statementId, resultsBy);
+
+            const top = await getResults(statement, subStatements, resultsBy, numberOfResults, deep);
+            setResults(top);
+            console.log(top)
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
 
@@ -32,19 +57,24 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                     <Text text={description} />
 
                 </section>
-                <section className={styles.results}>
+                <section className={styles.resultsWrapper}>
                     <h2>תוצאות</h2>
-                    <div className="btns">
-                        <button onClick={handleGetResults}>הצגת תוצאות</button>
+                    <form onSubmit={handleGetResults}>
+                        <div className="btns">
+                            <button type="submit">הצגת תוצאות</button>
+                        </div>
+                        <select name="results" id="results" defaultValue={resultsBy}>
+                            <option value={ResultsBy.topOptions}>אופציות מקסימליות</option>
+                            <option value={ResultsBy.topVote}>הצבעות</option>
+                        </select>
+                        <label htmlFor="">כמות פתרונות בכל רמה</label>
+                        <Slider defaultValue={statement.results?.numberOfResults || 1} min={1} max={10} aria-label="Default" valueLabelDisplay="on" name="numberOfResults"/>
+                        <label htmlFor="">עומק</label>
+                        <Slider defaultValue={statement.results?.deep || 1} min={1} max={4} aria-label="Default" valueLabelDisplay="on" name="deep"/>
+                    </form>
+                    <div className={styles.results}>
+                        {results.length > 0 ? results.map(result => <Text key={result.statementId} text={result.statement} />) : <h2>לא נבחרו עדיין אפשרויות</h2>}
                     </div>
-                    <select name="results" id="results" defaultValue={resultsBy} onChange={(ev) => setResultsBy(ev.target.value as ResultsBy)}>
-                        <option value={ResultsBy.topOption}>אופציות מקסימליות</option>
-                        <option value={ResultsBy.topVote}>הצבעות</option>
-                    </select>
-                </section>
-                <section className={styles.subStatements}>
-                    <h2>תוצאות</h2>
-                    {results.map(result => <Text key={result.statementId} text={result.statement} />)}
                 </section>
             </div>
         </div>
@@ -53,24 +83,62 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
 export default Document;
 
-function getResults(statement: Statement, subStatements: Statement[]): Statement[] {
+async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy = ResultsBy.topOptions, numberOfResults:number, deep:number): Promise<Statement[]> {
     try {
-        console.log(statement.resultsBy)
-        console.log(subStatements)
-        switch (statement.resultsBy) {
+
+
+        switch (resultsBy) {
+            case ResultsBy.topOne:
+
             case ResultsBy.topVote:
-                const { selections } = statement;
-                if (!selections) throw new Error('No selections (votes) in statement');
-                const maxVoteKey = Object.keys(selections).reduce((a, b) => selections[a] > selections[b] ? a : b);
-                const maxVoteStatement: Statement | undefined = subStatements.find(subStatement => subStatement.statementId === maxVoteKey);
-                if (!maxVoteStatement) throw new Error('No statement found with max vote key');
-                return [maxVoteStatement];
-
-
+                return getResultsByVotes(statement, subStatements);
+            case ResultsBy.topOptions:
+                return getResultsByOptions(statement, subStatements, numberOfResults);
             default:
                 return []
         }
     } catch (error) {
+        console.error(error);
+        return []
+    }
+}
+
+
+
+async function getResultsByVotes(statement: Statement, subStatements: Statement[]): Promise<Statement[]> {
+    try {
+        const { selections } = statement;
+        if (!selections) return [];
+        const maxVoteKey = maxKeyInObject(selections)
+        const maxVoteStatement: Statement | undefined = subStatements.find(subStatement => subStatement.statementId === maxVoteKey);
+        if (!maxVoteStatement) throw new Error('No statement found with max vote key');
+
+
+        if (statement.results?.deep && statement.results?.deep > 1) {
+            //get top results from sub statement
+            const topStatements = await getResultsFromDB({ statement: maxVoteStatement, resultsBy: ResultsBy.topVote, deep: 2 });
+            return topStatements
+        }
+
+        return [maxVoteStatement];
+
+
+    } catch (error) {
+        console.error(error);
+        return []
+    }
+}
+
+async function getResultsByOptions(statement: Statement, subStatements: Statement[], numberOfResults): Promise<Statement[]> {
+    try {
+        const maxOptions = subStatements.sort((b, a) => a.consensus - b.consensus)
+            .slice(0,numberOfResults || 1);
+
+        return maxOptions;
+
+
+    }
+    catch (error) {
         console.error(error);
         return []
     }

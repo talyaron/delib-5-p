@@ -94,7 +94,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
-            newStatement.resultsBy = newStatement.resultsBy || ResultsBy.topOne;
+            newStatement.results = {
+                resultsBy: newStatement.results?.resultsBy || ResultsBy.topOne,
+                deep:1,
+                minConsensus: 0
+            };
             newStatement.hasChildren = newStatement.hasChildren === "on" ? true : false;
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
@@ -129,7 +133,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const arrayOfStatementParagrphs = statement?.statement.split('\n') || [];
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join('\n');
-    const resultsBy: ResultsBy = statement?.resultsBy || ResultsBy.topOne;
+    const resultsBy: ResultsBy = statement?.results?.resultsBy || ResultsBy.topOne;
 
     return (
         <div className='wrapper'>
