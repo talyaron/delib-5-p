@@ -5,8 +5,9 @@ import styles from './Document.module.scss';
 import { updateResults } from '../../../../../functions/db/results/setResults';
 
 import { maxKeyInObject } from '../../../../../functions/general/helpers';
-import { getResultsFromDB,getResultsByTopVote } from '../../../../../functions/db/results/getResults';
+import { getResultsDB } from '../../../../../functions/db/results/getResults';
 import Slider from '@mui/material/Slider';
+
 
 
 
@@ -31,7 +32,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             const resultsBy = data.get('results') as ResultsBy;
             // const numberOfResults = Number(data.get('numberOfResults'));
             // const deep = Number(data.get('deep'));
-
+console.log(resultsBy)
 
             setResultsBy(resultsBy)
 
@@ -83,35 +84,35 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
 export default Document;
 
-interface Results2 {
-    top: Statement;
-    sub: Statement[];
-}
 
-interface Results1 {
+type Results = {
     top: Statement;
-    sub?: Results2[];
-}
-interface ResultsTop {
-    top: Statement;
-    sub: Results1[];
-}
+    sub?: Results[];
+};
 
-async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy = ResultsBy.topOptions): Promise<ResultsTop[]> {
+async function getResults(statement: Statement, subStatements: Statement[], resultsBy:ResultsBy): Promise<Results[]> {
     try {
 
+        // const { results } = statement;
+       
+        console.log('resultsBy', resultsBy)
+
+        const result: Results = { top: statement }
 
         switch (resultsBy) {
             case ResultsBy.topOne:
-
             case ResultsBy.topVote:
-                return getResultsByVotes(statement, subStatements);
+                result.sub = [...getResultsByVotes(statement, subStatements)];
+                break;
             case ResultsBy.topOptions:
-                return [];
-            // return getResultsByOptions(statement, subStatements, numberOfResults);
+                result.sub = [... getResultsByOptions(statement, subStatements)];
+                break
             default:
-                return []
+               result.sub = [];
         }
+
+        console.log(result)
+        return [result];
     } catch (error) {
         console.error(error);
         return []
@@ -123,60 +124,58 @@ async function getResults(statement: Statement, subStatements: Statement[], resu
 
 
 
-async function getResultsByVotes(statement: Statement, subStatements: Statement[]): Promise<ResultsTop[]> {
+function getResultsByVotes(statement: Statement, subStatements: Statement[]): Results[] {
+    try {
+
+
+
+        const maxVoteKey = getTopVoteStatementId(statement);
+        if (!maxVoteKey) return [];
+        const maxVoteStatement: Statement | undefined = subStatements.find(subStatement => subStatement.statementId === maxVoteKey);
+        if (!maxVoteStatement) return [];
+        const result: Results = { top: maxVoteStatement }
+
+        return [result];
+
+
+    } catch (error) {
+        console.error(error);
+        return []
+    }
+}
+
+
+
+function getResultsByOptions(statement: Statement, subStatements: Statement[]): Results[] {
+    try {
+        const { results } = statement;
+        const numberOfResults = results?.numberOfResults || 1;
+
+        const maxOptions: Statement[] = subStatements.sort((b, a) => a.consensus - b.consensus)
+            .slice(0, numberOfResults || 1);
+
+        const _maxOptions = maxOptions.map((topStatement: Statement) => ({ top: topStatement, sub: [] }))
+
+        return _maxOptions;
+
+
+    }
+    catch (error) {
+        console.error(error);
+        return []
+    }
+}
+
+function getTopVoteStatementId(statement: Statement): string | undefined {
     try {
         const { selections } = statement;
-        const { results } = statement;
-        let deep = results?.deep || 1;
-        const resultsBy = results?.resultsBy || ResultsBy.topOptions;
+        if (!selections) return undefined;
 
-        if (!selections) return [];
         const maxVoteKey = maxKeyInObject(selections)
-        const maxVoteStatement: Statement | undefined = subStatements.find(subStatement => subStatement.statementId === maxVoteKey);
-        if (!maxVoteStatement) throw new Error('No statement found with max vote key');
-        const resultStatements: ResultsTop = { top: maxVoteStatement, sub: [] };
-        console.log('resultStatements', resultStatements);
-        console.log(deep)
-        if (deep > 0) {
-           
-            //get top results from sub statement
-            const topStatements = await getResultsFromDB({ statement: maxVoteStatement, resultsBy, deep });
-            if (topStatements.length === 0) return [resultStatements];
-
-            const results1: Results1[] = topStatements.map((topStatement: Statement) => ({ top: topStatement, sub: [] }))
-            resultStatements.sub = [...results1];
-            deep--;
-            console.log(resultStatements)
-            //get top results from sub statements
-            const topStatment1:Statement = resultStatements.sub[0].top;
-            const topStatement1 = await getResultsByTopVote(topStatment1)
-            console.log(topStatement1)
-            resultStatements.sub[0].sub = topStatement1.map((topStatement: Statement) => ({ top: topStatement, sub: [] }));
-
-        }
-console.log([resultStatements])
-
-        return [resultStatements];
-
+        return maxVoteKey;
 
     } catch (error) {
         console.error(error);
-        return []
+        return undefined;
     }
 }
-
-// async function getResultsByOptions(statement: Statement, subStatements: Statement[], numberOfResults:number): Promise<Statement[]> {
-//     try {
-//         console.log( statement.statementId);
-//         const maxOptions = subStatements.sort((b, a) => a.consensus - b.consensus)
-//             .slice(0, numberOfResults || 1);
-
-//         return maxOptions;
-
-
-//     }
-//     catch (error) {
-//         console.error(error);
-//         return []
-//     }
-// }
