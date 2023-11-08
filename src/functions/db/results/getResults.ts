@@ -35,7 +35,7 @@ export async function getResultsFromDB({ statement, resultsBy, numberOfOptions =
     }
 }
 
-async function getResultsByTopVote(statement: Statement): Promise<Statement[]> {
+export async function getResultsByTopVote(statement: Statement): Promise<Statement[]> {
     try {
         //get top voted statement
         const { selections } = statement;
@@ -43,7 +43,7 @@ async function getResultsByTopVote(statement: Statement): Promise<Statement[]> {
 
         const topStatementId = maxKeyInObject(selections);
 
-        const statementRef = doc(DB, Collections.resultsTriggers, topStatementId);
+        const statementRef = doc(DB, Collections.statements, topStatementId);
         const statementSnap = await getDoc(statementRef);
         const statementData = statementSnap.data() as Statement;
         return [statementData];

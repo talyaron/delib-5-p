@@ -95,7 +95,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
             newStatement.results = {
-                resultsBy: newStatement.results?.resultsBy || ResultsBy.topOne,
+                resultsBy: newStatement.results?.resultsBy || ResultsBy.topVote,
                 deep:1,
                 minConsensus: 0
             };
@@ -133,7 +133,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const arrayOfStatementParagrphs = statement?.statement.split('\n') || [];
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join('\n');
-    const resultsBy: ResultsBy = statement?.results?.resultsBy || ResultsBy.topOne;
+    const resultsBy: ResultsBy = statement?.results?.resultsBy || ResultsBy.topVote;
 
     return (
         <div className='wrapper'>
@@ -164,7 +164,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
                         <select name="resultsBy" defaultValue={resultsBy}>
                             <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
-                            <option value={ResultsBy.topOption}>אופציה מועדפת</option>
+                            <option value={ResultsBy.topOptions}>אופציה מועדפת</option>
                             <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
                             <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
                             <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
