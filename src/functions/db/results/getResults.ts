@@ -7,16 +7,12 @@ import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
 import { maxKeyInObject } from "../../general/helpers";
 
 
-interface getResultsFromDBProps {
-    statement: Statement,
-    numberOfOptions?: number,
-    deep?: number
-}
 
-export async function getResultsDB({ statement, numberOfOptions = 1, deep = 1 }: getResultsFromDBProps): Promise<Statement[]> {
+
+export async function getResultsDB( statement:Statement): Promise<Statement[]> {
     try {
         StatementSchema.parse(statement);
-        console.log(deep, numberOfOptions)
+      
         const { results } = statement;
         const resultsBy = results?.resultsBy || ResultsBy.topOptions;
 

@@ -32,7 +32,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             const resultsBy = data.get('results') as ResultsBy;
             // const numberOfResults = Number(data.get('numberOfResults'));
             // const deep = Number(data.get('deep'));
-console.log(resultsBy)
+            console.log(resultsBy)
 
             setResultsBy(resultsBy)
 
@@ -85,19 +85,22 @@ console.log(resultsBy)
 export default Document;
 
 
-type Results = {
+export type Results = {
     top: Statement;
     sub?: Results[];
 };
 
-async function getResults(statement: Statement, subStatements: Statement[], resultsBy:ResultsBy): Promise<Results[]> {
+async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy): Promise<Results> {
     try {
 
         // const { results } = statement;
-       
+
         console.log('resultsBy', resultsBy)
 
-        const result: Results = { top: statement }
+        const result: Results = { top: statement };
+
+
+
 
         switch (resultsBy) {
             case ResultsBy.topOne:
@@ -105,17 +108,56 @@ async function getResults(statement: Statement, subStatements: Statement[], resu
                 result.sub = [...getResultsByVotes(statement, subStatements)];
                 break;
             case ResultsBy.topOptions:
-                result.sub = [... getResultsByOptions(statement, subStatements)];
+                result.sub = [...getResultsByOptions(statement, subStatements)];
                 break
             default:
-               result.sub = [];
+                result.sub = [];
         }
 
         console.log(result)
-        return [result];
+
+        const { results } = statement;
+        if (!results) return result;
+        let { deep = 0 } = results;
+        if (deep === 0) return result;
+
+
+        if (deep >= 2) {
+
+            console.log('result', result)
+
+            const subResultsPromises = result.sub.map(async (subResult: Results) => {
+                const subStatement = subResult.top;
+                const subResults: Statement[] = await getResultsDB(subStatement);
+                console.log(`subResults ${subResult.top.statement}:`, subResults)
+                return subResults;
+            })
+
+            const resultsStatements = await Promise.all(subResultsPromises);
+            console.log('y', resultsStatements)
+           
+            result.sub.forEach((_: Results, index: number) => {
+                if (!result.sub) return;
+                result.sub[index].sub = [...resultsStatements[index].map((subStatement: Statement) => ({ top: subStatement }))]
+
+                
+            });
+
+            console.log("result 2:", result)
+
+
+
+
+        }
+
+
+        //get results from DB
+
+
+        return result;
     } catch (error) {
         console.error(error);
-        return []
+        return { top: statement }
     }
 }
 
@@ -150,6 +192,7 @@ function getResultsByOptions(statement: Statement, subStatements: Statement[]): 
     try {
         const { results } = statement;
         const numberOfResults = results?.numberOfResults || 1;
+
 
         const maxOptions: Statement[] = subStatements.sort((b, a) => a.consensus - b.consensus)
             .slice(0, numberOfResults || 1);
