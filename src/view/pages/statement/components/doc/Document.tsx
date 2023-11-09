@@ -1,4 +1,4 @@
-import { ResultsBy, Statement } from 'delib-npm';
+import { Results, ResultsBy, Statement } from 'delib-npm';
 import { useState, FC } from 'react';
 import Text from '../../../../components/text/Text';
 import styles from './Document.module.scss';
@@ -7,6 +7,8 @@ import { updateResults } from '../../../../../functions/db/results/setResults';
 import { maxKeyInObject } from '../../../../../functions/general/helpers';
 import { getResultsDB } from '../../../../../functions/db/results/getResults';
 import Slider from '@mui/material/Slider';
+import ResultsComp from './results/Results';
+import { set } from 'lodash';
 
 
 
@@ -19,7 +21,7 @@ interface Props {
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
     const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.results?.resultsBy || ResultsBy.topOptions)
-    const [results, setResults] = useState<Statement[]>([]);
+    const [results, setResults] = useState<Results>({ top: statement});
     const description = statement.statement.split('\n').slice(1).join('\n');
 
     async function handleGetResults(ev: any) {
@@ -38,9 +40,10 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
             updateResults(statement.statementId, resultsBy);
 
-            const top = await getResults(statement, subStatements, resultsBy);
+            const _results = await getResults(statement, subStatements, resultsBy);
             // setResults(top);
-            console.log(top)
+            console.log(_results)
+            setResults(_results);
         } catch (error) {
             console.error(error);
         }
@@ -74,7 +77,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                         <Slider defaultValue={statement.results?.deep || 1} min={1} max={4} aria-label="Default" valueLabelDisplay="on" name="deep" />
                     </form>
                     <div className={styles.results}>
-                        {results.length > 0 ? results.map(result => <Text key={result.statementId} text={result.statement} />) : <h2>לא נבחרו עדיין אפשרויות</h2>}
+                        {results.sub ? <ResultsComp results={results} /> : <h2>לא נבחרו עדיין אפשרויות</h2>}
                     </div>
                 </section>
             </div>
@@ -85,10 +88,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 export default Document;
 
 
-export type Results = {
-    top: Statement;
-    sub?: Results[];
-};
+
 
 async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy): Promise<Results> {
     try {
@@ -143,15 +143,10 @@ async function getResults(statement: Statement, subStatements: Statement[], resu
                 
             });
 
-            console.log("result 2:", result)
-
-
-
+           
 
         }
 
-
-        //get results from DB
 
 
         return result;
