@@ -8,7 +8,7 @@ import { maxKeyInObject } from '../../../../../functions/general/helpers';
 import { getResultsDB } from '../../../../../functions/db/results/getResults';
 import Slider from '@mui/material/Slider';
 import ResultsComp from './results/Results';
-import { set } from 'lodash';
+
 
 
 

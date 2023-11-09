@@ -22,12 +22,12 @@ interface Props {
     statement: Statement;
     showImage: Function;
     top: number;
-    hasChildren: boolean;
+    hasChildren?: boolean;
 }
 
 
 
-const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
+const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren=false }) => {
     const dispatch = useAppDispatch();
   
     const user = useAppSelector(userSelector)

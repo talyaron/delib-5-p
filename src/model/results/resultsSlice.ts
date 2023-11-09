@@ -2,13 +2,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import {Result} from "delib-npm";
+import {Results} from "delib-npm";
 
 
 
 // Define a type for the slice state
 interface ResultsState {
-    results: Result[];
+    results: Results[];
 }
 
 // Define the initial state using that type
@@ -21,20 +21,22 @@ export const resultsSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        setResults: (state, action: PayloadAction<Result>) => {
+        setResults: (state, action: PayloadAction<any>) => {
             try {
-                const result:Result = action.payload;
-               const resultStore = state.results.find(result => result.statementId === action.payload.statementId);
-               if(!resultStore){
-                     state.results.push(action.payload);
-                     return;
-               }
-                const keys:string[] = Object.keys(result);
-                keys.forEach((key:string) => {
-                    if (key !== "statementId") {
-                        resultStore[key] = result[key];
-                    }
-                })
+                console.log(action.payload)
+                console.log(state.results)
+            //     const result:Results = action.payload;
+            //    const resultStore = state.results.find(result => result.statementId === action.payload.statementId);
+            //    if(!resultStore){
+            //          state.results.push(action.payload);
+            //          return;
+            //    }
+                // const keys:string[] = Object.keys(result);
+                // keys.forEach((key:string) => {
+                //     if (key !== "statementId") {
+                //         resultStore[key] = result[key];
+                //     }
+                // })
             } catch (error) {
                 console.error(error);
             }
@@ -45,7 +47,7 @@ export const resultsSlice = createSlice({
 export const { setResults } = resultsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const resultSelector = (statementId: string | undefined) => (state: RootState) => state.results.results.find(result => result.statementId === statementId);
+export const resultSelector = (statementId: string | undefined) => (state: RootState) => state.results.results.find(result => result.top.statementId === statementId);
 
 
 

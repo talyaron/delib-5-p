@@ -12,12 +12,16 @@
 @import './page.scss';
 @import "./badge.scss";
 @import "./buttons.scss";
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
 
 :root {
     --mainBackground: #32527b;
     --subBackground: #ee7171;
     --mainColor: white;
     --pageBackground:#f3f7fd;
+
+    --h1Color:#0f1b68e3;
+    --h2Color:#7d8adf;
 
     --textHeader: rgba(0, 0, 0, 0.78);
     --textHeaderSize: 1.3rem;
@@ -71,7 +75,7 @@ body {
     width: 100%;
     height: 100svh;
     margin: 0px;
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Fredoka', sans-serif;
     font-size: 13px;
     background: var(--pageBackground);
     direction: ltr;
@@ -82,8 +86,22 @@ body {
     overflow: hidden;
 }
 
-/* ------ page----------- */
+h1{
+    color:var(--h1Color);
+    font-weight: 500;
+}
+h2{
+    color:var(--h2Color);
+    font-weight: 400;
 
+}
+h1,
+h2 {
+    text-align: center;
+}
+b{
+    font-weight: 500;;
+}
 
 
 

@@ -26,7 +26,7 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
         const { sort } = useParams();
         const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
         const _subStatements = sortSubStatements(__substatements, sort);
-        const {hasChildren} = statement;
+        const {hasChildren = false} = statement;
         console.log('hasChildren',hasChildren)
 
         function dispatchCB(statement: Statement, order: number) {

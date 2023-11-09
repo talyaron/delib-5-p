@@ -154,6 +154,8 @@ button,
         display: flex;
         justify-content: center;
         flex-direction: column;
+        align-items: center;
+
 
         svg {
             transform: rotate(180deg) translateX(16px);
