@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './view/style/style.scss';
-import "delib-npm/dist/index.css"
+
 import { RouterProvider } from "react-router-dom";
 
 

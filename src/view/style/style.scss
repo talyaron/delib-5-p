@@ -11,11 +11,13 @@
 @import './accessibility.scss';
 @import './page.scss';
 @import "./badge.scss";
+@import "./buttons.scss";
 
 :root {
     --mainBackground: #32527b;
     --subBackground: #ee7171;
     --mainColor: white;
+    --pageBackground:#f3f7fd;
 
     --textHeader: rgba(0, 0, 0, 0.78);
     --textHeaderSize: 1.3rem;
@@ -27,7 +29,7 @@
     --textRegularSize: 1rem;
     --maxWidthOnPC: 550px;
 
-    --accent: #4269E2;
+    --accent: #7cacf8;
     --primary: #2B74B1;
     --halfPrimary: #7994E7;
     --secondary: #F0F4FF;
@@ -71,7 +73,7 @@ body {
     margin: 0px;
     font-family: 'Varela Round', sans-serif;
     font-size: 13px;
-    background: #e8e8e8;
+    background: var(--pageBackground);
     direction: ltr;
 }
 
