@@ -8,7 +8,7 @@
  */
 
 import { updateEvaluation } from "./fn_evaluation";
-import { updateResults } from "./fn_results";
+import { updateResultsSettings } from "./fn_results";
 import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
 import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
@@ -36,7 +36,7 @@ exports.updateNotifications = onDocumentCreated(`/${Collections.statements}/{sta
 
 //evaluations and results
 exports.updateEvaluation = onDocumentWritten(`/${Collections.evaluations}/{evaluationId}`, updateEvaluation);
-exports.updateResults = onDocumentWritten(`${Collections.resultsTriggers}/{statementId}`, updateResults);
+exports.updateResultsSettings = onDocumentWritten(`${Collections.resultsTriggers}/{statementId}`, updateResultsSettings);
 
 //votes
 exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);

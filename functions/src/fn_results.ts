@@ -5,7 +5,7 @@ import { z } from "zod";
 
 //results are dealing with the overall results of the deliberation
 
-export async function updateResults(ev: any):Promise<Statement[]> {
+export async function updateResultsSettings(ev: any):Promise<Statement[]> {
     try {
 
         //get results

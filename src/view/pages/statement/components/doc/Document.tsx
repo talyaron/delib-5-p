@@ -2,7 +2,7 @@ import { Results, ResultsBy, Statement } from 'delib-npm';
 import { useState, FC } from 'react';
 import Text from '../../../../components/text/Text';
 import styles from './Document.module.scss';
-import { updateResults } from '../../../../../functions/db/results/setResults';
+import { updateResultsSettings } from '../../../../../functions/db/results/setResults';
 
 import { maxKeyInObject } from '../../../../../functions/general/helpers';
 import { getResultsDB } from '../../../../../functions/db/results/getResults';
@@ -21,7 +21,7 @@ interface Props {
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
     const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.results?.resultsBy || ResultsBy.topOptions)
-    const [results, setResults] = useState<Results>({ top: statement});
+    const [results, setResults] = useState<Results>({ top: statement });
     const description = statement.statement.split('\n').slice(1).join('\n');
 
     async function handleGetResults(ev: any) {
@@ -33,24 +33,21 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             const data = new FormData(ev.target);
             const resultsBy = data.get('results') as ResultsBy;
             // const numberOfResults = Number(data.get('numberOfResults'));
-            // const deep = Number(data.get('deep'));
-            console.log(resultsBy)
+            const deep = Number(data.get('deep'));
 
             setResultsBy(resultsBy)
 
-            updateResults(statement.statementId, resultsBy);
+            updateResultsSettings(statement.statementId, resultsBy);
 
-            const _results = await getResults(statement, subStatements, resultsBy);
+            const _results = await getResults(statement, subStatements, resultsBy, deep);
             // setResults(top);
-            console.log(_results)
+
             setResults(_results);
         } catch (error) {
             console.error(error);
         }
 
     }
-
-
 
 
     return (
@@ -71,10 +68,12 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                             <option value={ResultsBy.topOptions}>אופציות מקסימליות</option>
                             <option value={ResultsBy.topVote}>הצבעות</option>
                         </select>
-                        <label htmlFor="">כמות פתרונות בכל רמה</label>
-                        <Slider defaultValue={statement.results?.numberOfResults || 1} min={1} max={10} aria-label="Default" valueLabelDisplay="on" name="numberOfResults" />
-                        <label htmlFor="">עומק</label>
-                        <Slider defaultValue={statement.results?.deep || 1} min={1} max={4} aria-label="Default" valueLabelDisplay="on" name="deep" />
+                        <div className="btns">
+                            <label htmlFor="">כמות פתרונות בכל רמה</label>
+                            <Slider defaultValue={statement.results?.numberOfResults || 1} min={1} max={10} aria-label="Default" valueLabelDisplay="on" name="numberOfResults" />
+                            <label htmlFor="">עומק</label>
+                            <Slider defaultValue={statement.results?.deep || 1} min={1} max={2} aria-label="Default" valueLabelDisplay="on" name="deep" />
+                        </div>
                     </form>
                     <div className={styles.results}>
                         {results.sub ? <ResultsComp results={results} /> : <h2>לא נבחרו עדיין אפשרויות</h2>}
@@ -90,7 +89,7 @@ export default Document;
 
 
 
-async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy): Promise<Results> {
+async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy, deep: number = 1): Promise<Results> {
     try {
 
         // const { results } = statement;
@@ -116,10 +115,10 @@ async function getResults(statement: Statement, subStatements: Statement[], resu
 
         console.log(result)
 
-        const { results } = statement;
-        if (!results) return result;
-        let { deep = 0 } = results;
-        if (deep === 0) return result;
+        // const { results } = statement;
+        // if (!results) return result;
+
+        if (deep <= 1) return result;
 
 
         if (deep >= 2) {
@@ -135,15 +134,15 @@ async function getResults(statement: Statement, subStatements: Statement[], resu
 
             const resultsStatements = await Promise.all(subResultsPromises);
             console.log('y', resultsStatements)
-           
+
             result.sub.forEach((_: Results, index: number) => {
                 if (!result.sub) return;
                 result.sub[index].sub = [...resultsStatements[index].map((subStatement: Statement) => ({ top: subStatement }))]
 
-                
+
             });
 
-           
+
 
         }
 
