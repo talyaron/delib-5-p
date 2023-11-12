@@ -4,7 +4,7 @@ import styles from './Results.module.scss';
 import Text from '../../../../../components/text/Text';
 
 interface Props {
-    results: _Results;
+    results: _Results; 
     level?: number;
 }
 

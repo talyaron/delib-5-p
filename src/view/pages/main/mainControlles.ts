@@ -6,44 +6,27 @@ import _ from "lodash";
 //create a function which sorts an array according to results
 export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
     try {
-        console.log(statements)
+        //1st level
         //search for tops
         const topStatements = statements.filter(statement => statement.parentId === "top");
-        console.log("topStatements", topStatements);
+       
         const results: Results[] = [];
         results.push(...topStatements.map(statement => ({ top: statement, sub: [] })));
 
         if (results.length === 0) return [];
 
-        //2nd level
+        //2nd and 3rd level
 
         const _results = getNextLevelResults(results, statements);
-        console.log(_results)
+      
 
-        _results.forEach((result, i: number) => {
-            result.sub?.forEach((sub, j: number) => {
+        _results.forEach((result) => {
+            result.sub?.forEach((sub) => {
                 sub.sub = getNextLevelSubs(sub.top, statements);
             });
         });
 
-        console.log(_results)
-
-        // results.forEach((top, i: number) => {
-
-        //     results[i].sub = getNextLevelSubs(top.top, statements);
-
-
-        //     //3rd level
-        //     // results[i].sub.forEach((sub, j: number) => {
-        //     //     results[i].sub[j].sub = getNextLevelSubs(sub.top, statements);
-        //     // }
-        // });
-        console.log(results)
-
-
-
-
-        return results;
+        return _results;
 
     } catch (error) {
         console.error(error)

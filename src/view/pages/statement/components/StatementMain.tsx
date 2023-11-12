@@ -37,7 +37,6 @@ const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker, 
     }, [subStatements]);
 
     const {hasChildren = false} = statement;
-    console.log("hasChildren - chat",hasChildren)
 
     return (
         <>

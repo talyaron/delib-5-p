@@ -9,9 +9,11 @@ import { deleteSubscribedStatement, setStatementSubscription, statementsSubscrip
 import useAuth from '../../../functions/hooks/authHooks';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
-import StatementCard from '../statement/components/StatementCard';
+
 import { install } from '../../../main';
 import { sortStatementsByHirarrchy } from './mainControlles';
+import ResultsComp from '../statement/components/doc/results/Results';
+import MainCard from './mainCard/MainCard';
 
 //install
 
@@ -95,7 +97,7 @@ const Main = () => {
             <div className="page__main">
                 <div className="wrapper">
                     <h2>שיחות</h2>
-                    {_results.map((result: Results) => <StatementCard key={result.top.statementId} statement={result.top} />)}
+                    {_results.map((result: Results) => <MainCard key={result.top.statementId} results={result} />)}
                 </div>
             </div>
             <Fav onclick={handleAddStatment} />
