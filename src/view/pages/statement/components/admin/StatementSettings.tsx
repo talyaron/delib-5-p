@@ -75,7 +75,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get('statement');
-            console.log(data)
+            const resultsBy = data.get('resultsBy') as ResultsBy;
+          
             const description = data.get('description');
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
@@ -95,7 +96,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
             newStatement.results = {
-                resultsBy: newStatement.results?.resultsBy || ResultsBy.topVote,
+                resultsBy: resultsBy || ResultsBy.topVote,
                 deep:1,
                 minConsensus: 0
             };
@@ -136,7 +137,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const resultsBy: ResultsBy = statement?.results?.resultsBy || ResultsBy.topVote;
 
     return (
-        <div className='wrapper'>
+        <>
 
             {!isLoading ?
                 <>
@@ -165,10 +166,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         <select name="resultsBy" defaultValue={resultsBy}>
                             <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
                             <option value={ResultsBy.topOptions}>אופציה מועדפת</option>
-                            <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
+                            {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
                             <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
                             <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
-                            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option>
+                            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option> */}
 
                         </select>
 
@@ -186,7 +187,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <h2>מעדכן...</h2>
                     <Loader />
                 </div>}
-        </div>
+        </>
 
     );
 };

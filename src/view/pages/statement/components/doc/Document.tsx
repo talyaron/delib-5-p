@@ -1,6 +1,6 @@
 import { Results, ResultsBy, Statement } from 'delib-npm';
-import { useState, FC } from 'react';
-import Text from '../../../../components/text/Text';
+import { useState, FC, useEffect } from 'react';
+
 import styles from './Document.module.scss';
 import { updateResultsSettings } from '../../../../../functions/db/results/setResults';
 
@@ -14,32 +14,47 @@ import ResultsComp from './results/Results';
 
 
 
+
+
 interface Props {
     statement: Statement,
     subStatements: Statement[]
 }
 
+
 const Document: FC<Props> = ({ statement, subStatements }) => {
     const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.results?.resultsBy || ResultsBy.topOptions)
+    const [numberOfResults, setNumberOfResults] = useState<number>(statement.results?.numberOfResults || 2);
     const [results, setResults] = useState<Results>({ top: statement });
-    const description = statement.statement.split('\n').slice(1).join('\n');
+
+    useEffect(() => {
+        if (!subStatements) return;
+
+        (async () => {
+            const _results = await getResults(statement, subStatements, resultsBy, numberOfResults);
+
+            setResults(_results);
+
+        })();
+    }, [subStatements])
 
     async function handleGetResults(ev: any) {
         try {
-            console.dir(ev.target)
+
             //get form data with formData
             ev.preventDefault();
 
             const data = new FormData(ev.target);
-            const resultsBy = data.get('results') as ResultsBy;
-            // const numberOfResults = Number(data.get('numberOfResults'));
-            const deep = Number(data.get('deep'));
+            const _resultsBy = data.get('results') as ResultsBy;
+            console.log(_resultsBy)
+            const numberOfResults = Number(data.get('numberOfResults'));
 
-            setResultsBy(resultsBy)
 
-            updateResultsSettings(statement.statementId, resultsBy);
+            setResultsBy(_resultsBy)
 
-            const _results = await getResults(statement, subStatements, resultsBy, deep);
+            updateResultsSettings(statement.statementId, _resultsBy, numberOfResults);
+
+            const _results = await getResults(statement, subStatements, _resultsBy, numberOfResults);
             // setResults(top);
 
             setResults(_results);
@@ -53,31 +68,29 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     return (
         <div className='page__main'>
             <div className="wrapper">
-                <section className={styles.document}>
-                    <h2><Text text={statement.statement} onlyTitle={true} /></h2>
-                    <Text text={description} />
 
-                </section>
                 <section className={styles.resultsWrapper}>
-                    <h2>תוצאות</h2>
+                    <h2>תוצאות הדיון</h2>
                     <form onSubmit={handleGetResults}>
+
+                        <div className={styles.inputWrapper}>
+                            <div>
+                                <label htmlFor="resultsId">הצגת תוצאות לפי</label>
+                                <select name="results" defaultValue={resultsBy} id="resultsId" onChange={(ev: any) => setResultsBy(ev.target.value)}>
+                                    <option value={ResultsBy.topOptions}>אופציות מקסימליות</option>
+                                    <option value={ResultsBy.topVote}>הצבעות</option>
+                                </select>
+                            </div>
+                            {resultsBy === ResultsBy.topOptions ? <div>
+                                <label htmlFor="numberOfResults">כמות פתרונות בכל רמה: {numberOfResults}</label>
+                                <Slider defaultValue={numberOfResults || 2} min={1} max={10} aria-label="Default" valueLabelDisplay="on" name="numberOfResults" id="numberOfResults" onChange={(ev: any) => setNumberOfResults(Number(ev.target.value))} />
+                            </div> : null}
+                        </div>
                         <div className="btns">
                             <button type="submit">הצגת תוצאות</button>
                         </div>
-                        <select name="results" id="results" defaultValue={resultsBy}>
-                            <option value={ResultsBy.topOptions}>אופציות מקסימליות</option>
-                            <option value={ResultsBy.topVote}>הצבעות</option>
-                        </select>
-                        <div className="btns">
-                            <label htmlFor="">כמות פתרונות בכל רמה</label>
-                            <Slider defaultValue={statement.results?.numberOfResults || 1} min={1} max={10} aria-label="Default" valueLabelDisplay="on" name="numberOfResults" />
-                            <label htmlFor="">עומק</label>
-                            <Slider defaultValue={statement.results?.deep || 1} min={1} max={2} aria-label="Default" valueLabelDisplay="on" name="deep" />
-                        </div>
                     </form>
-                    <div className={styles.results}>
-                        {results.sub ? <ResultsComp results={results} /> : <h2>לא נבחרו עדיין אפשרויות</h2>}
-                    </div>
+                    {results.sub ? <ResultsComp results={results} /> : <h2>לא נבחרו עדיין אפשרויות</h2>}
                 </section>
             </div>
         </div>
@@ -89,12 +102,12 @@ export default Document;
 
 
 
-async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy, deep: number = 1): Promise<Results> {
+async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy, numberOfResults: number): Promise<Results> {
     try {
 
         // const { results } = statement;
 
-        console.log('resultsBy', resultsBy)
+        console.log('resultsBy', resultsBy, 'numberOfResults', numberOfResults)
 
         const result: Results = { top: statement };
 
@@ -107,45 +120,27 @@ async function getResults(statement: Statement, subStatements: Statement[], resu
                 result.sub = [...getResultsByVotes(statement, subStatements)];
                 break;
             case ResultsBy.topOptions:
-                result.sub = [...getResultsByOptions(statement, subStatements)];
+                result.sub = [...getResultsByOptions(subStatements, numberOfResults)];
                 break
             default:
                 result.sub = [];
         }
 
-        console.log(result)
 
-        // const { results } = statement;
-        // if (!results) return result;
+        const subResultsPromises = result.sub.map(async (subResult: Results) => {
+            const subStatement = subResult.top;
+            const subResults: Statement[] = await getResultsDB(subStatement);
+            console.log(`subResults ${subResult.top.statement}:`, subResults)
+            return subResults;
+        })
 
-        if (deep <= 1) return result;
+        const resultsStatements = await Promise.all(subResultsPromises);
 
+        result.sub.forEach((_: Results, index: number) => {
+            if (!result.sub) return;
+            result.sub[index].sub = [...resultsStatements[index].map((subStatement: Statement) => ({ top: subStatement }))]
 
-        if (deep >= 2) {
-
-            console.log('result', result)
-
-            const subResultsPromises = result.sub.map(async (subResult: Results) => {
-                const subStatement = subResult.top;
-                const subResults: Statement[] = await getResultsDB(subStatement);
-                console.log(`subResults ${subResult.top.statement}:`, subResults)
-                return subResults;
-            })
-
-            const resultsStatements = await Promise.all(subResultsPromises);
-            console.log('y', resultsStatements)
-
-            result.sub.forEach((_: Results, index: number) => {
-                if (!result.sub) return;
-                result.sub[index].sub = [...resultsStatements[index].map((subStatement: Statement) => ({ top: subStatement }))]
-
-
-            });
-
-
-
-        }
-
+        });
 
 
         return result;
@@ -182,13 +177,11 @@ function getResultsByVotes(statement: Statement, subStatements: Statement[]): Re
 
 
 
-function getResultsByOptions(statement: Statement, subStatements: Statement[]): Results[] {
+function getResultsByOptions(subStatements: Statement[], numberOfResults: number): Results[] {
     try {
-        const { results } = statement;
-        const numberOfResults = results?.numberOfResults || 1;
-
-
-        const maxOptions: Statement[] = subStatements.sort((b, a) => a.consensus - b.consensus)
+        console.log(subStatements)
+        console.log(numberOfResults)
+        const maxOptions: Statement[] = subStatements.filter(s => s.isOption).sort((b, a) => a.consensus - b.consensus)
             .slice(0, numberOfResults || 1);
 
         const _maxOptions = maxOptions.map((topStatement: Statement) => ({ top: topStatement, sub: [] }))

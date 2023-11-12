@@ -260,7 +260,7 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
             case Screen.GROUPS:
                 return <StatmentRooms statement={statement} subStatements={subStatements} />
             case Screen.SETTINGS:
-                return <StatementSettings />
+                return <div className='wrapper'> <StatementSettings /></div>
             default:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
         }

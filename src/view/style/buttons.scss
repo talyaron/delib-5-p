@@ -13,7 +13,7 @@ button,
     background: var(--accent);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20rem;
     user-select: none;
     cursor: pointer;
     display: flex;
@@ -143,7 +143,6 @@ button,
 
     &>div {
         z-index: 100;
-        transform: scale(1);
         color: white;
         text-align: center;
         font-size: 3rem;
@@ -151,14 +150,15 @@ button,
         width: 3.2rem;
         height: 3.2rem;
         border-radius: 4rem;
-        display: flex;
+        // display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: center;
+        box-sizing: border-box;
 
 
         svg {
-            transform: rotate(180deg) translateX(16px);
+            transform: rotate(180deg) translate(10%, 45%);
             align-items: center;
             justify-content: center;
         }
