@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
-import { StatementSubscription } from 'delib-npm';
+import { Results, StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { deleteSubscribedStatement, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
@@ -11,6 +11,7 @@ import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
 import StatementCard from '../statement/components/StatementCard';
 import { install } from '../../../main';
+import { sortStatementsByHirarrchy } from './mainControlles';
 
 //install
 
@@ -78,6 +79,9 @@ const Main = () => {
         logOut();
         dispatch(setUser(null))
     }
+    const _statements = [...statements.map((statement) => statement.statement)];
+    const _results = sortStatementsByHirarrchy(_statements);
+
     return (
         <div className='page'>
             <div className="page__header">
@@ -91,7 +95,7 @@ const Main = () => {
             <div className="page__main">
                 <div className="wrapper">
                     <h2>שיחות</h2>
-                    {statements.map((statement: StatementSubscription) => <StatementCard key={statement.statement.statementId} statement={statement.statement} />)}
+                    {_results.map((result: Results) => <StatementCard key={result.top.statementId} statement={result.top} />)}
                 </div>
             </div>
             <Fav onclick={handleAddStatment} />
