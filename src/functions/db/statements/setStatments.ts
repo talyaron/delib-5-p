@@ -11,7 +11,7 @@ const TextSchema = z.string().min(2);
 
 export async function setStatmentToDB(statement: Statement, addSubscription: boolean = true) {
     try {
-        console.time("setStatmentToDB");
+      
 
         TextSchema.parse(statement.statement);
         statement.consensus = 0;
@@ -42,8 +42,6 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
             await Promise.all(statementPromises);
         }
 
-
-        console.timeEnd("setStatmentToDB")
 
         return statement.statementId;
 
