@@ -64,9 +64,6 @@ messaging.onBackgroundMessage(function (payload) {
         clients.openWindow(event.notification.data.url);
       }
 
-
-
-
     });
   } catch (error) {
     console.error(error)

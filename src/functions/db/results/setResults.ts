@@ -3,13 +3,22 @@ import { z } from 'zod';
 import { DB } from '../config';
 import { Collections, ResultsBy } from 'delib-npm';
 
-export async function updateResults(statementId:string, resultsBy:ResultsBy = ResultsBy.topOption){
+export async function updateResultsSettings(statementId: string, resultsBy: ResultsBy = ResultsBy.topOptions, numberOfResults: number = 3) {
     try {
         z.string().parse(statementId);
+        z.number().parse(numberOfResults);
+        z.nativeEnum(ResultsBy).parse(resultsBy);
 
-        const statementRef = doc(DB, Collections.resultsTriggers, statementId);
-        await setDoc(statementRef, {results: new Date().getTime(), resultsBy}, { merge: true });
-        
+        const statementRef = doc(DB, Collections.statements, statementId);
+
+        const results = {
+            numberOfResults,
+            resultsBy
+        }
+        console.log(results, statementId)
+        await setDoc(statementRef, {results}, { merge: true });
+
+
     } catch (error) {
         console.error(error)
     }
