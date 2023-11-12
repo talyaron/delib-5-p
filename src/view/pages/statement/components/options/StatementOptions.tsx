@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks';
 import { setStatementOrder } from '../../../../../model/statements/statementsSlice';
 import Modal from '../../../../components/modal/Modal';
 import NewSetStatementSimple from '../set/NewStatementSimple';
-// import Fav from '../../components/fav/Fav';
+import AddIcon from '@mui/icons-material/Add';
 
 
 interface Props {
@@ -26,7 +26,7 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
         const { sort } = useParams();
         const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
         const _subStatements = sortSubStatements(__substatements, sort);
-        const {hasChildren} = statement;
+        const {hasChildren = false} = statement;
         console.log('hasChildren',hasChildren)
 
         function dispatchCB(statement: Statement, order: number) {
@@ -65,7 +65,7 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
                     <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
                 </Modal> : null}
                 <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
-                    <div>+</div>
+                    <div ><AddIcon style={{transform:`translate(0px,-40%) scale(1.45)`}}/></div>
                 </div>
             </div>
         )

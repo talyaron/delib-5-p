@@ -3,7 +3,9 @@ import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 import { z } from "zod";
 
-export async function updateResults(ev: any):Promise<Statement[]> {
+//results are dealing with the overall results of the deliberation
+
+export async function updateResultsSettings(ev: any):Promise<Statement[]> {
     try {
 
         //get results
@@ -26,6 +28,7 @@ export async function updateResults(ev: any):Promise<Statement[]> {
     }
 }
 async function transpileResults(statementId: string, resultsBy: ResultsBy): Promise<Statement[]> {
+    //this function is responsible for converting the results to the desired format
     try {
         //get top results by ResultBy
         switch (resultsBy) {

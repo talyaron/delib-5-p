@@ -75,7 +75,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get('statement');
-            console.log(data)
+            const resultsBy = data.get('resultsBy') as ResultsBy;
+          
             const description = data.get('description');
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
@@ -94,7 +95,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
-            newStatement.resultsBy = newStatement.resultsBy || ResultsBy.topOne;
+            newStatement.results = {
+                resultsBy: resultsBy || ResultsBy.topVote,
+                deep:1,
+                minConsensus: 0
+            };
             newStatement.hasChildren = newStatement.hasChildren === "on" ? true : false;
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
@@ -129,10 +134,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const arrayOfStatementParagrphs = statement?.statement.split('\n') || [];
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join('\n');
-    const resultsBy: ResultsBy = statement?.resultsBy || ResultsBy.topOne;
+    const resultsBy: ResultsBy = statement?.results?.resultsBy || ResultsBy.topVote;
 
     return (
-        <div className='wrapper'>
+        <>
 
             {!isLoading ?
                 <>
@@ -160,11 +165,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
                         <select name="resultsBy" defaultValue={resultsBy}>
                             <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
-                            <option value={ResultsBy.topOption}>אופציה מועדפת</option>
-                            <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
+                            <option value={ResultsBy.topOptions}>אופציה מועדפת</option>
+                            {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
                             <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
                             <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
-                            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option>
+                            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option> */}
 
                         </select>
 
@@ -182,7 +187,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <h2>מעדכן...</h2>
                     <Loader />
                 </div>}
-        </div>
+        </>
 
     );
 };

@@ -22,12 +22,12 @@ interface Props {
     statement: Statement;
     showImage: Function;
     top: number;
-    hasChildren: boolean;
+    hasChildren?: boolean;
 }
 
 
 
-const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
+const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren=false }) => {
     const dispatch = useAppDispatch();
   
     const user = useAppSelector(userSelector)
@@ -77,7 +77,6 @@ const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
                
                 <div className="options__card__chat">
                     <StatementChatMore statement={statement} hasChildren={hasChildren}/>
-                    {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
                     <div className="press">
                         <StatementChatSetOption statement={statement} />
                     </div>

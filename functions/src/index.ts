@@ -8,7 +8,7 @@
  */
 
 import { updateEvaluation } from "./fn_evaluation";
-import { updateResults } from "./fn_results";
+import { updateResultsSettings } from "./fn_results";
 import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
 import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
@@ -28,25 +28,25 @@ export const db = getFirestore();
 
 // update subscribers when statement is updated
 //statements
-exports.updateSubscribedListners = onDocumentUpdated("/statements/{statementId}",updateSubscribedListnersCB);
+exports.updateSubscribedListners = onDocumentUpdated(`/${Collections.statements}/{statementId}`,updateSubscribedListnersCB);
+exports.updateParentWithNewMessage = onDocumentCreated(`/${Collections.statements}/{statementId}`,updateParentWithNewMessageCB);
 
-exports.updateParentWithNewMessage = onDocumentCreated("/statements/{statementId}",updateParentWithNewMessageCB);
+//notifications
+exports.updateNotifications = onDocumentCreated(`/${Collections.statements}/{statementId}`,sendNotificationsCB);
 
-exports.updateNotifications = onDocumentCreated("/statements/{statementId}",sendNotificationsCB);
-
-//evaluations
-exports.updateEvaluation = onDocumentWritten('/evaluations/{evaluationId}', updateEvaluation)
+//evaluations and results
+exports.updateEvaluation = onDocumentWritten(`/${Collections.evaluations}/{evaluationId}`, updateEvaluation);
+exports.updateResultsSettings = onDocumentWritten(`${Collections.resultsTriggers}/{statementId}`, updateResultsSettings);
 
 //votes
 exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);
 // exports.removeVote = onDocumentDeleted('/votes/{voteId}', removeVote);
 
+//signatures (part of delib-signatures)
 exports.changeSignature = onDocumentCreated('/statementsSignatures/{signatureId}', addSignature);
-
 exports.deleteSignature = onDocumentDeleted('/statementsSignatures/{signatureId}', removeSignature);
 
 //rooms
 exports.countRoomJoiners = onDocumentWritten(`${Collections.statementRoomsAsked}/{requestId}`, countRoomJoiners);
 
-//results
-exports.updateResults = onDocumentWritten(`${Collections.resultsTriggers}/{statementId}`, updateResults);
+

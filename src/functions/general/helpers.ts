@@ -93,3 +93,7 @@ export function getNewStatment({ value, statement, type, user }: getNewStatmentP
     return undefined
   }
 }
+
+export function maxKeyInObject(obj: { [key: string]: number }) {
+  return Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+}

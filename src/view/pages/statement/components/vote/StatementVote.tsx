@@ -12,6 +12,7 @@ import { setVote } from '../../../../../functions/db/vote/setVote';
 import { Screen } from '../../../../../model/system';
 import NewSetStatementSimple from '../set/NewStatementSimple';
 import Modal from '../../../../components/modal/Modal';
+import AddIcon from '@mui/icons-material/Add';
 
 
 interface Props {
@@ -63,7 +64,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
                 </Modal> : null}
             <div className="fav fav--fixed fav--up" onClick={() => setShowModal(true)}>
-                <div>+</div>
+            <div ><AddIcon style={{transform:`translate(0px,-40%) scale(1.45)`}}/></div>
             </div>
         </div>
     )
