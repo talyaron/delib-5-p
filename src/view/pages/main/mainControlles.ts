@@ -1,13 +1,12 @@
-import { z } from "zod";
-import { Results, Statement, StatementSchema } from "delib-npm";
+
+import { Results, Statement } from "delib-npm";
 import _ from "lodash";
 
 
 //create a function which sorts an array according to results
 export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
     try {
-        console.log("sortStatementsByHirarrchy");
-
+    
         const results: Results[] = [];
         if (statements.length === 0) return [];
         let _remainStatements = [...statements];
@@ -18,13 +17,10 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
             const { result, remainStatements } = createResult(_remainStatements[0], _remainStatements)
             results.push(result);
             _remainStatements = remainStatements;
-            console.log("remain statments", _remainStatements.length)
-
-            counter++;
-            console.log('counter', counter)
+          
+            counter++;       
         }
-        console.log(results)
-       
+           
         return results;
 
     } catch (error) {
@@ -40,13 +36,9 @@ function createResult(statement: Statement, statements: Statement[]): { result: 
         const ids = new Set<string>();
         let _statements = [...statements]
 
-        //look for top statements
-        ///look for the parent statement of the first statement
         const parentStatement: Statement = findTopParent(statement, _statements);
         ids.add(parentStatement.statementId);
         _statements = _statements.filter(s => s.statementId !== parentStatement.statementId);
-
-        console.log("Parent:",parentStatement.statement)
 
         const { result, remainStatements } = createResultLevel(parentStatement, _statements);
 
@@ -70,7 +62,7 @@ function findTopParent(statement: Statement, statements: Statement[]): Statement
             if (_parentStatement === undefined) break;
             parentStatement = _parentStatement;
             counter++;
-            console.log(counter);
+         
         }
 
         return parentStatement;
