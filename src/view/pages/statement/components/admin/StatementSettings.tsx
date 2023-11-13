@@ -76,7 +76,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             let title: any = data.get('statement');
             const resultsBy = data.get('resultsBy') as ResultsBy;
-          
+
             const description = data.get('description');
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
@@ -86,7 +86,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
 
             const newStatement: any = Object.fromEntries(data.entries());
-       
+
 
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;
@@ -97,7 +97,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.creator = statement?.creator || user;
             newStatement.results = {
                 resultsBy: resultsBy || ResultsBy.topVote,
-                deep:1,
+                deep: 1,
                 minConsensus: 0
             };
             newStatement.hasChildren = newStatement.hasChildren === "on" ? true : false;
@@ -115,7 +115,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 if (newStatement[key] === "on") delete newStatement[key];
             }
 
-        
+
 
             const _statementId = await setStatmentToDB(newStatement, setSubsciption);
 
@@ -135,6 +135,12 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join('\n');
     const resultsBy: ResultsBy = statement?.results?.resultsBy || ResultsBy.topVote;
+    const hasChildren: boolean = (() => {
+        if (!statement) return true;
+        if (statement.hasChildren === undefined) return true;
+        return statement.hasChildren;
+    })();
+  
 
     return (
         <>
@@ -158,8 +164,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             </FormGroup>
                             <label htmlFor="subPages"> מתקדם</label>
                             <FormGroup>
-                            <FormControlLabel key={"sub-statements"} control={<Checkbox name="hasChildren" defaultChecked={statement?.hasChildren} />} label={"לאפשר תת-שיחות"} />
-                               
+                                <FormControlLabel key={"sub-statements"} control={<Checkbox name="hasChildren" defaultChecked={hasChildren} />} label={"לאפשר תת-שיחות"} />
+
                             </FormGroup>
                         </section> : null}
 

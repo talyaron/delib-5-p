@@ -9,6 +9,7 @@
 
     a{
         text-decoration: none;
+        color:inherit;
     }
 
     //on mobile
@@ -34,13 +35,14 @@
 
     }
 
+ 
 
 }
 
 .level__2 {
 
-    color: var(--accent);
-    font-size: 1.4rem;
+   
+    font-size: 1rem;
     margin: 1.2rem 0rem 3rem;
     article{
         font-size: 1rem;
@@ -49,8 +51,8 @@
 }
 
 .level__3 {
-    color: var(--accent);
-    font-size: 1.2rem;
+  
+    font-size: 1rem;
     margin: 1rem 1rem .3rem 0rem;
 
     article{

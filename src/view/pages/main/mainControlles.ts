@@ -78,9 +78,10 @@ function createResultLevel(statement: Statement, statements: Statement[]): { res
         const ids = new Set<string>();
         ids.add(statement.statementId);
 
-        const subs = statements.filter(s => s.parentId === statement.statementId);
+        const __subs = statements.filter(s => s.parentId === statement.statementId)
+        const subs = __subs.sort((b, a) => b.lastUpdate - a.lastUpdate).slice(-3);
         const _subs: Results[] = subs.map(sub => createResultLevel(sub, statements).result);
-        subs.forEach(sub => ids.add(sub.statementId));
+        __subs.forEach(sub => ids.add(sub.statementId));
         const remainStatements = statements.filter(s => !ids.has(s.statementId));
 
         return {
