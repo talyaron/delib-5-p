@@ -31,7 +31,7 @@ interface Props {
 
 const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
   const navigate = useNavigate();
-  console.log(statement.statementId)
+
   const statementubscription = useAppSelector(statementSubscriptionSelector(statement.parentId))
 
   // const [show, setShow] = useState(false);

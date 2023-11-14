@@ -29,7 +29,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
             if (!newStatement) throw new Error('No statement');
             newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
     
-            setStatmentToDB(newStatement);
+            setStatmentToDB(newStatement, statement);
             e.target.reset();
         } catch (error) {
             console.error(error);
@@ -60,7 +60,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
                             
-                setStatmentToDB(newStatement);
+                setStatmentToDB(newStatement, statement);
                 e.target.value = '';
             }
 

@@ -93,6 +93,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.statementId = statement?.statementId || crypto.randomUUID();
             newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
             newStatement.parentId = statement?.parentId || statementId || "top";
+            newStatement.topParentId = statement?.topParentId || statementId || "top";
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
             newStatement.results = {
@@ -117,7 +118,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
 
 
-            const _statementId = await setStatmentToDB(newStatement, setSubsciption);
+            const _statementId = await setStatmentToDB(newStatement,statement, setSubsciption);
 
             setIsLoading(false);
 

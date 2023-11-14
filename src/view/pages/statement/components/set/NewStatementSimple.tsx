@@ -62,7 +62,7 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
 
             const setSubsciption: boolean = true;
 
-            await setStatmentToDB(newStatement, setSubsciption);
+            await setStatmentToDB(newStatement, parentStatement, setSubsciption);
 
             setIsLoading(false);
 

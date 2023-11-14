@@ -83,6 +83,7 @@ export function getNewStatment({ value, statement, type, user }: getNewStatmentP
       createdAt: new Date().getTime(),
       lastUpdate: new Date().getTime(),
       parentId: statement.statementId,
+      topParentId: statement.topParentId || statement.statementId ||"top",
       type: type || StatementType.STATEMENT,
       consensus: 0,
       isOption: type === StatementType.SOLUTION ? true : false,
@@ -112,7 +113,7 @@ export function isAuthorized(statement: Statement, statementSubscription: Statem
 
     if (!statementSubscription) return false;
     StatementSubscriptionSchema.parse(statementSubscription);
-    console.log(statementSubscription)
+
     const role = statementSubscription?.role || Role.guest;
 
     if (role === Role.admin || role === Role.statementCreator || role === Role.systemAdmin) return true;

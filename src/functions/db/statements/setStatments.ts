@@ -9,12 +9,20 @@ import { getUserPermissionToNotifications } from "../../notifications";
 
 const TextSchema = z.string().min(2);
 
-export async function setStatmentToDB(statement: Statement, addSubscription: boolean = true) {
+export async function setStatmentToDB(statement: Statement, topStatement:Statement|undefined, addSubscription: boolean = true) {
     try {
-      
 
+if(!topStatement) throw new Error("topStatement is undefined");
         TextSchema.parse(statement.statement);
         statement.consensus = 0;
+        console.log('statement.parentId', statement.parentId);
+        console.log('statement.topParentId', statement.topParentId);
+
+        const topParentId =  topStatement.topParentId || topStatement.parentId || "top";
+
+        statement.topParentId = topParentId;
+        console.log(' statement.topParentId', statement.topParentId)
+        console.log(statement)
 
         statement.lastUpdate = Timestamp.now().toMillis();
         StatementSchema.parse(statement);
@@ -72,10 +80,10 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
     }
 }
 
-export async function updateStatementText(statement: Statement |undefined, newText: string) {
+export async function updateStatementText(statement: Statement | undefined, newText: string) {
     try {
         if (!newText) throw new Error("New text is undefined");
-        if(!statement) throw new Error("Statement is undefined");
+        if (!statement) throw new Error("Statement is undefined");
         if (statement.statement === newText) return;
 
         StatementSchema.parse(statement);
@@ -179,7 +187,7 @@ export async function updateSubscriberForStatementSubStatements(statement: State
     } catch (error) {
         console.error(error);
     }
-} 
+}
 
 export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
     try {
@@ -193,7 +201,7 @@ export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
     }
 }
 
-export async function updateIsQuestion(statement:Statement){
+export async function updateIsQuestion(statement: Statement) {
     try {
         const statementRef = doc(DB, Collections.statements, statement.statementId);
         const isQuestion = !statement.isQuestion;

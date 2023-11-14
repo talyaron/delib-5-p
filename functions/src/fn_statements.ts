@@ -2,7 +2,7 @@ const { logger } = require("firebase-functions");
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
 import admin = require('firebase-admin');
-import { Collections } from "delib-npm";
+import { Collections, Statement } from "delib-npm";
 
 export async function updateSubscribedListnersCB(event: any) {
 
@@ -35,8 +35,9 @@ export async function updateParentWithNewMessageCB(e: any) {
   try {
 
     //get parentId
-    const statement = e.data.data();
-    const parentId = statement.parentId;
+    const statement = e.data.data() as Statement;
+    const {parentId, topParentId} = statement;
+   
     logger.log("updateParentWithNewMessageCB", parentId);
     if (!parentId) throw new Error("parentId not found");
     if (parentId !== "top") {
@@ -51,6 +52,10 @@ export async function updateParentWithNewMessageCB(e: any) {
       parentRef.update({ lastMessage, lastUpdate, totalSubStatements: FieldValue.increment(1) });
       //increment totalSubStatements
 
+      if(topParentId){
+        const topParentRef = db.doc(`statements/${topParentId}`);
+        topParentRef.update({ lastUpdate});
+      }
     }
     return
   } catch (error) {
