@@ -1,31 +1,28 @@
-.setStatement{
-    &__header{
+.setStatement {
+    &__header {
         display: flex;
-        // flex-direction: row-reverse;
         justify-content: space-between;
-        align-items:center;
+        align-items: center;
     }
-    &__back{
-        padding: 10px;
+    &__back {
+        padding: 0 1rem;
     }
-    &__form{
+    &__form {
         display: flex;
         flex-direction: column;
         max-width: 75ch;
-      
-        gap: 20px;
+        gap: 0.7rem;
 
-        input{
+        input {
             margin: 5px;
             font-size: 1.2rem;
             padding: 15px;
         }
-        textarea{
+        textarea {
             margin: 5px;
             font-size: 1.2rem;
             padding: 15px;
-            height:max-content;
+            height: max-content;
         }
     }
-
 }

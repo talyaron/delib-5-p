@@ -96,14 +96,12 @@ button,
 
 .fav {
     background: var(--halfPrimary);
-
     width: 4rem;
     height: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    justify-content: center;
     position: relative;
     border-radius: 50%;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
@@ -122,7 +120,7 @@ button,
 
     &--fixed {
         position: fixed;
-        right: calc(50vw - 26rem);
+        right: 10vw;
         bottom: 8vh;
 
         @media (max-width: 650px) {
