@@ -45,8 +45,7 @@ const StatementMain: FC<Props> = ({
         scrollToBottom()
     }, [subStatements])
 
-    const { hasChildren = false } = statement
-    console.log("hasChildren - chat", hasChildren)
+    const {hasChildren = false} = statement;
 
     return (
         <m.main

@@ -41,7 +41,7 @@
 
             &--selected {
                 border-bottom: 2px solid var(--accent);
-                font-weight: bolder;
+                font-weight: 500;
             }
         }
 
@@ -60,10 +60,10 @@
 
             word-break: break-word;
             margin-bottom: .2rem;
-            width:fit-content;
-        
+            width: fit-content;
 
-          
+
+
         }
 
         &__more {
@@ -103,10 +103,31 @@
         display: flex;
         gap: 10px;
 
+        .question {
+           
+            
+            &--yes {
+                background-color: var(--question);
+                color: var(--question-text);
+            }
+
+
+            &--no {
+                background-color: white;
+            }
+        }
+
         &__left {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        &__right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
         }
 
         &__main {
@@ -158,6 +179,7 @@
         flex-direction: row;
         padding: 5px;
         box-sizing: border-box;
+        border-radius: 3rem;
 
         align-items: center;
         background: linear-gradient(90deg, rgba(232, 232, 232, 0) 0%, rgba(232, 232, 232, 1) 35%, rgba(232, 232, 232, 1) 100%);
@@ -289,10 +311,12 @@
     --t: 30px;
     /* the size of the tail */
     border-radius: 10px 10px 10px 0px;
-  
     padding: calc(2*var(--r)/3);
+   
     background-color: #ffffff;
     color: #464646;
+    box-shadow: 0px 0px 10px #0000001f;
+
 
     //on mobile max width should be limeted
     @media only screen and (max-width: 600px) {
@@ -302,12 +326,12 @@
 
 .left {
     border-radius: 15px 15px 15px 0px;
-   
+
 }
 
 .right {
 
 
     border-radius: 15px 15px 0px 15px;
-   
+
 }

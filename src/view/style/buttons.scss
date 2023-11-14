@@ -1,41 +1,53 @@
-.btnBox {
+.btnBox,
+.btns {
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-button, .btn {
+button,
+.btn {
     width: max-content;
     padding: 12px 25px;
     margin: 5px 10px;
     background: var(--accent);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20rem;
     user-select: none;
     cursor: pointer;
     display: flex;
     align-items: center;
+    font-size: 1rem;
+
     &--small {
         font-size: var(--size11);
         padding: 5px 7px;
     }
+
     &--cancel {
 
         background: orange;
-    
+
     }
+
     &--danger {
 
         background: red;
-    
+
     }
 
-    &--default{
+    &--default {
         background-color: var(--accent);
     }
 
-    &--secondry{
+    &--selected {
+        background-color: var(--primary);
+        border: 1px solid var(--accent);
+        box-shadow: 0px 0px 4px #000000b5;
+    }
+
+    &--secondry {
         background-color: var(--secondry);
         border: 1px solid var(--accent);
         color: var(--accent);
@@ -67,7 +79,7 @@ button, .btn {
 }
 
 .buttonOutlineGray:hover {
-    background: rgb(126 122 122 / 21%);
+    background: rgba(126, 122, 122, 0.228);
 }
 
 .confirm {
@@ -85,8 +97,8 @@ button, .btn {
 .fav {
     background: var(--halfPrimary);
 
-    width: 60px;
-    height: 60px;
+    width: 4rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,44 +122,43 @@ button, .btn {
 
     &--fixed {
         position: fixed;
-        right:  calc(50vw - 37ch);
+        right: calc(50vw - 26rem);
         bottom: 8vh;
 
-        @media (max-width: 500px) {
-            right:  calc(50vw - 22ch);
-           
+        @media (max-width: 650px) {
+            right: 1.5rem;
+
         }
+
         @media (max-width: 300px) {
-            right:  calc(50vw - 15ch);
-           
+            right: calc(50vw - 15ch);
+
         }
     }
 
-    &--up{
-        bottom: 13vh !important;
+    &--up {
+        bottom: 24vh;
+        right: 5vw;
     }
 
     &>div {
         z-index: 100;
-        transform: scale(1);
         color: white;
         text-align: center;
         font-size: 3rem;
         background: var(--accent);
-        width: 50px;
-        height: 50px;
-        border-radius: 25px;
-        // position: absolute;
-        // left: 50%;
-        /* right: 50%; */
-        // top: 50%;
-        // transform: translate(-50%, -50%);
-        display: flex;
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 4rem;
+        // display: flex;
         justify-content: center;
         flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+
 
         svg {
-            transform: rotate(180deg) translateX(16px);
+            transform: rotate(180deg) translate(10%, 45%);
             align-items: center;
             justify-content: center;
         }

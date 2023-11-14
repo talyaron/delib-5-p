@@ -3,6 +3,8 @@ import { Statement } from "delib-npm"
 
 import StatementOptionsNav from "../options/StatementOptionsNav"
 
+import { motion as m } from "framer-motion"
+
 import { useParams } from "react-router-dom"
 import {
     useAppDispatch,
@@ -17,7 +19,7 @@ import { setVote } from "../../../../../functions/db/vote/setVote"
 import { Screen } from "../../../../../model/system"
 import NewSetStatementSimple from "../set/NewStatementSimple"
 import Modal from "../../../../components/modal/Modal"
-import { motion as m } from "framer-motion"
+import AddIcon from "@mui/icons-material/Add"
 
 interface Props {
     statement: Statement
@@ -86,7 +88,11 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                 className="fav fav--fixed fav--up"
                 onClick={() => setShowModal(true)}
             >
-                <div>+</div>
+                <div>
+                    <AddIcon
+                        style={{ transform: `translate(0px,-40%) scale(1.45)` }}
+                    />
+                </div>
             </div>
         </div>
     )

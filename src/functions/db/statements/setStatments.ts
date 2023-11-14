@@ -11,7 +11,7 @@ const TextSchema = z.string().min(2);
 
 export async function setStatmentToDB(statement: Statement, addSubscription: boolean = true) {
     try {
-        console.time("setStatmentToDB");
+      
 
         TextSchema.parse(statement.statement);
         statement.consensus = 0;
@@ -42,8 +42,6 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
             await Promise.all(statementPromises);
         }
 
-
-        console.timeEnd("setStatmentToDB")
 
         return statement.statementId;
 
@@ -190,6 +188,17 @@ export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
         const statementRef = doc(DB, Collections.statements, statement.statementId);
         const newRoomSize = { roomSize };
         updateDoc(statementRef, newRoomSize);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function updateIsQuestion(statement:Statement){
+    try {
+        const statementRef = doc(DB, Collections.statements, statement.statementId);
+        const isQuestion = !statement.isQuestion;
+        const newIsQuestion = { isQuestion };
+        await updateDoc(statementRef, newIsQuestion);
     } catch (error) {
         console.error(error);
     }

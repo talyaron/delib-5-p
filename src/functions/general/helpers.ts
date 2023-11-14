@@ -1,4 +1,6 @@
-import { Statement, StatementType, User } from "delib-npm";
+import { Role, Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema, StatementType, User } from "delib-npm";
+import { store } from "../../model/store";
+
 
 
 export function updateArray(
@@ -55,20 +57,20 @@ interface getNewStatmentProps {
   value?: string | undefined | null,
   statement?: Statement,
   type?: StatementType,
-  user:User
+  user: User
 }
 
 export function getNewStatment({ value, statement, type, user }: getNewStatmentProps): Statement | undefined {
 
   try {
-   
+
     if (!statement) throw new Error('No statement');
     if (!user) throw new Error('No user');
     if (!value) throw new Error('No value');
 
 
     const userId = user.uid;
-    
+
 
     const creator = user;
     if (!creator) throw new Error('User not logged in');
@@ -91,5 +93,34 @@ export function getNewStatment({ value, statement, type, user }: getNewStatmentP
   } catch (error) {
     console.error(error);
     return undefined
+  }
+}
+
+export function maxKeyInObject(obj: { [key: string]: number }):string {
+  return Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+}
+
+export function isAuthorized(statement: Statement, statementSubscription: StatementSubscription | undefined, authrizedRoles?: Array<Role>) {
+  try {
+    if(!statement) return false;
+    StatementSchema.parse(statement);
+
+
+    const user = store.getState().user.user;
+    if (!user || !user.uid) throw new Error('No user');
+    if (statement.creatorId === user.uid) return true;
+
+    if (!statementSubscription) return false;
+    StatementSubscriptionSchema.parse(statementSubscription);
+    console.log(statementSubscription)
+    const role = statementSubscription?.role || Role.guest;
+
+    if (role === Role.admin || role === Role.statementCreator || role === Role.systemAdmin) return true;
+
+    if (authrizedRoles && authrizedRoles.includes(role)) return true;
+    return false;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 }

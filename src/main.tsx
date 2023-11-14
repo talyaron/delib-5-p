@@ -1,8 +1,8 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
-import "./view/style/style.scss"
-import "delib-npm/dist/index.css"
-import { RouterProvider } from "react-router-dom"
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './view/style/style.scss';
+
+import { RouterProvider } from "react-router-dom";
 
 import { store } from "./model/store"
 import { Provider } from "react-redux"

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/r
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import { setStatementElementHight } from '../../../../../model/statements/statementsSlice';
 import StatementChatMore from '../StatementChatMore';
-import StatementChatSetOption from '../StatementChatSetOption';
+import StatementChatSetOption from '../chat/StatementChatSetOption';
 import Text from '../../../../components/text/Text';
 
 
@@ -22,12 +22,12 @@ interface Props {
     statement: Statement;
     showImage: Function;
     top: number;
-    hasChildren: boolean;
+   
 }
 
 
 
-const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
+const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch();
   
     const user = useAppSelector(userSelector)
@@ -55,6 +55,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
     function handleEdit() {
         if (statement.creatorId === user?.uid) setEdit(true);
     }
+    
 
     return (
         <>
@@ -76,8 +77,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top, hasChildren }) => {
                 </div>
                
                 <div className="options__card__chat">
-                    <StatementChatMore statement={statement} hasChildren={hasChildren}/>
-                    {statement.consensus ? <div className='options__card__solution text'>{statement.consensus}</div> : null}
+                    <StatementChatMore statement={statement} hasChildren={true}/>
                     <div className="press">
                         <StatementChatSetOption statement={statement} />
                     </div>

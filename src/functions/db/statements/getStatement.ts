@@ -15,7 +15,7 @@ export async function getStatmentsSubsciptions(): Promise<StatementSubscription[
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), limit(20));
         const querySnapshot = await getDocs(q);
 
         const statementsSubscriptions: StatementSubscription[] = [];
@@ -88,7 +88,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
         if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), limit(20));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"), limit(40));
 
 
 
