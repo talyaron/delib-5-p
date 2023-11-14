@@ -3,17 +3,19 @@
     height: 100vh;
     // min-height: -webkit-fill-available;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    background-color: "red";
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
 
- 
     &__header {
         box-shadow: 0px 3px 9px #00000026;
         z-index: 100;
         width: 100vw;
         // background-color: var(--white);
-        background-color: "red";
+        // display: flex;
+        // align-items: center;
+        // justify-content: space-around;
 
         &__wrapper {
             display: flex;
@@ -34,12 +36,8 @@
     }
 
     &__main {
-        // overflow-y: auto;
-        // flex: auto;
-        display: flex;
-        flex-direction: column;
-        height: "100%";
-        background-color: "red";
+        overflow-y: auto;
+        flex: auto;
         &__footer {
             // box-shadow: 0px -3px 9px rgba(0, 0, 0, 0.486);
             z-index: 100;
