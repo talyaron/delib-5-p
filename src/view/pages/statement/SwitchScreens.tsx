@@ -26,7 +26,9 @@ export default function SwitchScreens({
 
     switch (screen) {
         case Screen.DOC:
-            return <Document statement={statement} />
+            return (
+                <Document statement={statement} subStatements={subStatements} />
+            )
         case Screen.HOME:
             return (
                 <StatementMain

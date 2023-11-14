@@ -2,8 +2,8 @@ import { FC, useEffect, useRef } from "react"
 import { Statement } from "delib-npm"
 import StatementChat from "./chat/StatementChat"
 import StatementInput from "../../../pages/statement/StatementInput"
-import { motion as m } from "framer-motion"
 import "../../../style/page.scss"
+import ScreenSlide from "./ScreenSlide"
 
 interface Props {
     statement: Statement
@@ -48,13 +48,7 @@ const StatementMain: FC<Props> = ({
     const { hasChildren = false } = statement
 
     return (
-        <m.div
-            initial={{ x: "100%" }}
-            animate={{ x: "0%" }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            exit={{ x: "-100%" }}
-            className="page__main"
-        >
+        <ScreenSlide>
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>
@@ -62,7 +56,6 @@ const StatementMain: FC<Props> = ({
                             statement={statementSub}
                             showImage={handleShowTalker}
                             page={page}
-                            hasChildren={hasChildren}
                         />
                     </div>
                 ))}
@@ -71,7 +64,7 @@ const StatementMain: FC<Props> = ({
             <div style={{ marginTop: "auto" }}>
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </m.div>
+        </ScreenSlide>
     )
 }
 

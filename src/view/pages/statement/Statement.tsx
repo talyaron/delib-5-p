@@ -2,8 +2,8 @@ import { FC, useEffect, useState, useRef } from "react"
 
 // Third party imports
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { User, Screen, Statement, StatementSubscription, Role } from "delib-npm"
-import { AnimatePresence, motion as m } from "framer-motion"
+import { User, Statement, StatementSubscription, Role } from "delib-npm"
+import { AnimatePresence } from "framer-motion"
 
 // firestore
 import {
@@ -44,14 +44,8 @@ import { useSelector } from "react-redux"
 
 // Statement components
 import StatementNav from "./components/nav/StatementNav"
-import StatementMain from "./components/StatementMain"
-import StatementOptions from "./components/options/StatementOptions"
-import StatementVote from "./components/vote/StatementVote"
-import Document from "./components/doc/Document"
 import EditTitle from "../../components/edit/EditTitle"
 import AskPermisssion from "../../components/askPermission/AskPermisssion"
-import { StatementSettings } from "./components/admin/StatementSettings"
-import StatmentRooms from "./components/rooms/Rooms"
 
 //icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
@@ -295,13 +289,6 @@ const Statement: FC = () => {
                 </div>
                 {statement && <StatementNav statement={statement} />}
             </div>
-            {/* {switchScreens(
-                        screen,
-                        statement,
-                        subStatements,
-                        handleShowTalker,
-                        _page
-                    )} */}
             <AnimatePresence initial={false} mode="wait">
                 <SwitchScreens
                     key={page}
@@ -317,77 +304,6 @@ const Statement: FC = () => {
 }
 
 export default Statement
-
-// function switchScreens(
-//     screen: string | undefined,
-//     statement: Statement | undefined,
-//     subStatements: Statement[],
-//     handleShowTalker: Function,
-//     page: any
-// ) {
-//     try {
-//         if (!statement) return null
-
-//         switch (screen) {
-//             case Screen.DOC:
-//                 return <Document statement={statement} />
-//             case Screen.HOME:
-//                 return (
-//                     <StatementMain
-//                         statement={statement}
-//                         subStatements={subStatements}
-//                         handleShowTalker={handleShowTalker}
-//                         page={page}
-//                     />
-//                 )
-//             case Screen.CHAT:
-//                 return (
-//                     <StatementMain
-//                         statement={statement}
-//                         subStatements={subStatements}
-//                         handleShowTalker={handleShowTalker}
-//                         page={page}
-//                     />
-//                 )
-//             case Screen.OPTIONS:
-//                 return (
-//                     <StatementOptions
-//                         statement={statement}
-//                         subStatements={subStatements}
-//                         handleShowTalker={handleShowTalker}
-//                     />
-//                 )
-//             case Screen.VOTE:
-//                 return (
-//                     <StatementVote
-//                         statement={statement}
-//                         subStatements={subStatements}
-//                     />
-//                 )
-//             case Screen.GROUPS:
-//                 return (
-//                     <StatmentRooms
-//                         statement={statement}
-//                         subStatements={subStatements}
-//                     />
-//                 )
-//             case Screen.SETTINGS:
-//                 return <StatementSettings />
-//             default:
-//                 return (
-//                     <StatementMain
-//                         statement={statement}
-//                         subStatements={subStatements}
-//                         handleShowTalker={handleShowTalker}
-//                         page={page}
-//                     />
-//                 )
-//         }
-//     } catch (error) {
-//         console.error(error)
-//         return null
-//     }
-// }
 
 function navigationDirection(
     currentStatement: Statement | null | undefined,
