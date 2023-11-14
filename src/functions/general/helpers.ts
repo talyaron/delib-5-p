@@ -96,7 +96,7 @@ export function getNewStatment({ value, statement, type, user }: getNewStatmentP
   }
 }
 
-export function maxKeyInObject(obj: { [key: string]: number }) {
+export function maxKeyInObject(obj: { [key: string]: number }):string {
   return Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
 }
 
@@ -112,9 +112,10 @@ export function isAuthorized(statement: Statement, statementSubscription: Statem
 
     if (!statementSubscription) return false;
     StatementSubscriptionSchema.parse(statementSubscription);
+    console.log(statementSubscription)
     const role = statementSubscription?.role || Role.guest;
 
-    if (role === Role.admin) return true;
+    if (role === Role.admin || role === Role.statementCreator || role === Role.systemAdmin) return true;
 
     if (authrizedRoles && authrizedRoles.includes(role)) return true;
     return false;
