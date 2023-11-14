@@ -249,10 +249,10 @@ const Statement: FC = () => {
 
     return (
         <div ref={pageRef} className="page">
-            {showAskPermission ? (
+            {showAskPermission && (
                 <AskPermisssion showFn={setShowAskPermission} />
-            ) : null}
-            {talker ? (
+            )}
+            {talker && (
                 <div
                     onClick={() => {
                         handleShowTalker(null)
@@ -260,7 +260,7 @@ const Statement: FC = () => {
                 >
                     <ProfileImage user={talker} />
                 </div>
-            ) : null}
+            )}
             <div className="page__header">
                 <div className="page__header__wrapper">
                     <div onClick={handleBack}>
@@ -293,7 +293,7 @@ const Statement: FC = () => {
                         <ShareIcon />
                     </div>
                 </div>
-                {statement ? <StatementNav statement={statement} /> : null}
+                {statement && <StatementNav statement={statement} />}
             </div>
             {/* {switchScreens(
                         screen,

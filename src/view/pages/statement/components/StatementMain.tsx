@@ -45,47 +45,33 @@ const StatementMain: FC<Props> = ({
         scrollToBottom()
     }, [subStatements])
 
-    const {hasChildren = false} = statement;
+    const { hasChildren = false } = statement
 
     return (
-        <m.main
+        <m.div
             initial={{ x: "100%" }}
             animate={{ x: "0%" }}
             transition={{ duration: 1, ease: "easeInOut" }}
             exit={{ x: "-100%" }}
-            style={{ height: "100%" }}
+            className="page__main"
         >
-            <div
-                className="chatWindow"
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                }}
-            >
-                <div className="wrapper wrapper--chat">
-                    {subStatements?.map((statementSub: Statement) => (
-                        <div key={statementSub.statementId}>
-                            <StatementChat
-                                statement={statementSub}
-                                showImage={handleShowTalker}
-                                page={page}
-                                hasChildren={hasChildren}
-                            />
-                        </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                </div>
-                <div
-                    className="page__footer"
-                    style={{ marginTop: "auto", padding: 20 }}
-                >
-                    {statement ? (
-                        <StatementInput statement={statement} />
-                    ) : null}
-                </div>
+            <div className="wrapper wrapper--chat">
+                {subStatements?.map((statementSub: Statement) => (
+                    <div key={statementSub.statementId}>
+                        <StatementChat
+                            statement={statementSub}
+                            showImage={handleShowTalker}
+                            page={page}
+                            hasChildren={hasChildren}
+                        />
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
             </div>
-        </m.main>
+            <div style={{ marginTop: "auto" }}>
+                {statement && <StatementInput statement={statement} />}
+            </div>
+        </m.div>
     )
 }
 
