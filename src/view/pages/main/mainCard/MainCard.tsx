@@ -19,7 +19,7 @@ const MainCard: FC<Props> = ({ results }) => {
 
     if (results.sub && results.sub.length > 0) return (
         <div className={styles.results}>
-            <Accordion>
+            <Accordion defaultExpanded={true}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -60,11 +60,10 @@ function SubResults({ results, level = 2 }: Props): JSX.Element {
 
     if (results.sub && results.sub.length > 0) return (
         <div className={styles[_level]}>
-            <Accordion>
+            <Accordion defaultExpanded={true}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Link to={`/home/statement/${results.top.statementId}`}>
-                        <div ><Text text={results.top.statement} onlyTitle={true} /></div>
-                        {description ? <article><Text text={description} /></article> : null}
+                        <Text text={results.top.statement} />
                     </Link>
                 </AccordionSummary>
                 <AccordionDetails>

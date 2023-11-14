@@ -12,8 +12,8 @@ import { logOut } from '../../../functions/db/auth';
 
 import { install } from '../../../main';
 import { sortStatementsByHirarrchy } from './mainControlles';
-import ResultsComp from '../statement/components/doc/results/Results';
 import MainCard from './mainCard/MainCard';
+
 
 //install
 
@@ -27,7 +27,7 @@ const Main = () => {
     const dispatch = useAppDispatch();
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-    // const [isApp, setIsApp] = useState(false);
+
 
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
@@ -42,10 +42,11 @@ const Main = () => {
 
     }, [])
 
+
     useEffect(() => {
 
         if (isLgged) {
-         
+
             unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB);
         }
         return () => {
@@ -81,8 +82,11 @@ const Main = () => {
         logOut();
         dispatch(setUser(null))
     }
+
     const _statements = [...statements.map((statement) => statement.statement)];
     const _results = sortStatementsByHirarrchy(_statements);
+  
+   
 
     return (
         <div className='page'>

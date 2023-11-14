@@ -192,3 +192,14 @@ export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
         console.error(error);
     }
 }
+
+export async function updateIsQuestion(statement:Statement){
+    try {
+        const statementRef = doc(DB, Collections.statements, statement.statementId);
+        const isQuestion = !statement.isQuestion;
+        const newIsQuestion = { isQuestion };
+        await updateDoc(statementRef, newIsQuestion);
+    } catch (error) {
+        console.error(error);
+    }
+}
