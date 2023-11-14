@@ -26,6 +26,7 @@ const Main = () => {
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
 
+    //for defferd app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
 
@@ -37,7 +38,7 @@ const Main = () => {
     }
 
     useEffect(() => {
-
+        //for defferd app install
         setDeferredPrompt(install.deferredPrompt);
 
     }, [])
@@ -85,8 +86,8 @@ const Main = () => {
 
     const _statements = [...statements.map((statement) => statement.statement)];
     const _results = sortStatementsByHirarrchy(_statements);
-  
-   
+
+
 
     return (
         <div className='page'>

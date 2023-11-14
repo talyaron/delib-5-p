@@ -36,8 +36,8 @@ export async function updateParentWithNewMessageCB(e: any) {
 
     //get parentId
     const statement = e.data.data() as Statement;
-    const {parentId, topParentId} = statement;
-   
+    const { parentId, topParentId } = statement;
+
     logger.log("updateParentWithNewMessageCB", parentId);
     if (!parentId) throw new Error("parentId not found");
     if (parentId !== "top") {
@@ -50,11 +50,19 @@ export async function updateParentWithNewMessageCB(e: any) {
       const lastMessage = statement.statement;
       const lastUpdate = Timestamp.now().toMillis();
       parentRef.update({ lastMessage, lastUpdate, totalSubStatements: FieldValue.increment(1) });
+      //update topParent
+      if (topParentId) {
+        const topParentRef = db.doc(`statements/${topParentId}`);
+        topParentRef.update({ lastChildUpdate: lastUpdate });
+      }
+
+
+
       //increment totalSubStatements
 
-      if(topParentId){
+      if (topParentId) {
         const topParentRef = db.doc(`statements/${topParentId}`);
-        topParentRef.update({ lastUpdate});
+        topParentRef.update({ lastUpdate });
       }
     }
     return

@@ -9,21 +9,20 @@ import { getUserPermissionToNotifications } from "../../notifications";
 
 const TextSchema = z.string().min(2);
 
-export async function setStatmentToDB(statement: Statement, topStatement:Statement|undefined, addSubscription: boolean = true) {
+export async function setStatmentToDB(statement: Statement, topStatement: Statement | undefined, addSubscription: boolean = true) {
     try {
 
-if(!topStatement) throw new Error("topStatement is undefined");
+
         TextSchema.parse(statement.statement);
         statement.consensus = 0;
         console.log('statement.parentId', statement.parentId);
         console.log('statement.topParentId', statement.topParentId);
 
-        const topParentId =  topStatement.topParentId || topStatement.parentId || "top";
+        const topParentId = getTopParentId(topStatement);
+        if (statement.parentId === 'top') statement.isQuestion = true;
 
         statement.topParentId = topParentId;
-        console.log(' statement.topParentId', statement.topParentId)
-        console.log(statement)
-
+        statement.createdAt = Timestamp.now().toMillis();
         statement.lastUpdate = Timestamp.now().toMillis();
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator)
@@ -57,6 +56,15 @@ if(!topStatement) throw new Error("topStatement is undefined");
         console.error(error);
         return undefined;
     }
+}
+
+function getTopParentId(topStatement: Statement|undefined): string {
+
+    if (!topStatement) return "top";
+    if (topStatement.parentId === 'top') return topStatement?.statementId;
+
+    return topStatement.topParentId || topStatement.statementId;
+
 }
 
 export async function setStatmentSubscriptionToDB(statement: Statement, role: Role, setNotifications: boolean = false) {
