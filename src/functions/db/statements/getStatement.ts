@@ -88,7 +88,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
         if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where("isQuestion", "==", true), orderBy("lastUpdate", "desc"), limit(20));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where("statement.isQuestion", "==", true), orderBy("lastUpdate", "desc"), limit(20));
 
 
 
