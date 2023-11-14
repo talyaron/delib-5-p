@@ -16,6 +16,7 @@
     "deploy": "npm run deploy:h && npm run deploy:f"
   },
   "dependencies": {
+    "@barba/core": "^2.9.7",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.13.7",
@@ -24,6 +25,7 @@
     "deep-equal": "^2.2.2",
     "delib-npm": "^1.0.99",
     "firebase": "^10.0.0",
+    "framer-motion": "^10.16.4",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "match-sorter": "^6.3.1",

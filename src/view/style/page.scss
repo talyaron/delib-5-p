@@ -1,11 +1,11 @@
 .page {
     width: 100vw;
-    height: 100svh;
+    height: 100vh;
     // min-height: -webkit-fill-available;
     position: relative;
     display: flex;
     flex-direction: column;
-
+    background-color: "red";
 
     h1,
     h2 {
@@ -16,7 +16,8 @@
         box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.486);
         z-index: 100;
         width: 100vw;
-        background-color: var(--white);
+        // background-color: var(--white);
+        background-color: "red";
 
         &__wrapper {
             display: flex;
@@ -32,42 +33,40 @@
             @media screen and (min-width: 600px) {
                 max-width: 75ch;
                 margin: auto;
-
             }
-
         }
     }
 
     &__main {
-        overflow-y: auto;
-        flex: auto;
-    }
-
-    &__footer {
-        // box-shadow: 0px -3px 9px rgba(0, 0, 0, 0.486);
-        z-index: 100;
-
+        // overflow-y: auto;
+        // flex: auto;
+        display: flex;
+        flex-direction: column;
+        height: "100%";
+        background-color: "red";
+        &__footer {
+            // box-shadow: 0px -3px 9px rgba(0, 0, 0, 0.486);
+            z-index: 100;
+            margin-top: auto;
+        }
     }
 
     // animations
 
-    &--anima{
-        &__backOutScreen{
-           animation: fadeUpOut 200ms ease-in-out 0s 1 forwards normal;
+    &--anima {
+        &__backOutScreen {
+            animation: fadeUpOut 200ms ease-in-out 0s 1 forwards normal;
         }
-        &__backInScreen{
+        &__backInScreen {
             animation: comeinUpIn 200ms ease-in-out 0s 1 forwards normal;
         }
 
-        &__forwardOutScreen{
+        &__forwardOutScreen {
             animation: forwardOutScreen 200ms ease-in-out 0s 1 forwards normal;
         }
-        &__forwardInScreen{
+        &__forwardInScreen {
             animation: forwardInScreen 200ms ease-in-out 0s 1 forwards normal;
         }
-
-
-
     }
 }
 
@@ -85,7 +84,7 @@
 
 @keyframes comeinUpIn {
     0% {
-        transform: scale(.8);
+        transform: scale(0.8);
         opacity: 0;
     }
 
@@ -102,7 +101,7 @@
     }
 
     100% {
-        transform: scale(.8);
+        transform: scale(0.8);
         opacity: 0;
     }
 }
@@ -118,12 +117,6 @@
         opacity: 1;
     }
 }
-   
-    
-
-
-
-
 
 .page__grid {
     display: grid;
