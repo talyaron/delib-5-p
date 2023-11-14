@@ -1,10 +1,14 @@
 import React from "react"
+
+// Custom components
 import StatementMain from "./components/StatementMain"
 import { StatementSettings } from "./components/admin/StatementSettings"
 import StatmentRooms from "./components/rooms/Rooms"
 import StatementVote from "./components/vote/StatementVote"
 import StatementOptions from "./components/options/StatementOptions"
 import Document from "./components/doc/Document"
+
+// Third party imports
 import { Screen, Statement } from "delib-npm"
 
 interface SwitchScreensProps {

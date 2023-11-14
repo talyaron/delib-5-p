@@ -1,10 +1,27 @@
 import { FC, useEffect, useState } from "react"
+
+// Statment imports
 import { StatementType } from "../../../../../model/statements/statementModel"
 import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments"
-import { useNavigate, useParams } from "react-router-dom"
+import { navArray } from "../nav/StatementNav"
 
-import { UserSchema, User, StatementSubscription, ResultsBy } from "delib-npm"
+// Third party imports
+import { useNavigate, useParams } from "react-router-dom"
+import {
+    UserSchema,
+    User,
+    StatementSubscription,
+    ResultsBy,
+    NavObject,
+    Screen,
+    Statement,
+} from "delib-npm"
+
+// Custom components
 import Loader from "../../../../components/loaders/Loader"
+import MembershipLine from "./MembershipLine"
+
+// Redux Store
 import {
     useAppDispatch,
     useAppSelector,
@@ -16,19 +33,19 @@ import {
     statementMembershipSelector,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice"
+import { userSelector } from "../../../../../model/users/userSlice"
+
+// Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
 } from "../../../../../functions/db/statements/getStatement"
 
+// Mui
 import FormGroup from "@mui/material/FormGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Checkbox from "@mui/material/Checkbox"
-import { navArray } from "../nav/StatementNav"
-import { NavObject, Screen, Statement } from "delib-npm"
-import { userSelector } from "../../../../../model/users/userSlice"
 import { store } from "../../../../../model/store"
-import MembershipLine from "./MembershipLine"
 
 interface Props {
     simple?: boolean
@@ -38,13 +55,16 @@ interface Props {
 export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate()
     const { statementId } = useParams()
+
+    // Redux
+    const dispatch = useAppDispatch()
     const statement = useAppSelector(statementSelector(statementId))
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     )
     const user: User | null = useAppSelector(userSelector)
-    const dispatch = useAppDispatch()
 
+    // Use State
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -157,105 +177,90 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         return statement.hasChildren
     })()
 
-    return (
-        <>
-            {!isLoading ? (
-                <>
-                    <form
-                        onSubmit={handleSetStatment}
-                        className="setStatement__form"
-                    >
-                        <label htmlFor="statement">כותרת</label>
-                        <input
-                            type="text"
-                            name="statement"
-                            placeholder="כותרת הקבוצה"
-                            defaultValue={arrayOfStatementParagrphs[0]}
+    return !isLoading ? (
+        <form onSubmit={handleSetStatment} className="setStatement__form">
+            <label htmlFor="statement">
+                <input
+                    type="text"
+                    name="statement"
+                    placeholder="כותרת הקבוצה"
+                    defaultValue={arrayOfStatementParagrphs[0]}
+                />
+            </label>
+            <div>
+                <textarea
+                    name="description"
+                    placeholder="תיאור הקבוצה"
+                    rows={3}
+                    defaultValue={description}
+                ></textarea>
+            </div>
+            {!simple ? (
+                <section>
+                    <label htmlFor="subPages">לשוניות</label>
+                    <FormGroup>
+                        {navArray
+                            .filter((navObj) => navObj.link !== Screen.SETTINGS)
+                            .map((navObj) => (
+                                <FormControlLabel
+                                    key={navObj.id}
+                                    control={
+                                        <Checkbox
+                                            name={navObj.link}
+                                            defaultChecked={isSubPageChecked(
+                                                statement,
+                                                navObj
+                                            )}
+                                        />
+                                    }
+                                    label={navObj.name}
+                                />
+                            ))}
+                    </FormGroup>
+                    <label htmlFor="subPages"> מתקדם</label>
+                    <FormGroup>
+                        <FormControlLabel
+                            key={"sub-statements"}
+                            control={
+                                <Checkbox
+                                    name="hasChildren"
+                                    defaultChecked={hasChildren}
+                                />
+                            }
+                            label={"לאפשר תת-שיחות"}
                         />
-                        <textarea
-                            name="description"
-                            placeholder="תיאור הקבוצה"
-                            defaultValue={description}
-                        ></textarea>
-                        {!simple ? (
-                            <section>
-                                <label htmlFor="subPages">לשוניות</label>
-                                <FormGroup>
-                                    {navArray
-                                        .filter(
-                                            (navObj) =>
-                                                navObj.link !== Screen.SETTINGS
-                                        )
-                                        .map((navObj) => (
-                                            <FormControlLabel
-                                                key={navObj.id}
-                                                control={
-                                                    <Checkbox
-                                                        name={navObj.link}
-                                                        defaultChecked={isSubPageChecked(
-                                                            statement,
-                                                            navObj
-                                                        )}
-                                                    />
-                                                }
-                                                label={navObj.name}
-                                            />
-                                        ))}
-                                </FormGroup>
-                                <label htmlFor="subPages"> מתקדם</label>
-                                <FormGroup>
-                                    <FormControlLabel
-                                        key={"sub-statements"}
-                                        control={
-                                            <Checkbox
-                                                name="hasChildren"
-                                                defaultChecked={hasChildren}
-                                            />
-                                        }
-                                        label={"לאפשר תת-שיחות"}
-                                    />
-                                </FormGroup>
-                            </section>
-                        ) : null}
+                    </FormGroup>
+                </section>
+            ) : null}
 
-                        <select name="resultsBy" defaultValue={resultsBy}>
-                            <option value={ResultsBy.topVote}>
-                                תוצאות ההצבעה{" "}
-                            </option>
-                            <option value={ResultsBy.topOptions}>
-                                אופציה מועדפת
-                            </option>
-                            {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
-                            <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
-                            <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
-                            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option> */}
-                        </select>
+            <select name="resultsBy" defaultValue={resultsBy}>
+                <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
+                <option value={ResultsBy.topOptions}>אופציה מועדפת</option>
+                {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
+            <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
+            <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
+            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option> */}
+            </select>
 
-                        <div className="btnBox">
-                            <button type="submit">
-                                {!statementId ? "הוספה" : "עדכון"}
-                            </button>
-                        </div>
-                    </form>
-                    <h2>חברים בקבוצה</h2>
-                    <div className="wrapper">
-                        {membership
-                            ? membership.map((member) => (
-                                  <MembershipLine
-                                      key={member.userId}
-                                      member={member}
-                                  />
-                              ))
-                            : null}
-                    </div>
-                </>
-            ) : (
-                <div className="center">
-                    <h2>מעדכן...</h2>
-                    <Loader />
-                </div>
-            )}
-        </>
+            <div className="btnBox">
+                <button type="submit">
+                    {!statementId ? "הוספה" : "עדכון"}
+                </button>
+            </div>
+            <h2>חברים בקבוצה</h2>
+            <div className="wrapper">
+                {membership
+                    ? membership.map((member) => (
+                          <MembershipLine key={member.userId} member={member} />
+                      ))
+                    : null}
+            </div>
+        </form>
+    ) : (
+        <div className="center">
+            <h2>מעדכן...</h2>
+            <Loader />
+        </div>
     )
 }
 

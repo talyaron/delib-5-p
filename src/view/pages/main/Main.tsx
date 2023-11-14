@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import Fav from "../../components/fav/Fav"
 
-import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement"
+// Third party imports
+import { useNavigate } from "react-router-dom"
 import { Results, StatementSubscription } from "delib-npm"
+
+// Custom components
+import Fav from "../../components/fav/Fav"
+import MainCard from "./mainCard/MainCard"
+
+// Firestore functions
+import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement"
+import { logOut } from "../../../functions/db/auth"
+
+// Redux store
 import {
     useAppDispatch,
     useAppSelector,
@@ -15,11 +24,10 @@ import {
 } from "../../../model/statements/statementsSlice"
 import useAuth from "../../../functions/hooks/authHooks"
 import { setUser } from "../../../model/users/userSlice"
-import { logOut } from "../../../functions/db/auth"
 
+// Other
 import { install } from "../../../main"
 import { sortStatementsByHirarrchy } from "./mainControlles"
-import MainCard from "./mainCard/MainCard"
 
 //install
 

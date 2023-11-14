@@ -1,7 +1,9 @@
-//components
+import React from "react"
 
-//icons
+// Third party imports
 import { Link, useParams } from "react-router-dom"
+
+// Custom components
 import { StatementSettings } from "../admin/StatementSettings"
 import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon"
 
