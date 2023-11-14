@@ -46,6 +46,7 @@ import FormGroup from "@mui/material/FormGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Checkbox from "@mui/material/Checkbox"
 import { store } from "../../../../../model/store"
+import ScreenSlide from "../ScreenSlide"
 
 interface Props {
     simple?: boolean
@@ -177,90 +178,107 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         return statement.hasChildren
     })()
 
-    return !isLoading ? (
-        <form onSubmit={handleSetStatment} className="setStatement__form">
-            <label htmlFor="statement">
-                <input
-                    type="text"
-                    name="statement"
-                    placeholder="כותרת הקבוצה"
-                    defaultValue={arrayOfStatementParagrphs[0]}
-                />
-            </label>
-            <div>
-                <textarea
-                    name="description"
-                    placeholder="תיאור הקבוצה"
-                    rows={3}
-                    defaultValue={description}
-                ></textarea>
-            </div>
-            {!simple ? (
-                <section>
-                    <label htmlFor="subPages">לשוניות</label>
-                    <FormGroup>
-                        {navArray
-                            .filter((navObj) => navObj.link !== Screen.SETTINGS)
-                            .map((navObj) => (
+    return (
+        <ScreenSlide>
+            {!isLoading ? (
+                <form
+                    onSubmit={handleSetStatment}
+                    className="setStatement__form"
+                >
+                    <label htmlFor="statement">
+                        <input
+                            type="text"
+                            name="statement"
+                            placeholder="כותרת הקבוצה"
+                            defaultValue={arrayOfStatementParagrphs[0]}
+                        />
+                    </label>
+                    <div>
+                        <textarea
+                            name="description"
+                            placeholder="תיאור הקבוצה"
+                            rows={3}
+                            defaultValue={description}
+                        ></textarea>
+                    </div>
+                    {!simple ? (
+                        <section>
+                            <label htmlFor="subPages">לשוניות</label>
+                            <FormGroup>
+                                {navArray
+                                    .filter(
+                                        (navObj) =>
+                                            navObj.link !== Screen.SETTINGS
+                                    )
+                                    .map((navObj) => (
+                                        <FormControlLabel
+                                            key={navObj.id}
+                                            control={
+                                                <Checkbox
+                                                    name={navObj.link}
+                                                    defaultChecked={isSubPageChecked(
+                                                        statement,
+                                                        navObj
+                                                    )}
+                                                />
+                                            }
+                                            label={navObj.name}
+                                        />
+                                    ))}
+                            </FormGroup>
+                            <label htmlFor="subPages"> מתקדם</label>
+                            <FormGroup>
                                 <FormControlLabel
-                                    key={navObj.id}
+                                    key={"sub-statements"}
                                     control={
                                         <Checkbox
-                                            name={navObj.link}
-                                            defaultChecked={isSubPageChecked(
-                                                statement,
-                                                navObj
-                                            )}
+                                            name="hasChildren"
+                                            defaultChecked={hasChildren}
                                         />
                                     }
-                                    label={navObj.name}
+                                    label={"לאפשר תת-שיחות"}
                                 />
-                            ))}
-                    </FormGroup>
-                    <label htmlFor="subPages"> מתקדם</label>
-                    <FormGroup>
-                        <FormControlLabel
-                            key={"sub-statements"}
-                            control={
-                                <Checkbox
-                                    name="hasChildren"
-                                    defaultChecked={hasChildren}
-                                />
-                            }
-                            label={"לאפשר תת-שיחות"}
-                        />
-                    </FormGroup>
-                </section>
-            ) : null}
+                            </FormGroup>
+                        </section>
+                    ) : null}
 
-            <select name="resultsBy" defaultValue={resultsBy}>
-                <option value={ResultsBy.topVote}>תוצאות ההצבעה </option>
-                <option value={ResultsBy.topOptions}>אופציה מועדפת</option>
-                {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
+                    <select name="resultsBy" defaultValue={resultsBy}>
+                        <option value={ResultsBy.topVote}>
+                            תוצאות ההצבעה{" "}
+                        </option>
+                        <option value={ResultsBy.topOptions}>
+                            אופציה מועדפת
+                        </option>
+                        {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
             <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
             <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
             <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option> */}
-            </select>
+                    </select>
 
-            <div className="btnBox">
-                <button type="submit">
-                    {!statementId ? "הוספה" : "עדכון"}
-                </button>
-            </div>
-            <h2>חברים בקבוצה</h2>
-            <div className="wrapper">
-                {membership
-                    ? membership.map((member) => (
-                          <MembershipLine key={member.userId} member={member} />
-                      ))
-                    : null}
-            </div>
-        </form>
-    ) : (
-        <div className="center">
-            <h2>מעדכן...</h2>
-            <Loader />
-        </div>
+                    <div className="btnBox">
+                        <button type="submit">
+                            {!statementId ? "הוספה" : "עדכון"}
+                        </button>
+                    </div>
+                    <h2>חברים בקבוצה</h2>
+                    {membership && (
+                        <div>
+                            {membership.map((member) => (
+                                <MembershipLine
+                                    key={member.userId}
+                                    member={member}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </form>
+            ) : (
+                <div className="center">
+                    <h2>מעדכן...</h2>
+                    <Loader />
+                </div>
+            )}
+        </ScreenSlide>
     )
 }
 

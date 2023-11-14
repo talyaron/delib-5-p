@@ -10,8 +10,8 @@ import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon"
 export const SetStatement = () => {
     const { statementId } = useParams()
     return (
-        <div className="page setStatement">
-            <div className="page__header setStatement__header">
+        <div className="setStatement">
+            <div className="setStatement__header">
                 <span></span>
                 <h1>{statementId ? "עדכון" : "הוספת קבוצה חדשה"}</h1>
                 <Link to={"/home"} className="setStatement__back">
