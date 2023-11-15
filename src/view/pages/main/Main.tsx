@@ -18,43 +18,25 @@ import MainCard from './mainCard/MainCard';
 
 //install
 
-export const listenedStatements = new Set<string>();
-let unsubscribe: Function = () => { };
+
+
 
 const Main = () => {
     const navigate = useNavigate();
     const statements = [...useAppSelector(statementsSubscriptionsSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
-    const isLgged = useAuth();
+    
     const dispatch = useAppDispatch();
 
     //for defferd app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
 
-    function updateStoreStSubCB(statementSubscription: StatementSubscription) {
-        dispatch(setStatementSubscription(statementSubscription));
-    }
-    function deleteStoreStSubCB(statementId: string) {
-        dispatch(deleteSubscribedStatement(statementId));
-    }
-
     useEffect(() => {
         //for defferd app install
         setDeferredPrompt(install.deferredPrompt);
-
+    
     }, [])
-
-
-    useEffect(() => {
-
-        if (isLgged) {
-
-            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB);
-        }
-        return () => {
-            unsubscribe()
-        }
-    }, [isLgged])
+    
 
 
 

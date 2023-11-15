@@ -1,6 +1,6 @@
 
 import { Results, Statement } from "delib-npm";
-import _ from "lodash";
+
 
 
 //create a function which sorts an array according to results
@@ -9,9 +9,10 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
     
         const results: Results[] = [];
         if (statements.length === 0) return [];
-        let _remainStatements = [...statements];
-        let counter = 0;
 
+        let _remainStatements = [...statements];
+        
+        let counter = 0;
         while (_remainStatements.length > 0 && counter < 8) {
          
             const { result, remainStatements } = createResult(_remainStatements[0], _remainStatements)
@@ -49,6 +50,31 @@ function createResult(statement: Statement, statements: Statement[]): { result: 
     };
 }
 
+
+
+function createResultLevel(statement: Statement, statements: Statement[]): { result: Results, remainStatements: Statement[] } {
+    try {
+
+        const ids = new Set<string>();
+        ids.add(statement.statementId);
+
+        const subs = statements.filter(s => s.parentId === statement.statementId).sort((b, a) => b.lastUpdate - a.lastUpdate);
+        const _subs: Results[] = subs.map(sub => createResultLevel(sub, statements).result);
+
+        // remove subs from statements
+        subs.forEach(sub => ids.add(sub.statementId));
+        const remainStatements = statements.filter(s => !ids.has(s.statementId));
+
+        return {
+            result: { top: statement, sub: _subs },
+            remainStatements
+        };
+    } catch (error) {
+        console.error(error);
+        return { result: { top: statement, sub: [] }, remainStatements: statements };
+    }
+}
+
 function findTopParent(statement: Statement, statements: Statement[]): Statement {
     try {
         let parentStatement: Statement = statement;
@@ -69,27 +95,5 @@ function findTopParent(statement: Statement, statements: Statement[]): Statement
     } catch (error) {
         console.error(error);
         return statement;
-    }
-}
-
-function createResultLevel(statement: Statement, statements: Statement[]): { result: Results, remainStatements: Statement[] } {
-    try {
-
-        const ids = new Set<string>();
-        ids.add(statement.statementId);
-
-        const __subs = statements.filter(s => s.parentId === statement.statementId)
-        const subs = __subs.sort((b, a) => b.lastUpdate - a.lastUpdate).slice(-3);
-        const _subs: Results[] = subs.map(sub => createResultLevel(sub, statements).result);
-        __subs.forEach(sub => ids.add(sub.statementId));
-        const remainStatements = statements.filter(s => !ids.has(s.statementId));
-
-        return {
-            result: { top: statement, sub: _subs },
-            remainStatements
-        };
-    } catch (error) {
-        console.error(error);
-        return { result: { top: statement, sub: [] }, remainStatements: statements };
     }
 }

@@ -70,8 +70,8 @@ export async function updateParentWithNewMessageCB(e: any) {
       const mapRef = db.doc(`${Collections.maps}/${topParentId}`);
       const mapDB = await mapRef.get().data() as MapIndex;
       if(!mapDB) throw new Error("map not found");
-      const indexsParent = mapDB.index.find((i: any) => i.key === parentId); 
-      mapDB.map[indexsParent.path[0]];
+      // const indexsParent = mapDB.index.find((i: any) => i.key === parentId); 
+  
 
 
 

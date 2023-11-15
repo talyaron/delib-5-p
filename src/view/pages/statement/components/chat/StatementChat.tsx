@@ -15,7 +15,7 @@ import StatementChatSetQuestion from './StatementChatSetQuestion';
 import { isAuthorized } from '../../../../../functions/general/helpers';
 import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { statementSubscriptionSelector } from '../../../../../model/statements/statementsSlice';
-import _ from 'lodash';
+
 
 
 

@@ -3,11 +3,80 @@ import { Collections, Statement, StatementSubscription, StatementSubscriptionSch
 import { DB } from "../config";
 import { Unsubscribe } from "firebase/auth";
 import { store } from "../../../model/store";
-import { listenedStatements } from "../../../view/pages/main/Main";
+import { listenedStatements } from "../../../view/pages/home/App";
 
 
 
 
+export function listenToTopStatements(setStatementsCB: Function, deleteStatementCB: Function): Unsubscribe {
+    try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+
+        const statementsRef = collection(DB, Collections.statementsSubscribe);
+        const q = query(statementsRef, where("userId", "==", user.uid), where("statement.parentId", "==", 'top'), orderBy("lastUpdate", "desc"), limit(5));
+
+        return onSnapshot(q, (statementsDB) => {
+            statementsDB.docChanges().forEach((change) => {
+                const statementSubscription = change.doc.data() as StatementSubscription;
+
+                if (change.type === "added") {
+                    listenedStatements.add(statementSubscription.statement.statementId);
+                    setStatementsCB(statementSubscription.statement);
+                    listenToSubStatements(statementSubscription.statement.statementId, setStatementsCB, deleteStatementCB);
+                }
+
+                if (change.type === "modified") {
+                    listenedStatements.add(statementSubscription.statement.statementId);
+                    console.log("top statement changed", statementSubscription.statement.statementId);
+                }
+
+                if (change.type === "removed") {
+                    listenedStatements.delete(statementSubscription.statement.statementId);
+                    deleteStatementCB(statementSubscription.statement.statementId);
+                }
+
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        return () => { };
+    }
+}
+
+function listenToSubStatements(topStatementId:string, setStatementsCB: Function, deleteStatementCB: Function): Unsubscribe {
+    try {
+        const subStatementsRef = collection(DB, Collections.statements);
+        const q = query(subStatementsRef, where("topParentId", "==", topStatementId),where("isQuestion","==",true), orderBy("createdAt", "asc"), limit(50));
+
+        return onSnapshot(q, (statementsDB) => {
+            statementsDB.docChanges().forEach((change) => {
+                const statement = change.doc.data() as Statement;
+
+                if (change.type === "added") {
+                    listenedStatements.add(statement.statementId);
+                    setStatementsCB(statement);
+                }
+
+                if (change.type === "modified") {
+                    listenedStatements.add(statement.statementId);
+                    setStatementsCB(statement);
+                }
+
+                if (change.type === "removed") {
+                    listenedStatements.delete(statement.statementId);
+                    deleteStatementCB(statement.statementId);
+                }
+
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        return () => { };
+    }
+}
 
 
 export async function getStatmentsSubsciptions(): Promise<StatementSubscription[]> {
