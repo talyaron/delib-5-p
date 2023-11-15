@@ -3,6 +3,7 @@ import { Collections, Statement, StatementSubscription, StatementSubscriptionSch
 import { DB } from "../config";
 import { Unsubscribe } from "firebase/auth";
 import { store } from "../../../model/store";
+import { listenedStatements } from "../../../view/pages/main/Main";
 
 
 
@@ -44,7 +45,7 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
             const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
             if (!statementSubscription) return;
             StatementSubscriptionSchema.parse(statementSubscription);
-          
+
             updateStore(statementSubscription);
         });
     } catch (error) {
@@ -95,24 +96,25 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
         return onSnapshot(q, (subsDB) => {
 
             subsDB.docChanges().forEach((change) => {
+                const statementSubscription = change.doc.data() as StatementSubscription;
 
                 if (change.type === "added") {
-                    const statementSubscription = change.doc.data() as any;
 
+                    listenedStatements.add(statementSubscription.statement.statementId);
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                     cb(statementSubscription);
                 }
 
                 if (change.type === "modified") {
-                    const statementSubscription = change.doc.data() as any;
+                    listenedStatements.add(statementSubscription.statement.statementId);
 
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                     cb(statementSubscription);
                 }
 
                 if (change.type === "removed") {
-                    const statementSubscription = change.doc.data() as any;
 
+                    listenedStatements.delete(statementSubscription.statement.statementId);
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
 
                     deleteCB(statementSubscription.statement.statementId);
@@ -121,6 +123,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
 
 
             });
+            console.log("listenedStatements", listenedStatements);
         })
 
     } catch (error) {

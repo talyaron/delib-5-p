@@ -15,9 +15,10 @@ import { sortStatementsByHirarrchy } from './mainControlles';
 import MainCard from './mainCard/MainCard';
 
 
+
 //install
 
-
+export const listenedStatements = new Set<string>();
 let unsubscribe: Function = () => { };
 
 const Main = () => {
