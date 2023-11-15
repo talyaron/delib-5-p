@@ -28,6 +28,7 @@ import { setUser } from "../../../model/users/userSlice"
 // Other
 import { install } from "../../../main"
 import { sortStatementsByHirarrchy } from "./mainControlles"
+import ScreenSlide from "../../components/animation/ScreenSlide"
 
 //install
 
@@ -97,35 +98,37 @@ const Main = () => {
     const _results = sortStatementsByHirarrchy(_statements)
 
     return (
-        <div className="page">
-            <div className="page__header">
-                <div className="page__header__title">
-                    <h1>דליב</h1>
-                    <b>-</b>
-                    <h2> יוצרים הסכמות</h2>
+        <ScreenSlide>
+            <div className="page">
+                <div className="page__header">
+                    <div className="page__header__title">
+                        <h1>דליב</h1>
+                        <b>-</b>
+                        <h2> יוצרים הסכמות</h2>
+                    </div>
+                    <div className="btns">
+                        <button onClick={handleLogout}>התנתקות</button>
+                        {deferredPrompt && (
+                            <button onClick={handleInstallApp}>
+                                התקנת האפליקציה
+                            </button>
+                        )}
+                    </div>
                 </div>
-                <div className="btns">
-                    <button onClick={handleLogout}>התנתקות</button>
-                    {deferredPrompt && (
-                        <button onClick={handleInstallApp}>
-                            התקנת האפליקציה
-                        </button>
-                    )}
+                <div className="page__main">
+                    <div className="wrapper">
+                        <h2>שיחות</h2>
+                        {_results.map((result: Results) => (
+                            <MainCard
+                                key={result.top.statementId}
+                                results={result}
+                            />
+                        ))}
+                    </div>
                 </div>
+                <Fav onclick={handleAddStatment} />
             </div>
-            <div className="page__main">
-                <div className="wrapper">
-                    <h2>שיחות</h2>
-                    {_results.map((result: Results) => (
-                        <MainCard
-                            key={result.top.statementId}
-                            results={result}
-                        />
-                    ))}
-                </div>
-            </div>
-            <Fav onclick={handleAddStatment} />
-        </div>
+        </ScreenSlide>
     )
 }
 

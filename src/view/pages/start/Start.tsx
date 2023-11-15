@@ -7,6 +7,7 @@ import { getIntialLocationSessionStorage } from "../../../functions/general/help
 
 //img
 import Logo from "../../../assets/logo/logo-128px.png"
+import ScreenSlide from "../../components/animation/ScreenSlide"
 // import EnterName from './EnterName';
 
 const Start = () => {
@@ -23,27 +24,32 @@ const Start = () => {
     }, [user])
 
     return (
-        <div className="page splashPage">
-            <h1 className="splashPage__title">Delib 5</h1>
-            <img src={Logo} alt="Delib logo" />
-            <h2 className="splashPage__subTitle">יוצרים הסכמות</h2>
-            <button className="splashPage__loginButton" onClick={googleLogin}>
-                התחברות עם גוגל
-            </button>
-            {/* <div className="btn loginButton" onClick={()=>setShowNameModul(true)}>
+        <ScreenSlide>
+            <div className="page splashPage">
+                <h1 className="splashPage__title">Delib 5</h1>
+                <img src={Logo} alt="Delib logo" />
+                <h2 className="splashPage__subTitle">יוצרים הסכמות</h2>
+                <button
+                    className="splashPage__loginButton"
+                    onClick={googleLogin}
+                >
+                    התחברות עם גוגל
+                </button>
+                {/* <div className="btn loginButton" onClick={()=>setShowNameModul(true)}>
                     התחברות עם שם זמני
                 </div> */}
-            <a
-                href="http://delib.org"
-                style={{
-                    marginTop: "30px",
-                    textDecoration: "none",
-                }}
-            >
-                <h2>מבית המכון לדמוקרטיה דיונית</h2>
-            </a>
-            {/* {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null} */}
-        </div>
+                <a
+                    href="http://delib.org"
+                    style={{
+                        marginTop: "30px",
+                        textDecoration: "none",
+                    }}
+                >
+                    <h2>מבית המכון לדמוקרטיה דיונית</h2>
+                </a>
+                {/* {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null} */}
+            </div>
+        </ScreenSlide>
     )
 }
 

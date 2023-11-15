@@ -3,7 +3,6 @@ import { FC, useEffect, useState, useRef } from "react"
 // Third party imports
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { User, Statement, StatementSubscription, Role } from "delib-npm"
-import { AnimatePresence } from "framer-motion"
 
 // firestore
 import {
@@ -57,6 +56,9 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive"
 // Helpers
 import { getUserPermissionToNotifications } from "../../../functions/notifications"
 import SwitchScreens from "./SwitchScreens"
+import ScreenSlide from "../../components/animation/ScreenSlide"
+import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
+import { AnimatePresence } from "framer-motion"
 
 let unsub: Function = () => {}
 let unsubSubStatements: Function = () => {}
@@ -236,63 +238,65 @@ const Statement: FC = () => {
     }
 
     return (
-        <div ref={pageRef} className="page">
-            {showAskPermission && (
-                <AskPermisssion showFn={setShowAskPermission} />
-            )}
-            {talker && (
-                <div
-                    onClick={() => {
-                        handleShowTalker(null)
-                    }}
-                >
-                    <ProfileImage user={talker} />
-                </div>
-            )}
-            <div className="page__header">
-                <div className="page__header__wrapper">
-                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                        <ArrowBackIosIcon />
+        <ScreenSlide>
+            <div ref={pageRef} className="page">
+                {showAskPermission && (
+                    <AskPermisssion showFn={setShowAskPermission} />
+                )}
+                {talker && (
+                    <div
+                        onClick={() => {
+                            handleShowTalker(null)
+                        }}
+                    >
+                        <ProfileImage user={talker} />
                     </div>
-                    <Link to={"/home"}>
-                        <HomeOutlinedIcon />
-                    </Link>
-                    <div onClick={handleRegisterToNotifications}>
-                        {hasNotificationPermission && hasNotifications ? (
-                            <NotificationsActiveIcon />
+                )}
+                <div className="page__header">
+                    <div className="page__header__wrapper">
+                        <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                            <ArrowBackIosIcon />
+                        </div>
+                        <Link to={"/home"}>
+                            <HomeOutlinedIcon />
+                        </Link>
+                        <div onClick={handleRegisterToNotifications}>
+                            {hasNotificationPermission && hasNotifications ? (
+                                <NotificationsActiveIcon />
+                            ) : (
+                                <NotificationsOffIcon htmlColor="lightgray" />
+                            )}
+                        </div>
+                        {!editHeader ? (
+                            <h1
+                                className={isAdmin ? "clickable" : ""}
+                                onClick={handleEditTitle}
+                            >
+                                {title}
+                            </h1>
                         ) : (
-                            <NotificationsOffIcon htmlColor="lightgray" />
+                            <EditTitle
+                                statement={statement}
+                                setEdit={setEditHeader}
+                            />
                         )}
+                        <div onClick={handleShare}>
+                            <ShareIcon />
+                        </div>
                     </div>
-                    {!editHeader ? (
-                        <h1
-                            className={isAdmin ? "clickable" : ""}
-                            onClick={handleEditTitle}
-                        >
-                            {title}
-                        </h1>
-                    ) : (
-                        <EditTitle
-                            statement={statement}
-                            setEdit={setEditHeader}
-                        />
-                    )}
-                    <div onClick={handleShare}>
-                        <ShareIcon />
-                    </div>
+                    {statement && <StatementNav statement={statement} />}
                 </div>
-                {statement && <StatementNav statement={statement} />}
+                <AnimatePresence mode="wait" initial={false}>
+                    <SwitchScreens
+                        key={page}
+                        screen={screen}
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                    />
+                </AnimatePresence>
             </div>
-            <AnimatePresence initial={false} mode="wait">
-                <SwitchScreens
-                    key={page}
-                    screen={screen}
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
-            </AnimatePresence>
-        </div>
+        </ScreenSlide>
     )
 }
 
