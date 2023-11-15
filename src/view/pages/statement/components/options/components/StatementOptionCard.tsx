@@ -3,19 +3,19 @@ import { Statement } from "delib-npm"
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks"
+} from "../../../../../../functions/hooks/reduxHooks"
 
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { setStatementElementHight } from "../../../../../model/statements/statementsSlice"
-import StatementChatMore from "../StatementChatMore"
-import StatementChatSetOption from "../chat/StatementChatSetOption"
-import Text from "../../../../components/text/Text"
+import { setStatementElementHight } from "../../../../../../model/statements/statementsSlice"
+import StatementChatMore from "../../StatementChatMore"
+import StatementChatSetOption from "../../chat/StatementChatSetOption"
+import Text from "../../../../../components/text/Text"
 
 //images
 
-import EditTitle from "../../../../components/edit/EditTitle"
-import { userSelector } from "../../../../../model/users/userSlice"
-import Evaluation from "../../../../components/evaluation/Evaluation"
+import EditTitle from "../../../../../components/edit/EditTitle"
+import { userSelector } from "../../../../../../model/users/userSlice"
+import Evaluation from "../../../../../components/evaluation/Evaluation"
 
 interface Props {
     statement: Statement

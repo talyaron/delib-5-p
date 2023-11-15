@@ -15,8 +15,8 @@ import { updateResultsSettings } from "../../../../../functions/db/results/setRe
 // Custom Components
 import Slider from "@mui/material/Slider"
 import ResultsComp from "./results/Results"
-import ScreenSlide from "../ScreenSlide"
-import { getResults } from "./helpers/getResults"
+import ScreenSlide from "../../../../components/animation/ScreenSlide"
+import { getResults } from "./documentCont"
 
 interface Props {
     statement: Statement

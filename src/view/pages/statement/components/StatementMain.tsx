@@ -3,7 +3,7 @@ import { Statement } from "delib-npm"
 import StatementChat from "./chat/StatementChat"
 import StatementInput from "../../../pages/statement/StatementInput"
 import "../../../style/page.scss"
-import ScreenSlide from "./ScreenSlide"
+import ScreenSlide from "../../../components/animation/ScreenSlide"
 
 interface Props {
     statement: Statement

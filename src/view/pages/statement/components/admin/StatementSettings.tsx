@@ -12,9 +12,7 @@ import {
     User,
     StatementSubscription,
     ResultsBy,
-    NavObject,
     Screen,
-    Statement,
 } from "delib-npm"
 
 // Custom components
@@ -46,7 +44,11 @@ import FormGroup from "@mui/material/FormGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Checkbox from "@mui/material/Checkbox"
 import { store } from "../../../../../model/store"
-import ScreenSlide from "../ScreenSlide"
+import ScreenSlide from "../../../../components/animation/ScreenSlide"
+import {
+    parseScreensCheckBoxes,
+    isSubPageChecked,
+} from "./statementSettingsCont"
 
 interface Props {
     simple?: boolean
@@ -280,38 +282,4 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             )}
         </ScreenSlide>
     )
-}
-
-function isSubPageChecked(statement: Statement | undefined, navObj: NavObject) {
-    try {
-        //in case of a new statement
-        if (!statement) {
-            if (navObj.default === false) return false
-            else return true
-        }
-        //in case of an existing statement
-        const subScreens = statement.subScreens as Screen[]
-        if (subScreens === undefined) return true
-        if (subScreens?.includes(navObj.link)) return true
-    } catch (error) {
-        console.error(error)
-        return true
-    }
-}
-
-function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
-    try {
-        if (!dataObj) throw new Error("dataObj is undefined")
-        if (!navArray) throw new Error("navArray is undefined")
-        const _navArray = [...navArray]
-
-        const screens = _navArray
-            //@ts-ignore
-            .filter((navObj) => dataObj[navObj.link] === "on")
-            .map((navObj) => navObj.link)
-        return screens
-    } catch (error) {
-        console.error(error)
-        return []
-    }
 }

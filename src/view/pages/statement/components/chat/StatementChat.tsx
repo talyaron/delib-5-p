@@ -18,6 +18,7 @@ import { isAuthorized } from "../../../../../functions/general/helpers"
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 import _ from "lodash"
+import { bubbleclass } from "./StatementChatCont"
 
 interface Props {
     statement: Statement
@@ -114,18 +115,3 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
 
 export default StatementChat
 
-function bubbleclass(isQuestion: boolean | undefined, isMe: boolean) {
-    if (isQuestion) {
-        if (isMe) {
-            return "bubble right question--yes"
-        } else {
-            return "bubble left question--yes"
-        }
-    } else {
-        if (isMe) {
-            return "bubble right question--no"
-        } else {
-            return "bubble left question--no"
-        }
-    }
-}

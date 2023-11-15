@@ -7,8 +7,8 @@ import AddIcon from "@mui/icons-material/Add"
 import Modal from "../../../../components/modal/Modal"
 
 // Custom Components
-import StatementOptionsNav from "./StatementOptionsNav"
-import StatementOptionCard from "./StatementOptionCard"
+import StatementOptionsNav from "./components/StatementOptionsNav"
+import StatementOptionCard from "./components/StatementOptionCard"
 import { setStatementOrder } from "../../../../../model/statements/statementsSlice"
 import NewSetStatementSimple from "../set/NewStatementSimple"
 
@@ -16,8 +16,8 @@ import NewSetStatementSimple from "../set/NewStatementSimple"
 
 // Redux Store
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
-import { sortSubStatements } from "./sortSubStatements"
-import ScreenSlide from "../ScreenSlide"
+import { sortSubStatements } from "./statementOptionsCont"
+import ScreenSlide from "../../../../components/animation/ScreenSlide"
 
 interface Props {
     statement: Statement

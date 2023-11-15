@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { Statement } from "delib-npm"
 
-import StatementOptionsNav from "../options/StatementOptionsNav"
+import StatementOptionsNav from "../options/components/StatementOptionsNav"
 
 import { useParams } from "react-router-dom"
 import {
@@ -14,7 +14,7 @@ import {
 import NewSetStatementSimple from "../set/NewStatementSimple"
 import Modal from "../../../../components/modal/Modal"
 import AddIcon from "@mui/icons-material/Add"
-import ScreenSlide from "../ScreenSlide"
+import ScreenSlide from "../../../../components/animation/ScreenSlide"
 import { OptionBar } from "./OptionBar"
 import { setSelectionsToOptions } from "./setSelectionsToOptions"
 import { sortOptionsIndex } from "./sortOptionsIndex"
