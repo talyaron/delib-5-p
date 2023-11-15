@@ -3,7 +3,7 @@ import { Statement } from "delib-npm"
 import StatementChat from "./chat/StatementChat"
 import StatementInput from "../../../pages/statement/StatementInput"
 import "../../../style/page.scss"
-import ScreenSlide from "../../../components/animation/ScreenSlide"
+import ScreenFadeInOut from "../../../components/animation/ScreenFadeInOut"
 
 interface Props {
     statement: Statement
@@ -46,7 +46,7 @@ const StatementMain: FC<Props> = ({
     const { hasChildren = false } = statement
 
     return (
-        <ScreenSlide>
+        <ScreenFadeInOut>
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>
@@ -61,7 +61,7 @@ const StatementMain: FC<Props> = ({
             <div style={{ marginTop: "auto" }}>
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }
 

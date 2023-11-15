@@ -4,21 +4,17 @@ import { Statement } from "delib-npm"
 import StatementOptionsNav from "../options/components/StatementOptionsNav"
 
 import { useParams } from "react-router-dom"
-import {
-    useAppDispatch,
-} from "../../../../../functions/hooks/reduxHooks"
+import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
 import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes"
-import {
-    setVoteToStore,
-} from "../../../../../model/vote/votesSlice"
+import { setVoteToStore } from "../../../../../model/vote/votesSlice"
 import NewSetStatementSimple from "../set/NewStatementSimple"
 import Modal from "../../../../components/modal/Modal"
 import AddIcon from "@mui/icons-material/Add"
-import ScreenSlide from "../../../../components/animation/ScreenSlide"
 import { OptionBar } from "./OptionBar"
 import { setSelectionsToOptions } from "./setSelectionsToOptions"
 import { sortOptionsIndex } from "./sortOptionsIndex"
 import { getTotalVoters } from "./getTotalVoters"
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 
 interface Props {
     statement: Statement
@@ -57,7 +53,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenSlide>
+        <ScreenFadeInOut>
             <div className="wrapper">
                 <h2>Votes</h2>
                 <p>הצביעו: {totalVotes}</p>
@@ -97,10 +93,8 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     </div>
                 </div>
             </div>
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }
 
 export default StatementVote
-
-

@@ -15,8 +15,8 @@ import { updateResultsSettings } from "../../../../../functions/db/results/setRe
 // Custom Components
 import Slider from "@mui/material/Slider"
 import ResultsComp from "./results/Results"
-import ScreenSlide from "../../../../components/animation/ScreenSlide"
 import { getResults } from "./documentCont"
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 
 interface Props {
     statement: Statement
@@ -79,7 +79,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenSlide>
+        <ScreenFadeInOut>
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>תוצאות הדיון</h2>
@@ -138,7 +138,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                     )}
                 </section>
             </div>
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }
 

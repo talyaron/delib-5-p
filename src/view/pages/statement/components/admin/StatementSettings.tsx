@@ -44,11 +44,11 @@ import FormGroup from "@mui/material/FormGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Checkbox from "@mui/material/Checkbox"
 import { store } from "../../../../../model/store"
-import ScreenSlide from "../../../../components/animation/ScreenSlide"
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont"
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 
 interface Props {
     simple?: boolean
@@ -181,7 +181,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     })()
 
     return (
-        <ScreenSlide>
+        <ScreenFadeInOut>
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -280,6 +280,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <Loader />
                 </div>
             )}
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }

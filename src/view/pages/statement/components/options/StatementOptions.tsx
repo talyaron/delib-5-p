@@ -17,7 +17,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple"
 // Redux Store
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
 import { sortSubStatements } from "./statementOptionsCont"
-import ScreenSlide from "../../../../components/animation/ScreenSlide"
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 
 interface Props {
     statement: Statement
@@ -68,7 +68,7 @@ const StatementOptions: FC<Props> = ({
         let tops: number[] = [topSum]
 
         return (
-            <ScreenSlide>
+            <ScreenFadeInOut>
                 <div className="wrapper">
                     {_subStatements?.map(
                         (statementSub: Statement, i: number) => {
@@ -112,7 +112,7 @@ const StatementOptions: FC<Props> = ({
                         />
                     </div>
                 </div>
-            </ScreenSlide>
+            </ScreenFadeInOut>
         )
     } catch (error) {
         console.error(error)
