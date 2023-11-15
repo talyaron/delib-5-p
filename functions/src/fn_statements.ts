@@ -2,7 +2,7 @@ const { logger } = require("firebase-functions");
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
 import admin = require('firebase-admin');
-import { Collections, Statement } from "delib-npm";
+import { Collections, MapIndex, Statement } from "delib-npm";
 
 export async function updateSubscribedListnersCB(event: any) {
 
@@ -40,7 +40,17 @@ export async function updateParentWithNewMessageCB(e: any) {
 
     logger.log("updateParentWithNewMessageCB", parentId);
     if (!parentId) throw new Error("parentId not found");
-    if (parentId !== "top") {
+    //update map
+  
+    if (statement.parentId === "top") {
+      
+      //create map if this is top statement
+      const mapRef = db.doc(`${Collections.maps}/${statement.statementId}`);
+      const map = createMap(statement);
+      mapRef.set(map, { merge: true });
+
+    } else {
+      
       //get parent
       const parentRef = db.doc(`statements/${parentId}`);
       const parentDB = await parentRef.get();
@@ -55,6 +65,14 @@ export async function updateParentWithNewMessageCB(e: any) {
         const topParentRef = db.doc(`statements/${topParentId}`);
         topParentRef.update({ lastChildUpdate: lastUpdate });
       }
+
+      //update map if this is not top statement
+      const mapRef = db.doc(`${Collections.maps}/${topParentId}`);
+      const mapDB = await mapRef.get().data() as MapIndex;
+      if(!mapDB) throw new Error("map not found");
+      const indexsParent = mapDB.index.find((i: any) => i.key === parentId); 
+      mapDB.map[indexsParent.path[0]];
+
 
 
 
@@ -71,7 +89,37 @@ export async function updateParentWithNewMessageCB(e: any) {
     console.error(error);
     return
   }
+
+
 }
+
+function createMap(statement: Statement): MapIndex | undefined {
+  try {
+    const map: MapIndex = {
+      map: {
+        top: {
+          statementId: statement.statementId,
+          statement: statement.statement,
+          lastUpdate: statement.lastUpdate,
+          lastMessage: '',
+          results: []
+        }
+      },
+      index: [{
+        key: statement.statementId,
+        path: [statement.statementId]
+      }],
+      lastUpdate: statement.lastUpdate
+    };
+    return map
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+}
+
+
+
 
 export async function sendNotificationsCB(e: any) {
   try {
