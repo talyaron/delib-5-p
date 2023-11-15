@@ -9,7 +9,6 @@ interface Props {
     statement: Statement
     subStatements: Statement[]
     handleShowTalker: Function
-    page: any
 }
 
 let firstTime = true
@@ -18,7 +17,6 @@ const StatementMain: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
-    page,
 }) => {
     const messagesEndRef = useRef(null)
 
@@ -55,7 +53,6 @@ const StatementMain: FC<Props> = ({
                         <StatementChat
                             statement={statementSub}
                             showImage={handleShowTalker}
-                            page={page}
                         />
                     </div>
                 ))}

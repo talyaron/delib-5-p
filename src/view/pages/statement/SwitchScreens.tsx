@@ -16,7 +16,6 @@ interface SwitchScreensProps {
     statement: Statement | undefined
     subStatements: Statement[]
     handleShowTalker: Function
-    page: any
 }
 
 export default function SwitchScreens({
@@ -24,7 +23,6 @@ export default function SwitchScreens({
     statement,
     subStatements,
     handleShowTalker,
-    page,
 }: SwitchScreensProps) {
     if (!statement) return null
 
@@ -39,7 +37,6 @@ export default function SwitchScreens({
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
-                    page={page}
                 />
             )
         case Screen.CHAT:
@@ -48,7 +45,6 @@ export default function SwitchScreens({
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
-                    page={page}
                 />
             )
         case Screen.OPTIONS:
@@ -81,7 +77,6 @@ export default function SwitchScreens({
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
-                    page={page}
                 />
             )
     }

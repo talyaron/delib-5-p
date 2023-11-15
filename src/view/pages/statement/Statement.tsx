@@ -86,7 +86,6 @@ const Statement: FC = () => {
     const [editHeader, setEditHeader] = useState<boolean>(false)
 
     const pageRef = useRef<any>(null)
-    const _page = pageRef.current
     const screen: string | undefined = page
 
     //check if the user is registered
@@ -214,15 +213,10 @@ const Statement: FC = () => {
     }, [statement])
 
     function handleBack() {
-        const page = pageRef.current
-        page.classList.add("page--anima__backOutScreen")
-        page.onanimationend = () => {
-            page.classList.remove("page--anima__backOutScreen")
-            navigate(
-                statement?.parentId === "top"
-                    ? "/home"
-                    : `/home/statement/${statement?.parentId}`
-            )
+        if (statement?.parentId === "top") {
+            navigate("/home")
+        } else {
+            navigate(`/home/statement/${statement?.parentId}`)
         }
     }
 
@@ -257,7 +251,7 @@ const Statement: FC = () => {
             )}
             <div className="page__header">
                 <div className="page__header__wrapper">
-                    <div onClick={handleBack}>
+                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
                         <ArrowBackIosIcon />
                     </div>
                     <Link to={"/home"}>
@@ -296,7 +290,6 @@ const Statement: FC = () => {
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
-                    page={_page}
                 />
             </AnimatePresence>
         </div>

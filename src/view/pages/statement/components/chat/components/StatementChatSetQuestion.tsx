@@ -2,7 +2,7 @@ import { Statement } from 'delib-npm';
 import {FC} from 'react';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { updateIsQuestion } from '../../../../../functions/db/statements/setStatments';
+import { updateIsQuestion } from '../../../../../../functions/db/statements/setStatments';
 
 interface Props {
     statement: Statement;
