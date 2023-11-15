@@ -36,7 +36,7 @@ const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker, 
         scrollToBottom()
     }, [subStatements]);
 
-    const {hasChildren = false} = statement;
+    
 
     return (
         <>
@@ -45,7 +45,7 @@ const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker, 
                 <div className="wrapper wrapper--chat">
                     {subStatements?.map((statementSub: Statement) => (
                         <div key={statementSub.statementId} >
-                            <StatementChat statement={statementSub} showImage={handleShowTalker} page={page} hasChildren={hasChildren}/>
+                            <StatementChat statement={statementSub} showImage={handleShowTalker} page={page}/>
                         </div>
                     ))
                     }

@@ -29,7 +29,7 @@ const StatementCard: FC<Props> = ({ statement }) => {
                 </div>
             </Link>
             <div className="statementCard__more">
-                <StatementChat statement={statement} hasChildren={true}/>
+                <StatementChat statement={statement}/>
                 <Edit statement={statement} />
             </div>
         </div>

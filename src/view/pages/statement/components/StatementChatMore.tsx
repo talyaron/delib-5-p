@@ -9,19 +9,18 @@ import { statementSubscriptionSelector } from '../../../../model/statements/stat
 interface Props {
     statement: Statement
     page?: any;
-    hasChildren: boolean;
 }
 
-const StatementChatMore: FC<Props> = ({ statement, page,hasChildren }) => {
+const StatementChatMore: FC<Props> = ({ statement, page }) => {
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statement.statementId))
     let messagesRead = 0;
     if (statementSubscription) messagesRead = statementSubscription.totalSubStatementsRead || 0;
     const messages = statement.totalSubStatements || 0;
     
     const navigate = useNavigate();
-    if (statement.hasChildren === false) return null;
-
-    if(!hasChildren) return null;
+   
+    const {isOption, isQuestion} = statement;
+    if(!(isOption || isQuestion)) return null;
 
     return (
         <div className="more clickable" onClick={() => handleCreateSubStatements(statement, navigate, page)}>

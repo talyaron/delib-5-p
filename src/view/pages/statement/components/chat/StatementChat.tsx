@@ -75,7 +75,7 @@ const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
             {isQuestion || isOption ?
               <div className="statement__bubble__more">
 
-                <StatementChatMore statement={statement} page={page} hasChildren={true} />
+                <StatementChatMore statement={statement} page={page} />
               </div> : null}
           </div>
 

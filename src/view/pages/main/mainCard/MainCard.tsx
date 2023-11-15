@@ -7,6 +7,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import StatementChatMore from '../../statement/components/StatementChatMore';
 
 
 interface Props {
@@ -28,6 +29,7 @@ const MainCard: FC<Props> = ({ results }) => {
                     <Link to={`/home/statement/${results.top.statementId}`}>
                         <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
                         {description ? <Text text={description} /> : null}
+                       <StatementChatMore statement={results.top} />
                     </Link>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -45,6 +47,7 @@ const MainCard: FC<Props> = ({ results }) => {
             <Link to={`/home/statement/${results.top.statementId}`}>
                 <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
                 {description ? <Text text={description} /> : null}
+                <StatementChatMore statement={results.top} />
             </Link>
 
             {results.sub?.map((subResult) => <SubResults key={subResult.top.statementId} results={subResult} level={2} />)}
@@ -64,6 +67,7 @@ function SubResults({ results, level = 2 }: Props): JSX.Element {
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Link to={`/home/statement/${results.top.statementId}`}>
                         <Text text={results.top.statement} />
+                        <StatementChatMore statement={results.top} />
                     </Link>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -77,6 +81,7 @@ function SubResults({ results, level = 2 }: Props): JSX.Element {
             <Link to={`/home/statement/${results.top.statementId}`}>
                 <div ><Text text={results.top.statement} onlyTitle={true} /></div>
                 {description ? <article><Text text={description} /></article> : null}
+                <StatementChatMore statement={results.top} />
             </Link>
             {results.sub?.map((subResult) => <SubResults key={subResult.top.statementId} results={subResult} level={level + 1} />)}
         </div>
