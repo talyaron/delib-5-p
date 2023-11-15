@@ -14,7 +14,7 @@ export function listenToTopStatements(setStatementsCB: Function, deleteStatement
         if (!user) throw new Error("User not logged in");
 
         const statementsRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsRef, where("userId", "==", user.uid), where("statement.parentId", "==", 'top'), orderBy("lastUpdate", "desc"), limit(5));
+        const q = query(statementsRef, where("userId", "==", user.uid), where("statement.parentId", "==", 'top'), orderBy("lastUpdate", "desc"), limit(40));
 
         return onSnapshot(q, (statementsDB) => {
             statementsDB.docChanges().forEach((change) => {
@@ -28,7 +28,7 @@ export function listenToTopStatements(setStatementsCB: Function, deleteStatement
 
                 if (change.type === "modified") {
                     listenedStatements.add(statementSubscription.statement.statementId);
-                    console.log("top statement changed", statementSubscription.statement.statementId);
+                  
                 }
 
                 if (change.type === "removed") {
@@ -158,7 +158,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
         if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where("statement.isQuestion", "==", true), orderBy("lastUpdate", "desc"), limit(20));
+        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where("statement.isQuestion", "==", true), orderBy("lastUpdate", "desc"), limit(40));
 
 
 
@@ -192,7 +192,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
 
 
             });
-            console.log("listenedStatements", listenedStatements);
+         
         })
 
     } catch (error) {
