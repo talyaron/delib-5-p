@@ -2,26 +2,37 @@
 import { Results, Statement } from "delib-npm";
 
 
+interface ResultLevel {
+    result: Results,
+    remainStatements: Statement[]
+}
+
 
 //create a function which sorts an array according to results
 export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
     try {
-    
+
         const results: Results[] = [];
         if (statements.length === 0) return [];
 
-        let _remainStatements = [...statements];
-        
+        let _statements = [...statements];
+
         let counter = 0;
-        while (_remainStatements.length > 0 && counter < 8) {
-         
-            const { result, remainStatements } = createResult(_remainStatements[0], _remainStatements)
+        while (_statements.length > 0 && counter < 8) {
+
+            //take firs statement
+            const statement = _statements[0];
+
+            //find top parent statement
+            const parentStatement = findMostTopStatement(statement, _statements);
+            const { result, remainStatements } = createResultLevel(parentStatement, _statements);
+            _statements = remainStatements;
+
+            //add result to results
             results.push(result);
-            _remainStatements = remainStatements;
-          
-            counter++;       
+            counter++;
         }
-           
+
         return results;
 
     } catch (error) {
@@ -30,29 +41,25 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
     }
 }
 
-
-
-function createResult(statement: Statement, statements: Statement[]): { result: Results, remainStatements: Statement[] } {
+function findMostTopStatement(statement: Statement, statements: Statement[],maxLevels:number = 10): Statement {
     try {
-        const ids = new Set<string>();
-        let _statements = [...statements]
-
-        const parentStatement: Statement = findTopParent(statement, _statements);
-        ids.add(parentStatement.statementId);
-        _statements = _statements.filter(s => s.statementId !== parentStatement.statementId);
-
-        const { result, remainStatements } = createResultLevel(parentStatement, _statements);
-
-        return { result, remainStatements };
+        let counter = 0;
+        let  parentStatement:Statement|undefined = statement
+        while (counter < maxLevels) {
+            parentStatement = statements.find(s => s.statementId === statement.parentId);
+            if (!parentStatement) return statement;
+            statement = parentStatement;
+            counter++;
+        }
+        return parentStatement;
     } catch (error) {
-        console.error(error);
-        return { result: { top: statement, sub: [] }, remainStatements: [...statements] }
-    };
+        console.error(error)
+        return statement;
+    }
 }
 
 
-
-function createResultLevel(statement: Statement, statements: Statement[]): { result: Results, remainStatements: Statement[] } {
+function createResultLevel(statement: Statement, statements: Statement[]): ResultLevel {
     try {
 
         const ids = new Set<string>();
@@ -75,25 +82,4 @@ function createResultLevel(statement: Statement, statements: Statement[]): { res
     }
 }
 
-function findTopParent(statement: Statement, statements: Statement[]): Statement {
-    try {
-        let parentStatement: Statement = statement;
-        if (!parentStatement) throw new Error("parentStatement is undefined");
-        if (!parentStatement.parentId) throw new Error("parentStatement.parentId is undefined");
-        let counter = 0;
-        while (parentStatement.parentId !== "top" || counter < 10) {
-          
-            //search for a parent statement
-            const _parentStatement = statements.find(s => s.statementId === parentStatement.parentId);
-            if (_parentStatement === undefined) break;
-            parentStatement = _parentStatement;
-            counter++;
-         
-        }
 
-        return parentStatement;
-    } catch (error) {
-        console.error(error);
-        return statement;
-    }
-}

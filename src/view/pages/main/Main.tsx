@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
-
-import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
-import { Results, StatementSubscription } from 'delib-npm';
+import { Results } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { deleteSubscribedStatement, setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
-import useAuth from '../../../functions/hooks/authHooks';
+import { statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
 
