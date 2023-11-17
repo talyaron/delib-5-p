@@ -35,7 +35,6 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     function handleDivideIntoRooms() {
         try {
             const { rooms } = divideIntoTopics(participants, maxParticipantsPerRoom);
-            console.log('rooms', rooms)
             setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {

@@ -47,8 +47,6 @@ const StatementOptions: FC<Props> = ({
 
         const { hasChildren = false } = statement
 
-        console.log("hasChildren", hasChildren)
-
         function dispatchCB(statement: Statement, order: number) {
             dispatch(
                 setStatementOrder({

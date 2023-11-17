@@ -28,7 +28,7 @@ import { setUser } from "../../../model/users/userSlice"
 // Other
 import { install } from "../../../main"
 import { sortStatementsByHirarrchy } from "./mainControlles"
-import ScreenSlide from "../../components/animation/ScreenSlide"
+import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 
 //install
 
@@ -98,7 +98,7 @@ const Main = () => {
     const _results = sortStatementsByHirarrchy(_statements)
 
     return (
-        <ScreenSlide>
+        <ScreenFadeInOut>
             <div className="page">
                 <div className="page__header">
                     <div className="page__header__title">
@@ -128,7 +128,7 @@ const Main = () => {
                 </div>
                 <Fav onclick={handleAddStatment} />
             </div>
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }
 

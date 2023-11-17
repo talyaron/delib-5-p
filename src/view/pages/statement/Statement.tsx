@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react"
+import { FC, useEffect, useState } from "react"
 
 // Third party imports
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -55,9 +55,9 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive"
 
 // Helpers
 import { getUserPermissionToNotifications } from "../../../functions/notifications"
-import SwitchScreens from "./SwitchScreens"
-import ScreenSlide from "../../components/animation/ScreenSlide"
+import SwitchScreens from "./components/SwitchScreens"
 import { AnimatePresence } from "framer-motion"
+import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 
 let unsub: Function = () => {}
 let unsubSubStatements: Function = () => {}
@@ -79,21 +79,11 @@ const Statement: FC = () => {
     // const user = store.getState().user.user
     const user = useSelector(userSelector)
 
-    console.log(statementId)
-
     // Use state
     const [talker, setTalker] = useState<User | null>(null)
     const [title, setTitle] = useState<string>("קבוצה")
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false)
     const [editHeader, setEditHeader] = useState<boolean>(false)
-    
-    const screen: string | undefined = page
-
-    //check if the user is registered
-
-    // const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
-
-    // const role: any = statementSubscription?.role || Role.member;
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
@@ -203,7 +193,7 @@ const Statement: FC = () => {
                 state: { from: window.location.pathname },
             })
         } else {
-            navigate(`/home/statement/${statement?.parentId}/chat`, {
+            navigate(`/home/statement/${statement?.parentId}/${page}`, {
                 state: { from: window.location.pathname },
             })
         }
@@ -225,7 +215,7 @@ const Statement: FC = () => {
     }
 
     return (
-        <ScreenSlide>
+        <ScreenFadeInOut>
             <div className="page">
                 {showAskPermission && (
                     <AskPermisssion showFn={setShowAskPermission} />
@@ -275,34 +265,16 @@ const Statement: FC = () => {
                 </div>
                 <AnimatePresence mode="wait" initial={false}>
                     <SwitchScreens
-                        key={page || statementId}
-                        screen={screen}
+                        key={statementId}
+                        screen={page}
                         statement={statement}
                         subStatements={subStatements}
                         handleShowTalker={handleShowTalker}
                     />
                 </AnimatePresence>
             </div>
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }
 
 export default Statement
-
-function navigationDirection(
-    currentStatement: Statement | null | undefined,
-    prevStatement: Statement | null | undefined
-): "forward" | "back" | undefined {
-    try {
-        if (!prevStatement) return "forward"
-        if (!currentStatement) return undefined
-        if (currentStatement.parentId === prevStatement.statementId)
-            return "forward"
-        if (currentStatement.statementId === prevStatement.parentId)
-            return "back"
-        return undefined
-    } catch (error) {
-        console.error(error)
-        return undefined
-    }
-}

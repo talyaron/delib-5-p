@@ -112,7 +112,6 @@ export function isAuthorized(statement: Statement, statementSubscription: Statem
 
     if (!statementSubscription) return false;
     StatementSubscriptionSchema.parse(statementSubscription);
-    console.log(statementSubscription)
     const role = statementSubscription?.role || Role.guest;
 
     if (role === Role.admin || role === Role.statementCreator || role === Role.systemAdmin) return true;

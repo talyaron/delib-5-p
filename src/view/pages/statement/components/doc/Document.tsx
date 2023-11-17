@@ -53,7 +53,6 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
             const data = new FormData(ev.target)
             const _resultsBy = data.get("results") as ResultsBy
-            console.log(_resultsBy)
             const numberOfResults = Number(data.get("numberOfResults"))
 
             setResultsBy(_resultsBy)

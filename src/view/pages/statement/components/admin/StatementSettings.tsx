@@ -162,7 +162,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             setIsLoading(false)
 
-            if (_statementId) navigate(`/home/statement/${_statementId}`)
+            if (_statementId) navigate(`/home/statement/${_statementId}/chat`)
             else throw new Error("statement not found")
         } catch (error) {
             console.error(error)
@@ -189,6 +189,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 >
                     <label htmlFor="statement">
                         <input
+                            autoFocus={true}
                             type="text"
                             name="statement"
                             placeholder="כותרת הקבוצה"

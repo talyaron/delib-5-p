@@ -10,7 +10,6 @@ export async function getResults(
 ): Promise<Results> {
     try {
         // const { results } = statement;
-        console.log("resultsBy", resultsBy, "numberOfResults", numberOfResults)
 
         const result: Results = { top: statement }
 
@@ -32,10 +31,6 @@ export async function getResults(
             async (subResult: Results) => {
                 const subStatement = subResult.top
                 const subResults: Statement[] = await getResultsDB(subStatement)
-                console.log(
-                    `subResults ${subResult.top.statement}:`,
-                    subResults
-                )
                 return subResults
             }
         )
@@ -62,8 +57,6 @@ function getResultsByOptions(
     numberOfResults: number
 ): Results[] {
     try {
-        console.log(subStatements)
-        console.log(numberOfResults)
         const maxOptions: Statement[] = subStatements
             .filter((s) => s.isOption)
             .sort((b, a) => a.consensus - b.consensus)
