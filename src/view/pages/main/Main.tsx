@@ -13,7 +13,7 @@ import MainCard from "./mainCard/MainCard"
 
 // Firestore functions
 import { logOut } from "../../../functions/db/auth"
-import { sortStatementsByHirarrchy } from './mainCont';
+import { prompStore, sortStatementsByHirarrchy } from './mainCont';
 import ScreenSlide from '../../components/animation/ScreenSlide';
 
 
@@ -38,17 +38,7 @@ const Main = () => {
 
     function handleInstallApp() {
         try {
-            const deferredPrompt = install.deferredPrompt
-
-            if (deferredPrompt) {
-                deferredPrompt.prompt()
-                deferredPrompt.userChoice.then((choiceResult: any) => {
-                    if (choiceResult.outcome === "accepted") {
-                        console.info("User accepted the A2HS prompt")
-                    }
-                    setDeferredPrompt(null)
-                })
-            }
+            prompStore(setDeferredPrompt);
         } catch (error) {
             console.error(error)
         }
@@ -104,3 +94,5 @@ const Main = () => {
 }
 
 export default React.memo(Main)
+
+

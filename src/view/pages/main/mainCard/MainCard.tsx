@@ -8,6 +8,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StatementChatMore from '../../statement/components/StatementChatMore';
+import Solutions from '../../../components/solutions/Solutions';
 
 
 interface Props {
@@ -30,6 +31,7 @@ const MainCard: FC<Props> = ({ results }) => {
                         <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
                         {description ? <Text text={description} /> : null}
                        <StatementChatMore statement={results.top} />
+                       <Solutions statement={results.top} />
                     </Link>
                 </AccordionSummary>
                 <AccordionDetails>

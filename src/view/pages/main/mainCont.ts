@@ -1,5 +1,6 @@
 
 import { Results, Statement } from "delib-npm";
+import { install } from "../../../main";
 
 
 interface ResultLevel {
@@ -89,6 +90,21 @@ function createResultLevel(statement: Statement, statements: Statement[], ids: S
     } catch (error) {
         console.error(error);
         return { result: { top: statement, sub: [] }, ids };
+    }
+}
+
+export function prompStore(setDeferredPrompt: React.Dispatch<any>) {
+    
+    const deferredPrompt = install.deferredPrompt;
+
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult: any) => {
+            if (choiceResult.outcome === "accepted") {
+                console.info("User accepted the A2HS prompt");
+            }
+            setDeferredPrompt(null);
+        });
     }
 }
 

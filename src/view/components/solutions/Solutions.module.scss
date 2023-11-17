@@ -1,0 +1,15 @@
+.solutions{
+  
+    display: flex;
+    flex-direction: column;
+}
+
+.solution{
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: .3rem;
+    margin: .1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0,0,0,0.5);
+}
