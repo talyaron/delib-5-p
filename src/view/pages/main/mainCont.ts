@@ -16,7 +16,7 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
         if (statements.length === 0) return [];
 
         let _statements = [...statements];
-
+console.log(_statements)
         //convert string set to string array
       
 
