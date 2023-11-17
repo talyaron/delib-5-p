@@ -4,6 +4,7 @@ import { Results } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import { setUser } from '../../../model/users/userSlice';
+import { install } from '../../../main';
 
 
 // Custom components
@@ -12,7 +13,7 @@ import MainCard from "./mainCard/MainCard"
 
 // Firestore functions
 import { logOut } from "../../../functions/db/auth"
-import { sortStatementsByHirarrchy } from './mainControlles';
+import { sortStatementsByHirarrchy } from './mainCont';
 import ScreenSlide from '../../components/animation/ScreenSlide';
 
 
