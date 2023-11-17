@@ -239,7 +239,7 @@ const Statement: FC = () => {
 
     return (
         <ScreenSlide>
-            <div ref={pageRef} className="page">
+            <div ref={pageRef} className="">
                 {showAskPermission && (
                     <AskPermisssion showFn={setShowAskPermission} />
                 )}

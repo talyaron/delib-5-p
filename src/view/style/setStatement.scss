@@ -16,7 +16,7 @@
     &__form {
         display: flex;
         flex-direction: column;
-        width: 75ch;
+        max-width: 75ch;
         height: 85vh;
         gap: 0.7rem;
         margin: auto;

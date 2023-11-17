@@ -26,7 +26,8 @@
             align-items: center;
             justify-content: space-between;
             flex-direction: row-reverse;
-            width: 75ch;
+            width: 100%;
+            padding: 1rem;
 
             //only not on mobile
             @media screen and (min-width: 600px) {
