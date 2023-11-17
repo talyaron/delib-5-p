@@ -7,14 +7,18 @@ import { statementsSubscriptionsSelector } from '../../../model/statements/state
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
 
-import { install } from '../../../main';
-import { sortStatementsByHirarrchy } from './mainControlles';
-import MainCard from './mainCard/MainCard';
+// Custom components
+import Fav from "../../components/fav/Fav"
+import MainCard from "./mainCard/MainCard"
 
+// Firestore functions
+import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement"
+import { logOut } from "../../../functions/db/auth"
 
 
 //install
 
+let unsubscribe: Function = () => {}
 
 
 
@@ -39,28 +43,28 @@ const Main = () => {
 
     function handleInstallApp() {
         try {
-            const deferredPrompt = install.deferredPrompt;
+            const deferredPrompt = install.deferredPrompt
 
             if (deferredPrompt) {
-                deferredPrompt.prompt();
+                deferredPrompt.prompt()
                 deferredPrompt.userChoice.then((choiceResult: any) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.info('User accepted the A2HS prompt');
+                    if (choiceResult.outcome === "accepted") {
+                        console.info("User accepted the A2HS prompt")
                     }
-                    setDeferredPrompt(null);
-                });
+                    setDeferredPrompt(null)
+                })
             }
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
     function handleAddStatment() {
-        navigate('/home/addStatment')
+        navigate("/home/addStatment")
     }
 
     function handleLogout() {
-        logOut();
+        logOut()
         dispatch(setUser(null))
     }
 
@@ -70,23 +74,37 @@ const Main = () => {
 
 
     return (
-        <div className='page'>
-            <div className="page__header">
-                <h1>דליב</h1>
-                <h2> יוצרים הסכמות </h2>
-                <div className="btns">
-                    <button onClick={handleLogout}>התנתקות</button>
-                    {deferredPrompt ? <button onClick={handleInstallApp}>התקנת האפליקציה</button> : null}
+        <ScreenSlide>
+            <div className="page">
+                <div className="page__header">
+                    <div className="page__header__title">
+                        <h1>דליב</h1>
+                        <b>-</b>
+                        <h2> יוצרים הסכמות</h2>
+                    </div>
+                    <div className="btns">
+                        <button onClick={handleLogout}>התנתקות</button>
+                        {deferredPrompt && (
+                            <button onClick={handleInstallApp}>
+                                התקנת האפליקציה
+                            </button>
+                        )}
+                    </div>
                 </div>
-            </div>
-            <div className="page__main">
-                <div className="wrapper">
-                    <h2>שיחות</h2>
-                    {_results.map((result: Results) => <MainCard key={result.top.statementId} results={result} />)}
+                <div className="page__main">
+                    <div className="wrapper">
+                        <h2>שיחות</h2>
+                        {_results.map((result: Results) => (
+                            <MainCard
+                                key={result.top.statementId}
+                                results={result}
+                            />
+                        ))}
+                    </div>
                 </div>
+                <Fav onclick={handleAddStatment} />
             </div>
-            <Fav onclick={handleAddStatment} />
-        </div>
+        </ScreenSlide>
     )
 }
 

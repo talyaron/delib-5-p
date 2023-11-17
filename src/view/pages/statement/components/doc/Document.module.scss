@@ -1,32 +1,28 @@
-.document{
+.document {
     background-color: white;
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
 }
 
-.resultsWrapper{
+.resultsWrapper {
     margin-top: 1rem;
     background-color: white;
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
 }
 
-
-
-.inputWrapper{
-   
+.inputWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-
-    >div{
+    > div {
         margin: 2rem;
         width: 50%;
         display: flex;
         flex-direction: column;
-        label{
-            margin-bottom: .5rem;
+        label {
+            margin-bottom: 0.5rem;
         }
     }
 }
