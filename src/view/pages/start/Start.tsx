@@ -24,32 +24,27 @@ const Start = () => {
     }, [user])
 
     return (
-        <ScreenSlide>
-            <div className="page splashPage">
-                <h1 className="splashPage__title">Delib 5</h1>
-                <img src={Logo} alt="Delib logo" />
-                <h2 className="splashPage__subTitle">יוצרים הסכמות</h2>
-                <button
-                    className="splashPage__loginButton"
-                    onClick={googleLogin}
-                >
-                    התחברות עם גוגל
-                </button>
-                {/* <div className="btn loginButton" onClick={()=>setShowNameModul(true)}>
+        <div className="page splashPage">
+            <h1 className="splashPage__title">Delib 5</h1>
+            <img src={Logo} alt="Delib logo" />
+            <h2 className="splashPage__subTitle">יוצרים הסכמות</h2>
+            <button className="splashPage__loginButton" onClick={googleLogin}>
+                התחברות עם גוגל
+            </button>
+            {/* <div className="btn loginButton" onClick={()=>setShowNameModul(true)}>
                     התחברות עם שם זמני
                 </div> */}
-                <a
-                    href="http://delib.org"
-                    style={{
-                        marginTop: "30px",
-                        textDecoration: "none",
-                    }}
-                >
-                    <h2>מבית המכון לדמוקרטיה דיונית</h2>
-                </a>
-                {/* {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null} */}
-            </div>
-        </ScreenSlide>
+            <a
+                href="http://delib.org"
+                style={{
+                    marginTop: "30px",
+                    textDecoration: "none",
+                }}
+            >
+                <h2>מבית המכון לדמוקרטיה דיונית</h2>
+            </a>
+            {/* {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null} */}
+        </div>
     )
 }
 

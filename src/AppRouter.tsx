@@ -1,5 +1,9 @@
-import React, { Suspense } from "react"
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import { Suspense } from "react"
+
+// Router
+import { Route, Routes, useLocation } from "react-router-dom"
+
+// Custom Page Components
 import Start from "./view/pages/start/Start"
 import All from "./view/pages/all/All"
 import ErrorPage from "./view/pages/error/ErrorPage"
@@ -7,15 +11,18 @@ import Main from "./view/pages/main/Main"
 import SetStatement from "./view/pages/statement/components/set/SetStatement"
 import Statement from "./view/pages/statement/Statement"
 import App from "./view/pages/home/App"
+
+// Third Party
 import { AnimatePresence } from "framer-motion"
-import { useLocation } from "react-router-dom"
 
 const AppRouter = () => {
     const location = useLocation()
 
+    const mainPage = location.pathname.split("/")[1]
+
     return (
         <AnimatePresence mode="wait" initial={false}>
-            <Routes location={location}>
+            <Routes location={location} key={mainPage}>
                 <Route path="/" element={<All />} errorElement={<ErrorPage />}>
                     <Route
                         index

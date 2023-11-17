@@ -23,8 +23,6 @@ export const resultsSlice = createSlice({
     reducers: {
         setResults: (state, action: PayloadAction<any>) => {
             try {
-                console.log(action.payload)
-                console.log(state.results)
             //     const result:Results = action.payload;
             //    const resultStore = state.results.find(result => result.statementId === action.payload.statementId);
             //    if(!resultStore){

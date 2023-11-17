@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Statement } from 'delib-npm'
 import Text from '../../../components/text/Text'
 import Edit from '../../../components/edit/Edit'
-import StatementChat from './StatementChatMore'
+import StatementChat from './chat/StatementChatMore'
 import Solution from './general/Solution'
 
 interface Props {

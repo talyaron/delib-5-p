@@ -117,14 +117,23 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             const newStatement: any = Object.fromEntries(data.entries())
 
-            newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
-            newStatement.statement = _statement;
-            newStatement.statementId = statement?.statementId || crypto.randomUUID();
-            newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
-            newStatement.parentId = statement?.parentId || statementId || "top";
-            newStatement.topParentId = statement?.topParentId || statementId || "top";
-            newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
-            newStatement.creator = statement?.creator || user;
+            newStatement.subScreens = parseScreensCheckBoxes(
+                newStatement,
+                navArray
+            )
+            newStatement.statement = _statement
+            newStatement.statementId =
+                statement?.statementId || crypto.randomUUID()
+            newStatement.creatorId =
+                statement?.creator.uid || store.getState().user.user?.uid
+            newStatement.parentId = statement?.parentId || statementId || "top"
+            newStatement.topParentId =
+                statement?.topParentId || statementId || "top"
+            newStatement.type =
+                statementId === undefined
+                    ? StatementType.GROUP
+                    : StatementType.STATEMENT
+            newStatement.creator = statement?.creator || user
             newStatement.results = {
                 resultsBy: resultsBy || ResultsBy.topVote,
                 deep: 1,
@@ -148,17 +157,13 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 if (newStatement[key] === "on") delete newStatement[key]
             }
 
-          
+            const _statementId = await setStatmentToDB(
+                newStatement,
+                setSubsciption
+            )
 
-            const _statementId = await setStatmentToDB(newStatement,statement, setSubsciption);
-
-            setIsLoading(false);
-
-            if (_statementId)
-                navigate(`/home/statement/${_statementId}`);
-
-            else
-                throw new Error("statement not found");
+            if (_statementId) navigate(`/home/statement/${_statementId}/chat`)
+            else throw new Error("statement not found")
         } catch (error) {
             console.error(error)
         }
@@ -184,6 +189,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 >
                     <label htmlFor="statement">
                         <input
+                            autoFocus={true}
                             type="text"
                             name="statement"
                             placeholder="כותרת הקבוצה"

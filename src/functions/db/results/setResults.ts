@@ -15,7 +15,6 @@ export async function updateResultsSettings(statementId: string, resultsBy: Resu
             numberOfResults,
             resultsBy
         }
-        console.log(results, statementId)
         await setDoc(statementRef, {results}, { merge: true });
 
 

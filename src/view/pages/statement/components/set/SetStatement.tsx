@@ -11,7 +11,7 @@ import ScreenSlide from "../../../../components/animation/ScreenSlide"
 export const SetStatement = () => {
     const { statementId } = useParams()
     return (
-        <ScreenSlide>
+        <ScreenSlide toSubStatement={true}>
             <div className="setStatement">
                 <div className="setStatement__header">
                     <span></span>

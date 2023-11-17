@@ -1,12 +1,12 @@
 import React from "react"
 
 // Custom components
-import StatementMain from "./components/StatementMain"
-import { StatementSettings } from "./components/admin/StatementSettings"
-import StatmentRooms from "./components/rooms/Rooms"
-import StatementVote from "./components/vote/StatementVote"
-import StatementOptions from "./components/options/StatementOptions"
-import Document from "./components/doc/Document"
+import StatementMain from "./StatementMain"
+import { StatementSettings } from "./admin/StatementSettings"
+import StatmentRooms from "./rooms/Rooms"
+import StatementVote from "./vote/StatementVote"
+import StatementOptions from "./options/StatementOptions"
+import Document from "./doc/Document"
 
 // Third party imports
 import { Screen, Statement } from "delib-npm"
