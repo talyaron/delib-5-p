@@ -1,6 +1,5 @@
-import { Statement, ResultsBy, Results } from "delib-npm"
+import { Statement, ResultsBy, Results,maxKeyInObject } from "delib-npm"
 import { getResultsDB } from "../../../../../functions/db/results/getResults"
-import { maxKeyInObject } from "../../../../../functions/general/helpers"
 
 export async function getResults(
     statement: Statement,

@@ -20,7 +20,7 @@ import ScreenSlide from '../../components/animation/ScreenSlide';
 const Main = () => {
     const navigate = useNavigate();
     const statements = [...useAppSelector(statementsSubscriptionsSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
-    console.log(statements)
+   
     const dispatch = useAppDispatch();
 
     //for defferd app install

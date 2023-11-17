@@ -41,48 +41,41 @@ export async function updateParentWithNewMessageCB(e: any) {
     logger.log("updateParentWithNewMessageCB", parentId);
     if (!parentId) throw new Error("parentId not found");
     //update map
-  
-    if (statement.parentId === "top") {
-      
-      //create map if this is top statement
-      const mapRef = db.doc(`${Collections.maps}/${statement.statementId}`);
-      const map = createMap(statement);
-      mapRef.set(map, { merge: true });
-
-    } else {
-      
-      //get parent
-      const parentRef = db.doc(`statements/${parentId}`);
-      const parentDB = await parentRef.get();
-      const parent = parentDB.data();
-      if (!parent) throw new Error("parent not found");
-      //update parent
-      const lastMessage = statement.statement;
-      const lastUpdate = Timestamp.now().toMillis();
-      parentRef.update({ lastMessage, lastUpdate, totalSubStatements: FieldValue.increment(1) });
-      //update topParent
-      if (topParentId) {
-        const topParentRef = db.doc(`statements/${topParentId}`);
-        topParentRef.update({ lastChildUpdate: lastUpdate });
-      }
-
-      //update map if this is not top statement
-      const mapRef = db.doc(`${Collections.maps}/${topParentId}`);
-      const mapDB = await mapRef.get().data() as MapIndex;
-      if(!mapDB) throw new Error("map not found");
-      // const indexsParent = mapDB.index.find((i: any) => i.key === parentId); 
-  
 
 
 
-
-      //increment totalSubStatements
-
-      if (topParentId) {
-        const topParentRef = db.doc(`statements/${topParentId}`);
-        topParentRef.update({ lastUpdate });
-      }
+    //get parent
+    const parentRef = db.doc(`statements/${parentId}`);
+    const parentDB = await parentRef.get();
+    const parent = parentDB.data();
+    if (!parent) throw new Error("parent not found");
+    //update parent
+    const lastMessage = statement.statement;
+    const lastUpdate = Timestamp.now().toMillis();
+    parentRef.update({ lastMessage, lastUpdate, totalSubStatements: FieldValue.increment(1) });
+    //update topParent
+    if (topParentId) {
+      const topParentRef = db.doc(`statements/${topParentId}`);
+      topParentRef.update({ lastChildUpdate: lastUpdate });
     }
+
+    //update map if this is not top statement
+    const mapRef = db.doc(`${Collections.maps}/${topParentId}`);
+    const mapDB = await mapRef.get().data() as MapIndex;
+    if (!mapDB) throw new Error("map not found");
+    // const indexsParent = mapDB.index.find((i: any) => i.key === parentId); 
+
+
+
+
+
+    //increment totalSubStatements
+
+    if (topParentId) {
+      const topParentRef = db.doc(`statements/${topParentId}`);
+      topParentRef.update({ lastUpdate });
+    }
+
     return
   } catch (error) {
     logger.log("error updating parent with new message", error);
@@ -92,32 +85,6 @@ export async function updateParentWithNewMessageCB(e: any) {
 
 
 }
-
-function createMap(statement: Statement): MapIndex | undefined {
-  try {
-    const map: MapIndex = {
-      map: {
-        top: {
-          statementId: statement.statementId,
-          statement: statement.statement,
-          lastUpdate: statement.lastUpdate,
-          lastMessage: '',
-          results: []
-        }
-      },
-      index: [{
-        key: statement.statementId,
-        path: [statement.statementId]
-      }],
-      lastUpdate: statement.lastUpdate
-    };
-    return map
-  } catch (error) {
-    console.error(error);
-    return undefined;
-  }
-}
-
 
 
 
