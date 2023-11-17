@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Fav from '../../components/fav/Fav';
 import { Results } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import { setUser } from '../../../model/users/userSlice';
-import { logOut } from '../../../functions/db/auth';
+
 
 // Custom components
 import Fav from "../../components/fav/Fav"
 import MainCard from "./mainCard/MainCard"
 
 // Firestore functions
-import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement"
 import { logOut } from "../../../functions/db/auth"
-
-
-//install
-
-let unsubscribe: Function = () => {}
-
+import { sortStatementsByHirarrchy } from './mainControlles';
+import ScreenSlide from '../../components/animation/ScreenSlide';
 
 
 const Main = () => {

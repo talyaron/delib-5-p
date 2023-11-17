@@ -117,9 +117,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             const newStatement: any = Object.fromEntries(data.entries())
 
-            const newStatement: any = Object.fromEntries(data.entries());
-
-
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;
             newStatement.statementId = statement?.statementId || crypto.randomUUID();
@@ -151,12 +148,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 if (newStatement[key] === "on") delete newStatement[key]
             }
 
-            const _statementId = await setStatmentToDB(
-                newStatement,
-                setSubsciption
-            )
-
-            setIsLoading(false)
+          
 
             const _statementId = await setStatmentToDB(newStatement,statement, setSubsciption);
 
@@ -254,10 +246,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         <option value={ResultsBy.topOptions}>
                             אופציה מועדפת
                         </option>
-                        {/* <option value={ResultsBy.topOne}> אופציה מועדפת או תוצאות ההצבעה </option>
-            <option value={ResultsBy.checkedBy}> אושר על ידי מספר חברים </option>
-            <option value={ResultsBy.consensusLevel}>מידת ההסכמה</option>
-            <option value={ResultsBy.privateCheck}> סימון אישי ש אופציות מועדפות </option> */}
                     </select>
 
                     <div className="btnBox">
