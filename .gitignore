@@ -26,4 +26,4 @@ dist-ssr
 configKey.ts
 
 .firebaserc
-dev-dist
+dev_dist
