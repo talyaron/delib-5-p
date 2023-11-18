@@ -9,6 +9,7 @@ import { getNewStatment } from "../../../../functions/general/helpers"
 
 // MUI
 import SendIcon from "@mui/icons-material/Send"
+import { IconButton } from "@mui/material"
 
 // Redux Store
 import { useAppSelector } from "../../../../functions/hooks/reduxHooks"
@@ -96,19 +97,20 @@ const StatementInput: FC<Props> = ({ statement }) => {
         <form
             onSubmit={handleAddStatement}
             name="theForm"
-            className="page__footer statement__input"
+            className="statement__form"
         >
-            <textarea
+            <input
+                className="statement__form__input"
                 name="newStatement"
                 onKeyUp={handleInput}
                 required
                 autoFocus={true}
             />
-            <button className="fav">
-                <div>
-                    <SendIcon>Submit</SendIcon>
-                </div>
-            </button>
+            <div className="statement__form__sendBtnBox">
+                <IconButton type="submit">
+                    <SendIcon />
+                </IconButton>
+            </div>
         </form>
     )
 }
