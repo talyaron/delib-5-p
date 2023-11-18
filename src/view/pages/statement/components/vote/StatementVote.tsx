@@ -70,27 +70,24 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                         )
                     })}
                 </div>
-                <StatementOptionsNav statement={statement} />
-                {showModal ? (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                        />
-                    </Modal>
-                ) : null}
-                <div
-                    className="fav fav--fixed"
-                    onClick={() => setShowModal(true)}
-                >
-                    <div>
-                        <AddIcon
-                            style={{
-                                transform: `translate(0px,-40%) scale(1.45)`,
-                            }}
-                        />
-                    </div>
+            </div>
+            <StatementOptionsNav statement={statement} />
+            {showModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setShowModal}
+                    />
+                </Modal>
+            )}
+            <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
+                <div>
+                    <AddIcon
+                        style={{
+                            transform: `translate(0px,-40%) scale(1.45)`,
+                        }}
+                    />
                 </div>
             </div>
         </ScreenFadeInOut>

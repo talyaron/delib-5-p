@@ -84,9 +84,7 @@ const StatementMain: FC<Props> = ({
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div style={{ marginTop: "auto" }}>
-                {statement && <StatementInput statement={statement} />}
-            </div>
+            {statement && <StatementInput statement={statement} />}
         </ScreenFadeInOut>
     ) : (
         <ScreenSlide toSubStatement={toSubStatement}>
@@ -101,9 +99,7 @@ const StatementMain: FC<Props> = ({
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div style={{ marginTop: "auto" }}>
-                {statement && <StatementInput statement={statement} />}
-            </div>
+            {statement && <StatementInput statement={statement} />}
         </ScreenSlide>
     )
 }
