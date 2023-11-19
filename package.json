@@ -23,7 +23,7 @@
     "@mui/material": "^5.13.7",
     "@reduxjs/toolkit": "^1.9.5",
     "deep-equal": "^2.2.2",
-    "delib-npm": "^1.1.22",
+    "delib-npm": "^1.1.23",
     "firebase": "^10.0.0",
     "framer-motion": "^10.16.5",
     "localforage": "^1.10.0",

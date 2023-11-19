@@ -11,6 +11,8 @@ interface Props {
 const Solutions: FC<Props> = ({ statement }) => {
 
     const { results, resultsSettings } = statement;
+  
+    console.log( results, resultsSettings)
 
     if (!results || !resultsSettings) {
         return null;

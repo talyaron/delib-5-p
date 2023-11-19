@@ -47,9 +47,7 @@ export async function updateVote(event: any) {
         if (!topVotedDB.exists) throw new Error(`topVoted ${topVotedId} do not exists`);
         const topVoted = topVotedDB.data() as Statement;
         const simpleTopVoted = statementToSimpleStatement(topVoted);
-        simpleTopVoted.voted = simpleTopVoted.voted ||0;
-       
-      
+     
 
         await db.doc(`${Collections.statements}/${newVote.parentId}`).update({"results.votes": [simpleTopVoted]});
         return true;
