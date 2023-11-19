@@ -2,7 +2,7 @@ import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 
 import { logBase } from "./helpers";
-import { Collections, Evaluation, EvaluationSchema, ResultsBy, SimpleStatement, Statement, StatementSchema, maxKeyInObject } from "delib-npm";
+import { Collections, Evaluation, EvaluationSchema, ResultsBy, SimpleStatement, Statement, StatementSchema, maxKeyInObject, statementToSimpleStatement } from "delib-npm";
 
 
 
@@ -180,9 +180,9 @@ async function updateParentStatementWithChildResults(parentId: string | undefine
         const parentStatement = parentStatementDB.data() as Statement;
         StatementSchema.parse(parentStatement);
 
-        const { results, selections } = parentStatement;
+        const { resultsSettings, selections } = parentStatement;
 
-        let { resultsBy } = getResultsSettings(results);
+        let { resultsBy } = getResultsSettings(resultsSettings);
 
         if (!selections) resultsBy = ResultsBy.topOptions;
 
@@ -199,14 +199,14 @@ async function updateParentStatementWithChildResults(parentId: string | undefine
                 const topVoteStatementData = topVoteStatement.data() as Statement;
                 StatementSchema.parse(topVoteStatementData);
 
-                await topVoteStatementRef.update({ results: { solutions: [topVoteStatementData] } });
+                await topVoteStatementRef.update({ results: { consensus: [topVoteStatementData] } });
                 break;
             case ResultsBy.topOptions:
-                const { numberOfResults =1 } = getResultsSettings(results);
+                const { numberOfResults = 1 } = getResultsSettings(resultsSettings);
                 const topOptionsRef = db.collection(Collections.statements).where("parentId", "==", parentId).orderBy("consensus", "desc").limit(numberOfResults);
                 const topOptionsSnap = await topOptionsRef.get();
-                const topOptions = topOptionsSnap.docs.map((st: any) => st.data() as Statement);
-                await parentStatementRef.update({ results: { solutions: topOptions } });
+                const topOptions = topOptionsSnap.docs.map((st: any) => statementToSimpleStatement(st.data()) as SimpleStatement);
+                await parentStatementRef.update({ results: { consensus: topOptions } });
                 break;
         }
 

@@ -30,8 +30,9 @@ const MainCard: FC<Props> = ({ results }) => {
                     <Link to={`/home/statement/${results.top.statementId}`}>
                         <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
                         {description ? <Text text={description} /> : null}
-                       <StatementChatMore statement={results.top} />
+                      
                        <Solutions statement={results.top} />
+                       <StatementChatMore statement={results.top} />
                     </Link>
                 </AccordionSummary>
                 <AccordionDetails>

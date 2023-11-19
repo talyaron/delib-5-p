@@ -1,39 +1,15 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 import { FieldValue } from 'firebase-admin/firestore'
+import { Collections, Statement, maxKeyInObject, statementToSimpleStatement } from "delib-npm";
 
-
-// export async function addVote(event: any) {
-//     try {
-//         const vote = event.data.data();
-
-//         db.doc(`statements/${vote.statementId}`).update({ votes: FieldValue.increment(1) });
-//         await updteSelection(vote.parentId, vote.statementId, 1)
-
-//     } catch (error) {
-//         logger.error(error);
-//     }
-// }
-
-// export async function removeVote(event: any) {
-//     try {
-
-//         const vote = event.data.data();
-
-//         db.doc(`statements/${vote.statementId}`).update({ votes: FieldValue.increment(-1) });
-//         await updteSelection(vote.parentId, vote.statementId, -1)
-//     } catch (error) {
-//         logger.error(error);
-//     }
-// }
 
 export async function updateVote(event: any) {
     try {
 
         const newVote = event.data.after.data();
-        logger.info(`newVote: ${JSON.stringify(newVote)}`)
-        const newVoteOptionId = newVote.statementId;
-        logger.info(`newVoteOptionId: ${newVoteOptionId}`)
+        const { statementId: newVoteOptionId } = newVote;
+
 
         //first vote
         if (event.data.before.data() !== undefined) {
@@ -56,12 +32,29 @@ export async function updateVote(event: any) {
             await db.doc(`statements/${newVote.parentId}`).update({
                 [`selections.${newVoteOptionId}`]: FieldValue.increment(1)
             });
-            
+
         }
 
+        //update top voted
+       
+        const parentStatementDB = await db.doc(`${Collections.statements}/${newVote.parentId}`).get();
+        if (!parentStatementDB.exists) throw new Error(`parentStatement ${newVote.parentId} do not exists`);
 
+        const parentStatement = parentStatementDB.data() as Statement;
+        const { selections } = parentStatement;
+        const topVotedId = maxKeyInObject(selections);
+        const topVotedDB = await db.doc(`${Collections.statements}/${topVotedId}`).get();
+        if (!topVotedDB.exists) throw new Error(`topVoted ${topVotedId} do not exists`);
+        const topVoted = topVotedDB.data() as Statement;
+        const simpleTopVoted = statementToSimpleStatement(topVoted);
+        simpleTopVoted.voted = simpleTopVoted.voted ||0;
+       
+      
 
+        await db.doc(`${Collections.statements}/${newVote.parentId}`).update({"results.votes": [simpleTopVoted]});
+        return true;
     } catch (error) {
         logger.error(error);
+        return false;
     }
 }

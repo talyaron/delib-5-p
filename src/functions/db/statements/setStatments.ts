@@ -6,6 +6,7 @@ import { Collections, Role } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 
 import { getUserPermissionToNotifications } from "../../notifications";
+import { stat } from "fs";
 
 const TextSchema = z.string().min(2);
 
@@ -24,6 +25,7 @@ export async function setStatmentToDB(statement: Statement, topStatement: Statem
         statement.topParentId = topParentId;
         statement.createdAt = Timestamp.now().toMillis();
         statement.lastUpdate = Timestamp.now().toMillis();
+        statement.results = { votes: [], consensus: [] };
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator)
 
