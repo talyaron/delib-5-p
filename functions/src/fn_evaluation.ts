@@ -187,7 +187,7 @@ async function updateParentStatementWithChildResults(parentId: string | undefine
 
        
 
-        const topOptionsRef = db.collection(Collections.statements).where("parentId", "==", parentId).orderBy("consensus", "desc").limit(numberOfResults);
+        const topOptionsRef = db.collection(Collections.statements).where("parentId", "==", parentId).where("isOption","==",true).orderBy("consensus", "desc").limit(numberOfResults);
         const topOptionsSnap = await topOptionsRef.get();
         const topOptions = topOptionsSnap.docs.map((st: any) => statementToSimpleStatement(st.data()) as SimpleStatement);
       
