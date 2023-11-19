@@ -1,8 +1,8 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 
-import { logBase } from "./helpers";
-import { Collections, Evaluation, EvaluationSchema, ResultsBy, SimpleStatement, Statement, StatementSchema, maxKeyInObject, statementToSimpleStatement } from "delib-npm";
+// import { logBase } from "./helpers";
+import { Collections, Evaluation, EvaluationSchema, ResultsBy, SimpleStatement, Statement, StatementSchema, statementToSimpleStatement } from "delib-npm";
 
 
 
@@ -23,8 +23,9 @@ export async function updateEvaluation(event: any) {
 
         const sumEvaluation = newPro - newCon;
         const n = newPro + Math.abs(newCon);
-        const nLog = logBase(n, 2);
-        const consensus = sumEvaluation / nLog;
+        const consensusScore = sumEvaluation / n;
+        const consensus = (Math.log2(Math.abs(consensusScore) + 1) * Math.sign(consensusScore)) * Math.log2(n);
+        // const consensus =logBase(Math.abs(consensusScore), 2)*Math.sign(consensusScore);
 
         //set consensus to statement in DB
         await statementRef.update({ consensus });
@@ -180,35 +181,19 @@ async function updateParentStatementWithChildResults(parentId: string | undefine
         const parentStatement = parentStatementDB.data() as Statement;
         StatementSchema.parse(parentStatement);
 
-        const { resultsSettings, selections } = parentStatement;
+        const { resultsSettings } = parentStatement;
 
-        let { resultsBy } = getResultsSettings(resultsSettings);
+        let { numberOfResults = 1 } = getResultsSettings(resultsSettings);
 
-        if (!selections) resultsBy = ResultsBy.topOptions;
+       
 
-        switch (resultsBy as ResultsBy) {
-            case ResultsBy.topVote:
+        const topOptionsRef = db.collection(Collections.statements).where("parentId", "==", parentId).orderBy("consensus", "desc").limit(numberOfResults);
+        const topOptionsSnap = await topOptionsRef.get();
+        const topOptions = topOptionsSnap.docs.map((st: any) => statementToSimpleStatement(st.data()) as SimpleStatement);
+        topOptions.forEach((st: SimpleStatement) => st.voted = st.voted || 0);
+        await parentStatementRef.update({"results.consensus": topOptions });
 
 
-                if (!selections) throw new Error("selection is not defined");
-                const maxVoteKey = maxKeyInObject(selections);
-                if (!maxVoteKey) throw new Error("maxVoteKey is not defined");
-                const topVoteStatementRef = db.collection(Collections.statements).doc(maxVoteKey);
-
-                const topVoteStatement = await topVoteStatementRef.get();
-                const topVoteStatementData = topVoteStatement.data() as Statement;
-                StatementSchema.parse(topVoteStatementData);
-
-                await topVoteStatementRef.update({ results: { consensus: [topVoteStatementData] } });
-                break;
-            case ResultsBy.topOptions:
-                const { numberOfResults = 1 } = getResultsSettings(resultsSettings);
-                const topOptionsRef = db.collection(Collections.statements).where("parentId", "==", parentId).orderBy("consensus", "desc").limit(numberOfResults);
-                const topOptionsSnap = await topOptionsRef.get();
-                const topOptions = topOptionsSnap.docs.map((st: any) => statementToSimpleStatement(st.data()) as SimpleStatement);
-                await parentStatementRef.update({ results: { consensus: topOptions } });
-                break;
-        }
 
 
 
