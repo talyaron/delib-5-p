@@ -126,7 +126,6 @@ b {
 }
 
 .wrapper {
-    box-sizing: border-box;
     max-width: 100vw;
     height: 100%;
     width: 75ch;
@@ -145,6 +144,14 @@ b {
     &--chat {
         gap: 20px;
     }
+}
+
+.wrapper::-webkit-scrollbar {
+    width: 1.5rem;
+}
+.wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
+    border-radius: 1rem;
 }
 
 .card {

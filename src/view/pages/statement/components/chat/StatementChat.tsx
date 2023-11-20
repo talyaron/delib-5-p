@@ -1,21 +1,23 @@
 import { FC, useState } from "react"
+
+// Third Party Imports
 import { Statement } from "delib-npm"
+import { useNavigate } from "react-router-dom"
+
+// Custom Components
 import StatementChatMore, {
     handleCreateSubStatements,
-} from "../StatementChatMore"
-
-//icons
-
-import Text from "../../../../components/text/Text"
+} from "./StatementChatMore"
 import StatementChatSetOption from "./components/StatementChatSetOption"
+import Text from "../../../../components/text/Text"
 import ProfileImage from "./components/ProfileImage"
-import { store } from "../../../../../model/store"
 import Solution from "../general/Solution"
-import { useNavigate } from "react-router-dom"
 import EditTitle from "../../../../components/edit/EditTitle"
 import StatementChatSetQuestion from "./components/StatementChatSetQuestion"
-import { isAuthorized } from "../../../../../functions/general/helpers"
+
+// Redux Store
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
+import { store } from "../../../../../model/store"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 import { bubbleclass } from "./StatementChatCont"
 import StatementChatSetEdit from "./components/StatementChatSetEdit"
@@ -25,7 +27,7 @@ interface Props {
     showImage: Function
 }
 
-const StatementChat: FC<Props> = ({ statement, showImage,  }) => {
+const StatementChat: FC<Props> = ({ statement, showImage }) => {
     const navigate = useNavigate()
     
     const statementubscription = useAppSelector(

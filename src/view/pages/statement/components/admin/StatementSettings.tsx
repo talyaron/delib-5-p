@@ -153,17 +153,13 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 if (newStatement[key] === "on") delete newStatement[key]
             }
 
-          
+            const _statementId = await setStatmentToDB(
+                newStatement,
+                setSubsciption
+            )
 
-            const _statementId = await setStatmentToDB(newStatement,statement, setSubsciption);
-
-            setIsLoading(false);
-
-            if (_statementId)
-                navigate(`/home/statement/${_statementId}`);
-
-            else
-                throw new Error("statement not found");
+            if (_statementId) navigate(`/home/statement/${_statementId}/chat`)
+            else throw new Error("statement not found")
         } catch (error) {
             console.error(error)
         }
@@ -189,6 +185,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 >
                     <label htmlFor="statement">
                         <input
+                            autoFocus={true}
                             type="text"
                             name="statement"
                             placeholder="כותרת הקבוצה"

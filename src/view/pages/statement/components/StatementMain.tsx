@@ -1,9 +1,14 @@
-import { FC, useEffect, useRef } from "react"
+import { FC, useEffect, useRef, useState } from "react"
+
+// Third Party Imports
 import { Statement } from "delib-npm"
+import { useLocation } from "react-router-dom"
+
+// Custom Components
 import StatementChat from "./chat/StatementChat"
-import StatementInput from "../../../pages/statement/StatementInput"
-import "../../../style/page.scss"
+import StatementInput from "./StatementInput"
 import ScreenFadeInOut from "../../../components/animation/ScreenFadeInOut"
+import ScreenSlide from "../../../components/animation/ScreenSlide"
 
 interface Props {
     statement: Statement
@@ -19,6 +24,29 @@ const StatementMain: FC<Props> = ({
     handleShowTalker,
 }) => {
     const messagesEndRef = useRef(null)
+    const location = useLocation()
+
+    // Use State
+    const [toSlide, setToSlide] = useState(false)
+    const [toSubStatement, setToSubStatement] = useState(false)
+
+    useEffect(() => {
+        const testToSlide = location.state
+            ? location.state.from.split("/").length === 5
+            : false
+
+        const previousStateId = location.state
+            ? location.state.from.split("/")[3]
+            : null
+
+        if (previousStateId === statement.parentId) {
+            setToSubStatement(true)
+        } else {
+            setToSubStatement(false)
+        }
+
+        setToSlide(testToSlide)
+    }, [statement.statementId])
 
     //scroll to bottom
     const scrollToBottom = () => {
@@ -43,9 +71,7 @@ const StatementMain: FC<Props> = ({
         scrollToBottom()
     }, [subStatements])
 
-    
-
-    return (
+    return !toSlide ? (
         <ScreenFadeInOut>
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
@@ -58,10 +84,23 @@ const StatementMain: FC<Props> = ({
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div style={{ marginTop: "auto" }}>
-                {statement && <StatementInput statement={statement} />}
-            </div>
+            {statement && <StatementInput statement={statement} />}
         </ScreenFadeInOut>
+    ) : (
+        <ScreenSlide toSubStatement={toSubStatement}>
+            <div className="wrapper wrapper--chat">
+                {subStatements?.map((statementSub: Statement) => (
+                    <div key={statementSub.statementId}>
+                        <StatementChat
+                            statement={statementSub}
+                            showImage={handleShowTalker}
+                        />
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
+            </div>
+            {statement && <StatementInput statement={statement} />}
+        </ScreenSlide>
     )
 }
 

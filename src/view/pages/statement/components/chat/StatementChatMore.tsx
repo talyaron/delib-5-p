@@ -1,10 +1,10 @@
 import { FC } from "react"
-import ChatIcon from "../../../../assets/chat.svg"
-import { setStatmentGroupToDB } from "../../../../functions/db/statements/setStatments"
+import ChatIcon from "../../../../../assets/chat.svg"
+import { setStatmentGroupToDB } from "../../../../../functions/db/statements/setStatments"
 import { Statement, StatementSubscription, StatementType } from "delib-npm"
 import { useNavigate } from "react-router-dom"
-import { useAppSelector } from "../../../../functions/hooks/reduxHooks"
-import { statementSubscriptionSelector } from "../../../../model/statements/statementsSlice"
+import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 
 interface Props {
     statement: Statement
@@ -63,7 +63,9 @@ export function handleCreateSubStatements(
 ) {
     try {
         setStatmentGroupToDB(statement)
-        navigate(`/home/statement/${statement.statementId}`)
+        navigate(`/home/statement/${statement.statementId}/chat`, {
+            state: { from: window.location.pathname },
+        })
     } catch (error) {
         console.error(error)
     }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react"
+import { FC, useEffect, useState } from "react"
 
 // Third party imports
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
@@ -58,6 +58,7 @@ import { getUserPermissionToNotifications } from "../../../functions/notificatio
 import SwitchScreens from "./SwitchScreens"
 import ScreenSlide from "../../components/animation/ScreenSlide"
 import { AnimatePresence } from "framer-motion"
+import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 
 let unsub: Function = () => {}
 let unsubSubStatements: Function = () => {}
@@ -85,18 +86,8 @@ const Statement: FC = () => {
     // Use state
     const [talker, setTalker] = useState<User | null>(null)
     const [title, setTitle] = useState<string>("קבוצה")
-    const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null)
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false)
     const [editHeader, setEditHeader] = useState<boolean>(false)
-
-    const pageRef = useRef<any>(null)
-    const screen: string | undefined = page
-
-    //check if the user is registered
-
-    // const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
-
-    // const role: any = statementSubscription?.role || Role.member;
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
@@ -148,22 +139,6 @@ const Statement: FC = () => {
     }
 
     useEffect(() => {
-        const page = pageRef.current
-        const animationDireaction = navigationDirection(statement, prevStId)
-
-        if (animationDireaction == "forward") {
-            page.classList.add("page--anima__forwardInScreen")
-            page.onanimationend = () => {
-                page.classList.remove("page--anima__forwardInScreen")
-            }
-        } else if (animationDireaction == "back") {
-            page.classList.add("page--anima__backInScreen")
-
-            page.onanimationend = () => {
-                page.classList.remove("page--anima__backInScreen")
-            }
-        }
-        setPrevStId(statement)
         if (statementId) {
             unsub = listenToStatement(statementId, updateStoreStatementCB)
         }
@@ -222,9 +197,13 @@ const Statement: FC = () => {
 
     function handleBack() {
         if (statement?.parentId === "top") {
-            navigate("/home")
+            navigate("/home", {
+                state: { from: window.location.pathname },
+            })
         } else {
-            navigate(`/home/statement/${statement?.parentId}`)
+            navigate(`/home/statement/${statement?.parentId}/${page}`, {
+                state: { from: window.location.pathname },
+            })
         }
     }
 
@@ -244,8 +223,8 @@ const Statement: FC = () => {
     }
 
     return (
-        <ScreenSlide>
-            <div ref={pageRef} className="">
+        <ScreenFadeInOut>
+            <div className="page">
                 {showAskPermission && (
                     <AskPermisssion showFn={setShowAskPermission} />
                 )}
@@ -294,34 +273,16 @@ const Statement: FC = () => {
                 </div>
                 <AnimatePresence mode="wait" initial={false}>
                     <SwitchScreens
-                        key={page}
-                        screen={screen}
+                        key={statementId}
+                        screen={page}
                         statement={statement}
                         subStatements={subStatements}
                         handleShowTalker={handleShowTalker}
                     />
                 </AnimatePresence>
             </div>
-        </ScreenSlide>
+        </ScreenFadeInOut>
     )
 }
 
 export default Statement
-
-function navigationDirection(
-    currentStatement: Statement | null | undefined,
-    prevStatement: Statement | null | undefined
-): "forward" | "back" | undefined {
-    try {
-        if (!prevStatement) return "forward"
-        if (!currentStatement) return undefined
-        if (currentStatement.parentId === prevStatement.statementId)
-            return "forward"
-        if (currentStatement.statementId === prevStatement.parentId)
-            return "back"
-        return undefined
-    } catch (error) {
-        console.error(error)
-        return undefined
-    }
-}

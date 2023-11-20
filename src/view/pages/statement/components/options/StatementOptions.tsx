@@ -30,7 +30,6 @@ const StatementOptions: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
-    showNav,
 }) => {
     try {
         const dispatch = useAppDispatch()
@@ -38,16 +37,10 @@ const StatementOptions: FC<Props> = ({
 
         const [showModal, setShowModal] = useState(false)
 
-        if (showNav === undefined) showNav = true
-
         const __substatements = subStatements.filter(
             (subStatement: Statement) => subStatement.isOption
         )
         const _subStatements = sortSubStatements(__substatements, sort)
-
-        const { hasChildren = false } = statement
-
-        console.log("hasChildren", hasChildren)
 
         function dispatchCB(statement: Statement, order: number) {
             dispatch(
@@ -89,9 +82,9 @@ const StatementOptions: FC<Props> = ({
                         }
                     )}
                 </div>
+                    <StatementOptionsNav statement={statement} />
                 {/* <Fav onclick={handleAddStatment} /> */}
-                {showNav ? <StatementOptionsNav statement={statement} /> : null}
-                {showModal ? (
+                {showModal && (
                     <Modal>
                         <NewSetStatementSimple
                             parentStatement={statement}
@@ -99,7 +92,7 @@ const StatementOptions: FC<Props> = ({
                             setShowModal={setShowModal}
                         />
                     </Modal>
-                ) : null}
+                )}
                 <div
                     className="fav fav--fixed"
                     onClick={() => setShowModal(true)}
