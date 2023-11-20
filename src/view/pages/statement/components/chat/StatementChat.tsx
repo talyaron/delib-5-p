@@ -21,6 +21,7 @@ import { store } from "../../../../../model/store"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 import { bubbleclass } from "./StatementChatCont"
 import StatementChatSetEdit from "./components/StatementChatSetEdit"
+import { isAuthorized } from "../../../../../functions/general/helpers"
 
 interface Props {
     statement: Statement

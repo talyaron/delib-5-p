@@ -3,7 +3,7 @@ import { Statement } from "delib-npm"
 import {useAppDispatch, useAppSelector} from "../../../../../../functions/hooks/reduxHooks"
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import { setStatementElementHight, statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice"
-import StatementChatMore from "../../StatementChatMore"
+
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption"
 import Text from "../../../../../components/text/Text"
 
@@ -13,6 +13,7 @@ import EditTitle from "../../../../../components/edit/EditTitle"
 import Evaluation from "../../../../../components/evaluation/Evaluation"
 import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit"
 import { isAuthorized } from "../../../../../../functions/general/helpers"
+import StatementChatMore from "../../chat/StatementChatMore"
 
 interface Props {
     statement: Statement

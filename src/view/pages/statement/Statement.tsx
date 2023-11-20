@@ -45,6 +45,7 @@ import { useSelector } from "react-redux"
 import StatementNav from "./components/nav/StatementNav"
 import EditTitle from "../../components/edit/EditTitle"
 import AskPermisssion from "../../components/askPermission/AskPermisssion"
+import SwitchScreens from "./components/SwitchScreens";
 
 //icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
@@ -55,8 +56,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive"
 
 // Helpers
 import { getUserPermissionToNotifications } from "../../../functions/notifications"
-import SwitchScreens from "./SwitchScreens"
-import ScreenSlide from "../../components/animation/ScreenSlide"
+
 import { AnimatePresence } from "framer-motion"
 import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 

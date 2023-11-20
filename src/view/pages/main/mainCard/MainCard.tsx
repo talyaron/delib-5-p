@@ -15,6 +15,8 @@ import Accordion from "@mui/material/Accordion"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import Solutions from "../../../components/solutions/Solutions"
+import StatementChatMore from "../../statement/components/chat/StatementChatMore"
 
 interface Props {
     results: _Results
@@ -22,8 +24,7 @@ interface Props {
 }
 
 const MainCard: FC<Props> = ({ results }) => {
-    const description = results.top.statement.split("\n").slice(1).join("\n")
-  
+      
     const description = results.top.statement.split('\n').slice(1).join('\n');
 
     if (results.sub && results.sub.length > 0) return (
