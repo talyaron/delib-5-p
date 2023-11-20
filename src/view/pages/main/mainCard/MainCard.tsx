@@ -55,7 +55,7 @@ const MainCard: FC<Props> = ({ results }) => {
     else return (
         <div className={styles.results}>
 
-            <Link to={`/home/statement/${results.top.statementId}`}>
+            <Link to={`/home/statement/${results.top.statementId}/chat`}>
                 <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
                 {description ? <Text text={description} /> : null}
                 <Solutions statement={results.top} />
