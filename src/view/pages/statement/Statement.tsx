@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from "react"
 // Third party imports
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { User, Statement, StatementSubscription, Role } from "delib-npm"
+import { AnimatePresence } from "framer-motion"
+import { t } from "i18next"
 
 // firestore
 import {
@@ -33,6 +35,7 @@ import {
 } from "../../../model/statements/statementsSlice"
 
 // Custom components
+import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 import ProfileImage from "../../components/profileImage/ProfileImage"
 
 // Models
@@ -45,7 +48,7 @@ import { useSelector } from "react-redux"
 import StatementNav from "./components/nav/StatementNav"
 import EditTitle from "../../components/edit/EditTitle"
 import AskPermisssion from "../../components/askPermission/AskPermisssion"
-import SwitchScreens from "./components/SwitchScreens";
+import SwitchScreens from "./components/SwitchScreens"
 
 //icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
@@ -57,9 +60,6 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive"
 // Helpers
 import { getUserPermissionToNotifications } from "../../../functions/notifications"
 
-import { AnimatePresence } from "framer-motion"
-import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
-
 let unsub: Function = () => {}
 let unsubSubStatements: Function = () => {}
 let unsubStatementSubscription: Function = () => {}
@@ -68,10 +68,8 @@ let unsubEvaluations: Function = () => {}
 const Statement: FC = () => {
     // Hooks
     const { statementId, page } = useParams()
-    const navigate = useNavigate();
-    const {pathname} = useLocation();
-
-  
+    const navigate = useNavigate()
+    const { pathname } = useLocation()
 
     // Redux hooks
     const dispatch: any = useAppDispatch()
@@ -85,7 +83,7 @@ const Statement: FC = () => {
 
     // Use state
     const [talker, setTalker] = useState<User | null>(null)
-    const [title, setTitle] = useState<string>("קבוצה")
+    const [title, setTitle] = useState<string>(t("Group"))
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false)
     const [editHeader, setEditHeader] = useState<boolean>(false)
 
@@ -116,13 +114,11 @@ const Statement: FC = () => {
     }
 
     function handleShare() {
-       
-    
-        const baseUrl = window.location.origin;
+        const baseUrl = window.location.origin
 
         const shareData = {
-            title: "דליב: יוצרים הסכמות ביחד",
-            text: `מוזמנים: ${statement?.statement}`,
+            title: t("Delib: We create agreements together"),
+            text: t("Invited:") + statement?.statement,
             url: `${baseUrl}${pathname}`,
         }
         navigator.share(shareData)

@@ -19,9 +19,9 @@
         width: 75ch;
         height: 100%;
         gap: 0.7rem;
-        margin: .5rem auto;
+        margin: 0.5rem auto;
         padding: 1rem;
-        overflow: auto;
+        overflow-y: auto;
 
         input {
             font-size: 1.2rem;
@@ -34,6 +34,7 @@
             font-size: 1.2rem;
             width: 100%;
             outline: none;
+            resize: none;
         }
         &::-webkit-scrollbar {
             width: 1.5rem;

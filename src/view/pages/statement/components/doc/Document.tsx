@@ -17,6 +17,7 @@ import Slider from "@mui/material/Slider"
 import ResultsComp from "./results/Results"
 import { getResults } from "./documentCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
+import { t } from "i18next"
 
 interface Props {
     statement: Statement
@@ -81,12 +82,12 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
         <ScreenFadeInOut>
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
-                    <h2>תוצאות הדיון</h2>
+                    <h2>{t("Discussion Results")}</h2>
                     <form onSubmit={handleGetResults}>
                         <div className={styles.inputWrapper}>
                             <div>
                                 <label htmlFor="resultsId">
-                                    הצגת תוצאות לפי
+                                    {t("Display Results According To")}
                                 </label>
                                 <select
                                     name="results"
@@ -97,17 +98,22 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                                     }
                                 >
                                     <option value={ResultsBy.topOptions}>
-                                        אופציות מקסימליות
+                                        {t("Maximum Options")}
                                     </option>
                                     <option value={ResultsBy.topVote}>
-                                        הצבעות
+                                        {t("Votes")}
                                     </option>
                                 </select>
                             </div>
                             {resultsBy === ResultsBy.topOptions && (
                                 <div>
                                     <label htmlFor="numberOfResults">
-                                        כמות פתרונות בכל רמה: {numberOfResults}
+                                        {
+                                            (t(
+                                                "Number of Solutions in Each Level:"
+                                            ),
+                                            numberOfResults)
+                                        }
                                     </label>
                                     <Slider
                                         defaultValue={numberOfResults || 2}
@@ -127,13 +133,15 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                             )}
                         </div>
                         <div className="btns">
-                            <button type="submit">הצגת תוצאות</button>
+                            <button type="submit">
+                                {t("Display Results")}
+                            </button>
                         </div>
                     </form>
                     {results.sub ? (
                         <ResultsComp results={results} />
                     ) : (
-                        <h2>לא נבחרו עדיין אפשרויות</h2>
+                        <h2>{t("No Options Selected Yet")}</h2>
                     )}
                 </section>
             </div>

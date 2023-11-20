@@ -1,26 +1,37 @@
 import { FC } from "react"
+
+// Icons
 import ChatIcon from "../../../../../assets/chat.svg"
+
+// Statements functions
 import { setStatmentGroupToDB } from "../../../../../functions/db/statements/setStatments"
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
+
+// Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm"
 import { useNavigate } from "react-router-dom"
+import { t } from "i18next"
+
+// Redux
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
-import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 
 interface Props {
     statement: Statement
-    page?: any;
+    page?: any
 }
 
 const StatementChatMore: FC<Props> = ({ statement, page }) => {
-    const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statement.statementId))
-    let messagesRead = 0;
-    if (statementSubscription) messagesRead = statementSubscription.totalSubStatementsRead || 0;
-    const messages = statement.totalSubStatements || 0;
-    
-    const navigate = useNavigate();
-   
-    const {isOption, isQuestion} = statement;
-    if(!(isOption || isQuestion)) return null;
+    const statementSubscription: StatementSubscription | undefined =
+        useAppSelector(statementSubscriptionSelector(statement.statementId))
+    let messagesRead = 0
+    if (statementSubscription)
+        messagesRead = statementSubscription.totalSubStatementsRead || 0
+    const messages = statement.totalSubStatements || 0
+
+    const navigate = useNavigate()
+
+    const { isOption, isQuestion } = statement
+    if (!(isOption || isQuestion)) return null
 
     return (
         <div
@@ -49,7 +60,9 @@ const StatementChatMore: FC<Props> = ({ statement, page }) => {
                 />
             </div>
             <div className="text">
-                {statement.lastMessage ? statement.lastMessage : "שיחות..."}
+                {statement.lastMessage
+                    ? statement.lastMessage
+                    : t("Conversations")}
             </div>
         </div>
     )

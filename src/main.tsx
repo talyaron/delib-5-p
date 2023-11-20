@@ -1,12 +1,12 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import "./view/style/style.scss"
+import "./i18n"
 
-import { RouterProvider, BrowserRouter } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 
 import { store } from "./model/store"
 import { Provider } from "react-redux"
-import { router } from "./router"
 import AppRouter from "./AppRouter"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

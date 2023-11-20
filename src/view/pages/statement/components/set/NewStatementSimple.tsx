@@ -1,107 +1,115 @@
-import { FC, useState } from 'react';
-import { StatementType } from '../../../../../model/statements/statementModel';
-import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
+import { FC, useState } from "react"
 
-import { UserSchema } from 'delib-npm';
-import Loader from '../../../../components/loaders/Loader';
+// Third party imports
+import { UserSchema } from "delib-npm"
+import { Statement, parseUserFromFirebase } from "delib-npm"
+import { t } from "i18next"
 
-import {Statement, parseUserFromFirebase } from 'delib-npm';
-import { store } from '../../../../../model/store';
+// Statements helpers
+import { StatementType } from "../../../../../model/statements/statementModel"
+import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments"
+
+// Custom Components
+import Loader from "../../../../components/loaders/Loader"
+
+// Redux
+import { store } from "../../../../../model/store"
 
 interface Props {
-    parentStatement: Statement;
-    isOption?: boolean;
-    setShowModal: Function;
+    parentStatement: Statement
+    isOption?: boolean
+    setShowModal: Function
 }
 
-
-const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowModal }) => {
-
-
-
-    const [isLoading, setIsLoading] = useState(false);
-
-
+const NewSetStatementSimple: FC<Props> = ({
+    parentStatement,
+    isOption,
+    setShowModal,
+}) => {
+    const [isLoading, setIsLoading] = useState(false)
 
     async function handleAddStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
+            ev.preventDefault()
+            setIsLoading(true)
+            const data = new FormData(ev.currentTarget)
 
-            ev.preventDefault();
-            setIsLoading(true);
-            const data = new FormData(ev.currentTarget);
-
-            let title: any = data.get('statement');
-            const description = data.get('description');
+            let title: any = data.get("statement")
+            const description = data.get("description")
             //add to title * at the beggining
-            if (title && !title.startsWith('*')) title = `*${title}`;
-            const _statement = `${title}\n${description}`;
-            const _user = store.getState().user.user;
-            if (!_user) throw new Error("user not found");
-            const { displayName, email, photoURL, uid } = _user;
-            const user = { displayName, email, photoURL, uid };
-            UserSchema.parse(user);
+            if (title && !title.startsWith("*")) title = `*${title}`
+            const _statement = `${title}\n${description}`
+            const _user = store.getState().user.user
+            if (!_user) throw new Error("user not found")
+            const { displayName, email, photoURL, uid } = _user
+            const user = { displayName, email, photoURL, uid }
+            UserSchema.parse(user)
 
+            const newStatement: any = Object.fromEntries(data.entries())
 
-            const newStatement: any = Object.fromEntries(data.entries());
+            newStatement.statement = _statement
+            newStatement.statementId = crypto.randomUUID()
+            newStatement.creatorId = _user.uid
+            newStatement.parentId = parentStatement.statementId
+            newStatement.type = StatementType.GROUP
+            newStatement.creator = parseUserFromFirebase(_user)
+            if (isOption) newStatement.isOption = true
 
+            newStatement.lastUpdate = new Date().getTime()
 
+            newStatement.createdAt = new Date().getTime()
 
-            newStatement.statement = _statement;
-            newStatement.statementId = crypto.randomUUID();
-            newStatement.creatorId = _user.uid;
-            newStatement.parentId = parentStatement.statementId;
-            newStatement.type = StatementType.GROUP;
-            newStatement.creator =  parseUserFromFirebase(_user);
-            if(isOption) newStatement.isOption = true;
+            newStatement.consensus = 0
 
-            newStatement.lastUpdate = new Date().getTime();
+            const setSubsciption: boolean = true
 
-            newStatement.createdAt = new Date().getTime();
+            await setStatmentToDB(newStatement, setSubsciption)
 
-            newStatement.consensus = 0;
-
-            const setSubsciption: boolean = true;
-
-            await setStatmentToDB(newStatement, parentStatement, setSubsciption);
-
-            setIsLoading(false);
+            setIsLoading(false)
 
             setShowModal(false)
-
-
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
-
-
-
     return (
-       <>
+        <>
+            {!isLoading ? (
+                <form
+                    onSubmit={handleAddStatment}
+                    className="setStatement__form"
+                >
+                    <h2>{t("Add Option")}</h2>
+                    <input
+                        type="text"
+                        name="statement"
+                        placeholder={t("Title")}
+                    />
+                    <textarea
+                        name="description"
+                        placeholder={t("Description")}
+                        rows={4}
+                    ></textarea>
 
-            {!isLoading ? <form onSubmit={handleAddStatment} className='setStatement__form'>
-               <h2>הוספת אפשרות</h2>
-                <input type="text" name="statement" placeholder='כותרת' />
-                <textarea name="description" placeholder='תיאור'></textarea>
-
-
-                <div className="btnBox">
-                    <button type="submit">הוספה</button>
-                    <button className='btn btn--cancel'>ביטול</button>
-                </div>
-
-            </form> :
+                    <div className="btnBox">
+                        <button type="submit">{t("Add")}</button>
+                        <button className="btn btn--cancel">
+                            {t("Cancel")}
+                        </button>
+                    </div>
+                </form>
+            ) : (
                 <div className="center">
-                    <h2>מעדכן...</h2>
+                    <h2>{t("Updating")}</h2>
                     <Loader />
-                </div>}
-       </>
+                </div>
+            )}
+        </>
+    )
+}
 
-    );
-};
-
-export default NewSetStatementSimple;
+export default NewSetStatementSimple
 
 // function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
 //     try {
