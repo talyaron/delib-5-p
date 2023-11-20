@@ -24,7 +24,7 @@ import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 
 //install
 
-let unsubscribe: Function = () => {}
+
 
 const Main = () => {
     const navigate = useNavigate()

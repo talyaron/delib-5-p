@@ -92,9 +92,8 @@ export function getNewStatment({
             parentId: statement.statementId,
             topParentId:
                 statement.topParentId || statement.statementId || "top",
-            type: type || StatementType.STATEMENT,
             consensus: 0,
-            isOption: type === StatementType.SOLUTION ? true : false,
+            isOption: type === StatementType.option ? true : false,
         }
 
         return newStatement

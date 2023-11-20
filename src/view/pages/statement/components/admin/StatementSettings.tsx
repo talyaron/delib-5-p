@@ -3,7 +3,6 @@ import Slider from '@mui/material/Slider';
 
 
 // Statment imports
-import { StatementType } from "../../../../../model/statements/statementModel"
 import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments"
 import { navArray } from "../nav/StatementNav"
 
@@ -15,6 +14,7 @@ import {
     StatementSubscription,
     ResultsBy,
     Screen,
+    StatementType
 } from "delib-npm"
 
 // Custom components
@@ -133,7 +133,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.topParentId = statement?.topParentId || statementId || "top";
-            newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
+            newStatement.type = statementId === undefined ? StatementType.question : StatementType.statement;
+            newStatement.isQuestion = statementId === undefined ? true : false;
             newStatement.creator = statement?.creator || user;
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false

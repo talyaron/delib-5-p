@@ -24,6 +24,7 @@ export async function setStatmentToDB(
     addSubscription: boolean = true
 ) {
     try {
+        console.log(statement)
         TextSchema.parse(statement.statement)
         statement.consensus = 0
 
@@ -226,13 +227,13 @@ export async function setStatementisOption(statement: Statement) {
 
 export async function setStatmentGroupToDB(statement: Statement) {
     try {
-        if (statement.type === StatementType.GROUP) return
+        if (statement.type === StatementType.group) return
 
         const statementId = statement.statementId
         const statementRef = doc(DB, Collections.statements, statementId)
         await setDoc(
             statementRef,
-            { type: StatementType.GROUP },
+            { type: StatementType.group },
             { merge: true }
         )
     } catch (error) {
