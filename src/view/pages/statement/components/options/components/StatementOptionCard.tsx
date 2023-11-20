@@ -1,12 +1,8 @@
 import { FC, useEffect, useState, useRef } from "react"
 import { Statement } from "delib-npm"
-import {
-    useAppDispatch,
-    useAppSelector,
-} from "../../../../../../functions/hooks/reduxHooks"
-
+import {useAppDispatch, useAppSelector} from "../../../../../../functions/hooks/reduxHooks"
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { setStatementElementHight } from "../../../../../../model/statements/statementsSlice"
+import { setStatementElementHight, statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice"
 import StatementChatMore from "../../StatementChatMore"
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption"
 import Text from "../../../../../components/text/Text"
@@ -14,8 +10,9 @@ import Text from "../../../../../components/text/Text"
 //images
 
 import EditTitle from "../../../../../components/edit/EditTitle"
-import { userSelector } from "../../../../../../model/users/userSlice"
 import Evaluation from "../../../../../components/evaluation/Evaluation"
+import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit"
+import { isAuthorized } from "../../../../../../functions/general/helpers"
 
 interface Props {
     statement: Statement
@@ -26,8 +23,8 @@ interface Props {
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch()
 
-    const user = useAppSelector(userSelector)
-    // const order = useAppSelector(statementOrderSelector(statement.statementId))
+    const statementSubscription = useAppSelector(statementSubscriptionSelector(statement.statementId));
+    const _isAuthrized = isAuthorized(statement, statementSubscription)
     const elementRef = useRef<HTMLDivElement>(null)
 
     const [show, setShow] = useState(false)
@@ -47,9 +44,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
         )
     }, [])
 
-    function handleEdit() {
-        if (statement.creatorId === user?.uid) setEdit(true)
-    }
+ 
 
     return (
         <div
@@ -63,7 +58,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                     onClick={() => setShow(!show)}
                 >
                     {!edit ? (
-                        <div onClick={handleEdit}>
+                        <div className="clickable">
                             <Text text={statement.statement} />
                         </div>
                     ) : (
@@ -79,10 +74,13 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
             </div>
 
             <div className="options__card__chat">
-                <StatementChatMore statement={statement} hasChildren={true} />
-                <div className="press">
+                <StatementChatMore statement={statement} />
+                <div className="options__card__chat__settings">
+                    <StatementChatSetEdit isAuthrized={_isAuthrized} edit={edit} setEdit={setEdit} />
                     <StatementChatSetOption statement={statement} />
+
                 </div>
+
             </div>
         </div>
     )
