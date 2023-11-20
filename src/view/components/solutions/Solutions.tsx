@@ -2,6 +2,7 @@ import { ResultsBy, SimpleStatement, Statement } from 'delib-npm';
 import { FC } from 'react';
 import styles from './Solutions.module.scss';
 import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
+import Text from '../text/Text';
 
 
 interface Props {
@@ -11,8 +12,6 @@ interface Props {
 const Solutions: FC<Props> = ({ statement }) => {
 
     const { results, resultsSettings } = statement;
-  
-    console.log( results, resultsSettings)
 
     if (!results || !resultsSettings) {
         return null;
@@ -29,7 +28,7 @@ const Solutions: FC<Props> = ({ statement }) => {
             </section>
             <div>
                 {solutions.map((solution: SimpleStatement) => <p key={`solutions-${solution.statementId}`} className={styles.solution}>
-                    {solution.statement}
+                    <Text text={solution.statement} />
                 </p>)}
             </div>
         </div>

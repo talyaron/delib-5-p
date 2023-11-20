@@ -17,7 +17,7 @@ interface Props {
 }
 
 const MainCard: FC<Props> = ({ results }) => {
-    console.log('results', results.top)
+  
     const description = results.top.statement.split('\n').slice(1).join('\n');
 
     if (results.sub && results.sub.length > 0) return (
