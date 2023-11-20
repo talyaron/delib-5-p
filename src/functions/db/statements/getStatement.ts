@@ -1,10 +1,12 @@
 import {
+    and,
     collection,
     doc,
     getDoc,
     getDocs,
     limit,
     onSnapshot,
+    or,
     orderBy,
     query,
     where,
@@ -231,7 +233,13 @@ export function listenStatmentsSubsciptions(
         )
         const q = query(
             statementsSubscribeRef,
-            where("userId", "==", user.uid),
+            and(
+                where("userId", "==", user.uid),
+                or(
+                    where("statement.isQuestion", "==", true),
+                    where("statement.isOption", "==", true)
+                )
+            ),
             orderBy("lastUpdate", "desc"),
             limit(40)
         )

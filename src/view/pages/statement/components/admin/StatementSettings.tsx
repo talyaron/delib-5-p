@@ -54,10 +54,10 @@ import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 
 interface Props {
     simple?: boolean
-    new?: boolean
+    isNew?: boolean
 }
 
-export const StatementSettings: FC<Props> = ({ simple }) => {
+export const StatementSettings: FC<Props> = ({ simple, isNew }) => {
     const navigate = useNavigate()
     const { statementId } = useParams()
 
@@ -129,6 +129,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 deep: 1,
                 minConsensus: 1,
             }
+            newStatement.isQuestion = isNew ? true : statement?.isQuestion || false;
             newStatement.statementId = statement?.statementId || crypto.randomUUID();
             newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
             newStatement.parentId = statement?.parentId || statementId || "top";

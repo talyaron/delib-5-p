@@ -9,6 +9,7 @@ import ScreenSlide from "../../../../components/animation/ScreenSlide"
 
 export const SetStatement = () => {
     const { statementId } = useParams()
+    const isNew = statementId ? false : true
     return (
         <ScreenSlide toSubStatement={true}>
             <div className="setStatement">
@@ -21,7 +22,7 @@ export const SetStatement = () => {
                     </Link>
                 </div>
                 <div className="page__main">
-                    <StatementSettings />
+                    <StatementSettings isNew={isNew} />
                 </div>
             </div>
         </ScreenSlide>
