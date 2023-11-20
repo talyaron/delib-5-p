@@ -69,40 +69,14 @@
 
         &__chat{
             display: flex;
-         
+         justify-content: space-between;
+         &__settings{
+            display: flex;
+            align-items: center;
+            gap:1rem;
+         }
            
         }
-
-
-
-
-
-
-        //     &__text {
-        //         display: flex;
-        //         justify-content: space-between;
-        //         align-items: center;
-        //         padding: 10px;
-
-        //         &__statement {
-        //             display: flex;
-        //             width: 100%;
-        //             align-items: center;
-
-        //             .text {
-        //                 flex: auto;
-        //                 text-align: right;
-        //                 padding: 10px 20px;
-        //                 word-wrap: break-word;
-        //                 width: -webkit-fill-available;
-        //             }
-
-        //             .icon {
-        //                 padding: 10px;
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     &__nav {

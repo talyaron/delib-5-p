@@ -17,8 +17,8 @@ import StatementChatSetQuestion from "./components/StatementChatSetQuestion"
 import { isAuthorized } from "../../../../../functions/general/helpers"
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
-import _ from "lodash"
 import { bubbleclass } from "./StatementChatCont"
+import StatementChatSetEdit from "./components/StatementChatSetEdit"
 
 interface Props {
     statement: Statement
@@ -27,7 +27,6 @@ interface Props {
 
 const StatementChat: FC<Props> = ({ statement, showImage,  }) => {
     const navigate = useNavigate()
-    console.log(statement.statementId)
     
     const statementubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId)
@@ -44,10 +43,9 @@ const StatementChat: FC<Props> = ({ statement, showImage,  }) => {
     const { isOption, isQuestion } = statement
 
     function handleEdit() {
-        if (userId === creatorId) setIsEdit(true)
-        else {
+       if(!isEdit)
             handleCreateSubStatements(statement, navigate)
-        }
+        
     }
 
     return (
@@ -92,7 +90,6 @@ const StatementChat: FC<Props> = ({ statement, showImage,  }) => {
                         <div className="statement__bubble__more">
                             <StatementChatMore
                                 statement={statement}
-                                hasChildren={true}
                             />
                         </div>
                     ) : null}
@@ -105,6 +102,7 @@ const StatementChat: FC<Props> = ({ statement, showImage,  }) => {
                 {!_isAuthrized || isOption ? null : (
                     <StatementChatSetQuestion statement={statement} />
                 )}
+                <StatementChatSetEdit isAuthrized={_isAuthrized} setEdit={setIsEdit} edit={isEdit}/>
             </div>
         </div>
     )
