@@ -15,8 +15,6 @@ import { getUserPermissionToNotifications } from "../../notifications"
 import { getUserFromFirebase } from "../users/usersGeneral"
 import { DB, deviceToken } from "../config"
 
-
-
 const TextSchema = z.string().min(2)
 
 export async function setStatmentToDB(
@@ -38,9 +36,11 @@ export async function setStatmentToDB(
             statement.statementId
         )
         const statementPromises = []
-        const statementPromise = setDoc(statementRef, statement, {
+
+        const statementPromise = await setDoc(statementRef, statement, {
             merge: true,
         })
+
         statementPromises.push(statementPromise)
 
         //add subscription
