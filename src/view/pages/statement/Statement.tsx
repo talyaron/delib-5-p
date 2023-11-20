@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react"
 
 // Third party imports
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { User, Statement, StatementSubscription, Role } from "delib-npm"
 
 // firestore
@@ -57,7 +57,6 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive"
 import { getUserPermissionToNotifications } from "../../../functions/notifications"
 import SwitchScreens from "./SwitchScreens"
 import ScreenSlide from "../../components/animation/ScreenSlide"
-import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 import { AnimatePresence } from "framer-motion"
 
 let unsub: Function = () => {}
@@ -68,7 +67,10 @@ let unsubEvaluations: Function = () => {}
 const Statement: FC = () => {
     // Hooks
     const { statementId, page } = useParams()
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {pathname} = useLocation();
+
+  
 
     // Redux hooks
     const dispatch: any = useAppDispatch()
@@ -123,10 +125,14 @@ const Statement: FC = () => {
     }
 
     function handleShare() {
+       
+    
+        const baseUrl = window.location.origin;
+
         const shareData = {
             title: "דליב: יוצרים הסכמות ביחד",
             text: `מוזמנים: ${statement?.statement}`,
-            url: `https://delib-5.web.app/home/statement/${statementId}`,
+            url: `${baseUrl}${pathname}`,
         }
         navigator.share(shareData)
     }
