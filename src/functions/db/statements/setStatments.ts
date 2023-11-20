@@ -7,6 +7,7 @@ import { getUserFromFirebase } from "../users/usersGeneral";
 
 import { getUserPermissionToNotifications } from "../../notifications";
 
+
 const TextSchema = z.string().min(2);
 
 export async function setStatmentToDB(statement: Statement, topStatement: Statement | undefined, addSubscription: boolean = true) {
@@ -24,6 +25,8 @@ export async function setStatmentToDB(statement: Statement, topStatement: Statem
         statement.topParentId = topParentId;
         statement.createdAt = Timestamp.now().toMillis();
         statement.lastUpdate = Timestamp.now().toMillis();
+     
+        statement.results = { votes: [], consensus: [] };
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator)
 

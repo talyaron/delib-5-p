@@ -172,7 +172,7 @@ export function listenStatmentsSubsciptions(cb: Function, deleteCB: Function): U
                     listenedStatements.add(statementSubscription.statement.statementId);
                     statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                     cb(statementSubscription);
-                    console.log(statementSubscription)
+                 
                 }
 
                 if (change.type === "modified") {

@@ -1,5 +1,6 @@
 
 import { Results, Statement } from "delib-npm";
+import { install } from "../../../main";
 
 
 interface ResultLevel {
@@ -16,7 +17,7 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
         if (statements.length === 0) return [];
 
         let _statements = [...statements];
-console.log(_statements)
+
         //convert string set to string array
       
 
@@ -89,6 +90,21 @@ function createResultLevel(statement: Statement, statements: Statement[], ids: S
     } catch (error) {
         console.error(error);
         return { result: { top: statement, sub: [] }, ids };
+    }
+}
+
+export function prompStore(setDeferredPrompt: React.Dispatch<any>) {
+    
+    const deferredPrompt = install.deferredPrompt;
+
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult: any) => {
+            if (choiceResult.outcome === "accepted") {
+                console.info("User accepted the A2HS prompt");
+            }
+            setDeferredPrompt(null);
+        });
     }
 }
 

@@ -1,4 +1,6 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react";
+import Slider from '@mui/material/Slider';
+
 
 // Statment imports
 import { StatementType } from "../../../../../model/statements/statementModel"
@@ -68,7 +70,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const user: User | null = useAppSelector(userSelector)
 
     // Use State
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [numOfResults] = useState(statement?.resultsSettings?.numberOfResults || 1);
 
     useEffect(() => {
         let unsubscribe: Function = () => {}
@@ -107,6 +110,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             let title: any = data.get("statement")
             const resultsBy = data.get("resultsBy") as ResultsBy
+            const numberOfResults:number = Number(data.get("numberOfResults"));
 
             const description = data.get("description")
             //add to title * at the beggining
@@ -119,17 +123,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;
+            newStatement.resultsSettings = {
+                numberOfResults: numberOfResults,
+                resultsBy: resultsBy || ResultsBy.topVote,
+                deep: 1,
+                minConsensus: 1,
+            }
             newStatement.statementId = statement?.statementId || crypto.randomUUID();
             newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.topParentId = statement?.topParentId || statementId || "top";
             newStatement.type = statementId === undefined ? StatementType.GROUP : StatementType.STATEMENT;
             newStatement.creator = statement?.creator || user;
-            newStatement.results = {
-                resultsBy: resultsBy || ResultsBy.topVote,
-                deep: 1,
-                minConsensus: 0,
-            }
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false
             if (statement) {
@@ -168,7 +173,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n")
     const resultsBy: ResultsBy =
-        statement?.results?.resultsBy || ResultsBy.topVote
+        statement?.resultsSettings?.resultsBy || ResultsBy.topVote
     const hasChildren: boolean = (() => {
         if (!statement) return true
         if (statement.hasChildren === undefined) return true
@@ -247,6 +252,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             אופציה מועדפת
                         </option>
                     </select>
+                    <br></br>
+                    <label>כמה תוצאות להציג</label>
+                    <Slider defaultValue={numOfResults} min={1} max={10} valueLabelDisplay="on" name={"numberOfResults"}/>
 
                     <div className="btnBox">
                         <button type="submit">

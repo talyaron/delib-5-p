@@ -97,9 +97,6 @@ export function getNewStatment({ value, statement, type, user }: getNewStatmentP
   }
 }
 
-export function maxKeyInObject(obj: { [key: string]: number }):string {
-  return Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
-}
 
 export function isAuthorized(statement: Statement, statementSubscription: StatementSubscription | undefined, authrizedRoles?: Array<Role>) {
   try {

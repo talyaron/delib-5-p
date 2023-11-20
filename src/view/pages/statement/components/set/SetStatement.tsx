@@ -1,4 +1,3 @@
-import React from "react"
 
 // Third party imports
 import { Link, useParams } from "react-router-dom"
