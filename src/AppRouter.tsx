@@ -1,4 +1,4 @@
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 
 // Router
 import { Route, Routes, useLocation } from "react-router-dom"
@@ -14,11 +14,21 @@ import App from "./view/pages/home/App"
 
 // Third Party
 import { AnimatePresence } from "framer-motion"
+import { useTranslation } from "react-i18next"
 
 const AppRouter = () => {
     const location = useLocation()
+    const { i18n } = useTranslation()
 
     const mainPage = location.pathname.split("/")[1]
+
+    useEffect(() => {
+        const lang = localStorage.getItem("lang")
+        if (lang) {
+            i18n.changeLanguage(lang)
+            document.body.style.direction = lang === "he" ? "rtl" : "ltr"
+        }
+    }, [])
 
     return (
         <AnimatePresence mode="wait" initial={false}>
