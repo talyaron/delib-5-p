@@ -61,7 +61,7 @@ const Start = () => {
                 onChange={(e) => {
                     const lang = e.target.value
                     i18n.changeLanguage(lang)
-                    if (lang === "he") {
+                    if (lang === "he" || lang === "ar") {
                         document.body.style.direction = "rtl"
                     } else {
                         document.body.style.direction = "ltr"

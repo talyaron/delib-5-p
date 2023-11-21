@@ -5,16 +5,15 @@ import Solutions from "../../../../components/solutions/Solutions"
 import StatementChatMore from "../../../statement/components/chat/StatementChatMore"
 import { Link } from "react-router-dom"
 import styles from "./ResultsNode.module.scss"
-import { isShow, styleSwitch } from "./ResultsNodeCont"
+import {  styleSwitch } from "./ResultsNodeCont"
 
 interface Props {
     statement: Statement
     resultsType: StatementType[]
 }
-export const ResultsNode: FC<Props> = ({ statement, resultsType }) => {
+export const ResultsNode: FC<Props> = ({ statement }) => {
    
-    const show = isShow(statement, resultsType)
-    if (!show) return null
+   
 
     return (
         <div className={styleSwitch(styles, statement)}>

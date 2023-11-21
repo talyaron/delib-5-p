@@ -22,7 +22,7 @@ import { setUser } from "../../../model/users/userSlice"
 import { install } from "../../../main"
 import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
-import { isShow } from "./mainCard/resultsNode/ResultsNodeCont"
+
 
 const Main = () => {
     const navigate = useNavigate()
@@ -59,8 +59,8 @@ const Main = () => {
     }
     const resultsType = [StatementType.question, StatementType.option]
     const _statements = [...statements.map((statement) => statement.statement)]
-    const __statements = _statements.filter((s) => isShow(s, resultsType))
-    const _results = sortStatementsByHirarrchy(__statements)
+   
+    const _results = sortStatementsByHirarrchy(_statements)
 
     return (
         <ScreenFadeInOut>
