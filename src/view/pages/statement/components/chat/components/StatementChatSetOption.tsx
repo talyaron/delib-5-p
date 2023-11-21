@@ -1,6 +1,6 @@
 import {FC} from 'react'
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import { Statement, StatementSubscription, StatementType } from 'delib-npm';
+import { Statement, StatementSubscription } from 'delib-npm';
 import { setStatementisOption } from '../../../../../../functions/db/statements/setStatments';
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks';
 import {  statementSubscriptionSelector } from '../../../../../../model/statements/statementsSlice';

@@ -1,5 +1,6 @@
 import { Statement, ResultsBy, Results,maxKeyInObject } from "delib-npm"
 import { getResultsDB } from "../../../../../functions/db/results/getResults"
+import { isOptionFn } from "../../../../../functions/general/helpers"
 
 export async function getResults(
     statement: Statement,
@@ -57,7 +58,7 @@ function getResultsByOptions(
 ): Results[] {
     try {
         const maxOptions: Statement[] = subStatements
-            .filter((s) => s.isOption)
+            .filter((s) => isOptionFn(s))
             .sort((b, a) => a.consensus - b.consensus)
             .slice(0, numberOfResults || 1)
 

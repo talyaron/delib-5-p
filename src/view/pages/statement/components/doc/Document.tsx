@@ -26,10 +26,10 @@ interface Props {
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
     const [resultsBy, setResultsBy] = useState<ResultsBy>(
-        statement.results?.resultsBy || ResultsBy.topOptions
+        statement.resultsSettings?.resultsBy || ResultsBy.topOptions
     )
     const [numberOfResults, setNumberOfResults] = useState<number>(
-        statement.results?.numberOfResults || 2
+        statement.resultsSettings?.numberOfResults || 2
     )
     const [results, setResults] = useState<Results>({ top: statement })
 

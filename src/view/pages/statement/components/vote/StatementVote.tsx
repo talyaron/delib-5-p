@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 
 // Third party imports
-import { Statement, StatementType } from "delib-npm"
+import { Statement } from "delib-npm"
 import { useParams } from "react-router-dom"
 
 // Statements components

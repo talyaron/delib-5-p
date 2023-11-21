@@ -1,4 +1,3 @@
-import React from "react"
 
 // Custom components
 import StatementMain from "./StatementMain"
