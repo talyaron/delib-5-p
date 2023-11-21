@@ -22,6 +22,7 @@ const Start = () => {
     const { i18n, t } = useTranslation()
     const user = useAppSelector(userSelector)
     // const [showNameModul, setShowNameModul] = useState(false);
+    const savedLang = localStorage.getItem("lang")
 
     useEffect(() => {
         if (user) {
@@ -56,8 +57,17 @@ const Start = () => {
             </a>
             <select
                 style={{ position: "absolute", top: 20, left: 20 }}
-                defaultValue={"en"}
-                onChange={(e) => i18n.changeLanguage(e.target.value)}
+                defaultValue={savedLang || "en"}
+                onChange={(e) => {
+                    const lang = e.target.value
+                    i18n.changeLanguage(lang)
+                    if (lang === "he") {
+                        document.body.style.direction = "rtl"
+                    } else {
+                        document.body.style.direction = "ltr"
+                    }
+                    localStorage.setItem("lang", lang)
+                }}
             >
                 {LANGUAGES.map(({ code, label }) => (
                     <option key={code} value={code}>
