@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 // Third party imports
-import { Statement } from "delib-npm"
+import { Statement, StatementType } from "delib-npm"
 import { useParams } from "react-router"
 import AddIcon from "@mui/icons-material/Add"
 import Modal from "../../../../components/modal/Modal"
@@ -38,8 +38,9 @@ const StatementOptions: FC<Props> = ({
         const [showModal, setShowModal] = useState(false)
 
         const __substatements = subStatements.filter(
-            (subStatement: Statement) => subStatement.type === "option"
+            (subStatement: Statement) => subStatement.statementType === StatementType.option
         )
+        
         const _subStatements = sortSubStatements(__substatements, sort)
 
         function dispatchCB(statement: Statement, order: number) {

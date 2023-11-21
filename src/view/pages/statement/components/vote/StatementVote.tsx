@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 
 // Third party imports
-import { Statement } from "delib-npm"
+import { Statement, StatementType } from "delib-npm"
 import { useParams } from "react-router-dom"
 
 // Statements components
@@ -25,6 +25,7 @@ import { OptionBar } from "./OptionBar"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 
+
 interface Props {
     statement: Statement
     subStatements: Statement[]
@@ -40,7 +41,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false)
 
     const __options = subStatements.filter(
-        (subStatement: Statement) => subStatement.type === "option"
+        (subStatement: Statement) => subStatement.statementType === StatementType.option
     )
     const _options = setSelectionsToOptions(statement, __options)
     const options = sortOptionsIndex(_options, sort)
