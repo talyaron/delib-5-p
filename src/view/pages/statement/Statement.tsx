@@ -144,6 +144,7 @@ const Statement: FC = () => {
         }
     }, [statementId])
 
+
     useEffect(() => {
         if (user && statementId) {
             unsubSubStatements = listenToStatementsOfStatment(
@@ -218,6 +219,9 @@ const Statement: FC = () => {
         }
     }
 
+    const direction =
+        document.body.style.direction === "rtl" ? "row-reverse" : "row"
+
     return (
         <ScreenFadeInOut>
             <div className="page">
@@ -234,7 +238,10 @@ const Statement: FC = () => {
                     </div>
                 )}
                 <div className="page__header">
-                    <div className="page__header__wrapper">
+                    <div
+                        className="page__header__wrapper"
+                        style={{ flexDirection: direction }}
+                    >
                         <div onClick={handleBack} style={{ cursor: "pointer" }}>
                             <ArrowBackIosIcon />
                         </div>

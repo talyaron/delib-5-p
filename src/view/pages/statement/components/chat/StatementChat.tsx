@@ -1,7 +1,7 @@
 import { FC, useState } from "react"
 
 // Third Party Imports
-import { Statement } from "delib-npm"
+import { Statement, StatementType } from "delib-npm"
 import { useNavigate } from "react-router-dom"
 
 // Custom Components
@@ -29,6 +29,8 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement, showImage }) => {
+    const {statementType} = statement;
+
     const navigate = useNavigate()
     
     const statementubscription = useAppSelector(
@@ -43,7 +45,8 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
     const _isAuthrized = isAuthorized(statement, statementubscription)
 
     const isMe = userId === creatorId
-    const { isOption, isQuestion } = statement
+    const isQuestion = statementType === StatementType.question
+    const isOption = statementType === StatementType.option
 
     function handleEdit() {
        if(!isEdit)

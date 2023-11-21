@@ -38,7 +38,7 @@ const StatementOptions: FC<Props> = ({
         const [showModal, setShowModal] = useState(false)
 
         const __substatements = subStatements.filter(
-            (subStatement: Statement) => subStatement.isOption
+            (subStatement: Statement) => subStatement.type === "option"
         )
         const _subStatements = sortSubStatements(__substatements, sort)
 
@@ -82,7 +82,7 @@ const StatementOptions: FC<Props> = ({
                         }
                     )}
                 </div>
-                    <StatementOptionsNav statement={statement} />
+                <StatementOptionsNav statement={statement} />
                 {/* <Fav onclick={handleAddStatment} /> */}
                 {showModal && (
                     <Modal>

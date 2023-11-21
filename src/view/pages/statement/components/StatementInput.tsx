@@ -22,6 +22,9 @@ interface Props {
 const StatementInput: FC<Props> = ({ statement }) => {
     const user = useAppSelector(userSelector)
 
+    const direction =
+        document.body.style.direction === "rtl" ? "row" : "row-reverse"
+
     function handleAddStatement(e: any) {
         try {
             e.preventDefault()
@@ -98,8 +101,10 @@ const StatementInput: FC<Props> = ({ statement }) => {
             onSubmit={handleAddStatement}
             name="theForm"
             className="statement__form"
+            style={{ flexDirection: direction }}
         >
-            <input
+            <textarea
+                rows={3}
                 className="statement__form__input"
                 name="newStatement"
                 onKeyUp={handleInput}

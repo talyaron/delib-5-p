@@ -162,11 +162,10 @@
     &__form {
         width: 100%;
         display: flex;
-        flex-direction: row;
+        align-items: center;
         gap: 1rem;
 
         &__input {
-            border-radius: 4rem;
             padding: 0.5rem 1rem;
             resize: none;
             outline: none;
