@@ -1,9 +1,9 @@
 import { doc, getDoc } from "firebase/firestore";
-import { Collections } from "delib-npm";
+import { Collections,StatementSchema } from "delib-npm";
 import { DB } from "../config";
 import { getVoteId, voteSchema } from "../../../model/vote/voteModel";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { StatementSchema } from "../../../model/statements/statementModel";
+
 
 export async function getToVoteOnParent(parentId: string, updateStoreWitehVoteCB: Function) {
     try {

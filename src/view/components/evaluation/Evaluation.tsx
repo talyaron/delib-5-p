@@ -1,4 +1,4 @@
-import { Statement } from 'delib-npm'
+import { Statement, StatementType } from 'delib-npm'
 import { FC } from 'react'
 import Thumbs from '../thumbs/Thumbs';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Evaluation: FC<Props> = ({ statement }) => {
-    const { isOption } = statement;
+    const  isOption  = statement.statementType === StatementType.option ||  statement.statementType ===  StatementType.result;
 
     const evaluation = useAppSelector(evaluationSelector(statement.statementId))
     const { consensus:_consensus } = statement;

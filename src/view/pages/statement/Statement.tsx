@@ -89,7 +89,13 @@ const Statement: FC = () => {
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
-        dispatch(setStatement(statement))
+        try {
+            console.log(statement)
+            dispatch(setStatement(statement))
+        } catch (error) {
+            console.error(error)
+        }
+      
     }
     function deleteStatementCB(statementId: string) {
         dispatch(deleteStatement(statementId))

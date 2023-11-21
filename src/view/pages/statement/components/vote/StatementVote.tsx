@@ -25,7 +25,6 @@ import { OptionBar } from "./OptionBar"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 
-
 interface Props {
     statement: Statement
     subStatements: Statement[]
@@ -41,7 +40,9 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false)
 
     const __options = subStatements.filter(
-        (subStatement: Statement) => subStatement.statementType === StatementType.option
+        (subStatement: Statement) =>
+            subStatement.statementType === StatementType.option ||
+            subStatement.statementType === StatementType.result
     )
     const _options = setSelectionsToOptions(statement, __options)
     const options = sortOptionsIndex(_options, sort)

@@ -38,7 +38,7 @@ const StatementOptions: FC<Props> = ({
         const [showModal, setShowModal] = useState(false)
 
         const __substatements = subStatements.filter(
-            (subStatement: Statement) => subStatement.statementType === StatementType.option
+            (subStatement: Statement) => subStatement.statementType === StatementType.option || subStatement.statementType === StatementType.result
         )
         
         const _subStatements = sortSubStatements(__substatements, sort)
