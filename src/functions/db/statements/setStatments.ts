@@ -30,6 +30,7 @@ export async function setStatmentToDB(
         statement.consensus = 0
 
         statement.lastUpdate = Timestamp.now().toMillis();
+        statement.StatementType = statement.StatementType || StatementType.statement
         const {results, resultsSettings} = statement
         if(!results) statement.results = {consensus:[], votes: []}
         if(!resultsSettings) statement.resultsSettings = {resultsBy:ResultsBy.topVote}
@@ -233,13 +234,13 @@ export async function setStatementisOption(statement: Statement) {
 
 export async function setStatmentGroupToDB(statement: Statement) {
     try {
-        if (statement.type === StatementType.group) return
+        if (statement.type === StatementType.statement) return
 
         const statementId = statement.statementId
         const statementRef = doc(DB, Collections.statements, statementId)
         await setDoc(
             statementRef,
-            { type: StatementType.group },
+            { statementType: StatementType.statement },
             { merge: true }
         )
     } catch (error) {

@@ -11,7 +11,7 @@ interface Props {
     page?: any;
 }
 
-const StatementChatMore: FC<Props> = ({ statement, page }) => {
+const StatementChatMore: FC<Props> = ({ statement }) => {
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statement.statementId))
     let messagesRead = 0;
     if (statementSubscription) messagesRead = statementSubscription.totalSubStatementsRead || 0;
@@ -28,7 +28,7 @@ const StatementChatMore: FC<Props> = ({ statement, page }) => {
             onClick={() => handleCreateSubStatements(statement, navigate)}
         >
             <div className="icon">
-                {statement.type === StatementType.GROUP &&
+                {statement.type === StatementType.statement &&
                 messages - messagesRead > 0 ? (
                     <div className="redCircle">
                         {messages - messagesRead < 10
