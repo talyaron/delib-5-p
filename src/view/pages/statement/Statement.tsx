@@ -144,6 +144,7 @@ const Statement: FC = () => {
         }
     }, [statementId])
 
+
     useEffect(() => {
         if (user && statementId) {
             unsubSubStatements = listenToStatementsOfStatment(
