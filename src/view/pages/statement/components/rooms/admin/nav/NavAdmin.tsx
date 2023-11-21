@@ -1,49 +1,57 @@
 import { FC } from "react"
-import { RoomsStateSelection, Statement } from "delib-npm";
-import _styles from '../admin.module.css';
-const styles = _styles as any;
 
+// Third party
+import { RoomsStateSelection, Statement } from "delib-npm"
+import { t } from "i18next"
 
+// Styles
+import _styles from "../admin.module.css"
+
+const styles = _styles as any
 
 interface Props {
-    roomSelectionFn: Function;
-    statement: Statement;
-
+    roomSelectionFn: Function
+    statement: Statement
 }
 
 interface AdminNav {
-    link: RoomsStateSelection;
-    name: string;
-    id: string;
+    link: RoomsStateSelection
+    name: string
+    id: string
 }
 
-
 export const navArray: AdminNav[] = [
-    { link: RoomsStateSelection.SELECT_ROOMS, name: "משתתפים בוחרים חדרים", id: "choose" },
-    { link: RoomsStateSelection.DIVIDE, name: "הציג/י  חלוקה לחדרים", id: "divide" },
+    {
+        link: RoomsStateSelection.SELECT_ROOMS,
+        name: t("Participants choose rooms"),
+        id: "choose",
+    },
+    {
+        link: RoomsStateSelection.DIVIDE,
+        name: t("Show division into rooms"),
+        id: "divide",
+    },
 ]
 
-
 const NavAdmin: FC<Props> = ({ roomSelectionFn, statement }) => {
-
     // const { page } = useParams();
     // const _navArray = showNavElements(statement, navArray);
 
     return (
         <nav className={styles.nav}>
-
-            {navArray.map((navObject: AdminNav) =>
-
-                <div key={`admin-${navObject.id}`} onClick={() => roomSelectionFn(navObject.link)}
-                    className={statement.roomsState === navObject.link ?
-                        styles.item__selected :
-                        styles.item
-                    }>
-
+            {navArray.map((navObject: AdminNav) => (
+                <div
+                    key={`admin-${navObject.id}`}
+                    onClick={() => roomSelectionFn(navObject.link)}
+                    className={
+                        statement.roomsState === navObject.link
+                            ? styles.item__selected
+                            : styles.item
+                    }
+                >
                     {navObject.name}
-
-                </div>)}
-
+                </div>
+            ))}
         </nav>
     )
 }
@@ -52,7 +60,6 @@ const NavAdmin: FC<Props> = ({ roomSelectionFn, statement }) => {
 //     try {
 //         if (!statement) return navArray;
 //         let _navArray = [...navArray];
-
 
 //         const { subScreens } = statement;
 
@@ -95,4 +102,4 @@ const NavAdmin: FC<Props> = ({ roomSelectionFn, statement }) => {
 //     }
 // }
 
-export default NavAdmin;
+export default NavAdmin

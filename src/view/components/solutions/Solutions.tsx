@@ -1,38 +1,50 @@
-import { ResultsBy, SimpleStatement, Statement } from 'delib-npm';
-import { FC } from 'react';
-import styles from './Solutions.module.scss';
-import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
-import Text from '../text/Text';
+import { FC } from "react"
 
+// Third Party Libraries
+import { ResultsBy, SimpleStatement, Statement } from "delib-npm"
+import { t } from "i18next"
+import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl"
+
+// Styles
+import styles from "./Solutions.module.scss"
+
+// Custom Components
+import Text from "../text/Text"
 
 interface Props {
-    statement: Statement;
+    statement: Statement
 }
 
 const Solutions: FC<Props> = ({ statement }) => {
-
-    const { results, resultsSettings } = statement;
+    const { results, resultsSettings } = statement
 
     if (!results || !resultsSettings) {
-        return null;
+        return null
     }
 
-
-    const solutions: SimpleStatement[] = resultsSettings.resultsBy === ResultsBy.topOptions ? results.consensus : results.votes || [];
+    const solutions: SimpleStatement[] =
+        resultsSettings.resultsBy === ResultsBy.topOptions
+            ? results.consensus
+            : results.votes || []
 
     return (
         <div className={styles.solutions}>
             <section>
                 <ChecklistRtlIcon />
-                הסכמות
+                {t("Agreements")}
             </section>
             <div>
-                {solutions.map((solution: SimpleStatement) => <p key={`solutions-${solution.statementId}`} className={styles.solution}>
-                    <Text text={solution.statement} />
-                </p>)}
+                {solutions.map((solution: SimpleStatement) => (
+                    <p
+                        key={`solutions-${solution.statementId}`}
+                        className={styles.solution}
+                    >
+                        <Text text={solution.statement} />
+                    </p>
+                ))}
             </div>
         </div>
     )
 }
 
-export default Solutions;
+export default Solutions
