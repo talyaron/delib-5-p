@@ -13,18 +13,17 @@ import AccordionDetails from "@mui/material/AccordionDetails"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import SubResults from "./SubResults"
 import { ResultsNode } from "./resultsNode/ResultsNode"
+import { isShow } from "./resultsNode/ResultsNodeCont"
 
 interface Props {
     results: _Results
-    level?: number
+    level?: number, 
+    resultsType: StatementType[]
 }
 
-const resultsType = [StatementType.question]
 
-const MainCard: FC<Props> = ({ results }) => {
-    console.log(results.top.statement)
-    console.log(results)
 
+const MainCard: FC<Props> = ({ results,resultsType }) => {
     const hasSubs = results.sub && results.sub.length > 0
 
     return (
@@ -49,13 +48,18 @@ const MainCard: FC<Props> = ({ results }) => {
                 )}
                 {hasSubs ? (
                     <AccordionDetails>
-                        {results.sub?.map((subResult) => (
-                            <SubResults
-                                key={subResult.top.statementId}
-                                results={subResult}
-                                level={2}
-                            />
-                        ))}
+                        {results.sub?.map((subResult) => {
+                            if (isShow(subResult.top, resultsType)) {
+                                return (
+                                    <SubResults
+                                        key={subResult.top.statementId}
+                                        results={subResult}
+                                        level={2}
+                                        resultsType={resultsType}
+                                    />
+                                )
+                            }
+                        })}
                     </AccordionDetails>
                 ) : null}
             </Accordion>

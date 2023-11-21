@@ -1,20 +1,29 @@
 import { FC, useEffect, useState } from "react"
-import { Statement } from "delib-npm"
 
+// Third party imports
+import { Statement } from "delib-npm"
+import { useParams } from "react-router-dom"
+
+// Statements components
 import StatementOptionsNav from "../options/components/StatementOptionsNav"
 
-import { useParams } from "react-router-dom"
+// Redux
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
+
+// Statements helpers
 import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes"
 import { setVoteToStore } from "../../../../../model/vote/votesSlice"
 import NewSetStatementSimple from "../set/NewStatementSimple"
+import { setSelectionsToOptions } from "./setSelectionsToOptions"
+import { getTotalVoters } from "./getTotalVoters"
+import { sortOptionsIndex } from "./sortOptionsIndex"
+
+// Custom components
 import Modal from "../../../../components/modal/Modal"
 import AddIcon from "@mui/icons-material/Add"
 import { OptionBar } from "./OptionBar"
-import { setSelectionsToOptions } from "./setSelectionsToOptions"
-import { sortOptionsIndex } from "./sortOptionsIndex"
-import { getTotalVoters } from "./getTotalVoters"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
+import { t } from "i18next"
 
 interface Props {
     statement: Statement
@@ -56,7 +65,9 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
         <ScreenFadeInOut>
             <div className="wrapper">
                 <h2>Votes</h2>
-                <p>הצביעו: {totalVotes}</p>
+                <p>
+                    {t("Voted")}: {totalVotes}
+                </p>
                 <div className="statement__vote">
                     {options.map((option: Statement, i: number) => {
                         return (

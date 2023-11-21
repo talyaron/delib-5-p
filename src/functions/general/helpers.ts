@@ -62,14 +62,14 @@ export function getIntialLocationSessionStorage(): string | undefined {
 interface getNewStatmentProps {
     value?: string | undefined | null
     statement?: Statement
-    type?: StatementType
+    statementType?: StatementType
     user: User
 }
 
 export function getNewStatment({
     value,
     statement,
-    type,
+    statementType,
     user,
 }: getNewStatmentProps): Statement | undefined {
     try {
@@ -93,7 +93,7 @@ export function getNewStatment({
             topParentId:
                 statement.topParentId || statement.statementId || "top",
             consensus: 0,
-            isOption: type === StatementType.option ? true : false,
+           statementType: statementType || StatementType.statement,
         }
 
         return newStatement

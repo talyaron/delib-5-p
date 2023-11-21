@@ -2,6 +2,7 @@ import { FC } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Statement } from "delib-npm"
 import { NavObject, Screen } from "../../../../../../model/system"
+import { t } from "i18next"
 
 interface Props {
     statement: Statement
@@ -10,24 +11,32 @@ interface Props {
 const optionsArray: NavObject[] = [
     {
         link: Screen.OPTIONS_CONSENSUS,
-        name: "הסכמה",
+        name: t("Agreement"),
         id: Screen.OPTIONS_CONSENSUS,
     },
-    { link: Screen.OPTIONS_NEW, name: "חדש", id: Screen.OPTIONS_NEW },
-    { link: Screen.OPTIONS_RANDOM, name: "אקראי", id: Screen.OPTIONS_RANDOM },
+    { link: Screen.OPTIONS_NEW, name: t("New"), id: Screen.OPTIONS_NEW },
+    {
+        link: Screen.OPTIONS_RANDOM,
+        name: t("Random"),
+        id: Screen.OPTIONS_RANDOM,
+    },
     {
         link: Screen.OPTIONS_UPDATED,
-        name: "עידכון",
+        name: t("Update"),
         id: Screen.OPTIONS_UPDATED,
     },
 ]
 
 const votesArray: NavObject[] = [
-    { link: Screen.VOTESֹֹֹ_VOTED, name: "הצבעה", id: Screen.VOTESֹֹֹ_VOTED },
-    { link: Screen.VOTES_CONSENSUS, name: "הסכמה", id: Screen.VOTES_CONSENSUS },
-    { link: Screen.VOTES_NEW, name: "חדש", id: Screen.VOTES_NEW },
-    { link: Screen.VOTES_RANDOM, name: "אקראי", id: Screen.VOTES_RANDOM },
-    { link: Screen.VOTES_UPDATED, name: "עידכון", id: Screen.VOTES_UPDATED },
+    { link: Screen.VOTESֹֹֹ_VOTED, name: t("Vote"), id: Screen.VOTESֹֹֹ_VOTED },
+    {
+        link: Screen.VOTES_CONSENSUS,
+        name: t("Agreement"),
+        id: Screen.VOTES_CONSENSUS,
+    },
+    { link: Screen.VOTES_NEW, name: t("New"), id: Screen.VOTES_NEW },
+    { link: Screen.VOTES_RANDOM, name: t("Random"), id: Screen.VOTES_RANDOM },
+    { link: Screen.VOTES_UPDATED, name: t("Update"), id: Screen.VOTES_UPDATED },
 ]
 
 const StatementOptionsNav: FC<Props> = () => {

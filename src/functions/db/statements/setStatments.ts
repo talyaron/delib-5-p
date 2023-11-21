@@ -4,6 +4,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 // Third Party Imports
 import { z } from "zod"
 import {
+    ResultsBy,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -15,8 +16,6 @@ import { getUserPermissionToNotifications } from "../../notifications"
 import { getUserFromFirebase } from "../users/usersGeneral"
 import { DB, deviceToken } from "../config"
 
-
-
 const TextSchema = z.string().min(2)
 
 export async function setStatmentToDB(
@@ -24,11 +23,17 @@ export async function setStatmentToDB(
     addSubscription: boolean = true
 ) {
     try {
-        console.log(statement)
+       
         TextSchema.parse(statement.statement)
         statement.consensus = 0
 
-        statement.lastUpdate = Timestamp.now().toMillis()
+        statement.lastUpdate = Timestamp.now().toMillis();
+        statement.statementType = statement.statementType || StatementType.statement
+        const {results, resultsSettings} = statement
+        if(!results) statement.results = {consensus:[], votes: []}
+        if(!resultsSettings) statement.resultsSettings = {resultsBy:ResultsBy.topVote}
+        
+
         StatementSchema.parse(statement)
         UserSchema.parse(statement.creator)
 
@@ -39,9 +44,11 @@ export async function setStatmentToDB(
             statement.statementId
         )
         const statementPromises = []
-        const statementPromise = setDoc(statementRef, statement, {
+
+        const statementPromise = await setDoc(statementRef, statement, {
             merge: true,
         })
+
         statementPromises.push(statementPromise)
 
         //add subscription
@@ -214,8 +221,8 @@ export async function setStatementisOption(statement: Statement) {
         if (!statementDB.exists()) throw new Error("Statement not found")
 
         const statementDBData = statementDB.data() as Statement
-        const { isOption } = statementDBData
-        if (isOption) {
+        const { statementType} = statementDBData
+        if (statementType === StatementType.option) {
             await setDoc(statementRef, { isOption: false }, { merge: true })
         } else {
             await setDoc(statementRef, { isOption: true }, { merge: true })
@@ -227,13 +234,13 @@ export async function setStatementisOption(statement: Statement) {
 
 export async function setStatmentGroupToDB(statement: Statement) {
     try {
-        if (statement.type === StatementType.group) return
+        if (statement.type === StatementType.statement) return
 
         const statementId = statement.statementId
         const statementRef = doc(DB, Collections.statements, statementId)
         await setDoc(
             statementRef,
-            { type: StatementType.group },
+            { statementType: StatementType.statement },
             { merge: true }
         )
     } catch (error) {
@@ -289,9 +296,12 @@ export async function updateIsQuestion(statement: Statement) {
             Collections.statements,
             statement.statementId
         )
-        const isQuestion = !statement.isQuestion
-        const newIsQuestion = { isQuestion }
-        await updateDoc(statementRef, newIsQuestion)
+        let {statementType} = statement;
+        if (statementType === StatementType.question) statementType = StatementType.statement
+        else statementType = StatementType.question
+       
+        const newStatementType = { statementType }
+        await updateDoc(statementRef, newStatementType)
     } catch (error) {
         console.error(error)
     }

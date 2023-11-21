@@ -32,6 +32,7 @@ function SubResults({
                             key={subResult.top.statementId}
                             results={subResult}
                             level={level + 1}
+                            resultsType={resultsType}
                         />
                     ))}
                 </AccordionDetails>

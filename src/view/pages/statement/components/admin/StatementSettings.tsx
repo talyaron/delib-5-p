@@ -1,6 +1,5 @@
-import { FC, useEffect, useState } from "react";
-import Slider from '@mui/material/Slider';
-
+import { FC, useEffect, useState } from "react"
+import Slider from "@mui/material/Slider"
 
 // Statment imports
 import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments"
@@ -51,6 +50,7 @@ import {
     isSubPageChecked,
 } from "./statementSettingsCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
+import { t } from "i18next"
 
 interface Props {
     simple?: boolean
@@ -70,8 +70,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const user: User | null = useAppSelector(userSelector)
 
     // Use State
-    const [isLoading, setIsLoading] = useState(false);
-    const [numOfResults] = useState(statement?.resultsSettings?.numberOfResults || 1);
+    const [isLoading, setIsLoading] = useState(false)
+    const [numOfResults] = useState(
+        statement?.resultsSettings?.numberOfResults || 1
+    )
 
     useEffect(() => {
         let unsubscribe: Function = () => {}
@@ -110,19 +112,24 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             let title: any = data.get("statement")
             const resultsBy = data.get("resultsBy") as ResultsBy
-            const numberOfResults:number = Number(data.get("numberOfResults"));
+            const numberOfResults: number = Number(data.get("numberOfResults"))
 
             const description = data.get("description")
-            //add to title * at the beggining
-            if (title && !title.startsWith("*")) title = `*${title}`
+
             const _statement = `${title}\n${description}`
+
+            //add to title * at the beggining
+            if (title && !title.startsWith("*")) title = "*" + title
 
             UserSchema.parse(user)
 
             const newStatement: any = Object.fromEntries(data.entries())
 
-            newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
-            newStatement.statement = _statement;
+            newStatement.subScreens = parseScreensCheckBoxes(
+                newStatement,
+                navArray
+            )
+            newStatement.statement = _statement
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,
                 resultsBy: resultsBy || ResultsBy.topVote,
@@ -133,8 +140,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.topParentId = statement?.topParentId || statementId || "top";
-            newStatement.type = statementId === undefined ? StatementType.question : StatementType.statement;
-            newStatement.isQuestion = statementId === undefined ? true : false;
+            newStatement.statementType = statementId === undefined ? StatementType.question : StatementType.statement;
             newStatement.creator = statement?.creator || user;
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false
@@ -189,21 +195,21 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             autoFocus={true}
                             type="text"
                             name="statement"
-                            placeholder="כותרת הקבוצה"
+                            placeholder={t("Group Title")}
                             defaultValue={arrayOfStatementParagrphs[0]}
                         />
                     </label>
                     <div>
                         <textarea
                             name="description"
-                            placeholder="תיאור הקבוצה"
+                            placeholder={t("Group Description")}
                             rows={3}
                             defaultValue={description}
                         ></textarea>
                     </div>
                     {!simple ? (
                         <section>
-                            <label htmlFor="subPages">לשוניות</label>
+                            <label htmlFor="subPages">{t("Tabs")}</label>
                             <FormGroup>
                                 {navArray
                                     .filter(
@@ -226,7 +232,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                         />
                                     ))}
                             </FormGroup>
-                            <label htmlFor="subPages"> מתקדם</label>
+                            <label htmlFor="subPages">{t("Advanced")}</label>
                             <FormGroup>
                                 <FormControlLabel
                                     key={"sub-statements"}
@@ -236,7 +242,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             defaultChecked={hasChildren}
                                         />
                                     }
-                                    label={"לאפשר תת-שיחות"}
+                                    label={t("Enable Sub-Conversations")}
                                 />
                             </FormGroup>
                         </section>
@@ -244,22 +250,29 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
                     <select name="resultsBy" defaultValue={resultsBy}>
                         <option value={ResultsBy.topVote}>
-                            תוצאות ההצבעה{" "}
+                            {t("Voting Results")}
                         </option>
                         <option value={ResultsBy.topOptions}>
-                            אופציה מועדפת
+                            {t("Favorite Option")}
                         </option>
                     </select>
                     <br></br>
-                    <label>כמה תוצאות להציג</label>
-                    <Slider defaultValue={numOfResults} min={1} max={10} valueLabelDisplay="on" name={"numberOfResults"}/>
+                    <label>{t("Number of Results to Display")}</label>
+                    <Slider
+                        defaultValue={numOfResults}
+                        min={1}
+                        max={10}
+                        valueLabelDisplay="on"
+                        name={"numberOfResults"}
+                        style={{ width: "95%" }}
+                    />
 
                     <div className="btnBox">
                         <button type="submit">
-                            {!statementId ? "הוספה" : "עדכון"}
+                            {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>
-                    <h2>חברים בקבוצה</h2>
+                    <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div>
                             {membership.map((member) => (
@@ -273,7 +286,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 </form>
             ) : (
                 <div className="center">
-                    <h2>מעדכן...</h2>
+                    <h2>{t("Updating")}</h2>
                     <Loader />
                 </div>
             )}

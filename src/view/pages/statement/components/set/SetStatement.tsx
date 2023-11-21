@@ -1,6 +1,6 @@
-
 // Third party imports
 import { Link, useParams } from "react-router-dom"
+import { t } from "i18next"
 
 // Custom components
 import { StatementSettings } from "../admin/StatementSettings"
@@ -14,7 +14,7 @@ export const SetStatement = () => {
             <div className="setStatement">
                 <div className="setStatement__header">
                     <span></span>
-                    <h1>{statementId ? "עדכון" : "הוספת קבוצה חדשה"}</h1>
+                    <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
                     <Link to={"/home"} className="setStatement__back">
                         {" "}
                         <ArrowBackIosIcon />
