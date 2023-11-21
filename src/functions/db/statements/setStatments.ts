@@ -30,7 +30,7 @@ export async function setStatmentToDB(
         statement.consensus = 0
 
         statement.lastUpdate = Timestamp.now().toMillis();
-        statement.StatementType = statement.StatementType || StatementType.statement
+        statement.statementType = statement.statementType || StatementType.statement
         const {results, resultsSettings} = statement
         if(!results) statement.results = {consensus:[], votes: []}
         if(!resultsSettings) statement.resultsSettings = {resultsBy:ResultsBy.topVote}
@@ -221,8 +221,8 @@ export async function setStatementisOption(statement: Statement) {
         if (!statementDB.exists()) throw new Error("Statement not found")
 
         const statementDBData = statementDB.data() as Statement
-        const { isOption } = statementDBData
-        if (isOption) {
+        const { statementType} = statementDBData
+        if (statementType === StatementType.option) {
             await setDoc(statementRef, { isOption: false }, { merge: true })
         } else {
             await setDoc(statementRef, { isOption: true }, { merge: true })
@@ -296,9 +296,12 @@ export async function updateIsQuestion(statement: Statement) {
             Collections.statements,
             statement.statementId
         )
-        const isQuestion = !statement.isQuestion
-        const newIsQuestion = { isQuestion }
-        await updateDoc(statementRef, newIsQuestion)
+        let {statementType} = statement;
+        if (statementType === StatementType.question) statementType = StatementType.statement
+        else statementType = StatementType.question
+       
+        const newStatementType = { statementType }
+        await updateDoc(statementRef, newStatementType)
     } catch (error) {
         console.error(error)
     }

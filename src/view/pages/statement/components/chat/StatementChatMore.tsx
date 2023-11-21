@@ -19,8 +19,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
     
     const navigate = useNavigate();
    
-    const {isOption, isQuestion} = statement;
-    if(!(isOption || isQuestion)) return null;
+    const {statementType} = statement;
+    if(!(statementType === StatementType.option || statementType === StatementType.question)) return null;
 
     return (
         <div

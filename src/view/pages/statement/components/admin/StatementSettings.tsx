@@ -134,7 +134,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.topParentId = statement?.topParentId || statementId || "top";
             newStatement.statementType = statementId === undefined ? StatementType.question : StatementType.statement;
-            newStatement.isQuestion = statementId === undefined ? true : false;
             newStatement.creator = statement?.creator || user;
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false

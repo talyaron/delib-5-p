@@ -17,6 +17,7 @@ import {
     Statement,
     StatementSubscription,
     StatementSubscriptionSchema,
+    StatementType,
 } from "delib-npm"
 
 // Helpers
@@ -92,7 +93,7 @@ function listenToSubStatements(
         const q = query(
             subStatementsRef,
             where("topParentId", "==", topStatementId),
-            where("isQuestion", "==", true),
+            where("statementType", "==", StatementType.question),
             orderBy("createdAt", "asc"),
             limit(50)
         )
