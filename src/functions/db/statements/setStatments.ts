@@ -223,9 +223,9 @@ export async function setStatementisOption(statement: Statement) {
         const statementDBData = statementDB.data() as Statement
         const { statementType} = statementDBData
         if (statementType === StatementType.option) {
-            await setDoc(statementRef, { isOption: false }, { merge: true })
+            await updateDoc(statementRef, { statementType :StatementType.statement })
         } else {
-            await setDoc(statementRef, { isOption: true }, { merge: true })
+            await updateDoc(statementRef, { statementType :StatementType.option })
         }
     } catch (error) {
         console.error(error)
