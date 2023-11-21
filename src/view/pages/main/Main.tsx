@@ -22,6 +22,7 @@ import { setUser } from "../../../model/users/userSlice"
 import { install } from "../../../main"
 import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
+import { isShow } from "./mainCard/resultsNode/ResultsNodeCont"
 
 //install
 
