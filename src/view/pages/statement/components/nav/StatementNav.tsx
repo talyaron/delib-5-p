@@ -2,18 +2,19 @@ import { FC } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Statement, NavObject, Screen } from "delib-npm"
 import { showNavElements } from "./statementNvCont"
+import { t } from "i18next"
 
 interface Props {
     statement: Statement
 }
 
 export const navArray: NavObject[] = [
-    { link: Screen.DOC, name: "ראשי", id: "doc", default: true },
-    { link: Screen.CHAT, name: "שיחה", id: "main" },
-    { link: Screen.OPTIONS, name: "פתרונות", id: "options" },
-    { link: Screen.VOTE, name: "הצבעה", id: "vote" },
-    { link: Screen.GROUPS, name: "חדרים", id: "rooms", default: false },
-    { link: Screen.SETTINGS, name: "הגדרות", id: "settings" },
+    { link: Screen.DOC, name: t("Main"), id: "doc", default: true },
+    { link: Screen.CHAT, name: t("Chat"), id: "main" },
+    { link: Screen.OPTIONS, name: t("Solutions"), id: "options" },
+    { link: Screen.VOTE, name: t("Voting"), id: "vote" },
+    { link: Screen.GROUPS, name: t("Rooms"), id: "rooms", default: false },
+    { link: Screen.SETTINGS, name: t("Settings"), id: "settings" },
 ]
 
 const StatementNav: FC<Props> = ({ statement }) => {

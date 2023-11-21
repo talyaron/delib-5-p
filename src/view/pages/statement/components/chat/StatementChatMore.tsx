@@ -1,14 +1,23 @@
 import { FC } from "react"
+
+// Icons
 import ChatIcon from "../../../../../assets/chat.svg"
+
+// Statements functions
 import { setStatmentGroupToDB } from "../../../../../functions/db/statements/setStatments"
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
+
+// Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm"
 import { useNavigate } from "react-router-dom"
+import { t } from "i18next"
+
+// Redux
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
-import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 
 interface Props {
     statement: Statement
-    page?: any;
+    page?: any
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {
@@ -21,6 +30,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
    
     const {statementType} = statement;
     if(!(statementType === StatementType.option || statementType === StatementType.question)) return null;
+
 
     return (
         <div
@@ -49,7 +59,9 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                 />
             </div>
             <div className="text">
-                {statement.lastMessage ? statement.lastMessage : "שיחות..."}
+                {statement.lastMessage
+                    ? statement.lastMessage
+                    : t("Conversations")}
             </div>
         </div>
     )
