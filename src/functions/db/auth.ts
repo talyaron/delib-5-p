@@ -3,6 +3,7 @@ import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChang
 import { app } from "./config";
 import { parseUserFromFirebase, User } from "delib-npm";
 import { setUserToDB } from "./users/setUsersDB";
+import { getIntialLocationSessionStorage } from "../general/helpers";
 
 
 
@@ -39,7 +40,7 @@ export function googleLogin() {
             // ...
         });
 }
-export function listenToAuth(cb: Function, fontSizeCB:Function): Unsubscribe {
+export function listenToAuth(cb: Function, fontSizeCB:Function, navigationCB:Function): Unsubscribe {
 
     return onAuthStateChanged(auth, async (userFB) => {
         try {
@@ -66,6 +67,12 @@ export function listenToAuth(cb: Function, fontSizeCB:Function): Unsubscribe {
 
                 if (!userDB) throw new Error('userDB is undefined');
                 cb(userDB)
+
+                const initialLocation = getIntialLocationSessionStorage();
+                //navigate to initial location
+                if (initialLocation) navigationCB(initialLocation);
+
+
 
             } else {
                 // User is signed out

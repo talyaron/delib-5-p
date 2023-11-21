@@ -134,15 +134,18 @@ const Statement: FC = () => {
         setStatmentSubscriptionNotificationToDB(statement)
     }
 
+    //use effects
+
+    //listen to statement
     useEffect(() => {
-        if (statementId) {
+        if (statementId && user) {
             unsub = listenToStatement(statementId, updateStoreStatementCB)
         }
 
         return () => {
             unsub()
         }
-    }, [statementId])
+    }, [statementId, user])
 
 
     useEffect(() => {

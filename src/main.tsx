@@ -8,6 +8,9 @@ import { BrowserRouter } from "react-router-dom"
 import { store } from "./model/store"
 import { Provider } from "react-redux"
 import AppRouter from "./AppRouter"
+import { setIntialLocationSessionStorage } from "./functions/general/helpers"
+
+setIntialLocationSessionStorage(window.location.pathname)
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
