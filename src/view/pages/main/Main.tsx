@@ -24,12 +24,9 @@ import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 import { isShow } from "./mainCard/resultsNode/ResultsNodeCont"
 
-//install
-
-
-
 const Main = () => {
     const navigate = useNavigate()
+
     const statements = [
         ...useAppSelector(statementsSubscriptionsSelector),
     ].sort((a, b) => b.lastUpdate - a.lastUpdate)
@@ -62,7 +59,7 @@ const Main = () => {
     }
     const resultsType = [StatementType.question, StatementType.option]
     const _statements = [...statements.map((statement) => statement.statement)]
-    const __statements = _statements.filter(s=>isShow(s, resultsType))
+    const __statements = _statements.filter((s) => isShow(s, resultsType))
     const _results = sortStatementsByHirarrchy(__statements)
 
     return (

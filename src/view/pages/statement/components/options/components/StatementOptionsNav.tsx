@@ -34,9 +34,9 @@ const votesArray: NavObject[] = [
         name: t("Agreement"),
         id: Screen.VOTES_CONSENSUS,
     },
-    { link: Screen.VOTES_NEW, name: t("New"), id: Screen.VOTES_NEW },
-    { link: Screen.VOTES_RANDOM, name: t("Random"), id: Screen.VOTES_RANDOM },
-    { link: Screen.VOTES_UPDATED, name: t("Update"), id: Screen.VOTES_UPDATED },
+    { link: Screen.VOTES_NEW, name: "New", id: Screen.VOTES_NEW },
+    { link: Screen.VOTES_RANDOM, name: "Random", id: Screen.VOTES_RANDOM },
+    { link: Screen.VOTES_UPDATED, name: "Update", id: Screen.VOTES_UPDATED },
 ]
 
 const StatementOptionsNav: FC<Props> = () => {
@@ -55,7 +55,7 @@ const StatementOptionsNav: FC<Props> = () => {
                             : "options__nav__button"
                     }
                 >
-                    {navObject.name}
+                    {t(navObject.name)}
                 </Link>
             ))}
         </nav>

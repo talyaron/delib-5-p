@@ -40,7 +40,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false)
 
     const __options = subStatements.filter(
-        (subStatement: Statement) => subStatement.isOption
+        (subStatement: Statement) => subStatement.type === "option"
     )
     const _options = setSelectionsToOptions(statement, __options)
     const options = sortOptionsIndex(_options, sort)
@@ -64,7 +64,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     return (
         <ScreenFadeInOut>
             <div className="wrapper">
-                <h2>Votes</h2>
+                <h2>{t("Votes")}</h2>
                 <p>
                     {t("Voted")}: {totalVotes}
                 </p>
