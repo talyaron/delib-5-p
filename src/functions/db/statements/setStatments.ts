@@ -4,6 +4,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 // Third Party Imports
 import { z } from "zod"
 import {
+    ResultsBy,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -24,11 +25,16 @@ export async function setStatmentToDB(
     addSubscription: boolean = true
 ) {
     try {
-        console.log(statement)
+       
         TextSchema.parse(statement.statement)
         statement.consensus = 0
 
-        statement.lastUpdate = Timestamp.now().toMillis()
+        statement.lastUpdate = Timestamp.now().toMillis();
+        const {results, resultsSettings} = statement
+        if(!results) statement.results = {consensus:[], votes: []}
+        if(!resultsSettings) statement.resultsSettings = {resultsBy:ResultsBy.topVote}
+        
+
         StatementSchema.parse(statement)
         UserSchema.parse(statement.creator)
 
