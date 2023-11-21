@@ -89,7 +89,13 @@ const Statement: FC = () => {
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
-        dispatch(setStatement(statement))
+        try {
+            console.log(statement)
+            dispatch(setStatement(statement))
+        } catch (error) {
+            console.error(error)
+        }
+      
     }
     function deleteStatementCB(statementId: string) {
         dispatch(deleteStatement(statementId))
@@ -134,15 +140,18 @@ const Statement: FC = () => {
         setStatmentSubscriptionNotificationToDB(statement)
     }
 
+    //use effects
+
+    //listen to statement
     useEffect(() => {
-        if (statementId) {
+        if (statementId && user) {
             unsub = listenToStatement(statementId, updateStoreStatementCB)
         }
 
         return () => {
             unsub()
         }
-    }, [statementId])
+    }, [statementId, user])
 
 
     useEffect(() => {

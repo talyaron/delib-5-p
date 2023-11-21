@@ -3,9 +3,9 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { Statement, StatementSubscription } from 'delib-npm';
 import { setStatementisOption } from '../../../../../../functions/db/statements/setStatments';
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks';
-import { statementSelector, statementSubscriptionSelector } from '../../../../../../model/statements/statementsSlice';
-import { store } from '../../../../../../model/store';
-import { isAuthorized } from '../../../../../../functions/general/helpers';
+import {  statementSubscriptionSelector } from '../../../../../../model/statements/statementsSlice';
+
+import { isAuthorized, isOptionFn } from '../../../../../../functions/general/helpers';
 
 interface Props {
     statement: Statement
@@ -18,7 +18,7 @@ const StatementChatSetOption:FC<Props> = ({statement}) => {
   function handleSetOption(){
     try {
 
-      if(statement.isOption){
+      if(statement.statementType === 'option'){
         const cancelOption = window.confirm('Are you sure you want to cancel this option?');
         if(cancelOption){
           setStatementisOption(statement);
@@ -34,7 +34,7 @@ const StatementChatSetOption:FC<Props> = ({statement}) => {
   const _isAuthrized = isAuthorized(statement, statementSubscription)
   if(!_isAuthrized) return null;  
   return (
-    <div className='clickable' onClick={handleSetOption}> <LightbulbIcon htmlColor={statement.isOption?'orange':'lightgray'}/></div>
+    <div className='clickable' onClick={handleSetOption}> <LightbulbIcon htmlColor={isOptionFn(statement)?'orange':'lightgray'}/></div>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 // Third party imports
 import { Statement } from "delib-npm"
@@ -18,6 +18,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple"
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
 import { sortSubStatements } from "./statementOptionsCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
+import { isOptionFn } from "../../../../../functions/general/helpers"
 
 interface Props {
     statement: Statement
@@ -38,8 +39,9 @@ const StatementOptions: FC<Props> = ({
         const [showModal, setShowModal] = useState(false)
 
         const __substatements = subStatements.filter(
-            (subStatement: Statement) => subStatement.type === "option"
+            (subStatement: Statement) =>isOptionFn(subStatement)
         )
+        
         const _subStatements = sortSubStatements(__substatements, sort)
 
         function dispatchCB(statement: Statement, order: number) {

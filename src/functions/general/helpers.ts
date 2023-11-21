@@ -134,3 +134,12 @@ export function isAuthorized(
         return false
     }
 }
+
+export function isOptionFn(statement:Statement):boolean{
+    try {
+       return  statement.statementType === StatementType.option ||  statement.statementType ===  StatementType.result;
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}

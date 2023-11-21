@@ -3,6 +3,7 @@ import { FC } from 'react'
 import Thumbs from '../thumbs/Thumbs';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { evaluationSelector } from '../../../model/evaluations/evaluationsSlice';
+import { isOptionFn } from '../../../functions/general/helpers';
 import styles from './Evaluation.module.scss'
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const Evaluation: FC<Props> = ({ statement }) => {
-    const { isOption } = statement;
+    const  isOption  = isOptionFn(statement)
 
     const evaluation = useAppSelector(evaluationSelector(statement.statementId))
     const { consensus:_consensus } = statement;

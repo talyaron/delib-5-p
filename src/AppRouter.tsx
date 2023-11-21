@@ -26,7 +26,8 @@ const AppRouter = () => {
         const lang = localStorage.getItem("lang")
         if (lang) {
             i18n.changeLanguage(lang)
-            document.body.style.direction = lang === "he" ? "rtl" : "ltr"
+            document.body.style.direction =
+                lang === "he" || lang === "ar" ? "rtl" : "ltr"
         }
     }, [])
 

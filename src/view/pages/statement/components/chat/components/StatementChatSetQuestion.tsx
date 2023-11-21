@@ -3,6 +3,7 @@ import {FC} from 'react';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { updateIsQuestion } from '../../../../../../functions/db/statements/setStatments';
+import { isOptionFn } from '../../../../../../functions/general/helpers';
 
 interface Props {
     statement: Statement;
@@ -17,7 +18,7 @@ const StatementChatSetQuestion:FC<Props> = ({statement}) => {
     }
     
   return (
-    <div className='clickable' onClick={handleSetQuestion}><HelpOutlineIcon htmlColor={statement.isQuestion?'blue':'lightgray'}/></div>
+    <div className='clickable' onClick={handleSetQuestion}><HelpOutlineIcon htmlColor={isOptionFn(statement)?'blue':'lightgray'}/></div>
   )
 }
 

@@ -10,6 +10,7 @@ import SelectRoom from './comp/choose/ChooseRoom'
 import RoomQuestions from './comp/divide/RoomDivide'
 import { store } from '../../../../../model/store'
 import { enterRoomsDB } from '../../../../../functions/db/rooms/setRooms'
+import { isOptionFn } from '../../../../../functions/general/helpers'
 
 interface Props {
     statement: Statement
@@ -43,7 +44,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     }
 
 
-    const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
+    const __substatements = subStatements.filter((subStatement: Statement) => isOptionFn(subStatement));
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
 
     return (
