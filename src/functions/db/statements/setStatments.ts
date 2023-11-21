@@ -23,16 +23,16 @@ export async function setStatmentToDB(
     addSubscription: boolean = true
 ) {
     try {
-       
         TextSchema.parse(statement.statement)
         statement.consensus = 0
 
-        statement.lastUpdate = Timestamp.now().toMillis();
-        statement.statementType = statement.statementType || StatementType.statement
-        const {results, resultsSettings} = statement
-        if(!results) statement.results = {consensus:[], votes: []}
-        if(!resultsSettings) statement.resultsSettings = {resultsBy:ResultsBy.topVote}
-        
+        statement.lastUpdate = Timestamp.now().toMillis()
+        statement.statementType =
+            statement.statementType || StatementType.statement
+        const { results, resultsSettings } = statement
+        if (!results) statement.results = { consensus: [], votes: [] }
+        if (!resultsSettings)
+            statement.resultsSettings = { resultsBy: ResultsBy.topVote }
 
         StatementSchema.parse(statement)
         UserSchema.parse(statement.creator)
@@ -221,11 +221,15 @@ export async function setStatementisOption(statement: Statement) {
         if (!statementDB.exists()) throw new Error("Statement not found")
 
         const statementDBData = statementDB.data() as Statement
-        const { statementType} = statementDBData
+        const { statementType } = statementDBData
         if (statementType === StatementType.option) {
-            await updateDoc(statementRef, { statementType :StatementType.statement })
-        } else {
-            await updateDoc(statementRef, { statementType :StatementType.option })
+            await updateDoc(statementRef, {
+                statementType: StatementType.statement,
+            })
+        } else if (statementType === StatementType.statement) {
+            await updateDoc(statementRef, {
+                statementType: StatementType.option,
+            })
         }
     } catch (error) {
         console.error(error)
@@ -296,10 +300,11 @@ export async function updateIsQuestion(statement: Statement) {
             Collections.statements,
             statement.statementId
         )
-        let {statementType} = statement;
-        if (statementType === StatementType.question) statementType = StatementType.statement
+        let { statementType } = statement
+        if (statementType === StatementType.question)
+            statementType = StatementType.statement
         else statementType = StatementType.question
-       
+
         const newStatementType = { statementType }
         await updateDoc(statementRef, newStatementType)
     } catch (error) {

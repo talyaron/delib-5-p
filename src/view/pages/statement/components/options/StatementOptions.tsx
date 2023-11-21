@@ -18,6 +18,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple"
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
 import { sortSubStatements } from "./statementOptionsCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
+import { isOptionFn } from "../../../../../functions/general/helpers"
 
 interface Props {
     statement: Statement
@@ -38,7 +39,7 @@ const StatementOptions: FC<Props> = ({
         const [showModal, setShowModal] = useState(false)
 
         const __substatements = subStatements.filter(
-            (subStatement: Statement) => subStatement.statementType === StatementType.option || subStatement.statementType === StatementType.result
+            (subStatement: Statement) =>isOptionFn(subStatement)
         )
         
         const _subStatements = sortSubStatements(__substatements, sort)

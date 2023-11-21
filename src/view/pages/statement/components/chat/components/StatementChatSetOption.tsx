@@ -5,7 +5,7 @@ import { setStatementisOption } from '../../../../../../functions/db/statements/
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks';
 import {  statementSubscriptionSelector } from '../../../../../../model/statements/statementsSlice';
 
-import { isAuthorized } from '../../../../../../functions/general/helpers';
+import { isAuthorized, isOptionFn } from '../../../../../../functions/general/helpers';
 
 interface Props {
     statement: Statement
@@ -34,7 +34,7 @@ const StatementChatSetOption:FC<Props> = ({statement}) => {
   const _isAuthrized = isAuthorized(statement, statementSubscription)
   if(!_isAuthrized) return null;  
   return (
-    <div className='clickable' onClick={handleSetOption}> <LightbulbIcon htmlColor={statement.statementType === StatementType.option?'orange':'lightgray'}/></div>
+    <div className='clickable' onClick={handleSetOption}> <LightbulbIcon htmlColor={isOptionFn(statement)?'orange':'lightgray'}/></div>
   )
 }
 

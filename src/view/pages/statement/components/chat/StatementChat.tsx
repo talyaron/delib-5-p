@@ -21,7 +21,7 @@ import { store } from "../../../../../model/store"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 import { bubbleclass } from "./StatementChatCont"
 import StatementChatSetEdit from "./components/StatementChatSetEdit"
-import { isAuthorized } from "../../../../../functions/general/helpers"
+import { isAuthorized, isOptionFn } from "../../../../../functions/general/helpers"
 
 interface Props {
     statement: Statement
@@ -46,7 +46,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
 
     const isMe = userId === creatorId
     const isQuestion = statementType === StatementType.question
-    const isOption = statementType === StatementType.option
+    const isOption = isOptionFn(statement)
 
     function handleEdit() {
        if(!isEdit)
