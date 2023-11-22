@@ -13,7 +13,7 @@ import {
     StatementSubscription,
     ResultsBy,
     Screen,
-    StatementType
+    StatementType,
 } from "delib-npm"
 
 // Custom components
@@ -51,6 +51,7 @@ import {
 } from "./statementSettingsCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
+import { navigateToStatementTab } from "../../../../../functions/general/helpers"
 
 interface Props {
     simple?: boolean
@@ -107,7 +108,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
             ev.preventDefault()
+
             setIsLoading(true)
+
             const data = new FormData(ev.currentTarget)
 
             let title: any = data.get("statement")
@@ -136,12 +139,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 deep: 1,
                 minConsensus: 1,
             }
-            newStatement.statementId = statement?.statementId || crypto.randomUUID();
-            newStatement.creatorId = statement?.creator.uid || store.getState().user.user?.uid;
-            newStatement.parentId = statement?.parentId || statementId || "top";
-            newStatement.topParentId = statement?.topParentId || statementId || "top";
-            newStatement.statementType = statementId === undefined ? StatementType.question : StatementType.statement;
-            newStatement.creator = statement?.creator || user;
+            newStatement.statementId =
+                statement?.statementId || crypto.randomUUID()
+            newStatement.creatorId =
+                statement?.creator.uid || store.getState().user.user?.uid
+            newStatement.parentId = statement?.parentId || statementId || "top"
+            newStatement.topParentId =
+                statement?.topParentId || statementId || "top"
+            newStatement.statementType =
+                statementId === undefined
+                    ? StatementType.question
+                    : StatementType.statement
+            newStatement.creator = statement?.creator || user
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false
             if (statement) {
@@ -165,8 +174,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 setSubsciption
             )
 
-            if (_statementId) navigate(`/home/statement/${_statementId}/chat`)
-            else throw new Error("statement not found")
+            if (_statementId) {
+                navigateToStatementTab(newStatement, navigate)
+            } else throw new Error("statement not found")
         } catch (error) {
             console.error(error)
         }
@@ -207,7 +217,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             defaultValue={description}
                         ></textarea>
                     </div>
-                    {!simple ? (
+                    {!simple && (
                         <section>
                             <label htmlFor="subPages">{t("Tabs")}</label>
                             <FormGroup>
@@ -246,7 +256,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 />
                             </FormGroup>
                         </section>
-                    ) : null}
+                    )}
 
                     <select name="resultsBy" defaultValue={resultsBy}>
                         <option value={ResultsBy.topVote}>
@@ -256,7 +266,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {t("Favorite Option")}
                         </option>
                     </select>
-                    <br></br>
                     <label>{t("Number of Results to Display")}</label>
                     <Slider
                         defaultValue={numOfResults}
@@ -264,7 +273,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         max={10}
                         valueLabelDisplay="on"
                         name={"numberOfResults"}
-                        style={{ width: "95%" }}
+                        style={{ marginTop: "1rem" }}
                     />
 
                     <div className="btnBox">
@@ -274,7 +283,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </div>
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
-                        <div>
+                        <div className="setStatement__form__membersBox">
                             {membership.map((member) => (
                                 <MembershipLine
                                     key={member.userId}
