@@ -28,7 +28,6 @@ import {
     statementMembershipSelector,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice"
-import { userSelector } from "../../../../../model/users/userSlice"
 
 // Firestore functions
 import {

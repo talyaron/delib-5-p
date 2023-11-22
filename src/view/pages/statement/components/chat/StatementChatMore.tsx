@@ -1,10 +1,9 @@
 import { FC } from "react"
 
 // Icons
-import ChatIcon from "../../../../../assets/chat.svg"
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 
 // Statements functions
-import { setStatmentGroupToDB } from "../../../../../functions/db/statements/setStatments"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 
 // Third party
@@ -38,25 +37,14 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
             onClick={() => handleCreateSubStatements(statement, navigate)}
         >
             <div className="icon">
-                {statement.type === StatementType.statement &&
-                messages - messagesRead > 0 ? (
+                {messages - messagesRead > 0 ? (
                     <div className="redCircle">
                         {messages - messagesRead < 10
                             ? messages - messagesRead
                             : `9+`}
                     </div>
                 ) : null}
-                <img
-                    src={ChatIcon}
-                    alt="chat icon"
-                    style={{
-                        opacity:
-                            statement.totalSubStatements &&
-                            statement.totalSubStatements > 0
-                                ? 1
-                                : 0.5,
-                    }}
-                />
+                <ChatOutlinedIcon />
             </div>
             <div className="text">
                 {statement.lastMessage

@@ -8,13 +8,9 @@ import styles from "./Document.module.scss"
 
 import { updateResultsSettings } from "../../../../../functions/db/results/setResults"
 
-// Helpers
-
-// db functions
 
 // Custom Components
 import Slider from "@mui/material/Slider"
-import ResultsComp from "./results/Results"
 import { getResults } from "./documentCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
