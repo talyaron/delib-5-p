@@ -3,5 +3,6 @@ export const LANGUAGES = [
     { label: "English", code: "en" },
     { label: "Dutch", code: "nl" },
     { label: "Arabic", code: "ar" },
-    { label: "Spanish", code: "es"}
+    { label: "Spanish", code: "es"},
+    { label: "German", code: "de" },
   ];
