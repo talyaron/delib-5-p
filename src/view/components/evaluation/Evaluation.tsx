@@ -1,32 +1,55 @@
-import { Statement } from 'delib-npm'
-import { FC } from 'react'
-import Thumbs from '../thumbs/Thumbs';
-import { useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { evaluationSelector } from '../../../model/evaluations/evaluationsSlice';
-import { isOptionFn } from '../../../functions/general/helpers';
-import styles from './Evaluation.module.scss'
+import { Statement } from "delib-npm"
+import { FC } from "react"
+import Thumbs from "../thumbs/Thumbs"
+import { useAppSelector } from "../../../functions/hooks/reduxHooks"
+import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice"
+import { isOptionFn } from "../../../functions/general/helpers"
+import styles from "./Evaluation.module.scss"
 
 interface Props {
     statement: Statement
 }
 
 const Evaluation: FC<Props> = ({ statement }) => {
-    const  isOption  = isOptionFn(statement)
+    const isOption = isOptionFn(statement)
 
     const evaluation = useAppSelector(evaluationSelector(statement.statementId))
-    const { consensus:_consensus } = statement;
-    const consensus = _consensus ? (Math.round(_consensus*100))/100 : 0;
+    const { consensus: _consensus } = statement
+    const consensus = _consensus ? Math.round(_consensus * 100) / 100 : 0
+
+    const direction =
+        document.body.style.direction === "rtl" ? "row" : "row-reverse"
 
     return (
         <div className={styles.evaluation}>
-            <div className="options__card__more__vote">
-                <div className="options__card__more__vote__up">
+            <div
+                className="options__card__more__vote"
+                style={{ flexDirection: direction }}
+            >
+                <div
+                    className="options__card__more__vote__up"
+                    style={{ flexDirection: direction }}
+                >
                     <span>{statement.pro ? statement.pro : 0}</span>
-                    {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
-
+                    {isOption && (
+                        <Thumbs
+                            evaluation={evaluation}
+                            upDown="up"
+                            statement={statement}
+                        />
+                    )}
                 </div>
-                <div className="options__card__more__vote__down">
-                    {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
+                <div
+                    className="options__card__more__vote__down"
+                    style={{ flexDirection: direction }}
+                >
+                    {isOption && (
+                        <Thumbs
+                            evaluation={evaluation}
+                            upDown="down"
+                            statement={statement}
+                        />
+                    )}
                     <span>{statement.con ? statement.con : 0}</span>
                 </div>
             </div>
