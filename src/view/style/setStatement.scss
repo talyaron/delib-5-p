@@ -16,11 +16,11 @@
     &__form {
         display: flex;
         flex-direction: column;
+        gap: 1.5rem;
         width: 75ch;
         height: 100%;
-        gap: 0.7rem;
         margin: 0.5rem auto;
-        padding: 1rem;
+        padding: 2rem;
         overflow-y: auto;
 
         input {
@@ -46,6 +46,11 @@
                 var(--halfPrimary)
             );
             border-radius: 1rem;
+        }
+        &__membersBox {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
     }
 }
