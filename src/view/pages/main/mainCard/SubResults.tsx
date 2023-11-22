@@ -16,6 +16,9 @@ function SubResults({
     resultsType = [StatementType.question],
 }: Props) {
     const _level: string = `level__${level || 2}`
+    
+    //filter results by type
+    if(!(results.top.statementType && resultsType.includes(results.top.statementType))) return null;
 
     return (
         <div className={styles[_level]}>

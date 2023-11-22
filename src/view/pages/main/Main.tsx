@@ -8,7 +8,7 @@ import MainCard from "./mainCard/MainCard"
 
 // Firestore functions
 import { logOut } from "../../../functions/db/auth"
-import { prompStore, sortStatementsByHirarrchy } from "./mainCont"
+import { FilterType, filterByStatementType, prompStore, sortStatementsByHirarrchy } from "./mainCont"
 
 // Redux store
 import {
@@ -25,7 +25,9 @@ import { t } from "i18next"
 
 
 const Main = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const [filterState, setFilter] = useState<FilterType>(FilterType.all)
 
     const statements = [
         ...useAppSelector(statementsSubscriptionsSelector),
@@ -57,7 +59,7 @@ const Main = () => {
         logOut()
         dispatch(setUser(null))
     }
-    const resultsType = [StatementType.question, StatementType.option, StatementType.statement, StatementType.result]
+    const resultsType = filterByStatementType(filterState).types as StatementType[];
     const _statements = [...statements.map((statement) => statement.statement)]
    
     const _results = sortStatementsByHirarrchy(_statements)
@@ -85,6 +87,19 @@ const Main = () => {
                 <div className="page__main">
                     <div className="wrapper">
                         <h2>{t("Conversations")}</h2>
+                        {filterState}
+                        <select onChange={(ev:any)=>setFilter(ev.target.value)}>
+                            <option value={FilterType.all}>{t("All")}</option>
+                            <option value={FilterType.questions}>
+                                {t("Questions")}
+                            </option>
+                            <option value={FilterType.questionsResults}>
+                                {t("Questions and Results")}
+                            </option>
+                            <option value={FilterType.questionsResultsOptions}>
+                                {t("Questions, options and Results")}
+                            </option>
+                        </select>
                         {_results.map((result: Results) => (
                             <MainCard
                                 key={result.top.statementId}
