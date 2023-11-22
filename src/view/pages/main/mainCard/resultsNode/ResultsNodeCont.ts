@@ -2,10 +2,17 @@ import { Statement, StatementType } from "delib-npm"
 
 export function styleSwitch(styles: any, statement: Statement) {
     const { statementType } = statement
-    if (statementType === StatementType.question) return styles.question
-    if (statementType === StatementType.option) return styles.option
-    if (statementType === StatementType.result) return styles.result
-    return styles.general
+    
+    switch (statementType) {
+        case StatementType.question:
+            return styles.question
+        case StatementType.option:
+            return styles.option
+        case StatementType.result:
+            return styles.result
+        case StatementType.statement:
+            return styles.statement
+        default:
+            return styles.general
+    }
 }
-
-
