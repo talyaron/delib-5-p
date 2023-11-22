@@ -417,3 +417,52 @@ export function listenToMembers(
         return () => {}
     }
 }
+
+export async function getStatementDepth(
+    statement: Statement,
+    depth: number
+): Promise<Statement[]> {
+    try {
+        let statements: Statement[] = []
+
+        for (let i = 0; i < depth; i++) {
+            const _statements = await getLevel(statement)
+            statements = [...statements, ..._statements]
+            _statements.forEach((_statement) => {
+                const _statements = await getLevel(statement)
+                statements = [...statements, ..._statements]
+            })
+            console.log(statements)
+        }
+        return []
+    } catch (error) {
+        console.error(error)
+        return []
+    }
+
+    async function getLevel(statement: Statement): Promise<Statement[]> {
+        try {
+            const statementsRef = collection(DB, Collections.statements)
+            const q = query(
+                statementsRef,
+                and(
+                    where("parentId", "==", statement.statementId),
+                    or(
+                        where("statementType", "==", StatementType.option),
+                        where("statementType", "==", StatementType.result)
+                    )
+                )
+            )
+            const statementsDB = await getDocs(q)
+
+            const _statements = statementsDB.docs.map((doc) => {
+                return doc.data() as Statement
+            })
+
+            return _statements
+        } catch (error) {
+            console.error(error)
+            return []
+        }
+    }
+}

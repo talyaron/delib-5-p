@@ -6,9 +6,6 @@ import { Results, ResultsBy, Statement, StatementType } from "delib-npm"
 // Styles
 import styles from "./Document.module.scss"
 
-import { updateResultsSettings } from "../../../../../functions/db/results/setResults"
-
-
 // Custom Components
 import Slider from "@mui/material/Slider"
 import { getResults } from "./documentCont"
@@ -16,6 +13,9 @@ import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 import MainCard from "../../../main/mainCard/MainCard"
 import { FilterType, filterByStatementType } from "../../../main/mainCont"
+import { getStatementDepth } from "../../../../../functions/db/statements/getStatement"
+import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
+import { setStatement } from "../../../../../model/statements/statementsSlice"
 
 interface Props {
     statement: Statement
@@ -23,6 +23,8 @@ interface Props {
 }
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
+    const dispatch = useAppDispatch()
+
     const [resultsBy, setResultsBy] = useState<ResultsBy>(
         statement.resultsSettings?.resultsBy || ResultsBy.topOptions
     )
@@ -30,6 +32,10 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
         statement.resultsSettings?.numberOfResults || 2
     )
     const [results, setResults] = useState<Results>({ top: statement })
+
+    function setStatementCB(statement: Statement) {
+        dispatch(setStatement(statement))
+    }
 
     useEffect(() => {
         if (!subStatements) return
@@ -51,31 +57,38 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             ev.preventDefault()
 
             const data = new FormData(ev.target)
-            const _resultsBy = data.get("results") as ResultsBy
-            const numberOfResults = Number(data.get("numberOfResults"))
+            const depth = Number(data.get("depth"))
+            console.log(depth)
+            if (!statement) throw new Error("statement is undefined")
 
-            setResultsBy(_resultsBy)
+            getStatementDepth(statement, depth, setStatementCB)
+            // const _resultsBy = data.get("results") as ResultsBy
+            // const numberOfResults = Number(data.get("numberOfResults"))
 
-            updateResultsSettings(
-                statement.statementId,
-                _resultsBy,
-                numberOfResults
-            )
+            // setResultsBy(_resultsBy)
 
-            const _results = await getResults(
-                statement,
-                subStatements,
-                _resultsBy,
-                numberOfResults
-            )
-            // setResults(top);
+            // updateResultsSettings(
+            //     statement.statementId,
+            //     _resultsBy,
+            //     numberOfResults
+            // )
 
-            setResults(_results)
+            // const _results = await getResults(
+            //     statement,
+            //     subStatements,
+            //     _resultsBy,
+            //     numberOfResults
+            // )
+            // // setResults(top);
+
+            // setResults(_results)
         } catch (error) {
             console.error(error)
         }
     }
-    const resultsType:StatementType[] = filterByStatementType(FilterType.questionsResultsOptions).types
+    const resultsType: StatementType[] = filterByStatementType(
+        FilterType.questionsResultsOptions
+    ).types
 
     return (
         <ScreenFadeInOut>
@@ -130,7 +143,22 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                                     />
                                 </div>
                             )}
+                            <section>
+                                <label>{t("Depth")}</label>
+                                <br />
+                                <Slider
+                                    aria-label="Small steps"
+                                    defaultValue={1}
+                                    step={1}
+                                    marks
+                                    min={1}
+                                    max={5}
+                                    valueLabelDisplay="on"
+                                    name="depth"
+                                />
+                            </section>
                         </div>
+
                         <div className="btns">
                             <button type="submit">
                                 {t("Display Results")}
@@ -138,7 +166,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                         </div>
                     </form>
                     {results.sub ? (
-                       <MainCard results={results} resultsType={resultsType}/>
+                        <MainCard results={results} resultsType={resultsType} />
                     ) : (
                         <h2>{t("No Options Selected Yet")}</h2>
                     )}
