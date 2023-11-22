@@ -1,7 +1,7 @@
 import { useState, FC, useEffect } from "react"
 
 // Third party imports
-import { Results, ResultsBy, Statement } from "delib-npm"
+import { Results, ResultsBy, Statement, StatementType } from "delib-npm"
 
 // Styles
 import styles from "./Document.module.scss"
@@ -18,6 +18,8 @@ import ResultsComp from "./results/Results"
 import { getResults } from "./documentCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
+import MainCard from "../../../main/mainCard/MainCard"
+import { FilterType, filterByStatementType } from "../../../main/mainCont"
 
 interface Props {
     statement: Statement
@@ -77,6 +79,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             console.error(error)
         }
     }
+    const resultsType:StatementType[] = filterByStatementType(FilterType.questionsResultsOptions).types
 
     return (
         <ScreenFadeInOut>
@@ -139,7 +142,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                         </div>
                     </form>
                     {results.sub ? (
-                        <ResultsComp results={results} />
+                       <MainCard results={results} resultsType={resultsType}/>
                     ) : (
                         <h2>{t("No Options Selected Yet")}</h2>
                     )}

@@ -228,7 +228,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                                     )}
                                                 />
                                             }
-                                            label={navObj.name}
+                                            label={t(navObj.name)}
                                         />
                                     ))}
                             </FormGroup>
