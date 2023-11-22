@@ -8,7 +8,12 @@ import MainCard from "./mainCard/MainCard"
 
 // Firestore functions
 import { logOut } from "../../../functions/db/auth"
-import { FilterType, filterByStatementType, prompStore, sortStatementsByHirarrchy } from "./mainCont"
+import {
+    FilterType,
+    filterByStatementType,
+    prompStore,
+    sortStatementsByHirarrchy,
+} from "./mainCont"
 
 // Redux store
 import {
@@ -23,9 +28,8 @@ import { install } from "../../../main"
 import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 
-
 const Main = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const [filterState, setFilter] = useState<FilterType>(FilterType.all)
 
@@ -59,9 +63,9 @@ const Main = () => {
         logOut()
         dispatch(setUser(null))
     }
-    const resultsType = filterByStatementType(filterState).types as StatementType[];
+    const resultsType = filterByStatementType(filterState)
+        .types as StatementType[]
     const _statements = [...statements.map((statement) => statement.statement)]
-   
     const _results = sortStatementsByHirarrchy(_statements)
 
     return (
@@ -87,8 +91,10 @@ const Main = () => {
                 <div className="page__main">
                     <div className="wrapper">
                         <h2>{t("Conversations")}</h2>
-                        {filterState}
-                        <select onChange={(ev:any)=>setFilter(ev.target.value)}>
+                       <label>{t("Show")}</label>
+                        <select
+                            onChange={(ev: any) => setFilter(ev.target.value)}
+                        >
                             <option value={FilterType.all}>{t("All")}</option>
                             <option value={FilterType.questions}>
                                 {t("Questions")}
