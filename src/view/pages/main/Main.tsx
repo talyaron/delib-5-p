@@ -57,7 +57,7 @@ const Main = () => {
         logOut()
         dispatch(setUser(null))
     }
-    const resultsType = [StatementType.question, StatementType.option]
+    const resultsType = [StatementType.question, StatementType.option, StatementType.statement, StatementType.result]
     const _statements = [...statements.map((statement) => statement.statement)]
    
     const _results = sortStatementsByHirarrchy(_statements)

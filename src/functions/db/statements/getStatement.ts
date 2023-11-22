@@ -93,7 +93,7 @@ function listenToSubStatements(
         const q = query(
             subStatementsRef,
             where("topParentId", "==", topStatementId),
-            where("statementType", "==", StatementType.question),
+            // where("statementType", "==", StatementType.question),
             orderBy("createdAt", "asc"),
             limit(50)
         )
@@ -173,7 +173,7 @@ export function listenToStatementSubscription(
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             const statementSubscription =
                 statementSubscriptionDB.data() as StatementSubscription
-            if (!statementSubscription) return
+
             StatementSubscriptionSchema.parse(statementSubscription)
 
             updateStore(statementSubscription)

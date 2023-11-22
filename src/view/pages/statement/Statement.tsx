@@ -90,7 +90,7 @@ const Statement: FC = () => {
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
         try {
-            console.log(statement)
+           
             dispatch(setStatement(statement))
         } catch (error) {
             console.error(error)

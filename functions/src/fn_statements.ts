@@ -9,6 +9,7 @@ export async function updateSubscribedListnersCB(event: any) {
     //get statement
     const { statementId } = event.params
     const statement = event.data.after.data()
+    logger.log("updateSubscribedListnersCB", statement)
 
     //get all subscribers to this statement
     const subscribersRef = db.collection("statementsSubscribe")

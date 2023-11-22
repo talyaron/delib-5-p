@@ -149,6 +149,7 @@ export async function setStatmentSubscriptionNotificationToDB(
     statement: Statement | undefined
 ) {
     try {
+  
         const token = deviceToken
 
         if (!token) throw new Error("Token is undefined")
@@ -238,7 +239,7 @@ export async function setStatementisOption(statement: Statement) {
 
 export async function setStatmentGroupToDB(statement: Statement) {
     try {
-        if (statement.type === StatementType.statement) return
+
 
         const statementId = statement.statementId
         const statementRef = doc(DB, Collections.statements, statementId)

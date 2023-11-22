@@ -29,7 +29,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
     const navigate = useNavigate();
    
     const {statementType} = statement;
-    if(!(statementType === StatementType.option || statementType === StatementType.question)) return null;
+    if(statementType === StatementType.statement ) return null;
 
 
     return (
@@ -74,7 +74,7 @@ export function handleCreateSubStatements(
     navigate: Function
 ) {
     try {
-        setStatmentGroupToDB(statement)
+        // setStatmentGroupToDB(statement)
         navigate(`/home/statement/${statement.statementId}/chat`, {
             state: { from: window.location.pathname },
         })
