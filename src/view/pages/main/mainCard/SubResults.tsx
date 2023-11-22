@@ -8,21 +8,24 @@ interface Props {
     results: Results
     level?: number
     resultsType?: StatementType[]
+    accordionStyle: any
 }
 
 function SubResults({
     results,
     level = 2,
     resultsType = [StatementType.question],
+    accordionStyle
 }: Props) {
     const _level: string = `level__${level || 2}`
     
     //filter results by type
     if(!(results.top.statementType && resultsType.includes(results.top.statementType))) return null;
+   
 
     return (
         <div className={styles[_level]}>
-            <Accordion defaultExpanded={true}>
+            <Accordion defaultExpanded={true} style={accordionStyle}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <ResultsNode
                         statement={results.top}
@@ -36,6 +39,7 @@ function SubResults({
                             results={subResult}
                             level={level + 1}
                             resultsType={resultsType}
+                            accordionStyle={accordionStyle}
                         />
                     ))}
                 </AccordionDetails>

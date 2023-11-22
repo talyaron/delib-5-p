@@ -22,15 +22,23 @@ interface Props {
 
 const MainCard: FC<Props> = ({ results, resultsType }) => {
     const hasSubs = results.sub && results.sub.length > 0
+    const accordionStyle = {
+        backgroundColor: "white",
+        borderRadius: "0px",
+        boxShadow: "none",
+        border: "1px solid #f4f4f4",
+        padding: "3px",
+    }
 
     return (
         <div className={styles.results}>
-            <Accordion defaultExpanded={true}>
+            <Accordion defaultExpanded={true} style={accordionStyle}>
                 {hasSubs ? (
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
+                       
                     >
                         <ResultsNode
                             statement={results.top}
@@ -44,7 +52,7 @@ const MainCard: FC<Props> = ({ results, resultsType }) => {
                     />
                 )}
                 {hasSubs ? (
-                    <AccordionDetails>
+                    <AccordionDetails >
                         {results.sub?.map((subResult) => {
                             return (
                                 <SubResults
@@ -52,6 +60,7 @@ const MainCard: FC<Props> = ({ results, resultsType }) => {
                                     results={subResult}
                                     level={2}
                                     resultsType={resultsType}
+                                    accordionStyle={accordionStyle}
                                 />
                             )
                         })}
