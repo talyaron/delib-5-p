@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
 
     if (isLgged) {
-
+console.log('listenStatmentsSubsciptions')
       unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB, deleteStoreStSubCB);
     }
     return () => {

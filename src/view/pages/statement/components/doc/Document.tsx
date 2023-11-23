@@ -37,7 +37,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     )
 
     const _results = sortStatementsByHirarrchy([statement, ...subStatements])
-    console.log(_results)
+
     const [results, setResults] = useState<Results>(_results[0])
 
     // function setStatementCB(statement: Statement) {
@@ -45,17 +45,14 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     // }
 
     useEffect(() => {
-        if (!subStatements) return
-        ;(async () => {
-            // const _results = await getResults(
-            //     statement,
-            //     subStatements,
-            //     resultsBy,
-            //     numberOfResults
-            // )
-            // setResults(_results)
-        })()
-    }, [subStatements])
+        if (!subStatements || !statement) return
+
+        const _results = sortStatementsByHirarrchy([
+            statement,
+            ...subStatements,
+        ])
+        setResults(_results[0])
+    }, [subStatements, statement])
 
     async function handleGetResults(ev: any) {
         try {
@@ -67,27 +64,8 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             console.log(depth)
             if (!statement) throw new Error("statement is undefined")
 
-            getStatementDepth(statement, depth)
-            // const _resultsBy = data.get("results") as ResultsBy
-            // const numberOfResults = Number(data.get("numberOfResults"))
-
-            // setResultsBy(_resultsBy)
-
-            // updateResultsSettings(
-            //     statement.statementId,
-            //     _resultsBy,
-            //     numberOfResults
-            // )
-
-            // const _results = await getResults(
-            //     statement,
-            //     subStatements,
-            //     _resultsBy,
-            //     numberOfResults
-            // )
-            // // setResults(top);
-
-            // setResults(_results)
+            const x = getStatementDepth(statement, depth)
+            console.log(x)
         } catch (error) {
             console.error(error)
         }

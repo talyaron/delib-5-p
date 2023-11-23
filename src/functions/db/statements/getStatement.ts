@@ -256,6 +256,7 @@ export function listenStatmentsSubsciptions(
         )
 
         return onSnapshot(q, (subsDB) => {
+            console.log('number of statements', subsDB.size)
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription
