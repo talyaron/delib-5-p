@@ -436,7 +436,7 @@ export async function getStatementDepth(
             )
         statements.push(levleOneStatements)
         //get the next levels
-        debugger
+  
         for (let i = 1; i < depth; i++) {
             let __statements: Statement[] = []
             statements[i].forEach(async (statement) => {
@@ -470,7 +470,7 @@ export async function getStatementDepth(
                 )
             )
             const statementsDB = await getDocs(q)
-
+            console.log(statementsDB.size)
             const _statements = statementsDB.docs.map((doc) => {
                 return doc.data() as Statement
             })

@@ -12,10 +12,14 @@ import { getResults } from "./documentCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 import MainCard from "../../../main/mainCard/MainCard"
-import { FilterType, filterByStatementType } from "../../../main/mainCont"
+import {
+    FilterType,
+    filterByStatementType,
+    sortStatementsByHirarrchy,
+} from "../../../main/mainCont"
 import { getStatementDepth } from "../../../../../functions/db/statements/getStatement"
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
-import { setStatement } from "../../../../../model/statements/statementsSlice"
+// import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
+// import { setStatement } from "../../../../../model/statements/statementsSlice"
 
 interface Props {
     statement: Statement
@@ -23,7 +27,7 @@ interface Props {
 }
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
 
     const [resultsBy, setResultsBy] = useState<ResultsBy>(
         statement.resultsSettings?.resultsBy || ResultsBy.topOptions
@@ -31,23 +35,25 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     const [numberOfResults, setNumberOfResults] = useState<number>(
         statement.resultsSettings?.numberOfResults || 2
     )
-    const [results, setResults] = useState<Results>({ top: statement })
 
-    function setStatementCB(statement: Statement) {
-        dispatch(setStatement(statement))
-    }
+    const _results = sortStatementsByHirarrchy([statement, ...subStatements])
+    console.log(_results)
+    const [results, setResults] = useState<Results>(_results[0])
+
+    // function setStatementCB(statement: Statement) {
+    //     dispatch(setStatement(statement))
+    // }
 
     useEffect(() => {
         if (!subStatements) return
         ;(async () => {
-            const _results = await getResults(
-                statement,
-                subStatements,
-                resultsBy,
-                numberOfResults
-            )
-
-            setResults(_results)
+            // const _results = await getResults(
+            //     statement,
+            //     subStatements,
+            //     resultsBy,
+            //     numberOfResults
+            // )
+            // setResults(_results)
         })()
     }, [subStatements])
 
@@ -165,11 +171,8 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                             </button>
                         </div>
                     </form>
-                    {results.sub ? (
-                        <MainCard results={results} resultsType={resultsType} />
-                    ) : (
-                        <h2>{t("No Options Selected Yet")}</h2>
-                    )}
+
+                    <MainCard results={results} resultsType={resultsType} />
                 </section>
             </div>
         </ScreenFadeInOut>
