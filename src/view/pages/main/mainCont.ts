@@ -10,6 +10,7 @@ interface ResultLevel {
 export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
     try {
         const results: Results[] = []
+     
         if (statements.length === 0) return []
 
         let _statements = [...statements]
@@ -21,7 +22,9 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
 
         while (ids.size < statements.length && counter < 8) {
             //take firs statement
+            if (_statements.length === 0) break
             const statement = _statements[0]
+           
 
             //find top parent statement
             const parentStatement = findMostTopStatement(statement, _statements)

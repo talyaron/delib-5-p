@@ -29,6 +29,7 @@ import { DB } from "../config"
 // Redux Store
 import { store } from "../../../model/store"
 import _ from "lodash"
+import { compose } from "@reduxjs/toolkit"
 
 export function listenToTopStatements(
     setStatementsCB: Function,
@@ -256,7 +257,7 @@ export function listenStatmentsSubsciptions(
         )
 
         return onSnapshot(q, (subsDB) => {
-            console.log('number of statements', subsDB.size)
+       
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription
@@ -422,61 +423,79 @@ export function listenToMembers(
 
 export async function getStatementDepth(
     statement: Statement,
+    subStatements: Statement[],
     depth: number
 ): Promise<Statement[]> {
     try {
         let statements: Statement[][] = [[statement]]
 
         //level 1 is allready in store
-        const levleOneStatements: Statement[] = store
-            .getState()
-            .statements.statements.filter(
-                (s) =>
-                    s.parentId === statement.statementId &&
-                    s.statementType === StatementType.result
-            )
+        //find second level
+        const levleOneStatements: Statement[] = subStatements.filter(
+            (s) =>
+                s.parentId === statement.statementId &&
+                s.statementType === StatementType.result
+        )
         statements.push(levleOneStatements)
         //get the next levels
-  
+       
         for (let i = 1; i < depth; i++) {
-            let __statements: Statement[] = []
-            statements[i].forEach(async (statement) => {
-                const _statements = await getLevel(statement)
-                __statements = [...__statements, ..._statements]
-            })
-            if (__statements.length === 0) break
-            statements.push(__statements)
+         
+            const statementsCB = statements[i].map((st: Statement) =>
+                getLevelResults(st) as Promise<Statement[]>
+            )
+
+            let statementsTemp:any = await Promise.all(statementsCB)
+            console.log('statementsTemp',statementsTemp)
+            statementsTemp = statementsTemp.flat(1)
+            console.log('statementsTemp 2',statementsTemp)
+            if (statementsTemp.length === 0)  break
+
+            statements[i + 1] = []
+            statements[i+1].push(...statementsTemp)
+            console.log('statementsTemp 3',statements)
+           
+           
         }
         console.log(statements)
-        const finalStatements = statements.flat(Infinity)
+       
+        //@ts-ignore
+        const finalStatements: Statement[] = statements.flat(Infinity)
         console.log(finalStatements)
 
-        return []
+        return finalStatements
     } catch (error) {
         console.error(error)
         return []
     }
 
-    async function getLevel(statement: Statement): Promise<Statement[]> {
+    async function getLevelResults(statement: Statement): Promise<Statement[]> {
         try {
+            const subStatements: Statement[] = []
             const statementsRef = collection(DB, Collections.statements)
             const q = query(
                 statementsRef,
                 and(
                     where("parentId", "==", statement.statementId),
                     or(
-                        where("statementType", "==", StatementType.option),
-                        where("statementType", "==", StatementType.result)
+                        where("statementType", "==", StatementType.result),
+                        where("statementType", "==", StatementType.question)
                     )
                 )
             )
             const statementsDB = await getDocs(q)
             console.log(statementsDB.size)
-            const _statements = statementsDB.docs.map((doc) => {
-                return doc.data() as Statement
+            statementsDB.forEach((doc) => {
+                const statement = doc.data() as Statement
+                subStatements.push(statement)
+                console.log(statement)
             })
 
-            return _statements
+            // const _statements = statementsDB.docs.map((doc) => {
+            //     return doc.data() as Statement
+            // })
+
+            return subStatements
         } catch (error) {
             console.error(error)
             return []

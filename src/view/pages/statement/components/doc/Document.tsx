@@ -1,14 +1,19 @@
 import { useState, FC, useEffect } from "react"
 
 // Third party imports
-import { Results, ResultsBy, Statement, StatementType } from "delib-npm"
+import {
+    Results,
+    ResultsBy,
+    Statement,
+    StatementSchema,
+    StatementType,
+} from "delib-npm"
 
 // Styles
 import styles from "./Document.module.scss"
 
 // Custom Components
 import Slider from "@mui/material/Slider"
-import { getResults } from "./documentCont"
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
 import { t } from "i18next"
 import MainCard from "../../../main/mainCard/MainCard"
@@ -18,8 +23,9 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../main/mainCont"
 import { getStatementDepth } from "../../../../../functions/db/statements/getStatement"
-// import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
-// import { setStatement } from "../../../../../model/statements/statementsSlice"
+import { setStatement } from "../../../../../model/statements/statementsSlice"
+import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
+import { z } from "zod"
 
 interface Props {
     statement: Statement
@@ -27,7 +33,7 @@ interface Props {
 }
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
-    // const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
 
     const [resultsBy, setResultsBy] = useState<ResultsBy>(
         statement.resultsSettings?.resultsBy || ResultsBy.topOptions
@@ -40,19 +46,6 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
     const [results, setResults] = useState<Results>(_results[0])
 
-    // function setStatementCB(statement: Statement) {
-    //     dispatch(setStatement(statement))
-    // }
-
-    useEffect(() => {
-        if (!subStatements || !statement) return
-
-        const _results = sortStatementsByHirarrchy([
-            statement,
-            ...subStatements,
-        ])
-        setResults(_results[0])
-    }, [subStatements, statement])
 
     async function handleGetResults(ev: any) {
         try {
@@ -61,11 +54,32 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
             const data = new FormData(ev.target)
             const depth = Number(data.get("depth"))
-            console.log(depth)
+
             if (!statement) throw new Error("statement is undefined")
 
-            const x = getStatementDepth(statement, depth)
-            console.log(x)
+            const _subSubStatements = await getStatementDepth(
+                statement,
+                subStatements,
+                depth
+            )
+
+            _subSubStatements.forEach((subSubStatement) => {
+                console.log(subSubStatement.statement)
+            })
+
+           
+        
+
+            const _results = sortStatementsByHirarrchy(_subSubStatements)
+            console.log(_results[0])
+            setResults(_results[0])
+
+            if (_subSubStatements.length > 0) {
+                _subSubStatements.forEach((subSubStatement) => {
+                    StatementSchema.parse(subSubStatement)
+                    dispatch(setStatement(subSubStatement))
+                })
+            }
         } catch (error) {
             console.error(error)
         }

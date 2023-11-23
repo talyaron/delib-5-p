@@ -55,8 +55,10 @@ export const statementsSlicer = createSlice({
     reducers: {
         setStatement: (state, action: PayloadAction<Statement>) => {
             try {
-                StatementSchema.parse(action.payload)
-                const newStatement = action.payload
+                            
+                const newStatement = {...action.payload}
+                
+                StatementSchema.parse(newStatement)
                 newStatement.order = 0
                 const oldStatement = state.statements.find(
                     (statement) =>
