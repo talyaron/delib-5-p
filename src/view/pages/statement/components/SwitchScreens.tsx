@@ -1,4 +1,3 @@
-
 // Custom components
 import StatementMain from "./StatementMain"
 import { StatementSettings } from "./admin/StatementSettings"
@@ -15,6 +14,7 @@ interface SwitchScreensProps {
     statement: Statement | undefined
     subStatements: Statement[]
     handleShowTalker: Function
+    topBar: React.RefObject<HTMLDivElement>
 }
 
 export default function SwitchScreens({
@@ -22,6 +22,7 @@ export default function SwitchScreens({
     statement,
     subStatements,
     handleShowTalker,
+    topBar,
 }: SwitchScreensProps) {
     if (!statement) return null
 
@@ -33,6 +34,7 @@ export default function SwitchScreens({
         case Screen.HOME:
             return (
                 <StatementMain
+                    topBar={topBar}
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
@@ -41,6 +43,7 @@ export default function SwitchScreens({
         case Screen.CHAT:
             return (
                 <StatementMain
+                    topBar={topBar}
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
@@ -73,6 +76,7 @@ export default function SwitchScreens({
         default:
             return (
                 <StatementMain
+                    topBar={topBar}
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}

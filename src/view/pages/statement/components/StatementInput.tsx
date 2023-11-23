@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 
 // Third Party Imports
 import { Screen, Statement } from "delib-npm"
@@ -17,10 +17,13 @@ import { userSelector } from "../../../../model/users/userSlice"
 
 interface Props {
     statement: Statement
+    topBar: React.RefObject<HTMLDivElement>
 }
 
-const StatementInput: FC<Props> = ({ statement }) => {
+const StatementInput: FC<Props> = ({ statement, topBar }) => {
     const user = useAppSelector(userSelector)
+
+    const [margin, setMargin] = useState("0%")
 
     const direction =
         document.body.style.direction === "rtl" ? "row" : "row-reverse"
@@ -96,12 +99,30 @@ const StatementInput: FC<Props> = ({ statement }) => {
         }
     }
 
+    const _isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+        )
+            ? true
+            : false
+
+    const handleFocus = () => {
+        if (topBar?.current && _isMobile) {
+            topBar.current.scrollIntoView()
+            setMargin("60%")
+        }
+    }
+
     return (
         <form
             onSubmit={handleAddStatement}
             name="theForm"
             className="statement__form"
-            style={{ flexDirection: direction }}
+            style={{
+                flexDirection: direction,
+                position: "fixed",
+                bottom: margin,
+            }}
         >
             <textarea
                 rows={3}
@@ -110,6 +131,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 onKeyUp={handleInput}
                 required
                 autoFocus={true}
+                onFocusCapture={handleFocus}
             />
             <div className="statement__form__sendBtnBox">
                 <IconButton type="submit">

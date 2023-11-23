@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 
 // Third party imports
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
@@ -71,6 +71,9 @@ const Statement: FC = () => {
     const navigate = useNavigate()
     const { pathname } = useLocation()
 
+    //Use Ref
+    const topBar = React.useRef<HTMLDivElement>(null)
+
     // Redux hooks
     const dispatch: any = useAppDispatch()
     const statement = useAppSelector(statementSelector(statementId))
@@ -90,12 +93,10 @@ const Statement: FC = () => {
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
         try {
-           
             dispatch(setStatement(statement))
         } catch (error) {
             console.error(error)
         }
-      
     }
     function deleteStatementCB(statementId: string) {
         dispatch(deleteStatement(statementId))
@@ -152,7 +153,6 @@ const Statement: FC = () => {
             unsub()
         }
     }, [statementId, user])
-
 
     useEffect(() => {
         if (user && statementId) {
@@ -246,7 +246,7 @@ const Statement: FC = () => {
                         <ProfileImage user={talker} />
                     </div>
                 )}
-                <div className="page__header">
+                <div className="page__header" ref={topBar}>
                     <div
                         className="page__header__wrapper"
                         style={{ flexDirection: direction }}
@@ -285,6 +285,7 @@ const Statement: FC = () => {
                 </div>
                 <AnimatePresence mode="wait" initial={false}>
                     <SwitchScreens
+                        topBar={topBar}
                         key={statementId}
                         screen={page}
                         statement={statement}

@@ -14,6 +14,7 @@ interface Props {
     statement: Statement
     subStatements: Statement[]
     handleShowTalker: Function
+    topBar: React.RefObject<HTMLDivElement>
 }
 
 let firstTime = true
@@ -22,6 +23,7 @@ const StatementMain: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
+    topBar,
 }) => {
     const messagesEndRef = useRef(null)
     const location = useLocation()
@@ -83,8 +85,10 @@ const StatementMain: FC<Props> = ({
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
+                {statement && (
+                    <StatementInput topBar={topBar} statement={statement} />
+                )}
             </div>
-            {statement && <StatementInput statement={statement} />}
         </ScreenFadeInOut>
     ) : (
         <ScreenSlide toSubStatement={toSubStatement}>
@@ -98,8 +102,8 @@ const StatementMain: FC<Props> = ({
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
+                {statement && <StatementInput topBar={topBar} statement={statement} />}
             </div>
-            {statement && <StatementInput statement={statement} />}
         </ScreenSlide>
     )
 }
