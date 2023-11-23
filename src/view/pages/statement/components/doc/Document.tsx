@@ -46,7 +46,6 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
     const [results, setResults] = useState<Results>(_results[0])
 
-
     async function handleGetResults(ev: any) {
         try {
             //get form data with formData
@@ -63,15 +62,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                 depth
             )
 
-            _subSubStatements.forEach((subSubStatement) => {
-                console.log(subSubStatement.statement)
-            })
-
-           
-        
-
             const _results = sortStatementsByHirarrchy(_subSubStatements)
-            console.log(_results[0])
             setResults(_results[0])
 
             if (_subSubStatements.length > 0) {

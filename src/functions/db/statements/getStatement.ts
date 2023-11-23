@@ -446,23 +446,20 @@ export async function getStatementDepth(
             )
 
             let statementsTemp:any = await Promise.all(statementsCB)
-            console.log('statementsTemp',statementsTemp)
+           
             statementsTemp = statementsTemp.flat(1)
-            console.log('statementsTemp 2',statementsTemp)
+         
             if (statementsTemp.length === 0)  break
 
             statements[i + 1] = []
-            statements[i+1].push(...statementsTemp)
-            console.log('statementsTemp 3',statements)
-           
+            statements[i+1].push(...statementsTemp)         
            
         }
-        console.log(statements)
+   
        
-        //@ts-ignore
+        // @ts-ignore
         const finalStatements: Statement[] = statements.flat(Infinity)
-        console.log(finalStatements)
-
+      
         return finalStatements
     } catch (error) {
         console.error(error)
@@ -484,16 +481,13 @@ export async function getStatementDepth(
                 )
             )
             const statementsDB = await getDocs(q)
-            console.log(statementsDB.size)
+          
             statementsDB.forEach((doc) => {
                 const statement = doc.data() as Statement
                 subStatements.push(statement)
-                console.log(statement)
+             
             })
 
-            // const _statements = statementsDB.docs.map((doc) => {
-            //     return doc.data() as Statement
-            // })
 
             return subStatements
         } catch (error) {
