@@ -28,6 +28,7 @@ import { DB } from "../config"
 
 // Redux Store
 import { store } from "../../../model/store"
+import _ from "lodash"
 
 export function listenToTopStatements(
     setStatementsCB: Function,
@@ -423,17 +424,32 @@ export async function getStatementDepth(
     depth: number
 ): Promise<Statement[]> {
     try {
-        let statements: Statement[] = []
+        let statements: Statement[][] = [[statement]]
 
-        for (let i = 0; i < depth; i++) {
-            const _statements = await getLevel(statement)
-            statements = [...statements, ..._statements]
-            _statements.forEach((_statement) => {
+        //level 1 is allready in store
+        const levleOneStatements: Statement[] = store
+            .getState()
+            .statements.statements.filter(
+                (s) =>
+                    s.parentId === statement.statementId &&
+                    s.statementType === StatementType.result
+            )
+        statements.push(levleOneStatements)
+        //get the next levels
+        debugger
+        for (let i = 1; i < depth; i++) {
+            let __statements: Statement[] = []
+            statements[i].forEach(async (statement) => {
                 const _statements = await getLevel(statement)
-                statements = [...statements, ..._statements]
+                __statements = [...__statements, ..._statements]
             })
-            console.log(statements)
+            if (__statements.length === 0) break
+            statements.push(__statements)
         }
+        console.log(statements)
+        const finalStatements = statements.flat(Infinity)
+        console.log(finalStatements)
+
         return []
     } catch (error) {
         console.error(error)

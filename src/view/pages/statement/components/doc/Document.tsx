@@ -61,7 +61,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
             console.log(depth)
             if (!statement) throw new Error("statement is undefined")
 
-            getStatementDepth(statement, depth, setStatementCB)
+            getStatementDepth(statement, depth)
             // const _resultsBy = data.get("results") as ResultsBy
             // const numberOfResults = Number(data.get("numberOfResults"))
 
