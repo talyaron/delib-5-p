@@ -1,5 +1,9 @@
 import { FC } from "react"
+
+// Third party imports
 import { Statement } from "delib-npm"
+
+// Redux store
 import {
     useAppDispatch,
     useAppSelector,
@@ -8,8 +12,9 @@ import {
     parentVoteSelector,
     setVoteToStore,
 } from "../../../../../model/vote/votesSlice"
+
+// Statements helpers
 import { setVote } from "../../../../../functions/db/vote/setVote"
-import { barWidth, padding } from "./StatementVote"
 import { getSelections } from "./getSelections"
 
 export interface OptionBarProps {
@@ -35,6 +40,9 @@ export const OptionBar: FC<OptionBarProps> = ({
         dispatch(setVoteToStore(option))
     }
     const selections: number = getSelections(statement, option)
+
+    const barWidth = 120
+    const padding = 10
 
     return (
         <div

@@ -38,7 +38,6 @@ const MainCard: FC<Props> = ({ results, resultsType }) => {
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
-                       
                     >
                         <ResultsNode
                             statement={results.top}
@@ -51,8 +50,8 @@ const MainCard: FC<Props> = ({ results, resultsType }) => {
                         resultsType={resultsType}
                     />
                 )}
-                {hasSubs ? (
-                    <AccordionDetails >
+                {hasSubs && (
+                    <AccordionDetails>
                         {results.sub?.map((subResult) => {
                             return (
                                 <SubResults
@@ -65,7 +64,7 @@ const MainCard: FC<Props> = ({ results, resultsType }) => {
                             )
                         })}
                     </AccordionDetails>
-                ) : null}
+                )}
             </Accordion>
         </div>
     )

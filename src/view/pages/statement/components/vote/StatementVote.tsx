@@ -31,8 +31,6 @@ interface Props {
     subStatements: Statement[]
 }
 let getVoteFromDB = false
-export const barWidth = 120
-export const padding = 10
 
 const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const dispatch = useAppDispatch()
