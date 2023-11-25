@@ -165,7 +165,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 setSubsciption
             )
 
-            if (_statementId) navigate(`/home/statement/${_statementId}/chat`)
+            if (_statementId) navigate(`/statement/${_statementId}/chat`)
             else throw new Error("statement not found")
         } catch (error) {
             console.error(error)

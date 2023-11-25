@@ -23,7 +23,7 @@ import {
 } from "delib-npm"
 
 // Helpers
-import { listenedStatements } from "../../../view/pages/home/App"
+import { listenedStatements } from "../../../view/pages/home/Home"
 import { DB } from "../config"
 
 // Redux Store
@@ -257,7 +257,6 @@ export function listenStatmentsSubsciptions(
         )
 
         return onSnapshot(q, (subsDB) => {
-       
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription
@@ -438,28 +437,25 @@ export async function getStatementDepth(
         )
         statements.push(levleOneStatements)
         //get the next levels
-       
+
         for (let i = 1; i < depth; i++) {
-         
-            const statementsCB = statements[i].map((st: Statement) =>
-                getLevelResults(st) as Promise<Statement[]>
+            const statementsCB = statements[i].map(
+                (st: Statement) => getLevelResults(st) as Promise<Statement[]>
             )
 
-            let statementsTemp:any = await Promise.all(statementsCB)
-           
+            let statementsTemp: any = await Promise.all(statementsCB)
+
             statementsTemp = statementsTemp.flat(1)
-         
-            if (statementsTemp.length === 0)  break
+
+            if (statementsTemp.length === 0) break
 
             statements[i + 1] = []
-            statements[i+1].push(...statementsTemp)         
-           
+            statements[i + 1].push(...statementsTemp)
         }
-   
-       
+
         // @ts-ignore
         const finalStatements: Statement[] = statements.flat(Infinity)
-      
+
         return finalStatements
     } catch (error) {
         console.error(error)
@@ -481,13 +477,11 @@ export async function getStatementDepth(
                 )
             )
             const statementsDB = await getDocs(q)
-          
+
             statementsDB.forEach((doc) => {
                 const statement = doc.data() as Statement
                 subStatements.push(statement)
-             
             })
-
 
             return subStatements
         } catch (error) {

@@ -1,7 +1,7 @@
 import { FC } from "react"
 
 // Icons
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined"
 
 // Statements functions
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
@@ -20,16 +20,17 @@ interface Props {
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {
-    const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statement.statementId))
-    let messagesRead = 0;
-    if (statementSubscription) messagesRead = statementSubscription.totalSubStatementsRead || 0;
-    const messages = statement.totalSubStatements || 0;
-    
-    const navigate = useNavigate();
-   
-    const {statementType} = statement;
-    if(statementType === StatementType.statement ) return null;
+    const statementSubscription: StatementSubscription | undefined =
+        useAppSelector(statementSubscriptionSelector(statement.statementId))
+    let messagesRead = 0
+    if (statementSubscription)
+        messagesRead = statementSubscription.totalSubStatementsRead || 0
+    const messages = statement.totalSubStatements || 0
 
+    const navigate = useNavigate()
+
+    const { statementType } = statement
+    if (statementType === StatementType.statement) return null
 
     return (
         <div
@@ -63,7 +64,7 @@ export function handleCreateSubStatements(
 ) {
     try {
         // setStatmentGroupToDB(statement)
-        navigate(`/home/statement/${statement.statementId}/chat`, {
+        navigate(`/statement/${statement.statementId}/chat`, {
             state: { from: window.location.pathname },
         })
     } catch (error) {

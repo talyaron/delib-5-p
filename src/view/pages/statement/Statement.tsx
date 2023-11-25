@@ -207,7 +207,7 @@ const Statement: FC = () => {
                 state: { from: window.location.pathname },
             })
         } else {
-            navigate(`/home/statement/${statement?.parentId}/${page}`, {
+            navigate(`/statement/${statement?.parentId}/${page}`, {
                 state: { from: window.location.pathname },
             })
         }

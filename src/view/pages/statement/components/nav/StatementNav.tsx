@@ -24,10 +24,10 @@ const StatementNav: FC<Props> = ({ statement }) => {
     return (
         <nav className="statement__nav">
             {_navArray.map((navObject: NavObject) => (
-                //@ts-ignore
                 <Link
                     key={navObject.id}
-                    to={`${navObject.link}`}
+                    to={`/statement/${statement.statementId}/${navObject.link}`}
+                    // to={`${navObject.link}`}
                     className={
                         page === navObject.link ||
                         (!navObject.link && page === undefined)

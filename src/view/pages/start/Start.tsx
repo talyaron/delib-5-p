@@ -28,7 +28,7 @@ const Start = () => {
         if (user) {
             navigate(getIntialLocationSessionStorage() || "/home")
         } else {
-            console.info("not logged")
+            // console.info("not logged")
         }
     }, [user])
 

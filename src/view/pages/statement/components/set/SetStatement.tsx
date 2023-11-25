@@ -9,10 +9,17 @@ import ScreenSlide from "../../../../components/animation/ScreenSlide"
 
 export const SetStatement = () => {
     const { statementId } = useParams()
+
+    const direction =
+        document.body.style.direction === "rtl" ? "row" : "row-reverse"
+
     return (
         <ScreenSlide toSubStatement={true}>
             <div className="setStatement">
-                <div className="setStatement__header">
+                <div
+                    className="setStatement__header"
+                    style={{ flexDirection: direction }}
+                >
                     <span></span>
                     <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
                     <Link to={"/home"} className="setStatement__back">
