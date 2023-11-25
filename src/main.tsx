@@ -3,23 +3,20 @@ import ReactDOM from "react-dom/client"
 import "./view/style/style.scss"
 import "./i18n"
 
-import { BrowserRouter } from "react-router-dom"
+import { RouterProvider } from "react-router-dom"
 
 import { store } from "./model/store"
 import { Provider } from "react-redux"
-import AppRouter from "./AppRouter"
 import { setIntialLocationSessionStorage } from "./functions/general/helpers"
+import { router } from "./router"
 
 setIntialLocationSessionStorage(window.location.pathname)
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <BrowserRouter>
-            <Provider store={store}>
-                {/* <RouterProvider router={router} /> */}
-                <AppRouter />
-            </Provider>
-        </BrowserRouter>
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
     </React.StrictMode>
 )
 
