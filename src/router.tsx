@@ -5,10 +5,10 @@ import { createBrowserRouter } from "react-router-dom"
 
 // Custom components
 import Start from "./view/pages/start/Start"
-import App from "./view/pages/home/App"
-import All from "./view/pages/all/All"
 import ErrorPage from "./view/pages/error/ErrorPage"
 import Loader from "./view/components/loaders/Loader"
+import Home from "./view/pages/home/Home"
+import App from "./App"
 
 // Lazy loading
 const Main = lazy(() => import("./view/pages/main/Main"))
@@ -40,7 +40,7 @@ export const SuspenseComp = ({ chlildren }: any) => {
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <All />,
+        element: <App />,
         errorElement: <ErrorPage />,
         children: [
             {
@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "home",
-                element: <App />,
+                element: <Home />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
