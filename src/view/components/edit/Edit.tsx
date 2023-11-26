@@ -1,13 +1,13 @@
-import { FC } from 'react'
+import { FC } from "react";
 // import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import edit from '../../../assets/edit.svg';
-import { Statement } from 'delib-npm';
-import { useNavigate } from 'react-router-dom';
+import edit from "../../../assets/edit.svg";
+import { Statement } from "delib-npm";
+import { useNavigate } from "react-router-dom";
 // import { auth } from '../../../functions/db/auth';
-import { store } from '../../../model/store';
+import { store } from "../../../model/store";
 
 interface Props {
-    statement: Statement
+    statement: Statement;
 }
 
 const Edit: FC<Props> = ({ statement }) => {
@@ -16,18 +16,24 @@ const Edit: FC<Props> = ({ statement }) => {
 
     function handleEdit() {
         try {
-            navigate(`/home/updateStatement/${statement.statementId}`)
+            navigate(`/home/updateStatement/${statement.statementId}`, {
+                state: { from: window.location.pathname },
+            });
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
     return (
         <>
-            {user?.uid === statement.creatorId ?
-                <div className='clickable' onClick={handleEdit}><img src={edit} alt="edit"/></div>
-                : <div />}
+            {user?.uid === statement.creatorId ? (
+                <div className="clickable" onClick={handleEdit}>
+                    <img src={edit} alt="edit" />
+                </div>
+            ) : (
+                <div />
+            )}
         </>
-    )
-}
+    );
+};
 
-export default Edit
+export default Edit;

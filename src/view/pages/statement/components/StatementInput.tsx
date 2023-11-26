@@ -1,57 +1,61 @@
-import { FC } from "react"
+import { FC } from "react";
 
 // Third Party Imports
-import { Screen, Statement } from "delib-npm"
+import { Screen, Statement } from "delib-npm";
 
 // Helpers
-import { setStatmentToDB } from "../../../../functions/db/statements/setStatments"
-import { getNewStatment } from "../../../../functions/general/helpers"
+import { setStatmentToDB } from "../../../../functions/db/statements/setStatments";
+import { getNewStatment } from "../../../../functions/general/helpers";
 
 // MUI
-import SendIcon from "@mui/icons-material/Send"
-import { IconButton } from "@mui/material"
+import SendIcon from "@mui/icons-material/Send";
+import { IconButton } from "@mui/material";
 
 // Redux Store
-import { useAppSelector } from "../../../../functions/hooks/reduxHooks"
-import { userSelector } from "../../../../model/users/userSlice"
+import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
+import { userSelector } from "../../../../model/users/userSlice";
+import useDirection from "../../../../functions/hooks/useDirection";
 
 interface Props {
-    statement: Statement
+    statement: Statement;
 }
 
 const StatementInput: FC<Props> = ({ statement }) => {
-    const user = useAppSelector(userSelector)
+    const user = useAppSelector(userSelector);
 
-    const direction =
-        document.body.style.direction === "rtl" ? "row" : "row-reverse"
+    const direction = useDirection();
 
     function handleAddStatement(e: any) {
         try {
-            e.preventDefault()
+            e.preventDefault();
 
-            if (!user) throw new Error("No user")
+            if (!user) throw new Error("No user");
 
-            const value = e.target.newStatement.value
+            const value = e.target.newStatement.value;
 
             //remove white spaces and \n
-            const _value = value.replace(/\s+/g, " ").trim()
+            const _value = value.replace(/\s+/g, " ").trim();
 
-            if (!_value) throw new Error("No value")
+            if (!_value) throw new Error("No value");
 
             const newStatement: Statement | undefined = getNewStatment({
                 value,
                 statement,
                 user,
-            })
-            if (!newStatement) throw new Error("No statement")
+            });
+            if (!newStatement) throw new Error("No statement");
 
-            newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE]
+            newStatement.subScreens = [
+                Screen.CHAT,
+                Screen.OPTIONS,
+                Screen.VOTE,
+            ];
 
-            setStatmentToDB(newStatement)
+            setStatmentToDB(newStatement);
 
-            e.target.reset()
+            e.target.reset();
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -62,37 +66,37 @@ const StatementInput: FC<Props> = ({ statement }) => {
                     navigator.userAgent
                 )
                     ? true
-                    : false
+                    : false;
 
             if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
-                const _value = e.target.value.replace(/\s+/g, " ").trim()
+                const _value = e.target.value.replace(/\s+/g, " ").trim();
                 if (!_value) {
-                    e.target.value = ""
-                    return
+                    e.target.value = "";
+                    return;
                 }
 
                 // submit form
-                if (!user) throw new Error("No user")
+                if (!user) throw new Error("No user");
 
                 const newStatement: Statement | undefined = getNewStatment({
                     value: e.target.value,
                     statement,
                     user,
-                })
+                });
 
-                if (!newStatement) throw new Error("No statement")
+                if (!newStatement) throw new Error("No statement");
 
                 newStatement.subScreens = [
                     Screen.CHAT,
                     Screen.OPTIONS,
                     Screen.VOTE,
-                ]
+                ];
 
-                setStatmentToDB(newStatement)
-                e.target.value = ""
+                setStatmentToDB(newStatement);
+                e.target.value = "";
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -103,6 +107,11 @@ const StatementInput: FC<Props> = ({ statement }) => {
             className="statement__form"
             style={{ flexDirection: direction }}
         >
+            <div className="statement__form__sendBtnBox">
+                <IconButton type="submit">
+                    <SendIcon />
+                </IconButton>
+            </div>
             <textarea
                 rows={3}
                 className="statement__form__input"
@@ -111,13 +120,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 required
                 autoFocus={true}
             />
-            <div className="statement__form__sendBtnBox">
-                <IconButton type="submit">
-                    <SendIcon />
-                </IconButton>
-            </div>
         </form>
-    )
-}
+    );
+};
 
-export default StatementInput
+export default StatementInput;

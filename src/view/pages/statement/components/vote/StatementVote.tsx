@@ -1,70 +1,70 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm"
-import { useParams } from "react-router-dom"
+import { Statement } from "delib-npm";
+import { useParams } from "react-router-dom";
 
 // Statements components
-import StatementOptionsNav from "../options/components/StatementOptionsNav"
+import StatementOptionsNav from "../options/components/StatementOptionsNav";
 
 // Redux
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
+import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
 // Statements helpers
-import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes"
-import { setVoteToStore } from "../../../../../model/vote/votesSlice"
-import NewSetStatementSimple from "../set/NewStatementSimple"
-import { setSelectionsToOptions } from "./setSelectionsToOptions"
-import { getTotalVoters } from "./getTotalVoters"
-import { sortOptionsIndex } from "./sortOptionsIndex"
+import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
+import { setVoteToStore } from "../../../../../model/vote/votesSlice";
+import NewSetStatementSimple from "../set/NewStatementSimple";
+import { setSelectionsToOptions } from "./setSelectionsToOptions";
+import { getTotalVoters } from "./getTotalVoters";
+import { sortOptionsIndex } from "./sortOptionsIndex";
 
 // Custom components
-import Modal from "../../../../components/modal/Modal"
-import AddIcon from "@mui/icons-material/Add"
-import { OptionBar } from "./OptionBar"
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
-import { t } from "i18next"
-import { isOptionFn } from "../../../../../functions/general/helpers"
+import Modal from "../../../../components/modal/Modal";
+import AddIcon from "@mui/icons-material/Add";
+import { OptionBar } from "./OptionBar";
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import { t } from "i18next";
+import { isOptionFn } from "../../../../../functions/general/helpers";
 
 interface Props {
-    statement: Statement
-    subStatements: Statement[]
+    statement: Statement;
+    subStatements: Statement[];
 }
-let getVoteFromDB = false
-export const barWidth = 120
-export const padding = 10
+let getVoteFromDB = false;
+export const barWidth = 120;
+export const padding = 10;
 
 const StatementVote: FC<Props> = ({ statement, subStatements }) => {
-    const dispatch = useAppDispatch()
-    const { sort } = useParams()
+    const dispatch = useAppDispatch();
+    const { sort } = useParams();
 
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
 
-    const __options = subStatements.filter(
-        (subStatement: Statement) =>isOptionFn(subStatement)
-    )
-    const _options = setSelectionsToOptions(statement, __options)
-    const options = sortOptionsIndex(_options, sort)
-    const totalVotes = getTotalVoters(statement)
+    const __options = subStatements.filter((subStatement: Statement) =>
+        isOptionFn(subStatement)
+    );
+    const _options = setSelectionsToOptions(statement, __options);
+    const options = sortOptionsIndex(_options, sort);
+    const totalVotes = getTotalVoters(statement);
 
     useEffect(() => {
         if (!getVoteFromDB) {
-            getToVoteOnParent(statement.statementId, updateStoreWitehVoteCB)
-            getVoteFromDB = true
+            getToVoteOnParent(statement.statementId, updateStoreWitehVoteCB);
+            getVoteFromDB = true;
         }
-    }, [])
+    }, []);
 
     // useEffect(() => {
     //     setOptions(_options);
     // }, [_options]);
 
     function updateStoreWitehVoteCB(option: Statement) {
-        dispatch(setVoteToStore(option))
+        dispatch(setVoteToStore(option));
     }
 
     return (
         <ScreenFadeInOut>
-            <div className="wrapper">
+            <div className="statement">
                 <h2>{t("Votes")}</h2>
                 <p>
                     {t("Voted")}: {totalVotes}
@@ -79,7 +79,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                                 totalVotes={totalVotes}
                                 statement={statement}
                             />
-                        )
+                        );
                     })}
                 </div>
             </div>
@@ -103,7 +103,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                 </div>
             </div>
         </ScreenFadeInOut>
-    )
-}
+    );
+};
 
-export default StatementVote
+export default StatementVote;
