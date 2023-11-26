@@ -12,8 +12,9 @@ import Text from "../../../../../components/text/Text"
 import EditTitle from "../../../../../components/edit/EditTitle"
 import Evaluation from "../../../../../components/evaluation/Evaluation"
 import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit"
-import { isAuthorized } from "../../../../../../functions/general/helpers"
+import { isAuthorized, navigateToStatementTab } from "../../../../../../functions/general/helpers"
 import StatementChatMore from "../../chat/StatementChatMore"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
     statement: Statement
@@ -23,6 +24,7 @@ interface Props {
 
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const statementSubscription = useAppSelector(statementSubscriptionSelector(statement.statementId));
     const _isAuthrized = isAuthorized(statement, statementSubscription)
@@ -45,6 +47,9 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
         )
     }, [])
 
+    function handleGoToSubStatement() {
+        navigateToStatementTab(statement, navigate)
+    }
  
 
     return (
@@ -59,7 +64,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                     onClick={() => setShow(!show)}
                 >
                     {!edit ? (
-                        <div className="clickable">
+                        <div className="clickable" onClick={handleGoToSubStatement}>
                             <Text text={statement.statement} />
                         </div>
                     ) : (

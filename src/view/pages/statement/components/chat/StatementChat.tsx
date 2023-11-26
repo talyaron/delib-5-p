@@ -21,7 +21,7 @@ import { store } from "../../../../../model/store"
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
 import { bubbleclass } from "./StatementChatCont"
 import StatementChatSetEdit from "./components/StatementChatSetEdit"
-import { isAuthorized, isOptionFn } from "../../../../../functions/general/helpers"
+import { isAuthorized, isOptionFn, navigateToStatementTab } from "../../../../../functions/general/helpers"
 
 interface Props {
     statement: Statement
@@ -54,6 +54,10 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
         
     }
 
+    function handleGotToSubStatement(){
+        navigateToStatementTab(statement, navigate)
+    }
+
     return (
         <div
             className={
@@ -80,7 +84,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                     >
                         <div className="statement__bubble__text__text">
                             {!isEdit ? (
-                                <Text text={statement.statement} />
+                               <div onClick={handleGotToSubStatement} className="clickable"> <Text text={statement.statement} /></div>
                             ) : (
                                 <EditTitle
                                     statement={statement}
