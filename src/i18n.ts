@@ -5,7 +5,7 @@ import { initReactI18next } from "react-i18next"
 const getCurrentHost =
     import.meta.env.MODE === "development"
         ? "http://localhost:5173"
-        : "LINK TO PROD"
+        : "https://delib-5.web.app"
 
 i18n.use(i18nBackend)
     .use(initReactI18next)

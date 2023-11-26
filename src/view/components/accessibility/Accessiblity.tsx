@@ -10,7 +10,7 @@ import {
 } from "../../../model/users/userSlice"
 import { useEffect, useState } from "react"
 import { updateUserFontSize } from "../../../functions/db/users/setUsersDB"
-import { set } from "lodash"
+
 
 const Accessiblity = () => {
     const dispatch = useAppDispatch()
@@ -26,7 +26,6 @@ const Accessiblity = () => {
     }, [fontSize])
 
     function handleChangeFontSize(number: number) {
-        console.log(number)
        
         if (!user) {
             //get curent font size from body

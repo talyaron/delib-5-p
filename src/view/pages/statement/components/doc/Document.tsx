@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from "react"
+import { useState, FC } from "react"
 
 // Third party imports
 import {
@@ -25,7 +25,7 @@ import {
 import { getStatementDepth } from "../../../../../functions/db/statements/getStatement"
 import { setStatement } from "../../../../../model/statements/statementsSlice"
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
-import { z } from "zod"
+
 
 interface Props {
     statement: Statement

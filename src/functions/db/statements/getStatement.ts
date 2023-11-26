@@ -29,7 +29,7 @@ import { DB } from "../config"
 // Redux Store
 import { store } from "../../../model/store"
 import _ from "lodash"
-import { compose } from "@reduxjs/toolkit"
+
 
 export function listenToTopStatements(
     setStatementsCB: Function,
