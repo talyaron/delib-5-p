@@ -18,10 +18,17 @@
         flex-direction: column;
         width: 75ch;
         height: 100%;
-        gap: 0.7rem;
+        gap: 1.5rem;
         margin: 0.5rem auto;
         padding: 1rem;
         overflow-y: auto;
+
+        &__membersBox {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.5rem;
+        }
 
         input {
             font-size: 1.2rem;

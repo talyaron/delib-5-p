@@ -115,8 +115,8 @@ button,
 
     &--fixed {
         position: fixed;
-        right: 10ch;
-        bottom: 8vh;
+        right: 5ch;
+        bottom: 0;
 
         @media (max-width: 650px) {
             right: 1.5rem;
