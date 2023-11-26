@@ -1,5 +1,6 @@
 import {
     Role,
+    Screen,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -8,6 +9,7 @@ import {
     User,
 } from "delib-npm"
 import { store } from "../../model/store"
+import { NavigateFunction } from "react-router-dom"
 
 export function updateArray(
     currentArray: Array<any>,
@@ -93,7 +95,7 @@ export function getNewStatment({
             topParentId:
                 statement.topParentId || statement.statementId || "top",
             consensus: 0,
-           statementType: statementType || StatementType.statement,
+            statementType: statementType || StatementType.statement,
         }
 
         return newStatement
@@ -135,11 +137,39 @@ export function isAuthorized(
     }
 }
 
-export function isOptionFn(statement:Statement):boolean{
+export function isOptionFn(statement: Statement): boolean {
     try {
-       return  statement.statementType === StatementType.option ||  statement.statementType ===  StatementType.result;
+        return (
+            statement.statementType === StatementType.option ||
+            statement.statementType === StatementType.result
+        )
     } catch (error) {
-        console.error(error);
+        console.error(error)
         return false
+    }
+}
+
+export function navigateToStatementTab(
+    statement: Statement,
+    navigate: NavigateFunction
+) {
+    try {
+        if (!statement) throw new Error("No statement")
+        if (!navigate) throw new Error("No navigate function")
+
+        // If chat is a sub screen, navigate to chat.
+        // Otherwise, navigate to the first sub screen.
+
+        const tab = statement.subScreens?.includes(Screen.CHAT)
+            ? Screen.CHAT
+            : statement.subScreens
+            ? statement.subScreens[0]
+            : Screen.SETTINGS
+
+        navigate(`/statement/${statement.statementId}/${tab}`, {
+            state: { from: window.location.pathname },
+        })
+    } catch (error) {
+        console.error(error)
     }
 }
