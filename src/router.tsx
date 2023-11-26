@@ -1,21 +1,21 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense } from "react";
 
 // Third party imports
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter } from "react-router-dom";
 
 // Custom components
-import Start from "./view/pages/start/Start"
-import ErrorPage from "./view/pages/error/ErrorPage"
-import Loader from "./view/components/loaders/Loader"
-import Home from "./view/pages/home/Home"
-import App from "./App"
+import Start from "./view/pages/start/Start";
+import ErrorPage from "./view/pages/error/ErrorPage";
+import Loader from "./view/components/loaders/Loader";
+import Home from "./view/pages/home/Home";
+import App from "./App";
 
 // Lazy loading
-const Main = lazy(() => import("./view/pages/main/Main"))
-const Statement = lazy(() => import("./view/pages/statement/Statement"))
+const Main = lazy(() => import("./view/pages/main/Main"));
+const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const SetStatement = lazy(
     () => import("./view/pages/statement/components/set/SetStatement")
-)
+);
 
 const SuspenseFallback = () => {
     return (
@@ -30,17 +30,21 @@ const SuspenseFallback = () => {
         >
             <Loader />
         </div>
-    )
-}
+    );
+};
 
 export const SuspenseComp = ({ chlildren }: any) => {
-    return <Suspense fallback={<SuspenseFallback />}>{chlildren}</Suspense>
-}
+    return <Suspense fallback={<SuspenseFallback />}>{chlildren}</Suspense>;
+};
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: (
+            <Suspense fallback={<SuspenseFallback />}>
+                <App />
+            </Suspense>
+        ),
         errorElement: <ErrorPage />,
         children: [
             {
@@ -93,4 +97,4 @@ export const router = createBrowserRouter([
             },
         ],
     },
-])
+]);
