@@ -292,7 +292,8 @@ export const statementSubsSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements
             .filter((statementSub) => statementSub.parentId === statementId)
-            .sort((a, b) => a.createdAt - b.createdAt);
+            .sort((a, b) => a.createdAt - b.createdAt)
+            .map((statement) => ({...statement}));
 export const statementNotificationSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statementSubscription.find(

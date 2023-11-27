@@ -33,8 +33,7 @@ const StatementOptions: FC<Props> = ({
     handleShowTalker,
 }) => {
     try {
-        console.log("Rendering StatementOptions");
-    
+          
         const { sort } = useParams();
 
         const [showModal, setShowModal] = useState(false);
@@ -42,14 +41,13 @@ const StatementOptions: FC<Props> = ({
             Statement[]
         >([...subStatements]);
 
-        useEffect(() => {  console.log("rendering useEffect sort");
-         
+        useEffect(() => {          
             setSortedSubStatements(() =>  sortSubStatements(subStatements, sort));
         }, [sort, subStatements]);
 
         let topSum = 50;
         let tops: number[] = [topSum];
-        console.log(sortedSubStatements);
+      
 
         return (
             <ScreenFadeInOut>

@@ -28,11 +28,13 @@ export function sortSubStatements(
                 break;
             
         }
-         _subStatements.forEach((statement: Statement, i: number) => {
+       const __subStatements = _subStatements.map((statement: Statement, i: number) => {
+          
             statement.order = i;
-        })
+            return statement;
+        }).sort((b: Statement, a: Statement) => a.createdAt - b.createdAt)
 
-        return _subStatements.sort((b: Statement, a: Statement) => a.createdAt - b.createdAt);
+        return __subStatements;
         
     } catch (error) {
         console.error(error);
