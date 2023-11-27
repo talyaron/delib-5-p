@@ -48,7 +48,7 @@ const StatementOptionsNav: FC<Props> = () => {
             {navArray.map((navObject: NavObject) => (
                 <Link
                     key={navObject.id}
-                    to={`${page}/${navObject.link}`}
+                    to={`${navObject.link}`}
                     className={
                         sort === navObject.link
                             ? "options__nav__button options__nav__button--selected"

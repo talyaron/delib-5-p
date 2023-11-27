@@ -166,7 +166,7 @@ export function navigateToStatementTab(
             ? statement.subScreens[0]
             : Screen.SETTINGS
 
-        navigate(`/home/statement/${statement.statementId}/${tab}`, {
+        navigate(`/statement/${statement.statementId}/${tab}`, {
             state: { from: window.location.pathname },
         })
     } catch (error) {

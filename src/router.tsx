@@ -94,6 +94,17 @@ export const router = createBrowserRouter([
                     </Suspense>
                 ),
                 errorElement: <ErrorPage />,
+                children: [
+                    {
+                        path: ":sort",
+                        element: (
+                            <Suspense fallback={<SuspenseFallback />}>
+                                <Statement />
+                            </Suspense>
+                        ),
+                        errorElement: <ErrorPage />,
+                    },
+                ],
             },
         ],
     },

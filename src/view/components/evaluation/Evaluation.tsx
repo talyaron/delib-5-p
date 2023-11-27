@@ -21,9 +21,6 @@ const Evaluation: FC<Props> = ({ statement }) => {
     const { consensus: _consensus } = statement;
     const consensus = _consensus ? Math.round(_consensus * 100) / 100 : 0;
 
-    const direction =
-        document.body.style.direction === "rtl" ? "row" : "row-reverse"
-
     return (
         <div className={styles.evaluation}>
             <div

@@ -150,7 +150,7 @@ export async function sendNotificationsCB(e: any) {
                     data: {
                         title,
                         body: statement.statement,
-                        url: `https://delib-5.web.app/home/statement/${parentId}`,
+                        url: `https://delib-5.web.app/statement/${parentId}`,
                     },
                     token,
                 }
