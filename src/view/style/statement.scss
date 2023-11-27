@@ -213,6 +213,8 @@
         display: flex;
         flex: auto;
         width: 100%;
+        direction: rtl;
+        justify-content: center;
 
         &__bar {
             position: relative;

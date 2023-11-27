@@ -41,6 +41,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const __options = subStatements.filter(
         (subStatement: Statement) =>isOptionFn(subStatement)
     )
+    console.log(__options)
     const _options = setSelectionsToOptions(statement, __options)
     const options = sortOptionsIndex(_options, sort)
     const totalVotes = getTotalVoters(statement)
