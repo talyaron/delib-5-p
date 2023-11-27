@@ -61,6 +61,7 @@ export default function App() {
     }, []);
 
     useEffect(() => {
+        //TODO: add check if you are not at start screen
         if (!user) navigate("/");
     }, [user]);
 
