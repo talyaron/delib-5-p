@@ -1,16 +1,18 @@
 // Third party imports
-import { Link, useParams } from "react-router-dom"
-import { t } from "i18next"
+import { Link, useParams } from "react-router-dom";
+import { t } from "i18next";
 
 // Custom components
-import { StatementSettings } from "../admin/StatementSettings"
-import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon"
-import ScreenSlide from "../../../../components/animation/ScreenSlide"
+import { StatementSettings } from "../admin/StatementSettings";
+import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon";
+import ScreenSlide from "../../../../components/animation/ScreenSlide";
+import useDirection from "../../../../../functions/hooks/useDirection";
 
 export const SetStatement = () => {
-    const { statementId } = useParams()
-    const direction =
-        document.body.style.direction === "rtl" ? "row-reverse" : "row"
+    const { statementId } = useParams();
+
+    const direction = useDirection();
+
     return (
         <ScreenSlide toSubStatement={true}>
             <div className="setStatement">
@@ -30,7 +32,7 @@ export const SetStatement = () => {
                 </div>
             </div>
         </ScreenSlide>
-    )
-}
+    );
+};
 
-export default SetStatement
+export default SetStatement;

@@ -1,8 +1,9 @@
 .statement {
+    height: 100%;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    position: relative;
+    margin: 0 auto;
 
     &__main {
         display: flex;
@@ -12,11 +13,11 @@
         overflow-x: auto;
     }
 
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+    // .wrapper {
+    //     display: flex;
+    //     flex-direction: column;
+    //     gap: 15px;
+    // }
 
     &__nav {
         display: flex;
@@ -210,11 +211,12 @@
     }
 
     &__vote {
+        height: 100%;
         display: flex;
-        flex: auto;
-        width: 100%;
         direction: rtl;
         justify-content: center;
+        padding: 1rem 0;
+        overflow-x: auto;
 
         &__bar {
             position: relative;
@@ -278,6 +280,13 @@
                 }
             }
         }
+    }
+    &__vote::-webkit-scrollbar {
+        width: 1.5rem;
+    }
+    &__vote::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
+        border-radius: 1rem;
     }
 }
 

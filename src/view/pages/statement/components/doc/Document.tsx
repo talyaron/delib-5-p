@@ -1,4 +1,4 @@
-import { useState, FC } from "react"
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
 import {
@@ -7,77 +7,77 @@ import {
     Statement,
     StatementSchema,
     StatementType,
-} from "delib-npm"
+} from "delib-npm";
 
 // Styles
-import styles from "./Document.module.scss"
+import styles from "./Document.module.scss";
 
 // Custom Components
-import Slider from "@mui/material/Slider"
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
-import { t } from "i18next"
-import MainCard from "../../../main/mainCard/MainCard"
+import Slider from "@mui/material/Slider";
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import { t } from "i18next";
+import MainCard from "../../../main/mainCard/MainCard";
 import {
     FilterType,
     filterByStatementType,
     sortStatementsByHirarrchy,
-} from "../../../main/mainCont"
-import { getStatementDepth } from "../../../../../functions/db/statements/getStatement"
-import { setStatement } from "../../../../../model/statements/statementsSlice"
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
+} from "../../../main/mainCont";
+import { getStatementDepth } from "../../../../../functions/db/statements/getStatement";
+import { setStatement } from "../../../../../model/statements/statementsSlice";
+import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
 
 interface Props {
-    statement: Statement
-    subStatements: Statement[]
+    statement: Statement;
+    subStatements: Statement[];
 }
 
 const Document: FC<Props> = ({ statement, subStatements }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     const [resultsBy, setResultsBy] = useState<ResultsBy>(
         statement.resultsSettings?.resultsBy || ResultsBy.topOptions
-    )
+    );
     const [numberOfResults, setNumberOfResults] = useState<number>(
         statement.resultsSettings?.numberOfResults || 2
-    )
+    );
 
-    const _results = sortStatementsByHirarrchy([statement, ...subStatements])
+    const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
 
-    const [results, setResults] = useState<Results>(_results[0])
+    const [results, setResults] = useState<Results>(_results[0]);
 
     async function handleGetResults(ev: any) {
         try {
             //get form data with formData
-            ev.preventDefault()
+            ev.preventDefault();
 
-            const data = new FormData(ev.target)
-            const depth = Number(data.get("depth"))
+            const data = new FormData(ev.target);
+            const depth = Number(data.get("depth"));
 
-            if (!statement) throw new Error("statement is undefined")
+            if (!statement) throw new Error("statement is undefined");
 
             const _subSubStatements = await getStatementDepth(
                 statement,
                 subStatements,
                 depth
-            )
+            );
 
-            const _results = sortStatementsByHirarrchy(_subSubStatements)
-            setResults(_results[0])
+            const _results = sortStatementsByHirarrchy(_subSubStatements);
+            setResults(_results[0]);
 
             if (_subSubStatements.length > 0) {
                 _subSubStatements.forEach((subSubStatement) => {
-                    StatementSchema.parse(subSubStatement)
-                    dispatch(setStatement(subSubStatement))
-                })
+                    StatementSchema.parse(subSubStatement);
+                    dispatch(setStatement(subSubStatement));
+                });
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
     const resultsType: StatementType[] = filterByStatementType(
         FilterType.questionsResultsOptions
-    ).types
+    ).types;
 
     return (
         <ScreenFadeInOut>
@@ -159,7 +159,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
                 </section>
             </div>
         </ScreenFadeInOut>
-    )
-}
+    );
+};
 
-export default Document
+export default Document;

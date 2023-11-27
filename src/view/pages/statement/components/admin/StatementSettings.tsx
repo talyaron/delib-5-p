@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from "react"
-import Slider from "@mui/material/Slider"
+import { FC, useEffect, useState } from "react";
+import Slider from "@mui/material/Slider";
 
 // Statment imports
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments"
-import { navArray } from "../nav/StatementNav"
+import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import { navArray } from "../nav/StatementNav";
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 import {
     UserSchema,
     User,
@@ -14,184 +14,180 @@ import {
     ResultsBy,
     Screen,
     StatementType,
-} from "delib-npm"
+} from "delib-npm";
 
 // Custom components
-import Loader from "../../../../components/loaders/Loader"
-import MembershipLine from "./MembershipLine"
+import Loader from "../../../../components/loaders/Loader";
+import MembershipLine from "./MembershipLine";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks"
+} from "../../../../../functions/hooks/reduxHooks";
 import {
     removeMembership,
     setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
-} from "../../../../../model/statements/statementsSlice"
-import { userSelector } from "../../../../../model/users/userSlice"
+} from "../../../../../model/statements/statementsSlice";
+import { userSelector } from "../../../../../model/users/userSlice";
 
 // Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
-} from "../../../../../functions/db/statements/getStatement"
+} from "../../../../../functions/db/statements/getStatement";
 
 // Mui
-import FormGroup from "@mui/material/FormGroup"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import Checkbox from "@mui/material/Checkbox"
-import { store } from "../../../../../model/store"
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { store } from "../../../../../model/store";
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
-} from "./statementSettingsCont"
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
-import { t } from "i18next"
-import { navigateToStatementTab } from "../../../../../functions/general/helpers"
+} from "./statementSettingsCont";
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import { t } from "i18next";
+import { navigateToStatementTab } from "../../../../../functions/general/helpers";
 
 interface Props {
-    simple?: boolean
-    new?: boolean
+    simple?: boolean;
+    new?: boolean;
 }
 
 export const StatementSettings: FC<Props> = ({ simple }) => {
-    const navigate = useNavigate()
-    const { statementId } = useParams()
+    const navigate = useNavigate();
+    const { statementId } = useParams();
 
     // Redux
-    const dispatch = useAppDispatch()
-    const statement = useAppSelector(statementSelector(statementId))
+    const dispatch = useAppDispatch();
+    const statement = useAppSelector(statementSelector(statementId));
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
-    )
-    const user: User | null = useAppSelector(userSelector)
+    );
+    const user: User | null = useAppSelector(userSelector);
 
     // Use State
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const [numOfResults] = useState(
         statement?.resultsSettings?.numberOfResults || 1
-    )
+    );
 
     useEffect(() => {
-        let unsubscribe: Function = () => {}
+        let unsubscribe: Function = () => {};
         if (statementId) {
             unsubscribe = listenToMembers(
                 statementId,
                 setMembershipCB,
                 removeMembershipCB
-            )
+            );
 
             if (!statement)
                 (async () => {
-                    const statementDB = await getStatementFromDB(statementId)
-                    if (statementDB) dispatch(setStatement(statementDB))
-                })()
+                    const statementDB = await getStatementFromDB(statementId);
+                    if (statementDB) dispatch(setStatement(statementDB));
+                })();
         }
         return () => {
-            unsubscribe()
-        }
-    }, [statementId])
+            unsubscribe();
+        };
+    }, [statementId]);
 
     //CBs
     function setMembershipCB(membership: StatementSubscription) {
-        dispatch(setMembership(membership))
+        dispatch(setMembership(membership));
     }
 
     function removeMembershipCB(membership: StatementSubscription) {
-        dispatch(removeMembership(membership.statementsSubscribeId))
+        dispatch(removeMembership(membership.statementsSubscribeId));
     }
 
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
-            ev.preventDefault()
+            ev.preventDefault();
+            setIsLoading(true);
+            const data = new FormData(ev.currentTarget);
 
-            setIsLoading(true)
+            let title: any = data.get("statement");
+            const resultsBy = data.get("resultsBy") as ResultsBy;
+            const numberOfResults: number = Number(data.get("numberOfResults"));
 
-            const data = new FormData(ev.currentTarget)
+            const description = data.get("description");
 
-            let title: any = data.get("statement")
-            const resultsBy = data.get("resultsBy") as ResultsBy
-            const numberOfResults: number = Number(data.get("numberOfResults"))
-
-            const description = data.get("description")
-
-            const _statement = `${title}\n${description}`
+            const _statement = `${title}\n${description}`;
 
             //add to title * at the beggining
-            if (title && !title.startsWith("*")) title = "*" + title
+            if (title && !title.startsWith("*")) title = "*" + title;
 
-            UserSchema.parse(user)
+            UserSchema.parse(user);
 
-            const newStatement: any = Object.fromEntries(data.entries())
+            const newStatement: any = Object.fromEntries(data.entries());
 
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
                 navArray
-            )
-            newStatement.statement = _statement
+            );
+            newStatement.statement = _statement;
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,
                 resultsBy: resultsBy || ResultsBy.topVote,
                 deep: 1,
                 minConsensus: 1,
-            }
+            };
             newStatement.statementId =
-                statement?.statementId || crypto.randomUUID()
+                statement?.statementId || crypto.randomUUID();
             newStatement.creatorId =
-                statement?.creator.uid || store.getState().user.user?.uid
-            newStatement.parentId = statement?.parentId || statementId || "top"
+                statement?.creator.uid || store.getState().user.user?.uid;
+            newStatement.parentId = statement?.parentId || statementId || "top";
             newStatement.topParentId =
-                statement?.topParentId || statementId || "top"
+                statement?.topParentId || statementId || "top";
             newStatement.statementType =
                 statementId === undefined
                     ? StatementType.question
-                    : StatementType.statement
-            newStatement.creator = statement?.creator || user
+                    : StatementType.statement;
+            newStatement.creator = statement?.creator || user;
             newStatement.hasChildren =
-                newStatement.hasChildren === "on" ? true : false
+                newStatement.hasChildren === "on" ? true : false;
             if (statement) {
-                newStatement.lastUpdate = new Date().getTime()
+                newStatement.lastUpdate = new Date().getTime();
             }
             newStatement.createdAt =
-                statement?.createdAt || new Date().getTime()
+                statement?.createdAt || new Date().getTime();
 
-            newStatement.consensus = statement?.consensus || 0
+            newStatement.consensus = statement?.consensus || 0;
 
             const setSubsciption: boolean =
-                statementId === undefined ? true : false
+                statementId === undefined ? true : false;
 
             //remove all "on" values
             for (const key in newStatement) {
-                if (newStatement[key] === "on") delete newStatement[key]
+                if (newStatement[key] === "on") delete newStatement[key];
             }
 
             const _statementId = await setStatmentToDB(
                 newStatement,
                 setSubsciption
-            )
+            );
 
-            if (_statementId) {
-                navigateToStatementTab(newStatement, navigate)
-            } else throw new Error("statement not found")
+            if (_statementId) navigateToStatementTab(newStatement, navigate);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
-    const arrayOfStatementParagrphs = statement?.statement.split("\n") || []
+    const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
     //get all elements of the array except the first one
-    const description = arrayOfStatementParagrphs?.slice(1).join("\n")
+    const description = arrayOfStatementParagrphs?.slice(1).join("\n");
     const resultsBy: ResultsBy =
-        statement?.resultsSettings?.resultsBy || ResultsBy.topVote
+        statement?.resultsSettings?.resultsBy || ResultsBy.topVote;
     const hasChildren: boolean = (() => {
-        if (!statement) return true
-        if (statement.hasChildren === undefined) return true
-        return statement.hasChildren
-    })()
+        if (!statement) return true;
+        if (statement.hasChildren === undefined) return true;
+        return statement.hasChildren;
+    })();
 
     return (
         <ScreenFadeInOut>
@@ -219,8 +215,19 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </div>
                     {!simple && (
                         <section>
-                            <label htmlFor="subPages">{t("Tabs")}</label>
-                            <FormGroup>
+                            <label
+                                htmlFor="subPages"
+                                style={{ fontSize: "1.3rem" }}
+                            >
+                                {t("Tabs")}
+                            </label>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    padding: "0 1rem",
+                                }}
+                            >
                                 {navArray
                                     .filter(
                                         (navObj) =>
@@ -241,8 +248,15 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             label={t(navObj.name)}
                                         />
                                     ))}
-                            </FormGroup>
-                            <label htmlFor="subPages">{t("Advanced")}</label>
+                            </div>
+                            <label
+                                htmlFor="subPages"
+                                style={{
+                                    fontSize: "1.3rem",
+                                }}
+                            >
+                                {t("Advanced")}
+                            </label>
                             <FormGroup>
                                 <FormControlLabel
                                     key={"sub-statements"}
@@ -266,14 +280,19 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {t("Favorite Option")}
                         </option>
                     </select>
-                    <label>{t("Number of Results to Display")}</label>
+                    <label style={{ fontSize: "1.3rem", marginBottom: "1rem" }}>
+                        {t("Number of Results to Display")}
+                    </label>
                     <Slider
                         defaultValue={numOfResults}
                         min={1}
                         max={10}
                         valueLabelDisplay="on"
                         name={"numberOfResults"}
-                        style={{ marginTop: "1rem" }}
+                        style={{
+                            margin: "auto",
+                            width: "90%",
+                        }}
                     />
 
                     <div className="btnBox">
@@ -300,5 +319,5 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 </div>
             )}
         </ScreenFadeInOut>
-    )
-}
+    );
+};

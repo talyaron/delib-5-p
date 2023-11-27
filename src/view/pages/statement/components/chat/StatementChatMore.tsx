@@ -1,7 +1,7 @@
 import { FC } from "react"
 
 // Icons
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined"
 
 // Statements functions
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
@@ -67,7 +67,9 @@ export function handleCreateSubStatements(
 ) {
     try {
         // setStatmentGroupToDB(statement)
-        navigateToStatementTab(statement, navigate)
+        navigate(`/statement/${statement.statementId}/chat`, {
+            state: { from: window.location.pathname },
+        })
     } catch (error) {
         console.error(error)
     }

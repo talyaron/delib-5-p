@@ -62,7 +62,7 @@ export function listenToAuth(
                         localStorage.getItem("displayName") || "anonymous"
                 const _user = parseUserFromFirebase(user)
 
-                console.info("User is signed in")
+                // console.info("User is signed in")
                 if (!_user) throw new Error("user is undefined")
 
                 const userDB = (await setUserToDB(_user)) as User
@@ -82,7 +82,7 @@ export function listenToAuth(
                 if (initialLocation) navigationCB(initialLocation)
             } else {
                 // User is signed out
-                console.info("User is signed out")
+                // console.info("User is signed out")
                 cb(null)
             }
         } catch (error) {
