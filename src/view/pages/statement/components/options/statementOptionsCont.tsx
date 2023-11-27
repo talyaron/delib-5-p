@@ -26,13 +26,14 @@ export function sortSubStatements(
                     (a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate
                 );
                 break;
-            default:
-                return _subStatements;
+            
         }
-        // _subStatements.forEach((statement: Statement, i: number) => {
-        //     dispatchCB(statement, i);
-        // })
-        return _subStatements;
+         _subStatements.forEach((statement: Statement, i: number) => {
+            statement.order = i;
+        })
+
+        return _subStatements.sort((b: Statement, a: Statement) => a.createdAt - b.createdAt);
+        
     } catch (error) {
         console.error(error);
         return subStatements;
