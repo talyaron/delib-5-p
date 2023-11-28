@@ -90,6 +90,12 @@ const Statement: FC = () => {
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
     const [editHeader, setEditHeader] = useState<boolean>(false);
 
+    const titleStyle = {
+        fontSize:
+            title.length > 30 ? "1.3rem" : title.length > 40 ? "1rem" : "2rem",
+        width: "75%",
+    };
+
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
         try {
@@ -265,6 +271,7 @@ const Statement: FC = () => {
                             <h1
                                 className={isAdmin ? "clickable" : ""}
                                 onClick={handleEditTitle}
+                                style={titleStyle}
                             >
                                 {title}
                             </h1>
@@ -280,15 +287,17 @@ const Statement: FC = () => {
                     </div>
                     {statement && <StatementNav statement={statement} />}
                 </div>
-                <AnimatePresence mode="wait" initial={false}>
-                    <SwitchScreens
-                        key={statementId}
-                        screen={page}
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                    />
-                </AnimatePresence>
+                <div className="page__main">
+                    <AnimatePresence mode="wait" initial={false}>
+                        <SwitchScreens
+                            key={statementId}
+                            screen={page}
+                            statement={statement}
+                            subStatements={subStatements}
+                            handleShowTalker={handleShowTalker}
+                        />
+                    </AnimatePresence>
+                </div>
             </div>
         </ScreenFadeInOut>
     );
