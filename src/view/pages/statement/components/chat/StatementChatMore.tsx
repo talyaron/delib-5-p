@@ -14,8 +14,7 @@ import { t } from "i18next"
 // Redux
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
 
-// Helpers
-import { navigateToStatementTab } from "../../../../../functions/general/helpers"
+
 
 interface Props {
     statement: Statement
