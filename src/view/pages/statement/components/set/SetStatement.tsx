@@ -14,7 +14,7 @@ export const SetStatement = () => {
     const direction = useDirection();
 
     return (
-        <ScreenSlide toSubStatement={true}>
+        <ScreenSlide toSubStatement={true} className='page'>
             <div className="setStatement">
                 <div
                     className="setStatement__header"

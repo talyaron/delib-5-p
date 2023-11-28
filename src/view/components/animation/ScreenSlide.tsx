@@ -1,13 +1,15 @@
-import React from "react"
+import React from "react";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 export default function ScreenSlide({
     children,
     toSubStatement,
+    className = "page__main",
 }: {
-    children: React.ReactNode
-    toSubStatement: boolean
+    children: React.ReactNode;
+    toSubStatement: boolean;
+    className?: string;
 }) {
     return (
         <motion.div
@@ -15,9 +17,9 @@ export default function ScreenSlide({
             animate={{ x: "0%" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             exit={{ opacity: 0 }}
-            className="page__main"
+            className={className}
         >
             {children}
         </motion.div>
-    )
+    );
 }

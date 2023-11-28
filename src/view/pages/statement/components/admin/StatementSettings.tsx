@@ -40,10 +40,8 @@ import {
     listenToMembers,
 } from "../../../../../functions/db/statements/getStatement";
 
-// Mui
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+// Mui imports
+import { Switch, FormControlLabel, Checkbox, FormGroup } from "@mui/material";
 import { store } from "../../../../../model/store";
 import {
     parseScreensCheckBoxes,
@@ -224,7 +222,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             <div
                                 style={{
                                     display: "flex",
-                                    justifyContent: "space-between",
+                                    flexWrap: "wrap",
+                                    justifyContent: "space-around",
                                     padding: "0 1rem",
                                 }}
                             >
@@ -237,7 +236,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                         <FormControlLabel
                                             key={navObj.id}
                                             control={
-                                                <Checkbox
+                                                <Switch
                                                     name={navObj.link}
                                                     defaultChecked={isSubPageChecked(
                                                         statement,

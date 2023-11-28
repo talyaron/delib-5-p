@@ -63,7 +63,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenFadeInOut>
+        <ScreenFadeInOut className="page__main">
             <div className="statement">
                 <h2>{t("Votes")}</h2>
                 <p>
@@ -83,7 +83,12 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     })}
                 </div>
             </div>
-            <StatementOptionsNav statement={statement} />
+            <div
+                className="page__main__bottom"
+                style={{ marginBottom: "10vh" }}
+            >
+                <StatementOptionsNav statement={statement} />
+            </div>
             {showModal && (
                 <Modal>
                     <NewSetStatementSimple
