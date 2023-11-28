@@ -211,12 +211,11 @@
     }
 
     &__vote {
-        // height: 100%;
+        flex: 1;
         display: flex;
         direction: rtl;
-        justify-content: center;
         padding: 1rem;
-        margin-top: auto;
+        max-width: 80svw;
         overflow-x: auto;
 
         &__bar {

@@ -1,27 +1,28 @@
-import { FC } from "react"
+import { FC } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm"
+import { Statement } from "delib-npm";
 
 // Redux store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks"
+} from "../../../../../functions/hooks/reduxHooks";
 import {
     parentVoteSelector,
     setVoteToStore,
-} from "../../../../../model/vote/votesSlice"
+} from "../../../../../model/vote/votesSlice";
 
 // Statements helpers
-import { setVote } from "../../../../../functions/db/vote/setVote"
-import { getSelections } from "./getSelections"
+import { setVote } from "../../../../../functions/db/vote/setVote";
+import { getSelections } from "./getSelections";
+import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 
 export interface OptionBarProps {
-    option: Statement
-    totalVotes: number
-    statement: Statement
-    order: number
+    option: Statement;
+    totalVotes: number;
+    statement: Statement;
+    order: number;
 }
 export const OptionBar: FC<OptionBarProps> = ({
     option,
@@ -29,20 +30,21 @@ export const OptionBar: FC<OptionBarProps> = ({
     statement,
     order,
 }) => {
-    const dispatch = useAppDispatch()
-    const vote = useAppSelector(parentVoteSelector(option.parentId))
-    const _optionOrder = option.order || 0
+    const dispatch = useAppDispatch();
+    const vote = useAppSelector(parentVoteSelector(option.parentId));
+    const _optionOrder = option.order || 0;
 
     const handlePressButton = () => {
-        setVote(option, setVoteCB)
-    }
+        setVote(option, setVoteCB);
+    };
     function setVoteCB(option: Statement) {
-        dispatch(setVoteToStore(option))
+        dispatch(setVoteToStore(option));
     }
-    const selections: number = getSelections(statement, option)
+    const selections: number = getSelections(statement, option);
+    const { width } = useWindowDimensions();
 
-    const barWidth = 120
-    const padding = 10
+    const barWidth = width / 4 > 120 ? 120 : width / 4;
+    const padding = 10;
 
     return (
         <div
@@ -78,5 +80,5 @@ export const OptionBar: FC<OptionBarProps> = ({
                 {option.statement}
             </div>
         </div>
-    )
-}
+    );
+};

@@ -14,22 +14,20 @@ export const SetStatement = () => {
     const direction = useDirection();
 
     return (
-        <ScreenSlide toSubStatement={true} className='page'>
-            <div className="setStatement">
-                <div
-                    className="setStatement__header"
-                    style={{ flexDirection: direction }}
-                >
-                    <Link to={"/home"} className="setStatement__back">
-                        {" "}
-                        <ArrowBackIosIcon />
-                    </Link>
-                    <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
-                    <span></span>
-                </div>
-                <div className="page__main">
-                    <StatementSettings />
-                </div>
+        <ScreenSlide toSubStatement={true} className="setStatement">
+            <div
+                className="setStatement__header"
+                style={{ flexDirection: direction }}
+            >
+                <Link to={"/home"} className="setStatement__back">
+                    {" "}
+                    <ArrowBackIosIcon />
+                </Link>
+                <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
+                <span></span>
+            </div>
+            <div className="page__main">
+                <StatementSettings />
             </div>
         </ScreenSlide>
     );
