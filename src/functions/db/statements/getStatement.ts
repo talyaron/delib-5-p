@@ -256,7 +256,7 @@ deleteCB: Function
         );
 
         return onSnapshot(q, (subsDB) => {
-            console.log("subsDB", subsDB.size);
+            console.log("user", user.uid,  "subsDB", subsDB.size);
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription;
