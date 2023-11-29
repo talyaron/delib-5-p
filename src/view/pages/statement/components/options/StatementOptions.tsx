@@ -9,16 +9,14 @@ import Modal from "../../../../components/modal/Modal";
 // Custom Components
 import StatementOptionsNav from "./components/StatementOptionsNav";
 import StatementOptionCard from "./components/StatementOptionCard";
-import { setStatementOrder } from "../../../../../model/statements/statementsSlice";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 
 // Utils & Constants
 
 // Redux Store
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 import { sortSubStatements } from "./statementOptionsCont";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import { isOptionFn } from "../../../../../functions/general/helpers";
+
 
 interface Props {
     statement: Statement;

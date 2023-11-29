@@ -40,11 +40,7 @@ export const SuspenseComp = ({ chlildren }: any) => {
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: (
-            <Suspense fallback={<SuspenseFallback />}>
-                <App />
-            </Suspense>
-        ),
+        element: <App />,
         errorElement: <ErrorPage />,
         children: [
             {
