@@ -1,30 +1,30 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm"
-import { useParams } from "react-router"
-import AddIcon from "@mui/icons-material/Add"
-import Modal from "../../../../components/modal/Modal"
+import { Statement } from "delib-npm";
+import { useParams } from "react-router";
+import AddIcon from "@mui/icons-material/Add";
+import Modal from "../../../../components/modal/Modal";
 
 // Custom Components
-import StatementOptionsNav from "./components/StatementOptionsNav"
-import StatementOptionCard from "./components/StatementOptionCard"
-import { setStatementOrder } from "../../../../../model/statements/statementsSlice"
-import NewSetStatementSimple from "../set/NewStatementSimple"
+import StatementOptionsNav from "./components/StatementOptionsNav";
+import StatementOptionCard from "./components/StatementOptionCard";
+import { setStatementOrder } from "../../../../../model/statements/statementsSlice";
+import NewSetStatementSimple from "../set/NewStatementSimple";
 
 // Utils & Constants
 
 // Redux Store
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks"
-import { sortSubStatements } from "./statementOptionsCont"
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut"
-import { isOptionFn } from "../../../../../functions/general/helpers"
+import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
+import { sortSubStatements } from "./statementOptionsCont";
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import { isOptionFn } from "../../../../../functions/general/helpers";
 
 interface Props {
-    statement: Statement
-    subStatements: Statement[]
-    handleShowTalker: Function
-    showNav?: boolean
+    statement: Statement;
+    subStatements: Statement[];
+    handleShowTalker: Function;
+    showNav?: boolean;
 }
 
 const StatementOptions: FC<Props> = ({
@@ -33,16 +33,16 @@ const StatementOptions: FC<Props> = ({
     handleShowTalker,
 }) => {
     try {
-        const dispatch = useAppDispatch()
-        const { sort } = useParams()
+        const dispatch = useAppDispatch();
+        const { sort } = useParams();
 
-        const [showModal, setShowModal] = useState(false)
+        const [showModal, setShowModal] = useState(false);
 
         const __substatements = subStatements.filter(
-            (subStatement: Statement) =>isOptionFn(subStatement)
-        )
-        
-        const _subStatements = sortSubStatements(__substatements, sort)
+            (subStatement: Statement) => isOptionFn(subStatement)
+        );
+
+        const _subStatements = sortSubStatements(__substatements, sort);
 
         function dispatchCB(statement: Statement, order: number) {
             dispatch(
@@ -50,27 +50,27 @@ const StatementOptions: FC<Props> = ({
                     statementId: statement.statementId,
                     order: order,
                 })
-            )
+            );
         }
 
         useEffect(() => {
             _subStatements.forEach((statement: Statement, i: number) => {
-                dispatchCB(statement, i)
-            })
-        }, [sort])
+                dispatchCB(statement, i);
+            });
+        }, [sort]);
 
-        let topSum = 50
-        let tops: number[] = [topSum]
+        let topSum = 50;
+        let tops: number[] = [topSum];
 
         return (
-            <ScreenFadeInOut>
+            <ScreenFadeInOut className="page__main">
                 <div className="wrapper">
                     {_subStatements?.map(
                         (statementSub: Statement, i: number) => {
                             //get the top of the element
                             if (statementSub.elementHight) {
-                                topSum += statementSub.elementHight + 10
-                                tops.push(topSum)
+                                topSum += statementSub.elementHight + 10;
+                                tops.push(topSum);
                             }
 
                             return (
@@ -80,11 +80,16 @@ const StatementOptions: FC<Props> = ({
                                     showImage={handleShowTalker}
                                     top={tops[i]}
                                 />
-                            )
+                            );
                         }
                     )}
                 </div>
-                <StatementOptionsNav statement={statement} />
+                <div
+                    className="page__main__bottom"
+                    style={{ marginBottom: "5vh" }}
+                >
+                    <StatementOptionsNav statement={statement} />
+                </div>
                 {/* <Fav onclick={handleAddStatment} /> */}
                 {showModal && (
                     <Modal>
@@ -108,11 +113,11 @@ const StatementOptions: FC<Props> = ({
                     </div>
                 </div>
             </ScreenFadeInOut>
-        )
+        );
     } catch (error) {
-        console.error(error)
-        return null
+        console.error(error);
+        return null;
     }
-}
+};
 
-export default StatementOptions
+export default StatementOptions;

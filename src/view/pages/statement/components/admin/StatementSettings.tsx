@@ -188,7 +188,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     })();
 
     return (
-        <ScreenFadeInOut>
+        <ScreenFadeInOut className="setStatement">
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -260,7 +260,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 <FormControlLabel
                                     key={"sub-statements"}
                                     control={
-                                        <Checkbox
+                                        <Switch
                                             name="hasChildren"
                                             defaultChecked={hasChildren}
                                         />
