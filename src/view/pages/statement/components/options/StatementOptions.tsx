@@ -16,6 +16,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 // Redux Store
 import { sortSubStatements } from "./statementOptionsCont";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import { isOptionFn } from "../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -39,11 +40,13 @@ const StatementOptions: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort)
+                sortSubStatements(subStatements, sort).filter((s) =>
+                    isOptionFn(s)
+                )
             );
         }, [sort, subStatements]);
 
-        let topSum = 50;
+        let topSum = 10;
         let tops: number[] = [topSum];
 
         return (
@@ -53,7 +56,7 @@ const StatementOptions: FC<Props> = ({
                         (statementSub: Statement, i: number) => {
                             //get the top of the element
                             if (statementSub.elementHight) {
-                                topSum += statementSub.elementHight + 10;
+                                topSum += statementSub.elementHight + 20;
                                 tops.push(topSum);
                             }
 
