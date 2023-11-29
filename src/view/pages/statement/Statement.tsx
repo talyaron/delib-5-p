@@ -67,6 +67,7 @@ let unsubStatementSubscription: Function = () => {};
 let unsubEvaluations: Function = () => {};
 
 const Statement: FC = () => {
+   
     // Hooks
     const { statementId, page } = useParams();
     const navigate = useNavigate();
