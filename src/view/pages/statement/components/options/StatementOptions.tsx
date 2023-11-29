@@ -31,7 +31,6 @@ const StatementOptions: FC<Props> = ({
     handleShowTalker,
 }) => {
     try {
-          
         const { sort } = useParams();
 
         const [showModal, setShowModal] = useState(false);
@@ -39,16 +38,17 @@ const StatementOptions: FC<Props> = ({
             Statement[]
         >([...subStatements]);
 
-        useEffect(() => {          
-            setSortedSubStatements(() =>  sortSubStatements(subStatements, sort));
+        useEffect(() => {
+            setSortedSubStatements(() =>
+                sortSubStatements(subStatements, sort)
+            );
         }, [sort, subStatements]);
 
         let topSum = 50;
         let tops: number[] = [topSum];
-      
 
         return (
-            <ScreenFadeInOut>
+            <ScreenFadeInOut className="page__main">
                 <div className="wrapper">
                     {sortedSubStatements?.map(
                         (statementSub: Statement, i: number) => {
@@ -70,7 +70,13 @@ const StatementOptions: FC<Props> = ({
                         }
                     )}
                 </div>
-                <StatementOptionsNav statement={statement} />
+                <div
+                    className="page__main__bottom"
+                    style={{ marginBottom: "5vh" }}
+                >
+                    <StatementOptionsNav statement={statement} />
+                </div>
+                {/* <Fav onclick={handleAddStatment} /> */}
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple

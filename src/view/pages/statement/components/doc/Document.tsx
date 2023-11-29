@@ -26,7 +26,6 @@ import { getStatementDepth } from "../../../../../functions/db/statements/getSta
 import { setStatement } from "../../../../../model/statements/statementsSlice";
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
-
 interface Props {
     statement: Statement;
     subStatements: Statement[];
@@ -80,7 +79,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     ).types;
 
     return (
-        <ScreenFadeInOut>
+        <ScreenFadeInOut className="page__main">
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
