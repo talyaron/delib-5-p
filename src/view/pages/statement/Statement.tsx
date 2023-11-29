@@ -93,7 +93,6 @@ const Statement: FC = () => {
     const titleStyle = {
         fontSize:
             title.length > 30 ? "1.3rem" : title.length > 40 ? "1rem" : "2rem",
-        width: "75%",
     };
 
     //store callbacks
@@ -191,7 +190,11 @@ const Statement: FC = () => {
             const __title =
                 statement.statement.split("\n")[0] || statement.statement;
             const _title = __title.replace("*", "");
-            setTitle(_title);
+
+            const titleToSet =
+                _title.length > 20 ? _title.substring(0, 17) + "..." : _title;
+
+            setTitle(titleToSet);
             (async () => {
                 const isSubscribed = await getIsSubscribed(statementId);
 
@@ -235,70 +238,66 @@ const Statement: FC = () => {
     }
 
     return (
-        <ScreenFadeInOut>
-            <div className="page">
-                {showAskPermission && (
-                    <AskPermisssion showFn={setShowAskPermission} />
-                )}
-                {talker && (
-                    <div
-                        onClick={() => {
-                            handleShowTalker(null);
-                        }}
-                    >
-                        <ProfileImage user={talker} />
+        <ScreenFadeInOut className="page">
+            {showAskPermission && (
+                <AskPermisssion showFn={setShowAskPermission} />
+            )}
+            {talker && (
+                <div
+                    onClick={() => {
+                        handleShowTalker(null);
+                    }}
+                >
+                    <ProfileImage user={talker} />
+                </div>
+            )}
+            <div className="page__header">
+                <div
+                    className="page__header__wrapper"
+                    style={{ flexDirection: direction }}
+                >
+                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                        <ArrowBackIosIcon />
                     </div>
-                )}
-                <div className="page__header">
-                    <div
-                        className="page__header__wrapper"
-                        style={{ flexDirection: direction }}
-                    >
-                        <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                            <ArrowBackIosIcon />
-                        </div>
-                        <Link to={"/home"}>
-                            <HomeOutlinedIcon />
-                        </Link>
-                        <div onClick={handleRegisterToNotifications}>
-                            {hasNotificationPermission && hasNotifications ? (
-                                <NotificationsActiveIcon />
-                            ) : (
-                                <NotificationsOffIcon htmlColor="lightgray" />
-                            )}
-                        </div>
-                        {!editHeader ? (
-                            <h1
-                                className={isAdmin ? "clickable" : ""}
-                                onClick={handleEditTitle}
-                                style={titleStyle}
-                            >
-                                {title}
-                            </h1>
+                    <Link to={"/home"}>
+                        <HomeOutlinedIcon />
+                    </Link>
+                    <div onClick={handleRegisterToNotifications}>
+                        {hasNotificationPermission && hasNotifications ? (
+                            <NotificationsActiveIcon />
                         ) : (
-                            <EditTitle
-                                statement={statement}
-                                setEdit={setEditHeader}
-                            />
+                            <NotificationsOffIcon htmlColor="lightgray" />
                         )}
-                        <div onClick={handleShare}>
-                            <ShareIcon />
-                        </div>
                     </div>
-                    {statement && <StatementNav statement={statement} />}
-                </div>
-                <div className="page__main">
-                    <AnimatePresence mode="wait" initial={false}>
-                        <SwitchScreens
-                            key={statementId}
-                            screen={page}
+                    {!editHeader ? (
+                        <h1
+                            className={isAdmin ? "clickable" : ""}
+                            onClick={handleEditTitle}
+                            style={titleStyle}
+                        >
+                            {title}
+                        </h1>
+                    ) : (
+                        <EditTitle
                             statement={statement}
-                            subStatements={subStatements}
-                            handleShowTalker={handleShowTalker}
+                            setEdit={setEditHeader}
                         />
-                    </AnimatePresence>
+                    )}
+                    <div onClick={handleShare}>
+                        <ShareIcon />
+                    </div>
                 </div>
+                {statement && <StatementNav statement={statement} />}
             </div>
+            <AnimatePresence mode="wait" initial={false}>
+                <SwitchScreens
+                    key={statementId}
+                    screen={page}
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                />
+            </AnimatePresence>
         </ScreenFadeInOut>
     );
 };

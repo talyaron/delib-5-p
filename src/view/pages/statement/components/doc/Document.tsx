@@ -26,7 +26,6 @@ import { getStatementDepth } from "../../../../../functions/db/statements/getSta
 import { setStatement } from "../../../../../model/statements/statementsSlice";
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
-
 interface Props {
     statement: Statement;
     subStatements: Statement[];
@@ -80,79 +79,75 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
     ).types;
 
     return (
-        <ScreenFadeInOut>
-            <div className="wrapper">
+        <ScreenFadeInOut className="page__main">
+            <div className="wrapper" style={{ height: "85svh" }}>
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
-                    <form onSubmit={handleGetResults}>
-                        <div className={styles.inputWrapper}>
+                    <form
+                        onSubmit={handleGetResults}
+                        className={styles.inputWrapper}
+                    >
+                        <div>
+                            <label htmlFor="resultsId">
+                                {t("Display Results According To")}
+                            </label>
+                            <select
+                                name="results"
+                                defaultValue={resultsBy}
+                                id="resultsId"
+                                onChange={(ev: any) =>
+                                    setResultsBy(ev.target.value)
+                                }
+                            >
+                                <option value={ResultsBy.topOptions}>
+                                    {t("Maximum Options")}
+                                </option>
+                                <option value={ResultsBy.topVote}>
+                                    {t("Votes")}
+                                </option>
+                            </select>
+                        </div>
+                        {resultsBy === ResultsBy.topOptions && (
                             <div>
-                                <label htmlFor="resultsId">
-                                    {t("Display Results According To")}
-                                </label>
-                                <select
-                                    name="results"
-                                    defaultValue={resultsBy}
-                                    id="resultsId"
-                                    onChange={(ev: any) =>
-                                        setResultsBy(ev.target.value)
+                                <label htmlFor="numberOfResults">
+                                    {
+                                        (t(
+                                            "Number of Solutions in Each Level:"
+                                        ),
+                                        numberOfResults)
                                     }
-                                >
-                                    <option value={ResultsBy.topOptions}>
-                                        {t("Maximum Options")}
-                                    </option>
-                                    <option value={ResultsBy.topVote}>
-                                        {t("Votes")}
-                                    </option>
-                                </select>
-                            </div>
-                            {resultsBy === ResultsBy.topOptions && (
-                                <div>
-                                    <label htmlFor="numberOfResults">
-                                        {
-                                            (t(
-                                                "Number of Solutions in Each Level:"
-                                            ),
-                                            numberOfResults)
-                                        }
-                                    </label>
-                                    <Slider
-                                        defaultValue={numberOfResults || 2}
-                                        min={1}
-                                        max={10}
-                                        aria-label="Default"
-                                        valueLabelDisplay="on"
-                                        name="numberOfResults"
-                                        id="numberOfResults"
-                                        onChange={(ev: any) =>
-                                            setNumberOfResults(
-                                                Number(ev.target.value)
-                                            )
-                                        }
-                                    />
-                                </div>
-                            )}
-                            <section>
-                                <label>{t("Depth")}</label>
-                                <br />
+                                </label>
                                 <Slider
-                                    aria-label="Small steps"
-                                    defaultValue={1}
-                                    step={1}
-                                    marks
+                                    defaultValue={numberOfResults || 2}
                                     min={1}
-                                    max={5}
+                                    max={10}
+                                    aria-label="Default"
                                     valueLabelDisplay="on"
-                                    name="depth"
+                                    name="numberOfResults"
+                                    id="numberOfResults"
+                                    onChange={(ev: any) =>
+                                        setNumberOfResults(
+                                            Number(ev.target.value)
+                                        )
+                                    }
                                 />
-                            </section>
-                        </div>
+                            </div>
+                        )}
+                        <section style={{ width: "80%" }}>
+                            <label>{t("Depth")}</label>
+                            <Slider
+                                aria-label="Small steps"
+                                defaultValue={1}
+                                step={1}
+                                marks
+                                min={1}
+                                max={5}
+                                valueLabelDisplay="on"
+                                name="depth"
+                            />
+                        </section>
 
-                        <div className="btns">
-                            <button type="submit">
-                                {t("Display Results")}
-                            </button>
-                        </div>
+                        <button type="submit">{t("Display Results")}</button>
                     </form>
 
                     <MainCard results={results} resultsType={resultsType} />

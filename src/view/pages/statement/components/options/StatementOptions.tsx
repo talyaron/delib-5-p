@@ -9,13 +9,11 @@ import Modal from "../../../../components/modal/Modal";
 // Custom Components
 import StatementOptionsNav from "./components/StatementOptionsNav";
 import StatementOptionCard from "./components/StatementOptionCard";
-import { setStatementOrder } from "../../../../../model/statements/statementsSlice";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 
 // Utils & Constants
 
 // Redux Store
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 import { sortSubStatements } from "./statementOptionsCont";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { isOptionFn } from "../../../../../functions/general/helpers";
@@ -33,7 +31,6 @@ const StatementOptions: FC<Props> = ({
     handleShowTalker,
 }) => {
     try {
-          
         const { sort } = useParams();
 
         const [showModal, setShowModal] = useState(false);
@@ -41,22 +38,25 @@ const StatementOptions: FC<Props> = ({
             Statement[]
         >([...subStatements]);
 
-        useEffect(() => {          
-            setSortedSubStatements(() =>  sortSubStatements(subStatements, sort));
+        useEffect(() => {
+            setSortedSubStatements(() =>
+                sortSubStatements(subStatements, sort).filter((s) =>
+                    isOptionFn(s)
+                )
+            );
         }, [sort, subStatements]);
 
-        let topSum = 50;
+        let topSum = 10;
         let tops: number[] = [topSum];
-      
 
         return (
-            <ScreenFadeInOut>
+            <ScreenFadeInOut className="page__main">
                 <div className="wrapper">
                     {sortedSubStatements?.map(
                         (statementSub: Statement, i: number) => {
                             //get the top of the element
                             if (statementSub.elementHight) {
-                                topSum += statementSub.elementHight + 10;
+                                topSum += statementSub.elementHight + 20;
                                 tops.push(topSum);
                             }
 
@@ -72,7 +72,13 @@ const StatementOptions: FC<Props> = ({
                         }
                     )}
                 </div>
-                <StatementOptionsNav statement={statement} />
+                <div
+                    className="page__main__bottom"
+                    style={{ marginBottom: "5vh" }}
+                >
+                    <StatementOptionsNav statement={statement} />
+                </div>
+                {/* <Fav onclick={handleAddStatment} /> */}
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple

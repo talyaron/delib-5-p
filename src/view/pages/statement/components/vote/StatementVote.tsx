@@ -31,8 +31,6 @@ interface Props {
     subStatements: Statement[];
 }
 let getVoteFromDB = false;
-export const barWidth = 120;
-export const padding = 10;
 
 const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const dispatch = useAppDispatch();
@@ -63,12 +61,14 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenFadeInOut>
+        <ScreenFadeInOut className="page__main">
             <div className="statement">
-                <h2>{t("Votes")}</h2>
-                <p>
-                    {t("Voted")}: {totalVotes}
-                </p>
+                <div>
+                    <h2>{t("Votes")}</h2>
+                    <p style={{ maxWidth: "75ch", margin: "0 auto" }}>
+                        {t("Voted")}: {totalVotes}
+                    </p>
+                </div>
                 <div className="statement__vote">
                     {options.map((option: Statement, i: number) => {
                         return (
@@ -83,7 +83,9 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     })}
                 </div>
             </div>
-            <StatementOptionsNav statement={statement} />
+            <div className="page__main__bottom" style={{ marginBottom: "5vh" }}>
+                <StatementOptionsNav statement={statement} />
+            </div>
             {showModal && (
                 <Modal>
                     <NewSetStatementSimple
