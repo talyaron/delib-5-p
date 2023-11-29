@@ -80,7 +80,7 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
     return (
         <ScreenFadeInOut className="page__main">
-            <div className="wrapper">
+            <div className="wrapper" style={{ height: "85svh" }}>
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
                     <form
