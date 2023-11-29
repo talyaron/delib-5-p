@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 // Third party imports
 import { Statement } from "delib-npm";
 import { useParams } from "react-router";
-import AddIcon from "@mui/icons-material/Add";
 import Modal from "../../../../components/modal/Modal";
 
 // Custom Components
@@ -74,9 +73,12 @@ const StatementOptions: FC<Props> = ({
                 </div>
                 <div
                     className="page__main__bottom"
-                    style={{ marginBottom: "5vh" }}
+                    style={{ marginBottom: "10vh" }}
                 >
-                    <StatementOptionsNav statement={statement} />
+                    <StatementOptionsNav
+                        setShowModal={setShowModal}
+                        statement={statement}
+                    />
                 </div>
                 {/* <Fav onclick={handleAddStatment} /> */}
                 {showModal && (
@@ -88,18 +90,6 @@ const StatementOptions: FC<Props> = ({
                         />
                     </Modal>
                 )}
-                <div
-                    className="fav fav--fixed"
-                    onClick={() => setShowModal(true)}
-                >
-                    <div>
-                        <AddIcon
-                            style={{
-                                transform: `translate(0px,-40%) scale(1.45)`,
-                            }}
-                        />
-                    </div>
-                </div>
             </ScreenFadeInOut>
         );
     } catch (error) {

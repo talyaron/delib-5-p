@@ -113,8 +113,8 @@ const Main = () => {
                         />
                     ))}
                 </div>
+                <Fav isHome={true} onclick={handleAddStatment} />
             </div>
-            <Fav onclick={handleAddStatment} />
         </ScreenSlide>
     );
 };
