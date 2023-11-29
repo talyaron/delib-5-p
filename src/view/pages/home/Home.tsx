@@ -16,7 +16,7 @@ import { listenStatmentsSubsciptions } from "../../../functions/db/statements/ge
 import useAuth from "../../../functions/hooks/authHooks"
 
 export const listenedStatements = new Set<string>()
-let unsubscribe: Function = () => {}
+
 
 export default function Home() {
     const dispatch = useAppDispatch()
@@ -31,6 +31,7 @@ export default function Home() {
     }
 
     useEffect(() => {
+        let unsubscribe: Function = () => {}
         if (isLgged) {
             unsubscribe = listenStatmentsSubsciptions(
                 updateStoreStSubCB,

@@ -41,7 +41,7 @@ const Main = () => {
 
     const dispatch = useAppDispatch();
 
-    //for defferd app install
+    //for deffered app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
     useEffect(() => {
