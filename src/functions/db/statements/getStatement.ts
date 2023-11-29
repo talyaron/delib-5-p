@@ -222,7 +222,7 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
 
 export function listenStatmentsSubsciptions(
     cb: Function,
-    deleteCB: Function
+deleteCB: Function
 ): Unsubscribe {
     try {
         const user = store.getState().user.user;
