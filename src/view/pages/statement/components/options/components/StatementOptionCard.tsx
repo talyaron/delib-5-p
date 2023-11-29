@@ -20,9 +20,10 @@ interface Props {
     statement: Statement
     showImage: Function
     top: number
+    index: number
 }
 
-const StatementOptionCard: FC<Props> = ({ statement, top }) => {
+const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -62,7 +63,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                 <div
                     className="options__card__text text"
                     onClick={() => setShow(!show)}
-                >
+                ><span>{index}</span>
                     {!edit ? (
                         <div className="clickable" onClick={handleGoToSubStatement}>
                             <Text text={statement.statement} />

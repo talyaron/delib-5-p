@@ -33,31 +33,18 @@ const StatementOptions: FC<Props> = ({
     handleShowTalker,
 }) => {
     try {
-        const dispatch = useAppDispatch();
         const { sort } = useParams();
 
         const [showModal, setShowModal] = useState(false);
-
-        const __substatements = subStatements.filter(
-            (subStatement: Statement) => isOptionFn(subStatement)
-        );
-
-        const _subStatements = sortSubStatements(__substatements, sort);
-
-        function dispatchCB(statement: Statement, order: number) {
-            dispatch(
-                setStatementOrder({
-                    statementId: statement.statementId,
-                    order: order,
-                })
-            );
-        }
+        const [sortedSubStatements, setSortedSubStatements] = useState<
+            Statement[]
+        >([...subStatements]);
 
         useEffect(() => {
-            _subStatements.forEach((statement: Statement, i: number) => {
-                dispatchCB(statement, i);
-            });
-        }, [sort]);
+            setSortedSubStatements(() =>
+                sortSubStatements(subStatements, sort)
+            );
+        }, [sort, subStatements]);
 
         let topSum = 50;
         let tops: number[] = [topSum];
@@ -65,7 +52,7 @@ const StatementOptions: FC<Props> = ({
         return (
             <ScreenFadeInOut className="page__main">
                 <div className="wrapper">
-                    {_subStatements?.map(
+                    {sortedSubStatements?.map(
                         (statementSub: Statement, i: number) => {
                             //get the top of the element
                             if (statementSub.elementHight) {
@@ -79,6 +66,7 @@ const StatementOptions: FC<Props> = ({
                                     statement={statementSub}
                                     showImage={handleShowTalker}
                                     top={tops[i]}
+                                    index={i}
                                 />
                             );
                         }

@@ -10,8 +10,8 @@ import {
     orderBy,
     query,
     where,
-} from "firebase/firestore"
-import { Unsubscribe } from "firebase/auth"
+} from "firebase/firestore";
+import { Unsubscribe } from "firebase/auth";
 
 // Third party imports
 import {
@@ -20,70 +20,69 @@ import {
     StatementSubscription,
     StatementSubscriptionSchema,
     StatementType,
-} from "delib-npm"
+} from "delib-npm";
 
 // Helpers
-import { listenedStatements } from "../../../view/pages/home/Home"
-import { DB } from "../config"
+import { listenedStatements } from "../../../view/pages/home/Home";
+import { DB } from "../config";
 
 // Redux Store
-import { store } from "../../../model/store"
-import _ from "lodash"
-
+import { store } from "../../../model/store";
+import _ from "lodash";
 
 export function listenToTopStatements(
     setStatementsCB: Function,
     deleteStatementCB: Function
 ): Unsubscribe {
     try {
-        const user = store.getState().user.user
-        if (!user) throw new Error("User not logged in")
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
 
-        const statementsRef = collection(DB, Collections.statementsSubscribe)
+        const statementsRef = collection(DB, Collections.statementsSubscribe);
         const q = query(
             statementsRef,
             where("userId", "==", user.uid),
             where("statement.parentId", "==", "top"),
             orderBy("lastUpdate", "desc"),
             limit(40)
-        )
+        );
 
         return onSnapshot(q, (statementsDB) => {
             statementsDB.docChanges().forEach((change) => {
                 const statementSubscription =
-                    change.doc.data() as StatementSubscription
+                    change.doc.data() as StatementSubscription;
 
                 if (change.type === "added") {
                     listenedStatements.add(
                         statementSubscription.statement.statementId
-                    )
-                    setStatementsCB(statementSubscription.statement)
+                    );
+                    setStatementsCB(statementSubscription.statement);
                     listenToSubStatements(
                         statementSubscription.statement.statementId,
                         setStatementsCB,
                         deleteStatementCB
-                    )
+                    );
                 }
 
                 if (change.type === "modified") {
                     listenedStatements.add(
                         statementSubscription.statement.statementId
-                    )
+                    );
                 }
 
                 if (change.type === "removed") {
                     listenedStatements.delete(
                         statementSubscription.statement.statementId
-                    )
+                    );
                     deleteStatementCB(
                         statementSubscription.statement.statementId
-                    )
+                    );
                 }
-            })
-        })
+            });
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 
@@ -93,38 +92,38 @@ function listenToSubStatements(
     deleteStatementCB: Function
 ): Unsubscribe {
     try {
-        const subStatementsRef = collection(DB, Collections.statements)
+        const subStatementsRef = collection(DB, Collections.statements);
         const q = query(
             subStatementsRef,
             where("topParentId", "==", topStatementId),
             // where("statementType", "==", StatementType.question),
             orderBy("createdAt", "asc"),
             limit(50)
-        )
+        );
 
         return onSnapshot(q, (statementsDB) => {
             statementsDB.docChanges().forEach((change) => {
-                const statement = change.doc.data() as Statement
+                const statement = change.doc.data() as Statement;
 
                 if (change.type === "added") {
-                    listenedStatements.add(statement.statementId)
-                    setStatementsCB(statement)
+                    listenedStatements.add(statement.statementId);
+                    setStatementsCB(statement);
                 }
 
                 if (change.type === "modified") {
-                    listenedStatements.add(statement.statementId)
-                    setStatementsCB(statement)
+                    listenedStatements.add(statement.statementId);
+                    setStatementsCB(statement);
                 }
 
                 if (change.type === "removed") {
-                    listenedStatements.delete(statement.statementId)
-                    deleteStatementCB(statement.statementId)
+                    listenedStatements.delete(statement.statementId);
+                    deleteStatementCB(statement.statementId);
                 }
-            })
-        })
+            });
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 
@@ -132,29 +131,29 @@ export async function getStatmentsSubsciptions(): Promise<
     StatementSubscription[]
 > {
     try {
-        const user = store.getState().user.user
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
         const statementsSubscribeRef = collection(
             DB,
             Collections.statementsSubscribe
-        )
+        );
         const q = query(
             statementsSubscribeRef,
             where("userId", "==", user.uid),
             limit(20)
-        )
-        const querySnapshot = await getDocs(q)
+        );
+        const querySnapshot = await getDocs(q);
 
-        const statementsSubscriptions: StatementSubscription[] = []
+        const statementsSubscriptions: StatementSubscription[] = [];
 
         querySnapshot.forEach((doc) => {
-            statementsSubscriptions.push(doc.data() as StatementSubscription)
-        })
-        return statementsSubscriptions
+            statementsSubscriptions.push(doc.data() as StatementSubscription);
+        });
+        return statementsSubscriptions;
     } catch (error) {
-        console.error(error)
-        return []
+        console.error(error);
+        return [];
     }
 }
 
@@ -163,77 +162,77 @@ export function listenToStatementSubscription(
     updateStore: Function
 ) {
     try {
-        if (!statementId) throw new Error("Statement id is undefined")
-        const user = store.getState().user.user
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
+        if (!statementId) throw new Error("Statement id is undefined");
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
             `${user.uid}--${statementId}`
-        )
+        );
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             const statementSubscription =
-                statementSubscriptionDB.data() as StatementSubscription
+                statementSubscriptionDB.data() as StatementSubscription;
 
-            StatementSubscriptionSchema.parse(statementSubscription)
+            StatementSubscriptionSchema.parse(statementSubscription);
 
-            updateStore(statementSubscription)
-        })
+            updateStore(statementSubscription);
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 export async function getSubscriptions(): Promise<StatementSubscription[]> {
     try {
-        const user = store.getState().user.user
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
         const statementsSubscribeRef = collection(
             DB,
             Collections.statementsSubscribe
-        )
+        );
         const q = query(
             statementsSubscribeRef,
             where("userId", "==", user.uid),
             orderBy("lastUpdate", "desc"),
             limit(20)
-        )
+        );
 
-        const subscriptionsDB = await getDocs(q)
+        const subscriptionsDB = await getDocs(q);
 
-        const subscriptions: StatementSubscription[] = []
+        const subscriptions: StatementSubscription[] = [];
         subscriptionsDB.forEach((doc) => {
-            const statementSubscription = doc.data() as StatementSubscription
+            const statementSubscription = doc.data() as StatementSubscription;
 
-            StatementSubscriptionSchema.parse(statementSubscription)
+            StatementSubscriptionSchema.parse(statementSubscription);
 
-            subscriptions.push(statementSubscription)
-        })
+            subscriptions.push(statementSubscription);
+        });
 
-        return subscriptions
+        return subscriptions;
     } catch (error) {
-        console.error(error)
-        return []
+        console.error(error);
+        return [];
     }
 }
 
 export function listenStatmentsSubsciptions(
     cb: Function,
-    deleteCB: Function
+deleteCB: Function
 ): Unsubscribe {
     try {
-        const user = store.getState().user.user
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeRef = collection(
             DB,
             Collections.statementsSubscribe
-        )
+        );
         const q = query(
             statementsSubscribeRef,
             and(
@@ -254,46 +253,52 @@ export function listenStatmentsSubsciptions(
             ),
             orderBy("lastUpdate", "desc"),
             limit(40)
-        )
+        );
 
         return onSnapshot(q, (subsDB) => {
+            console.log("subsDB", subsDB.size);
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
-                    change.doc.data() as StatementSubscription
+                    change.doc.data() as StatementSubscription;
 
                 if (change.type === "added") {
                     listenedStatements.add(
                         statementSubscription.statement.statementId
-                    )
+                    );
                     statementSubscription.lastUpdate =
-                        statementSubscription.lastUpdate
-                    cb(statementSubscription)
+                        statementSubscription.lastUpdate;
+                    console.log(
+                        user.uid,
+                        statementSubscription.statement.statement,
+                        statementSubscription.statement.statementType
+                    );
+                    cb(statementSubscription);
                 }
 
                 if (change.type === "modified") {
                     listenedStatements.add(
                         statementSubscription.statement.statementId
-                    )
+                    );
 
                     statementSubscription.lastUpdate =
-                        statementSubscription.lastUpdate
-                    cb(statementSubscription)
+                        statementSubscription.lastUpdate;
+                    cb(statementSubscription);
                 }
 
                 if (change.type === "removed") {
                     listenedStatements.delete(
                         statementSubscription.statement.statementId
-                    )
+                    );
                     statementSubscription.lastUpdate =
-                        statementSubscription.lastUpdate
+                        statementSubscription.lastUpdate;
 
-                    deleteCB(statementSubscription.statement.statementId)
+                    deleteCB(statementSubscription.statement.statementId);
                 }
-            })
-        })
+            });
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 
@@ -301,36 +306,36 @@ export async function getIsSubscribed(
     statementId: string | undefined
 ): Promise<boolean> {
     try {
-        if (!statementId) throw new Error("Statement id is undefined")
-        const user = store.getState().user.user
-        if (!user) throw new Error("User not logged in")
+        if (!statementId) throw new Error("Statement id is undefined");
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
 
         const subscriptionRef = doc(
             DB,
             Collections.statementsSubscribe,
             `${user.uid}--${statementId}`
-        )
-        const subscriptionDB = await getDoc(subscriptionRef)
+        );
+        const subscriptionDB = await getDoc(subscriptionRef);
 
-        if (!subscriptionDB.exists()) return false
-        return true
+        if (!subscriptionDB.exists()) return false;
+        return true;
     } catch (error) {
-        console.error(error)
-        return false
+        console.error(error);
+        return false;
     }
 }
 
 export function listenToStatement(statementId: string, updateStore: Function) {
     try {
-        const statementRef = doc(DB, Collections.statements, statementId)
+        const statementRef = doc(DB, Collections.statements, statementId);
         return onSnapshot(statementRef, (statementDB) => {
-            const statement = statementDB.data() as Statement
+            const statement = statementDB.data() as Statement;
 
-            updateStore(statement)
-        })
+            updateStore(statement);
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 
@@ -338,12 +343,12 @@ export async function getStatementFromDB(
     statementId: string
 ): Promise<Statement | undefined> {
     try {
-        const statementRef = doc(DB, Collections.statements, statementId)
-        const statementDB = await getDoc(statementRef)
-        return statementDB.data() as Statement | undefined
+        const statementRef = doc(DB, Collections.statements, statementId);
+        const statementDB = await getDoc(statementRef);
+        return statementDB.data() as Statement | undefined;
     } catch (error) {
-        console.error(error)
-        return undefined
+        console.error(error);
+        return undefined;
     }
 }
 
@@ -353,35 +358,35 @@ export function listenToStatementsOfStatment(
     deleteStatementCB: Function
 ) {
     try {
-        if (!statementId) throw new Error("Statement id is undefined")
-        const statementsRef = collection(DB, Collections.statements)
+        if (!statementId) throw new Error("Statement id is undefined");
+        const statementsRef = collection(DB, Collections.statements);
         const q = query(
             statementsRef,
             where("parentId", "==", statementId),
             orderBy("createdAt", "desc"),
             limit(20)
-        )
+        );
 
         return onSnapshot(q, (subsDB) => {
             subsDB.docChanges().forEach((change) => {
-                const statement = change.doc.data() as any
+                const statement = change.doc.data() as any;
 
                 if (change.type === "added") {
-                    updateStore(statement)
+                    updateStore(statement);
                 }
 
                 if (change.type === "modified") {
-                    updateStore(statement)
+                    updateStore(statement);
                 }
 
                 if (change.type === "removed") {
-                    deleteStatementCB(statement.statementId)
+                    deleteStatementCB(statement.statementId);
                 }
-            })
-        })
+            });
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 
@@ -391,32 +396,32 @@ export function listenToMembers(
     removeMembership: Function
 ): Function {
     try {
-        const membersRef = collection(DB, Collections.statementsSubscribe)
+        const membersRef = collection(DB, Collections.statementsSubscribe);
         const q = query(
             membersRef,
             where("statementId", "==", statementId),
             orderBy("createdAt", "desc")
-        )
+        );
 
         return onSnapshot(q, (subsDB) => {
             subsDB.docChanges().forEach((change) => {
-                const member = change.doc.data() as StatementSubscription
+                const member = change.doc.data() as StatementSubscription;
                 if (change.type === "added") {
-                    setMembershipCB(member)
+                    setMembershipCB(member);
                 }
 
                 if (change.type === "modified") {
-                    setMembershipCB(member)
+                    setMembershipCB(member);
                 }
 
                 if (change.type === "removed") {
-                    removeMembership(member)
+                    removeMembership(member);
                 }
-            })
-        })
+            });
+        });
     } catch (error) {
-        console.error(error)
-        return () => {}
+        console.error(error);
+        return () => {};
     }
 }
 
@@ -426,7 +431,7 @@ export async function getStatementDepth(
     depth: number
 ): Promise<Statement[]> {
     try {
-        let statements: Statement[][] = [[statement]]
+        let statements: Statement[][] = [[statement]];
 
         //level 1 is allready in store
         //find second level
@@ -434,38 +439,38 @@ export async function getStatementDepth(
             (s) =>
                 s.parentId === statement.statementId &&
                 s.statementType === StatementType.result
-        )
-        statements.push(levleOneStatements)
+        );
+        statements.push(levleOneStatements);
         //get the next levels
 
         for (let i = 1; i < depth; i++) {
             const statementsCB = statements[i].map(
                 (st: Statement) => getLevelResults(st) as Promise<Statement[]>
-            )
+            );
 
-            let statementsTemp: any = await Promise.all(statementsCB)
+            let statementsTemp: any = await Promise.all(statementsCB);
 
-            statementsTemp = statementsTemp.flat(1)
+            statementsTemp = statementsTemp.flat(1);
 
-            if (statementsTemp.length === 0) break
+            if (statementsTemp.length === 0) break;
 
-            statements[i + 1] = []
-            statements[i + 1].push(...statementsTemp)
+            statements[i + 1] = [];
+            statements[i + 1].push(...statementsTemp);
         }
 
         // @ts-ignore
-        const finalStatements: Statement[] = statements.flat(Infinity)
+        const finalStatements: Statement[] = statements.flat(Infinity);
 
-        return finalStatements
+        return finalStatements;
     } catch (error) {
-        console.error(error)
-        return []
+        console.error(error);
+        return [];
     }
 
     async function getLevelResults(statement: Statement): Promise<Statement[]> {
         try {
-            const subStatements: Statement[] = []
-            const statementsRef = collection(DB, Collections.statements)
+            const subStatements: Statement[] = [];
+            const statementsRef = collection(DB, Collections.statements);
             const q = query(
                 statementsRef,
                 and(
@@ -475,18 +480,18 @@ export async function getStatementDepth(
                         where("statementType", "==", StatementType.question)
                     )
                 )
-            )
-            const statementsDB = await getDocs(q)
+            );
+            const statementsDB = await getDocs(q);
 
             statementsDB.forEach((doc) => {
-                const statement = doc.data() as Statement
-                subStatements.push(statement)
-            })
+                const statement = doc.data() as Statement;
+                subStatements.push(statement);
+            });
 
-            return subStatements
+            return subStatements;
         } catch (error) {
-            console.error(error)
-            return []
+            console.error(error);
+            return [];
         }
     }
 }
