@@ -73,53 +73,47 @@ const Main = () => {
     const _results = sortStatementsByHirarrchy(_statements);
 
     return (
-        <ScreenSlide toSubStatement={true}>
-            <div className="page">
-                <div className="page__header">
-                    <div className="page__header__title">
-                        <h1>{t("Delib 5")}</h1>
-                        <b>-</b>
-                        <h2>{t("Creating Agreements")}</h2>
-                    </div>
-                    <div className="btns">
-                        <button onClick={handleLogout}>
-                            {t("Disconnect")}
+        <ScreenSlide className="page" toSubStatement={true}>
+            <div className="page__header">
+                <div className="page__header__title">
+                    <h1>{t("Delib 5")}</h1>
+                    <b>-</b>
+                    <h2>{t("Creating Agreements")}</h2>
+                </div>
+                <div className="btns">
+                    <button onClick={handleLogout}>{t("Disconnect")}</button>
+                    {deferredPrompt && (
+                        <button onClick={handleInstallApp}>
+                            {t("Install the App")}
                         </button>
-                        {deferredPrompt && (
-                            <button onClick={handleInstallApp}>
-                                {t("Install the App")}
-                            </button>
-                        )}
-                    </div>
+                    )}
                 </div>
-                <div className="page__main">
-                    <div className="wrapper">
-                        <h2>{t("Conversations")}</h2>
-                        <label>{t("Show")}</label>
-                        <select
-                            onChange={(ev: any) => setFilter(ev.target.value)}
-                        >
-                            <option value={FilterType.all}>{t("All")}</option>
-                            <option value={FilterType.questions}>
-                                {t("Questions")}
-                            </option>
-                            <option value={FilterType.questionsResults}>
-                                {t("Questions and Results")}
-                            </option>
-                            <option value={FilterType.questionsResultsOptions}>
-                                {t("Questions, options and Results")}
-                            </option>
-                        </select>
-                        {_results.map((result: Results) => (
-                            <MainCard
-                                key={result.top.statementId}
-                                results={result}
-                                resultsType={resultsType}
-                            />
-                        ))}
-                    </div>
+            </div>
+            <div className="page__main">
+                <div className="wrapper">
+                    <h2>{t("Conversations")}</h2>
+                    <label>{t("Show")}</label>
+                    <select onChange={(ev: any) => setFilter(ev.target.value)}>
+                        <option value={FilterType.all}>{t("All")}</option>
+                        <option value={FilterType.questions}>
+                            {t("Questions")}
+                        </option>
+                        <option value={FilterType.questionsResults}>
+                            {t("Questions and Results")}
+                        </option>
+                        <option value={FilterType.questionsResultsOptions}>
+                            {t("Questions, options and Results")}
+                        </option>
+                    </select>
+                    {_results.map((result: Results) => (
+                        <MainCard
+                            key={result.top.statementId}
+                            results={result}
+                            resultsType={resultsType}
+                        />
+                    ))}
                 </div>
-                <Fav onclick={handleAddStatment} />
+                <Fav isHome={true} onclick={handleAddStatment} />
             </div>
         </ScreenSlide>
     );

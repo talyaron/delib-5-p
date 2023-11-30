@@ -256,7 +256,6 @@ export function listenStatmentsSubsciptions(
         );
 
         return onSnapshot(q, (subsDB) => {
-            console.log("user", user.uid, "subsDB", subsDB.size);
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription;
@@ -267,11 +266,6 @@ export function listenStatmentsSubsciptions(
                     );
                     statementSubscription.lastUpdate =
                         statementSubscription.lastUpdate;
-                    console.log(
-                        user.uid,
-                        statementSubscription.statement.statement,
-                        statementSubscription.statement.statementType
-                    );
                     cb(statementSubscription);
                 }
 
