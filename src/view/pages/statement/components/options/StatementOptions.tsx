@@ -40,11 +40,13 @@ const StatementOptions: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort)
+                sortSubStatements(subStatements, sort).filter((s) =>
+                    isOptionFn(s)
+                )
             );
         }, [sort, subStatements]);
 
-        let topSum = 50;
+        let topSum = 10;
         let tops: number[] = [topSum];
 
         return (
@@ -54,7 +56,7 @@ const StatementOptions: FC<Props> = ({
                         (statementSub: Statement, i: number) => {
                             //get the top of the element
                             if (statementSub.elementHight) {
-                                topSum += statementSub.elementHight + 10;
+                                topSum += statementSub.elementHight + 20;
                                 tops.push(topSum);
                             }
 

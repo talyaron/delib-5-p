@@ -7,30 +7,31 @@
 .resultsWrapper {
     background-color: #fff;
     border-radius: 1rem;
+    padding: 1rem;
 }
 
 .inputWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 50ch;
-    margin:auto;
-    
-    section{
-        width: 30%;
-        margin-bottom: 2rem;
-        label{
-            margin-bottom: 5rem;
-        }
+    gap: 1rem;
+
+    section {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 3rem;
     }
 
     > div {
         margin: 2rem;
-        width: 50%;
         display: flex;
         flex-direction: column;
         label {
             margin-bottom: 0.5rem;
         }
+    }
+    button {
+        margin-bottom: 1rem;
     }
 }

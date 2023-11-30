@@ -26,16 +26,15 @@ export function sortSubStatements(
                     (a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate
                 );
                 break;
-            
         }
-       const __subStatements = _subStatements.map((statement: Statement, i: number) => {
-          
-            statement.order = i;
-            return statement;
-        }).sort((b: Statement, a: Statement) => a.createdAt - b.createdAt)
+        const __subStatements = _subStatements.map(
+            (statement: Statement, i: number) => {
+                statement.order = i;
+                return statement;
+            }
+        );
 
         return __subStatements;
-        
     } catch (error) {
         console.error(error);
         return subStatements;

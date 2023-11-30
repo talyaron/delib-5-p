@@ -1,43 +1,54 @@
-import { FC, useEffect, useState, useRef } from "react"
-import { Statement } from "delib-npm"
-import {useAppDispatch, useAppSelector} from "../../../../../../functions/hooks/reduxHooks"
+import { FC, useEffect, useState, useRef } from "react";
+import { Statement } from "delib-npm";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../../functions/hooks/reduxHooks";
 // import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { setStatementElementHight, statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice"
+import {
+    setStatementElementHight,
+    statementSubscriptionSelector,
+} from "../../../../../../model/statements/statementsSlice";
 
-import StatementChatSetOption from "../../chat/components/StatementChatSetOption"
-import Text from "../../../../../components/text/Text"
+import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
+import Text from "../../../../../components/text/Text";
 
 //images
 
-import EditTitle from "../../../../../components/edit/EditTitle"
-import Evaluation from "../../../../../components/evaluation/Evaluation"
-import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit"
-import { isAuthorized, navigateToStatementTab } from "../../../../../../functions/general/helpers"
-import StatementChatMore from "../../chat/StatementChatMore"
-import { useNavigate } from "react-router-dom"
+import EditTitle from "../../../../../components/edit/EditTitle";
+import Evaluation from "../../../../../components/evaluation/Evaluation";
+import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
+import {
+    isAuthorized,
+    navigateToStatementTab,
+} from "../../../../../../functions/general/helpers";
+import StatementChatMore from "../../chat/StatementChatMore";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-    statement: Statement
-    showImage: Function
-    top: number
-    index: number
+    statement: Statement;
+    showImage: Function;
+    top: number;
+    index: number;
 }
 
 const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
-    const dispatch = useAppDispatch()
-    const navigate = useNavigate()
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
-    const statementSubscription = useAppSelector(statementSubscriptionSelector(statement.statementId));
-    const _isAuthrized = isAuthorized(statement, statementSubscription)
-    const elementRef = useRef<HTMLDivElement>(null)
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statement.statementId)
+    );
+    const _isAuthrized = isAuthorized(statement, statementSubscription);
+    const elementRef = useRef<HTMLDivElement>(null);
 
-    const [show, setShow] = useState(false)
-    const [newTop, setNewTop] = useState(top)
-    const [edit, setEdit] = useState(false)
+    const [show, setShow] = useState(false);
+    const [newTop, setNewTop] = useState(top);
+    const [edit, setEdit] = useState(false);
 
     useEffect(() => {
-        setNewTop(top)
-    }, [top])
+        setNewTop(top);
+    }, [top]);
 
     useEffect(() => {
         dispatch(
@@ -45,13 +56,12 @@ const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
                 statementId: statement.statementId,
                 height: elementRef.current?.clientHeight,
             })
-        )
-    }, [])
+        );
+    }, []);
 
     function handleGoToSubStatement() {
-        navigateToStatementTab(statement, navigate)
+        navigateToStatementTab(statement, navigate);
     }
- 
 
     return (
         <div
@@ -63,9 +73,13 @@ const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
                 <div
                     className="options__card__text text"
                     onClick={() => setShow(!show)}
-                ><span>{index}</span>
+                >
+                    <span></span>
                     {!edit ? (
-                        <div className="clickable" onClick={handleGoToSubStatement}>
+                        <div
+                            className="clickable"
+                            onClick={handleGoToSubStatement}
+                        >
                             <Text text={statement.statement} />
                         </div>
                     ) : (
@@ -83,14 +97,16 @@ const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
             <div className="options__card__chat">
                 <StatementChatMore statement={statement} />
                 <div className="options__card__chat__settings">
-                    <StatementChatSetEdit isAuthrized={_isAuthrized} edit={edit} setEdit={setEdit} />
+                    <StatementChatSetEdit
+                        isAuthrized={_isAuthrized}
+                        edit={edit}
+                        setEdit={setEdit}
+                    />
                     <StatementChatSetOption statement={statement} />
-
                 </div>
-
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default StatementOptionCard
+export default StatementOptionCard;
