@@ -32,7 +32,7 @@ interface Props {
     index: number;
 }
 
-const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
+const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
