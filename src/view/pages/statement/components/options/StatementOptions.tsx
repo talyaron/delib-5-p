@@ -66,7 +66,6 @@ const StatementOptions: FC<Props> = ({
                                     statement={statementSub}
                                     showImage={handleShowTalker}
                                     top={tops[i]}
-                                    index={i}
                                 />
                             );
                         }
