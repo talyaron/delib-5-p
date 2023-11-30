@@ -15,6 +15,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 // Redux Store
 import { sortSubStatements } from "./statementOptionsCont";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import { isOptionFn } from "../../../../../functions/general/helpers";
 
 
 interface Props {

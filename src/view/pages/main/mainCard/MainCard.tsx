@@ -32,7 +32,7 @@ const MainCard: FC<Props> = ({ results, resultsType }) => {
 
     return (
         <div className={styles.results}>
-            <Accordion defaultExpanded={false} style={accordionStyle}>
+            <Accordion defaultExpanded={true} style={accordionStyle}>
                 {hasSubs ? (
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
