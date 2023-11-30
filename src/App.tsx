@@ -40,6 +40,10 @@ export default function App() {
         });
     }
     useEffect(() => {
+        // Default direction is ltr
+        document.body.style.direction = "ltr";
+
+        // Get language from local storage and change accordingly
         const lang = localStorage.getItem("lang");
         if (lang) {
             i18n.changeLanguage(lang);

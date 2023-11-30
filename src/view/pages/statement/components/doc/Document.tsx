@@ -19,9 +19,7 @@ import {
     filterByStatementType,
     sortStatementsByHirarrchy,
 } from "../../../main/mainCont";
-import {
-    getChildStatements
-} from "../../../../../functions/db/statements/getStatement";
+import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 import {
     setStatements,
     statementsChildSelector,
@@ -41,13 +39,10 @@ const Document: FC<Props> = ({ statement }) => {
     const subStatements = useAppSelector(
         statementsChildSelector(statement.statementId)
     );
- 
-
 
     const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
 
     const [results, setResults] = useState<Results>(_results[0]);
-
 
     async function handleGetResults(ev: any) {
         try {
@@ -76,11 +71,13 @@ const Document: FC<Props> = ({ statement }) => {
 
     return (
         <ScreenFadeInOut className="page__main">
-            <div className="wrapper" style={{ height: "85svh" }}>
+            <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
                     <div className="btns">
-                        <button onClick={handleGetResults}>{t("Display Results")}</button>
+                        <button onClick={handleGetResults}>
+                            {t("Display Results")}
+                        </button>
                     </div>
                     <MainCard results={results} resultsType={resultsType} />
                 </section>
