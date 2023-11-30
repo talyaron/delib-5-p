@@ -46,28 +46,13 @@ const Document: FC<Props> = ({ statement }) => {
     const subStatements = useAppSelector(
         statementsChildSelector(statement.statementId)
     );
-    console.log(subStatements.length);
+ 
 
-    const [resultsBy, setResultsBy] = useState<ResultsBy>(
-        statement.resultsSettings?.resultsBy || ResultsBy.topOptions
-    );
-    const [activateRender, setActivateRender] = useState<number>(0);
-    const [numberOfResults, setNumberOfResults] = useState<number>(
-        statement.resultsSettings?.numberOfResults || 2
-    );
 
     const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
 
     const [results, setResults] = useState<Results>(_results[0]);
 
-    useEffect(() => {
-        console.log(subStatements);
-        const _results = sortStatementsByHirarrchy([
-            statement,
-            ...subStatements,
-        ]);
-        setResults(_results[0]);
-    }, [activateRender]);
 
     async function handleGetResults(ev: any) {
         try {
@@ -79,7 +64,6 @@ const Document: FC<Props> = ({ statement }) => {
             const childStatements = await getChildStatements(
                 statement.statementId
             );
-            console.log(childStatements);
 
             dispatch(setStatements(childStatements));
             const _results = sortStatementsByHirarrchy([
@@ -100,77 +84,9 @@ const Document: FC<Props> = ({ statement }) => {
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
-                    <form onSubmit={handleGetResults}>
-                        <div className={styles.inputWrapper}>
-                            <div>
-                                <label htmlFor="resultsId">
-                                    {t("Display Results According To")}
-                                </label>
-                                <select
-                                    name="results"
-                                    defaultValue={resultsBy}
-                                    id="resultsId"
-                                    onChange={(ev: any) =>
-                                        setResultsBy(ev.target.value)
-                                    }
-                                >
-                                    <option value={ResultsBy.topOptions}>
-                                        {t("Maximum Options")}
-                                    </option>
-                                    <option value={ResultsBy.topVote}>
-                                        {t("Votes")}
-                                    </option>
-                                </select>
-                            </div>
-                            {resultsBy === ResultsBy.topOptions && (
-                                <div>
-                                    <label htmlFor="numberOfResults">
-                                        {
-                                            (t(
-                                                "Number of Solutions in Each Level:"
-                                            ),
-                                            numberOfResults)
-                                        }
-                                    </label>
-                                    <Slider
-                                        defaultValue={numberOfResults || 2}
-                                        min={1}
-                                        max={10}
-                                        aria-label="Default"
-                                        valueLabelDisplay="on"
-                                        name="numberOfResults"
-                                        id="numberOfResults"
-                                        onChange={(ev: any) =>
-                                            setNumberOfResults(
-                                                Number(ev.target.value)
-                                            )
-                                        }
-                                    />
-                                </div>
-                            )}
-                            <section>
-                                <label>{t("Depth")}</label>
-                                <br />
-                                <Slider
-                                    aria-label="Small steps"
-                                    defaultValue={1}
-                                    step={1}
-                                    marks
-                                    min={1}
-                                    max={5}
-                                    valueLabelDisplay="on"
-                                    name="depth"
-                                />
-                            </section>
-                        </div>
-
-                        <div className="btns">
-                            <button type="submit">
-                                {t("Display Results")}
-                            </button>
-                        </div>
-                    </form>
-
+                    <div className="btns">
+                        <button onClick={handleGetResults}>{t("Display Results")}</button>
+                    </div>
                     <MainCard results={results} resultsType={resultsType} />
                 </section>
             </div>

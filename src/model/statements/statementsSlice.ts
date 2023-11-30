@@ -127,6 +127,7 @@ export const statementsSlicer = createSlice({
                         action.payload,
                         "statementsSubscribeId"
                     );
+                    state.statements = updateArray(state.statements, newStatement.statement, "statementId");
 
                 //update last update if bigger than current
                 if (
@@ -288,12 +289,7 @@ export const statementsSelector = (state: RootState) =>
     state.statements.statements;
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter((statement) => {
-           
-           const is = statement.parents?.includes(statementId);
-           console.log(statement.parents, statement.statement, is)
-           return is;
-        });
+        state.statements.statements.filter((statement) => statement.parents?.includes(statementId));
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements
