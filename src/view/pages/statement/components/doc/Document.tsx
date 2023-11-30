@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
 import {
@@ -22,22 +22,36 @@ import {
     filterByStatementType,
     sortStatementsByHirarrchy,
 } from "../../../main/mainCont";
-import { getStatementDepth } from "../../../../../functions/db/statements/getStatement";
-import { setStatement } from "../../../../../model/statements/statementsSlice";
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
-
+import {
+    getChildStatements,
+    getStatementDepth,
+} from "../../../../../functions/db/statements/getStatement";
+import {
+    setStatement,
+    setStatements,
+    statementsChildSelector,
+} from "../../../../../model/statements/statementsSlice";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../functions/hooks/reduxHooks";
 
 interface Props {
     statement: Statement;
-    subStatements: Statement[];
 }
 
-const Document: FC<Props> = ({ statement, subStatements }) => {
+const Document: FC<Props> = ({ statement }) => {
     const dispatch = useAppDispatch();
+
+    const subStatements = useAppSelector(
+        statementsChildSelector(statement.statementId)
+    );
+    console.log(subStatements.length);
 
     const [resultsBy, setResultsBy] = useState<ResultsBy>(
         statement.resultsSettings?.resultsBy || ResultsBy.topOptions
     );
+    const [activateRender, setActivateRender] = useState<number>(0);
     const [numberOfResults, setNumberOfResults] = useState<number>(
         statement.resultsSettings?.numberOfResults || 2
     );
@@ -46,31 +60,33 @@ const Document: FC<Props> = ({ statement, subStatements }) => {
 
     const [results, setResults] = useState<Results>(_results[0]);
 
+    useEffect(() => {
+        console.log(subStatements);
+        const _results = sortStatementsByHirarrchy([
+            statement,
+            ...subStatements,
+        ]);
+        setResults(_results[0]);
+    }, [activateRender]);
+
     async function handleGetResults(ev: any) {
         try {
             //get form data with formData
             ev.preventDefault();
 
-            const data = new FormData(ev.target);
-            const depth = Number(data.get("depth"));
-
             if (!statement) throw new Error("statement is undefined");
 
-            const _subSubStatements = await getStatementDepth(
-                statement,
-                subStatements,
-                depth
+            const childStatements = await getChildStatements(
+                statement.statementId
             );
+            console.log(childStatements);
 
-            const _results = sortStatementsByHirarrchy(_subSubStatements);
+            dispatch(setStatements(childStatements));
+            const _results = sortStatementsByHirarrchy([
+                statement,
+                ...childStatements,
+            ]);
             setResults(_results[0]);
-
-            if (_subSubStatements.length > 0) {
-                _subSubStatements.forEach((subSubStatement) => {
-                    StatementSchema.parse(subSubStatement);
-                    dispatch(setStatement(subSubStatement));
-                });
-            }
         } catch (error) {
             console.error(error);
         }
