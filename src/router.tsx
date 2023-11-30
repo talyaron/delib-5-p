@@ -9,6 +9,7 @@ import ErrorPage from "./view/pages/error/ErrorPage";
 import Loader from "./view/components/loaders/Loader";
 import Home from "./view/pages/home/Home";
 import App from "./App";
+import Page404 from "./view/pages/page404/Page404";
 
 // Lazy loading
 const Main = lazy(() => import("./view/pages/main/Main"));
@@ -102,6 +103,12 @@ export const router = createBrowserRouter([
                     },
                 ],
             },
+          
         ],
     },
+    {
+        path:"*",
+        element: <Page404 />,
+        errorElement: <ErrorPage />
+    }
 ]);
