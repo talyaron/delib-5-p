@@ -8,8 +8,8 @@ interface Props {
 }
 const Fav: FC<Props> = ({ onclick, isHome }) => {
     const position = {
-        right: isHome ? "20vw" : "0",
-        bottom: isHome ? "5vh" : "-5rem",
+        right: isHome ? "20vw" : "1rem",
+        bottom: isHome ? "5vh" : "3rem",
     };
     return (
         <div
