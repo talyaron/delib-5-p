@@ -84,6 +84,18 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
+        setStatements: (state, action: PayloadAction<Statement[]>) => {
+            try {
+                const statements = action.payload;
+                z.array(StatementSchema).parse(statements);
+
+                statements.forEach((statement) => {
+                    updateArray(state.statements, statement, "statementId");
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        },
         deleteStatement: (state, action: PayloadAction<string>) => {
             try {
                 const statementId = action.payload;
@@ -114,6 +126,7 @@ export const statementsSlicer = createSlice({
                         action.payload,
                         "statementsSubscribeId"
                     );
+                    state.statements = updateArray(state.statements, newStatement.statement, "statementId");
 
                 //update last update if bigger than current
                 if (
@@ -258,6 +271,7 @@ export const {
     removeFromAskToJoinRooms,
     setAskToJoinRooms,
     setStatement,
+    setStatements,
     deleteStatement,
     deleteSubscribedStatement,
     setStatementSubscription,
@@ -272,6 +286,9 @@ export const {
 export const screenSelector = (state: RootState) => state.statements.screen;
 export const statementsSelector = (state: RootState) =>
     state.statements.statements;
+export const statementsChildSelector =
+    (statementId: string) => (state: RootState) =>
+        state.statements.statements.filter((statement) => statement.parents?.includes(statementId));
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements

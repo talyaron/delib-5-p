@@ -489,3 +489,26 @@ export async function getStatementDepth(
         }
     }
 }
+
+export async function getChildStatements(
+    statementId: string
+): Promise<Statement[]> {
+    try {
+        const statementsRef = collection(DB, Collections.statements);
+        const q = query(
+            statementsRef,
+            where("statementType", "!=", StatementType.statement),
+            where("parents", "array-contains", statementId)
+        );
+        const statementsDB = await getDocs(q);
+
+        const subStatements = statementsDB.docs.map(
+            (doc) => doc.data() as Statement
+        );
+       
+        return subStatements;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}

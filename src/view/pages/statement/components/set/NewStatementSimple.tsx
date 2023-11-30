@@ -1,115 +1,126 @@
-import { FC, useState } from "react"
+import { FC, useState } from "react";
 
 // Third party imports
-import { UserSchema } from "delib-npm"
-import { Statement, parseUserFromFirebase } from "delib-npm"
-import { t } from "i18next"
+import { UserSchema } from "delib-npm";
+import { Statement, parseUserFromFirebase } from "delib-npm";
+import { t } from "i18next";
 
 // Statements helpers
-import { StatementType } from "../../../../../model/statements/statementModel"
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments"
+import { StatementType } from "delib-npm";
+import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
-import Loader from "../../../../components/loaders/Loader"
+import Loader from "../../../../components/loaders/Loader";
 
 // Redux
-import { store } from "../../../../../model/store"
+import { store } from "../../../../../model/store";
 
 interface Props {
-    parentStatement: Statement
-    isOption?: boolean
-    setShowModal: Function
+    parentStatement: Statement;
+    isOption?: boolean;
+    isQuestion?: boolean;
+    setShowModal: Function;
 }
 
 const NewSetStatementSimple: FC<Props> = ({
     parentStatement,
     isOption,
+    isQuestion,
     setShowModal,
 }) => {
-    const [isLoading, setIsLoading] = useState(false)
+    try {
+        if (!parentStatement) throw new Error("parentStatement is undefined");
 
-    async function handleAddStatment(ev: React.FormEvent<HTMLFormElement>) {
-        try {
-            ev.preventDefault()
-            setIsLoading(true)
-            const data = new FormData(ev.currentTarget)
+        const [isLoading, setIsLoading] = useState(false);
 
-            let title: any = data.get("statement")
-            const description = data.get("description")
-            //add to title * at the beggining
-            if (title && !title.startsWith("*")) title = `*${title}`
-            const _statement = `${title}\n${description}`
-            const _user = store.getState().user.user
-            if (!_user) throw new Error("user not found")
-            const { displayName, email, photoURL, uid } = _user
-            const user = { displayName, email, photoURL, uid }
-            UserSchema.parse(user)
+        async function handleAddStatment(ev: React.FormEvent<HTMLFormElement>) {
+            try {
+                ev.preventDefault();
+                setIsLoading(true);
+                const data = new FormData(ev.currentTarget);
 
-            const newStatement: any = Object.fromEntries(data.entries())
+                let title: any = data.get("statement");
+                const description = data.get("description");
+                //add to title * at the beggining
+                if (title && !title.startsWith("*")) title = `*${title}`;
+                const _statement = `${title}\n${description}`;
+                const _user = store.getState().user.user;
+                if (!_user) throw new Error("user not found");
+                const { displayName, email, photoURL, uid } = _user;
+                const user = { displayName, email, photoURL, uid };
+                UserSchema.parse(user);
 
-            newStatement.statement = _statement
-            newStatement.statementId = crypto.randomUUID()
-            newStatement.creatorId = _user.uid
-            newStatement.parentId = parentStatement.statementId
-            newStatement.type = StatementType.GROUP
-            newStatement.creator = parseUserFromFirebase(_user)
-            if (isOption) newStatement.isOption = true
+                const newStatement: any = Object.fromEntries(data.entries());
 
-            newStatement.lastUpdate = new Date().getTime()
+                newStatement.statement = _statement;
+                newStatement.statementId = crypto.randomUUID();
+                newStatement.creatorId = _user.uid;
+                newStatement.parentId = parentStatement.statementId;
 
-            newStatement.createdAt = new Date().getTime()
+                newStatement.creator = parseUserFromFirebase(_user);
+                if (isOption) newStatement.statementType = StatementType.option;
+                if (isQuestion)
+                    newStatement.statementType = StatementType.question;
 
-            newStatement.consensus = 0
+                newStatement.lastUpdate = new Date().getTime();
 
-            const setSubsciption: boolean = true
+                newStatement.createdAt = new Date().getTime();
 
-            await setStatmentToDB(newStatement, setSubsciption)
+                newStatement.consensus = 0;
 
-            setIsLoading(false)
+                const setSubsciption: boolean = true;
 
-            setShowModal(false)
-        } catch (error) {
-            console.error(error)
+                await setStatmentToDB(newStatement, setSubsciption);
+
+                setIsLoading(false);
+
+                setShowModal(false);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
 
-    return (
-        <>
-            {!isLoading ? (
-                <form
-                    onSubmit={handleAddStatment}
-                    className="setStatement__form"
-                >
-                    <h2>{t("Add Option")}</h2>
-                    <input
-                        type="text"
-                        name="statement"
-                        placeholder={t("Title")}
-                    />
-                    <textarea
-                        name="description"
-                        placeholder={t("Description")}
-                        rows={4}
-                    ></textarea>
+        return (
+            <>
+                {!isLoading ? (
+                    <form
+                        onSubmit={handleAddStatment}
+                        className="setStatement__form"
+                    >
+                        <h2>{t("Add Option")}</h2>
+                        <input
+                            type="text"
+                            name="statement"
+                            placeholder={t("Title")}
+                        />
+                        <textarea
+                            name="description"
+                            placeholder={t("Description")}
+                            rows={4}
+                        ></textarea>
 
-                    <div className="btnBox">
-                        <button type="submit">{t("Add")}</button>
-                        <button className="btn btn--cancel">
-                            {t("Cancel")}
-                        </button>
+                        <div className="btnBox">
+                            <button type="submit">{t("Add")}</button>
+                            <button className="btn btn--cancel">
+                                {t("Cancel")}
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                    <div className="center">
+                        <h2>{t("Updating")}</h2>
+                        <Loader />
                     </div>
-                </form>
-            ) : (
-                <div className="center">
-                    <h2>{t("Updating")}</h2>
-                    <Loader />
-                </div>
-            )}
-        </>
-    )
-}
+                )}
+            </>
+        );
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
 
-export default NewSetStatementSimple
+export default NewSetStatementSimple;
 
 // function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
 //     try {
