@@ -41,7 +41,7 @@ import {
 } from "../../../../../functions/db/statements/getStatement";
 
 // Mui imports
-import { Switch, FormControlLabel, Checkbox, FormGroup } from "@mui/material";
+import { Switch, FormControlLabel, FormGroup } from "@mui/material";
 import { store } from "../../../../../model/store";
 import {
     parseScreensCheckBoxes,

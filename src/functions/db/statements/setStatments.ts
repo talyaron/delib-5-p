@@ -15,7 +15,7 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import { stat } from "fs";
+
 
 const TextSchema = z.string().min(2);
 

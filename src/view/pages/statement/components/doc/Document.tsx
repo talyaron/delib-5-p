@@ -1,11 +1,9 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 
 // Third party imports
 import {
     Results,
-    ResultsBy,
     Statement,
-    StatementSchema,
     StatementType,
 } from "delib-npm";
 
@@ -13,7 +11,6 @@ import {
 import styles from "./Document.module.scss";
 
 // Custom Components
-import Slider from "@mui/material/Slider";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
 import MainCard from "../../../main/mainCard/MainCard";
@@ -23,11 +20,9 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../main/mainCont";
 import {
-    getChildStatements,
-    getStatementDepth,
+    getChildStatements
 } from "../../../../../functions/db/statements/getStatement";
 import {
-    setStatement,
     setStatements,
     statementsChildSelector,
 } from "../../../../../model/statements/statementsSlice";

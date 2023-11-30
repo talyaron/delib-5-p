@@ -25,8 +25,7 @@ import {
     isOptionFn,
     navigateToStatementTab,
 } from "../../../../../functions/general/helpers";
-import NewSetStatementSimple from "../set/NewStatementSimple";
-import Modal from "../../../../components/modal/Modal";
+
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 
 interface Props {
@@ -51,7 +50,6 @@ const StatementChat: FC<Props> = ({
 
     // const [show, setShow] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [addQuestionModal, setAddQuestionModal] = useState(false);
 
     const userId = store.getState().user.user?.uid;
     const creatorId = statement.creatorId;
@@ -70,9 +68,7 @@ const StatementChat: FC<Props> = ({
         navigateToStatementTab(statement, navigate);
     }
 
-    function handleAddQuestionToOption() {
-        setAddQuestionModal(true)
-    }
+   
 
     return (
         <div
