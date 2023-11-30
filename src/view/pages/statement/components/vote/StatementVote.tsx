@@ -20,7 +20,6 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 
 // Custom components
 import Modal from "../../../../components/modal/Modal";
-import AddIcon from "@mui/icons-material/Add";
 import { OptionBar } from "./OptionBar";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
