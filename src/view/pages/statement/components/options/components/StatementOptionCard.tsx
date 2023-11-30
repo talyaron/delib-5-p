@@ -24,6 +24,7 @@ import {
 } from "../../../../../../functions/general/helpers";
 import StatementChatMore from "../../chat/StatementChatMore";
 import { useNavigate } from "react-router-dom";
+import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 
 interface Props {
     statement: Statement;
@@ -93,7 +94,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top, index }) => {
 
                 <Evaluation statement={statement} />
             </div>
-
+            <AddSubQuestion statement={statement} />
             <div className="options__card__chat">
                 <StatementChatMore statement={statement} />
                 <div className="options__card__chat__settings">
