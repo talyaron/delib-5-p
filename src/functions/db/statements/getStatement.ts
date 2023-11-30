@@ -222,7 +222,7 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
 
 export function listenStatmentsSubsciptions(
     cb: Function,
-deleteCB: Function
+    deleteCB: Function
 ): Unsubscribe {
     try {
         const user = store.getState().user.user;
@@ -256,7 +256,6 @@ deleteCB: Function
         );
 
         return onSnapshot(q, (subsDB) => {
-            console.log("subsDB", subsDB.size);
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription;
@@ -267,11 +266,6 @@ deleteCB: Function
                     );
                     statementSubscription.lastUpdate =
                         statementSubscription.lastUpdate;
-                    console.log(
-                        user.uid,
-                        statementSubscription.statement.statement,
-                        statementSubscription.statement.statementType
-                    );
                     cb(statementSubscription);
                 }
 
