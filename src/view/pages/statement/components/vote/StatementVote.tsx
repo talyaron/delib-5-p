@@ -20,7 +20,6 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 
 // Custom components
 import Modal from "../../../../components/modal/Modal";
-import AddIcon from "@mui/icons-material/Add";
 import { OptionBar } from "./OptionBar";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
@@ -83,10 +82,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     })}
                 </div>
             </div>
-            <div
-                className="page__main__bottom"
-                style={{ marginBottom: "10vh" }}
-            >
+            <div className="page__main__bottom">
                 <StatementOptionsNav
                     setShowModal={setShowModal}
                     statement={statement}
