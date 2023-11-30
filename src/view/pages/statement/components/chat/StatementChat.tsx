@@ -1,61 +1,76 @@
-import { FC, useState } from "react"
+import { FC, useState } from "react";
 
 // Third Party Imports
-import { Statement, StatementType } from "delib-npm"
-import { useNavigate } from "react-router-dom"
+import { Statement, StatementType } from "delib-npm";
+import { useNavigate } from "react-router-dom";
 
 // Custom Components
 import StatementChatMore, {
     handleCreateSubStatements,
-} from "./StatementChatMore"
-import StatementChatSetOption from "./components/StatementChatSetOption"
-import Text from "../../../../components/text/Text"
-import ProfileImage from "./components/ProfileImage"
-import Solution from "../general/Solution"
-import EditTitle from "../../../../components/edit/EditTitle"
-import StatementChatSetQuestion from "./components/StatementChatSetQuestion"
+} from "./StatementChatMore";
+import StatementChatSetOption from "./components/StatementChatSetOption";
+import Text from "../../../../components/text/Text";
+import ProfileImage from "./components/ProfileImage";
+import EditTitle from "../../../../components/edit/EditTitle";
+import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
 
 // Redux Store
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks"
-import { store } from "../../../../../model/store"
-import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice"
-import { bubbleclass } from "./StatementChatCont"
-import StatementChatSetEdit from "./components/StatementChatSetEdit"
-import { isAuthorized, isOptionFn, navigateToStatementTab } from "../../../../../functions/general/helpers"
+import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { store } from "../../../../../model/store";
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import { bubbleclass } from "./StatementChatCont";
+import StatementChatSetEdit from "./components/StatementChatSetEdit";
+import {
+    isAuthorized,
+    isOptionFn,
+    navigateToStatementTab,
+} from "../../../../../functions/general/helpers";
+import NewSetStatementSimple from "../set/NewStatementSimple";
+import Modal from "../../../../components/modal/Modal";
 
 interface Props {
-    statement: Statement
-    showImage: Function
+    statement: Statement;
+    showImage: Function;
+    setShowModal?: Function;
+
 }
 
-const StatementChat: FC<Props> = ({ statement, showImage }) => {
-    const {statementType} = statement;
+const StatementChat: FC<Props> = ({
+    statement,
+    showImage,
+    setShowModal = () => {}
+}) => {
+    const { statementType } = statement;
 
-    const navigate = useNavigate()
-    
+    const navigate = useNavigate();
+
     const statementubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId)
-    )
+    );
 
     // const [show, setShow] = useState(false);
-    const [isEdit, setIsEdit] = useState(false)
+    const [isEdit, setIsEdit] = useState(false);
+    const [addQuestionModal, setAddQuestionModal] = useState(false);
 
-    const userId = store.getState().user.user?.uid
-    const creatorId = statement.creatorId
-    const _isAuthrized = isAuthorized(statement, statementubscription)
+    const userId = store.getState().user.user?.uid;
+    const creatorId = statement.creatorId;
+    const _isAuthrized = isAuthorized(statement, statementubscription);
 
-    const isMe = userId === creatorId
-    const isQuestion = statementType === StatementType.question
-    const isOption = isOptionFn(statement)
+    const isMe = userId === creatorId;
+    const isQuestion = statementType === StatementType.question;
+    const isOption = isOptionFn(statement);
 
     function handleEdit() {
-       if(!isEdit)
-            handleCreateSubStatements(statement, navigate)
-        
+        if (!isEdit) handleCreateSubStatements(statement, navigate);
+        setShowModal(true);
     }
 
-    function handleGotToSubStatement(){
-        navigateToStatementTab(statement, navigate)
+    function handleGotToSubStatement() {
+        navigateToStatementTab(statement, navigate);
+    }
+
+    function handleAddQuestionToOption() {
+        setAddQuestionModal(true)
     }
 
     return (
@@ -84,7 +99,13 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                     >
                         <div className="statement__bubble__text__text">
                             {!isEdit ? (
-                               <div onClick={handleGotToSubStatement} className="clickable"> <Text text={statement.statement} /></div>
+                                <div
+                                    onClick={handleGotToSubStatement}
+                                    className="clickable"
+                                >
+                                    {" "}
+                                    <Text text={statement.statement} />
+                                </div>
                             ) : (
                                 <EditTitle
                                     statement={statement}
@@ -93,14 +114,13 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                                 />
                             )}
                         </div>
-
-                        <Solution statement={statement} />
                     </div>
+                    {statement.statementType === StatementType.option && (
+                        <p onClick={handleAddQuestionToOption}>Add question</p>
+                    )}
                     {isQuestion || isOption ? (
                         <div className="statement__bubble__more">
-                            <StatementChatMore
-                                statement={statement}
-                            />
+                            <StatementChatMore statement={statement} />
                         </div>
                     ) : null}
                 </div>
@@ -112,10 +132,23 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                 {!_isAuthrized || isOption ? null : (
                     <StatementChatSetQuestion statement={statement} />
                 )}
-                <StatementChatSetEdit isAuthrized={_isAuthrized} setEdit={setIsEdit} edit={isEdit}/>
+                <StatementChatSetEdit
+                    isAuthrized={_isAuthrized}
+                    setEdit={setIsEdit}
+                    edit={isEdit}
+                />
             </div>
+            {addQuestionModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatement={statement}
+                        isQuestion={true}
+                        setShowModal={setAddQuestionModal}
+                    />
+                </Modal>
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default StatementChat
+export default StatementChat;

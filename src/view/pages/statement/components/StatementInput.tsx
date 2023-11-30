@@ -15,6 +15,7 @@ import { IconButton } from "@mui/material";
 import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../../model/users/userSlice";
 import useDirection from "../../../../functions/hooks/useDirection";
+import { handleAddStatement } from "./StatementInputCont";
 
 interface Props {
     statement: Statement;
@@ -25,39 +26,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
     const direction = useDirection();
 
-    function handleAddStatement(e: any) {
-        try {
-            e.preventDefault();
-
-            if (!user) throw new Error("No user");
-
-            const value = e.target.newStatement.value;
-
-            //remove white spaces and \n
-            const _value = value.replace(/\s+/g, " ").trim();
-
-            if (!_value) throw new Error("No value");
-
-            const newStatement: Statement | undefined = getNewStatment({
-                value,
-                statement,
-                user,
-            });
-            if (!newStatement) throw new Error("No statement");
-
-            newStatement.subScreens = [
-                Screen.CHAT,
-                Screen.OPTIONS,
-                Screen.VOTE,
-            ];
-
-            setStatmentToDB(newStatement);
-
-            e.target.reset();
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    
 
     function handleInput(e: any) {
         try {
@@ -102,7 +71,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
     return (
         <form
-            onSubmit={handleAddStatement}
+            onSubmit={e=>handleAddStatement(e, statement, user)}
             name="theForm"
             className="statement__form"
             style={{ flexDirection: direction }}
