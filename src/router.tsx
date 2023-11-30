@@ -10,9 +10,10 @@ import Loader from "./view/components/loaders/Loader";
 import Home from "./view/pages/home/Home";
 import App from "./App";
 import Page404 from "./view/pages/page404/Page404";
+import Main from "./view/pages/main/Main";
 
 // Lazy loading
-const Main = lazy(() => import("./view/pages/main/Main"));
+// const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const SetStatement = lazy(
     () => import("./view/pages/statement/components/set/SetStatement")
@@ -51,7 +52,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "home",
-                element: <Suspense fallback={<SuspenseFallback />}><Home /></Suspense>,
+                element: (
+                    <Suspense fallback={<SuspenseFallback />}>
+                        <Home />
+                    </Suspense>
+                ),
                 errorElement: <ErrorPage />,
                 children: [
                     {
@@ -103,12 +108,11 @@ export const router = createBrowserRouter([
                     },
                 ],
             },
-          
         ],
     },
     {
-        path:"*",
+        path: "*",
         element: <Page404 />,
-        errorElement: <ErrorPage />
-    }
+        errorElement: <ErrorPage />,
+    },
 ]);
