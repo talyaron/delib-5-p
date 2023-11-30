@@ -27,6 +27,7 @@ import {
 } from "../../../../../functions/general/helpers";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
+import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 
 interface Props {
     statement: Statement;
@@ -116,7 +117,7 @@ const StatementChat: FC<Props> = ({
                         </div>
                     </div>
                     {statement.statementType === StatementType.option && (
-                        <p onClick={handleAddQuestionToOption}>Add question</p>
+                        <AddSubQuestion statement={statement}/>
                     )}
                     {isQuestion || isOption ? (
                         <div className="statement__bubble__more">
@@ -138,15 +139,7 @@ const StatementChat: FC<Props> = ({
                     edit={isEdit}
                 />
             </div>
-            {addQuestionModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={statement}
-                        isQuestion={true}
-                        setShowModal={setAddQuestionModal}
-                    />
-                </Modal>
-            )}
+           
         </div>
     );
 };
