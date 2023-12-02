@@ -1,9 +1,7 @@
 .statement {
-    flex: 1;
+    flex: auto;
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    width: 100%;
 
     &__main {
         display: flex;
@@ -212,13 +210,12 @@
     }
 
     &__vote {
-        flex: 1;
+        flex: auto;
         display: flex;
         direction: rtl;
         padding: 1rem;
-        // width: 100%;
-        max-width: 80svw;
-        margin: 0 auto;
+        max-width: 100svw;
+        margin: 2.5rem auto;
         overflow-x: auto;
 
         &__bar {

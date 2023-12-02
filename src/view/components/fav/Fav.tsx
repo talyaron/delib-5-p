@@ -7,10 +7,15 @@ interface Props {
     isHome: boolean;
 }
 const Fav: FC<Props> = ({ onclick, isHome }) => {
-    const position = {
-        right: isHome ? "20vw" : "1rem",
-        bottom: isHome ? "5vh" : "3rem",
-    };
+    // const position = {
+    //     right: isHome ? "20vw" : "1rem",
+    //     bottom: isHome ? "5vh" : "3rem",
+    // };
+
+    const position = isHome
+        ? { right: "1rem", top: "80svh" }
+        : { right: "0", bottom: "3rem" };
+
     return (
         <div
             style={position}

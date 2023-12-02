@@ -17,7 +17,6 @@ import { sortSubStatements } from "./statementOptionsCont";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 
-
 interface Props {
     statement: Statement;
     subStatements: Statement[];
@@ -56,7 +55,7 @@ const StatementOptions: FC<Props> = ({
                         (statementSub: Statement, i: number) => {
                             //get the top of the element
                             if (statementSub.elementHight) {
-                                topSum += statementSub.elementHight + 20;
+                                topSum += statementSub.elementHight + 30;
                                 tops.push(topSum);
                             }
 
@@ -71,10 +70,7 @@ const StatementOptions: FC<Props> = ({
                         }
                     )}
                 </div>
-                <div
-                    className="page__main__bottom"
-                    style={{ marginBottom: "10vh" }}
-                >
+                <div className="page__main__bottom">
                     <StatementOptionsNav
                         setShowModal={setShowModal}
                         statement={statement}
