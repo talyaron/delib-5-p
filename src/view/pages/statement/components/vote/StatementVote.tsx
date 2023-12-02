@@ -20,7 +20,6 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 
 // Custom components
 import Modal from "../../../../components/modal/Modal";
-import AddIcon from "@mui/icons-material/Add";
 import { OptionBar } from "./OptionBar";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
@@ -65,7 +64,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
             <div className="statement">
                 <div>
                     <h2>{t("Votes")}</h2>
-                    <p style={{ maxWidth: "75ch", margin: "0 auto" }}>
+                    <p style={{ maxWidth: "50vw", margin: "0 auto" }}>
                         {t("Voted")}: {totalVotes}
                     </p>
                 </div>
@@ -83,8 +82,14 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     })}
                 </div>
             </div>
-            <div className="page__main__bottom" style={{ marginBottom: "5vh" }}>
-                <StatementOptionsNav statement={statement} />
+            <div
+                className="page__main__bottom"
+                style={{ marginBottom: "10vh" }}
+            >
+                <StatementOptionsNav
+                    setShowModal={setShowModal}
+                    statement={statement}
+                />
             </div>
             {showModal && (
                 <Modal>
@@ -95,15 +100,6 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     />
                 </Modal>
             )}
-            <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
-                <div>
-                    <AddIcon
-                        style={{
-                            transform: `translate(0px,-40%) scale(1.45)`,
-                        }}
-                    />
-                </div>
-            </div>
         </ScreenFadeInOut>
     );
 };

@@ -222,7 +222,7 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
 
 export function listenStatmentsSubsciptions(
     cb: Function,
-deleteCB: Function
+    deleteCB: Function
 ): Unsubscribe {
     try {
         const user = store.getState().user.user;
@@ -256,7 +256,6 @@ deleteCB: Function
         );
 
         return onSnapshot(q, (subsDB) => {
-            console.log("subsDB", subsDB.size);
             subsDB.docChanges().forEach((change) => {
                 const statementSubscription =
                     change.doc.data() as StatementSubscription;
@@ -267,11 +266,6 @@ deleteCB: Function
                     );
                     statementSubscription.lastUpdate =
                         statementSubscription.lastUpdate;
-                    console.log(
-                        user.uid,
-                        statementSubscription.statement.statement,
-                        statementSubscription.statement.statementType
-                    );
                     cb(statementSubscription);
                 }
 
@@ -493,5 +487,28 @@ export async function getStatementDepth(
             console.error(error);
             return [];
         }
+    }
+}
+
+export async function getChildStatements(
+    statementId: string
+): Promise<Statement[]> {
+    try {
+        const statementsRef = collection(DB, Collections.statements);
+        const q = query(
+            statementsRef,
+            where("statementType", "!=", StatementType.statement),
+            where("parents", "array-contains", statementId)
+        );
+        const statementsDB = await getDocs(q);
+
+        const subStatements = statementsDB.docs.map(
+            (doc) => doc.data() as Statement
+        );
+       
+        return subStatements;
+    } catch (error) {
+        console.error(error);
+        return [];
     }
 }

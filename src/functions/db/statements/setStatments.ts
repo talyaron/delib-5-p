@@ -1,8 +1,8 @@
 // Firestore
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // Third Party Imports
-import { z } from "zod"
+import { z } from "zod";
 import {
     ResultsBy,
     Statement,
@@ -10,46 +10,64 @@ import {
     StatementSubscription,
     StatementType,
     UserSchema,
-} from "delib-npm"
-import { Collections, Role } from "delib-npm"
-import { getUserPermissionToNotifications } from "../../notifications"
-import { getUserFromFirebase } from "../users/usersGeneral"
-import { DB, deviceToken } from "../config"
+} from "delib-npm";
+import { Collections, Role } from "delib-npm";
+import { getUserPermissionToNotifications } from "../../notifications";
+import { getUserFromFirebase } from "../users/usersGeneral";
+import { DB, deviceToken } from "../config";
 
-const TextSchema = z.string().min(2)
+
+const TextSchema = z.string().min(2);
 
 export async function setStatmentToDB(
     statement: Statement,
     addSubscription: boolean = true
 ) {
     try {
-        TextSchema.parse(statement.statement)
-        statement.consensus = 0
+        if (!statement) throw new Error("Statement is undefined");
 
-        statement.lastUpdate = Timestamp.now().toMillis()
+        if (statement.parentId === "top") statement.parents = [];
+        else {
+            const parentStatementRef = doc(
+                DB,
+                Collections.statements,
+                statement.parentId
+            );
+            const parentStatementDB = await getDoc(parentStatementRef);
+            if (!parentStatementDB.exists())
+                throw new Error("Parent statement not found");
+            const parentStatement = parentStatementDB.data() as Statement;
+            statement.parents = parentStatement.parents || [];
+            statement.parents.push(parentStatement.statementId);
+        }
+
+        TextSchema.parse(statement.statement);
+        statement.consensus = 0;
+
+        statement.lastUpdate = Timestamp.now().toMillis();
         statement.statementType =
-            statement.statementType || StatementType.statement
-        const { results, resultsSettings } = statement
-        if (!results) statement.results = { consensus: [], votes: [] }
+            statement.statementType || StatementType.statement;
+        const { results, resultsSettings } = statement;
+        if (!results) statement.results = { consensus: [], votes: [] };
         if (!resultsSettings)
-            statement.resultsSettings = { resultsBy: ResultsBy.topVote }
+            statement.resultsSettings = { resultsBy: ResultsBy.topVote };
 
-        StatementSchema.parse(statement)
-        UserSchema.parse(statement.creator)
+        StatementSchema.parse(statement);
+        UserSchema.parse(statement.creator);
 
         //set statement
         const statementRef = doc(
             DB,
             Collections.statements,
             statement.statementId
-        )
-        const statementPromises = []
+        );
+        const statementPromises = [];
 
         const statementPromise = await setDoc(statementRef, statement, {
             merge: true,
-        })
+        });
 
-        statementPromises.push(statementPromise)
+        statementPromises.push(statementPromise);
 
         //add subscription
 
@@ -60,23 +78,23 @@ export async function setStatmentToDB(
                     Role.statementCreator,
                     true
                 )
-            )
-            statementPromises.push(getUserPermissionToNotifications())
+            );
+            statementPromises.push(getUserPermissionToNotifications());
 
             const [_, __, canGetNotifications] = await Promise.all(
                 statementPromises
-            )
+            );
 
             if (canGetNotifications)
-                await setStatmentSubscriptionNotificationToDB(statement)
+                await setStatmentSubscriptionNotificationToDB(statement);
         } else {
-            await Promise.all(statementPromises)
+            await Promise.all(statementPromises);
         }
 
-        return statement.statementId
+        return statement.statementId;
     } catch (error) {
-        console.error(error)
-        return undefined
+        console.error(error);
+        return undefined;
     }
 }
 
@@ -86,21 +104,21 @@ export async function setStatmentSubscriptionToDB(
     setNotifications: boolean = false
 ) {
     try {
-        const user = getUserFromFirebase()
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
-        const { statementId } = statement
-        StatementSchema.parse(statement)
+        const user = getUserFromFirebase();
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+        const { statementId } = statement;
+        StatementSchema.parse(statement);
 
-        const statementsSubscribeId = `${user.uid}--${statementId}`
+        const statementsSubscribeId = `${user.uid}--${statementId}`;
 
-        if (role === Role.admin) setNotifications = true
+        if (role === Role.admin) setNotifications = true;
 
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
             statementsSubscribeId
-        )
+        );
 
         await setDoc(
             statementsSubscribeRef,
@@ -116,9 +134,9 @@ export async function setStatmentSubscriptionToDB(
                 createdAt: Timestamp.now().toMillis(),
             },
             { merge: true }
-        )
+        );
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 
@@ -127,21 +145,21 @@ export async function updateStatementText(
     newText: string
 ) {
     try {
-        if (!newText) throw new Error("New text is undefined")
-        if (!statement) throw new Error("Statement is undefined")
-        if (statement.statement === newText) return
+        if (!newText) throw new Error("New text is undefined");
+        if (!statement) throw new Error("Statement is undefined");
+        if (statement.statement === newText) return;
 
-        StatementSchema.parse(statement)
+        StatementSchema.parse(statement);
         const statementRef = doc(
             DB,
             Collections.statements,
             statement.statementId
-        )
+        );
         const newStatement = {
             statement: newText,
             lastUpdate: Timestamp.now().toMillis(),
-        }
-        await updateDoc(statementRef, newStatement)
+        };
+        await updateDoc(statementRef, newStatement);
     } catch (error) {}
 }
 
@@ -149,29 +167,28 @@ export async function setStatmentSubscriptionNotificationToDB(
     statement: Statement | undefined
 ) {
     try {
-  
-        const token = deviceToken
+        const token = deviceToken;
 
-        if (!token) throw new Error("Token is undefined")
+        if (!token) throw new Error("Token is undefined");
 
-        if (!statement) throw new Error("Statement is undefined")
-        const { statementId } = statement
+        if (!statement) throw new Error("Statement is undefined");
+        const { statementId } = statement;
 
         //ask user for permission to send notifications
 
-        await getUserPermissionToNotifications()
+        await getUserPermissionToNotifications();
 
-        const user = getUserFromFirebase()
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
+        const user = getUserFromFirebase();
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
 
-        const statementsSubscribeId = `${user.uid}--${statementId}`
+        const statementsSubscribeId = `${user.uid}--${statementId}`;
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
             statementsSubscribeId
-        )
-        const statementSubscriptionDB = await getDoc(statementsSubscribeRef)
+        );
+        const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
 
         if (!statementSubscriptionDB.exists()) {
             //set new subscription
@@ -189,23 +206,23 @@ export async function setStatmentSubscriptionNotificationToDB(
                     statement,
                 },
                 { merge: true }
-            )
+            );
         } else {
             //update subscription
             const statementSubscription =
-                statementSubscriptionDB.data() as StatementSubscription
+                statementSubscriptionDB.data() as StatementSubscription;
 
-            let { notification } = statementSubscription
-            notification = !notification
+            let { notification } = statementSubscription;
+            notification = !notification;
 
             await setDoc(
                 statementsSubscribeRef,
                 { token, notification },
                 { merge: true }
-            )
+            );
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 
@@ -215,41 +232,39 @@ export async function setStatementisOption(statement: Statement) {
             DB,
             Collections.statements,
             statement.statementId
-        )
+        );
 
         //get current statement
-        const statementDB = await getDoc(statementRef)
-        if (!statementDB.exists()) throw new Error("Statement not found")
+        const statementDB = await getDoc(statementRef);
+        if (!statementDB.exists()) throw new Error("Statement not found");
 
-        const statementDBData = statementDB.data() as Statement
-        const { statementType } = statementDBData
+        const statementDBData = statementDB.data() as Statement;
+        const { statementType } = statementDBData;
         if (statementType === StatementType.option) {
             await updateDoc(statementRef, {
                 statementType: StatementType.statement,
-            })
+            });
         } else if (statementType === StatementType.statement) {
             await updateDoc(statementRef, {
                 statementType: StatementType.option,
-            })
+            });
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 
 export async function setStatmentGroupToDB(statement: Statement) {
     try {
-
-
-        const statementId = statement.statementId
-        const statementRef = doc(DB, Collections.statements, statementId)
+        const statementId = statement.statementId;
+        const statementRef = doc(DB, Collections.statements, statementId);
         await setDoc(
             statementRef,
             { statementType: StatementType.statement },
             { merge: true }
-        )
+        );
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 
@@ -257,40 +272,40 @@ export async function updateSubscriberForStatementSubStatements(
     statement: Statement
 ) {
     try {
-        const user = getUserFromFirebase()
-        if (!user) throw new Error("User not logged in")
-        if (!user.uid) throw new Error("User not logged in")
+        const user = getUserFromFirebase();
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
 
-        const statementsSubscribeId = `${user.uid}--${statement.statementId}`
+        const statementsSubscribeId = `${user.uid}--${statement.statementId}`;
 
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
             statementsSubscribeId
-        )
+        );
         const newSubStatmentsRead = {
             totalSubStatementsRead: statement.totalSubStatements || 0,
-        }
+        };
 
-        await updateDoc(statementsSubscribeRef, newSubStatmentsRead)
+        await updateDoc(statementsSubscribeRef, newSubStatmentsRead);
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 
 export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
     try {
-        z.number().parse(roomSize)
-        StatementSchema.parse(statement)
+        z.number().parse(roomSize);
+        StatementSchema.parse(statement);
         const statementRef = doc(
             DB,
             Collections.statements,
             statement.statementId
-        )
-        const newRoomSize = { roomSize }
-        updateDoc(statementRef, newRoomSize)
+        );
+        const newRoomSize = { roomSize };
+        updateDoc(statementRef, newRoomSize);
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 
@@ -300,15 +315,15 @@ export async function updateIsQuestion(statement: Statement) {
             DB,
             Collections.statements,
             statement.statementId
-        )
-        let { statementType } = statement
+        );
+        let { statementType } = statement;
         if (statementType === StatementType.question)
-            statementType = StatementType.statement
-        else statementType = StatementType.question
+            statementType = StatementType.statement;
+        else statementType = StatementType.question;
 
-        const newStatementType = { statementType }
-        await updateDoc(statementRef, newStatementType)
+        const newStatementType = { statementType };
+        await updateDoc(statementRef, newStatementType);
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
