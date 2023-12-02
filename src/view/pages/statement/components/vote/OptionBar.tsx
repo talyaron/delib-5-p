@@ -35,11 +35,10 @@ export const OptionBar: FC<OptionBarProps> = ({
     const _optionOrder = option.order || 0;
 
     const handlePressButton = () => {
-        setVote(option, setVoteCB);
-    };
-    function setVoteCB(option: Statement) {
         dispatch(setVoteToStore(option));
-    }
+        setVote(option);
+    };
+
     const selections: number = getSelections(statement, option);
     const { width } = useWindowDimensions();
 
