@@ -60,15 +60,11 @@ const StatementChat: FC<Props> = ({
     const isOption = isOptionFn(statement);
 
     function handleEdit() {
-        if (!isEdit) handleCreateSubStatements(statement, navigate);
-        setShowModal(true);
+      
+        setShowModal((showModal:boolean)=> !showModal);
     }
 
-    function handleGotToSubStatement() {
-        navigateToStatementTab(statement, navigate);
-    }
-
-   
+    
 
     return (
         <div
@@ -96,10 +92,7 @@ const StatementChat: FC<Props> = ({
                     >
                         <div className="statement__bubble__text__text">
                             {!isEdit ? (
-                                <div
-                                    onClick={handleGotToSubStatement}
-                                    className="clickable"
-                                >
+                                <div >
                                     {" "}
                                     <Text text={statement.statement} />
                                 </div>
