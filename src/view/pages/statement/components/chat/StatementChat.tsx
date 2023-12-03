@@ -4,8 +4,7 @@ import { FC, useState } from "react";
 import { Statement, StatementType } from "delib-npm";
 
 // Custom Components
-import StatementChatMore, {
-} from "./StatementChatMore";
+import StatementChatMore from "./StatementChatMore";
 import StatementChatSetOption from "./components/StatementChatSetOption";
 import Text from "../../../../components/text/Text";
 import ProfileImage from "./components/ProfileImage";
@@ -29,18 +28,16 @@ interface Props {
     statement: Statement;
     showImage: Function;
     setShowModal?: Function;
-
 }
 
 const StatementChat: FC<Props> = ({
     statement,
     showImage,
-    setShowModal = () => {}
+    setShowModal = () => {},
 }) => {
     const { statementType } = statement;
 
-
-    const statementubscription = useAppSelector(
+    const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId)
     );
 
@@ -48,19 +45,19 @@ const StatementChat: FC<Props> = ({
     const [isEdit, setIsEdit] = useState(false);
 
     const userId = store.getState().user.user?.uid;
+    const displayName = store.getState().user.user?.displayName;
+
     const creatorId = statement.creatorId;
-    const _isAuthrized = isAuthorized(statement, statementubscription);
+    const _isAuthrized = isAuthorized(statement, statementSubscription);
+    console.log(displayName, statement.statement, _isAuthrized);
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
 
     function handleEdit() {
-      
-        setShowModal((showModal:boolean)=> !showModal);
+        setShowModal((showModal: boolean) => !showModal);
     }
-
-    
 
     return (
         <div
@@ -88,7 +85,7 @@ const StatementChat: FC<Props> = ({
                     >
                         <div className="statement__bubble__text__text">
                             {!isEdit ? (
-                                <div >
+                                <div>
                                     {" "}
                                     <Text text={statement.statement} />
                                 </div>
@@ -102,7 +99,7 @@ const StatementChat: FC<Props> = ({
                         </div>
                     </div>
                     {statement.statementType === StatementType.option && (
-                        <AddSubQuestion statement={statement}/>
+                        <AddSubQuestion statement={statement} />
                     )}
                     {isQuestion || isOption ? (
                         <div className="statement__bubble__more">
@@ -112,7 +109,7 @@ const StatementChat: FC<Props> = ({
                 </div>
             </div>
             <div className="statement__chatCard__right">
-                {isQuestion ? null : (
+                {!_isAuthrized || isQuestion ? null : (
                     <StatementChatSetOption statement={statement} />
                 )}
                 {!_isAuthrized || isOption ? null : (
@@ -124,7 +121,6 @@ const StatementChat: FC<Props> = ({
                     edit={isEdit}
                 />
             </div>
-           
         </div>
     );
 };

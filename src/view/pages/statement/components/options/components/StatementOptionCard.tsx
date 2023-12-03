@@ -28,6 +28,7 @@ interface Props {
     statement: Statement;
     showImage: Function;
     top: number;
+
 }
 
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {

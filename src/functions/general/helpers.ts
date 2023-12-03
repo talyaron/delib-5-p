@@ -112,22 +112,27 @@ export function isAuthorized(
 ) {
     try {
         if (!statement) return false;
-        StatementSchema.parse(statement);
+        if(!statementSubscription) return false;
+
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
 
         if (!statementSubscription) return false;
-        StatementSubscriptionSchema.parse(statementSubscription);
+   
+
         const role = statementSubscription?.role || Role.guest;
 
+        console.log(user.displayName, statement.statement, "role", role);
         if (
             role === Role.admin ||
             role === Role.statementCreator ||
             role === Role.systemAdmin
-        )
+        ){
+            console.log("authorized.....")
             return true;
+        }
 
         if (authrizedRoles && authrizedRoles.includes(role)) return true;
         return false;
