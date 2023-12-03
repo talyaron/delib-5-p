@@ -59,9 +59,6 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
         );
     }, []);
 
-    function handleGoToSubStatement() {
-        navigateToStatementTab(statement, navigate);
-    }
 
     return (
         <div
@@ -76,10 +73,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                 >
                     <span></span>
                     {!edit ? (
-                        <div
-                            className="clickable"
-                            onClick={handleGoToSubStatement}
-                        >
+                        <div>
                             <Text text={statement.statement} />
                         </div>
                     ) : (
