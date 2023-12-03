@@ -2,12 +2,9 @@ import { FC, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType } from "delib-npm";
-import { useNavigate } from "react-router-dom";
 
 // Custom Components
-import StatementChatMore, {
-    handleCreateSubStatements,
-} from "./StatementChatMore";
+import StatementChatMore from "./StatementChatMore";
 import StatementChatSetOption from "./components/StatementChatSetOption";
 import Text from "../../../../components/text/Text";
 import ProfileImage from "./components/ProfileImage";
@@ -22,8 +19,7 @@ import { bubbleclass } from "./StatementChatCont";
 import StatementChatSetEdit from "./components/StatementChatSetEdit";
 import {
     isAuthorized,
-    isOptionFn,
-    navigateToStatementTab,
+    isOptionFn
 } from "../../../../../functions/general/helpers";
 
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
@@ -41,8 +37,6 @@ const StatementChat: FC<Props> = ({
     setShowModal = () => {}
 }) => {
     const { statementType } = statement;
-
-    const navigate = useNavigate();
 
     const statementubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId)
