@@ -19,11 +19,9 @@ import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
 import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
 import {
-    isAuthorized,
-    navigateToStatementTab,
+    isAuthorized
 } from "../../../../../../functions/general/helpers";
 import StatementChatMore from "../../chat/StatementChatMore";
-import { useNavigate } from "react-router-dom";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 
 interface Props {
@@ -35,7 +33,6 @@ interface Props {
 
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)

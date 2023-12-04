@@ -1,6 +1,6 @@
 import { FC } from "react";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import { Statement, StatementSubscription } from "delib-npm";
+import { Statement } from "delib-npm";
 import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
 
 import { isOptionFn } from "../../../../../../functions/general/helpers";

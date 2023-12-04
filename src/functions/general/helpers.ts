@@ -2,9 +2,7 @@ import {
     Role,
     Screen,
     Statement,
-    StatementSchema,
     StatementSubscription,
-    StatementSubscriptionSchema,
     StatementType,
     User,
 } from "delib-npm";
