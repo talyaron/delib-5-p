@@ -145,7 +145,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.statementType =
                 statementId === undefined
                     ? StatementType.question
-                    : StatementType.statement;
+                    : newStatement.statementType || statement?.statementType;
             newStatement.creator = statement?.creator || user;
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
