@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import commonjs from 'vite-plugin-commonjs';
 import react from '@vitejs/plugin-react-swc'
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const manifestPlugin:Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
@@ -61,8 +62,8 @@ const manifestPlugin:Partial<VitePWAOptions> = {
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA(manifestPlugin)
-    
+    VitePWA(manifestPlugin),
+    visualizer({ open: true, gzipSize: true, brotliSize: true })
   ],
 })
 
