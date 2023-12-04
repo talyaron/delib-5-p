@@ -289,7 +289,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         valueLabelDisplay="on"
                         name={"numberOfResults"}
                         style={{
-                            margin: "auto",
+                            margin: "0 auto",
                             width: "90%",
                         }}
                     />
