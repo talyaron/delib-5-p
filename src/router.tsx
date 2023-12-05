@@ -10,10 +10,12 @@ import Loader from "./view/components/loaders/Loader";
 import Home from "./view/pages/home/Home";
 import App from "./App";
 import Page404 from "./view/pages/page404/Page404";
-import Main from "./view/pages/main/Main";
+// import Main from "./view/pages/main/Main";
+import Map from "./view/pages/map/Map";
+import StatementMap from "./view/pages/map/StatementMap";
 
 // Lazy loading
-// const Main = lazy(() => import("./view/pages/main/Main"));
+const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const SetStatement = lazy(
     () => import("./view/pages/statement/components/set/SetStatement")
@@ -102,6 +104,26 @@ export const router = createBrowserRouter([
                         element: (
                             <Suspense fallback={<SuspenseFallback />}>
                                 <Statement />
+                            </Suspense>
+                        ),
+                        errorElement: <ErrorPage />,
+                    },
+                ],
+            },
+            {
+                path: "map",
+                element: (
+                    <Suspense fallback={<SuspenseFallback />}>
+                        <Map />
+                    </Suspense>
+                ),
+                errorElement: <ErrorPage />,
+                children: [
+                    {
+                        path: ":statementId",
+                        element: (
+                            <Suspense fallback={<SuspenseFallback />}>
+                                <StatementMap />
                             </Suspense>
                         ),
                         errorElement: <ErrorPage />,

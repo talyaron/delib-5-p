@@ -87,6 +87,7 @@ const Main = () => {
                             {t("Install the App")}
                         </button>
                     )}
+                    <button onClick={() => navigate("/map")}>Map</button>
                 </div>
             </div>
             <div className="page__main">

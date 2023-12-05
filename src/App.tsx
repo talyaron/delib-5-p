@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 // Third party imports
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 // Firebase functions
 import { listenToAuth } from "./functions/db/auth";
@@ -23,6 +23,7 @@ import Accessiblity from "./view/components/accessibility/Accessiblity";
 export default function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
     const { i18n } = useTranslation();
     const user = useAppSelector(userSelector);
 
@@ -66,7 +67,7 @@ export default function App() {
 
     useEffect(() => {
         //TODO: add check if you are not at start screen
-        if (!user) navigate("/");
+        if (!user && location.pathname !== "/") navigate("/");
     }, [user]);
 
     return (
