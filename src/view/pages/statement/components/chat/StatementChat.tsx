@@ -49,7 +49,7 @@ const StatementChat: FC<Props> = ({
     
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(statement, statementSubscription);
-        console.log(displayName, statement.statement, _isAuthrized)
+        // console.log(displayName, statement.statement, _isAuthrized)
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;

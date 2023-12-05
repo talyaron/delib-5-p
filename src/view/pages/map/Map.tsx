@@ -41,7 +41,7 @@ export default function Map() {
                             key={index}
                             onClick={() =>
                                 navigate(`/map/${result.top.statementId}`, {
-                                    state: result,
+                                    state: window.location.pathname,
                                 })
                             }
                         >
