@@ -1,18 +1,21 @@
 import React from "react";
+
+// Third party libraries
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import ScreenSlide from "../../components/animation/ScreenSlide";
 import { logOut } from "../../../functions/db/auth";
 import { t } from "i18next";
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import { statementsSelector } from "../../../model/statements/statementsSlice";
+
+// Custom components
+import ScreenSlide from "../../components/animation/ScreenSlide";
+
+// Hooks
+import useSortStatements from "../../../functions/hooks/useSortStatements";
 
 export default function Map() {
     const navigate = useNavigate();
     const { statementId } = useParams();
 
-    const statements = [...useAppSelector(statementsSelector)].sort(
-        (a, b) => b.lastUpdate - a.lastUpdate
-    );
+    const results = useSortStatements();
 
     return statementId ? (
         <Outlet />
@@ -33,16 +36,18 @@ export default function Map() {
             </div>
             <div className="page__main">
                 <div className="wrapper">
-                        {statements.map((statement, index) => (
-                            <button
-                                key={index}
-                                onClick={() =>
-                                    navigate(`/map/${statement.statementId}`)
-                                }
-                            >
-                                {statement.statement}
-                            </button>
-                        ))}
+                    {results.map((result, index) => (
+                        <button
+                            key={index}
+                            onClick={() =>
+                                navigate(`/map/${result.top.statementId}`, {
+                                    state: result,
+                                })
+                            }
+                        >
+                            {result.top.statement}
+                        </button>
+                    ))}
                 </div>
             </div>
         </ScreenSlide>
