@@ -40,6 +40,10 @@
             &--selected {
                 border-bottom: 2px solid var(--accent);
                 font-weight: 500;
+
+                &--question {
+                    border-bottom: 2px solid white;
+                }
             }
         }
     }
