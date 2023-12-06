@@ -78,6 +78,7 @@ const Statement: FC = () => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const direction = useDirection();
+    const langDirection = direction === "row" ? "ltr" : "rtl";
 
     // Redux hooks
     const dispatch: any = useAppDispatch();
@@ -197,7 +198,7 @@ const Statement: FC = () => {
             const _title = __title.replace("*", "");
 
             const titleToSet =
-                _title.length > 20 ? _title.substring(0, 17) + "..." : _title;
+                _title.length >100 ? _title.substring(0, 97) + "..." : _title;
 
             setTitle(titleToSet);
             (async () => {
@@ -265,7 +266,7 @@ const Statement: FC = () => {
             >
                 <div
                     className="page__header__wrapper"
-                    style={{ flexDirection: direction }}
+                    style={{ flexDirection: direction, direction: langDirection}}
                 >
                     <div onClick={handleBack} style={{ cursor: "pointer" }}>
                         <ArrowBackIosIcon />
@@ -290,6 +291,7 @@ const Statement: FC = () => {
                         </h1>
                     ) : (
                         <EditTitle
+                        isEdit={editHeader}
                             statement={statement}
                             setEdit={setEditHeader}
                         />
