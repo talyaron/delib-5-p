@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ReactFlow, {
     ConnectionLineType,
@@ -23,8 +23,8 @@ import useSortStatements from "../../../functions/hooks/useSortStatements";
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 172;
-const nodeHeight = 36;
+export const nodeWidth = 100;
+export const nodeHeight = 20;
 
 const getLayoutedElements = (
     nodes: Node[],
@@ -46,6 +46,7 @@ const getLayoutedElements = (
 
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
+        
         node.targetPosition = isHorizontal ? Position.Left : Position.Top;
         node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
 
@@ -65,9 +66,8 @@ const getLayoutedElements = (
 export default function StatementMap() {
     const { statementId } = useParams();
     const results = useSortStatements();
+    const navigate = useNavigate();
 
-    console.log(results);
-    
     const statement = results.find(
         (state) => state.top.statementId === statementId
     );
@@ -95,7 +95,7 @@ export default function StatementMap() {
             <div
                 style={{
                     height: "90vh",
-                    width: "100ch",
+                    width: "100vw",
                 }}
             >
                 <ReactFlow
@@ -103,6 +103,9 @@ export default function StatementMap() {
                     edges={edges}
                     connectionLineType={ConnectionLineType.SmoothStep}
                     fitView
+                    onNodeClick={(event, node) => {
+                        navigate(`/statement/${node.id}/chat`);
+                    }}
                 >
                     <Controls />
                 </ReactFlow>
