@@ -1,8 +1,13 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { User, Statement, StatementSubscription, Role } from "delib-npm";
+import { useParams } from "react-router-dom";
+import {
+    User,
+    Statement,
+    StatementSubscription,
+    Role
+} from "delib-npm";
 import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
@@ -14,7 +19,6 @@ import {
     listenToStatementsOfStatment,
 } from "../../../functions/db/statements/getStatement";
 import {
-    setStatmentSubscriptionNotificationToDB,
     setStatmentSubscriptionToDB,
     updateSubscriberForStatementSubStatements,
 } from "../../../functions/db/statements/setStatments";
@@ -29,7 +33,6 @@ import {
     deleteStatement,
     setStatement,
     setStatementSubscription,
-    statementNotificationSelector,
     statementSelector,
     statementSubsSelector,
 } from "../../../model/statements/statementsSlice";
@@ -45,21 +48,13 @@ import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
 
 // Statement components
-import StatementNav from "./components/nav/StatementNav";
-import EditTitle from "../../components/edit/EditTitle";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
 import SwitchScreens from "./components/SwitchScreens";
 
-//icons
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import ShareIcon from "../../icons/ShareIcon";
-import ArrowBackIosIcon from "../../icons/ArrowBackIosIcon";
-import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-
 // Helpers
-import { getUserPermissionToNotifications } from "../../../functions/notifications";
+
 import useDirection from "../../../functions/hooks/useDirection";
+import StatementHeader from "./StatementHeader";
 
 let unsub: Function = () => {};
 let unsubSubStatements: Function = () => {};
@@ -67,20 +62,17 @@ let unsubStatementSubscription: Function = () => {};
 let unsubEvaluations: Function = () => {};
 
 const Statement: FC = () => {
-   
     // Hooks
     const { statementId, page } = useParams();
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
+
     const direction = useDirection();
+    const langDirection = direction === "row" ? "ltr" : "rtl";
 
     // Redux hooks
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
-    const hasNotifications = useAppSelector(
-        statementNotificationSelector(statementId)
-    );
+
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
 
@@ -88,12 +80,6 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
-    const [editHeader, setEditHeader] = useState<boolean>(false);
-
-    const titleStyle = {
-        fontSize:
-            title.length > 30 ? "1.3rem" : title.length > 40 ? "1rem" : "2rem",
-    };
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
@@ -123,27 +109,6 @@ const Statement: FC = () => {
         } else {
             setTalker(null);
         }
-    }
-
-    function handleShare() {
-        const baseUrl = window.location.origin;
-
-        const shareData = {
-            title: t("Delib: We create agreements together"),
-            text: t("Invited:") + statement?.statement,
-            url: `${baseUrl}${pathname}`,
-        };
-        navigator.share(shareData);
-    }
-
-    async function handleRegisterToNotifications() {
-        const isPermited = await getUserPermissionToNotifications();
-
-        if (!isPermited) {
-            setShowAskPermission(true);
-            return;
-        }
-        setStatmentSubscriptionNotificationToDB(statement);
     }
 
     //use effects
@@ -192,7 +157,7 @@ const Statement: FC = () => {
             const _title = __title.replace("*", "");
 
             const titleToSet =
-                _title.length > 20 ? _title.substring(0, 17) + "..." : _title;
+                _title.length > 100 ? _title.substring(0, 97) + "..." : _title;
 
             setTitle(titleToSet);
             (async () => {
@@ -210,33 +175,6 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
-    function handleBack() {
-        if (statement?.parentId === "top") {
-            navigate("/home", {
-                state: { from: window.location.pathname },
-            });
-        } else {
-            navigate(`/statement/${statement?.parentId}/${page}`, {
-                state: { from: window.location.pathname },
-            });
-        }
-    }
-
-    const hasNotificationPermission = (() => {
-        if (window.hasOwnProperty("Notification") === false) return false;
-        if (Notification.permission === "denied") return false;
-        if (Notification.permission === "granted") return true;
-        return false;
-    })();
-
-    const isAdmin = statement?.creatorId === user?.uid;
-
-    function handleEditTitle() {
-        if (isAdmin) {
-            setEditHeader(true);
-        }
-    }
-
     return (
         <ScreenFadeInOut className="page">
             {showAskPermission && (
@@ -251,44 +189,16 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            <div className="page__header">
-                <div
-                    className="page__header__wrapper"
-                    style={{ flexDirection: direction }}
-                >
-                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                        <ArrowBackIosIcon />
-                    </div>
-                    <Link to={"/home"}>
-                        <HomeOutlinedIcon />
-                    </Link>
-                    <div onClick={handleRegisterToNotifications}>
-                        {hasNotificationPermission && hasNotifications ? (
-                            <NotificationsActiveIcon />
-                        ) : (
-                            <NotificationsOffIcon htmlColor="lightgray" />
-                        )}
-                    </div>
-                    {!editHeader ? (
-                        <h1
-                            className={isAdmin ? "clickable" : ""}
-                            onClick={handleEditTitle}
-                            style={titleStyle}
-                        >
-                            {title}
-                        </h1>
-                    ) : (
-                        <EditTitle
-                            statement={statement}
-                            setEdit={setEditHeader}
-                        />
-                    )}
-                    <div onClick={handleShare}>
-                        <ShareIcon />
-                    </div>
-                </div>
-                {statement && <StatementNav statement={statement} />}
-            </div>
+            {statement ? (
+                <StatementHeader
+                    statement={statement}
+                    title={title}
+                    direction={direction}
+                    langDirection={langDirection}
+                    showAskPermission={showAskPermission}
+                    setShowAskPermission={setShowAskPermission}
+                />
+            ) : null}
             <AnimatePresence mode="wait" initial={false}>
                 <SwitchScreens
                     key={statementId}

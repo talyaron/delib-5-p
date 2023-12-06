@@ -2,6 +2,7 @@ import {
     Role,
     Screen,
     Statement,
+    StatementSchema,
     StatementSubscription,
     StatementType,
     User,
@@ -110,25 +111,23 @@ export function isAuthorized(
 ) {
     try {
         if (!statement) return false;
-        if(!statementSubscription) return false;
-
+        if (!statementSubscription) return false;
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
 
         if (!statementSubscription) return false;
-   
 
         const role = statementSubscription?.role || Role.guest;
 
-        console.log(user.displayName, statement.statement, "role", role);
+      
         if (
             role === Role.admin ||
             role === Role.statementCreator ||
             role === Role.systemAdmin
-        ){
-            console.log("authorized.....")
+        ) {
+          
             return true;
         }
 
@@ -206,4 +205,33 @@ export function generateRandomLightColor(uuid: string) {
         .toUpperCase()}`;
 
     return hexColor;
+}
+
+export function isStatementTypeAllowed(
+    parentStatement: Statement,
+    statement: Statement
+): boolean {
+    // check if statement type is allowed
+    // if parent is option, dont allow options
+    // if parent is question, dont allow questions
+
+    try {
+        if(!parentStatement) throw new Error(`No parent statement at statement ${statement.statement}`);
+        if(!statement) throw new Error("No statement");
+
+        StatementSchema.parse(parentStatement);
+        StatementSchema.parse(statement);
+
+        if (isOptionFn(parentStatement) && isOptionFn(statement)) return false;
+        if (
+            parentStatement.statementType === StatementType.question &&
+            statement.statementType === StatementType.question
+        )
+            return false;
+
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }

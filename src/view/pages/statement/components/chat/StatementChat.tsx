@@ -20,18 +20,21 @@ import StatementChatSetEdit from "./components/StatementChatSetEdit";
 import {
     isAuthorized,
     isOptionFn,
+    isStatementTypeAllowed,
 } from "../../../../../functions/general/helpers";
 
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 
 interface Props {
     statement: Statement;
+    parentStatement: Statement;
     showImage: Function;
     setShowModal?: Function;
 }
 
 const StatementChat: FC<Props> = ({
     statement,
+    parentStatement,
     showImage,
     setShowModal = () => {},
 }) => {
@@ -45,11 +48,10 @@ const StatementChat: FC<Props> = ({
     const [isEdit, setIsEdit] = useState(false);
 
     const userId = store.getState().user.user?.uid;
-    const displayName = store.getState().user.user?.displayName;
-    
+
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(statement, statementSubscription);
-        // console.log(displayName, statement.statement, _isAuthrized)
+    // console.log(displayName, statement.statement, _isAuthrized)
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
@@ -84,23 +86,17 @@ const StatementChat: FC<Props> = ({
                         onClick={handleEdit}
                     >
                         <div className="statement__bubble__text__text">
-                            {!isEdit ? (
-                                <div>
-                                    {" "}
-                                    <Text text={statement.statement} />
-                                </div>
-                            ) : (
-                                <EditTitle
-                                    statement={statement}
-                                    setEdit={setIsEdit}
-                                    isTextArea={true}
-                                />
-                            )}
+                            <EditTitle
+                                statement={statement}
+                                isEdit={isEdit}
+                                setEdit={setIsEdit}
+                            />
                         </div>
                     </div>
-                    {statement.statementType === StatementType.option && (
-                        <AddSubQuestion statement={statement} />
-                    )}
+                    {statement.statementType === StatementType.option &&
+                        isStatementTypeAllowed(parentStatement, statement) && (
+                            <AddSubQuestion statement={statement} />
+                        )}
                     {isQuestion || isOption ? (
                         <div className="statement__bubble__more">
                             <StatementChatMore statement={statement} />
@@ -109,12 +105,17 @@ const StatementChat: FC<Props> = ({
                 </div>
             </div>
             <div className="statement__chatCard__right">
-                {!_isAuthrized  || isQuestion ? null : (
+                {_isAuthrized &&
+                !isQuestion &&
+                parentStatement.statementType === StatementType.question ? (
                     <StatementChatSetOption statement={statement} />
-                )}
-                {!_isAuthrized || isOption ? null : (
+                ) : null}
+                {_isAuthrized &&
+                !isOption &&
+                parentStatement.statementType !== StatementType.question ? (
                     <StatementChatSetQuestion statement={statement} />
-                )}
+                ) : null}
+
                 <StatementChatSetEdit
                     isAuthrized={_isAuthrized}
                     setEdit={setIsEdit}

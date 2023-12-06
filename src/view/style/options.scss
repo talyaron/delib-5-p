@@ -16,7 +16,11 @@
 
         &__text {
             text-align: left;
-
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            // justify-content: space-between;
+            width: 100%;
             p {
                 text-align: right;
 
@@ -45,12 +49,13 @@
                 border-radius: 1rem;
                 gap: 0px;
 
-                > div {
+                >div {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     gap: 0.4rem;
                 }
+
                 &__up {
                     img {
                         transform: translateX(7px);
@@ -68,6 +73,7 @@
         &__chat {
             display: flex;
             justify-content: space-between;
+
             &__settings {
                 display: flex;
                 align-items: center;
@@ -104,6 +110,7 @@
         }
     }
 }
+
 .press {
     background-color: var(--press);
     border-radius: 4rem;

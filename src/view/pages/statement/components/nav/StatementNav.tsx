@@ -20,6 +20,7 @@ export const navArray: NavObject[] = [
 const StatementNav: FC<Props> = ({ statement }) => {
     const { page } = useParams();
     const _navArray = showNavElements(statement, navArray);
+    const isQuestion = statement.type === "question";
 
     return (
         <nav className="statement__nav">
@@ -32,7 +33,9 @@ const StatementNav: FC<Props> = ({ statement }) => {
                     className={
                         page === navObject.link ||
                         (!navObject.link && page === undefined)
-                            ? "statement__nav__button statement__nav__button--selected"
+                            ? isQuestion
+                                ? "statement__nav__button statement__nav__button--selected"
+                                : "statement__nav__button statement__nav__button--selected--question"
                             : "statement__nav__button"
                     }
                 >

@@ -10,7 +10,6 @@ import ScreenFadeInOut from "../../../components/animation/ScreenFadeInOut";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
 
-
 interface Props {
     statement: Statement;
     subStatements: Statement[];
@@ -25,7 +24,6 @@ const StatementMain: FC<Props> = ({
     handleShowTalker,
 }) => {
     const messagesEndRef = useRef(null);
-
 
     const { toSlide, toSubStatement } = useSlideAndSubStatement(
         statement.parentId
@@ -60,9 +58,9 @@ const StatementMain: FC<Props> = ({
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
+                            parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}
-    
                         />
                     </div>
                 ))}
@@ -79,6 +77,7 @@ const StatementMain: FC<Props> = ({
                     <div key={statementSub.statementId}>
                         <StatementChat
                             statement={statementSub}
+                            parentStatement={statement}
                             showImage={handleShowTalker}
                         />
                     </div>
