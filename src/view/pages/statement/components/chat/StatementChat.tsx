@@ -112,12 +112,9 @@ const StatementChat: FC<Props> = ({
                 </div>
             </div>
             <div className="statement__chatCard__right">
-                {!_isAuthrized  || isQuestion ? null : (
-                    <StatementChatSetOption statement={statement} />
-                )}
-                {!_isAuthrized || isOption ? null : (
-                    <StatementChatSetQuestion statement={statement} />
-                )}
+                {_isAuthrized  && !isQuestion && parentStatement.statementType === StatementType.question ? <StatementChatSetOption statement={statement} />:null}
+                {_isAuthrized &&  !isOption && (parentStatement.statementType !== StatementType.question) ? <StatementChatSetQuestion statement={statement} />:null}
+            
                 <StatementChatSetEdit
                     isAuthrized={_isAuthrized}
                     setEdit={setIsEdit}
