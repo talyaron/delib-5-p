@@ -6,7 +6,7 @@ import { store } from "../../../model/store";
 import { getUserPermissionToNotifications } from "../../../functions/notifications";
 
 //icons
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import HomeIcon from '@mui/icons-material/Home';
 import ShareIcon from "../../icons/ShareIcon";
 import ArrowBackIosIcon from "../../icons/ArrowBackIosIcon";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
@@ -101,7 +101,7 @@ const StatementHeader: FC<Props> = ({
             className={
                 statement?.statementType === StatementType.question
                     ? "page__header page__header--question"
-                    : "page__heade"
+                    : "page__header"
             }
         >
             <div
@@ -112,13 +112,13 @@ const StatementHeader: FC<Props> = ({
                     <ArrowBackIosIcon />
                 </div>
                 <Link to={"/home"}>
-                    <HomeOutlinedIcon />
+                    <HomeIcon />
                 </Link>
                 <div onClick={handleRegisterToNotifications}>
                     {hasNotificationPermission && hasNotifications ? (
                         <NotificationsActiveIcon />
                     ) : (
-                        <NotificationsOffIcon htmlColor="lightgray" />
+                        <NotificationsOffIcon />
                     )}
                 </div>
                 {!editHeader ? (

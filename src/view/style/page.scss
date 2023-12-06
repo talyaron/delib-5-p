@@ -11,8 +11,14 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: var(--mainColor);
+        background-color: white;
+        color:rgb(64, 64, 64);
         z-index: 1;
+
+        a{
+            text-decoration: none;
+            color: var(--text);
+        }
 
         &--question {
             background-color: var(--question);
