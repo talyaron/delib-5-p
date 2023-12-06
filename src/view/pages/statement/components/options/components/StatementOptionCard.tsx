@@ -11,7 +11,7 @@ import {
 } from "../../../../../../model/statements/statementsSlice";
 
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
-import Text from "../../../../../components/text/Text";
+
 
 //images
 

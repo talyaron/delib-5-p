@@ -11,7 +11,7 @@ export async function getResults(
     try {
         // const { results } = statement;
 
-        const result: Results = { top: statement }
+        const result: Results = { top: statement, sub:[] }
 
         switch (resultsBy) {
             case ResultsBy.topOne:
@@ -42,6 +42,7 @@ export async function getResults(
             result.sub[index].sub = [
                 ...resultsStatements[index].map((subStatement: Statement) => ({
                     top: subStatement,
+                    sub:[]
                 })),
             ]
         })
@@ -49,7 +50,7 @@ export async function getResults(
         return result
     } catch (error) {
         console.error(error)
-        return { top: statement }
+        return { top: statement, sub: [] }
     }
 }
 function getResultsByOptions(
@@ -84,7 +85,7 @@ function getResultsByVotes(
             (subStatement) => subStatement.statementId === maxVoteKey
         )
         if (!maxVoteStatement) return []
-        const result: Results = { top: maxVoteStatement }
+        const result: Results = { top: maxVoteStatement, sub: [] }
 
         return [result]
     } catch (error) {

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Statement, NavObject, Screen } from "delib-npm";
+import { Statement, NavObject, Screen, StatementType } from "delib-npm";
 import { showNavElements } from "./statementNvCont";
 import { t } from "i18next";
 
@@ -20,7 +20,7 @@ export const navArray: NavObject[] = [
 const StatementNav: FC<Props> = ({ statement }) => {
     const { page } = useParams();
     const _navArray = showNavElements(statement, navArray);
-    const isQuestion = statement.type === "question";
+    const isQuestion = statement.statementType === StatementType.question;
 
     return (
         <nav className="statement__nav">
@@ -34,8 +34,8 @@ const StatementNav: FC<Props> = ({ statement }) => {
                         page === navObject.link ||
                         (!navObject.link && page === undefined)
                             ? isQuestion
-                                ? "statement__nav__button statement__nav__button--selected"
-                                : "statement__nav__button statement__nav__button--selected--question"
+                                ? "statement__nav__button statement__nav__button--selected--question"
+                                : "statement__nav__button statement__nav__button--selected"
                             : "statement__nav__button"
                     }
                 >

@@ -6,7 +6,6 @@ import { Statement, StatementType } from "delib-npm";
 // Custom Components
 import StatementChatMore from "./StatementChatMore";
 import StatementChatSetOption from "./components/StatementChatSetOption";
-import Text from "../../../../components/text/Text";
 import ProfileImage from "./components/ProfileImage";
 import EditTitle from "../../../../components/edit/EditTitle";
 import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
