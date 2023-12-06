@@ -1,12 +1,16 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import "./reactFlow.scss";
+
 import ReactFlow, {
     ConnectionLineType,
     Node,
     Edge,
     Position,
     Controls,
+    useNodesState,
+    useEdgesState,
 } from "reactflow";
 
 import "reactflow/dist/style.css";
@@ -23,8 +27,8 @@ import useSortStatements from "../../../functions/hooks/useSortStatements";
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-export const nodeWidth = 100;
-export const nodeHeight = 20;
+export const nodeWidth = 172;
+export const nodeHeight = 36;
 
 const getLayoutedElements = (
     nodes: Node[],
@@ -46,7 +50,7 @@ const getLayoutedElements = (
 
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
-        
+
         node.targetPosition = isHorizontal ? Position.Left : Position.Top;
         node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
 
@@ -85,8 +89,8 @@ export default function StatementMap() {
         createdEdges
     );
 
-    const [nodes, setNodes] = React.useState(layoutedNodes);
-    const [edges, setEdges] = React.useState(layoutedEdges);
+    const [nodes] = useNodesState(layoutedNodes);
+    const [edges] = useEdgesState(layoutedEdges);
 
     return (
         <div className="center">

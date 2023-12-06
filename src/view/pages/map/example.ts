@@ -1,45 +1,44 @@
 const position = { x: 0, y: 0 };
-const edgeType = "smoothstep";
+const edgeType = "bezier";
 
 import { Results } from "delib-npm";
 import { Edge, Node } from "reactflow";
+import { nodeHeight, nodeWidth } from "./StatementMap";
 
 export const initialNodes: Node[] = [
     {
         id: "1",
-        type: "input",
-        data: { label: "input" },
+        data: { label: "input", isOption: true },
         position,
     },
     {
         id: "2",
-        data: { label: "node 2" },
+        data: { label: "node 2", isOption: false },
         position,
-        parentNode: "1",
     },
     {
         id: "2a",
-        data: { label: "node 2a" },
+        data: { label: "node 2a", isOption: true },
         position,
     },
     {
         id: "2b",
-        data: { label: "node 2b" },
+        data: { label: "node 2b", isOption: false },
         position,
     },
     {
         id: "2c",
-        data: { label: "node 2c" },
+        data: { label: "node 2c", isOption: true },
         position,
     },
     {
         id: "2d",
-        data: { label: "node 2d" },
+        data: { label: "node 2d", isOption: false },
         position,
     },
     {
         id: "3",
-        data: { label: "node 3" },
+        data: { label: "node 3", isOption: true },
         position,
     },
     // {
@@ -72,6 +71,32 @@ export const initialEdges: Edge[] = [
     { id: "e56", source: "5", target: "6", type: edgeType, animated: true },
     { id: "e57", source: "5", target: "7", type: edgeType, animated: true },
 ];
+const resultColor = "#8FF18F";
+const questionColor = "#5252FD";
+
+const backgroundColor = (res: Results) =>
+    res.top.statementType === "result"
+        ? resultColor
+        : res.top.statementType === "question"
+        ? questionColor
+        : "#b7b7b7";
+
+const nodeStyle = (result: Results) => {
+    const style = {
+        backgroundColor: backgroundColor(result),
+        color: result.top.statementType === "result" ? "black" : "white",
+        width: nodeWidth,
+        height: nodeHeight,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: ".7rem",
+        cursor: "pointer",
+        border: "none",
+        outline: "none",
+    };
+    return style;
+};
 
 export const createInitEdges = (nodes: Node[]) => {
     try {
@@ -88,6 +113,7 @@ export const createInitEdges = (nodes: Node[]) => {
                     target: child.id,
                     type: edgeType,
                     animated: true,
+                    style: { stroke: "pink", strokeWidth: 1 },
                 });
             });
         });
@@ -99,21 +125,12 @@ export const createInitEdges = (nodes: Node[]) => {
 
 export const createInitialNodes = (result: Results) => {
     try {
-        const optionColor = "#8FF18F";
-        const questionColor = "#5252FD";
-
-        const backgroundColor = (res: Results) =>
-            res.top.statementType === "option" ? optionColor : questionColor;
-
         const nodes: Node[] = [
             {
                 id: result.top.statementId,
                 data: { label: result.top.statement },
                 position,
-                style: {
-                    backgroundColor: backgroundColor(result),
-                    color: "white",
-                },
+                style: nodeStyle(result),
             },
         ];
 
@@ -128,10 +145,7 @@ export const createInitialNodes = (result: Results) => {
                     data: { label: sub.top.statement },
                     position,
                     parentNode: result.top.statementId,
-                    style: {
-                        backgroundColor: backgroundColor(sub),
-                        color: "white",
-                    },
+                    style: nodeStyle(sub),
                 });
                 if (sub.sub) {
                     createNodes(sub.sub, sub.top.statementId);
@@ -146,10 +160,7 @@ export const createInitialNodes = (result: Results) => {
                     data: { label: sub.top.statement },
                     position,
                     parentNode: parentId,
-                    style: {
-                        backgroundColor: backgroundColor(sub),
-                        color: "white",
-                    },
+                    style: nodeStyle(sub),
                 });
                 if (sub.sub && sub.sub.length > 0) {
                     createNodes(sub.sub, sub.top.statementId);
