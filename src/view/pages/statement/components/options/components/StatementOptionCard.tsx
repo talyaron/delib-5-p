@@ -18,9 +18,7 @@ import Text from "../../../../../components/text/Text";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
 import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
-import {
-    isAuthorized
-} from "../../../../../../functions/general/helpers";
+import { isAuthorized } from "../../../../../../functions/general/helpers";
 import StatementChatMore from "../../chat/StatementChatMore";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 
@@ -28,7 +26,6 @@ interface Props {
     statement: Statement;
     showImage: Function;
     top: number;
-
 }
 
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
@@ -57,7 +54,6 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
         );
     }, []);
 
-
     return (
         <div
             className="options__card"
@@ -69,18 +65,17 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                     className="options__card__text text"
                     onClick={() => setShow(!show)}
                 >
-                    <span></span>
-                    {!edit ? (
-                        <div>
-                            <Text text={statement.statement} />
-                        </div>
-                    ) : (
-                        <EditTitle
-                            statement={statement}
-                            setEdit={setEdit}
-                            isTextArea={true}
-                        />
-                    )}
+                    <StatementChatSetEdit
+                        isAuthrized={_isAuthrized}
+                        edit={edit}
+                        setEdit={setEdit}
+                    />
+                    <EditTitle
+                        statement={statement}
+                        isEdit={edit}
+                        setEdit={setEdit}
+                        isTextArea={true}
+                    />
                 </div>
 
                 <Evaluation statement={statement} />
@@ -89,11 +84,6 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
             <div className="options__card__chat">
                 <StatementChatMore statement={statement} />
                 <div className="options__card__chat__settings">
-                    <StatementChatSetEdit
-                        isAuthrized={_isAuthrized}
-                        edit={edit}
-                        setEdit={setEdit}
-                    />
                     <StatementChatSetOption statement={statement} />
                 </div>
             </div>
