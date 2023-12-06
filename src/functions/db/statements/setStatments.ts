@@ -15,7 +15,8 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-
+import { isStatementTypeAllowed } from "../../general/helpers";
+import { get } from "lodash";
 
 const TextSchema = z.string().min(2);
 
@@ -34,9 +35,16 @@ export async function setStatmentToDB(
                 statement.parentId
             );
             const parentStatementDB = await getDoc(parentStatementRef);
+
             if (!parentStatementDB.exists())
                 throw new Error("Parent statement not found");
+
             const parentStatement = parentStatementDB.data() as Statement;
+
+            //prevent question under question and option under option
+            if (!isStatementTypeAllowed(parentStatement, statement))
+                throw new Error("Statement type not allowed");
+
             statement.parents = parentStatement.parents || [];
             statement.parents.push(parentStatement.statementId);
         }
@@ -233,24 +241,54 @@ export async function setStatementisOption(statement: Statement) {
             Collections.statements,
             statement.statementId
         );
-
+        const parentStatementRef = doc(
+            DB,
+            Collections.statements,
+            statement.parentId
+        );
         //get current statement
-        const statementDB = await getDoc(statementRef);
+        const [statementDB, parentStatementDB] = await Promise.all([
+            getDoc(statementRef),
+            getDoc(parentStatementRef),
+        ]);
+
         if (!statementDB.exists()) throw new Error("Statement not found");
 
         const statementDBData = statementDB.data() as Statement;
-        const { statementType } = statementDBData;
-        if (statementType === StatementType.option) {
-            await updateDoc(statementRef, {
-                statementType: StatementType.statement,
-            });
-        } else if (statementType === StatementType.statement) {
-            await updateDoc(statementRef, {
-                statementType: StatementType.option,
-            });
-        }
+        const parentStatementDBData = parentStatementDB.data() as Statement;
+
+        StatementSchema.parse(statementDBData);
+        StatementSchema.parse(parentStatementDBData);
+
+        await toggleStatementOption(
+            statementDBData,
+            statementDBData,
+            statementRef
+        );
     } catch (error) {
         console.error(error);
+    }
+
+    async function toggleStatementOption(
+        statement: Statement,
+        parentStatement: Statement,
+        statementRef: any
+    ) {
+        try {
+            if (statement.statementType === StatementType.option) {
+                await updateDoc(statementRef, {
+                    statementType: StatementType.statement,
+                });
+            } else if (statement.statementType === StatementType.statement) {
+                if (!isStatementTypeAllowed(statement, parentStatement))
+                    throw new Error("Statement type not allowed");
+                await updateDoc(statementRef, {
+                    statementType: StatementType.option,
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
 
@@ -316,10 +354,27 @@ export async function updateIsQuestion(statement: Statement) {
             Collections.statements,
             statement.statementId
         );
+
+        const parentStatementRef = doc(
+            DB,
+            Collections.statements,
+            statement.parentId
+        );
+        const parentStatementDB = await getDoc(parentStatementRef);
+        const parentStatement = parentStatementDB.data() as Statement;
+        StatementSchema.parse(parentStatement);
+
         let { statementType } = statement;
         if (statementType === StatementType.question)
             statementType = StatementType.statement;
-        else statementType = StatementType.question;
+        else {
+            if (parentStatement.statementType === StatementType.question)
+                throw new Error(
+                    "Statement type question can not be created under a question"
+                );
+
+            statementType = StatementType.question;
+        }
 
         const newStatementType = { statementType };
         await updateDoc(statementRef, newStatementType);

@@ -20,18 +20,21 @@ import StatementChatSetEdit from "./components/StatementChatSetEdit";
 import {
     isAuthorized,
     isOptionFn,
+    isStatementTypeAllowed,
 } from "../../../../../functions/general/helpers";
 
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 
 interface Props {
     statement: Statement;
+    parentStatement:Statement
     showImage: Function;
     setShowModal?: Function;
 }
 
 const StatementChat: FC<Props> = ({
     statement,
+    parentStatement,
     showImage,
     setShowModal = () => {},
 }) => {
@@ -98,7 +101,7 @@ const StatementChat: FC<Props> = ({
                             )}
                         </div>
                     </div>
-                    {statement.statementType === StatementType.option && (
+                    {statement.statementType === StatementType.option && isStatementTypeAllowed(parentStatement, statement) && (
                         <AddSubQuestion statement={statement} />
                     )}
                     {isQuestion || isOption ? (
@@ -124,5 +127,7 @@ const StatementChat: FC<Props> = ({
         </div>
     );
 };
+
+
 
 export default StatementChat;
