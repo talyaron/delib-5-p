@@ -86,18 +86,7 @@ const StatementChat: FC<Props> = ({
                         onClick={handleEdit}
                     >
                         <div className="statement__bubble__text__text">
-                            {!isEdit ? (
-                                <div>
-                                    {" "}
-                                    <Text text={statement.statement} />
-                                </div>
-                            ) : (
-                                <EditTitle
-                                    statement={statement}
-                                    setEdit={setIsEdit}
-                                    isTextArea={true}
-                                />
-                            )}
+                            <EditTitle statement={statement} isEdit={isEdit} setEdit={setIsEdit} />
                         </div>
                     </div>
                     {statement.statementType === StatementType.option && isStatementTypeAllowed(parentStatement, statement) && (

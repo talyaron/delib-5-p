@@ -2,16 +2,23 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 import { updateStatementText } from "../../../functions/db/statements/setStatments";
 import styles from "./EditTitle.module.scss";
+import Text from "../text/Text";
+import useDirection from "../../../functions/hooks/useDirection";
 
 interface Props {
     statement: Statement | undefined;
+    isEdit: boolean;
     setEdit: Function;
     isTextArea?: boolean;
 }
 
-const EditTitle: FC<Props> = ({ statement, setEdit, isTextArea }) => {
+const EditTitle: FC<Props> = ({ statement,isEdit, setEdit, isTextArea }) => {
     try {
         if (!statement) return null;
+
+        const _direction = useDirection();
+        const direction = _direction === "row" ? "ltr" : "rtl";
+        const align = _direction === "row" ? "left" : "right";
 
         const title = statement.statement.split("\n")[0];
         const description = statement.statement.split("\n").slice(1).join("\n");
@@ -43,6 +50,7 @@ const EditTitle: FC<Props> = ({ statement, setEdit, isTextArea }) => {
                 console.error(error);
             }
         }
+        if(!isEdit) return (<div style={{direction:direction, textAlign:align}}><Text text={statement.statement} /></div>)
 
         if (isTextArea)
             return (
