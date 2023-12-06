@@ -48,11 +48,10 @@ const StatementChat: FC<Props> = ({
     const [isEdit, setIsEdit] = useState(false);
 
     const userId = store.getState().user.user?.uid;
-    const displayName = store.getState().user.user?.displayName;
     
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(statement, statementSubscription);
-        console.log(displayName, statement.statement, _isAuthrized)
+      
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;

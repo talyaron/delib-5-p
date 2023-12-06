@@ -121,13 +121,13 @@ export function isAuthorized(
 
         const role = statementSubscription?.role || Role.guest;
 
-        console.log(user.displayName, statement.statement, "role", role);
+      
         if (
             role === Role.admin ||
             role === Role.statementCreator ||
             role === Role.systemAdmin
         ) {
-            console.log("authorized.....");
+          
             return true;
         }
 
