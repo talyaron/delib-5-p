@@ -2,7 +2,13 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { User, Statement, StatementSubscription, Role } from "delib-npm";
+import {
+    User,
+    Statement,
+    StatementSubscription,
+    Role,
+    StatementType,
+} from "delib-npm";
 import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
@@ -67,7 +73,6 @@ let unsubStatementSubscription: Function = () => {};
 let unsubEvaluations: Function = () => {};
 
 const Statement: FC = () => {
-   
     // Hooks
     const { statementId, page } = useParams();
     const navigate = useNavigate();
@@ -251,7 +256,13 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            <div className="page__header">
+            <div
+                className={
+                    statement?.statementType === StatementType.question
+                        ? "page__header page__header--question"
+                        : "page__heade"
+                }
+            >
                 <div
                     className="page__header__wrapper"
                     style={{ flexDirection: direction }}

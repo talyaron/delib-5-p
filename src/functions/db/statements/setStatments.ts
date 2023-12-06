@@ -15,7 +15,7 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import { isStatementTypeAllowed } from "../../general/helpers";
+import { isOptionFn, isStatementTypeAllowed } from "../../general/helpers";
 import { get } from "lodash";
 
 const TextSchema = z.string().min(2);
@@ -259,29 +259,36 @@ export async function setStatementisOption(statement: Statement) {
 
         StatementSchema.parse(statementDBData);
         StatementSchema.parse(parentStatementDBData);
+       
 
-        await toggleStatementOption(
-            statementDBData,
-            statementDBData,
-            statementRef
-        );
+        await toggleStatementOption(statementDBData, parentStatementDBData);
     } catch (error) {
         console.error(error);
     }
 
     async function toggleStatementOption(
         statement: Statement,
-        parentStatement: Statement,
-        statementRef: any
+        parentStatement: Statement
     ) {
         try {
+            const statementRef = doc(
+                DB,
+                Collections.statements,
+                statement.statementId
+            );
+
             if (statement.statementType === StatementType.option) {
                 await updateDoc(statementRef, {
                     statementType: StatementType.statement,
                 });
             } else if (statement.statementType === StatementType.statement) {
-                if (!isStatementTypeAllowed(statement, parentStatement))
-                    throw new Error("Statement type not allowed");
+                
+                if (!(parentStatement.statementType === StatementType.question))
+                    throw new Error(
+                        "You can't create option under option or statement"
+                    );
+
+               
                 await updateDoc(statementRef, {
                     statementType: StatementType.option,
                 });
