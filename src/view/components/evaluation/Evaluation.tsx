@@ -25,8 +25,8 @@ interface Props {
 }
 
 const Evaluation: FC<Props> = ({ statement }) => {
-    //TODO: make evaluation without useState, only with redux
-    
+    //TODO: make evaluation without useState, only with redux. it weill be more efficient
+
     const isOption = isOptionFn(statement);
     const direction = useDirection();
 
