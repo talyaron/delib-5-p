@@ -21,7 +21,7 @@ export default function Map() {
     return statementId ? (
         <Outlet />
     ) : (
-        <ScreenSlide className="page" toSubStatement={!slideLeft}>
+        <ScreenSlide className="page" slideFromRight={!slideLeft}>
             <div className="page__main">
                 <div className="wrapper">
                     {results.map((result, index) => (

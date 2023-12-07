@@ -34,7 +34,7 @@ const Main = () => {
         .types as StatementType[];
 
     return (
-        <ScreenSlide className="page__main" toSubStatement={true}>
+        <ScreenSlide className="page__main" slideFromRight={true}>
             <div className="wrapper">
                 <h2>{t("Conversations")}</h2>
                 <label>{t("Show")}</label>

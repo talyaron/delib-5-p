@@ -31,11 +31,10 @@ const StatementNav: FC<Props> = ({ statement }) => {
                         navObject.link === Screen.VOTE ? "/votes-voted" : ""
                     }`}
                     className={
-                        page === navObject.link ||
-                        (!navObject.link && page === undefined)
-                            ? isQuestion
-                                ? "statement__nav__button statement__nav__button--selected"
-                                : "statement__nav__button statement__nav__button--selected--question"
+                        page === navObject.link
+                            ? "statement__nav__button statement__nav__button--selected"
+                            : isQuestion
+                            ? "statement__nav__button statement__nav__button--selected--question"
                             : "statement__nav__button"
                     }
                 >

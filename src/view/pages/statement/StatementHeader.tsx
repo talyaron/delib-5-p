@@ -76,7 +76,7 @@ const StatementHeader: FC<Props> = ({
     })();
 
     function handleBack() {
-        if (location.state) {
+        if (location.state && location.state.from.includes("map")) {
             return navigate(location.state.from, {
                 state: { from: window.location.pathname },
             });

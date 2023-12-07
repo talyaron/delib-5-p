@@ -14,7 +14,7 @@ export const SetStatement = () => {
     const direction = useDirection();
 
     return (
-        <ScreenSlide toSubStatement={true} className="setStatement">
+        <ScreenSlide slideFromRight={true} className="setStatement">
             <div
                 className="setStatement__header"
                 style={{ flexDirection: direction }}
