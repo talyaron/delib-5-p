@@ -49,14 +49,14 @@ export default function StatementMap() {
         <div className="page">
             <div
                 className="page__header"
-                style={{ flexDirection: "row", gap: 10 }}
+                style={{ flexDirection: "row"}}
             >
                 <h1>{statement.top.statement}</h1>
                 <b>-</b>
                 <h2>Mind Map</h2>
                 <div
                     onClick={() =>
-                        navigate("/map", {
+                        navigate("/home/map", {
                             state: { from: window.location.pathname },
                         })
                     }

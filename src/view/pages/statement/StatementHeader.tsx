@@ -117,7 +117,7 @@ const StatementHeader: FC<Props> = ({
                 <div onClick={handleBack} style={{ cursor: "pointer" }}>
                     <ArrowBackIosIcon />
                 </div>
-                <Link to={"/home"}>
+                <Link state={{ from: window.location.pathname }} to={"/home"}>
                     <HomeIcon />
                 </Link>
                 <div onClick={handleRegisterToNotifications}>

@@ -19,7 +19,11 @@ export const SetStatement = () => {
                 className="setStatement__header"
                 style={{ flexDirection: direction }}
             >
-                <Link to={"/home"} className="setStatement__back">
+                <Link
+                    to={"/home"}
+                    state={{ from: window.location.pathname }}
+                    className="setStatement__back"
+                >
                     {" "}
                     <ArrowBackIosIcon />
                 </Link>
