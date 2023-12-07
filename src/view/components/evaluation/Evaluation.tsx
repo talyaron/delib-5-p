@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third Party Imports
 import { Statement } from "delib-npm";
@@ -19,11 +19,14 @@ import styles from "./Evaluation.module.scss";
 // Custom Hooks
 import useDirection from "../../../functions/hooks/useDirection";
 
+
 interface Props {
     statement: Statement;
 }
 
 const Evaluation: FC<Props> = ({ statement }) => {
+    //TODO: make evaluation without useState, only with redux
+    
     const isOption = isOptionFn(statement);
     const direction = useDirection();
 
@@ -39,6 +42,11 @@ const Evaluation: FC<Props> = ({ statement }) => {
 
     const { consensus: _consensus } = statement;
     const consensus = _consensus ? Math.round(_consensus * 100) / 100 : 0;
+
+    useEffect(() => {
+        setConVote(statement.con ? statement.con : 0);
+        setProVote(statement.pro ? statement.pro : 0);
+    },[statement])
 
     return (
         <div className={styles.evaluation}>

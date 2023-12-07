@@ -368,7 +368,7 @@ export function listenToStatementsOfStatment(
 
         return onSnapshot(q, (subsDB) => {
             subsDB.docChanges().forEach((change) => {
-                const statement = change.doc.data() as any;
+                const statement = change.doc.data() as Statement;
 
                 if (change.type === "added") {
                     updateStore(statement);
