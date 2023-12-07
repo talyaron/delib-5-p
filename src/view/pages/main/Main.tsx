@@ -12,10 +12,7 @@ import ScreenSlide from "../../components/animation/ScreenSlide";
 
 // Firestore functions
 import { logOut } from "../../../functions/db/auth";
-import {
-    FilterType,
 
-} from "../../../functions/general/sorting";
 
 // Redux store
 import {
