@@ -244,7 +244,15 @@ async function updateParentStatementWithChildResults(
             .orderBy("consensus", "desc")
             .limit(numberOfResults)
             .update({statementType: StatementType.result})
+
+
     } catch (error) {
         logger.error(error)
     }
 }
+
+async function updateParentWithResults(parentId:string){
+
+}
+
+

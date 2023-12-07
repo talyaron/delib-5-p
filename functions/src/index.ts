@@ -7,7 +7,7 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { updateEvaluation } from "./fn_evaluation";
+import { updateEvaluation, updateResultsCB } from "./fn_evaluation";
 import { updateResultsSettings } from "./fn_results";
 import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
@@ -29,6 +29,7 @@ export const db = getFirestore();
 // update subscribers when statement is updated
 //statements
 exports.updateSubscribedListners = onDocumentUpdated(`/${Collections.statements}/{statementId}`,updateSubscribedListnersCB);
+exports.updateResults = onDocumentUpdated(`/${Collections.statements}/{statementId}`,updateResultsCB);
 exports.updateParentWithNewMessage = onDocumentCreated(`/${Collections.statements}/{statementId}`,updateParentWithNewMessageCB);
 
 //notifications

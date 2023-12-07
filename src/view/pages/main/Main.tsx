@@ -25,7 +25,7 @@ import { setUser } from "../../../model/users/userSlice";
 // Other
 import { install } from "../../../main";
 import { prompStore } from "./mainCont";
-import MainCardRes from "./MainCardRes";
+import MainCardRes from "./MainCard2";
 
 const Main = () => {
     const navigate = useNavigate();
