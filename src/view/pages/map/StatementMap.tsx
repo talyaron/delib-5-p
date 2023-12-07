@@ -19,6 +19,7 @@ import { createInitialNodesAndEdges, getLayoutedElements } from "./mapCont";
 // Custom hooks
 import useSortStatements from "../../../functions/hooks/useSortStatements";
 import ArrowBackIosIcon from "../../icons/ArrowBackIosIcon";
+import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut";
 
 export default function StatementMap() {
     const { statementId } = useParams();
@@ -46,11 +47,8 @@ export default function StatementMap() {
     }, [statementId]);
 
     return (
-        <div className="page">
-            <div
-                className="page__header"
-                style={{ flexDirection: "row"}}
-            >
+        <ScreenFadeInOut className="page" duration={1}>
+            <div className="page__header" style={{ flexDirection: "row" }}>
                 <h1>{statement.top.statement}</h1>
                 <b>-</b>
                 <h2>Mind Map</h2>
@@ -84,6 +82,6 @@ export default function StatementMap() {
                     <Controls />
                 </ReactFlow>
             </div>
-        </div>
+        </ScreenFadeInOut>
     );
 }
