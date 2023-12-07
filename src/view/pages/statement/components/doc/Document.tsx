@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
 import { Results, Statement, StatementType } from "delib-npm";
@@ -25,11 +25,9 @@ import {
     useAppSelector,
 } from "../../../../../functions/hooks/reduxHooks";
 
-
 interface Props {
     statement: Statement;
 }
-
 
 const Document: FC<Props> = ({ statement }) => {
     const dispatch = useAppDispatch();
@@ -39,9 +37,13 @@ const Document: FC<Props> = ({ statement }) => {
     );
 
     const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
-
     const [results, setResults] = useState<Results>(_results[0]);
-    const [filterState, setFilter] = useState<FilterType>(FilterType.all);
+    const [filterState, setFilter] = useState<FilterType>(
+        FilterType.questionsResultsOptions
+    );
+    const [resultsType, setResultsType] = useState(
+        filterByStatementType(filterState).types as StatementType[]
+    );
 
     async function handleGetResults(ev: any) {
         try {
@@ -53,10 +55,9 @@ const Document: FC<Props> = ({ statement }) => {
             const childStatements = await getChildStatements(
                 statement.statementId
             );
-         
+
             dispatch(setStatements(childStatements));
-           
-            
+
             const _results = sortStatementsByHirarrchy([
                 statement,
                 ...childStatements,
@@ -66,16 +67,19 @@ const Document: FC<Props> = ({ statement }) => {
             console.error(error);
         }
     }
-    const resultsType = filterByStatementType(filterState)
-    .types as StatementType[];
+    // const resultsType = filterByStatementType(filterState)
+        // .types as StatementType[];
 
+        useEffect(() => {
+            setResultsType(filterByStatementType(filterState).types as StatementType[]);
+        }, [filterState]);
 
     return (
         <ScreenFadeInOut className="page__main">
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
-                    <select onChange={(ev: any) => setFilter(ev.target.value)}>
+                    <select onChange={(ev: any) => setFilter(ev.target.value)} defaultValue={FilterType.questionsResultsOptions}>
                         <option value={FilterType.questionsResults}>
                             {t("Questions and Results")}
                         </option>
