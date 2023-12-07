@@ -88,7 +88,7 @@ const StatementChat: FC<Props> = ({
                             <EditTitle statement={statement} isEdit={isEdit} setEdit={setIsEdit} />
                         </div>
                     </div>
-                    {statement.statementType === StatementType.option && isStatementTypeAllowed(parentStatement, statement) && (
+                    {isOptionFn(statement) && isStatementTypeAllowed(parentStatement, statement) && (
                         <AddSubQuestion statement={statement} />
                     )}
                     {isQuestion || isOption ? (
