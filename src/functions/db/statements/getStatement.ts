@@ -243,12 +243,12 @@ export function listenStatmentsSubsciptions(
                         "==",
                         StatementType.question
                     ),
-                    where(
-                        "statement.statementType",
-                        "==",
-                        StatementType.option
-                    ),
-                    where("statement.statementType", "==", StatementType.result)
+                    // where(
+                    //     "statement.statementType",
+                    //     "==",
+                    //     StatementType.option
+                    // ),
+                    // where("statement.statementType", "==", StatementType.result)
                 )
             ),
             orderBy("lastUpdate", "desc"),
