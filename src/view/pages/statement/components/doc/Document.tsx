@@ -1,11 +1,7 @@
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import {
-    Results,
-    Statement,
-    StatementType,
-} from "delib-npm";
+import { Results, Statement, StatementType } from "delib-npm";
 
 // Styles
 import styles from "./Document.module.scss";
@@ -18,7 +14,7 @@ import {
     FilterType,
     filterByStatementType,
     sortStatementsByHirarrchy,
-} from "../../../main/mainCont";
+} from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 import {
     setStatements,
@@ -41,8 +37,13 @@ const Document: FC<Props> = ({ statement }) => {
     );
 
     const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
-
     const [results, setResults] = useState<Results>(_results[0]);
+    const [filterState, setFilter] = useState<FilterType>(
+        FilterType.questionsResultsOptions
+    );
+    const [resultsType, setResultsType] = useState(
+        filterByStatementType(filterState).types as StatementType[]
+    );
 
     async function handleGetResults(ev: any) {
         try {
@@ -56,6 +57,7 @@ const Document: FC<Props> = ({ statement }) => {
             );
 
             dispatch(setStatements(childStatements));
+
             const _results = sortStatementsByHirarrchy([
                 statement,
                 ...childStatements,
@@ -65,15 +67,26 @@ const Document: FC<Props> = ({ statement }) => {
             console.error(error);
         }
     }
-    const resultsType: StatementType[] = filterByStatementType(
-        FilterType.questionsResultsOptions
-    ).types;
+    // const resultsType = filterByStatementType(filterState)
+        // .types as StatementType[];
+
+        useEffect(() => {
+            setResultsType(filterByStatementType(filterState).types as StatementType[]);
+        }, [filterState]);
 
     return (
         <ScreenFadeInOut className="page__main">
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
+                    <select onChange={(ev: any) => setFilter(ev.target.value)} defaultValue={FilterType.questionsResultsOptions}>
+                        <option value={FilterType.questionsResults}>
+                            {t("Questions and Results")}
+                        </option>
+                        <option value={FilterType.questionsResultsOptions}>
+                            {t("Questions, options and Results")}
+                        </option>
+                    </select>
                     <div className="btns">
                         <button onClick={handleGetResults}>
                             {t("Display Results")}

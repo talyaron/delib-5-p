@@ -12,7 +12,6 @@ import {
 
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
 
-
 //images
 
 import EditTitle from "../../../../../components/edit/EditTitle";
@@ -21,6 +20,7 @@ import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
 import { isAuthorized } from "../../../../../../functions/general/helpers";
 import StatementChatMore from "../../chat/StatementChatMore";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
+import { useNavigate } from "react-router";
 
 interface Props {
     statement: Statement;
@@ -30,6 +30,7 @@ interface Props {
 
 const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
@@ -37,7 +38,6 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const [show, setShow] = useState(false);
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
 
@@ -54,6 +54,10 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
         );
     }, []);
 
+    function handleGoToOption() {
+        if (!edit) navigate(`/statement/${statement.statementId}/chat`);
+    }
+
     return (
         <div
             className="options__card"
@@ -61,21 +65,20 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
             ref={elementRef}
         >
             <div className="options__card__main">
-                <div
-                    className="options__card__text text"
-                    onClick={() => setShow(!show)}
-                >
+                <div className="options__card__text text">
                     <StatementChatSetEdit
                         isAuthrized={_isAuthrized}
                         edit={edit}
                         setEdit={setEdit}
                     />
-                    <EditTitle
-                        statement={statement}
-                        isEdit={edit}
-                        setEdit={setEdit}
-                        isTextArea={true}
-                    />
+                    <div className="clickable" onClick={handleGoToOption}>
+                        <EditTitle
+                            statement={statement}
+                            isEdit={edit}
+                            setEdit={setEdit}
+                            isTextArea={true}
+                        />
+                    </div>
                 </div>
 
                 <Evaluation statement={statement} />
