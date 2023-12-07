@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 
 // Third party imports
 import { Results, Statement, StatementType } from "delib-npm";
@@ -30,7 +30,6 @@ interface Props {
     statement: Statement;
 }
 
-let results: Results = {};
 
 const Document: FC<Props> = ({ statement }) => {
     const dispatch = useAppDispatch();
@@ -42,7 +41,7 @@ const Document: FC<Props> = ({ statement }) => {
     const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
 
     const [results, setResults] = useState<Results>(_results[0]);
-    const [render, setRender] = useState<number>(0);
+    const [filterState, setFilter] = useState<FilterType>(FilterType.all);
 
     async function handleGetResults(ev: any) {
         try {
@@ -54,9 +53,9 @@ const Document: FC<Props> = ({ statement }) => {
             const childStatements = await getChildStatements(
                 statement.statementId
             );
-            console.log(childStatements);
+         
             dispatch(setStatements(childStatements));
-            setRender(render + 1);
+           
             
             const _results = sortStatementsByHirarrchy([
                 statement,
@@ -67,24 +66,23 @@ const Document: FC<Props> = ({ statement }) => {
             console.error(error);
         }
     }
-    const resultsType: StatementType[] = filterByStatementType(
-        FilterType.questionsResultsOptions
-    ).types;
+    const resultsType = filterByStatementType(filterState)
+    .types as StatementType[];
 
-    // useEffect(() => {
-    //     console.log(subStatements);
-    //     const _results = sortStatementsByHirarrchy([
-    //         statement,
-    //         ...subStatements,
-    //     ]);
-    //     setResults(_results[0]);
-    // }, [render]);
 
     return (
         <ScreenFadeInOut className="page__main">
             <div className="wrapper">
                 <section className={styles.resultsWrapper}>
                     <h2>{t("Discussion Results")}</h2>
+                    <select onChange={(ev: any) => setFilter(ev.target.value)}>
+                        <option value={FilterType.questionsResults}>
+                            {t("Questions and Results")}
+                        </option>
+                        <option value={FilterType.questionsResultsOptions}>
+                            {t("Questions, options and Results")}
+                        </option>
+                    </select>
                     <div className="btns">
                         <button onClick={handleGetResults}>
                             {t("Display Results")}

@@ -38,7 +38,6 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const [show, setShow] = useState(false);
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
 
