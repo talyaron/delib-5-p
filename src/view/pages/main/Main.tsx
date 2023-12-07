@@ -15,9 +15,8 @@ import { logOut } from "../../../functions/db/auth";
 import {
     FilterType,
     filterByStatementType,
-    prompStore,
     sortStatementsByHirarrchy,
-} from "./mainCont";
+} from "../../../functions/general/sorting";
 
 // Redux store
 import {
@@ -29,6 +28,7 @@ import { setUser } from "../../../model/users/userSlice";
 
 // Other
 import { install } from "../../../main";
+import { prompStore } from "./mainCont";
 
 const Main = () => {
     const navigate = useNavigate();

@@ -18,7 +18,7 @@ import {
     FilterType,
     filterByStatementType,
     sortStatementsByHirarrchy,
-} from "../../../main/mainCont";
+} from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 import {
     setStatements,
