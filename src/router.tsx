@@ -71,6 +71,26 @@ export const router = createBrowserRouter([
                         errorElement: <ErrorPage />,
                     },
                     {
+                        path: "map",
+                        element: (
+                            <Suspense fallback={<SuspenseFallback />}>
+                                <Map />
+                            </Suspense>
+                        ),
+                        errorElement: <ErrorPage />,
+                        children: [
+                            {
+                                path: ":statementId",
+                                element: (
+                                    <Suspense fallback={<SuspenseFallback />}>
+                                        <StatementMap />
+                                    </Suspense>
+                                ),
+                                errorElement: <ErrorPage />,
+                            },
+                        ],
+                    },
+                    {
                         path: "addStatment",
                         element: (
                             <Suspense fallback={<SuspenseFallback />}>
@@ -104,26 +124,6 @@ export const router = createBrowserRouter([
                         element: (
                             <Suspense fallback={<SuspenseFallback />}>
                                 <Statement />
-                            </Suspense>
-                        ),
-                        errorElement: <ErrorPage />,
-                    },
-                ],
-            },
-            {
-                path: "map",
-                element: (
-                    <Suspense fallback={<SuspenseFallback />}>
-                        <Map />
-                    </Suspense>
-                ),
-                errorElement: <ErrorPage />,
-                children: [
-                    {
-                        path: ":statementId",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <StatementMap />
                             </Suspense>
                         ),
                         errorElement: <ErrorPage />,
