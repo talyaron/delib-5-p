@@ -28,7 +28,7 @@ const Main = () => {
     const results = useSortStatements();
     const dispatch = useAppDispatch();
 
-    // Use State 
+    // Use State
     const [filterState, setFilter] = useState<FilterType>(FilterType.all);
     //for deffered app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -74,7 +74,15 @@ const Main = () => {
                             {t("Install the App")}
                         </button>
                     )}
-                    <button onClick={() => navigate("/map")}>Map</button>
+                    <button
+                        onClick={() =>
+                            navigate("/map", {
+                                state: { from: window.location.pathname },
+                            })
+                        }
+                    >
+                        Map
+                    </button>
                 </div>
             </div>
             <div className="page__main">

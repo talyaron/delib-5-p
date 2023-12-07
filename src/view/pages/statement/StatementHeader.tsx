@@ -6,7 +6,7 @@ import { store } from "../../../model/store";
 import { getUserPermissionToNotifications } from "../../../functions/notifications";
 
 //icons
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import ShareIcon from "../../icons/ShareIcon";
 import ArrowBackIosIcon from "../../icons/ArrowBackIosIcon";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
@@ -37,6 +37,7 @@ const StatementHeader: FC<Props> = ({
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const { statementId, page } = useParams();
+    const location = useLocation();
 
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId)
@@ -75,6 +76,11 @@ const StatementHeader: FC<Props> = ({
     })();
 
     function handleBack() {
+        if (location.state) {
+            return navigate(location.state.from, {
+                state: { from: window.location.pathname },
+            });
+        }
         if (statement?.parentId === "top") {
             navigate("/home", {
                 state: { from: window.location.pathname },

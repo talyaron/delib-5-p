@@ -18,6 +18,7 @@ import { createInitialNodesAndEdges, getLayoutedElements } from "./mapCont";
 
 // Custom hooks
 import useSortStatements from "../../../functions/hooks/useSortStatements";
+import ArrowBackIosIcon from "../../icons/ArrowBackIosIcon";
 
 export default function StatementMap() {
     const { statementId } = useParams();
@@ -45,21 +46,39 @@ export default function StatementMap() {
     }, [statementId]);
 
     return (
-        <div className="center">
-            <h1>Mind Map</h1>
+        <div className="page">
             <div
-                style={{
-                    height: "90vh",
-                    width: "100vw",
-                }}
+                className="page__header"
+                style={{ flexDirection: "row", gap: 10 }}
             >
+                <h1>{statement.top.statement}</h1>
+                <b>-</b>
+                <h2>Mind Map</h2>
+                <div
+                    onClick={() =>
+                        navigate("/map", {
+                            state: { from: window.location.pathname },
+                        })
+                    }
+                    style={{
+                        cursor: "pointer",
+                        position: "absolute",
+                        left: 20,
+                    }}
+                >
+                    <ArrowBackIosIcon />
+                </div>
+            </div>
+            <div style={{ height: "100vh", width: "100%" }}>
                 <ReactFlow
                     nodes={nodes}
                     edges={edges}
                     connectionLineType={ConnectionLineType.SmoothStep}
                     fitView
                     onNodeClick={(event, node) => {
-                        navigate(`/statement/${node.id}/chat`);
+                        navigate(`/statement/${node.id}/chat`, {
+                            state: { from: window.location.pathname },
+                        });
                     }}
                 >
                     <Controls />
