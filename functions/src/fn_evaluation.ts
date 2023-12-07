@@ -1,5 +1,5 @@
-import { logger } from "firebase-functions/v1"
-import { db } from "./index"
+import { logger } from "firebase-functions/v1";
+import { db } from "./index";
 
 // import { logBase } from "./helpers";
 import {
@@ -10,8 +10,9 @@ import {
     SimpleStatement,
     Statement,
     StatementSchema,
-    StatementType
-} from "delib-npm"
+    StatementType,
+    statementToSimpleStatement,
+} from "delib-npm";
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
@@ -23,60 +24,60 @@ export async function updateEvaluation(event: any) {
             evaluation,
             previousEvaluation,
             error,
-        } = getEvaluationInfo()
-        if (error) throw error
+        } = getEvaluationInfo();
+        if (error) throw error;
 
-        const statementRef = db.collection("statements").doc(statementId)
+        const statementRef = db.collection("statements").doc(statementId);
         const { newPro, newCon } = await setNewEvaluation(
             statementRef,
             evaluationDeferneces,
             evaluation,
             previousEvaluation
-        )
+        );
 
-        // Consensus calculations
+        // Fairness calculations (social choice theory)
         // The aim of the consesus calulation is to give statement with more positive evaluation and less vegative evaluations,
         // while letting small groups with heigher consesus an uper hand, over large groups with alot of negative evaluations.
 
-        const sumEvaluation = newPro - newCon
-        const n = newPro + Math.abs(newCon)
-        const consensusScore = sumEvaluation / n
+        const sumEvaluation = newPro - newCon;
+        const n = newPro + Math.abs(newCon);
+        const consensusScore = sumEvaluation / n;
         const consensus =
-            Math.log2(Math.abs(consensusScore) + 1) *
-            Math.sign(consensusScore) *
-            Math.log2(n)
-        // const consensus =logBase(Math.abs(consensusScore), 2)*Math.sign(consensusScore);
+            Math.abs(consensusScore) *
+            Math.sign(newPro - newCon) *
+            Math.log2(n);
 
         //set consensus to statement in DB
-        await statementRef.update({ consensus })
+        await statementRef.update({ consensus });
 
         //update parent statement?
         //get parent statement
-        updateParentStatementWithChildResults(parentId)
+        updateParentStatementWithChildResults(parentId);
     } catch (error) {
-        logger.error(error)
-        return
+        logger.error(error);
+        return;
     }
 
     //inner functions
 
     function getEvaluationInfo() {
         try {
-            const statementEvaluation = event.data.after.data() as Evaluation
-            EvaluationSchema.parse(statementEvaluation)
-            const { evaluation, statementId, parentId } = statementEvaluation
+            const statementEvaluation = event.data.after.data() as Evaluation;
+            EvaluationSchema.parse(statementEvaluation);
+            const { evaluation, statementId, parentId } = statementEvaluation;
 
-            const dataBefore = event.data.before.data()
-            let previousEvaluation = 0
-            if (dataBefore) previousEvaluation = dataBefore.evaluation || 0
+            const dataBefore = event.data.before.data();
+            let previousEvaluation = 0;
+            if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
             if (isNaN(previousEvaluation))
-                throw new Error("previousEvaluation is not a number")
-            if (isNaN(evaluation)) throw new Error("evaluation is not a number")
+                throw new Error("previousEvaluation is not a number");
+            if (isNaN(evaluation))
+                throw new Error("evaluation is not a number");
 
             const evaluationDeferneces: number =
-                evaluation - previousEvaluation || 0
+                evaluation - previousEvaluation || 0;
             if (!evaluationDeferneces)
-                throw new Error("evaluationDeferneces is not defined")
+                throw new Error("evaluationDeferneces is not defined");
 
             return {
                 parentId,
@@ -84,10 +85,10 @@ export async function updateEvaluation(event: any) {
                 evaluationDeferneces,
                 evaluation,
                 previousEvaluation,
-            }
+            };
         } catch (error: any) {
-            logger.error(error)
-            return { error: error.message }
+            logger.error(error);
+            return { error: error.message };
         }
     }
 
@@ -97,49 +98,49 @@ export async function updateEvaluation(event: any) {
         evaluation: number = 0,
         previousEvaluation: number | undefined
     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
-        const results = { newCon: 0, newPro: 0, totalEvaluators: 0 }
+        const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
         await db.runTransaction(async (t: any) => {
             try {
                 if (!evaluationDeferneces)
-                    throw new Error("evaluationDeferneces is not defined")
+                    throw new Error("evaluationDeferneces is not defined");
                 if (evaluation === undefined)
-                    throw new Error("evaluation is not defined")
+                    throw new Error("evaluation is not defined");
                 if (previousEvaluation === undefined)
-                    throw new Error("previousEvaluation is not defined error")
+                    throw new Error("previousEvaluation is not defined error");
 
-                const statementDB = await t.get(statementRef)
+                const statementDB = await t.get(statementRef);
 
                 if (!statementDB.exists) {
-                    throw new Error("statement does not exist")
+                    throw new Error("statement does not exist");
                 }
 
-                const oldPro = statementDB.data().pro || 0
-                const oldCon = statementDB.data().con || 0
+                const oldPro = statementDB.data().pro || 0;
+                const oldCon = statementDB.data().con || 0;
 
                 const { newCon, newPro, totalEvaluators } = updateProCon(
                     oldPro,
                     oldCon,
                     evaluation,
                     previousEvaluation
-                )
-                results.newCon = newCon
-                results.newPro = newPro
-                results.totalEvaluators = totalEvaluators
+                );
+                results.newCon = newCon;
+                results.newPro = newPro;
+                results.totalEvaluators = totalEvaluators;
 
                 t.update(statementRef, {
                     totalEvaluations: newCon + newPro,
                     con: newCon,
                     pro: newPro,
-                })
+                });
 
-                return results
+                return results;
             } catch (error) {
-                logger.error(error)
-                return results
+                logger.error(error);
+                return results;
             }
-        })
+        });
 
-        return results
+        return results;
 
         function updateProCon(
             oldPro: number,
@@ -148,22 +149,19 @@ export async function updateEvaluation(event: any) {
             previousEvaluation: number
         ): { newPro: number; newCon: number; totalEvaluators: number } {
             try {
-                logger.info(`oldPro: ${oldPro}, oldCon: ${oldCon}`)
-                let newPro = oldPro
-                let newCon = oldCon
+                let newPro = oldPro;
+                let newCon = oldCon;
 
-                const { pro, con } = clacProCon(previousEvaluation, evaluation)
-                logger.info(`pro: ${pro}, con: ${con}`)
-                newPro += pro
-                newCon += con
-                const totalEvaluators: number = newPro + newCon
+                const { pro, con } = clacProCon(previousEvaluation, evaluation);
 
-                logger.info(`newPro: ${newPro}, newCon: ${newCon}`)
+                newPro += pro;
+                newCon += con;
+                const totalEvaluators: number = newPro + newCon;
 
-                return { newPro, newCon, totalEvaluators }
+                return { newPro, newCon, totalEvaluators };
             } catch (error) {
-                logger.error(error)
-                return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 }
+                logger.error(error);
+                return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
             }
         }
     }
@@ -172,31 +170,31 @@ export async function updateEvaluation(event: any) {
 function clacProCon(prev: number, curr: number): { pro: number; con: number } {
     try {
         let pro = 0,
-            con = 0
+            con = 0;
         if (prev > 0) {
-            pro = -prev
+            pro = -prev;
         } else if (prev < 0) {
-            con = prev
+            con = prev;
         }
 
         if (curr > 0) {
-            pro += curr
+            pro += curr;
         } else if (curr < 0) {
-            con -= curr
+            con -= curr;
         }
-        return { pro, con }
+        return { pro, con };
     } catch (error) {
-        console.error(error)
-        return { pro: 0, con: 0 }
+        console.error(error);
+        return { pro: 0, con: 0 };
     }
 }
 
 interface ResultsSettings {
-    resultsBy: ResultsBy
-    numberOfResults?: number
-    deep?: number
-    minConsensus?: number
-    solutions?: SimpleStatement[]
+    resultsBy: ResultsBy;
+    numberOfResults?: number;
+    deep?: number;
+    minConsensus?: number;
+    solutions?: SimpleStatement[];
 }
 
 function getResultsSettings(
@@ -205,9 +203,9 @@ function getResultsSettings(
     if (!results) {
         return {
             resultsBy: ResultsBy.topOne,
-        }
+        };
     } else {
-        return results
+        return results;
     }
 }
 
@@ -215,44 +213,87 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined
 ) {
     try {
-        if (!parentId) throw new Error("parentId is not defined")
+        logger.info("updateParentStatementWithChildResults");
+        if (!parentId) throw new Error("parentId is not defined");
 
-        const parentStatementRef = db.collection("statements").doc(parentId)
-        const parentStatementDB = await parentStatementRef.get()
+        //get parent statement
+        const parentStatementRef = db.collection("statements").doc(parentId);
+        const parentStatementDB = await parentStatementRef.get();
         if (!parentStatementDB.exists)
-            throw new Error("parentStatement does not exist")
+            throw new Error("parentStatement does not exist");
+        const parentStatement = parentStatementDB.data() as Statement;
+        StatementSchema.parse(parentStatement);
 
-        const parentStatement = parentStatementDB.data() as Statement
-        StatementSchema.parse(parentStatement)
-
-        const { resultsSettings } = parentStatement
+        //get resutls settings
+        const { resultsSettings } = parentStatement;
         const { resultsBy, numberOfResults } =
-            getResultsSettings(resultsSettings)
+            getResultsSettings(resultsSettings);
+        logger.info(
+            "resultsBy:",
+            resultsBy,
+            "numberOfResults:",
+            numberOfResults
+        );
+        //this function is responsible for converting the results of evaluation of options
 
-        if (resultsBy !== ResultsBy.topOptions) return
-
-        await db
+        if (resultsBy !== ResultsBy.topOptions) {
+            logger.info("resultsBy is not topOptions");
+            return;
+        }
+        //update child statements if they are results or options
+        const childStatementsRef = db
             .collection(Collections.statements)
             .where("parentId", "==", parentId)
-            .where("statementType", "==", StatementType.result)
-            .update({ statementType: StatementType.option })
-
-        await db
-            .collection(Collections.statements)
-            .where("parentId", "==", parentId)
-            .where("statementType", "==", StatementType.option)
             .orderBy("consensus", "desc")
-            .limit(numberOfResults)
-            .update({statementType: StatementType.result})
+            .limit(numberOfResults);
 
+        const childStatementsDB = await childStatementsRef.get();
+        const childStatements = childStatementsDB.docs.map(
+            (doc: any) => doc.data() as Statement
+        );
 
+        const childStatementsSimple = childStatements.map((st: Statement) =>
+            statementToSimpleStatement(st)
+        );
+
+        const childIds = childStatements.map((st: Statement) => st.statementId);
+
+        logger.info("childStatements", childStatementsSimple);
+
+        //update parent with results
+        await db.collection(Collections.statements).doc(parentId).update({
+            totalResults: numberOfResults,
+            results: childStatementsSimple,
+        });
+
+        //update previous results to be of type option
+        const statementsDB = await db
+            .collection(Collections.statements)
+            .where("parentId", "==", parentId)
+            .where("statementType", "!=", StatementType.statement)
+            .get();
+
+        await statementsDB.forEach(async (stDB: any) => {
+            const st = stDB.data() as Statement;
+
+            //update childstatment selectd to be of type result
+            if (childIds.includes(st.statementId)) {
+                db.collection(Collections.statements)
+                    .doc(st.statementId)
+                    .update({ statementType: StatementType.result });
+            } else if (st.statementType === StatementType.result) {
+                db.collection(Collections.statements)
+                    .doc(st.statementId)
+                    .update({ statementType: StatementType.option });
+            }
+        });
+
+        //update childstatment selectd to be of type result
     } catch (error) {
-        logger.error(error)
+        logger.error(error);
     }
 }
 
-async function updateParentWithResults(parentId:string){
+// async function updateParentWithResults(parentId:string){
 
-}
-
-
+// }

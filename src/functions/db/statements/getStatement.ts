@@ -29,6 +29,7 @@ import { DB } from "../config";
 // Redux Store
 import { store } from "../../../model/store";
 import _ from "lodash";
+import { stat } from "fs";
 
 export function listenToTopStatements(
     setStatementsCB: Function,
@@ -176,6 +177,10 @@ export function listenToStatementSubscription(
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             const statementSubscription =
                 statementSubscriptionDB.data() as StatementSubscription;
+
+                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+
+               if(!Array.isArray(statementSubscription.statement.results)) statementSubscription.statement.results = [] 
 
             StatementSubscriptionSchema.parse(statementSubscription);
 

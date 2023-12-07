@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import {
     useAppDispatch,
     useAppSelector,
@@ -60,7 +60,11 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
     return (
         <div
-            className="options__card"
+            className={
+                statement.statementType === StatementType.result
+                    ? "options__card options__card--result"
+                    : "options__card"
+            }
             style={{ top: `${newTop}px` }}
             ref={elementRef}
         >
