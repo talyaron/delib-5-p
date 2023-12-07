@@ -1,7 +1,5 @@
 import React from "react";
 import { NodeProps } from "reactflow";
-import { nodeHeight, nodeWidth } from "./StatementMap";
-import { Results } from "delib-npm";
 
 const resultColor = "#8FF18F";
 const questionColor = "#5252FD";
@@ -12,8 +10,8 @@ const backgroundColor = (isOption: boolean) =>
 const nodeStyle = (isOption: boolean) => {
     const style = {
         backgroundColor: backgroundColor(isOption),
-        width: nodeWidth,
-        height: nodeHeight,
+        width: "auto",
+        height: "auto",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
