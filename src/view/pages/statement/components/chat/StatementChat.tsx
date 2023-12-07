@@ -23,6 +23,7 @@ import {
 } from "../../../../../functions/general/helpers";
 
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
+import { useNavigate } from "react-router";
 
 interface Props {
     statement: Statement;
@@ -34,18 +35,15 @@ interface Props {
 const StatementChat: FC<Props> = ({
     statement,
     parentStatement,
-    showImage,
-    setShowModal = () => {},
+    showImage
 }) => {
+
+    const navigate = useNavigate();
     const { statementType } = statement;
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId)
     );
-
-    // const [show, setShow] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
-
     const userId = store.getState().user.user?.uid;
     
     const creatorId = statement.creatorId;
@@ -56,8 +54,10 @@ const StatementChat: FC<Props> = ({
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
 
-    function handleEdit() {
-        setShowModal((showModal: boolean) => !showModal);
+    const [isEdit, setIsEdit] = useState(false);
+
+    function handleGoToStatement() {
+        navigate(`/statement/${statement.statementId}/chat`)
     }
 
     return (
@@ -81,8 +81,8 @@ const StatementChat: FC<Props> = ({
             >
                 <div className={bubbleclass(isQuestion, isMe)}>
                     <div
-                        className="statement__bubble__text"
-                        onClick={handleEdit}
+                        className="statement__bubble__text clickable"
+                        onClick={handleGoToStatement}
                     >
                         <div className="statement__bubble__text__text">
                             <EditTitle statement={statement} isEdit={isEdit} setEdit={setIsEdit} />
