@@ -8,7 +8,7 @@ import { Statement } from "delib-npm"
 import Text from "../../../components/text/Text"
 import Edit from "../../../components/edit/Edit"
 import StatementChat from "./chat/StatementChatMore"
-import Solution from "./general/Solution"
+
 
 interface Props {
     statement: Statement
@@ -28,7 +28,7 @@ const StatementCard: FC<Props> = ({ statement }) => {
                 <div className="statementCard__main">
                     <Text text={title} />
                     {_description ? <Text text={description} /> : null}
-                    <Solution statement={statement} />
+                  
                 </div>
             </Link>
             <div className="statementCard__more">

@@ -1,11 +1,7 @@
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import {
-    Results,
-    Statement,
-    StatementType,
-} from "delib-npm";
+import { Results, Statement, StatementType } from "delib-npm";
 
 // Styles
 import styles from "./Document.module.scss";
@@ -29,9 +25,12 @@ import {
     useAppSelector,
 } from "../../../../../functions/hooks/reduxHooks";
 
+
 interface Props {
     statement: Statement;
 }
+
+let results: Results = {};
 
 const Document: FC<Props> = ({ statement }) => {
     const dispatch = useAppDispatch();
@@ -43,6 +42,7 @@ const Document: FC<Props> = ({ statement }) => {
     const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
 
     const [results, setResults] = useState<Results>(_results[0]);
+    const [render, setRender] = useState<number>(0);
 
     async function handleGetResults(ev: any) {
         try {
@@ -54,8 +54,10 @@ const Document: FC<Props> = ({ statement }) => {
             const childStatements = await getChildStatements(
                 statement.statementId
             );
-
+            console.log(childStatements);
             dispatch(setStatements(childStatements));
+            setRender(render + 1);
+            
             const _results = sortStatementsByHirarrchy([
                 statement,
                 ...childStatements,
@@ -68,6 +70,15 @@ const Document: FC<Props> = ({ statement }) => {
     const resultsType: StatementType[] = filterByStatementType(
         FilterType.questionsResultsOptions
     ).types;
+
+    // useEffect(() => {
+    //     console.log(subStatements);
+    //     const _results = sortStatementsByHirarrchy([
+    //         statement,
+    //         ...subStatements,
+    //     ]);
+    //     setResults(_results[0]);
+    // }, [render]);
 
     return (
         <ScreenFadeInOut className="page__main">

@@ -27,7 +27,7 @@ import { useNavigate } from "react-router";
 
 interface Props {
     statement: Statement;
-    parentStatement:Statement
+    parentStatement: Statement;
     showImage: Function;
     setShowModal?: Function;
 }
@@ -35,9 +35,8 @@ interface Props {
 const StatementChat: FC<Props> = ({
     statement,
     parentStatement,
-    showImage
+    showImage,
 }) => {
-
     const navigate = useNavigate();
     const { statementType } = statement;
 
@@ -45,10 +44,9 @@ const StatementChat: FC<Props> = ({
         statementSubscriptionSelector(statement.parentId)
     );
     const userId = store.getState().user.user?.uid;
-    
+
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(statement, statementSubscription);
-      
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
@@ -57,7 +55,7 @@ const StatementChat: FC<Props> = ({
     const [isEdit, setIsEdit] = useState(false);
 
     function handleGoToStatement() {
-        navigate(`/statement/${statement.statementId}/chat`)
+        if (!isEdit) navigate(`/statement/${statement.statementId}/chat`);
     }
 
     return (
@@ -85,12 +83,17 @@ const StatementChat: FC<Props> = ({
                         onClick={handleGoToStatement}
                     >
                         <div className="statement__bubble__text__text">
-                            <EditTitle statement={statement} isEdit={isEdit} setEdit={setIsEdit} />
+                            <EditTitle
+                                statement={statement}
+                                isEdit={isEdit}
+                                setEdit={setIsEdit}
+                            />
                         </div>
                     </div>
-                    {isOptionFn(statement) && isStatementTypeAllowed(parentStatement, statement) && (
-                        <AddSubQuestion statement={statement} />
-                    )}
+                    {isOptionFn(statement) &&
+                        isStatementTypeAllowed(parentStatement, statement) && (
+                            <AddSubQuestion statement={statement} />
+                        )}
                     {isQuestion || isOption ? (
                         <div className="statement__bubble__more">
                             <StatementChatMore statement={statement} />
@@ -99,9 +102,17 @@ const StatementChat: FC<Props> = ({
                 </div>
             </div>
             <div className="statement__chatCard__right">
-                {_isAuthrized  && !isQuestion && parentStatement.statementType === StatementType.question ? <StatementChatSetOption statement={statement} />:null}
-                {_isAuthrized &&  !isOption && (parentStatement.statementType !== StatementType.question) ? <StatementChatSetQuestion statement={statement} />:null}
-            
+                {_isAuthrized &&
+                !isQuestion &&
+                parentStatement.statementType === StatementType.question ? (
+                    <StatementChatSetOption statement={statement} />
+                ) : null}
+                {_isAuthrized &&
+                !isOption &&
+                parentStatement.statementType !== StatementType.question ? (
+                    <StatementChatSetQuestion statement={statement} />
+                ) : null}
+
                 <StatementChatSetEdit
                     isAuthrized={_isAuthrized}
                     setEdit={setIsEdit}
@@ -111,7 +122,5 @@ const StatementChat: FC<Props> = ({
         </div>
     );
 };
-
-
 
 export default StatementChat;

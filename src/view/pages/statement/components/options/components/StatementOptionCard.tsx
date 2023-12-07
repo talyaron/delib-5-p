@@ -56,7 +56,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
     }, []);
 
     function handleGoToOption() {
-        navigate(`/statement/${statement.statementId}/chat`);
+        if (!edit) navigate(`/statement/${statement.statementId}/chat`);
     }
 
     return (
