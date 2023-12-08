@@ -3,7 +3,7 @@ import { Statement, Collections } from "delib-npm";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 
-export async function setEvaluation(
+export async function setEvaluationToDB(
     statement: Statement,
     evaluation: number
 ): Promise<void> {

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 // Third Party Imports
 import { Statement } from "delib-npm";
@@ -7,10 +7,9 @@ import { Statement } from "delib-npm";
 import Thumbs from "../thumbs/Thumbs";
 
 // Redux Store
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 
 // Stetement helpers
-import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice";
+
 import { isOptionFn } from "../../../functions/general/helpers";
 
 // Style
@@ -19,34 +18,18 @@ import styles from "./Evaluation.module.scss";
 // Custom Hooks
 import useDirection from "../../../functions/hooks/useDirection";
 
-
 interface Props {
     statement: Statement;
 }
 
 const Evaluation: FC<Props> = ({ statement }) => {
-    //TODO: make evaluation without useState, only with redux. it weill be more efficient
+    const { con, pro } = statement;
 
     const isOption = isOptionFn(statement);
     const direction = useDirection();
 
-    const initContVote = statement.con ? statement.con : 0;
-    const initProVote = statement.pro ? statement.pro : 0;
-
-    const [conVote, setConVote] = useState(initContVote);
-    const [proVote, setProVote] = useState(initProVote);
-
-    const evaluation = useAppSelector(
-        evaluationSelector(statement.statementId)
-    );
-
     const { consensus: _consensus } = statement;
     const consensus = _consensus ? Math.round(_consensus * 100) / 100 : 0;
-
-    useEffect(() => {
-        setConVote(statement.con ? statement.con : 0);
-        setProVote(statement.pro ? statement.pro : 0);
-    },[statement])
 
     return (
         <div className={styles.evaluation}>
@@ -58,31 +41,17 @@ const Evaluation: FC<Props> = ({ statement }) => {
                     className="options__card__more__vote__down"
                     style={{ flexDirection: direction }}
                 >
-                    <span>{conVote}</span>
+                    <span>{con}</span>
                     {isOption && (
-                        <Thumbs
-                            evaluation={evaluation}
-                            upDown="down"
-                            statement={statement}
-                            setConVote={setConVote}
-                            setProVote={setProVote}
-                        />
+                        <Thumbs statement={statement} upDown={"down"} />
                     )}
                 </div>
                 <div
                     className="options__card__more__vote__up"
                     style={{ flexDirection: direction }}
                 >
-                    {isOption && (
-                        <Thumbs
-                            evaluation={evaluation}
-                            upDown="up"
-                            statement={statement}
-                            setProVote={setProVote}
-                            setConVote={setConVote}
-                        />
-                    )}
-                    <span>{proVote}</span>
+                    {isOption && <Thumbs statement={statement} upDown={"up"} />}
+                    <span>{pro}</span>
                 </div>
             </div>
             <div className={styles.consensus}>{consensus}</div>
