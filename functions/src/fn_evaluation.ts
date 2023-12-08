@@ -213,7 +213,7 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined
 ) {
     try {
-        logger.info("updateParentStatementWithChildResults");
+    
         if (!parentId) throw new Error("parentId is not defined");
 
         //get parent statement
@@ -228,16 +228,11 @@ async function updateParentStatementWithChildResults(
         const { resultsSettings } = parentStatement;
         const { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
-        logger.info(
-            "resultsBy:",
-            resultsBy,
-            "numberOfResults:",
-            numberOfResults
-        );
+       
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
-            logger.info("resultsBy is not topOptions");
+           
             return;
         }
         //update child statements if they are results or options
@@ -258,7 +253,6 @@ async function updateParentStatementWithChildResults(
 
         const childIds = childStatements.map((st: Statement) => st.statementId);
 
-        logger.info("childStatements", childStatementsSimple);
 
         //update parent with results
         await db.collection(Collections.statements).doc(parentId).update({

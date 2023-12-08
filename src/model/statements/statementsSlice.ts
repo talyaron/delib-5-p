@@ -16,7 +16,7 @@ import { z } from "zod";
 
 // Helpers
 import { updateArray } from "../../functions/general/helpers";
-import { stat } from "fs";
+
 
 enum StatementScreen {
     chat = "chat",
@@ -37,6 +37,11 @@ interface StatementsState {
 interface StatementOrder {
     statementId: string;
     order: number;
+}
+
+interface SetEvaluation{
+    statementId: string;
+    evaluation: number;
 }
 
 // Define the initial state using that type
@@ -289,7 +294,7 @@ export const {
     setScreen,
     setStatementElementHight,
     setMembership,
-    removeMembership,
+    removeMembership
 } = statementsSlicer.actions;
 
 // statements
