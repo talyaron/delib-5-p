@@ -71,7 +71,7 @@ const StatementMain: FC<Props> = ({
             </div>
         </ScreenFadeInOut>
     ) : (
-        <ScreenSlide className="page__main" toSubStatement={toSubStatement}>
+        <ScreenSlide className="page__main" slideFromRight={toSubStatement}>
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>

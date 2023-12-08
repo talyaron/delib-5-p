@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@barba/core": "^2.9.7",
+    "@dagrejs/dagre": "^1.0.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.13.7",
@@ -37,6 +38,7 @@
     "react-query": "^3.39.3",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.19.0",
+    "reactflow": "^11.10.1",
     "rollup-plugin-visualizer": "^5.10.0",
     "sass": "^1.63.6",
     "sort-by": "^1.2.0",

@@ -14,12 +14,16 @@ export const SetStatement = () => {
     const direction = useDirection();
 
     return (
-        <ScreenSlide toSubStatement={true} className="setStatement">
+        <ScreenSlide slideFromRight={true} className="setStatement">
             <div
                 className="setStatement__header"
                 style={{ flexDirection: direction }}
             >
-                <Link to={"/home"} className="setStatement__back">
+                <Link
+                    to={"/home"}
+                    state={{ from: window.location.pathname }}
+                    className="setStatement__back"
+                >
                     {" "}
                     <ArrowBackIosIcon />
                 </Link>

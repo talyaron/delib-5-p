@@ -7,8 +7,8 @@
         display: flex;
         flex-direction: column;
         flex: auto;
-        min-width: 0px;
-        overflow-x: auto;
+        max-width: 75ch;
+        margin: 0 auto;
     }
 
     // .wrapper {

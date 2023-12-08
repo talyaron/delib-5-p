@@ -2,12 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import {
-    User,
-    Statement,
-    StatementSubscription,
-    Role
-} from "delib-npm";
+import { User, Statement, StatementSubscription, Role } from "delib-npm";
 import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
@@ -201,7 +196,7 @@ const Statement: FC = () => {
             ) : null}
             <AnimatePresence mode="wait" initial={false}>
                 <SwitchScreens
-                    key={statementId}
+                    key={window.location.pathname}
                     screen={page}
                     statement={statement}
                     subStatements={subStatements}
