@@ -2,21 +2,17 @@ import React, { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
-import { Results, StatementType } from "delib-npm";
+
 import { t } from "i18next";
 
 // Custom components
 import Fav from "../../components/fav/Fav";
-import MainCard from "./mainCard/MainCard";
+
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
 // Firestore functions
 import { logOut } from "../../../functions/db/auth";
-import {
-    FilterType,
-    filterByStatementType,
-    sortStatementsByHirarrchy,
-} from "../../../functions/general/sorting";
+
 
 // Redux store
 import {
@@ -29,11 +25,11 @@ import { setUser } from "../../../model/users/userSlice";
 // Other
 import { install } from "../../../main";
 import { prompStore } from "./mainCont";
+import MainCardRes from "./MainCard2";
 
 const Main = () => {
     const navigate = useNavigate();
 
-    const [filterState, setFilter] = useState<FilterType>(FilterType.all);
 
     const statements = [
         ...useAppSelector(statementsSubscriptionsSelector),
@@ -67,10 +63,7 @@ const Main = () => {
         logOut();
         dispatch(setUser(null));
     }
-    const resultsType = filterByStatementType(filterState)
-        .types as StatementType[];
-    const _statements = [...statements.map((statement) => statement.statement)];
-    const _results = sortStatementsByHirarrchy(_statements);
+
 
     return (
         <ScreenSlide className="page" toSubStatement={true}>
@@ -92,24 +85,11 @@ const Main = () => {
             <div className="page__main">
                 <div className="wrapper">
                     <h2>{t("Conversations")}</h2>
-                    <label>{t("Show")}</label>
-                    <select onChange={(ev: any) => setFilter(ev.target.value)}>
-                        <option value={FilterType.all}>{t("All")}</option>
-                        <option value={FilterType.questions}>
-                            {t("Questions")}
-                        </option>
-                        <option value={FilterType.questionsResults}>
-                            {t("Questions and Results")}
-                        </option>
-                        <option value={FilterType.questionsResultsOptions}>
-                            {t("Questions, options and Results")}
-                        </option>
-                    </select>
-                    {_results.map((result: Results) => (
-                        <MainCard
-                            key={result.top.statementId}
-                            results={result}
-                            resultsType={resultsType}
+                    
+                    {statements.map((statement) => (
+                        <MainCardRes
+                            key={statement.statement.statementId}
+                            statement={statement.statement}
                         />
                     ))}
                 </div>

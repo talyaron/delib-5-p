@@ -16,6 +16,7 @@ import { z } from "zod";
 
 // Helpers
 import { updateArray } from "../../functions/general/helpers";
+import { stat } from "fs";
 
 enum StatementScreen {
     chat = "chat",
@@ -57,6 +58,10 @@ export const statementsSlicer = createSlice({
             try {
                 const newStatement = { ...action.payload };
 
+                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+                if(!Array.isArray(newStatement.results)) newStatement.results = [];
+
+
                 StatementSchema.parse(newStatement);
                 newStatement.order = 0;
                 const oldStatement = state.statements.find(
@@ -87,6 +92,11 @@ export const statementsSlicer = createSlice({
         setStatements: (state, action: PayloadAction<Statement[]>) => {
             try {
                 const statements = action.payload;
+                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+                statements.forEach((statement) => {
+                    if(!Array.isArray(statement.results)) statement.results = [];
+                });
+                
                 z.array(StatementSchema).parse(statements);
 
                 statements.forEach((statement) => {

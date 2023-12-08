@@ -55,7 +55,7 @@ export async function setStatmentToDB(
         statement.statementType =
             statement.statementType || StatementType.statement;
         const { results, resultsSettings } = statement;
-        if (!results) statement.results = { consensus: [], votes: [] };
+        if (!results) statement.results = [];
         if (!resultsSettings)
             statement.resultsSettings = { resultsBy: ResultsBy.topVote };
 

@@ -29,6 +29,7 @@ import { DB } from "../config";
 // Redux Store
 import { store } from "../../../model/store";
 import _ from "lodash";
+import { stat } from "fs";
 
 export function listenToTopStatements(
     setStatementsCB: Function,
@@ -177,6 +178,10 @@ export function listenToStatementSubscription(
             const statementSubscription =
                 statementSubscriptionDB.data() as StatementSubscription;
 
+                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+
+               if(!Array.isArray(statementSubscription.statement.results)) statementSubscription.statement.results = [] 
+
             StatementSubscriptionSchema.parse(statementSubscription);
 
             updateStore(statementSubscription);
@@ -243,12 +248,12 @@ export function listenStatmentsSubsciptions(
                         "==",
                         StatementType.question
                     ),
-                    where(
-                        "statement.statementType",
-                        "==",
-                        StatementType.option
-                    ),
-                    where("statement.statementType", "==", StatementType.result)
+                    // where(
+                    //     "statement.statementType",
+                    //     "==",
+                    //     StatementType.option
+                    // ),
+                    // where("statement.statementType", "==", StatementType.result)
                 )
             ),
             orderBy("lastUpdate", "desc"),
@@ -363,7 +368,7 @@ export function listenToStatementsOfStatment(
 
         return onSnapshot(q, (subsDB) => {
             subsDB.docChanges().forEach((change) => {
-                const statement = change.doc.data() as any;
+                const statement = change.doc.data() as Statement;
 
                 if (change.type === "added") {
                     updateStore(statement);
