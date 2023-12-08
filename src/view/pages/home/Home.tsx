@@ -25,8 +25,6 @@ export default function Home() {
     const { statementId } = useParams();
     const location = useLocation();
 
-    // const user = useAppSelector(userSelector);
-
     const [displayHeader, setDisplayHeader] = useState(true);
 
     useEffect(() => {

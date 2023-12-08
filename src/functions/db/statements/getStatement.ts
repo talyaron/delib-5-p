@@ -178,9 +178,10 @@ export function listenToStatementSubscription(
             const statementSubscription =
                 statementSubscriptionDB.data() as StatementSubscription;
 
-                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+            //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
 
-               if(!Array.isArray(statementSubscription.statement.results)) statementSubscription.statement.results = [] 
+            if (!Array.isArray(statementSubscription.statement.results))
+                statementSubscription.statement.results = [];
 
             StatementSubscriptionSchema.parse(statementSubscription);
 
@@ -248,12 +249,12 @@ export function listenStatmentsSubsciptions(
                         "==",
                         StatementType.question
                     ),
-                    // where(
-                    //     "statement.statementType",
-                    //     "==",
-                    //     StatementType.option
-                    // ),
-                    // where("statement.statementType", "==", StatementType.result)
+                    where(
+                        "statement.statementType",
+                        "==",
+                        StatementType.option
+                    ),
+                    where("statement.statementType", "==", StatementType.result)
                 )
             ),
             orderBy("lastUpdate", "desc"),
@@ -510,7 +511,7 @@ export async function getChildStatements(
         const subStatements = statementsDB.docs.map(
             (doc) => doc.data() as Statement
         );
-       
+
         return subStatements;
     } catch (error) {
         console.error(error);

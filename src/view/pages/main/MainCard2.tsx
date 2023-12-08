@@ -1,4 +1,4 @@
-import { SimpleStatement, Statement } from "delib-npm";
+import { Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../components/text/Text";
 
@@ -7,14 +7,11 @@ import styles from "./MainCardRes.module.scss";
 import StatementChatMore from "../statement/components/chat/StatementChatMore";
 import ResultsComp from "../../components/results/ResultsComp";
 
-
 interface Props {
     statement: Statement;
 }
 
 const MainCardRes: FC<Props> = ({ statement }) => {
-    
-console.log(statement.results);
     return (
         <div className={styles.card}>
             <Text text={statement.statement} />

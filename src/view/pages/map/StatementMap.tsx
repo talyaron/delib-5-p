@@ -48,7 +48,10 @@ export default function StatementMap() {
 
     return (
         <ScreenFadeInOut className="page" duration={1}>
-            <div className="page__header" style={{ flexDirection: "row" }}>
+            <div
+                className="page__header"
+                style={{ flexDirection: "row", padding: 10 }}
+            >
                 <h1>{statement.top.statement}</h1>
                 <b>-</b>
                 <h2>Mind Map</h2>

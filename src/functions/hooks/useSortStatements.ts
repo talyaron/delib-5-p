@@ -1,6 +1,6 @@
 import { useAppSelector } from "./reduxHooks";
 import { statementsSubscriptionsSelector } from "../../model/statements/statementsSlice";
-import { sortStatementsByHirarrchy } from "../../view/pages/main/mainCont";
+import { sortStatementsByHirarrchy } from "../general/sorting";
 
 const useSortStatements = () => {
     const statements = [
