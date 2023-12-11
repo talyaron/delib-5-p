@@ -82,7 +82,14 @@ const Document: FC<Props> = ({ statement }) => {
                 </option>
                 <option value={FilterType.all}>{t("All")}</option>
             </select>
-            <div style={{ flex: "auto", height: "10vh", width: "100%" }}>
+            <div
+                style={{
+                    flex: "auto",
+                    height: "10vh",
+                    width: "100%",
+                    direction: "ltr",
+                }}
+            >
                 <StatementMap topResult={results} />
             </div>
         </ScreenFadeInOut>
