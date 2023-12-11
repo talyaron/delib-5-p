@@ -17,7 +17,7 @@ const Main = () => {
     const navigate = useNavigate();
 
     const statements = [...useAppSelector(statementsSubscriptionsSelector)]
-        .filter((state) => state.statement.statementType === "question")
+        .filter((state) => state.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
     function handleAddStatment() {

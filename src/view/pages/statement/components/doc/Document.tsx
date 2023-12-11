@@ -1,99 +1,73 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 
 // Third party imports
-import { Results, Statement, StatementType } from "delib-npm";
+import { Results, Statement } from "delib-npm";
+import { t } from "i18next";
 
-// Styles
-import styles from "./Document.module.scss";
+// Redux Store
+import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { statementsChildSelector } from "../../../../../model/statements/statementsSlice";
 
 // Custom Components
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import { t } from "i18next";
-import MainCard from "../../../main/mainCard/MainCard";
+import StatementMap from "../../../map/StatementMap";
+
+// Helpers
 import {
     FilterType,
     filterByStatementType,
     sortStatementsByHirarrchy,
 } from "../../../../../functions/general/sorting";
-import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
-import {
-    setStatements,
-    statementsChildSelector,
-} from "../../../../../model/statements/statementsSlice";
-import {
-    useAppDispatch,
-    useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
 
 interface Props {
     statement: Statement;
 }
 
 const Document: FC<Props> = ({ statement }) => {
-    const dispatch = useAppDispatch();
-
     const subStatements = useAppSelector(
         statementsChildSelector(statement.statementId)
     );
 
-    const _results = sortStatementsByHirarrchy([statement, ...subStatements]);
-    const [results, setResults] = useState<Results>(_results[0]);
-    const [filterState, setFilter] = useState<FilterType>(
-        FilterType.questionsResultsOptions
-    );
-    const [resultsType, setResultsType] = useState(
-        filterByStatementType(filterState).types as StatementType[]
-    );
+    const topResult = sortStatementsByHirarrchy([
+        statement,
+        ...subStatements.filter((state) => state.statementType !== "statement"),
+    ])[0];
 
-    async function handleGetResults(ev: any) {
-        try {
-            //get form data with formData
-            ev.preventDefault();
+    const [results, setResults] = useState<Results>(topResult);
 
-            if (!statement) throw new Error("statement is undefined");
+    const handleFilter = (filterBy: FilterType) => {
+        const filteredArray = filterByStatementType(filterBy).types;
 
-            const childStatements = await getChildStatements(
-                statement.statementId
-            );
+        const filterSubStatements = subStatements.filter((state) => {
+            if (!state.statementType) return false;
+            return filteredArray.includes(state.statementType);
+        });
 
-            dispatch(setStatements(childStatements));
+        const sortedResults = sortStatementsByHirarrchy([
+            statement,
+            ...filterSubStatements,
+        ]);
 
-            const _results = sortStatementsByHirarrchy([
-                statement,
-                ...childStatements,
-            ]);
-            setResults(_results[0]);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    // const resultsType = filterByStatementType(filterState)
-        // .types as StatementType[];
-
-        useEffect(() => {
-            setResultsType(filterByStatementType(filterState).types as StatementType[]);
-        }, [filterState]);
+        setResults(sortedResults[0]);
+    };
 
     return (
         <ScreenFadeInOut className="page__main">
-            <div className="wrapper">
-                <section className={styles.resultsWrapper}>
-                    <h2>{t("Discussion Results")}</h2>
-                    <select onChange={(ev: any) => setFilter(ev.target.value)} defaultValue={FilterType.questionsResultsOptions}>
-                        <option value={FilterType.questionsResults}>
-                            {t("Questions and Results")}
-                        </option>
-                        <option value={FilterType.questionsResultsOptions}>
-                            {t("Questions, options and Results")}
-                        </option>
-                    </select>
-                    <div className="btns">
-                        <button onClick={handleGetResults}>
-                            {t("Display Results")}
-                        </button>
-                    </div>
-                    <MainCard results={results} resultsType={resultsType} />
-                </section>
+            <select
+                onChange={(ev: any) => handleFilter(ev.target.value)}
+                defaultValue={FilterType.questionsResultsOptions}
+                style={{ width: "50ch", margin: "0 auto" }}
+            >
+                <option value={FilterType.questionsResults}>
+                    {t("Questions and Results")}
+                </option>
+                <option value={FilterType.questionsResultsOptions}>
+                    {t("Questions, options and Results")}
+                </option>
+                <option value={FilterType.all}>{t("All")}</option>
+            </select>
+            <div style={{ flex: "auto", height: "10vh", width: "100%" }}>
+                <StatementMap topResult={results} />
             </div>
         </ScreenFadeInOut>
     );
