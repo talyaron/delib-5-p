@@ -46,32 +46,32 @@ export const getLayoutedElements = (
     return { nodes, edges };
 };
 
-const resultColor = "#8FF18F";
-const questionColor = "#5252FD";
+// const resultColor = "#8FF18F";
+// const questionColor = "#5252FD";
 
-const backgroundColor = (res: Results) =>
-    res.top.statementType === "result"
-        ? resultColor
-        : res.top.statementType === "question"
-        ? questionColor
-        : "#b7b7b7";
+// const backgroundColor = (res: Results) =>
+//     res.top.statementType === "result"
+//         ? resultColor
+//         : res.top.statementType === "question"
+//         ? questionColor
+//         : "#b7b7b7";
 
-const nodeStyle = (result: Results) => {
-    const style = {
-        backgroundColor: backgroundColor(result),
-        color: result.top.statementType === "result" ? "black" : "white",
-        width: "auto",
-        height: "auto",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        fontSize: ".7rem",
-        border: "none",
-        outline: "none",
-        cursor: "pointer",
-    };
-    return style;
-};
+// const nodeStyle = (result: Results) => {
+//     const style = {
+//         backgroundColor: backgroundColor(result),
+//         color: result.top.statementType === "result" ? "black" : "white",
+//         width: "auto",
+//         height: "auto",
+//         display: "flex",
+//         justifyContent: "center",
+//         alignItems: "center",
+//         fontSize: ".7rem",
+//         border: "none",
+//         outline: "none",
+//         cursor: "pointer",
+//     };
+//     return style;
+// };
 
 const edgeStyle = {
     stroke: "#000",
@@ -82,9 +82,10 @@ const edgeStyle = {
 const nodeOptions = (result: Results) => {
     return {
         id: result.top.statementId,
-        data: { label: result.top.statement },
+        data: { label: result.top.statement, type: result.top.statementType },
         position,
-        style: nodeStyle(result),
+        // style: nodeStyle(result),
+        type: "custom",
     };
 };
 

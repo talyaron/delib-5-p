@@ -26,7 +26,6 @@ interface Props {
 }
 
 export default function StatementMap({ topResult }: Props) {
-    const navigate = useNavigate();
     const [nodes, setNodes] = useNodesState([]);
     const [edges, setEdges] = useEdgesState([]);
 
@@ -46,7 +45,6 @@ export default function StatementMap({ topResult }: Props) {
             elementsSelectable={false}
             nodes={nodes}
             edges={edges}
-            onNodeClick={(evnt, node) => navigate(`/statement/${node.id}/chat`)}
             nodeTypes={nodeTypes}
             fitView
         >

@@ -10,7 +10,7 @@ import { statementsChildSelector } from "../../../../../model/statements/stateme
 
 // Custom Components
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import StatementMap from "../../../map/StatementMap";
+import StatementMap from "./map/StatementMap";
 
 // Helpers
 import {
@@ -97,6 +97,7 @@ const Document: FC<Props> = ({ statement }) => {
             >
                 <StatementMap topResult={results} />
             </div>
+            
         </ScreenFadeInOut>
     ) : (
         <SuspenseFallback />

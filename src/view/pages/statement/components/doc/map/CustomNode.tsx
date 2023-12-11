@@ -14,6 +14,7 @@ const backgroundColor = (type: string) =>
 const nodeStyle = (type: string) => {
     const style = {
         backgroundColor: backgroundColor(type),
+        color: type === "result" ? "black" : "white",
         width: "auto",
         height: "auto",
         display: "flex",
@@ -21,21 +22,22 @@ const nodeStyle = (type: string) => {
         alignItems: "center",
         fontSize: ".7rem",
         padding: ".5rem",
+        cursor: "pointer",
     };
     return style;
 };
 
 export default function CustomNode({ data, id }: NodeProps) {
+    // const navigate = useNavigate();
     const [showBtns, setShowBtns] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     const handleNodeClick = () => {
         setShowBtns((prev) => !prev);
-        setShowModal(false);
     };
 
     const handleAddNode = () => {
-        setShowModal((prev) => !prev);
+        setShowModal(true);
     };
 
     return (
@@ -54,6 +56,7 @@ export default function CustomNode({ data, id }: NodeProps) {
                         color: "black",
                         position: "absolute",
                         bottom: -20,
+                        cursor: "pointer",
                     }}
                 >
                     +

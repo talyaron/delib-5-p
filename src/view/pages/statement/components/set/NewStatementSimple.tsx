@@ -86,6 +86,7 @@ const NewSetStatementSimple: FC<Props> = ({
                     <form
                         onSubmit={handleAddStatment}
                         className="setStatement__form"
+                        style={{height: "auto"}}
                     >
                         <h2>{t("Add Option")}</h2>
                         <input
