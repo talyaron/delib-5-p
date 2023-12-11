@@ -68,7 +68,7 @@ const nodeStyle = (result: Results) => {
         fontSize: ".7rem",
         border: "none",
         outline: "none",
-        cursor: "unset",
+        cursor: "pointer",
     };
     return style;
 };
