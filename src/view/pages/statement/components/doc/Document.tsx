@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
 import { Results, Statement } from "delib-npm";
@@ -18,22 +18,19 @@ import {
     filterByStatementType,
     sortStatementsByHirarrchy,
 } from "../../../../../functions/general/sorting";
+import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 
 interface Props {
     statement: Statement;
 }
 
 const Document: FC<Props> = ({ statement }) => {
-    const subStatements = useAppSelector(
-        statementsChildSelector(statement.statementId)
-    );
+    // const subStatements = useAppSelector(
+    //     statementsChildSelector(statement.statementId)
+    // );
 
-    const topResult = sortStatementsByHirarrchy([
-        statement,
-        ...subStatements.filter((state) => state.statementType !== "statement"),
-    ])[0];
-
-    const [results, setResults] = useState<Results>(topResult);
+    const [results, setResults] = useState<Results | undefined>();
+    const [subStatements, setSubStatements] = useState<Statement[]>([]);
 
     const handleFilter = (filterBy: FilterType) => {
         const filteredArray = filterByStatementType(filterBy).types;
@@ -51,7 +48,26 @@ const Document: FC<Props> = ({ statement }) => {
         setResults(sortedResults[0]);
     };
 
-    return (
+    const getSubStatements = async () => {
+        const childStatements = await getChildStatements(statement.statementId);
+
+        setSubStatements(childStatements);
+
+        const topResult = sortStatementsByHirarrchy([
+            statement,
+            ...childStatements.filter(
+                (state) => state.statementType !== "statement"
+            ),
+        ])[0];
+
+        setResults(topResult);
+    };
+
+    useEffect(() => {
+        getSubStatements();
+    }, []);
+
+    return results ? (
         <ScreenFadeInOut className="page__main">
             <select
                 onChange={(ev: any) => handleFilter(ev.target.value)}
@@ -70,6 +86,8 @@ const Document: FC<Props> = ({ statement }) => {
                 <StatementMap topResult={results} />
             </div>
         </ScreenFadeInOut>
+    ) : (
+        <div>Loading...</div>
     );
 };
 
