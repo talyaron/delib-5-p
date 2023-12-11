@@ -19,6 +19,7 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
+import { SuspenseFallback } from "../../../../../router";
 
 interface Props {
     statement: Statement;
@@ -48,6 +49,7 @@ const Document: FC<Props> = ({ statement }) => {
         setResults(sortedResults[0]);
     };
 
+    // Get all child statements and set top result to display map
     const getSubStatements = async () => {
         const childStatements = await getChildStatements(statement.statementId);
 
@@ -72,7 +74,11 @@ const Document: FC<Props> = ({ statement }) => {
             <select
                 onChange={(ev: any) => handleFilter(ev.target.value)}
                 defaultValue={FilterType.questionsResultsOptions}
-                style={{ width: "50ch", margin: "0 auto" }}
+                style={{
+                    width: "100vw",
+                    maxWidth: "300px",
+                    margin: "1rem auto",
+                }}
             >
                 <option value={FilterType.questionsResults}>
                     {t("Questions and Results")}
@@ -80,7 +86,6 @@ const Document: FC<Props> = ({ statement }) => {
                 <option value={FilterType.questionsResultsOptions}>
                     {t("Questions, options and Results")}
                 </option>
-                <option value={FilterType.all}>{t("All")}</option>
             </select>
             <div
                 style={{
@@ -94,7 +99,7 @@ const Document: FC<Props> = ({ statement }) => {
             </div>
         </ScreenFadeInOut>
     ) : (
-        <div>Loading...</div>
+        <SuspenseFallback />
     );
 };
 
