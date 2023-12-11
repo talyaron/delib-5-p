@@ -5,7 +5,7 @@ import Text from "../../components/text/Text";
 //css
 import styles from "./MainCardRes.module.scss";
 import StatementChatMore from "../statement/components/chat/StatementChatMore";
-import ResultsComp from "../../components/results/ResultsComp";
+import { Link } from "react-router-dom";
 
 interface Props {
     statement: Statement;
@@ -13,11 +13,15 @@ interface Props {
 
 const MainCardRes: FC<Props> = ({ statement }) => {
     return (
+       
         <div className={styles.card}>
+             <Link to={`/statement/${statement.statementId}/chat`}>
             <Text text={statement.statement} />
             <StatementChatMore statement={statement} />
-            <ResultsComp statement={statement} />
+            {/* <ResultsComp statement={statement} /> */}
+            </Link>
         </div>
+       
     );
 };
 
