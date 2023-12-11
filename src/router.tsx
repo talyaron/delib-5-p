@@ -19,7 +19,7 @@ const SetStatement = lazy(
     () => import("./view/pages/statement/components/set/SetStatement")
 );
 
-const SuspenseFallback = () => {
+export const SuspenseFallback = () => {
     return (
         <div
             style={{
