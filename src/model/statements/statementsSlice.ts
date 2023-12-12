@@ -17,7 +17,6 @@ import { z } from "zod";
 // Helpers
 import { updateArray } from "../../functions/general/helpers";
 
-
 enum StatementScreen {
     chat = "chat",
     options = "options",
@@ -39,7 +38,7 @@ interface StatementOrder {
     order: number;
 }
 
-interface SetEvaluation{
+interface SetEvaluation {
     statementId: string;
     evaluation: number;
 }
@@ -64,8 +63,8 @@ export const statementsSlicer = createSlice({
                 const newStatement = { ...action.payload };
 
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
-                if(!Array.isArray(newStatement.results)) newStatement.results = [];
-
+                if (!Array.isArray(newStatement.results))
+                    newStatement.results = [];
 
                 StatementSchema.parse(newStatement);
                 newStatement.order = 0;
@@ -99,9 +98,10 @@ export const statementsSlicer = createSlice({
                 const statements = action.payload;
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 statements.forEach((statement) => {
-                    if(!Array.isArray(statement.results)) statement.results = [];
+                    if (!Array.isArray(statement.results))
+                        statement.results = [];
                 });
-                
+
                 z.array(StatementSchema).parse(statements);
 
                 statements.forEach((statement) => {
@@ -141,7 +141,11 @@ export const statementsSlicer = createSlice({
                         action.payload,
                         "statementsSubscribeId"
                     );
-                    state.statements = updateArray(state.statements, newStatement.statement, "statementId");
+                state.statements = updateArray(
+                    state.statements,
+                    newStatement.statement,
+                    "statementId"
+                );
 
                 //update last update if bigger than current
                 if (
@@ -278,6 +282,15 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
+        resetStatements: (state) => {
+            state.statements = [];
+            state.statementSubscription = [];
+            state.statementSubscriptionLastUpdate = 0;
+            state.statementMembership = [];
+            state.screen = StatementScreen.chat;
+            state.askToJoinRooms = [];
+            state.lobbyRooms = [];
+        },
     },
 });
 
@@ -294,7 +307,8 @@ export const {
     setScreen,
     setStatementElementHight,
     setMembership,
-    removeMembership
+    removeMembership,
+    resetStatements,
 } = statementsSlicer.actions;
 
 // statements
@@ -303,7 +317,9 @@ export const statementsSelector = (state: RootState) =>
     state.statements.statements;
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter((statement) => statement.parents?.includes(statementId));
+        state.statements.statements.filter((statement) =>
+            statement.parents?.includes(statementId)
+        );
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements
@@ -325,7 +341,7 @@ export const statementSubsSelector =
         state.statements.statements
             .filter((statementSub) => statementSub.parentId === statementId)
             .sort((a, b) => a.createdAt - b.createdAt)
-            .map((statement) => ({...statement}));
+            .map((statement) => ({ ...statement }));
 export const statementNotificationSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statementSubscription.find(

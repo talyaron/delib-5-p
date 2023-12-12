@@ -31,11 +31,14 @@ export const evaluationsSlicer = createSlice({
       } catch (error) {
         console.error(error);
       }
+    },
+    resetEvaluations: (state) => {    
+      state.userEvaluations = [];
     }
   },
 })
 
-export const { setEvaluationToStore } = evaluationsSlicer.actions
+export const { setEvaluationToStore,resetEvaluations } = evaluationsSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const evaluationsSelector = (state: RootState) => state.evaluations.userEvaluations;
