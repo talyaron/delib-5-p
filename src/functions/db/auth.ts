@@ -50,7 +50,8 @@ export function googleLogin() {
 export function listenToAuth(
     cb: Function,
     fontSizeCB: Function,
-    navigationCB: Function
+    navigationCB: Function,
+    resetCB: Function
 ): Unsubscribe {
     return onAuthStateChanged(auth, async (userFB) => {
         try {
@@ -61,6 +62,7 @@ export function listenToAuth(
                     user.displayName =
                         localStorage.getItem("displayName") || "anonymous"
                 const _user = parseUserFromFirebase(user)
+                console.log(_user)
 
                 // console.info("User is signed in")
                 if (!_user) throw new Error("user is undefined")
@@ -82,8 +84,10 @@ export function listenToAuth(
                 if (initialLocation) navigationCB(initialLocation)
             } else {
                 // User is signed out
-                // console.info("User is signed out")
+                console.info("User is signed out")
+                resetCB()
                 cb(null)
+                
             }
         } catch (error) {
             console.error(error)

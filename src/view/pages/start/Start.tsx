@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // firestore functions
 import { googleLogin } from "../../../functions/db/auth";
@@ -17,13 +17,14 @@ import Logo from "../../../assets/logo/logo-128px.png";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
+import EnterName from "./EnterName";
 // import EnterName from './EnterName';
 
 const Start = () => {
     const navigate = useNavigate();
     const { i18n, t } = useTranslation();
     const user = useAppSelector(userSelector);
-    // const [showNameModul, setShowNameModul] = useState(false);
+    const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
 
     useEffect(() => {
@@ -44,12 +45,12 @@ const Start = () => {
             <button className="splashPage__loginButton" onClick={googleLogin}>
                 {t("Connect with Google")}
             </button>
-            {/* <div
+            <div
                 className="btn loginButton"
                 onClick={() => setShowNameModul(true)}
             >
                 {t("Login with a temporary name")}
-            </div> */}
+            </div>
             <a
                 href="http://delib.org"
                 style={{
@@ -57,7 +58,11 @@ const Start = () => {
                     textDecoration: "none",
                 }}
             >
-                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
+                <h2>
+                    <a href="https://delib.org" target="_blank">
+                        {t("From the Institute for Deliberative Democracy")}
+                    </a>
+                </h2>
             </a>
             <select
                 style={{ position: "absolute", top: 20, left: 20 }}
@@ -79,7 +84,7 @@ const Start = () => {
                     </option>
                 ))}
             </select>
-            {/* {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null} */}
+            {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null}
         </div>
     );
 };
