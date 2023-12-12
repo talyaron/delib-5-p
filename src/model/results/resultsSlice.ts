@@ -38,11 +38,14 @@ export const resultsSlice = createSlice({
             } catch (error) {
                 console.error(error);
             }
+        },
+        resetResults: (state) => {
+            state.results = [];
         }
     },
 })
 
-export const { setResults } = resultsSlice.actions
+export const { setResults,resetResults } = resultsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const resultSelector = (statementId: string | undefined) => (state: RootState) => state.results.results.find(result => result.top.statementId === statementId);

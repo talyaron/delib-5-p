@@ -19,6 +19,10 @@ import { User } from "./model/users/userModel";
 
 // Custom components
 import Accessiblity from "./view/components/accessibility/Accessiblity";
+import { resetStatements } from "./model/statements/statementsSlice";
+import { resetEvaluations } from "./model/evaluations/evaluationsSlice";
+import { resetVotes } from "./model/vote/votesSlice";
+import { resetResults } from "./model/results/resultsSlice";
 
 export default function App() {
     const navigate = useNavigate();
@@ -40,6 +44,13 @@ export default function App() {
             state: { from: window.location.pathname },
         });
     }
+
+    function resetStoreCB() {
+        dispatch(resetStatements());
+        dispatch(resetEvaluations());
+        dispatch(resetVotes());
+        dispatch(resetResults());
+    }
     useEffect(() => {
         // Default direction is ltr
         document.body.style.direction = "ltr";
@@ -57,7 +68,8 @@ export default function App() {
         const usub: Unsubscribe = listenToAuth(
             updateUserToStore,
             updateFonSize,
-            navigateToInitialLocationCB
+            navigateToInitialLocationCB,
+            resetStoreCB
         );
 
         return () => {

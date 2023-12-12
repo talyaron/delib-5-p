@@ -39,10 +39,6 @@ interface StatementOrder {
     order: number;
 }
 
-interface SetEvaluation{
-    statementId: string;
-    evaluation: number;
-}
 
 // Define the initial state using that type
 const initialState: StatementsState = {
@@ -278,6 +274,15 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
+        resetStatements: (state) => {
+            state.statements = [];
+            state.statementSubscription = [];
+            state.statementSubscriptionLastUpdate = 0;
+            state.statementMembership = [];
+            state.screen = StatementScreen.chat;
+            state.askToJoinRooms = [];
+            state.lobbyRooms = [];
+        },
     },
 });
 
@@ -294,7 +299,8 @@ export const {
     setScreen,
     setStatementElementHight,
     setMembership,
-    removeMembership
+    removeMembership,
+    resetStatements,
 } = statementsSlicer.actions;
 
 // statements

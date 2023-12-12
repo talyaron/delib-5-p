@@ -48,7 +48,9 @@ export default function Home() {
         if (isLgged) {
             unsubscribe = listenStatmentsSubsciptions(
                 updateStoreStSubCB,
-                deleteStoreStSubCB
+                deleteStoreStSubCB,
+                10,
+                true
             );
         }
         return () => {

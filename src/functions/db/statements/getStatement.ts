@@ -29,7 +29,6 @@ import { DB } from "../config";
 // Redux Store
 import { store } from "../../../model/store";
 import _ from "lodash";
-import { stat } from "fs";
 
 export function listenToTopStatements(
     setStatementsCB: Function,
@@ -228,38 +227,16 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
 
 export function listenStatmentsSubsciptions(
     cb: Function,
-    deleteCB: Function
+    deleteCB: Function,
+    numberOfStatements?: number,
+    onlyTop?: true
 ): Unsubscribe {
     try {
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
-        const statementsSubscribeRef = collection(
-            DB,
-            Collections.statementsSubscribe
-        );
-        const q = query(
-            statementsSubscribeRef,
-            and(
-                where("userId", "==", user.uid),
-                or(
-                    where(
-                        "statement.statementType",
-                        "==",
-                        StatementType.question
-                    ),
-                    where(
-                        "statement.statementType",
-                        "==",
-                        StatementType.option
-                    ),
-                    where("statement.statementType", "==", StatementType.result)
-                )
-            ),
-            orderBy("lastUpdate", "desc"),
-            limit(40)
-        );
+        const q = getQuery(onlyTop, numberOfStatements);
 
         return onSnapshot(q, (subsDB) => {
             subsDB.docChanges().forEach((change) => {
@@ -299,6 +276,93 @@ export function listenStatmentsSubsciptions(
     } catch (error) {
         console.error(error);
         return () => {};
+    }
+
+    function getQuery(onlyTop?: boolean, numberOfStatements: number = 40) {
+        try {
+            const user = store.getState().user.user;
+            if (!user) throw new Error("User not logged in");
+            if (!user.uid) throw new Error("User not logged in");
+
+            const statementsSubscribeRef = collection(
+                DB,
+                Collections.statementsSubscribe
+            );
+            if (onlyTop) {
+                return query(
+                    statementsSubscribeRef,
+                    where("userId", "==", user.uid),
+                    where("statement.parentId", "==", "top"),
+                    where(
+                        "statement.statementType",
+                        "==",
+                        StatementType.question
+                    ),
+                    orderBy("lastUpdate", "desc"),
+                    limit(numberOfStatements)
+                );
+            }
+            return query(
+                statementsSubscribeRef,
+                and(
+                    where("userId", "==", user.uid),
+                    or(
+                        where(
+                            "statement.statementType",
+                            "==",
+                            StatementType.question
+                        ),
+                        where(
+                            "statement.statementType",
+                            "==",
+                            StatementType.option
+                        ),
+                        where(
+                            "statement.statementType",
+                            "==",
+                            StatementType.result
+                        )
+                    )
+                ),
+                orderBy("lastUpdate", "desc"),
+                limit(numberOfStatements)
+            );
+        } catch (error) {
+            console.error(error);
+            const user = store.getState().user.user;
+            if (!user) throw new Error("User not logged in");
+            if (!user.uid) throw new Error("User not logged in");
+
+            const statementsSubscribeRef = collection(
+                DB,
+                Collections.statementsSubscribe
+            );
+            return query(
+                statementsSubscribeRef,
+                and(
+                    where("userId", "==", user.uid),
+                    or(
+                        where(
+                            "statement.statementType",
+                            "==",
+                            StatementType.question
+                        ),
+                        where(
+                            "statement.statementType",
+                            "==",
+                            StatementType.option
+                        ),
+                        where(
+                            "statement.statementType",
+                            "==",
+                            StatementType.result
+                        )
+                    )
+                ),
+                orderBy("lastUpdate", "desc"),
+                limit(numberOfStatements)
+            );
+        }
     }
 }
 

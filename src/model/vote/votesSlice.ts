@@ -45,11 +45,14 @@ export const votesSlicer = createSlice({
                 console.error(error);
             }
         },
+        resetVotes: (state) => {
+            state.votes = [];
+        }
 
     },
 })
 
-export const { setVoteToStore } = votesSlicer.actions
+export const { setVoteToStore,resetVotes } = votesSlicer.actions
 
 export const votesSelector = (state: RootState) => state.votes.votes;
 export const parentVoteSelector = (parentId: string | undefined) => (state: RootState) => state.votes.votes.find(vote => vote.parentId === parentId);
