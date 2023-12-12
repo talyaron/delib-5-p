@@ -32,24 +32,25 @@ import {
     statementSubsSelector,
 } from "../../../model/statements/statementsSlice";
 
+import { userSelector } from "../../../model/users/userSlice";
+import { useSelector } from "react-redux";
+
 // Custom components
 import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut";
 import ProfileImage from "../../components/profileImage/ProfileImage";
+import StatementHeader from "./StatementHeader";
+import AskPermisssion from "../../components/askPermission/AskPermisssion";
+import SwitchScreens from "./components/SwitchScreens";
 
 // Models
 import { Evaluation } from "../../../model/evaluations/evaluationModel";
 import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
-import { userSelector } from "../../../model/users/userSlice";
-import { useSelector } from "react-redux";
-
-// Statement components
-import AskPermisssion from "../../components/askPermission/AskPermisssion";
-import SwitchScreens from "./components/SwitchScreens";
 
 // Helpers
 
+// Hooks & Providers
 import useDirection from "../../../functions/hooks/useDirection";
-import StatementHeader from "./StatementHeader";
+import { MapModelProvider } from "../../../functions/hooks/useMap";
 
 let unsub: Function = () => {};
 let unsubSubStatements: Function = () => {};
@@ -195,13 +196,18 @@ const Statement: FC = () => {
                 />
             ) : null}
             <AnimatePresence mode="wait" initial={false}>
-                <SwitchScreens
-                    key={window.location.pathname.split("/").slice(2).join(" ")}
-                    screen={page}
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
+                <MapModelProvider>
+                    <SwitchScreens
+                        key={window.location.pathname
+                            .split("/")
+                            .slice(2)
+                            .join(" ")}
+                        screen={page}
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                    />
+                </MapModelProvider>
             </AnimatePresence>
         </ScreenFadeInOut>
     );

@@ -80,7 +80,7 @@ const StatementOptions: FC<Props> = ({
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple
-                            parentStatement={statement}
+                            parentStatementId={statement.parentId}
                             isOption={true}
                             setShowModal={setShowModal}
                         />

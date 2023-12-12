@@ -20,6 +20,9 @@ import {
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 import { SuspenseFallback } from "../../../../../router";
+import { useMyContext } from "../../../../../functions/hooks/useMap";
+import Modal from "../../../../components/modal/Modal";
+import NewSetStatementSimple from "../set/NewStatementSimple";
 
 interface Props {
     statement: Statement;
@@ -29,6 +32,8 @@ const Document: FC<Props> = ({ statement }) => {
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
+    const { showModal, setShowModal, parentId, isOption, isQuestion } =
+        useMyContext();
 
     const [results, setResults] = useState<Results | undefined>();
     const [subStatements, setSubStatements] = useState<Statement[]>([]);
@@ -97,7 +102,18 @@ const Document: FC<Props> = ({ statement }) => {
             >
                 <StatementMap topResult={results} />
             </div>
-            
+
+            {showModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatementId={parentId}
+                        isOption={isOption}
+                        isQuestion={isQuestion}
+                        setShowModal={setShowModal}
+                        getSubStatements={getSubStatements}
+                    />
+                </Modal>
+            )}
         </ScreenFadeInOut>
     ) : (
         <SuspenseFallback />
