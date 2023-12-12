@@ -95,6 +95,7 @@ const NewSetStatementSimple: FC<Props> = ({
                     >
                         <h2>{t("Add Option")}</h2>
                         <input
+                            autoFocus={true}
                             type="text"
                             name="statement"
                             placeholder={t("Title")}

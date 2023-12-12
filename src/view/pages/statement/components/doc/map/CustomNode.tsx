@@ -34,6 +34,10 @@ const nodeStyle = (type: string) => {
 export default function CustomNode({ data, id }: NodeProps) {
     const navigate = useNavigate();
 
+    const nodeTitle =
+        data.label.split("\n")[0].replace("*", "") ||
+        data.label.replace("*", "");
+
     const { showModal, setShowModal, setIsOption, setIsQuestion, setParentId } =
         useMyContext();
     const [showBtns, setShowBtns] = useState(false);
@@ -72,7 +76,7 @@ export default function CustomNode({ data, id }: NodeProps) {
                 data-id={id}
                 style={nodeStyle(data.type)}
             >
-                {data?.label}
+                {nodeTitle}
             </div>
             {showBtns && (
                 <>

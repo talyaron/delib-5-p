@@ -12,7 +12,7 @@ interface Props {
     isTextArea?: boolean;
 }
 
-const EditTitle: FC<Props> = ({ statement,isEdit, setEdit, isTextArea }) => {
+const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
     try {
         if (!statement) return null;
 
@@ -50,7 +50,12 @@ const EditTitle: FC<Props> = ({ statement,isEdit, setEdit, isTextArea }) => {
                 console.error(error);
             }
         }
-        if(!isEdit) return (<div style={{direction:direction, textAlign:align}}><Text text={statement.statement} /></div>)
+        if (!isEdit)
+            return (
+                <div style={{ direction: direction, textAlign: align }}>
+                    <Text text={statement.statement} />
+                </div>
+            );
 
         if (isTextArea)
             return (

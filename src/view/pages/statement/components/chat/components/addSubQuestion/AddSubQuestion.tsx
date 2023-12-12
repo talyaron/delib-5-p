@@ -25,7 +25,7 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
             {showQuestionModal && (
                 <Modal>
                     <NewSetStatementSimple
-                        parentStatementId={statement.parentId}
+                        parentStatementId={statement.statementId}
                         isQuestion={true}
                         setShowModal={setAddQuestionModal}
                     />

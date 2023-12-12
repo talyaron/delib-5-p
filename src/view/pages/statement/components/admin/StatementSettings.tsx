@@ -115,10 +115,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             const description = data.get("description");
 
-            const _statement = `${title}\n${description}`;
-
             //add to title * at the beggining
             if (title && !title.startsWith("*")) title = "*" + title;
+
+            const _statement = `${title}\n${description}`;
 
             UserSchema.parse(user);
 
@@ -128,6 +128,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 newStatement,
                 navArray
             );
+
+            console.log(_statement);
             newStatement.statement = _statement;
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,

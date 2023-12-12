@@ -45,6 +45,10 @@ export const OptionBar: FC<OptionBarProps> = ({
     const barWidth = width / 4 > 120 ? 120 : width / 4;
     const padding = 10;
 
+    const optionTitle =
+        option.statement.split("\n")[0].replace("*", "") ||
+        option.statement.replace("*", "");
+
     return (
         <div
             className="statement__vote__bar"
@@ -76,7 +80,7 @@ export const OptionBar: FC<OptionBarProps> = ({
                 }
                 onClick={handlePressButton}
             >
-                {option.statement}
+                {optionTitle}
             </div>
         </div>
     );

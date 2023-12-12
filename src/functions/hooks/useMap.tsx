@@ -2,7 +2,6 @@ import React, {
     createContext,
     useContext,
     useState,
-    useEffect,
     FC,
 } from "react";
 
@@ -40,12 +39,6 @@ export const MapModelProvider: FC<MyContextProviderProps> = ({ children }) => {
     const [isOption, setIsOption] = useState(false);
     const [isQuestion, setIsQuestion] = useState(false);
 
-    // Example: Use useEffect to perform side effects when the value changes
-    useEffect(() => {
-        console.log("Value changed:", showModal);
-        // You can perform any other side effects here
-    }, [showModal]);
-
     const contextValue: MyContextProps = {
         showModal,
         setShowModal,
@@ -58,6 +51,8 @@ export const MapModelProvider: FC<MyContextProviderProps> = ({ children }) => {
     };
 
     return (
-        <MapModelContext.Provider value={contextValue}>{children}</MapModelContext.Provider>
+        <MapModelContext.Provider value={contextValue}>
+            {children}
+        </MapModelContext.Provider>
     );
 };
