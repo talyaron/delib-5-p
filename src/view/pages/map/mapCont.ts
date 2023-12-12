@@ -7,8 +7,8 @@ const position = { x: 0, y: 0 };
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 25;
-const nodeHeight = 5;
+const nodeWidth = 50;
+const nodeHeight = 50;
 
 export const getLayoutedElements = (
     nodes: Node[],
@@ -66,25 +66,41 @@ const nodeStyle = (result: Results) => {
         justifyContent: "center",
         alignItems: "center",
         fontSize: ".7rem",
-        cursor: "pointer",
         border: "none",
         outline: "none",
+        cursor: "pointer",
     };
     return style;
 };
 
+const edgeStyle = {
+    stroke: "#000",
+    strokeWidth: 1,
+    strokeOpacity: 0.5,
+};
+
+const nodeOptions = (result: Results) => {
+    return {
+        id: result.top.statementId,
+        data: { label: result.top.statement },
+        position,
+        style: nodeStyle(result),
+    };
+};
+
+const edgeOptions = (result: Results, parentId: string): Edge => {
+    return {
+        id: `e${parentId}-${result.top.statementId}`,
+        source: parentId,
+        target: result.top.statementId,
+        style: edgeStyle,
+    };
+};
 export const createInitialNodesAndEdges = (result: Results) => {
     try {
         const edges: Edge[] = [];
 
-        const nodes: Node[] = [
-            {
-                id: result.top.statementId,
-                data: { label: result.top.statement },
-                position,
-                style: nodeStyle(result),
-            },
-        ];
+        const nodes: Node[] = [nodeOptions(result)];
 
         if (!result.sub) return { nodes, edges };
 
@@ -92,20 +108,9 @@ export const createInitialNodesAndEdges = (result: Results) => {
             return { nodes, edges };
         } else {
             result.sub.forEach((sub) => {
-                nodes.push({
-                    id: sub.top.statementId,
-                    data: { label: sub.top.statement },
-                    position,
-                    style: nodeStyle(sub),
-                });
+                nodes.push(nodeOptions(sub));
 
-                edges.push({
-                    id: `e${result.top.statementId}-${sub.top.statementId}`,
-                    source: result.top.statementId,
-                    target: sub.top.statementId,
-                    animated: true,
-                    style: { stroke: "pink", strokeWidth: 1 },
-                });
+                edges.push(edgeOptions(sub, result.top.statementId));
 
                 if (sub.sub) {
                     createNodes(sub.sub, sub.top.statementId);
@@ -115,20 +120,9 @@ export const createInitialNodesAndEdges = (result: Results) => {
 
         function createNodes(results: Results[], parentId: string) {
             results.forEach((sub) => {
-                nodes.push({
-                    id: sub.top.statementId,
-                    data: { label: sub.top.statement },
-                    position,
-                    style: nodeStyle(sub),
-                });
+                nodes.push(nodeOptions(sub));
 
-                edges.push({
-                    id: `e${result.top.statementId}-${sub.top.statementId}`,
-                    source: parentId,
-                    target: sub.top.statementId,
-                    animated: true,
-                    style: { stroke: "pink", strokeWidth: 1 },
-                });
+                edges.push(edgeOptions(sub, parentId));
 
                 if (sub.sub && sub.sub.length > 0) {
                     createNodes(sub.sub, sub.top.statementId);

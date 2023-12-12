@@ -43,6 +43,7 @@ export default function Home() {
     }
 
     useEffect(() => {
+        console.log("Home use effect is running");
         let unsubscribe: Function = () => {};
         if (isLgged) {
             unsubscribe = listenStatmentsSubsciptions(

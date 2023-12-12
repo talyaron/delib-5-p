@@ -131,7 +131,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.statement = _statement;
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,
-                resultsBy: resultsBy || ResultsBy.topVote,
+                resultsBy: resultsBy || ResultsBy.topOptions,
                 deep: 1,
                 minConsensus: 1,
             };
@@ -180,7 +180,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
     const resultsBy: ResultsBy =
-        statement?.resultsSettings?.resultsBy || ResultsBy.topVote;
+        statement?.resultsSettings?.resultsBy || ResultsBy.topOptions;
     const hasChildren: boolean = (() => {
         if (!statement) return true;
         if (statement.hasChildren === undefined) return true;

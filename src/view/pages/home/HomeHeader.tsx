@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { logOut } from "../../../functions/db/auth";
 import { setUser } from "../../../model/users/userSlice";
 import { install } from "../../../main";
@@ -8,23 +7,10 @@ import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
 import { t } from "i18next";
 
 export default function HomeHeader() {
-    const navigate = useNavigate();
-    const location = useLocation();
     const dispatch = useAppDispatch();
 
     //for deffered app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-    const [navigateHome, setNavigateHome] = useState(
-        location.pathname.includes("map")
-    );
-
-    useEffect(() => {
-        if (location.pathname.includes("map")) {
-            setNavigateHome(true);
-        } else {
-            setNavigateHome(false);
-        }
-    }, [location]);
 
     useEffect(() => {
         //for defferd app install
@@ -57,15 +43,6 @@ export default function HomeHeader() {
                         {t("Install the App")}
                     </button>
                 )}
-                <button
-                    onClick={() => {
-                        navigate(navigateHome ? "/home" : "map", {
-                            state: { from: window.location.pathname },
-                        });
-                    }}
-                >
-                    {navigateHome ? "Home" : "Map"}
-                </button>
             </div>
         </div>
     );

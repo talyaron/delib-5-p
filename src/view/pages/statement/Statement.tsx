@@ -196,7 +196,7 @@ const Statement: FC = () => {
             ) : null}
             <AnimatePresence mode="wait" initial={false}>
                 <SwitchScreens
-                    key={window.location.pathname}
+                    key={window.location.pathname.split("/").slice(2).join(" ")}
                     screen={page}
                     statement={statement}
                     subStatements={subStatements}
