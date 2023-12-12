@@ -36,6 +36,7 @@ export const evaluationsSlicer = createSlice({
       state.userEvaluations = [];
     }
   },
+  
 })
 
 export const { setEvaluationToStore,resetEvaluations } = evaluationsSlicer.actions
