@@ -53,16 +53,13 @@ const Start = () => {
             </div>
             <a
                 href="http://delib.org"
+                target="_blank"
                 style={{
                     marginTop: "30px",
                     textDecoration: "none",
                 }}
             >
-                <h2>
-                    <a href="https://delib.org" target="_blank">
-                        {t("From the Institute for Deliberative Democracy")}
-                    </a>
-                </h2>
+                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
             </a>
             <select
                 style={{ position: "absolute", top: 20, left: 20 }}
@@ -84,7 +81,9 @@ const Start = () => {
                     </option>
                 ))}
             </select>
-            {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null}
+            {showNameModul ? (
+                <EnterName setShowNameModul={setShowNameModul} />
+            ) : null}
         </div>
     );
 };
