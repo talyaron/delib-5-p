@@ -4,6 +4,7 @@ import { updateStatementText } from "../../../functions/db/statements/setStatmen
 import styles from "./EditTitle.module.scss";
 import Text from "../text/Text";
 import useDirection from "../../../functions/hooks/useDirection";
+import { statementTitleToDisplay } from "../../../functions/general/helpers";
 
 interface Props {
     statement: Statement | undefined;
@@ -19,6 +20,11 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
         const _direction = useDirection();
         const direction = _direction === "row" ? "ltr" : "rtl";
         const align = _direction === "row" ? "left" : "right";
+
+        const { shortVersion } = statementTitleToDisplay(
+            statement.statement,
+            80
+        );
 
         const title = statement.statement.split("\n")[0];
         const description = statement.statement.split("\n").slice(1).join("\n");
@@ -53,7 +59,7 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
         if (!isEdit)
             return (
                 <div style={{ direction: direction, textAlign: align }}>
-                    <Text text={statement.statement} />
+                    <Text text={shortVersion} />
                 </div>
             );
 

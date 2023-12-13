@@ -51,6 +51,7 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 // Hooks & Providers
 import useDirection from "../../../functions/hooks/useDirection";
 import { MapModelProvider } from "../../../functions/hooks/useMap";
+import { statementTitleToDisplay } from "../../../functions/general/helpers";
 
 let unsub: Function = () => {};
 let unsubSubStatements: Function = () => {};
@@ -148,14 +149,12 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (statement) {
-            const __title =
-                statement.statement.split("\n")[0] || statement.statement;
-            const _title = __title.replace("*", "");
+            const { shortVersion } = statementTitleToDisplay(
+                statement.statement,
+                100
+            );
 
-            const titleToSet =
-                _title.length > 100 ? _title.substring(0, 97) + "..." : _title;
-
-            setTitle(titleToSet);
+            setTitle(shortVersion);
             (async () => {
                 const isSubscribed = await getIsSubscribed(statementId);
 
