@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 // Third party imports
 import { Outlet, useLocation, useParams } from "react-router-dom";
-import {  StatementSubscription } from "delib-npm";
+import { StatementSubscription } from "delib-npm";
 import { t } from "i18next";
 
 // Redux Store
@@ -20,16 +20,14 @@ import { listenStatmentsSubsciptions } from "../../../functions/db/statements/ge
 import useAuth from "../../../functions/hooks/authHooks";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import HomeHeader from "./HomeHeader";
-import {
-    getSigniture
-} from "../../../functions/db/users/getUserDB";
+import { getSigniture } from "../../../functions/db/users/getUserDB";
 import Modal from "../../components/modal/Modal";
 import { userSelector } from "../../../model/users/userSlice";
 
-
-
 //css
 import styles from "./Home.module.scss";
+import { logOut } from "../../../functions/db/auth";
+import { updateUserAgreement } from "../../../functions/db/users/setUsersDB";
 
 export const listenedStatements = new Set<string>();
 
@@ -52,6 +50,7 @@ export default function Home() {
         }
     }, [location]);
 
+    //callbacks
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
     }
@@ -59,27 +58,48 @@ export default function Home() {
         dispatch(deleteSubscribedStatement(statementId));
     }
 
+    //handles
+
+    function handleAgreement(agree: boolean) {
+        if (agree) {
+            setShowSignAgreement(false);
+        } else {
+            console.log("logout");
+            logOut();
+        }
+    }
+
+    //use effects
+
     useEffect(() => {
         let unsubscribe: Function = () => {};
-        if (user) {
-            unsubscribe = listenStatmentsSubsciptions(
-                updateStoreStSubCB,
-                deleteStoreStSubCB,
-                10,
-                true
-            );
+        try {
+            if (user) {
+                unsubscribe = listenStatmentsSubsciptions(
+                    updateStoreStSubCB,
+                    deleteStoreStSubCB,
+                    10,
+                    true
+                );
 
-            //check if user signed the agreement
+                //check if user signed the agreement
 
-            if (user && user.sign?.signed) {
-                console.log("user signed the agreement");
-            } else {
-                console.log("user didn't signed the agreement");
-                const agreement = getSigniture("basic");
-                setShowSignAgreement(true);
-                setAgreement(agreement?.text || "");
+                if (user && user.agreement?.date && user.agreement.text) {
+                    console.log("user signed the agreement");
+                    setShowSignAgreement(false);
+                } else {
+                    console.log("user didn't signed the agreement");
+                    const agreement = getSigniture("basic");
+
+                    if (!agreement) throw new Error("agreement not found");
+
+                    setAgreement(agreement.text);
+                    updateUserAgreement(agreement).then((isAgreed: boolean) =>
+                        setShowSignAgreement(isAgreed)
+                    );
+                }
             }
-        }
+        } catch (error) {}
         return () => {
             unsubscribe();
         };
@@ -94,8 +114,18 @@ export default function Home() {
                         <h2>{t("terms of use")}</h2>
                         <p>{t(agreement)}</p>
                         <div className="btns">
-                            <div className="btn">{t("Agree")}</div>
-                            <div className="btn btn--danger">{t("Dont agree")}</div>
+                            <div
+                                className="btn"
+                                onClick={() => handleAgreement(true)}
+                            >
+                                {t("Agree")}
+                            </div>
+                            <div
+                                className="btn btn--danger"
+                                onClick={() => handleAgreement(false)}
+                            >
+                                {t("Dont agree")}
+                            </div>
                         </div>
                     </div>
                 </Modal>
