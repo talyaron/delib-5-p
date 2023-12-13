@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 
 // Third party imports
 import { Outlet, useLocation, useParams } from "react-router-dom";
-import { StatementSubscription } from "delib-npm";
+import {  StatementSubscription } from "delib-npm";
+import { t } from "i18next";
 
 // Redux Store
-import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../functions/hooks/reduxHooks";
 import {
     deleteSubscribedStatement,
     setStatementSubscription,
@@ -16,6 +20,16 @@ import { listenStatmentsSubsciptions } from "../../../functions/db/statements/ge
 import useAuth from "../../../functions/hooks/authHooks";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import HomeHeader from "./HomeHeader";
+import {
+    getSigniture
+} from "../../../functions/db/users/getUserDB";
+import Modal from "../../components/modal/Modal";
+import { userSelector } from "../../../model/users/userSlice";
+
+
+
+//css
+import styles from "./Home.module.scss";
 
 export const listenedStatements = new Set<string>();
 
@@ -24,8 +38,11 @@ export default function Home() {
     const isLgged = useAuth();
     const { statementId } = useParams();
     const location = useLocation();
+    const user = useAppSelector(userSelector);
 
     const [displayHeader, setDisplayHeader] = useState(true);
+    const [showSignAgreement, setShowSignAgreement] = useState(false);
+    const [agreement, setAgreement] = useState<string>("");
 
     useEffect(() => {
         if (location.pathname.includes("addStatment") || statementId) {
@@ -43,24 +60,46 @@ export default function Home() {
     }
 
     useEffect(() => {
-        console.log("Home use effect is running");
         let unsubscribe: Function = () => {};
-        if (isLgged) {
+        if (user) {
             unsubscribe = listenStatmentsSubsciptions(
                 updateStoreStSubCB,
                 deleteStoreStSubCB,
                 10,
                 true
             );
+
+            //check if user signed the agreement
+
+            if (user && user.sign?.signed) {
+                console.log("user signed the agreement");
+            } else {
+                console.log("user didn't signed the agreement");
+                const agreement = getSigniture("basic");
+                setShowSignAgreement(true);
+                setAgreement(agreement?.text || "");
+            }
         }
         return () => {
             unsubscribe();
         };
-    }, [isLgged]);
+    }, [user]);
     return (
         <ScreenSlide className="page" slideFromRight={true}>
             {displayHeader && <HomeHeader />}
             <Outlet />
+            {showSignAgreement ? (
+                <Modal>
+                    <div className={styles.modal}>
+                        <h2>{t("terms of use")}</h2>
+                        <p>{t(agreement)}</p>
+                        <div className="btns">
+                            <div className="btn">{t("Agree")}</div>
+                            <div className="btn btn--danger">{t("Dont agree")}</div>
+                        </div>
+                    </div>
+                </Modal>
+            ) : null}
         </ScreenSlide>
     );
 }
