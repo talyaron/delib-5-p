@@ -177,6 +177,8 @@ export function listenToStatementSubscription(
             const statementSubscription =
                 statementSubscriptionDB.data() as StatementSubscription;
 
+            StatementSubscriptionSchema.parse(statementSubscription);
+
             //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
 
             if (!Array.isArray(statementSubscription.statement.results))

@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import { StatementSubscription } from "delib-npm";
 
+
 // Redux Store
-import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../functions/hooks/reduxHooks";
 import {
     deleteSubscribedStatement,
     setStatementSubscription,
@@ -13,19 +17,24 @@ import {
 
 // Helpers
 import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement";
-import useAuth from "../../../functions/hooks/authHooks";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import HomeHeader from "./HomeHeader";
+
+import { userSelector } from "../../../model/users/userSlice";
+
+
+
 
 export const listenedStatements = new Set<string>();
 
 export default function Home() {
     const dispatch = useAppDispatch();
-    const isLgged = useAuth();
     const { statementId } = useParams();
     const location = useLocation();
+    const user = useAppSelector(userSelector);
 
     const [displayHeader, setDisplayHeader] = useState(true);
+   
 
     useEffect(() => {
         if (location.pathname.includes("addStatment") || statementId) {
@@ -35,6 +44,7 @@ export default function Home() {
         }
     }, [location]);
 
+    //callbacks
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
     }
@@ -42,25 +52,35 @@ export default function Home() {
         dispatch(deleteSubscribedStatement(statementId));
     }
 
+
+
+    //use effects
+
     useEffect(() => {
-        console.log("Home use effect is running");
         let unsubscribe: Function = () => {};
-        if (isLgged) {
-            unsubscribe = listenStatmentsSubsciptions(
-                updateStoreStSubCB,
-                deleteStoreStSubCB,
-                10,
-                true
-            );
-        }
+        try {
+            if (user) {
+                unsubscribe = listenStatmentsSubsciptions(
+                    updateStoreStSubCB,
+                    deleteStoreStSubCB,
+                    10,
+                    true
+                );
+
+            
+
+               
+            }
+        } catch (error) {}
         return () => {
             unsubscribe();
         };
-    }, [isLgged]);
+    }, [user]);
     return (
         <ScreenSlide className="page" slideFromRight={true}>
             {displayHeader && <HomeHeader />}
             <Outlet />
+        
         </ScreenSlide>
     );
 }

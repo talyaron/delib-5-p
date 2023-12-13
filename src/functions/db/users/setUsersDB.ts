@@ -1,4 +1,4 @@
-import { Collections, User, UserSchema } from "delib-npm";
+import { Agreement, AgreementSchema, Collections, User, UserSchema } from "delib-npm";
 import { DB } from "../config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { store } from "../../../model/store";
@@ -31,5 +31,25 @@ export async function updateUserFontSize(size:number) {
         
     } catch (error) {
         console.error(error)
+    }
+}
+
+export async function updateUserAgreement(agreement:Agreement):Promise<boolean> {
+    try {
+
+        const user = store.getState().user.user;
+        if(!user) throw new Error('user is not logged in');
+        if(!user.uid) throw new Error('uid is required');
+        if(!agreement) throw new Error('agreement is required');
+        AgreementSchema.parse(agreement);
+       
+        const userRef = doc(DB, Collections.users, user.uid);
+        await setDoc(userRef, { agreement}, { merge: true }) 
+
+        return true;
+        
+    } catch (error) {
+        console.error(error)
+        return false;
     }
 }
