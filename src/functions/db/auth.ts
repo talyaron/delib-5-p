@@ -62,7 +62,7 @@ export function listenToAuth(
                     user.displayName =
                         localStorage.getItem("displayName") || "anonymous"
                 const _user = parseUserFromFirebase(user)
-                console.log(_user)
+             
 
                 // console.info("User is signed in")
                 if (!_user) throw new Error("user is undefined")

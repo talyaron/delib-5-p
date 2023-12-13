@@ -97,10 +97,10 @@ export default function App() {
         }
 
         if (user && user.agreement?.date && user.agreement.text) {
-            console.log("user signed agreement");
+         
             setShowSignAgreement(false);
         } else {
-            console.log("user didnt signed agreement");
+        
             const agreement = getSigniture("basic");
 
             if (!agreement) throw new Error("agreement not found");
