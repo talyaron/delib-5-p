@@ -4,6 +4,7 @@ import { useMyContext } from "../../../../../../functions/hooks/useMap";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
+import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 
 const resultColor = "#8FF18F";
 const questionColor = "#5252FD";
@@ -13,13 +14,14 @@ const backgroundColor = (type: string) =>
         ? questionColor
         : type === "result"
         ? resultColor
-        : "#4d4d4d";
+        : "gold";
 
 const nodeStyle = (type: string) => {
     const style = {
         backgroundColor: backgroundColor(type),
-        color: type === "result" ? "black" : "white",
+        color: type === "question" ? "white" : "black",
         width: "auto",
+        maxWidth: 150,
         height: "auto",
         display: "flex",
         justifyContent: "center",
@@ -34,9 +36,7 @@ const nodeStyle = (type: string) => {
 export default function CustomNode({ data, id }: NodeProps) {
     const navigate = useNavigate();
 
-    const nodeTitle =
-        data.label.split("\n")[0].replace("*", "") ||
-        data.label.replace("*", "");
+    const { shortVersion: nodeTitle } = statementTitleToDisplay(data.label, 80);
 
     const { showModal, setShowModal, setIsOption, setIsQuestion, setParentId } =
         useMyContext();
@@ -54,15 +54,18 @@ export default function CustomNode({ data, id }: NodeProps) {
 
     const handleAddChildNode = () => {
         setShowModal(true);
-        setIsOption(data.type === "option");
-        setIsQuestion(data.type === "question");
-        setParentId(data.parentId);
-    };
-    const handleAddSiblingNode = () => {
-        setShowModal(true);
+        setParentId(id);
+
         setIsOption(data.type !== "option");
         setIsQuestion(data.type !== "question");
-        setParentId(id);
+    };
+
+    const handleAddSiblingNode = () => {
+        setShowModal(true);
+        setParentId(data.parentId);
+
+        setIsOption(data.type === "option" || data.type === "result");
+        setIsQuestion(data.type === "question");
     };
 
     useEffect(() => {
@@ -81,7 +84,7 @@ export default function CustomNode({ data, id }: NodeProps) {
             {showBtns && (
                 <>
                     <IconButton
-                        onClick={handleAddSiblingNode}
+                        onClick={handleAddChildNode}
                         size="small"
                         sx={{
                             position: "absolute",
@@ -97,7 +100,7 @@ export default function CustomNode({ data, id }: NodeProps) {
                         <AddIcon sx={{ fontSize: 12 }} />
                     </IconButton>
                     <IconButton
-                        onClick={handleAddChildNode}
+                        onClick={handleAddSiblingNode}
                         size="small"
                         sx={{
                             position: "absolute",

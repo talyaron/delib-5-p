@@ -83,6 +83,9 @@ const Document: FC<Props> = ({ statement }) => {
                     width: "100vw",
                     maxWidth: "300px",
                     margin: "1rem auto",
+                    position: "absolute",
+                    right: "1rem",
+                    zIndex: 100,
                 }}
             >
                 <option value={FilterType.questionsResults}>

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 // Third party imports
+import { Results } from "delib-npm";
 
 // React Flow imports
 import ReactFlow, { Controls, useNodesState, useEdgesState } from "reactflow";
@@ -12,10 +13,6 @@ import { createInitialNodesAndEdges, getLayoutedElements } from "./mapCont";
 
 // Custom components
 import CustomNode from "./CustomNode";
-
-// Custom hooks
-import { Results } from "delib-npm";
-import { useNavigate } from "react-router-dom";
 
 const nodeTypes = {
     custom: CustomNode,

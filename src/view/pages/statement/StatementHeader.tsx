@@ -48,6 +48,7 @@ const StatementHeader: FC<Props> = ({
     const titleStyle = {
         fontSize:
             title.length > 30 ? "1.3rem" : title.length > 40 ? "1rem" : "2rem",
+        maxWidth: "70%",
     };
 
     const isAdmin = statement?.creatorId === user?.uid;

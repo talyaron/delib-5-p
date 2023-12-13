@@ -108,7 +108,11 @@ const NewSetStatementSimple: FC<Props> = ({
 
                         <div className="btnBox">
                             <button type="submit">{t("Add")}</button>
-                            <button className="btn btn--cancel">
+                            <button
+                                onClick={() => setShowModal(false)}
+                                type="button"
+                                className="btn btn--cancel"
+                            >
                                 {t("Cancel")}
                             </button>
                         </div>
