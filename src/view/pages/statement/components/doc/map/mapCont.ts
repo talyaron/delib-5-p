@@ -7,7 +7,7 @@ const position = { x: 0, y: 0 };
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 50;
+const nodeWidth = 120;
 const nodeHeight = 50;
 
 export const getLayoutedElements = (
@@ -46,45 +46,22 @@ export const getLayoutedElements = (
     return { nodes, edges };
 };
 
-const resultColor = "#8FF18F";
-const questionColor = "#5252FD";
-
-const backgroundColor = (res: Results) =>
-    res.top.statementType === "result"
-        ? resultColor
-        : res.top.statementType === "question"
-        ? questionColor
-        : "#b7b7b7";
-
-const nodeStyle = (result: Results) => {
-    const style = {
-        backgroundColor: backgroundColor(result),
-        color: result.top.statementType === "result" ? "black" : "white",
-        width: "auto",
-        height: "auto",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        fontSize: ".7rem",
-        border: "none",
-        outline: "none",
-        cursor: "pointer",
-    };
-    return style;
-};
-
 const edgeStyle = {
     stroke: "#000",
     strokeWidth: 1,
     strokeOpacity: 0.5,
 };
 
-const nodeOptions = (result: Results) => {
+const nodeOptions = (result: Results, parentId: string) => {
     return {
         id: result.top.statementId,
-        data: { label: result.top.statement },
+        data: {
+            label: result.top.statement,
+            type: result.top.statementType,
+            parentId,
+        },
         position,
-        style: nodeStyle(result),
+        type: "custom",
     };
 };
 
@@ -100,27 +77,19 @@ export const createInitialNodesAndEdges = (result: Results) => {
     try {
         const edges: Edge[] = [];
 
-        const nodes: Node[] = [nodeOptions(result)];
+        const nodes: Node[] = [nodeOptions(result, "top")];
 
         if (!result.sub) return { nodes, edges };
 
         if (result?.sub?.length === 0) {
             return { nodes, edges };
         } else {
-            result.sub.forEach((sub) => {
-                nodes.push(nodeOptions(sub));
-
-                edges.push(edgeOptions(sub, result.top.statementId));
-
-                if (sub.sub) {
-                    createNodes(sub.sub, sub.top.statementId);
-                }
-            });
+            createNodes(result.sub, result.top.statementId);
         }
 
         function createNodes(results: Results[], parentId: string) {
             results.forEach((sub) => {
-                nodes.push(nodeOptions(sub));
+                nodes.push(nodeOptions(sub, parentId));
 
                 edges.push(edgeOptions(sub, parentId));
 

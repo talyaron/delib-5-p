@@ -17,6 +17,7 @@ import {
 import { setVote } from "../../../../../functions/db/vote/setVote";
 import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
+import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
 
 export interface OptionBarProps {
     option: Statement;
@@ -32,6 +33,8 @@ export const OptionBar: FC<OptionBarProps> = ({
 }) => {
     const dispatch = useAppDispatch();
     const vote = useAppSelector(parentVoteSelector(option.parentId));
+    const direction = document.body.style.direction as "ltr" | "rtl";
+
     const _optionOrder = option.order || 0;
 
     const handlePressButton = () => {
@@ -44,6 +47,11 @@ export const OptionBar: FC<OptionBarProps> = ({
 
     const barWidth = width / 4 > 120 ? 120 : width / 4;
     const padding = 10;
+
+    const { shortVersion } = statementTitleToDisplay(
+        option.statement,
+        30
+    );
 
     return (
         <div
@@ -68,7 +76,10 @@ export const OptionBar: FC<OptionBarProps> = ({
                 </div>
             </div>
             <div
-                style={{ width: `${barWidth - padding}px` }}
+                style={{
+                    width: `${barWidth - padding}px`,
+                    direction: direction,
+                }}
                 className={
                     vote?.statementId === option.statementId
                         ? "statement__vote__bar__btn statement__vote__bar__btn--selected"
@@ -76,7 +87,7 @@ export const OptionBar: FC<OptionBarProps> = ({
                 }
                 onClick={handlePressButton}
             >
-                {option.statement}
+                {shortVersion}
             </div>
         </div>
     );

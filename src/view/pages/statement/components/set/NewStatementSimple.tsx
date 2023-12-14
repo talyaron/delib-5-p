@@ -16,20 +16,23 @@ import Loader from "../../../../components/loaders/Loader";
 import { store } from "../../../../../model/store";
 
 interface Props {
-    parentStatement: Statement;
+    parentStatementId: string;
     isOption?: boolean;
     isQuestion?: boolean;
     setShowModal: Function;
+    getSubStatements?: Function;
 }
 
 const NewSetStatementSimple: FC<Props> = ({
-    parentStatement,
+    parentStatementId,
     isOption,
     isQuestion,
     setShowModal,
+    getSubStatements,
 }) => {
     try {
-        if (!parentStatement) throw new Error("parentStatement is undefined");
+        if (!parentStatementId)
+            throw new Error("parentStatementId is undefined");
 
         const [isLoading, setIsLoading] = useState(false);
 
@@ -55,7 +58,7 @@ const NewSetStatementSimple: FC<Props> = ({
                 newStatement.statement = _statement;
                 newStatement.statementId = crypto.randomUUID();
                 newStatement.creatorId = _user.uid;
-                newStatement.parentId = parentStatement.statementId;
+                newStatement.parentId = parentStatementId;
 
                 newStatement.creator = parseUserFromFirebase(_user);
                 if (isOption) newStatement.statementType = StatementType.option;
@@ -72,6 +75,8 @@ const NewSetStatementSimple: FC<Props> = ({
 
                 await setStatmentToDB(newStatement, setSubsciption);
 
+                if (getSubStatements) await getSubStatements();
+
                 setIsLoading(false);
 
                 setShowModal(false);
@@ -86,9 +91,11 @@ const NewSetStatementSimple: FC<Props> = ({
                     <form
                         onSubmit={handleAddStatment}
                         className="setStatement__form"
+                        style={{ height: "auto" }}
                     >
                         <h2>{t("Add Option")}</h2>
                         <input
+                            autoFocus={true}
                             type="text"
                             name="statement"
                             placeholder={t("Title")}
@@ -101,7 +108,11 @@ const NewSetStatementSimple: FC<Props> = ({
 
                         <div className="btnBox">
                             <button type="submit">{t("Add")}</button>
-                            <button className="btn btn--cancel">
+                            <button
+                                onClick={() => setShowModal(false)}
+                                type="button"
+                                className="btn btn--cancel"
+                            >
                                 {t("Cancel")}
                             </button>
                         </div>

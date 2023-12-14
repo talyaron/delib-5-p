@@ -121,13 +121,11 @@ export function isAuthorized(
 
         const role = statementSubscription?.role || Role.guest;
 
-      
         if (
             role === Role.admin ||
             role === Role.statementCreator ||
             role === Role.systemAdmin
         ) {
-          
             return true;
         }
 
@@ -216,8 +214,11 @@ export function isStatementTypeAllowed(
     // if parent is question, dont allow questions
 
     try {
-        if(!parentStatement) throw new Error(`No parent statement at statement ${statement.statement}`);
-        if(!statement) throw new Error("No statement");
+        if (!parentStatement)
+            throw new Error(
+                `No parent statement at statement ${statement.statement}`
+            );
+        if (!statement) throw new Error("No statement");
 
         StatementSchema.parse(parentStatement);
         StatementSchema.parse(statement);
@@ -235,3 +236,18 @@ export function isStatementTypeAllowed(
         return false;
     }
 }
+
+export const statementTitleToDisplay = (
+    statement: string,
+    titleLength: number
+) => {
+    const _title =
+        statement.split("\n")[0].replace("*", "") || statement.replace("*", "");
+
+    const titleToSet =
+        _title.length > titleLength - 3
+            ? _title.substring(0, titleLength) + "..."
+            : _title;
+
+    return { shortVersion: titleToSet, fullVersion: _title };
+};

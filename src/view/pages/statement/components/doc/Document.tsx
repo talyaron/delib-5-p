@@ -10,7 +10,7 @@ import { statementsChildSelector } from "../../../../../model/statements/stateme
 
 // Custom Components
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import StatementMap from "../../../map/StatementMap";
+import StatementMap from "./map/StatementMap";
 
 // Helpers
 import {
@@ -20,6 +20,9 @@ import {
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 import { SuspenseFallback } from "../../../../../router";
+import { useMyContext } from "../../../../../functions/hooks/useMap";
+import Modal from "../../../../components/modal/Modal";
+import NewSetStatementSimple from "../set/NewStatementSimple";
 
 interface Props {
     statement: Statement;
@@ -29,6 +32,8 @@ const Document: FC<Props> = ({ statement }) => {
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
+    const { showModal, setShowModal, parentId, isOption, isQuestion } =
+        useMyContext();
 
     const [results, setResults] = useState<Results | undefined>();
     const [subStatements, setSubStatements] = useState<Statement[]>([]);
@@ -78,6 +83,9 @@ const Document: FC<Props> = ({ statement }) => {
                     width: "100vw",
                     maxWidth: "300px",
                     margin: "1rem auto",
+                    position: "absolute",
+                    right: "1rem",
+                    zIndex: 100,
                 }}
             >
                 <option value={FilterType.questionsResults}>
@@ -97,6 +105,18 @@ const Document: FC<Props> = ({ statement }) => {
             >
                 <StatementMap topResult={results} />
             </div>
+
+            {showModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatementId={parentId}
+                        isOption={isOption}
+                        isQuestion={isQuestion}
+                        setShowModal={setShowModal}
+                        getSubStatements={getSubStatements}
+                    />
+                </Modal>
+            )}
         </ScreenFadeInOut>
     ) : (
         <SuspenseFallback />
