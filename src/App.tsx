@@ -30,7 +30,6 @@ import Modal from "./view/components/modal/Modal";
 import styles from "./App.module.scss";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
-import { set } from "lodash";
 import { Agreement } from "delib-npm";
 
 export default function App() {
@@ -97,10 +96,8 @@ export default function App() {
         }
 
         if (user && user.agreement?.date && user.agreement.text) {
-         
             setShowSignAgreement(false);
-        } else {
-        
+        } else if (location.pathname !== "/") {
             const agreement = getSigniture("basic");
 
             if (!agreement) throw new Error("agreement not found");
@@ -108,17 +105,17 @@ export default function App() {
             setAgreement(agreement.text);
             setShowSignAgreement(true);
         }
-    }, [user]);
+    }, [user,location.pathname]);
 
     //handles
 
     function handleAgreement(agree: boolean, text: string) {
         try {
-            if(!text) throw new Error("text is empty");
+            if (!text) throw new Error("text is empty");
             if (agree) {
                 setShowSignAgreement(false);
                 const agreement: Agreement | undefined = getSigniture("basic");
-                if(!agreement) throw new Error("agreement not found");
+                if (!agreement) throw new Error("agreement not found");
                 agreement.text = text;
 
                 updateUserAgreement(agreement).then((isAgreed: boolean) =>
@@ -145,13 +142,17 @@ export default function App() {
                         <div className="btns">
                             <div
                                 className="btn"
-                                onClick={() => handleAgreement(true, t(agreement))}
+                                onClick={() =>
+                                    handleAgreement(true, t(agreement))
+                                }
                             >
                                 {t("Agree")}
                             </div>
                             <div
                                 className="btn btn--danger"
-                                onClick={() => handleAgreement(false, t(agreement))}
+                                onClick={() =>
+                                    handleAgreement(false, t(agreement))
+                                }
                             >
                                 {t("Dont agree")}
                             </div>
