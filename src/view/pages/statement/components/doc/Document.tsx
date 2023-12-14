@@ -5,8 +5,6 @@ import { Results, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Redux Store
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
-import { statementsChildSelector } from "../../../../../model/statements/statementsSlice";
 
 // Custom Components
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
