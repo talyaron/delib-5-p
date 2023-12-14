@@ -13,8 +13,6 @@ import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
 import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
 import { updateVote } from "./fn_vote";
-
-// const { onRequest } = require("firebase-functions/v2/https");
 const { onDocumentUpdated,onDocumentCreated,onDocumentWritten,onDocumentDeleted } = require("firebase-functions/v2/firestore");
 
 // The Firebase Admin SDK to access Firestore.

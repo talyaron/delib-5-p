@@ -11,7 +11,7 @@ import { Unsubscribe } from "firebase/auth";
 
 // Redux Store
 import { useAppSelector } from "./functions/hooks/reduxHooks";
-import { setFontSize } from "./model/users/userSlice";
+import { setFontSize, updateAgreementToStore } from "./model/users/userSlice";
 import { useDispatch } from "react-redux";
 import { setUser, userSelector } from "./model/users/userSlice";
 
@@ -90,14 +90,16 @@ export default function App() {
 
     useEffect(() => {
         //TODO: add check if you are not at start screen
-        if (!user && location.pathname !== "/") {
+        if (location.pathname === "/") return;
+
+        if (!user) {
             navigate("/");
             return;
         }
 
-        if (user && user.agreement?.date && user.agreement.text) {
+        if (user.agreement?.date) {
             setShowSignAgreement(false);
-        } else if (location.pathname !== "/") {
+        } else {
             const agreement = getSigniture("basic");
 
             if (!agreement) throw new Error("agreement not found");
@@ -105,7 +107,7 @@ export default function App() {
             setAgreement(agreement.text);
             setShowSignAgreement(true);
         }
-    }, [user,location.pathname]);
+    }, [user, location.pathname]);
 
     //handles
 
@@ -117,6 +119,8 @@ export default function App() {
                 const agreement: Agreement | undefined = getSigniture("basic");
                 if (!agreement) throw new Error("agreement not found");
                 agreement.text = text;
+
+                dispatch(updateAgreementToStore(agreement));
 
                 updateUserAgreement(agreement).then((isAgreed: boolean) =>
                     setShowSignAgreement(!isAgreed)

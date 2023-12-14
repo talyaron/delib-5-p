@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { User, UserSchema } from 'delib-npm';
+import { Agreement, User, UserSchema } from 'delib-npm';
 
 export enum Status {
   idle = 'idle',
@@ -74,11 +74,27 @@ export const userSlicer = createSlice({
       } catch (error) {
         console.error(error);
       }
-    }
+    },
+    updateAgreementToStore: (state: UserState, action: PayloadAction<Agreement | undefined>) => {
+      try {
+        if (!state.user) return
+
+        if (!action.payload) {
+          delete state.user.agreement;
+          return;
+        }
+
+        const agreement = action.payload;
+        state.user.agreement = agreement;
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 })
 
-export const { setUser,increaseFontSize,setFontSize } = userSlicer.actions
+export const { setUser,increaseFontSize,setFontSize,updateAgreementToStore } = userSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const userSelector = (state: RootState) => state.user.user;
