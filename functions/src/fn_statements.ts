@@ -2,7 +2,7 @@ const { logger } = require("firebase-functions")
 import { Timestamp, FieldValue } from "firebase-admin/firestore"
 import { db } from "./index"
 import admin = require("firebase-admin")
-import { Collections, MapIndex, Statement } from "delib-npm"
+import { Collections, Statement } from "delib-npm"
 import { t } from "i18next"
 
 export async function updateSubscribedListnersCB(event: any) {
@@ -29,7 +29,7 @@ export async function updateSubscribedListnersCB(event: any) {
                 { merge: true }
             )
         } catch (error) {
-            logger.log("error updating subscribers", error)
+            logger.error("error updating subscribers", error)
         }
     })
     return
@@ -41,7 +41,7 @@ export async function updateParentWithNewMessageCB(e: any) {
         const statement = e.data.data() as Statement
         const { parentId, topParentId } = statement
 
-        logger.log("updateParentWithNewMessageCB", parentId)
+      
         if (!parentId) throw new Error("parentId not found")
         //update map
 
@@ -65,9 +65,10 @@ export async function updateParentWithNewMessageCB(e: any) {
         }
 
         //update map if this is not top statement
-        const mapRef = db.doc(`${Collections.maps}/${topParentId}`)
-        const mapDB = (await mapRef.get().data()) as MapIndex
-        if (!mapDB) throw new Error("map not found")
+        // const mapRef = db.doc(`${Collections.maps}/${topParentId}`)
+        // const mapDB = await mapRef.get()
+        // const map = mapDB.data() as MapIndex;
+        // if (!map) throw new Error("map not found")
         // const indexsParent = mapDB.index.find((i: any) => i.key === parentId);
 
         //increment totalSubStatements
@@ -79,8 +80,8 @@ export async function updateParentWithNewMessageCB(e: any) {
 
         return
     } catch (error) {
-        logger.log("error updating parent with new message", error)
-        console.error(error)
+        logger.error("error updating parent with new message", error)
+     
         return
     }
 }
@@ -92,7 +93,7 @@ export async function sendNotificationsCB(e: any) {
         const parentId = statement.parentId
 
         if (!parentId) throw new Error("parentId not found")
-        logger.log("parentId", parentId)
+      
         let title: string = "",
             parent
 
@@ -126,12 +127,11 @@ export async function sendNotificationsCB(e: any) {
             .where("notification", "==", true)
 
         const subscribersDB = await q.get()
-        logger.log("subscribersDB size", subscribersDB.docs.length)
-
+      
         //send push notifications to all subscribers
         subscribersDB.docs.forEach((doc: any) => {
             const token = doc.data().token
-            logger.log("token:", token)
+        
 
             if (token) {
                 // const notifications = {
@@ -158,7 +158,7 @@ export async function sendNotificationsCB(e: any) {
                     .send(message)
                     .then((response: any) => {
                         // Response is a message ID string.
-                        logger.log("Successfully sent message:", response)
+                   
                     })
                     .catch((error: any) => {
                         logger.error("Error sending message:", error)
