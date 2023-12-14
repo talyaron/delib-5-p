@@ -3,7 +3,7 @@ import { Timestamp, FieldValue } from "firebase-admin/firestore"
 import { db } from "./index"
 import admin = require("firebase-admin")
 import { Collections, Statement } from "delib-npm"
-import { t } from "i18next"
+
 
 export async function updateSubscribedListnersCB(event: any) {
     //get statement
@@ -99,7 +99,7 @@ export async function sendNotificationsCB(e: any) {
 
         //get parent statement
         if (parentId === "top") {
-            title = t("New message")
+            title = "New message"
         } else {
             const parentRef = db.doc(`statements/${parentId}`)
             const parentDB = await parentRef.get()
@@ -115,8 +115,8 @@ export async function sendNotificationsCB(e: any) {
 
             title =
                 parent && parent.statement
-                    ? t("In conversation:") + __first20Chars
-                    : t("New message")
+                    ? "In conversation:" + __first20Chars
+                    : "New message"
         }
         //remove * from statement and bring only the first paragraph (pargraph are created by /n)
 
