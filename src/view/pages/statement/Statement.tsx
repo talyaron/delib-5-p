@@ -54,7 +54,6 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 import useDirection from "../../../functions/hooks/useDirection";
 import { MapModelProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
-import { func } from "prop-types";
 
 const Statement: FC = () => {
     // Hooks
