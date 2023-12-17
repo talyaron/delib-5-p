@@ -150,6 +150,7 @@ const Statement: FC = () => {
         return () => {
             unsubSubStatements();
             unsubStatementSubscription();
+            unsubSubSubscribedStatements();
             unsubEvaluations();
         };
     }, [user, statementId]);
