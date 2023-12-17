@@ -10,6 +10,7 @@ import { t } from "i18next";
 import {
     getIsSubscribed,
     listenToStatement,
+    listenToStatementSubSubscriptions,
     listenToStatementSubscription,
     listenToStatementsOfStatment,
 } from "../../../functions/db/statements/getStatement";
@@ -26,6 +27,7 @@ import {
 } from "../../../functions/hooks/reduxHooks";
 import {
     deleteStatement,
+    deleteSubscribedStatement,
     setStatement,
     setStatementSubscription,
     statementSelector,
@@ -52,11 +54,7 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 import useDirection from "../../../functions/hooks/useDirection";
 import { MapModelProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
-
-let unsub: Function = () => {};
-let unsubSubStatements: Function = () => {};
-let unsubStatementSubscription: Function = () => {};
-let unsubEvaluations: Function = () => {};
+import { func } from "prop-types";
 
 const Statement: FC = () => {
     // Hooks
@@ -95,6 +93,10 @@ const Statement: FC = () => {
         dispatch(setStatementSubscription(statementSubscription));
     }
 
+    function deleteSubscribedStatementCB(statementId: string) {
+        dispatch(deleteSubscribedStatement(statementId));
+    }
+
     function updateEvaluationsCB(evaluation: Evaluation) {
         dispatch(setEvaluationToStore(evaluation));
     }
@@ -112,6 +114,7 @@ const Statement: FC = () => {
 
     //listen to statement
     useEffect(() => {
+        let unsub: Function = () => {};
         if (statementId && user) {
             unsub = listenToStatement(statementId, updateStoreStatementCB);
         }
@@ -122,12 +125,18 @@ const Statement: FC = () => {
     }, [statementId, user]);
 
     useEffect(() => {
+        let unsubSubStatements: Function = () => {};
+        let unsubStatementSubscription: Function = () => {};
+        let unsubEvaluations: Function = () => {};
+        let unsubSubSubscribedStatements: Function = () => {};
+
         if (user && statementId) {
             unsubSubStatements = listenToStatementsOfStatment(
                 statementId,
                 updateStoreStatementCB,
                 deleteStatementCB
             );
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId,updateStatementSubscriptionCB, deleteSubscribedStatementCB)
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
                 updateStatementSubscriptionCB

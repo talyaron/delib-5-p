@@ -62,6 +62,7 @@ const StatementOptions: FC<Props> = ({
                             return (
                                 <StatementOptionCard
                                     key={statementSub.statementId}
+                                    parentStatement={statement}
                                     statement={statementSub}
                                     showImage={handleShowTalker}
                                     top={tops[i]}
