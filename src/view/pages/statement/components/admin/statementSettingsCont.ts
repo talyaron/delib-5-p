@@ -1,7 +1,8 @@
 import {
     Statement,
     NavObject,
-    Screen
+    Screen,
+    ResultsBy
 } from "delib-npm"
 
 

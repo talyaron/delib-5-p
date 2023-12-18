@@ -1,3 +1,4 @@
+import {z} from "zod";
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
@@ -91,10 +92,21 @@ export const userSlicer = createSlice({
         console.error(error);
       }
     },
+    setUserDefaultLanguage: (state, action: PayloadAction<string>) => {
+      try {
+        if (!state.user) return
+        z.string().length(2).parse(action.payload);
+
+        state.user.defaultLanguage = action.payload;
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
   },
 })
 
-export const { setUser,increaseFontSize,setFontSize,updateAgreementToStore } = userSlicer.actions
+export const { setUser,increaseFontSize,setFontSize,updateAgreementToStore,setUserDefaultLanguage } = userSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const userSelector = (state: RootState) => state.user.user;

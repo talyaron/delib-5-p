@@ -2,7 +2,13 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { User, Statement, StatementSubscription, Role, Screen } from "delib-npm";
+import {
+    User,
+    Statement,
+    StatementSubscription,
+    Role,
+    Screen,
+} from "delib-npm";
 import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
@@ -55,12 +61,12 @@ import useDirection from "../../../functions/hooks/useDirection";
 import { MapModelProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
+import i18n from "../../../i18n";
 
 const Statement: FC = () => {
     // Hooks
     const statementId = useParams().statementId;
     const page = useParams().page as Screen;
-    
 
     const direction = useDirection();
     const langDirection = direction === "row" ? "ltr" : "rtl";
@@ -69,7 +75,7 @@ const Statement: FC = () => {
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
-    const screen = availableScreen(statement,page)
+    const screen = availableScreen(statement, page);
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -139,7 +145,11 @@ const Statement: FC = () => {
                 updateStoreStatementCB,
                 deleteStatementCB
             );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId,updateStatementSubscriptionCB, deleteSubscribedStatementCB)
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+                statementId,
+                updateStatementSubscriptionCB,
+                deleteSubscribedStatementCB
+            );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
                 updateStatementSubscriptionCB
@@ -158,7 +168,17 @@ const Statement: FC = () => {
         };
     }, [user, statementId]);
 
-    useEffect(() => {}, [statementId]);
+    useEffect(() => {
+        if (statement && user) {
+            console.log("user:",user.defaultLanguage, "group:",statement.defaultLanguage)
+            const { defaultLanguage } = statement;
+            if (defaultLanguage && !user?.defaultLanguage) {
+                i18n.changeLanguage(defaultLanguage);
+            }
+
+          
+        }
+    }, [statement]);
 
     useEffect(() => {
         if (statement) {

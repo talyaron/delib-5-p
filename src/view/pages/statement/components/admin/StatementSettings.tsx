@@ -50,6 +50,7 @@ import {
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
 import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+import LanguageSelector from "../../../../components/language/LanguageSelector";
 
 interface Props {
     simple?: boolean;
@@ -110,6 +111,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get("statement");
+            const language = data.get("language");
             if (!title || title.length < 2) return;
             setIsLoading(true);
             const resultsBy = data.get("resultsBy") as ResultsBy;
@@ -139,6 +141,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 deep: 1,
                 minConsensus: 1,
             };
+            newStatement.defaultLanguage = language || "en";
             newStatement.statementId =
                 statement?.statementId || crypto.randomUUID();
             newStatement.creatorId =
@@ -274,7 +277,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             </FormGroup>
                         </section>
                     )}
-
+<LanguageSelector />
                     <select name="resultsBy" defaultValue={resultsBy}>
                         <option value={ResultsBy.topVote}>
                             {t("Voting Results")}

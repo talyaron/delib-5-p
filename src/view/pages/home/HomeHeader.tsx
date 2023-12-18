@@ -5,6 +5,7 @@ import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
 import { t } from "i18next";
+import LanguageSelector from "../../components/language/LanguageSelector";
 
 export default function HomeHeader() {
     const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ export default function HomeHeader() {
                 <h1>{t("Delib 5")}</h1>
                 <b>-</b>
                 <h2>{t("Creating Agreements")}</h2>
+              
             </div>
             <div className="btns">
                 <button onClick={handleLogout}>{t("Disconnect")}</button>
@@ -43,6 +45,7 @@ export default function HomeHeader() {
                         {t("Install the App")}
                     </button>
                 )}
+                  <LanguageSelector />
             </div>
         </div>
     );

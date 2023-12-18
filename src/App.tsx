@@ -28,7 +28,10 @@ import Modal from "./view/components/modal/Modal";
 
 //css
 import styles from "./App.module.scss";
-import { updateUserAgreement } from "./functions/db/users/setUsersDB";
+import {
+    setUserDefaultLanguageDB,
+    updateUserAgreement,
+} from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
 
@@ -108,6 +111,14 @@ export default function App() {
             setShowSignAgreement(true);
         }
     }, [user, location.pathname]);
+
+    useEffect(() => {
+        if (!user) return;
+
+        if (!user.defaultLanguage) {
+            setUserDefaultLanguageDB(i18n.language);
+        }
+    }, [user]);
 
     //handles
 

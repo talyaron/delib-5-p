@@ -53,3 +53,14 @@ export async function updateUserAgreement(agreement:Agreement):Promise<boolean> 
         return false;
     }
 }
+
+export async function setUserDefaultLanguageDB(defaultLanguage:string):Promise<void>{
+    try {
+        const user = store.getState().user.user;
+        if(!user) throw new Error('user is not logged in');
+        const userRef = doc(DB, Collections.users, user.uid);
+        await setDoc(userRef, { defaultLanguage }, { merge: true })
+    } catch (error) {
+        console.error(error)
+    }
+}
