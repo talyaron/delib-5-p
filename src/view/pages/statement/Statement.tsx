@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { User, Statement, StatementSubscription, Role } from "delib-npm";
+import { User, Statement, StatementSubscription, Role, Screen } from "delib-npm";
 import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
@@ -10,6 +10,7 @@ import { t } from "i18next";
 import {
     getIsSubscribed,
     listenToStatement,
+    listenToStatementSubSubscriptions,
     listenToStatementSubscription,
     listenToStatementsOfStatment,
 } from "../../../functions/db/statements/getStatement";
@@ -26,6 +27,7 @@ import {
 } from "../../../functions/hooks/reduxHooks";
 import {
     deleteStatement,
+    deleteSubscribedStatement,
     setStatement,
     setStatementSubscription,
     statementSelector,
@@ -52,15 +54,13 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 import useDirection from "../../../functions/hooks/useDirection";
 import { MapModelProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
-
-let unsub: Function = () => {};
-let unsubSubStatements: Function = () => {};
-let unsubStatementSubscription: Function = () => {};
-let unsubEvaluations: Function = () => {};
+import { availableScreen } from "./StatementCont";
 
 const Statement: FC = () => {
     // Hooks
-    const { statementId, page } = useParams();
+    const statementId = useParams().statementId;
+    const page = useParams().page as Screen;
+    
 
     const direction = useDirection();
     const langDirection = direction === "row" ? "ltr" : "rtl";
@@ -69,6 +69,7 @@ const Statement: FC = () => {
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
+    const screen = availableScreen(statement,page)
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -95,6 +96,10 @@ const Statement: FC = () => {
         dispatch(setStatementSubscription(statementSubscription));
     }
 
+    function deleteSubscribedStatementCB(statementId: string) {
+        dispatch(deleteSubscribedStatement(statementId));
+    }
+
     function updateEvaluationsCB(evaluation: Evaluation) {
         dispatch(setEvaluationToStore(evaluation));
     }
@@ -112,6 +117,7 @@ const Statement: FC = () => {
 
     //listen to statement
     useEffect(() => {
+        let unsub: Function = () => {};
         if (statementId && user) {
             unsub = listenToStatement(statementId, updateStoreStatementCB);
         }
@@ -122,12 +128,18 @@ const Statement: FC = () => {
     }, [statementId, user]);
 
     useEffect(() => {
+        let unsubSubStatements: Function = () => {};
+        let unsubStatementSubscription: Function = () => {};
+        let unsubEvaluations: Function = () => {};
+        let unsubSubSubscribedStatements: Function = () => {};
+
         if (user && statementId) {
             unsubSubStatements = listenToStatementsOfStatment(
                 statementId,
                 updateStoreStatementCB,
                 deleteStatementCB
             );
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId,updateStatementSubscriptionCB, deleteSubscribedStatementCB)
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
                 updateStatementSubscriptionCB
@@ -141,6 +153,7 @@ const Statement: FC = () => {
         return () => {
             unsubSubStatements();
             unsubStatementSubscription();
+            unsubSubSubscribedStatements();
             unsubEvaluations();
         };
     }, [user, statementId]);
@@ -187,6 +200,7 @@ const Statement: FC = () => {
             {statement ? (
                 <StatementHeader
                     statement={statement}
+                    screen={screen || Screen.CHAT}
                     title={title}
                     direction={direction}
                     langDirection={langDirection}
@@ -201,7 +215,7 @@ const Statement: FC = () => {
                             .split("/")
                             .slice(2)
                             .join(" ")}
-                        screen={page}
+                        screen={screen}
                         statement={statement}
                         subStatements={subStatements}
                         handleShowTalker={handleShowTalker}

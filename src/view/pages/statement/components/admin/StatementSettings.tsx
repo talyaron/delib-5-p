@@ -131,7 +131,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 navArray
             );
 
-            console.log(_statement);
+          
             newStatement.statement = _statement;
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,

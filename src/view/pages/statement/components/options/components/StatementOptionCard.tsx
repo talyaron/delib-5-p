@@ -24,19 +24,26 @@ import { useNavigate } from "react-router";
 
 interface Props {
     statement: Statement;
+    parentStatement: Statement;
     showImage: Function;
     top: number;
 }
 
-const StatementOptionCard: FC<Props> = ({ statement, top }) => {
+const StatementOptionCard: FC<Props> = ({
+    parentStatement,
+    statement,
+    top,
+}) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
     );
+
     const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
+    const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
@@ -87,13 +94,17 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
                 <Evaluation statement={statement} />
             </div>
-            <AddSubQuestion statement={statement} />
-            <div className="options__card__chat">
-                <StatementChatMore statement={statement} />
-                <div className="options__card__chat__settings">
-                    <StatementChatSetOption statement={statement} />
-                </div>
-            </div>
+            {hasChildren ? (
+                <>
+                    <AddSubQuestion statement={statement} />
+                    <div className="options__card__chat">
+                        <StatementChatMore statement={statement} />
+                        <div className="options__card__chat__settings">
+                            <StatementChatSetOption statement={statement} />
+                        </div>
+                    </div>
+                </>
+            ) : null}
         </div>
     );
 };

@@ -30,6 +30,7 @@ import { DB } from "../config";
 import { store } from "../../../model/store";
 import _ from "lodash";
 
+
 export function listenToTopStatements(
     setStatementsCB: Function,
     deleteStatementCB: Function
@@ -224,6 +225,47 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
     } catch (error) {
         console.error(error);
         return [];
+    }
+}
+
+export function listenToStatementSubSubscriptions(statementId: string, cbSet: Function, cbDelete:Function):Function {
+    try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+
+        const statementsSubscribeRef = collection(
+            DB,
+            Collections.statementsSubscribe
+        );
+        const q = query(
+            statementsSubscribeRef,
+            where("statement.parentId", "==", statementId),
+            where("userId", "==", user.uid),
+            limit(20)
+        );
+
+        return onSnapshot(q, (subscriptionsDB) => {
+            subscriptionsDB.docChanges().forEach((change) => {
+                const statementSubscription =
+                    change.doc.data() as StatementSubscription;
+
+                if (change.type === "added") {
+                    cbSet(statementSubscription);
+                }
+
+                if (change.type === "modified") {
+                    cbSet(statementSubscription);
+                }
+
+                if (change.type === "removed") {
+                    cbDelete(statementSubscription.statementId);
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        return () => {};
     }
 }
 

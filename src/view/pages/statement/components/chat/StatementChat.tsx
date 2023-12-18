@@ -87,6 +87,7 @@ const StatementChat: FC<Props> = ({
                                 statement={statement}
                                 isEdit={isEdit}
                                 setEdit={setIsEdit}
+                                isTextArea={true}
                             />
                         </div>
                     </div>

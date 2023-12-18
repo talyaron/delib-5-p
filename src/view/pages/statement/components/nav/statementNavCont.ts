@@ -5,7 +5,7 @@ import { store } from "../../../../../model/store";
 export function showNavElements(
     statement: Statement | undefined,
     navArray: NavObject[]
-) {
+):NavObject[] {
     try {
         if (!statement) return navArray
         let _navArray = [...navArray]
