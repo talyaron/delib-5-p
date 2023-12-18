@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Statement, StatementType } from "delib-npm";
+import { Screen, Statement, StatementType } from "delib-npm";
 import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { store } from "../../../model/store";
@@ -19,6 +19,7 @@ import EditTitle from "../../components/edit/EditTitle";
 
 interface Props {
     title: string;
+    screen:Screen;
     statement: Statement;
     direction: "row" | "row-reverse";
     langDirection: "ltr" | "rtl";
@@ -28,6 +29,7 @@ interface Props {
 
 const StatementHeader: FC<Props> = ({
     title,
+    screen,
     statement,
     direction,
     langDirection,
@@ -147,7 +149,7 @@ const StatementHeader: FC<Props> = ({
                     <ShareIcon />
                 </div>
             </div>
-            {statement && <StatementNav statement={statement} />}
+            {statement && <StatementNav statement={statement} screen={screen}/>}
         </div>
     );
 };

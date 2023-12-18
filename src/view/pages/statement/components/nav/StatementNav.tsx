@@ -1,11 +1,12 @@
 import { FC } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Statement, NavObject, Screen, StatementType } from "delib-npm";
-import { showNavElements } from "./statementNvCont";
+import { showNavElements } from "./statementNavCont";
 import { t } from "i18next";
 
 interface Props {
     statement: Statement;
+    screen: Screen;
 }
 
 export const navArray: NavObject[] = [
@@ -17,8 +18,8 @@ export const navArray: NavObject[] = [
     { link: Screen.SETTINGS, name: "Settings", id: "settings" },
 ];
 
-const StatementNav: FC<Props> = ({ statement }) => {
-    const { page } = useParams();
+const StatementNav: FC<Props> = ({ statement, screen }) => {
+   
     const _navArray = showNavElements(statement, navArray);
     const isQuestion = statement.statementType === StatementType.question;
 
@@ -31,9 +32,9 @@ const StatementNav: FC<Props> = ({ statement }) => {
                         navObject.link === Screen.VOTE ? "/votes-voted" : ""
                     }`}
                     className={
-                        page === navObject.link && isQuestion
+                        screen === navObject.link && isQuestion
                             ? "statement__nav__button statement__nav__button--selected--question"
-                            : page === navObject.link
+                            : screen === navObject.link
                             ? "statement__nav__button statement__nav__button--selected"
                             : "statement__nav__button"
                     }
