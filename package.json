@@ -24,7 +24,7 @@
     "@mui/material": "^5.13.7",
     "@reduxjs/toolkit": "^1.9.5",
     "deep-equal": "^2.2.2",
-    "delib-npm": "^1.1.45",
+    "delib-npm": "^1.1.47",
     "firebase": "^10.0.0",
     "framer-motion": "^10.16.5",
     "i18next": "^23.7.6",
@@ -41,7 +41,7 @@
     "reactflow": "^11.10.1",
     "rollup-plugin-visualizer": "^5.10.0",
     "sass": "^1.63.6",
-    "sort-by": "^1.2.0",
+    "sort-by": "^0.0.2",
     "vite-plugin-commonjs": "^0.10.0",
     "zod": "^3.21.4"
   },
