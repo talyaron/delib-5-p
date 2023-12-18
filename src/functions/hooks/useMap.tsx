@@ -2,29 +2,15 @@ import React, { createContext, useContext, useState, FC } from "react";
 import { Position } from "reactflow";
 
 // Define the context
-interface MyContextProps {
-    showModal: boolean;
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-    parentId: string;
-    setParentId: React.Dispatch<React.SetStateAction<string>>;
-    isOption: boolean;
-    setIsOption: React.Dispatch<React.SetStateAction<boolean>>;
-    isQuestion: boolean;
-    setIsQuestion: React.Dispatch<React.SetStateAction<boolean>>;
-    targetPosition: Position;
-    setTargetPosition: React.Dispatch<React.SetStateAction<Position>>;
-    sourcePosition: Position;
-    setSourcePosition: React.Dispatch<React.SetStateAction<Position>>;
-    nodeWidth: number;
-    setNodeWidth: React.Dispatch<React.SetStateAction<number>>;
-    nodeHeight: number;
-    setNodeHeight: React.Dispatch<React.SetStateAction<number>>;
+interface MapProps {
+    mapContext: MapProviderState;
+    setMapContext: React.Dispatch<React.SetStateAction<MapProviderState>>;
 }
 
-const MapModelContext = createContext<MyContextProps | undefined>(undefined);
+const MapModelContext = createContext<MapProps | undefined>(undefined);
 
 // Define a hook to use the context
-export const useMapContext = (): MyContextProps => {
+export const useMapContext = (): MapProps => {
     const context = useContext(MapModelContext);
     if (!context) {
         throw new Error(
@@ -35,37 +21,36 @@ export const useMapContext = (): MyContextProps => {
 };
 
 // Create a provider component
-interface MyContextProviderProps {
+interface MapProviderProps {
     children: React.ReactNode;
 }
 
-export const MapModelProvider: FC<MyContextProviderProps> = ({ children }) => {
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const [parentId, setParentId] = useState("");
-    const [isOption, setIsOption] = useState(false);
-    const [isQuestion, setIsQuestion] = useState(false);
-    const [targetPosition, setTargetPosition] = useState(Position.Top);
-    const [sourcePosition, setSourcePosition] = useState(Position.Bottom);
-    const [nodeWidth, setNodeWidth] = useState(80);
-    const [nodeHeight, setNodeHeight] = useState(80);
+interface MapProviderState {
+    showModal: boolean;
+    parentId: string;
+    isOption: boolean;
+    isQuestion: boolean;
+    targetPosition: Position;
+    sourcePosition: Position;
+    nodeWidth: number;
+    nodeHeight: number;
+}
 
-    const contextValue: MyContextProps = {
-        showModal,
-        setShowModal,
-        parentId,
-        setParentId,
-        isOption,
-        setIsOption,
-        isQuestion,
-        setIsQuestion,
-        targetPosition,
-        setTargetPosition,
-        sourcePosition,
-        setSourcePosition,
-        nodeWidth,
-        setNodeWidth,
-        nodeHeight,
-        setNodeHeight,
+export const MapProvider: FC<MapProviderProps> = ({ children }) => {
+    const [mapContext, setMapContext] = useState<MapProviderState>({
+        showModal: false,
+        parentId: "",
+        isOption: false,
+        isQuestion: false,
+        targetPosition: Position.Top,
+        sourcePosition: Position.Bottom,
+        nodeWidth: 80,
+        nodeHeight: 80,
+    });
+
+    const contextValue: MapProps = {
+        mapContext,
+        setMapContext,
     };
 
     return (

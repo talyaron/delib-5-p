@@ -33,18 +33,11 @@ export default function StatementMap({ topResult }: Props) {
     const [nodes, setNodes] = useNodesState([]);
     const [edges, setEdges] = useEdgesState([]);
 
-    const {
-        targetPosition,
-        setTargetPosition,
-        setSourcePosition,
-        nodeHeight,
-        nodeWidth,
-        setNodeWidth,
-        setNodeHeight,
-    } = useMapContext();
+    const { mapContext, setMapContext } = useMapContext();
 
     useEffect(() => {
-        const direction = targetPosition === Position.Top ? "TB" : "LR";
+        const direction =
+            mapContext.targetPosition === Position.Top ? "TB" : "LR";
         const { nodes: createdNodes, edges: createdEdges } =
             createInitialNodesAndEdges(topResult);
 
@@ -53,8 +46,8 @@ export default function StatementMap({ topResult }: Props) {
                 createdNodes,
                 createdEdges,
                 direction,
-                nodeHeight,
-                nodeWidth
+                mapContext.nodeHeight,
+                mapContext.nodeWidth
             );
 
         setNodes(layoutedNodes);
@@ -63,23 +56,24 @@ export default function StatementMap({ topResult }: Props) {
 
     const onLayout = useCallback(
         (direction: string) => {
-            const width = direction === "TB" ? 80 : 100;
-            const height = direction === "TB" ? 80 : 0;
+            const width = direction === "TB" ? 80 : 150;
+            const height = direction === "TB" ? 80 : 40;
 
-            setNodeWidth(width);
-            setNodeHeight(height);
+            setMapContext((prev) => ({
+                ...prev,
+                targetPosition:
+                    direction === "TB" ? Position.Top : Position.Left,
+                sourcePosition:
+                    direction === "TB" ? Position.Bottom : Position.Right,
+                nodeWidth: width,
+                nodeHeight: height,
+            }));
 
             const { nodes: layoutedNodes, edges: layoutedEdges } =
                 getLayoutedElements(nodes, edges, direction, height, width);
 
             setNodes([...layoutedNodes]);
             setEdges([...layoutedEdges]);
-            setTargetPosition(
-                direction === "TB" ? Position.Top : Position.Left
-            );
-            setSourcePosition(
-                direction === "TB" ? Position.Bottom : Position.Right
-            );
         },
         [nodes, edges]
     );
@@ -87,11 +81,15 @@ export default function StatementMap({ topResult }: Props) {
     return (
         <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
             <Controls />
-            <Panel position="top-left">
-                <button onClick={() => onLayout("TB")}>vertical layout</button>
-                <button onClick={() => onLayout("LR")}>
-                    horizontal layout
-                </button>
+            <Panel position="bottom-right">
+                <div className="btns">
+                    <button onClick={() => onLayout("TB")}>
+                        vertical layout
+                    </button>
+                    <button onClick={() => onLayout("LR")}>
+                        horizontal layout
+                    </button>
+                </div>
             </Panel>
         </ReactFlow>
     );

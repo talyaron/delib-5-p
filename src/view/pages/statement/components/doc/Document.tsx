@@ -30,8 +30,7 @@ const Document: FC<Props> = ({ statement }) => {
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
-    const { showModal, setShowModal, parentId, isOption, isQuestion } =
-        useMapContext();
+    const { mapContext, setMapContext } = useMapContext();
 
     const [results, setResults] = useState<Results | undefined>();
     const [subStatements, setSubStatements] = useState<Statement[]>([]);
@@ -53,6 +52,7 @@ const Document: FC<Props> = ({ statement }) => {
     };
 
     // Get all child statements and set top result to display map
+    // TODO: In the future refactor to listen to changes in sub statements
     const getSubStatements = async () => {
         const childStatements = await getChildStatements(statement.statementId);
 
@@ -71,6 +71,13 @@ const Document: FC<Props> = ({ statement }) => {
     useEffect(() => {
         getSubStatements();
     }, []);
+
+    const toggleModal = (show: boolean) => {
+        setMapContext((prev) => ({
+            ...prev,
+            showModal: show,
+        }));
+    };
 
     return results ? (
         <ScreenFadeInOut className="page__main">
@@ -104,13 +111,13 @@ const Document: FC<Props> = ({ statement }) => {
                 <StatementMap topResult={results} />
             </div>
 
-            {showModal && (
+            {mapContext.showModal && (
                 <Modal>
                     <NewSetStatementSimple
-                        parentStatementId={parentId}
-                        isOption={isOption}
-                        isQuestion={isQuestion}
-                        setShowModal={setShowModal}
+                        parentStatementId={mapContext.parentId}
+                        isOption={mapContext.isOption}
+                        isQuestion={mapContext.isQuestion}
+                        setShowModal={toggleModal}
                         getSubStatements={getSubStatements}
                     />
                 </Modal>

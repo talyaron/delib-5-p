@@ -52,7 +52,7 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 
 // Hooks & Providers
 import useDirection from "../../../functions/hooks/useDirection";
-import { MapModelProvider } from "../../../functions/hooks/useMap";
+import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 
@@ -209,7 +209,7 @@ const Statement: FC = () => {
                 />
             ) : null}
             <AnimatePresence mode="wait" initial={false}>
-                <MapModelProvider>
+                <MapProvider>
                     <SwitchScreens
                         key={window.location.pathname
                             .split("/")
@@ -220,7 +220,7 @@ const Statement: FC = () => {
                         subStatements={subStatements}
                         handleShowTalker={handleShowTalker}
                     />
-                </MapModelProvider>
+                </MapProvider>
             </AnimatePresence>
         </ScreenFadeInOut>
     );
