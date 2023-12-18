@@ -18,7 +18,7 @@ import {
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
 import { SuspenseFallback } from "../../../../../router";
-import { useMyContext } from "../../../../../functions/hooks/useMap";
+import { useMapContext } from "../../../../../functions/hooks/useMap";
 import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 
@@ -31,7 +31,7 @@ const Document: FC<Props> = ({ statement }) => {
     //     statementsChildSelector(statement.statementId)
     // );
     const { showModal, setShowModal, parentId, isOption, isQuestion } =
-        useMyContext();
+        useMapContext();
 
     const [results, setResults] = useState<Results | undefined>();
     const [subStatements, setSubStatements] = useState<Statement[]>([]);
