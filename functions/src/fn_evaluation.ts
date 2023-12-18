@@ -25,9 +25,11 @@ export async function updateEvaluation(event: any) {
             previousEvaluation,
             error,
         } = getEvaluationInfo();
-        if (error) throw error;
+
+        if (error || !statementId) throw error;
 
         const statementRef = db.collection("statements").doc(statementId);
+
         const { newPro, newCon } = await setNewEvaluation(
             statementRef,
             evaluationDeferneces,
@@ -213,7 +215,6 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined
 ) {
     try {
-    
         if (!parentId) throw new Error("parentId is not defined");
 
         //get parent statement
@@ -228,11 +229,10 @@ async function updateParentStatementWithChildResults(
         const { resultsSettings } = parentStatement;
         const { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
-       
+
         //this function is responsible for converting the results of evaluation of options
 
-        if (resultsBy !== ResultsBy.topOptions) {
-           
+        if (resultsBy !== ResultsBy.topOptions || !numberOfResults) {
             return;
         }
         //update child statements if they are results or options
@@ -252,7 +252,6 @@ async function updateParentStatementWithChildResults(
         );
 
         const childIds = childStatements.map((st: Statement) => st.statementId);
-
 
         //update parent with results
         await db.collection(Collections.statements).doc(parentId).update({
