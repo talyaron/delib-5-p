@@ -39,10 +39,6 @@ interface StatementOrder {
     order: number;
 }
 
-interface SetEvaluation{
-    statementId: string;
-    evaluation: number;
-}
 
 // Define the initial state using that type
 const initialState: StatementsState = {

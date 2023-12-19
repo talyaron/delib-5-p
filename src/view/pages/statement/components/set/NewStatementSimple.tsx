@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 // Third party imports
 import { UserSchema } from "delib-npm";
-import { Statement, parseUserFromFirebase } from "delib-npm";
+import { parseUserFromFirebase } from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
