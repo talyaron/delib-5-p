@@ -21,7 +21,6 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 // Custom components
 import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeIn";
 import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
