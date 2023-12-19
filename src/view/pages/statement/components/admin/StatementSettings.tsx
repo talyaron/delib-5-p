@@ -6,6 +6,7 @@ import { setStatmentToDB } from "../../../../../functions/db/statements/setStatm
 import { navArray } from "../nav/StatementNav";
 
 // Third party imports
+import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     UserSchema,
@@ -19,6 +20,7 @@ import {
 // Custom components
 import Loader from "../../../../components/loaders/Loader";
 import MembershipLine from "./MembershipLine";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Redux Store
 import {
@@ -47,8 +49,8 @@ import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import { t } from "i18next";
+
+// Helpers
 import { navigateToStatementTab } from "../../../../../functions/general/helpers";
 
 interface Props {
@@ -106,7 +108,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
             ev.preventDefault();
-           
+
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get("statement");
@@ -131,7 +133,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 navArray
             );
 
-          
             newStatement.statement = _statement;
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,
@@ -192,7 +193,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     })();
 
     return (
-        <ScreenFadeInOut className="setStatement">
+        <ScreenFadeIn className="setStatement">
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -321,6 +322,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <Loader />
                 </div>
             )}
-        </ScreenFadeInOut>
+        </ScreenFadeIn>
     );
 };

@@ -2,8 +2,13 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { User, Statement, StatementSubscription, Role, Screen } from "delib-npm";
-import { AnimatePresence } from "framer-motion";
+import {
+    User,
+    Statement,
+    StatementSubscription,
+    Role,
+    Screen,
+} from "delib-npm";
 import { t } from "i18next";
 
 // firestore
@@ -38,7 +43,6 @@ import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
 
 // Custom components
-import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut";
 import ProfileImage from "../../components/profileImage/ProfileImage";
 import StatementHeader from "./StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
@@ -60,7 +64,6 @@ const Statement: FC = () => {
     // Hooks
     const statementId = useParams().statementId;
     const page = useParams().page as Screen;
-    
 
     const direction = useDirection();
     const langDirection = direction === "row" ? "ltr" : "rtl";
@@ -69,7 +72,7 @@ const Statement: FC = () => {
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
-    const screen = availableScreen(statement,page)
+    const screen = availableScreen(statement, page);
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -139,7 +142,11 @@ const Statement: FC = () => {
                 updateStoreStatementCB,
                 deleteStatementCB
             );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId,updateStatementSubscriptionCB, deleteSubscribedStatementCB)
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+                statementId,
+                updateStatementSubscriptionCB,
+                deleteSubscribedStatementCB
+            );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
                 updateStatementSubscriptionCB
@@ -184,7 +191,7 @@ const Statement: FC = () => {
     }, [statement]);
 
     return (
-        <ScreenFadeInOut className="page">
+        <div className="page">
             {showAskPermission && (
                 <AskPermisssion showFn={setShowAskPermission} />
             )}
@@ -197,7 +204,7 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement ? (
+            {statement && (
                 <StatementHeader
                     statement={statement}
                     screen={screen || Screen.CHAT}
@@ -207,22 +214,17 @@ const Statement: FC = () => {
                     showAskPermission={showAskPermission}
                     setShowAskPermission={setShowAskPermission}
                 />
-            ) : null}
-            <AnimatePresence mode="wait" initial={false}>
-                <MapModelProvider>
-                    <SwitchScreens
-                        key={window.location.pathname
-                            .split("/")
-                            .slice(2)
-                            .join(" ")}
-                        screen={screen}
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                    />
-                </MapModelProvider>
-            </AnimatePresence>
-        </ScreenFadeInOut>
+            )}
+            <MapModelProvider>
+                <SwitchScreens
+                    key={window.location.pathname.split("/").slice(2).join(" ")}
+                    screen={screen}
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                />
+            </MapModelProvider>
+        </div>
     );
 };
 

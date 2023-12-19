@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import { StatementSubscription } from "delib-npm";
 
-
 // Redux Store
 import {
     useAppDispatch,
@@ -17,13 +16,9 @@ import {
 
 // Helpers
 import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement";
-import ScreenSlide from "../../components/animation/ScreenSlide";
 import HomeHeader from "./HomeHeader";
 
 import { userSelector } from "../../../model/users/userSlice";
-
-
-
 
 export const listenedStatements = new Set<string>();
 
@@ -34,7 +29,6 @@ export default function Home() {
     const user = useAppSelector(userSelector);
 
     const [displayHeader, setDisplayHeader] = useState(true);
-   
 
     useEffect(() => {
         if (location.pathname.includes("addStatment") || statementId) {
@@ -52,8 +46,6 @@ export default function Home() {
         dispatch(deleteSubscribedStatement(statementId));
     }
 
-
-
     //use effects
 
     useEffect(() => {
@@ -66,10 +58,6 @@ export default function Home() {
                     10,
                     true
                 );
-
-            
-
-               
             }
         } catch (error) {}
         return () => {
@@ -77,10 +65,9 @@ export default function Home() {
         };
     }, [user]);
     return (
-        <ScreenSlide className="page" slideFromRight={true}>
+        <div className="page">
             {displayHeader && <HomeHeader />}
             <Outlet />
-        
-        </ScreenSlide>
+        </div>
     );
 }

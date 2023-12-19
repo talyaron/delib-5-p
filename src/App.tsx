@@ -138,7 +138,7 @@ export default function App() {
         <>
             <Accessiblity />
             <Outlet />
-            {showSignAgreement ? (
+            {showSignAgreement && (
                 <Modal>
                     <div className={styles.modal}>
                         <h2>{t("terms of use")}</h2>
@@ -163,7 +163,7 @@ export default function App() {
                         </div>
                     </div>
                 </Modal>
-            ) : null}
+            )}
         </>
     );
 }

@@ -21,9 +21,10 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 // Custom components
 import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeIn";
 import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 interface Props {
     statement: Statement;
@@ -60,7 +61,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenFadeInOut className="page__main">
+        <ScreenFadeIn className="page__main">
             <div className="statement">
                 <div>
                     <h2>{t("Votes")}</h2>
@@ -97,7 +98,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                     />
                 </Modal>
             )}
-        </ScreenFadeInOut>
+        </ScreenFadeIn>
     );
 };
 

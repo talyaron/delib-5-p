@@ -7,7 +7,7 @@ import { t } from "i18next";
 // Redux Store
 
 // Custom Components
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 import StatementMap from "./map/StatementMap";
 
 // Helpers
@@ -73,7 +73,7 @@ const Document: FC<Props> = ({ statement }) => {
     }, []);
 
     return results ? (
-        <ScreenFadeInOut className="page__main">
+        <ScreenFadeIn className="page__main">
             <select
                 onChange={(ev: any) => handleFilter(ev.target.value)}
                 defaultValue={FilterType.questionsResultsOptions}
@@ -115,7 +115,7 @@ const Document: FC<Props> = ({ statement }) => {
                     />
                 </Modal>
             )}
-        </ScreenFadeInOut>
+        </ScreenFadeIn>
     ) : (
         <SuspenseFallback />
     );

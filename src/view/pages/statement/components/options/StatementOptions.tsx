@@ -9,12 +9,10 @@ import Modal from "../../../../components/modal/Modal";
 import StatementOptionsNav from "./components/StatementOptionsNav";
 import StatementOptionCard from "./components/StatementOptionCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
-// Utils & Constants
-
-// Redux Store
+// Utils & Helpers
 import { sortSubStatements } from "./statementOptionsCont";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 
 interface Props {
@@ -49,7 +47,7 @@ const StatementOptions: FC<Props> = ({
         let tops: number[] = [topSum];
 
         return (
-            <ScreenFadeInOut className="page__main">
+            <ScreenFadeIn className="page__main">
                 <div className="wrapper">
                     {sortedSubStatements?.map(
                         (statementSub: Statement, i: number) => {
@@ -87,7 +85,7 @@ const StatementOptions: FC<Props> = ({
                         />
                     </Modal>
                 )}
-            </ScreenFadeInOut>
+            </ScreenFadeIn>
         );
     } catch (error) {
         console.error(error);
