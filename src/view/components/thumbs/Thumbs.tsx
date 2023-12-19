@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC, SetStateAction } from "react";
 
 // Third Party Imports
 import { Statement } from "delib-npm";
@@ -14,43 +14,69 @@ import { setEvaluationToDB } from "../../../functions/db/evaluation/setEvaluatio
 
 // Style
 import styles from "./Thumbs.module.scss";
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice";
-
 
 interface ThumbsProps {
-    statement: Statement;
+    evaluation: number;
     upDown: "up" | "down";
+    statement: Statement;
+    setConVote: React.Dispatch<SetStateAction<number>>;
+    setProVote: React.Dispatch<SetStateAction<number>>;
 }
 
-const Thumbs: FC<ThumbsProps> = ({ statement, upDown }) => {
-    const evaluation = useAppSelector(
-        evaluationSelector(statement.statementId)
-    );
-
-    const handleVote = () => {
-        console.log("handleVote", upDown, evaluation);
-        switch (true) {
-            case upDown === "up" && evaluation <= 0:
+const Thumbs: FC<ThumbsProps> = ({
+    evaluation,
+    upDown,
+    statement,
+    setConVote,
+    setProVote,
+}) => {
+    const handleVote = (isUp: boolean) => {
+        if (isUp) {
+            if (evaluation > 0) {
+                // Set evaluation in DB
+                setEvaluationToDB(statement, 0);
+                // if evaluation is 0 user didn't vote yet so don't do anything
+                if (evaluation === 0) return;
+                // Set local state
+                setProVote((prev) => prev - 1);
+            } else {
                 setEvaluationToDB(statement, 1);
-                break;
-            case upDown === "down" && evaluation >= 0:
-                setEvaluationToDB(statement, -1);
+                setProVote((prev) => prev + 1);
+                if (evaluation === 0) return;
+                setConVote((prev) => prev - 1);
+            }
+        } else {
+            if (evaluation < 0) {
+                setEvaluationToDB(statement, 0);
 
-                break;
+                if (evaluation === 0) return;
+                setConVote((prev) => prev - 1);
+            } else {
+                setEvaluationToDB(statement, -1);
+                setConVote((prev) => prev + 1);
+                if (evaluation === 0) return;
+                setProVote((prev) => prev - 1);
+            }
         }
     };
 
     if (upDown === "up") {
         if (evaluation > 0) {
             return (
-                <div className={styles.pressedRight} onClick={handleVote}>
+                <div
+                    className={styles.pressedRight}
+                    onClick={() => handleVote(true)}
+                >
                     <img src={ThumbUpWhite} alt="vote up" />
                 </div>
             );
         } else {
             return (
-                <div className={styles.pressRight} onClick={handleVote}>
+                <div
+                    className={styles.pressRight}
+                    onClick={() => handleVote(true)}
+                >
+                    {" "}
                     <img src={ThumbUp} alt="vote up" />
                 </div>
             );
@@ -58,13 +84,19 @@ const Thumbs: FC<ThumbsProps> = ({ statement, upDown }) => {
     } else {
         if (evaluation < 0) {
             return (
-                <div className={styles.pressedLeft} onClick={handleVote}>
+                <div
+                    className={styles.pressedLeft}
+                    onClick={() => handleVote(false)}
+                >
                     <img src={ThumbDownWhite} alt="vote down" />
                 </div>
             );
         } else {
             return (
-                <div className={styles.pressLeft} onClick={handleVote}>
+                <div
+                    className={styles.pressLeft}
+                    onClick={() => handleVote(false)}
+                >
                     <img src={ThumbDown} alt="vote down" />
                 </div>
             );
