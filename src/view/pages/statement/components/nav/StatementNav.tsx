@@ -12,14 +12,13 @@ interface Props {
 export const navArray: NavObject[] = [
     { link: Screen.DOC, name: "Main", id: "doc", default: true },
     { link: Screen.CHAT, name: "Chat", id: "main" },
-    { link: Screen.OPTIONS, name: "Solutions", id: "options" },
+    { link: Screen.OPTIONS, name: "Evaluations", id: "options" },
     { link: Screen.VOTE, name: "Voting", id: "vote" },
     { link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false },
     { link: Screen.SETTINGS, name: "Settings", id: "settings" },
 ];
 
 const StatementNav: FC<Props> = ({ statement, screen }) => {
-   
     const _navArray = showNavElements(statement, navArray);
     const isQuestion = statement.statementType === StatementType.question;
 

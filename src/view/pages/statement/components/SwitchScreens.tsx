@@ -1,20 +1,19 @@
-
 // Custom components
-import StatementMain from "./StatementMain"
-import { StatementSettings } from "./admin/StatementSettings"
-import StatmentRooms from "./rooms/Rooms"
-import StatementVote from "./vote/StatementVote"
-import StatementOptions from "./options/StatementOptions"
-import Document from "./doc/Document"
+import StatementMain from "./StatementMain";
+import { StatementSettings } from "./admin/StatementSettings";
+import StatmentRooms from "./rooms/Rooms";
+import StatementVote from "./vote/StatementVote";
+import StatementEvaluation from "./options/StatementEvaluation";
+import Document from "./doc/Document";
 
 // Third party imports
-import { Screen, Statement } from "delib-npm"
+import { Screen, Statement } from "delib-npm";
 
 interface SwitchScreensProps {
-    screen: string | undefined
-    statement: Statement | undefined
-    subStatements: Statement[]
-    handleShowTalker: Function
+    screen: string | undefined;
+    statement: Statement | undefined;
+    subStatements: Statement[];
+    handleShowTalker: Function;
 }
 
 export default function SwitchScreens({
@@ -23,13 +22,11 @@ export default function SwitchScreens({
     subStatements,
     handleShowTalker,
 }: SwitchScreensProps) {
-    if (!statement) return null
+    if (!statement) return null;
 
     switch (screen) {
         case Screen.DOC:
-            return (
-                <Document statement={statement} />
-            )
+            return <Document statement={statement} />;
         case Screen.HOME:
             return (
                 <StatementMain
@@ -37,7 +34,7 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                 />
-            )
+            );
         case Screen.CHAT:
             return (
                 <StatementMain
@@ -45,31 +42,31 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                 />
-            )
+            );
         case Screen.OPTIONS:
             return (
-                <StatementOptions
+                <StatementEvaluation
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                 />
-            )
+            );
         case Screen.VOTE:
             return (
                 <StatementVote
                     statement={statement}
                     subStatements={subStatements}
                 />
-            )
+            );
         case Screen.GROUPS:
             return (
                 <StatmentRooms
                     statement={statement}
                     subStatements={subStatements}
                 />
-            )
+            );
         case Screen.SETTINGS:
-            return <StatementSettings />
+            return <StatementSettings />;
         default:
             return (
                 <StatementMain
@@ -77,6 +74,6 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                 />
-            )
+            );
     }
 }

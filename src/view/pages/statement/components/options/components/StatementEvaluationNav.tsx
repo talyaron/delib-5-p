@@ -45,7 +45,7 @@ const votesArray: NavObject[] = [
     { link: Screen.VOTES_UPDATED, name: "Update", id: Screen.VOTES_UPDATED },
 ];
 
-const StatementOptionsNav: FC<Props> = ({ setShowModal }) => {
+const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
     const { page, sort } = useParams();
     const navArray = page === "vote" ? votesArray : optionsArray;
 
@@ -68,9 +68,16 @@ const StatementOptionsNav: FC<Props> = ({ setShowModal }) => {
                     {t(navObject.name)}
                 </Link>
             ))}
-            <Fav isHome={false} onclick={handleToggleModal} />
+            {statement.statementSettings?.enableAddEvaluationOption &&
+                page === "vote" && (
+                    <Fav isHome={false} onclick={handleToggleModal} />
+                )}
+            {statement.statementSettings?.enableAddVotingOption &&
+                page === "options" && (
+                    <Fav isHome={false} onclick={handleToggleModal} />
+                )}
         </nav>
     );
 };
 
-export default StatementOptionsNav;
+export default StatementEvaluationNav;
