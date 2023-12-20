@@ -10,6 +10,7 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementSubscriptionSchema,
+    StatementType,
 } from "delib-npm";
 
 import { z } from "zod";
@@ -37,7 +38,6 @@ interface StatementOrder {
     statementId: string;
     order: number;
 }
-
 
 // Define the initial state using that type
 const initialState: StatementsState = {
@@ -322,7 +322,7 @@ export const statementsRoomSolutions =
             .filter(
                 (statement) =>
                     statement.parentId === statementId &&
-                    statement.type === "solution"
+                    statement.statementType === StatementType.result
             )
             .sort((a, b) => a.createdAt - b.createdAt);
 export const statementsSubscriptionsSelector = (state: RootState) =>
