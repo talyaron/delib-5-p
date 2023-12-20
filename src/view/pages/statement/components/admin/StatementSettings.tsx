@@ -162,8 +162,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
 
-            //TODO: Add show fav to statement
-            // newStatement.showFav = newStatement.showFav === "on" ? true : false;
+            Object.assign(newStatement, {
+                statementSettings: {
+                    enableAddEvaluationOption:
+                        newStatement.enableAddEvaluationOption === "on"
+                            ? true
+                            : false,
+                    enableAddVotingOption:
+                        newStatement.enableAddVotingOption === "on"
+                            ? true
+                            : false,
+                },
+            });
 
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
@@ -202,6 +212,12 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         if (statement.hasChildren === undefined) return true;
         return statement.hasChildren;
     })();
+
+    const enableAddEvaluationOption: boolean =
+        statement?.statementSettings?.enableAddEvaluationOption || false;
+
+    const enableAddVotingOption: boolean =
+        statement?.statementSettings?.enableAddVotingOption || false;
 
     return (
         <ScreenFadeInOut className="setStatement">
@@ -278,11 +294,24 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 <FormControlLabel
                                     control={
                                         <Switch
-                                            name="showFav"
-                                            defaultChecked={true}
+                                            name="enableAddEvaluationOption"
+                                            defaultChecked={
+                                                enableAddEvaluationOption
+                                            }
                                         />
                                     }
-                                    label={t("Show add statement button")}
+                                    label={t("Show Add Option In Evaluation")}
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            name="enableAddVotingOption"
+                                            defaultChecked={
+                                                enableAddVotingOption
+                                            }
+                                        />
+                                    }
+                                    label={t("Show Add Option In Voting")}
                                 />
                             </FormGroup>
                         </section>
