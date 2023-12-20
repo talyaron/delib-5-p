@@ -41,12 +41,14 @@ export async function updateEvaluation(event: any) {
 
         const sumEvaluation = newPro - newCon;
         const n = newPro + Math.abs(newCon);
-        const consensusScore = sumEvaluation / n;
+        const consensusScore = n !== 0 ? sumEvaluation / n : 0;
         const consensus =
-            Math.abs(consensusScore) *
-            Math.sign(newPro - newCon) *
-            Math.log2(n);
-
+            n !== 0
+                ? Math.abs(consensusScore) *
+                  Math.sign(newPro - newCon) *
+                  Math.log2(n)
+                : 0;
+    
         //set consensus to statement in DB
         await statementRef.update({ consensus });
 
@@ -213,7 +215,6 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined
 ) {
     try {
-    
         if (!parentId) throw new Error("parentId is not defined");
 
         //get parent statement
@@ -228,11 +229,10 @@ async function updateParentStatementWithChildResults(
         const { resultsSettings } = parentStatement;
         const { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
-       
+
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
-           
             return;
         }
         //update child statements if they are results or options
@@ -252,7 +252,6 @@ async function updateParentStatementWithChildResults(
         );
 
         const childIds = childStatements.map((st: Statement) => st.statementId);
-
 
         //update parent with results
         await db.collection(Collections.statements).doc(parentId).update({

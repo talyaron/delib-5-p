@@ -1,3 +1,4 @@
+import {z} from "zod";
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
 import { Statement, Collections } from "delib-npm";
 import { DB } from "../config";
@@ -8,6 +9,7 @@ export async function setEvaluationToDB(
     evaluation: number
 ): Promise<void> {
     try {
+        z.number().parse(evaluation);
         if (evaluation < -1 || evaluation > 1)
             throw new Error("Evaluation is not in range");
 
