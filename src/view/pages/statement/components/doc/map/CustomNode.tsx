@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Handle, NodeProps, Position } from "reactflow";
-import { useMyContext } from "../../../../../../functions/hooks/useMap";
+import { Handle, NodeProps } from "reactflow";
+import { useMapContext } from "../../../../../../functions/hooks/useMap";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
@@ -20,9 +20,11 @@ const nodeStyle = (type: string) => {
     const style = {
         backgroundColor: backgroundColor(type),
         color: type === "question" ? "white" : "black",
-        width: "auto",
-        maxWidth: 150,
+        // width: "auto",
+        // maxWidth: 150,
         height: "auto",
+        width: 100,
+        // height: 20,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -38,8 +40,8 @@ export default function CustomNode({ data, id }: NodeProps) {
 
     const { shortVersion: nodeTitle } = statementTitleToDisplay(data.label, 80);
 
-    const { showModal, setShowModal, setIsOption, setIsQuestion, setParentId } =
-        useMyContext();
+    const { mapContext, setMapContext } = useMapContext();
+
     const [showBtns, setShowBtns] = useState(false);
 
     const handleNodeClick = () => {
@@ -53,24 +55,28 @@ export default function CustomNode({ data, id }: NodeProps) {
     };
 
     const handleAddChildNode = () => {
-        setShowModal(true);
-        setParentId(id);
-
-        setIsOption(data.type !== "option");
-        setIsQuestion(data.type !== "question");
+        setMapContext((prev) => ({
+            ...prev,
+            showModal: true,
+            parentId: id,
+            isOption: data.type !== "option",
+            isQuestion: data.type !== "question",
+        }));
     };
 
     const handleAddSiblingNode = () => {
-        setShowModal(true);
-        setParentId(data.parentId);
-
-        setIsOption(data.type === "option" || data.type === "result");
-        setIsQuestion(data.type === "question");
+        setMapContext((prev) => ({
+            ...prev,
+            showModal: true,
+            parentId: data.parentId,
+            isOption: data.type !== "option",
+            isQuestion: data.type !== "question",
+        }));
     };
 
     useEffect(() => {
-        if (!showModal) setShowBtns(false);
-    }, [showModal]);
+        if (!mapContext.showModal) setShowBtns(false);
+    }, [mapContext.showModal]);
 
     return (
         <>
@@ -117,8 +123,8 @@ export default function CustomNode({ data, id }: NodeProps) {
                 </>
             )}
 
-            <Handle type="target" position={Position.Top} />
-            <Handle type="source" position={Position.Bottom} />
+            <Handle type="target" position={mapContext.targetPosition} />
+            <Handle type="source" position={mapContext.sourcePosition} />
         </>
     );
 }
