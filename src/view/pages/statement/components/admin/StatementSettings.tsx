@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { CSSProperties, FC, useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
 
 // Statment imports
@@ -50,6 +50,7 @@ import {
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
 import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 
 interface Props {
     simple?: boolean;
@@ -59,6 +60,7 @@ interface Props {
 export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
+    const { width } = useWindowDimensions();
 
     // Redux
     const dispatch = useAppDispatch();
@@ -73,6 +75,13 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const [numOfResults] = useState(
         statement?.resultsSettings?.numberOfResults || 1
     );
+
+    const tabsStyle: CSSProperties = {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: width > 600 ? "space-between" : "space-around",
+        padding: width > 600 ? "0" : "0 1rem",
+    };
 
     useEffect(() => {
         let unsubscribe: Function = () => {};
@@ -106,7 +115,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
             ev.preventDefault();
-           
+
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get("statement");
@@ -131,7 +140,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 navArray
             );
 
-          
             newStatement.statement = _statement;
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,
@@ -153,6 +161,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             newStatement.creator = statement?.creator || user;
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
+
+            //TODO: Add show fav to statement
+            // newStatement.showFav = newStatement.showFav === "on" ? true : false;
+
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
             }
@@ -223,14 +235,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             >
                                 {t("Tabs")}
                             </label>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    justifyContent: "space-around",
-                                    padding: "0 1rem",
-                                }}
-                            >
+                            <div style={tabsStyle}>
                                 {navArray
                                     .filter(
                                         (navObj) =>
@@ -262,7 +267,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             </label>
                             <FormGroup>
                                 <FormControlLabel
-                                    key={"sub-statements"}
                                     control={
                                         <Switch
                                             name="hasChildren"
@@ -270,6 +274,15 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                         />
                                     }
                                     label={t("Enable Sub-Conversations")}
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            name="showFav"
+                                            defaultChecked={true}
+                                        />
+                                    }
+                                    label={t("Show add statement button")}
                                 />
                             </FormGroup>
                         </section>
