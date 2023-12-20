@@ -28,61 +28,112 @@
                         // You can listen for changes to the installing service worker's
                         // state via installingWorker.onstatechange
                     });
-                })
-                .catch((error) => {
-                    console.error(
-                        "firebase-messaging-sw.js registration failed:",
-                        error
-                    );
-                });
+            }
+        </script>
+    </head>
+    <style>
+        body {
+            overflow: hidden;
         }
-    </script>
-</head>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+        .loaderBox {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .loader {
+            transform: rotateZ(45deg);
+            perspective: 1000px;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            color: navy;
+        }
 
-    .boxTemp {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: rgb(255, 255, 255);
-        color: rgb(83, 83, 221);
-        margin: auto;
-    }
+        .loader:before,
+        .loader:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: inherit;
+            height: inherit;
+            border-radius: 50%;
+            transform: rotateX(70deg);
+            animation: 1s spin linear infinite;
+        }
 
-    .boxTemp h1 {
-        font-size: 3rem;
-        margin: 0;
-    }
+        .loader:after {
+            color: #ff3d00;
+            transform: rotateY(70deg);
+            animation-delay: 0.4s;
+        }
 
-    .boxTemp a {
-        color: rgb(83, 83, 221);
-    }
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotateZ(0deg);
+            }
 
-    .boxTemp img {
-        transform: scaleX(-1);
-    }
-</style>
+            100% {
+                transform: translate(-50%, -50%) rotateZ(360deg);
+            }
+        }
 
+        @keyframes rotateccw {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
 
-<body>
-    <div id="root">
-        <div class="boxTemp">
-            <h1>דליב - יוצרים הסכמות ושיתופי פעולה</h1>
-            <img src="./logo-512 px.png" alt="לוגו המכון לדמוקרטיה דיונית" />
-            <h2><a href="http://delib.org">מבית המכון לדמוקרטיה דיונית</a></h2>
-            טוען... נא להמתין
+            100% {
+                transform: translate(-50%, -50%) rotate(-360deg);
+            }
+        }
+
+        @keyframes spin {
+            0%,
+            100% {
+                box-shadow: 0.2em 0px 0 0px currentcolor;
+            }
+
+            12% {
+                box-shadow: 0.2em 0.2em 0 0 currentcolor;
+            }
+
+            25% {
+                box-shadow: 0 0.2em 0 0px currentcolor;
+            }
+
+            37% {
+                box-shadow: -0.2em 0.2em 0 0 currentcolor;
+            }
+
+            50% {
+                box-shadow: -0.2em 0 0 0 currentcolor;
+            }
+
+            62% {
+                box-shadow: -0.2em -0.2em 0 0 currentcolor;
+            }
+
+            75% {
+                box-shadow: 0px -0.2em 0 0 currentcolor;
+            }
+
+            87% {
+                box-shadow: 0.2em -0.2em 0 0 currentcolor;
+            }
+        }
+    </style>
+
+    <body>
+        <div id="root">
+            <div class="loaderBox">
+                <span class="loader"></span>
+            </div>
         </div>
-    </div>
 
-
-    <script type="module" src="/src/main.tsx"></script>
-</body>
-
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>
