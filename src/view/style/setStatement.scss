@@ -16,6 +16,8 @@
         padding: 0 1rem;
     }
     &__form {
+        flex: auto;
+        height: 100vh;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
