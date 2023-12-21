@@ -26,7 +26,7 @@ interface Props {
     statement: Statement;
 }
 
-const Document: FC<Props> = ({ statement }) => {
+const Map: FC<Props> = ({ statement }) => {
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
@@ -128,4 +128,4 @@ const Document: FC<Props> = ({ statement }) => {
     );
 };
 
-export default Document;
+export default Map;
