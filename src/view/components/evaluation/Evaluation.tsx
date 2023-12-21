@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third Party Imports
 import { Statement } from "delib-npm";
@@ -39,6 +39,11 @@ const Evaluation: FC<Props> = ({ statement }) => {
 
     const { consensus: _consensus } = statement;
     const consensus = _consensus ? Math.round(_consensus * 100) / 100 : 0;
+
+    useEffect(() => {
+        setConVote(initContVote);
+        setProVote(initProVote);
+    }, [statement.con, statement.pro]);
 
     return (
         <div className={styles.evaluation}>
