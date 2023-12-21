@@ -159,8 +159,7 @@ export async function getStatmentsSubsciptions(): Promise<
 
 export function listenToStatementSubscription(
     statementId: string,
-    updateStore: Function,
-    goHomeCB: Function
+    updateStore: Function
 ) {
     try {
         if (!statementId) throw new Error("Statement id is undefined");
@@ -183,8 +182,8 @@ export function listenToStatementSubscription(
                     statementSubscription
                 );
                 if (!success) {
-                    console.error("Statement subscription not valid");
-                    goHomeCB();
+                    console.info("No subscription found");
+               
                     return;
                 }
     

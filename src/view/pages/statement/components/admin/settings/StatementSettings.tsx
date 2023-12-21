@@ -48,7 +48,6 @@ import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
-import ScreenFadeInOut from "../../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
 import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";

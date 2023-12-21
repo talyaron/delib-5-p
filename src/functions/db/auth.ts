@@ -100,7 +100,7 @@ export function logOut() {
         .then(() => {
             // Sign-out successful.
             console.info("Sign-out successful.")
-            setIntialLocationSessionStorage("/home")
+            setIntialLocationSessionStorage("/")
         })
         .catch((error) => {
             // An error happened.

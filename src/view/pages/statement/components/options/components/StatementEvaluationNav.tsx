@@ -8,6 +8,7 @@ import { t } from "i18next";
 
 // Custom components
 import Fav from "../../../../../components/fav/Fav";
+import { add } from "lodash";
 
 interface Props {
     statement: Statement;
@@ -53,6 +54,12 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
         setShowModal((prev) => !prev);
     };
 
+    //used to check if the user can add a new option in voting and in evaluation screens
+    const addOption: boolean | undefined =
+        statement.statementSettings?.enableAddEvaluationOption;
+    const addVotingOption: boolean | undefined =
+        statement.statementSettings?.enableAddVotingOption;
+
     return (
         <nav className="options__nav" style={{ position: "relative" }}>
             {navArray.map((navObject: NavObject) => (
@@ -68,14 +75,12 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
                     {t(navObject.name)}
                 </Link>
             ))}
-            {statement.statementSettings?.enableAddEvaluationOption &&
-                page === "vote" && (
-                    <Fav isHome={false} onclick={handleToggleModal} />
-                )}
-            {statement.statementSettings?.enableAddVotingOption &&
-                page === "options" && (
-                    <Fav isHome={false} onclick={handleToggleModal} />
-                )}
+            {addOption && page === Screen.OPTIONS ? (
+                <Fav isHome={false} onclick={handleToggleModal} />
+            ) : null}
+            {addVotingOption && page === Screen.VOTE && (
+                <Fav isHome={false} onclick={handleToggleModal} />
+            )}
         </nav>
     );
 };

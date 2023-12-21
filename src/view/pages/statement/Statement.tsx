@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     User,
     Statement,
@@ -67,8 +67,6 @@ const Statement: FC = () => {
     const statementId = useParams().statementId;
     const page = useParams().page as Screen;
 
-    const navigate = useNavigate();
-
     const direction = useDirection();
     const langDirection = direction === "row" ? "ltr" : "rtl";
 
@@ -109,10 +107,6 @@ const Statement: FC = () => {
 
     function updateEvaluationsCB(evaluation: Evaluation) {
         dispatch(setEvaluationToStore(evaluation));
-    }
-
-    function goHomeCB() {
-        navigate("/home");
     }
 
     //handlers
@@ -157,8 +151,7 @@ const Statement: FC = () => {
             );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
-                updateStatementSubscriptionCB,
-                goHomeCB
+                updateStatementSubscriptionCB
             );
             unsubEvaluations = listenToEvaluations(
                 statementId,

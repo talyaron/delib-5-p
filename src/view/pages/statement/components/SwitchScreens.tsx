@@ -1,6 +1,5 @@
 // Custom components
 import StatementMain from "./StatementMain";
-import { StatementSettings } from "./admin/settings/StatementSettings";
 import StatmentRooms from "./rooms/Rooms";
 import StatementVote from "./vote/StatementVote";
 import StatementEvaluation from "./options/StatementEvaluation";
