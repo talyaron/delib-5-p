@@ -30,7 +30,6 @@ import { DB } from "../config";
 import { store } from "../../../model/store";
 import _ from "lodash";
 
-
 export function listenToTopStatements(
     setStatementsCB: Function,
     deleteStatementCB: Function
@@ -160,7 +159,8 @@ export async function getStatmentsSubsciptions(): Promise<
 
 export function listenToStatementSubscription(
     statementId: string,
-    updateStore: Function
+    updateStore: Function,
+    goHomeCB: Function
 ) {
     try {
         if (!statementId) throw new Error("Statement id is undefined");
@@ -175,19 +175,30 @@ export function listenToStatementSubscription(
         );
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
-            const statementSubscription =
-                statementSubscriptionDB.data() as StatementSubscription;
-
-            StatementSubscriptionSchema.parse(statementSubscription);
-
-            //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
-
-            if (!Array.isArray(statementSubscription.statement.results))
-                statementSubscription.statement.results = [];
-
-            StatementSubscriptionSchema.parse(statementSubscription);
-
-            updateStore(statementSubscription);
+            try {
+                const statementSubscription =
+                    statementSubscriptionDB.data() as StatementSubscription;
+    
+                const { success } = StatementSubscriptionSchema.safeParse(
+                    statementSubscription
+                );
+                if (!success) {
+                    console.error("Statement subscription not valid");
+                    goHomeCB();
+                    return;
+                }
+    
+                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+    
+                if (!Array.isArray(statementSubscription.statement.results))
+                    statementSubscription.statement.results = [];
+    
+                StatementSubscriptionSchema.parse(statementSubscription);
+    
+                updateStore(statementSubscription);
+            } catch (error) {
+                console.error(error);
+            }
         });
     } catch (error) {
         console.error(error);
@@ -228,7 +239,11 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
     }
 }
 
-export function listenToStatementSubSubscriptions(statementId: string, cbSet: Function, cbDelete:Function):Function {
+export function listenToStatementSubSubscriptions(
+    statementId: string,
+    cbSet: Function,
+    cbDelete: Function
+): Function {
     try {
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
