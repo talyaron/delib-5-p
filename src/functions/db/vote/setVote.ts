@@ -1,14 +1,14 @@
 import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
-import { Statement } from "delib-npm";
+import { Statement, User } from "delib-npm";
 import { Collections } from "delib-npm";
-import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB } from "../config";
 import { Vote, getVoteId, VoteSchema } from "delib-npm";
+import { store } from "../../../model/store";
 
 export async function setVote(option: Statement) {
     try {
         //vote refernce
-        const user = getUserFromFirebase();
+        const user:User|null= store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const voteId = getVoteId(user.uid, option.parentId);
 
@@ -22,6 +22,7 @@ export async function setVote(option: Statement) {
             userId: user.uid,
             lastUpdate: Timestamp.now().toMillis(),
             createdAt: Timestamp.now().toMillis(),
+            voter: user
         };
 
         const voteDoc = await getDoc(voteRef);

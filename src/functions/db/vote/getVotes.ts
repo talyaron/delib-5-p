@@ -1,8 +1,9 @@
-import { doc, getDoc } from "firebase/firestore";
-import { Collections, StatementSchema } from "delib-npm";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { Collections, StatementSchema, Vote } from "delib-npm";
 import { DB } from "../config";
-import { VoteSchema,getVoteId } from "delib-npm";
+import { VoteSchema, getVoteId } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
+import { store } from "../../../model/store";
 
 export async function getToVoteOnParent(
     parentId: string,
@@ -35,5 +36,22 @@ export async function getToVoteOnParent(
     } catch (error) {
         console.error(error);
         return () => {};
+    }
+}
+
+export async function getVoters(parentId: string): Promise<Vote[]> {
+    try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        const votesRef = collection(DB, Collections.votes);
+        const q = query(votesRef, where("parentId", "==", parentId));
+
+        const votersDB = await getDocs(q);
+        const voters = votersDB.docs.map((vote:any) => vote.data()) as Vote[];
+
+        return voters;
+    } catch (error) {
+        console.error(error);
+        return[] as Vote[];
     }
 }
