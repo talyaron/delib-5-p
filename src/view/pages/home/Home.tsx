@@ -17,11 +17,8 @@ import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
 import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement";
-
-// Custom components
-import ScreenSlide from "../../components/animation/ScreenSlide";
 import HomeHeader from "./HomeHeader";
-
+import ScreenSlide from "../../components/animation/ScreenSlide";
 
 export const listenedStatements = new Set<string>();
 
@@ -68,7 +65,7 @@ export default function Home() {
         };
     }, [user]);
     return (
-        <ScreenSlide className="page" slideFromRight={true}>
+        <ScreenSlide className="page slide-in">
             {displayHeader && <HomeHeader />}
             <Outlet />
         </ScreenSlide>

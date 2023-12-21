@@ -6,7 +6,7 @@ import { Statement } from "delib-npm";
 // Custom Components
 import StatementChat from "./chat/StatementChat";
 import StatementInput from "./StatementInput";
-import ScreenFadeInOut from "../../../components/animation/ScreenFadeInOut";
+import ScreenFadeIn from "../../../components/animation/ScreenFadeIn";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
 
@@ -25,7 +25,7 @@ const StatementMain: FC<Props> = ({
 }) => {
     const messagesEndRef = useRef(null);
 
-    const { toSlide, toSubStatement } = useSlideAndSubStatement(
+    const { toSlide, slideInOrOut } = useSlideAndSubStatement(
         statement.parentId
     );
 
@@ -53,7 +53,7 @@ const StatementMain: FC<Props> = ({
     }, [subStatements]);
 
     return !toSlide ? (
-        <ScreenFadeInOut className="page__main">
+        <ScreenFadeIn className="page__main fade-in">
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>
@@ -69,9 +69,9 @@ const StatementMain: FC<Props> = ({
             <div className="page__main__bottom">
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </ScreenFadeInOut>
+        </ScreenFadeIn>
     ) : (
-        <ScreenSlide className="page__main" slideFromRight={toSubStatement}>
+        <ScreenSlide className={"page__main" + " " + slideInOrOut}>
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>

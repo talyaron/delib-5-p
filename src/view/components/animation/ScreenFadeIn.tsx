@@ -2,12 +2,12 @@ import React from "react";
 
 import "./style.scss";
 
-export default function ScreenSlide({
+export default function ScreenFadeIn({
     children,
     className,
 }: {
     children: React.ReactNode;
     className?: string;
 }) {
-    return <div className={className}>{children}</div>;
+    return <div className={className + " fade-in"}>{children}</div>;
 }

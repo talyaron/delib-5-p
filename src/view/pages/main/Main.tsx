@@ -1,20 +1,23 @@
 // Third party libraries
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { t } from "i18next";
 
 // Custom components
 import Fav from "../../components/fav/Fav";
-
-import ScreenSlide from "../../components/animation/ScreenSlide";
+import ScreenFadeIn from "../../components/animation/ScreenFadeIn";
 
 // Other
 import MainCardRes from "./MainCard2";
+import ScreenSlide from "../../components/animation/ScreenSlide";
 
 const Main = () => {
     // Hooks
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const backFromAddStatment = location.state?.from === "/home/addStatment";
 
     const statements = [...useAppSelector(statementsSubscriptionsSelector)]
         .filter((state) => state.statement.parentId === "top")
@@ -26,8 +29,8 @@ const Main = () => {
         });
     }
 
-    return (
-        <ScreenSlide className="page__main" slideFromRight={true}>
+    return backFromAddStatment ? (
+        <ScreenSlide className="page__main slide-in">
             <div className="wrapper">
                 <h2>{t("Conversations")}</h2>
 
@@ -40,6 +43,20 @@ const Main = () => {
             </div>
             <Fav isHome={true} onclick={handleAddStatment} />
         </ScreenSlide>
+    ) : (
+        <ScreenFadeIn className="page__main">
+            <div className="wrapper">
+                <h2>{t("Conversations")}</h2>
+
+                {statements.map((statement) => (
+                    <MainCardRes
+                        key={statement.statement.statementId}
+                        statement={statement.statement}
+                    />
+                ))}
+            </div>
+            <Fav isHome={true} onclick={handleAddStatment} />
+        </ScreenFadeIn>
     );
 };
 
