@@ -2,8 +2,8 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
 
 // Statment imports
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
-import { navArray } from "../nav/StatementNav";
+import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
+import { navArray } from "../../nav/StatementNav";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,40 +18,40 @@ import {
 } from "delib-npm";
 
 // Custom components
-import Loader from "../../../../components/loaders/Loader";
-import MembershipLine from "./MembershipLine";
+import Loader from "../../../../../components/loaders/Loader";
+import MembershipLine from "../membership/MembershipLine";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../functions/hooks/reduxHooks";
 import {
     removeMembership,
     setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
-} from "../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../model/users/userSlice";
+} from "../../../../../../model/statements/statementsSlice";
+import { userSelector } from "../../../../../../model/users/userSlice";
 
 // Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
-} from "../../../../../functions/db/statements/getStatement";
+} from "../../../../../../functions/db/statements/getStatement";
 
 // Mui imports
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
-import { store } from "../../../../../model/store";
+import { store } from "../../../../../../model/store";
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import ScreenFadeInOut from "../../../../../components/animation/ScreenFadeInOut";
 import { t } from "i18next";
-import { navigateToStatementTab } from "../../../../../functions/general/helpers";
-import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
+import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
+import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
 
 interface Props {
     simple?: boolean;
