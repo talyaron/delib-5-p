@@ -57,7 +57,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 newStatement.subScreens = [
                     Screen.CHAT,
-                    Screen.OPTIONS,
+                    Screen.EVALUATION,
                     Screen.VOTE,
                 ];
 

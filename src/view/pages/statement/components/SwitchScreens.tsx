@@ -43,7 +43,7 @@ export default function SwitchScreens({
                     handleShowTalker={handleShowTalker}
                 />
             );
-        case Screen.OPTIONS:
+        case Screen.EVALUATION:
             return (
                 <StatementEvaluation
                     statement={statement}

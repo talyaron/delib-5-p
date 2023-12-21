@@ -16,20 +16,20 @@ interface Props {
 
 const optionsArray: NavObject[] = [
     {
-        link: Screen.OPTIONS_CONSENSUS,
+        link: Screen.EVALUATION_CONSENSUS,
         name: t("Agreement"),
-        id: Screen.OPTIONS_CONSENSUS,
+        id: Screen.EVALUATION_CONSENSUS,
     },
-    { link: Screen.OPTIONS_NEW, name: t("New"), id: Screen.OPTIONS_NEW },
+    { link: Screen.EVALUATION_NEW, name: t("New"), id: Screen.EVALUATION_NEW },
     {
-        link: Screen.OPTIONS_RANDOM,
+        link: Screen.EVALUATION_RANDOM,
         name: t("Random"),
-        id: Screen.OPTIONS_RANDOM,
+        id: Screen.EVALUATION_RANDOM,
     },
     {
-        link: Screen.OPTIONS_UPDATED,
+        link: Screen.EVALUATION_UPDATED,
         name: t("Update"),
-        id: Screen.OPTIONS_UPDATED,
+        id: Screen.EVALUATION_UPDATED,
     },
 ];
 

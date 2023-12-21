@@ -23,7 +23,7 @@ export function handleAddStatement(e: any, statement: Statement, user: User|null
         });
         if (!newStatement) throw new Error("No statement");
 
-        newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
+        newStatement.subScreens = [Screen.CHAT, Screen.EVALUATION, Screen.VOTE];
 
         setStatmentToDB(newStatement);
 
