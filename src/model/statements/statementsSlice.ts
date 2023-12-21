@@ -56,8 +56,10 @@ export const statementsSlicer = createSlice({
     reducers: {
         setStatement: (state, action: PayloadAction<Statement>) => {
             try {
+           
                 const newStatement = { ...action.payload };
-
+                const {success} = StatementSchema.safeParse(newStatement);
+                if(!success) return;
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];

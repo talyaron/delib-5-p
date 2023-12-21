@@ -1,8 +1,14 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { useParams } from "react-router-dom";
-import { User, Statement, StatementSubscription, Role, Screen } from "delib-npm";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+    User,
+    Statement,
+    StatementSubscription,
+    Role,
+    Screen,
+} from "delib-npm";
 import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
@@ -60,7 +66,8 @@ const Statement: FC = () => {
     // Hooks
     const statementId = useParams().statementId;
     const page = useParams().page as Screen;
-    
+
+    const navigate = useNavigate();
 
     const direction = useDirection();
     const langDirection = direction === "row" ? "ltr" : "rtl";
@@ -69,7 +76,7 @@ const Statement: FC = () => {
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
     const subStatements = useSelector(statementSubsSelector(statementId));
-    const screen = availableScreen(statement,page)
+    const screen = availableScreen(statement, page);
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -102,6 +109,10 @@ const Statement: FC = () => {
 
     function updateEvaluationsCB(evaluation: Evaluation) {
         dispatch(setEvaluationToStore(evaluation));
+    }
+
+    function goHomeCB() {
+        navigate("/home");
     }
 
     //handlers
@@ -139,10 +150,15 @@ const Statement: FC = () => {
                 updateStoreStatementCB,
                 deleteStatementCB
             );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId,updateStatementSubscriptionCB, deleteSubscribedStatementCB)
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+                statementId,
+                updateStatementSubscriptionCB,
+                deleteSubscribedStatementCB
+            );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
-                updateStatementSubscriptionCB
+                updateStatementSubscriptionCB,
+                goHomeCB
             );
             unsubEvaluations = listenToEvaluations(
                 statementId,
