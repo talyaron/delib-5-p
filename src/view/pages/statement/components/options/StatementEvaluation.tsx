@@ -16,6 +16,8 @@ import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import StatementEvaluationNav from "./components/StatementEvaluationNav";
+import Fav from "../../../../components/fav/Fav";
+import { handleAddStatement } from "../StatementInputCont";
 
 
 interface Props {
@@ -49,6 +51,7 @@ const StatementEvaluation: FC<Props> = ({
         let topSum = 10;
         let tops: number[] = [topSum];
 
+
         return (
             <ScreenFadeInOut className="page__main">
                 <div className="wrapper">
@@ -78,7 +81,7 @@ const StatementEvaluation: FC<Props> = ({
                         statement={statement}
                     />
                 </div>
-                {/* <Fav onclick={handleAddStatment} /> */}
+                {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple

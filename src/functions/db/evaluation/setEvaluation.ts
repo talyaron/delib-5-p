@@ -2,7 +2,7 @@ import {z} from "zod";
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
 import { Statement, Collections } from "delib-npm";
 import { DB } from "../config";
-import { getUserFromFirebase } from "../users/usersGeneral";
+import { store } from "../../../model/store";
 
 export async function setEvaluationToDB(
     statement: Statement,
@@ -18,7 +18,7 @@ export async function setEvaluationToDB(
         if (!parentId) throw new Error("ParentId is undefined");
 
         const statementId = statement.statementId;
-        const user = getUserFromFirebase();
+        const user = store.getState().user.user;
 
         const userId = user?.uid;
         if (!userId) throw new Error("User is undefined");
@@ -34,6 +34,7 @@ export async function setEvaluationToDB(
             evaluatorId: userId,
             updatedAt: Timestamp.now().toMillis(),
             evaluation,
+            evaluator: user
         });
     } catch (error) {
         console.error(error);
