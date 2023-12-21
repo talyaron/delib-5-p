@@ -8,6 +8,7 @@ import Document from "./doc/Document";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
+import AdminPage from "./admin/AdminPage";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -66,7 +67,7 @@ export default function SwitchScreens({
                 />
             );
         case Screen.SETTINGS:
-            return <StatementSettings />;
+            return <AdminPage />;
         default:
             return (
                 <StatementMain

@@ -220,7 +220,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
 
     return (
-        <ScreenFadeInOut className="setStatement">
+        <>
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -363,6 +363,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <Loader />
                 </div>
             )}
-        </ScreenFadeInOut>
+        </>
     );
 };
