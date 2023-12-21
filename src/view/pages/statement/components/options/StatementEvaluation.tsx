@@ -16,8 +16,7 @@ import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import StatementEvaluationNav from "./components/StatementEvaluationNav";
-import Fav from "../../../../components/fav/Fav";
-import { handleAddStatement } from "../StatementInputCont";
+
 
 
 interface Props {

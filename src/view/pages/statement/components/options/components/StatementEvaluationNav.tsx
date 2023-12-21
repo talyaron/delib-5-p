@@ -8,7 +8,6 @@ import { t } from "i18next";
 
 // Custom components
 import Fav from "../../../../../components/fav/Fav";
-import { add } from "lodash";
 
 interface Props {
     statement: Statement;
