@@ -8,14 +8,15 @@ import Modal from "../../../../components/modal/Modal";
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 
 // Utils & Constants
 
 // Redux Store
 import { sortSubStatements } from "./statementEvaluationCont";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import StatementEvaluationNav from "./components/StatementEvaluationNav";
+
 
 interface Props {
     statement: Statement;
