@@ -6,16 +6,16 @@ import { useParams } from "react-router";
 import Modal from "../../../../components/modal/Modal";
 
 // Custom Components
-import StatementOptionsNav from "./components/StatementOptionsNav";
-import StatementOptionCard from "./components/StatementOptionCard";
+import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 
 // Utils & Constants
 
 // Redux Store
-import { sortSubStatements } from "./statementOptionsCont";
+import { sortSubStatements } from "./statementEvaluationCont";
 import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
 import { isOptionFn } from "../../../../../functions/general/helpers";
+import StatementEvaluationNav from "./components/StatementEvaluationNav";
 
 interface Props {
     statement: Statement;
@@ -24,7 +24,7 @@ interface Props {
     showNav?: boolean;
 }
 
-const StatementOptions: FC<Props> = ({
+const StatementEvaluation: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
@@ -60,7 +60,7 @@ const StatementOptions: FC<Props> = ({
                             }
 
                             return (
-                                <StatementOptionCard
+                                <StatementEvaluationCard
                                     key={statementSub.statementId}
                                     parentStatement={statement}
                                     statement={statementSub}
@@ -72,7 +72,7 @@ const StatementOptions: FC<Props> = ({
                     )}
                 </div>
                 <div className="page__main__bottom">
-                    <StatementOptionsNav
+                    <StatementEvaluationNav
                         setShowModal={setShowModal}
                         statement={statement}
                     />
@@ -95,4 +95,4 @@ const StatementOptions: FC<Props> = ({
     }
 };
 
-export default StatementOptions;
+export default StatementEvaluation;
