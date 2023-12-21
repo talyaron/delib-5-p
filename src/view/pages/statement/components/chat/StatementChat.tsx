@@ -1,81 +1,127 @@
-import { FC, useState } from 'react'
-import { Statement } from 'delib-npm'
-import StatementChatMore, { handleCreateSubStatements } from '../StatementChatMore';
+import { FC, useState } from "react";
 
-//icons
+// Third Party Imports
+import { Statement, StatementType } from "delib-npm";
 
-import Text from '../../../../components/text/Text';
-import StatementChatSetOption from '../StatementChatSetOption';
-import ProfileImage from './ProfileImage';
-import { store } from '../../../../../model/store';
-import Solution from '../general/Solution';
-import { useNavigate } from 'react-router-dom';
-import EditTitle from '../../../../components/edit/EditTitle';
+// Custom Components
+import StatementChatMore from "./StatementChatMore";
+import StatementChatSetOption from "./components/StatementChatSetOption";
+import ProfileImage from "./components/ProfileImage";
+import EditTitle from "../../../../components/edit/EditTitle";
+import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
 
+// Redux Store
+import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { store } from "../../../../../model/store";
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import { bubbleclass } from "./StatementChatCont";
+import StatementChatSetEdit from "./components/StatementChatSetEdit";
+import {
+    isAuthorized,
+    isOptionFn,
+    isStatementTypeAllowed,
+} from "../../../../../functions/general/helpers";
 
-
-
-
+import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
+import { useNavigate } from "react-router";
 
 interface Props {
-  statement: Statement
-  showImage: Function
-  page: any,
-  hasChildren:boolean
+    statement: Statement;
+    parentStatement: Statement;
+    showImage: Function;
+    setShowModal?: Function;
 }
 
-const StatementChat: FC<Props> = ({ statement, showImage, page, hasChildren }) => {
-  const navigate = useNavigate();
+const StatementChat: FC<Props> = ({
+    statement,
+    parentStatement,
+    showImage,
+}) => {
+    const navigate = useNavigate();
+    const { statementType } = statement;
 
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statement.parentId)
+    );
+    const userId = store.getState().user.user?.uid;
 
-  // const [show, setShow] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+    const creatorId = statement.creatorId;
+    const _isAuthrized = isAuthorized(statement, statementSubscription);
 
-  const userId = store.getState().user.user?.uid;
-  const creatorId = statement.creatorId;
+    const isMe = userId === creatorId;
+    const isQuestion = statementType === StatementType.question;
+    const isOption = isOptionFn(statement);
 
-  const isMe = userId === creatorId;
-  const { isOption } = statement;
+    const [isEdit, setIsEdit] = useState(false);
 
-  function handleEdit() {
-    if (userId === creatorId) setIsEdit(true);
-    else {
-      handleCreateSubStatements(statement, navigate, page)
+    function handleGoToStatement() {
+        if (!isEdit) navigate(`/statement/${statement.statementId}/chat`);
     }
-  }
 
-
-
-  return (
-    <>
-
-      <div className={isMe ? `statement__chatCard statement__chatCard--me` : "statement__chatCard statement__chatCard--other"}>
-        <div className="statement__chatCard__left">
-
-          <ProfileImage statement={statement} showImage={showImage} />
-          <StatementChatSetOption statement={statement} />
-        </div>
-
-        <div className={isOption ? "statement__bubble statement__bubble--option" : "statement__bubble"}>
-          <div className={isMe ? "bubble right" : "bubble left"}>
-            <div className="statement__bubble__text" onClick={handleEdit}>
-            
-               <div className='statement__bubble__text__text'>{!isEdit ?<Text text={statement.statement} /> : <EditTitle statement={statement} setEdit={setIsEdit} isTextArea={true} />}</div>
-            
-              <Solution statement={statement} />
+    return (
+        <div
+            className={
+                isMe
+                    ? `statement__chatCard statement__chatCard--me`
+                    : "statement__chatCard statement__chatCard--other"
+            }
+        >
+            <div className="statement__chatCard__left">
+                <ProfileImage statement={statement} showImage={showImage} />
             </div>
-            {hasChildren?<div className="statement__bubble__more">
 
-              <StatementChatMore statement={statement} page={page} hasChildren={hasChildren} />
-            </div>:null}
-          </div>
+            <div
+                className={
+                    isOption
+                        ? "statement__bubble statement__bubble--option"
+                        : "statement__bubble"
+                }
+            >
+                <div className={bubbleclass(isQuestion, isMe)}>
+                    <div
+                        className="statement__bubble__text clickable"
+                        onClick={handleGoToStatement}
+                    >
+                        <div className="statement__bubble__text__text">
+                            <EditTitle
+                                statement={statement}
+                                isEdit={isEdit}
+                                setEdit={setIsEdit}
+                                isTextArea={true}
+                            />
+                        </div>
+                    </div>
+                    {isOptionFn(statement) &&
+                        isStatementTypeAllowed(parentStatement, statement) && (
+                            <AddSubQuestion statement={statement} />
+                        )}
+                    {isQuestion || isOption ? (
+                        <div className="statement__bubble__more">
+                            <StatementChatMore statement={statement} />
+                        </div>
+                    ) : null}
+                </div>
+            </div>
+            <div className="statement__chatCard__right">
+                {_isAuthrized &&
+                !isQuestion &&
+                parentStatement.statementType === StatementType.question ? (
+                    <StatementChatSetOption statement={statement} />
+                ) : null}
+                {_isAuthrized &&
+                !isOption &&
+                parentStatement.statementType !== StatementType.question ? (
+                    <StatementChatSetQuestion statement={statement} />
+                ) : null}
+
+                <StatementChatSetEdit
+                    isAuthrized={_isAuthrized}
+                    setEdit={setIsEdit}
+                    edit={isEdit}
+                />
+            </div>
         </div>
-      </div>
-    </>
-  )
-}
-
-
-
+    );
+};
 
 export default StatementChat;

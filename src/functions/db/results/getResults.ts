@@ -3,8 +3,8 @@
 // import { Collections } from "delib-npm";
 import { collection, doc, getDoc, getDocs, limit, query, where, orderBy } from "@firebase/firestore";
 import { DB } from "../config";
-import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
-import { maxKeyInObject } from "../../general/helpers";
+import { Collections, ResultsBy, Statement, StatementSchema, maxKeyInObject } from "delib-npm";
+
 
 
 
@@ -13,8 +13,8 @@ export async function getResultsDB( statement:Statement): Promise<Statement[]> {
     try {
         StatementSchema.parse(statement);
       
-        const { results } = statement;
-        const resultsBy = results?.resultsBy || ResultsBy.topOptions;
+        const { resultsSettings } = statement;
+        const resultsBy = resultsSettings?.resultsBy || ResultsBy.topOptions;
 
         switch (resultsBy) {
             case ResultsBy.topVote:
@@ -53,8 +53,8 @@ export async function getResultsByTopVoteDB(statement: Statement): Promise<State
 
 async function getTopOtionsDB(statement: Statement): Promise<Statement[]> {
     try {
-        const { results } = statement;
-        const numberOfOptions = results?.numberOfResults || 1;
+        const { resultsSettings } = statement;
+        const numberOfOptions = resultsSettings?.numberOfResults || 1;
 
         const topOptionsRef = collection(DB, Collections.statements);
         const q = query(topOptionsRef, where('parentId', '==', statement.statementId), orderBy("consensus", "asc"), limit(numberOfOptions));

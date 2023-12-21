@@ -53,7 +53,7 @@ export async function countRoomJoiners(ev: any) {
         logger.error(error);
     }
 
-    async function updatePreviuosRoom(previousLoobyRoom: any, previousLoobyRoomRef: any, parentId: string, statementId: string) {
+    async function updatePreviuosRoom(previousLoobyRoom: any, previousLoobyRoomRef: any, parentId: string, statementId: string|undefined) {
         try {
             if (previousLoobyRoom.exists) {
 
@@ -72,7 +72,7 @@ export async function countRoomJoiners(ev: any) {
         }
     }
 
-    async function updateNewRoom(newLobbyRoom: any, newLobbyRoomRef: any, parentId: string, statementId: string) {
+    async function updateNewRoom(newLobbyRoom: any, newLobbyRoomRef: any, parentId: string, statementId: string|undefined) {
         try {
             if (newLobbyRoom.exists) {
                 await newLobbyRoomRef.update({

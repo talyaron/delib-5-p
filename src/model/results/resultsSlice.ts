@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+// import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import {Results} from "delib-npm";
 
@@ -21,10 +21,8 @@ export const resultsSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        setResults: (state, action: PayloadAction<any>) => {
+        setResults: () => {
             try {
-                console.log(action.payload)
-                console.log(state.results)
             //     const result:Results = action.payload;
             //    const resultStore = state.results.find(result => result.statementId === action.payload.statementId);
             //    if(!resultStore){
@@ -40,11 +38,14 @@ export const resultsSlice = createSlice({
             } catch (error) {
                 console.error(error);
             }
+        },
+        resetResults: (state) => {
+            state.results = [];
         }
     },
 })
 
-export const { setResults } = resultsSlice.actions
+export const { setResults,resetResults } = resultsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const resultSelector = (statementId: string | undefined) => (state: RootState) => state.results.results.find(result => result.top.statementId === statementId);

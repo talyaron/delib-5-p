@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAGKEAAACM/wD///8AGHUIAKWs+gAHEXgAAPv/AP8iAAAARP8AJjfrAAAA/wAEFswAJv8AAACq/wAIFZkAAAAIiIiAAAAACIiESIiAAACIQREREUgACIQR3d3RFIAIgR13d33USIgR13d3d31IgRd3d3d3dxiJLuM1Uz7imIkiLjqj4imYiZIiLMIimZiLmZIv8pmbmAi5mZZpmbuACIu5lmu7uIAAiGtmZrtoAAAIhmZmZoAAAAAIiIiIAAD4HwAA4AcAAMADAACAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAACAAQAAwAMAAOAHAAD4DwAA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delib 5</title>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register("/firebase-messaging-sw.js")
+                .then((registration) => {
+                    console.info("firebase-messaging-sw.js was registerd");
+
+                    registration.addEventListener("updatefound", () => {
+                        // If updatefound is fired, it means that there's
+                        // a new service worker being installed.
+                        console.info(
+                            "new firebase-messaging-sw.js being installed"
+                        );
+                        const installingWorker = registration.installing;
+                        console.info(
+                            "A new firebase-messaging-sw.js is being installed:",
+                            installingWorker
+                        );
+
+                        // You can listen for changes to the installing service worker's
+                        // state via installingWorker.onstatechange
+                    });
+                })
+                .catch((error) => {
+                    console.error(
+                        "firebase-messaging-sw.js registration failed:",
+                        error
+                    );
+                });
+        }
+    </script>
+    <script type="module" crossorigin src="/assets/index-40730d81.js"></script>
+    <link rel="stylesheet" href="/assets/index-d75ee101.css">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <script
+        id="vite-plugin-pwa:inline-sw">if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js', { scope: '/' }) }) }</script>
+</head>
+<style>
+body{
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .boxTemp{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: rgb(255, 255, 255);
+        color: rgb(83, 83, 221);
+        margin: auto;
+    }
+    .boxTemp h1{
+        font-size: 3rem;
+        margin: 0;
+    }
+    .boxTemp a{
+        color: rgb(83, 83, 221);
+    }
+    .boxTemp img{
+        transform: scaleX(-1) ;
+    }
+    </style>
+<body>
+    <div id="root">
+        <div class="boxTemp">
+            <h1>דליב - יוצרים הסכמות ושיתופי פעולה</h1>
+            <img src="./logo-512 px.png" alt="לוגו המכון לדמוקרטיה דיונית" />
+            <h2><a href="http://delib.org">מבית המכון לדמוקרטיה דיונית</a></h2>
+            טוען... נא להמתין
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -19,7 +19,7 @@
     }
   ],
   "hosting": {
-    "site": "delib-5",
+    "site":"delib-5",
     "public": "dist",
     "ignore": [
       "firebase.json",

@@ -1,58 +1,91 @@
-import { useEffect } from 'react';
-import { googleLogin } from '../../../functions/db/auth'
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { userSelector } from '../../../model/users/userSlice';
-import { getIntialLocationSessionStorage } from '../../../functions/general/helpers';
-import styles from './Start.module.scss';
+import { useEffect, useState } from "react";
+
+// firestore functions
+import { googleLogin } from "../../../functions/db/auth";
+import { getIntialLocationSessionStorage } from "../../../functions/general/helpers";
+
+// Third Party Libraries
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+// Redux
+import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { userSelector } from "../../../model/users/userSlice";
 
 //img
-import Logo from '../../../assets/logo/logo-128px.png';
+import Logo from "../../../assets/logo/logo-128px.png";
+
+// Constants
+import { LANGUAGES } from "../../../constants/Languages";
+import EnterName from "./EnterName";
 // import EnterName from './EnterName';
 
 const Start = () => {
     const navigate = useNavigate();
-    const user = useAppSelector(userSelector)
-    // const [showNameModul, setShowNameModul] = useState(false);
+    const { i18n, t } = useTranslation();
+    const user = useAppSelector(userSelector);
+    const [showNameModul, setShowNameModul] = useState(false);
+    const savedLang = localStorage.getItem("lang");
 
     useEffect(() => {
         if (user) {
-            navigate(getIntialLocationSessionStorage() || '/home');
-
+            navigate(getIntialLocationSessionStorage() || "/home", {
+                state: { from: window.location.pathname },
+            });
         } else {
-            console.info('not logged')
+            // console.info("not logged")
         }
-    }, [user])
-
+    }, [user]);
 
     return (
-        <div className={styles.start}>
+        <div className="page splashPage">
+            <h1 className="splashPage__title">{t("Delib 5")}</h1>
+            <img src={Logo} alt="Delib logo" />
+            <h2 className="splashPage__subTitle">{t("Creating Agreements")}</h2>
+            <button className="splashPage__loginButton" onClick={googleLogin}>
+                {t("Connect with Google")}
+            </button>
             <div
-                className='page splashPage'
+                className="btn loginButton"
+                onClick={() => setShowNameModul(true)}
             >
-                <div className='centerElement'>
-                    <div id='login__splashName' >
-                        <h1>Delib 5</h1>
-                        <img src={Logo} alt="Delib logo" />
-                    </div>
-                    <div id='login__splashSubName' className='opacity07'>
-                        <h2>יוצרים הסכמות</h2>
-                    </div>
-                    <div className="btns">
-                        <div className="buttons loginButton" onClick={googleLogin}>
-                            <div>התחברות עם גוגל</div>
-                        </div>
-                        {/* <div className="btn loginButton" onClick={()=>setShowNameModul(true)}>
-                    התחברות עם שם זמני
-                </div> */}
-                    </div>
-                    <br />
-                    <a href="http://delib.org" style={{ color: 'white', marginTop: '30px', textDecoration: "none" }}><h2>מבית המכון לדמוקרטיה דיונית</h2></a>
-                </div>
-                {/* {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null} */}
-            </div >
+                {t("Login with a temporary name")}
+            </div>
+            <a
+                href="http://delib.org"
+                target="_blank"
+                style={{
+                    marginTop: "30px",
+                    textDecoration: "none",
+                }}
+            >
+                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
+            </a>
+            <select
+                style={{ position: "absolute", top: 20, left: 20 }}
+                defaultValue={savedLang || "en"}
+                onChange={(e) => {
+                    const lang = e.target.value;
+                    i18n.changeLanguage(lang);
+                    if (lang === "he" || lang === "ar") {
+                        document.body.style.direction = "rtl";
+                    } else {
+                        document.body.style.direction = "ltr";
+                    }
+                    localStorage.setItem("lang", lang);
+                }}
+            >
+                {LANGUAGES.map(({ code, label }) => (
+                    <option key={code} value={code}>
+                        {label}
+                    </option>
+                ))}
+            </select>
+            {showNameModul ? (
+                <EnterName setShowNameModul={setShowNameModul} />
+            ) : null}
         </div>
-    )
-}
+    );
+};
 
-export default Start
+export default Start;

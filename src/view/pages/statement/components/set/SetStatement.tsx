@@ -1,28 +1,40 @@
+// Third party imports
+import { Link, useParams } from "react-router-dom";
+import { t } from "i18next";
 
-//components
-
-//icons
-import { Link, useParams } from 'react-router-dom';
-import { StatementSettings } from '../admin/StatementSettings';
-import ArrowBackIosIcon from '../../../../icons/ArrowBackIosIcon';
+// Custom components
+import { StatementSettings } from "../admin/StatementSettings";
+import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon";
+import ScreenSlide from "../../../../components/animation/ScreenSlide";
+import useDirection from "../../../../../functions/hooks/useDirection";
 
 export const SetStatement = () => {
     const { statementId } = useParams();
+
+    const direction = useDirection();
+
     return (
-        <div className='page setStatement'>
-            <div className="page__header setStatement__header">
+        <ScreenSlide slideFromRight={true} className="setStatement">
+            <div
+                className="setStatement__header"
+                style={{ flexDirection: direction }}
+            >
+                <Link
+                    to={"/home"}
+                    state={{ from: window.location.pathname }}
+                    className="setStatement__back"
+                >
+                    {" "}
+                    <ArrowBackIosIcon />
+                </Link>
+                <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
                 <span></span>
-                <h1>{statementId ? "עדכון" : "הוספת קבוצה חדשה"}</h1>
-                <Link to={"/home"} className='setStatement__back'> <ArrowBackIosIcon /></Link>
             </div>
             <div className="page__main">
-                <div className="wrapper">
-                    <StatementSettings />
-                </div>
+                <StatementSettings />
             </div>
-        </div>
+        </ScreenSlide>
+    );
+};
 
-    )
-}
-
-export default SetStatement
+export default SetStatement;

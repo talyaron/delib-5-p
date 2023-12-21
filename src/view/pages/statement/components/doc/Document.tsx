@@ -1,211 +1,131 @@
-import { Results, ResultsBy, Statement } from 'delib-npm';
-import { useState, FC, useEffect } from 'react';
+import { useState, FC, useEffect } from "react";
 
-import styles from './Document.module.scss';
-import { updateResultsSettings } from '../../../../../functions/db/results/setResults';
+// Third party imports
+import { Results, Statement } from "delib-npm";
+import { t } from "i18next";
 
-import { maxKeyInObject } from '../../../../../functions/general/helpers';
-import { getResultsDB } from '../../../../../functions/db/results/getResults';
-import Slider from '@mui/material/Slider';
-import ResultsComp from './results/Results';
+// Redux Store
 
+// Custom Components
+import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import StatementMap from "./map/StatementMap";
 
-
-
-
-
-
+// Helpers
+import {
+    FilterType,
+    filterByStatementType,
+    sortStatementsByHirarrchy,
+} from "../../../../../functions/general/sorting";
+import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
+import { SuspenseFallback } from "../../../../../router";
+import { useMapContext } from "../../../../../functions/hooks/useMap";
+import Modal from "../../../../components/modal/Modal";
+import NewSetStatementSimple from "../set/NewStatementSimple";
 
 interface Props {
-    statement: Statement,
-    subStatements: Statement[]
+    statement: Statement;
 }
 
+const Document: FC<Props> = ({ statement }) => {
+    // const subStatements = useAppSelector(
+    //     statementsChildSelector(statement.statementId)
+    // );
+    const { mapContext, setMapContext } = useMapContext();
 
-const Document: FC<Props> = ({ statement, subStatements }) => {
-    const [resultsBy, setResultsBy] = useState<ResultsBy>(statement.results?.resultsBy || ResultsBy.topOptions)
-    const [numberOfResults, setNumberOfResults] = useState<number>(statement.results?.numberOfResults || 2);
-    const [results, setResults] = useState<Results>({ top: statement });
+    const [results, setResults] = useState<Results | undefined>();
+    const [subStatements, setSubStatements] = useState<Statement[]>([]);
 
-    useEffect(() => {
-        if (!subStatements) return;
+    const handleFilter = (filterBy: FilterType) => {
+        const filteredArray = filterByStatementType(filterBy).types;
 
-        (async () => {
-            const _results = await getResults(statement, subStatements, resultsBy, numberOfResults);
-
-            setResults(_results);
-
-        })();
-    }, [subStatements])
-
-    async function handleGetResults(ev: any) {
-        try {
-
-            //get form data with formData
-            ev.preventDefault();
-
-            const data = new FormData(ev.target);
-            const _resultsBy = data.get('results') as ResultsBy;
-            console.log(_resultsBy)
-            const numberOfResults = Number(data.get('numberOfResults'));
-
-
-            setResultsBy(_resultsBy)
-
-            updateResultsSettings(statement.statementId, _resultsBy, numberOfResults);
-
-            const _results = await getResults(statement, subStatements, _resultsBy, numberOfResults);
-            // setResults(top);
-
-            setResults(_results);
-        } catch (error) {
-            console.error(error);
-        }
-
-    }
-
-
-    return (
-        <div className='page__main'>
-            <div className="wrapper">
-
-                <section className={styles.resultsWrapper}>
-                    <h2>תוצאות הדיון</h2>
-                    <form onSubmit={handleGetResults}>
-
-                        <div className={styles.inputWrapper}>
-                            <div>
-                                <label htmlFor="resultsId">הצגת תוצאות לפי</label>
-                                <select name="results" defaultValue={resultsBy} id="resultsId" onChange={(ev: any) => setResultsBy(ev.target.value)}>
-                                    <option value={ResultsBy.topOptions}>אופציות מקסימליות</option>
-                                    <option value={ResultsBy.topVote}>הצבעות</option>
-                                </select>
-                            </div>
-                            {resultsBy === ResultsBy.topOptions ? <div>
-                                <label htmlFor="numberOfResults">כמות פתרונות בכל רמה: {numberOfResults}</label>
-                                <Slider defaultValue={numberOfResults || 2} min={1} max={10} aria-label="Default" valueLabelDisplay="on" name="numberOfResults" id="numberOfResults" onChange={(ev: any) => setNumberOfResults(Number(ev.target.value))} />
-                            </div> : null}
-                        </div>
-                        <div className="btns">
-                            <button type="submit">הצגת תוצאות</button>
-                        </div>
-                    </form>
-                    {results.sub ? <ResultsComp results={results} /> : <h2>לא נבחרו עדיין אפשרויות</h2>}
-                </section>
-            </div>
-        </div>
-    )
-}
-
-export default Document;
-
-
-
-
-async function getResults(statement: Statement, subStatements: Statement[], resultsBy: ResultsBy, numberOfResults: number): Promise<Results> {
-    try {
-
-        // const { results } = statement;
-
-        console.log('resultsBy', resultsBy, 'numberOfResults', numberOfResults)
-
-        const result: Results = { top: statement };
-
-
-
-
-        switch (resultsBy) {
-            case ResultsBy.topOne:
-            case ResultsBy.topVote:
-                result.sub = [...getResultsByVotes(statement, subStatements)];
-                break;
-            case ResultsBy.topOptions:
-                result.sub = [...getResultsByOptions(subStatements, numberOfResults)];
-                break
-            default:
-                result.sub = [];
-        }
-
-
-        const subResultsPromises = result.sub.map(async (subResult: Results) => {
-            const subStatement = subResult.top;
-            const subResults: Statement[] = await getResultsDB(subStatement);
-            console.log(`subResults ${subResult.top.statement}:`, subResults)
-            return subResults;
-        })
-
-        const resultsStatements = await Promise.all(subResultsPromises);
-
-        result.sub.forEach((_: Results, index: number) => {
-            if (!result.sub) return;
-            result.sub[index].sub = [...resultsStatements[index].map((subStatement: Statement) => ({ top: subStatement }))]
-
+        const filterSubStatements = subStatements.filter((state) => {
+            if (!state.statementType) return false;
+            return filteredArray.includes(state.statementType);
         });
 
+        const sortedResults = sortStatementsByHirarrchy([
+            statement,
+            ...filterSubStatements,
+        ]);
 
-        return result;
-    } catch (error) {
-        console.error(error);
-        return { top: statement }
-    }
-}
+        setResults(sortedResults[0]);
+    };
 
+    // Get all child statements and set top result to display map
+    // TODO: In the future refactor to listen to changes in sub statements
+    const getSubStatements = async () => {
+        const childStatements = await getChildStatements(statement.statementId);
 
+        setSubStatements(childStatements);
 
+        const topResult = sortStatementsByHirarrchy([
+            statement,
+            ...childStatements.filter(
+                (state) => state.statementType !== "statement"
+            ),
+        ])[0];
 
+        setResults(topResult);
+    };
 
+    useEffect(() => {
+        getSubStatements();
+    }, []);
 
-function getResultsByVotes(statement: Statement, subStatements: Statement[]): Results[] {
-    try {
+    const toggleModal = (show: boolean) => {
+        setMapContext((prev) => ({
+            ...prev,
+            showModal: show,
+        }));
+    };
 
+    return results ? (
+        <ScreenFadeInOut className="page__main">
+            <select
+                onChange={(ev: any) => handleFilter(ev.target.value)}
+                defaultValue={FilterType.questionsResultsOptions}
+                style={{
+                    width: "100vw",
+                    maxWidth: "300px",
+                    margin: "1rem auto",
+                    position: "absolute",
+                    right: "1rem",
+                    zIndex: 100,
+                }}
+            >
+                <option value={FilterType.questionsResults}>
+                    {t("Questions and Results")}
+                </option>
+                <option value={FilterType.questionsResultsOptions}>
+                    {t("Questions, options and Results")}
+                </option>
+            </select>
+            <div
+                style={{
+                    flex: "auto",
+                    height: "10vh",
+                    width: "100%",
+                    direction: "ltr",
+                }}
+            >
+                <StatementMap topResult={results} />
+            </div>
 
+            {mapContext.showModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatementId={mapContext.parentId}
+                        isOption={mapContext.isOption}
+                        isQuestion={mapContext.isQuestion}
+                        setShowModal={toggleModal}
+                        getSubStatements={getSubStatements}
+                    />
+                </Modal>
+            )}
+        </ScreenFadeInOut>
+    ) : (
+        <SuspenseFallback />
+    );
+};
 
-        const maxVoteKey = getTopVoteStatementId(statement);
-        if (!maxVoteKey) return [];
-        const maxVoteStatement: Statement | undefined = subStatements.find(subStatement => subStatement.statementId === maxVoteKey);
-        if (!maxVoteStatement) return [];
-        const result: Results = { top: maxVoteStatement }
-
-        return [result];
-
-
-    } catch (error) {
-        console.error(error);
-        return []
-    }
-}
-
-
-
-function getResultsByOptions(subStatements: Statement[], numberOfResults: number): Results[] {
-    try {
-        console.log(subStatements)
-        console.log(numberOfResults)
-        const maxOptions: Statement[] = subStatements.filter(s => s.isOption).sort((b, a) => a.consensus - b.consensus)
-            .slice(0, numberOfResults || 1);
-
-        const _maxOptions = maxOptions.map((topStatement: Statement) => ({ top: topStatement, sub: [] }))
-
-        return _maxOptions;
-
-
-    }
-    catch (error) {
-        console.error(error);
-        return []
-    }
-}
-
-function getTopVoteStatementId(statement: Statement): string | undefined {
-    try {
-        const { selections } = statement;
-        if (!selections) return undefined;
-
-        const maxVoteKey = maxKeyInObject(selections)
-        return maxVoteKey;
-
-    } catch (error) {
-        console.error(error);
-        return undefined;
-    }
-}
+export default Document;

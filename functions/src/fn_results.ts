@@ -32,7 +32,7 @@ async function transpileResults(statementId: string, resultsBy: ResultsBy): Prom
     try {
         //get top results by ResultBy
         switch (resultsBy) {
-            case ResultsBy.topOption:
+            case ResultsBy.topOptions:
                 logger.info("topOption")
                 return await resultsByTopOptions(statementId);
                 case ResultsBy.topVote:

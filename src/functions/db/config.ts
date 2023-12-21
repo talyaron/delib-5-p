@@ -19,28 +19,32 @@ export const messaging = getMessaging(app);
 
 export let deviceToken: string | undefined = undefined;
 
-getToken(messaging, { vapidKey }).then((currentToken) => {
-  if (currentToken) {
-    // Send the token to your server and update the UI if necessary
-  
-    deviceToken = currentToken;
+getToken(messaging, { vapidKey })
+    .then((currentToken) => {
+        if (currentToken) {
+            // Send the token to your server and update the UI if necessary
 
-    // ...
-  } else {
-    // Show permission request UI
-    console.info('No registration token available. Request permission to generate one.');
-    // ...
-  }
-}).catch((err) => {
-  console.error('An error occurred while retrieving token. ', err);
-  // ...
-});
+            deviceToken = currentToken;
+
+            // ...
+        } else {
+            // Show permission request UI
+            console.info(
+                "No registration token available. Request permission to generate one."
+            );
+            // ...
+        }
+    })
+    .catch((err) => {
+        console.error("An error occurred while retrieving token. ", err);
+        // ...
+    });
 
 //development
-console.warn("runing on development mode")
+console.warn("runing on development mode");
 import { getAuth } from "firebase/auth";
-import { connectFirestoreEmulator  } from "firebase/firestore";
+import { connectFirestoreEmulator } from "firebase/firestore";
 import { connectAuthEmulator } from "firebase/auth";
-connectFirestoreEmulator(DB, '127.0.0.1', 8080);
+connectFirestoreEmulator(DB, "127.0.0.1", 8080);
 const auth = getAuth();
 connectAuthEmulator(auth, "http://127.0.0.1:9099");

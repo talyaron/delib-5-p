@@ -1,22 +1,21 @@
 .statement {
+    flex: auto;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    position: relative;
 
     &__main {
         display: flex;
         flex-direction: column;
         flex: auto;
-        min-width: 0px;
-        overflow-x: auto;
+        max-width: 75ch;
+        margin: 0 auto;
     }
 
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+    // .wrapper {
+    //     display: flex;
+    //     flex-direction: column;
+    //     gap: 15px;
+    // }
 
     &__nav {
         display: flex;
@@ -38,20 +37,21 @@
             padding: 5px;
             border-bottom: 2px solid rgba(0, 0, 0, 0);
 
-
             &--selected {
                 border-bottom: 2px solid var(--accent);
                 font-weight: 500;
+
+                &--question {
+                    border-bottom: 2px solid white;
+                }
             }
         }
-
     }
 
     &__bubble {
         width: fit-content;
 
         &__text {
-
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -59,11 +59,8 @@
             gap: 10px;
 
             word-break: break-word;
-            margin-bottom: .2rem;
-            width:fit-content;
-        
-
-          
+            margin-bottom: 0.2rem;
+            width: fit-content;
         }
 
         &__more {
@@ -74,8 +71,6 @@
             margin-bottom: -3px;
             opacity: 0.7;
             border-top: 1px solid #e0e0e0;
-
-
 
             .icon {
                 cursor: pointer;
@@ -103,10 +98,28 @@
         display: flex;
         gap: 10px;
 
+        .question {
+            &--yes {
+                background-color: var(--question);
+                color: var(--question-text);
+            }
+
+            &--no {
+                background-color: white;
+            }
+        }
+
         &__left {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        &__right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
         }
 
         &__main {
@@ -123,13 +136,10 @@
             &--other {
                 border-radius: 10px 10px 10px 0px;
                 background-color: #e0e0e0;
-
             }
         }
 
-
         &--other {
-
             flex-direction: row-reverse;
         }
 
@@ -152,19 +162,20 @@
         }
     }
 
-    &__input {
-        width: 100vw;
+    &__form {
+        width: 100%;
         display: flex;
-        flex-direction: row;
-        padding: 5px;
-        box-sizing: border-box;
-        border-radius: 3rem;
-
         align-items: center;
-        background: linear-gradient(90deg, rgba(232, 232, 232, 0) 0%, rgba(232, 232, 232, 1) 35%, rgba(232, 232, 232, 1) 100%);
+        gap: 1rem;
+        padding: 0 1rem;
 
-        >* {
-            margin: 5px;
+        &__input {
+            padding: 0.5rem 1rem;
+            resize: none;
+            outline: none;
+            border: none;
+            flex: auto;
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
         }
 
         @media only screen and (min-width: 600px) {
@@ -172,56 +183,51 @@
             margin: 0 auto;
         }
 
-        button {
-
+        &__sendBtnBox {
+            background: var(--halfPrimary);
             width: 4rem;
             height: 4rem;
-            border: none;
-
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            svg {
-                transform: rotate(180deg) translateX(16px);
+            flex-direction: column;
+            position: relative;
+            border-radius: 50%;
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+            user-select: none;
+            cursor: pointer;
+            button {
+                color: white;
+                text-align: center;
+                font-size: 3rem;
+                background: var(--accent);
+                width: 3rem;
+                height: 3rem;
+                &:hover {
+                    background-color: var(--accent);
+                }
+                svg {
+                    transform: rotate(180deg) translateX(5%);
+                }
             }
-
-        }
-
-        textarea {
-            border-radius: 4rem;
-            min-height: 5ch;
-            flex: auto;
-            padding: 5px 15px;
-            color: gray;
-            resize: none;
-            outline: none;
         }
     }
 
-
-
     &__vote {
-        box-sizing: border-box;
-        display: flex;
         flex: auto;
-        margin: 20px 0;
-        padding: 20px;
+        display: flex;
+        direction: rtl;
+        padding: 1rem;
+        max-width: 100svw;
+        margin: 2.5rem auto;
         overflow-x: auto;
-        width: 100%;
-        // gap: 20px;
-        position: relative;
 
         &__bar {
             position: relative;
-            bottom: 0px;
-            width: 130px;
-            // left: 0px;
-            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            align-items: center;
             gap: 10px;
             transition: all 500ms ease-in-out;
 
@@ -229,6 +235,7 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
+                align-items: center;
                 height: 100%;
 
                 &__bar {
@@ -242,7 +249,6 @@
                     align-items: center;
                     transition: all 500ms ease-in-out;
                 }
-
             }
 
             &__btn {
@@ -280,7 +286,13 @@
                 }
             }
         }
-
+    }
+    &__vote::-webkit-scrollbar {
+        width: 1.5rem;
+    }
+    &__vote::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
+        border-radius: 1rem;
     }
 }
 
@@ -290,12 +302,11 @@
     --t: 30px;
     /* the size of the tail */
     border-radius: 10px 10px 10px 0px;
-  
-    padding: calc(2*var(--r)/3);
+    padding: calc(2 * var(--r) / 3);
+
     background-color: #ffffff;
     color: #464646;
     box-shadow: 0px 0px 10px #0000001f;
-
 
     //on mobile max width should be limeted
     @media only screen and (max-width: 600px) {
@@ -305,12 +316,8 @@
 
 .left {
     border-radius: 15px 15px 15px 0px;
-   
 }
 
 .right {
-
-
     border-radius: 15px 15px 0px 15px;
-   
 }

@@ -1,24 +1,23 @@
-.badge{
-    background-color: #d9d9d9;;
+.badge {
+    background-color: #d9d9d9;
     color: #7f7f7f;
-    
+
     width: fit-content;
     border-radius: 30px;
     display: flex;
     align-items: center;
     height: 1.6rem;
 
-    &__text{
+    &__text {
         padding: 5px 10px 5px 5px;
         font-size: 1rem;
         font-weight: 500;
-    
     }
 
-    &__img{
+    &__img {
         background-color: #ca746e;
         width: 1.6rem;
-        height:  1.6rem;
+        height: 1.6rem;
         margin-right: 5px;
         border-radius: 100px;
         background-size: cover;
@@ -26,10 +25,10 @@
         background-position: center;
     }
 
-    &__wrapper{
+    &__wrapper {
         display: flex;
         align-items: center;
         width: 100%;
-        gap:.5rem;
+        gap: 0.5rem;
     }
 }

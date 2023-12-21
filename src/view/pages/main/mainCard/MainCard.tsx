@@ -1,89 +1,73 @@
-import { Results as _Results } from 'delib-npm'
-import { FC } from 'react';
-import styles from './mainCard.module.scss';
-import Text from '../../../components/text/Text';
-import { Link } from 'react-router-dom';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { FC } from "react";
 
+// Third party Imports
+import { StatementType, Results as _Results } from "delib-npm";
+
+// Styles
+import styles from "./mainCard.module.scss";
+
+// MUI
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SubResults from "./SubResults";
+import { ResultsNode } from "./resultsNode/ResultsNode";
 
 interface Props {
     results: _Results;
     level?: number;
+    resultsType: StatementType[];
 }
 
-const MainCard: FC<Props> = ({ results }) => {
-    const description = results.top.statement.split('\n').slice(1).join('\n');
+const MainCard: FC<Props> = ({ results, resultsType }) => {
+    const hasSubs = results.sub && results.sub.length > 0;
+    const accordionStyle = {
+        backgroundColor: "white",
+        borderRadius: "0px",
+        boxShadow: "none",
+        border: "1px solid #f4f4f4",
+        padding: "3px",
+    };
 
-    if (results.sub && results.sub.length > 0) return (
+    return (
         <div className={styles.results}>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Link to={`/home/statement/${results.top.statementId}`}>
-                        <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
-                        {description ? <Text text={description} /> : null}
-                    </Link>
-                </AccordionSummary>
-                <AccordionDetails>
-
-                    {results.sub?.map((subResult) => <SubResults key={subResult.top.statementId} results={subResult} level={2} />)}
-
-                </AccordionDetails>
-
+            <Accordion defaultExpanded={true} style={accordionStyle}>
+                {hasSubs ? (
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <ResultsNode
+                            statement={results.top}
+                            resultsType={resultsType}
+                        />
+                    </AccordionSummary>
+                ) : (
+                    <ResultsNode
+                        statement={results.top}
+                        resultsType={resultsType}
+                    />
+                )}
+                {hasSubs && (
+                    <AccordionDetails>
+                        {results.sub?.map((subResult) => {
+                            return (
+                                <SubResults
+                                    key={subResult.top.statementId}
+                                    results={subResult}
+                                    level={2}
+                                    resultsType={resultsType}
+                                    accordionStyle={accordionStyle}
+                                />
+                            );
+                        })}
+                    </AccordionDetails>
+                )}
             </Accordion>
         </div>
-    )
-    else return (
-        <div className={styles.results}>
+    );
+};
 
-            <Link to={`/home/statement/${results.top.statementId}`}>
-                <h2>  <Text text={results.top.statement} onlyTitle={true} /></h2>
-                {description ? <Text text={description} /> : null}
-            </Link>
-
-            {results.sub?.map((subResult) => <SubResults key={subResult.top.statementId} results={subResult} level={2} />)}
-
-
-        </div>
-    )
-}
-
-function SubResults({ results, level = 2 }: Props): JSX.Element {
-    const _level: string = `level__${level || 2}`;
-    const description = results.top.statement.split('\n').slice(1).join('\n');
-
-    if (results.sub && results.sub.length > 0) return (
-        <div className={styles[_level]}>
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Link to={`/home/statement/${results.top.statementId}`}>
-                        <div ><Text text={results.top.statement} onlyTitle={true} /></div>
-                        {description ? <article><Text text={description} /></article> : null}
-                    </Link>
-                </AccordionSummary>
-                <AccordionDetails>
-                    {results.sub?.map((subResult) => <SubResults key={subResult.top.statementId} results={subResult} level={level + 1} />)}
-                </AccordionDetails>
-            </Accordion>
-        </div>
-    )
-    else return (
-        <div className={styles[_level]}>
-            <Link to={`/home/statement/${results.top.statementId}`}>
-                <div ><Text text={results.top.statement} onlyTitle={true} /></div>
-                {description ? <article><Text text={description} /></article> : null}
-            </Link>
-            {results.sub?.map((subResult) => <SubResults key={subResult.top.statementId} results={subResult} level={level + 1} />)}
-        </div>
-    )
-
-}
-
-
-export default MainCard
+export default MainCard;

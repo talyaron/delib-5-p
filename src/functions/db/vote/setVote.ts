@@ -5,7 +5,7 @@ import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB } from "../config";
 import { Vote, getVoteId, voteSchema } from "../../../model/vote/voteModel";
 
-export async function setVote(option: Statement, setVoteCB:Function) {
+export async function setVote(option: Statement) {
     try {
         //vote refernce
         const user = getUserFromFirebase();
@@ -14,22 +14,27 @@ export async function setVote(option: Statement, setVoteCB:Function) {
 
         const voteRef = doc(DB, Collections.votes, voteId);
 
-
         // toggle vote
-        const vote: Vote = { voteId, statementId: option.statementId, parentId: option.parentId, userId: user.uid, lastUpdate: Timestamp.now().toMillis(), createdAt: Timestamp.now().toMillis() };
-        
+        const vote: Vote = {
+            voteId,
+            statementId: option.statementId,
+            parentId: option.parentId,
+            userId: user.uid,
+            lastUpdate: Timestamp.now().toMillis(),
+            createdAt: Timestamp.now().toMillis(),
+        };
+
         const voteDoc = await getDoc(voteRef);
-        if (voteDoc.exists() && voteDoc.data()?.statementId === option.statementId) {
+        if (
+            voteDoc.exists() &&
+            voteDoc.data()?.statementId === option.statementId
+        ) {
             vote.statementId = "none";
         }
-      
 
         voteSchema.parse(vote);
-        setVoteCB(option)
-        
+
         await setDoc(voteRef, vote, { merge: true });
-
-
     } catch (error) {
         console.error(error);
     }

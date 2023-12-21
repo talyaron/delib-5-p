@@ -24,3 +24,11 @@ dist-ssr
 *.sw?
 
 configKey.ts
+
+.firebaserc
+dev_dist
+stats.html
+
+dev-dist/
+
+*.cache
