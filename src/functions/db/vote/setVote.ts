@@ -3,7 +3,7 @@ import { Statement } from "delib-npm";
 import { Collections } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB } from "../config";
-import { Vote, getVoteId, voteSchema } from "../../../model/vote/voteModel";
+import { Vote, getVoteId, VoteSchema } from "delib-npm";
 
 export async function setVote(option: Statement) {
     try {
@@ -32,7 +32,7 @@ export async function setVote(option: Statement) {
             vote.statementId = "none";
         }
 
-        voteSchema.parse(vote);
+        VoteSchema.parse(vote);
 
         await setDoc(voteRef, vote, { merge: true });
     } catch (error) {
