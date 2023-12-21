@@ -14,6 +14,7 @@ import {
     ResultsBy,
     Screen,
     StatementType,
+    Statement,
 } from "delib-npm";
 
 // Custom components
@@ -64,7 +65,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     // Redux
     const dispatch = useAppDispatch();
-    const statement = useAppSelector(statementSelector(statementId));
+    const statement:Statement|undefined = useAppSelector(statementSelector(statementId));
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
@@ -300,7 +301,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             }
                                         />
                                     }
-                                    label={t("Show Add Option In Evaluation")}
+                                    label={t("Allow participants to contribute options to the evaluation page")}
                                 />
                                 <FormControlLabel
                                     control={
@@ -311,7 +312,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             }
                                         />
                                     }
-                                    label={t("Show Add Option In Voting")}
+                                    label={t("Allow participants to contribute options to the voting page")}
                                 />
                             </FormGroup>
                         </section>
