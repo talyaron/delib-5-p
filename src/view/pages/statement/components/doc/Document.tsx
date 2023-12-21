@@ -4,11 +4,11 @@ import { useState, FC, useEffect } from "react";
 import { Results, Statement } from "delib-npm";
 import { t } from "i18next";
 
-// Redux Store
-
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import StatementMap from "./map/StatementMap";
+import StatementMap from "./mapHelpers/StatementMap";
+import Modal from "../../../../components/modal/Modal";
+import { SuspenseFallback } from "../../../../../router";
 
 // Helpers
 import {
@@ -17,10 +17,10 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
-import { SuspenseFallback } from "../../../../../router";
-import { useMapContext } from "../../../../../functions/hooks/useMap";
-import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
+
+// Hooks
+import { useMapContext } from "../../../../../functions/hooks/useMap";
 
 interface Props {
     statement: Statement;
