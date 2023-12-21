@@ -214,11 +214,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         return statement.hasChildren;
     })();
 
-    const enableAddEvaluationOption: boolean =
-        statement?.statementSettings?.enableAddEvaluationOption || false;
+    const enableAddEvaluationOption: boolean = statement?.statementSettings?.enableAddEvaluationOption === false ? false : true;
 
-    const enableAddVotingOption: boolean =
-        statement?.statementSettings?.enableAddVotingOption || false;
+    const enableAddVotingOption: boolean =  statement?.statementSettings?.enableAddVotingOption === false ? false :true;
+
 
     return (
         <ScreenFadeInOut className="setStatement">

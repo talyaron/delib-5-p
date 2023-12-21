@@ -15,7 +15,7 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import {  isStatementTypeAllowed } from "../../general/helpers";
+import { isStatementTypeAllowed } from "../../general/helpers";
 
 const TextSchema = z.string().min(2);
 
@@ -58,6 +58,13 @@ export async function setStatmentToDB(
         if (!results) statement.results = [];
         if (!resultsSettings)
             statement.resultsSettings = { resultsBy: ResultsBy.topVote };
+
+        //statement settings
+        if (!statement.statementSettings)
+            statement.statementSettings = {
+                enableAddEvaluationOption: true,
+                enableAddVotingOption: true,
+            };
 
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator);
@@ -258,7 +265,6 @@ export async function setStatementisOption(statement: Statement) {
 
         StatementSchema.parse(statementDBData);
         StatementSchema.parse(parentStatementDBData);
-       
 
         await toggleStatementOption(statementDBData, parentStatementDBData);
     } catch (error) {
@@ -281,13 +287,11 @@ export async function setStatementisOption(statement: Statement) {
                     statementType: StatementType.statement,
                 });
             } else if (statement.statementType === StatementType.statement) {
-                
                 if (!(parentStatement.statementType === StatementType.question))
                     throw new Error(
                         "You can't create option under option or statement"
                     );
 
-               
                 await updateDoc(statementRef, {
                     statementType: StatementType.option,
                 });
