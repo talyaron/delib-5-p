@@ -37,8 +37,10 @@ const Evaluation: FC<Props> = ({ statement }) => {
         evaluationSelector(statement.statementId)
     );
 
-    const { consensus: _consensus } = statement;
-    const consensus = _consensus ? Math.round(_consensus * 100) / 100 : 0;
+    const { consensus } = statement;
+    const consensusToDisplay = consensus
+        ? Math.round(consensus * 100) / 100
+        : 0;
 
     useEffect(() => {
         setConVote(initContVote);
@@ -82,7 +84,7 @@ const Evaluation: FC<Props> = ({ statement }) => {
                     <span>{proVote}</span>
                 </div>
             </div>
-            <div className={styles.consensus}>{consensus}</div>
+            <div className={styles.consensus}>{consensusToDisplay}</div>
         </div>
     );
 };

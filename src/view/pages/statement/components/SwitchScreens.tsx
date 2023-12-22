@@ -3,7 +3,7 @@ import StatementMain from "./StatementMain";
 import StatmentRooms from "./rooms/Rooms";
 import StatementVote from "./vote/StatementVote";
 import StatementEvaluation from "./options/StatementEvaluation";
-import Document from "./doc/Document";
+import Map from "./doc/Map";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
@@ -26,7 +26,7 @@ export default function SwitchScreens({
 
     switch (screen) {
         case Screen.DOC:
-            return <Document statement={statement} />;
+            return <Map statement={statement} />;
         case Screen.HOME:
             return (
                 <StatementMain

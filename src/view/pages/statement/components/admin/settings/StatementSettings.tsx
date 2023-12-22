@@ -6,6 +6,7 @@ import { setStatmentToDB } from "../../../../../../functions/db/statements/setSt
 import { navArray } from "../../nav/StatementNav";
 
 // Third party imports
+import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     UserSchema,
@@ -48,9 +49,9 @@ import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
-import { t } from "i18next";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
 import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
+import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
 
 interface Props {
     simple?: boolean;
@@ -64,7 +65,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     // Redux
     const dispatch = useAppDispatch();
-    const statement:Statement|undefined = useAppSelector(statementSelector(statementId));
+    const statement: Statement | undefined = useAppSelector(
+        statementSelector(statementId)
+    );
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
@@ -213,13 +216,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         return statement.hasChildren;
     })();
 
-    const enableAddEvaluationOption: boolean = statement?.statementSettings?.enableAddEvaluationOption === false ? false : true;
+    const enableAddEvaluationOption: boolean =
+        statement?.statementSettings?.enableAddEvaluationOption === false
+            ? false
+            : true;
 
-    const enableAddVotingOption: boolean =  statement?.statementSettings?.enableAddVotingOption === false ? false :true;
-
+    const enableAddVotingOption: boolean =
+        statement?.statementSettings?.enableAddVotingOption === false
+            ? false
+            : true;
 
     return (
-        <>
+        <ScreenFadeIn className="setStatement">
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -299,7 +307,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             }
                                         />
                                     }
-                                    label={t("Allow participants to contribute options to the evaluation page")}
+                                    label={t(
+                                        "Allow participants to contribute options to the evaluation page"
+                                    )}
                                 />
                                 <FormControlLabel
                                     control={
@@ -310,7 +320,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             }
                                         />
                                     }
-                                    label={t("Allow participants to contribute options to the voting page")}
+                                    label={t(
+                                        "Allow participants to contribute options to the voting page"
+                                    )}
                                 />
                             </FormGroup>
                         </section>
@@ -362,6 +374,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <Loader />
                 </div>
             )}
-        </>
+        </ScreenFadeIn>
     );
 };

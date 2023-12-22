@@ -5,12 +5,14 @@ const useSlideAndSubStatement = (parentId: string) => {
     const location = useLocation();
     const [toSlide, setToSlide] = useState(false);
     const [toSubStatement, setToSubStatement] = useState(false);
+    const [slideInOrOut, setSlideInOrOut] = useState("slide-out");
 
     useEffect(() => {
         if (!location.state) return;
 
         if (location.state.from === "/home") {
             setToSubStatement(true);
+            setSlideInOrOut("slide-out");
             setToSlide(true);
             return;
         }
@@ -24,14 +26,16 @@ const useSlideAndSubStatement = (parentId: string) => {
 
         if (previousStateId === parentId) {
             setToSubStatement(true);
+            setSlideInOrOut("slide-out");
         } else {
             setToSubStatement(false);
+            setSlideInOrOut("slide-in");
         }
 
         setToSlide(testToSlide);
     }, [parentId, location.state]);
 
-    return { toSlide, toSubStatement };
+    return { toSlide, toSubStatement, slideInOrOut };
 };
 
 export default useSlideAndSubStatement;
