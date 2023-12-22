@@ -8,14 +8,13 @@ import Modal from "../../../../components/modal/Modal";
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
-// Utils & Constants
-
-// Redux Store
+// Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import StatementEvaluationNav from "./components/StatementEvaluationNav";
+
 
 
 interface Props {
@@ -49,8 +48,9 @@ const StatementEvaluation: FC<Props> = ({
         let topSum = 10;
         let tops: number[] = [topSum];
 
+
         return (
-            <ScreenFadeInOut className="page__main">
+            <ScreenFadeIn className="page__main">
                 <div className="wrapper">
                     {sortedSubStatements?.map(
                         (statementSub: Statement, i: number) => {
@@ -78,7 +78,7 @@ const StatementEvaluation: FC<Props> = ({
                         statement={statement}
                     />
                 </div>
-                {/* <Fav onclick={handleAddStatment} /> */}
+                {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple
@@ -88,7 +88,7 @@ const StatementEvaluation: FC<Props> = ({
                         />
                     </Modal>
                 )}
-            </ScreenFadeInOut>
+            </ScreenFadeIn>
         );
     } catch (error) {
         console.error(error);

@@ -6,6 +6,20 @@ import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 
+function calculateFontSize(text: string) {
+    // Set the base font size and a multiplier for adjusting based on text length
+    const baseFontSize = 20;
+    const fontSizeMultiplier = 0.2;
+
+    // Calculate the font size based on the length of the text
+    const fontSize = Math.max(
+        baseFontSize - fontSizeMultiplier * text.length,
+        8
+    );
+
+    return `${fontSize}px`;
+}
+
 const resultColor = "#8FF18F";
 const questionColor = "#5252FD";
 
@@ -16,21 +30,20 @@ const backgroundColor = (type: string) =>
         ? resultColor
         : "gold";
 
-const nodeStyle = (type: string) => {
+const nodeStyle = (data: any, nodeTitle: string) => {
     const style = {
-        backgroundColor: backgroundColor(type),
-        color: type === "question" ? "white" : "black",
-        // width: "auto",
-        // maxWidth: 150,
-        height: "auto",
+        backgroundColor:
+            data.parentId === "top" ? "darkblue" : backgroundColor(data.type),
+        color: data.type === "question" ? "white" : "black",
+        height: 70,
         width: 100,
-        // height: 20,
+        borderRadius: "5px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        fontSize: ".7rem",
         padding: ".5rem",
         cursor: "pointer",
+        fontSize: calculateFontSize(nodeTitle),
     };
     return style;
 };
@@ -83,7 +96,11 @@ export default function CustomNode({ data, id }: NodeProps) {
             <div
                 onClick={handleNodeClick}
                 data-id={id}
-                style={nodeStyle(data.type)}
+                style={{
+                    ...nodeStyle(data, nodeTitle),
+                    textAlign: "center",
+                    wordBreak: "break-word",
+                }}
             >
                 {nodeTitle}
             </div>

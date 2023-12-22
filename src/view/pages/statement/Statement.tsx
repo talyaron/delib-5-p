@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     User,
     Statement,
@@ -9,7 +9,6 @@ import {
     Role,
     Screen,
 } from "delib-npm";
-import { AnimatePresence } from "framer-motion";
 import { t } from "i18next";
 
 // firestore
@@ -44,7 +43,6 @@ import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
 
 // Custom components
-import ScreenFadeInOut from "../../components/animation/ScreenFadeInOut";
 import ProfileImage from "../../components/profileImage/ProfileImage";
 import StatementHeader from "./StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
@@ -66,8 +64,6 @@ const Statement: FC = () => {
     // Hooks
     const statementId = useParams().statementId;
     const page = useParams().page as Screen;
-
-    const navigate = useNavigate();
 
     const direction = useDirection();
     const langDirection = direction === "row" ? "ltr" : "rtl";
@@ -109,10 +105,6 @@ const Statement: FC = () => {
 
     function updateEvaluationsCB(evaluation: Evaluation) {
         dispatch(setEvaluationToStore(evaluation));
-    }
-
-    function goHomeCB() {
-        navigate("/home");
     }
 
     //handlers
@@ -157,8 +149,7 @@ const Statement: FC = () => {
             );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
-                updateStatementSubscriptionCB,
-                goHomeCB
+                updateStatementSubscriptionCB
             );
             unsubEvaluations = listenToEvaluations(
                 statementId,
@@ -200,7 +191,7 @@ const Statement: FC = () => {
     }, [statement]);
 
     return (
-        <ScreenFadeInOut className="page">
+        <div className="page">
             {showAskPermission && (
                 <AskPermisssion showFn={setShowAskPermission} />
             )}
@@ -213,7 +204,7 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement ? (
+            {statement && (
                 <StatementHeader
                     statement={statement}
                     screen={screen || Screen.CHAT}
@@ -223,22 +214,17 @@ const Statement: FC = () => {
                     showAskPermission={showAskPermission}
                     setShowAskPermission={setShowAskPermission}
                 />
-            ) : null}
-            <AnimatePresence mode="wait" initial={false}>
-                <MapProvider>
-                    <SwitchScreens
-                        key={window.location.pathname
-                            .split("/")
-                            .slice(2)
-                            .join(" ")}
-                        screen={screen}
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                    />
-                </MapProvider>
-            </AnimatePresence>
-        </ScreenFadeInOut>
+            )}
+            <MapProvider>
+                <SwitchScreens
+                    key={window.location.pathname.split("/").slice(2).join(" ")}
+                    screen={screen}
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                />
+            </MapProvider>
+        </div>
     );
 };
 

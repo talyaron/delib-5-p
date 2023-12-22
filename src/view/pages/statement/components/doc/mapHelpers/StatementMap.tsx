@@ -56,8 +56,8 @@ export default function StatementMap({ topResult }: Props) {
 
     const onLayout = useCallback(
         (direction: string) => {
-            const width = direction === "TB" ? 80 : 150;
-            const height = direction === "TB" ? 80 : 40;
+            const width = direction === "TB" ? 80 : 120;
+            const height = direction === "TB" ? 80 : 50;
 
             setMapContext((prev) => ({
                 ...prev,

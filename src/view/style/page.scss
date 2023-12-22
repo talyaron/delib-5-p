@@ -1,16 +1,17 @@
 .page {
     width: 100vw;
-    min-height: 100svh;
+    height: 100svh;
     position: relative;
     display: flex;
     flex-direction: column;
+    position: fixed;
 
     &__header {
         box-shadow: 0px 3px 9px #00000026;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: .5rem;
+        gap: 0.5rem;
         justify-content: center;
         background-color: white;
         color: rgb(64, 64, 64);
@@ -53,6 +54,7 @@
         display: flex;
         flex-direction: column;
         height: 100%;
+        overflow-y: auto;
 
         &__bottom {
             margin-top: auto;

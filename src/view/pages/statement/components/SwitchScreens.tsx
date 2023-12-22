@@ -1,13 +1,13 @@
 // Custom components
 import StatementMain from "./StatementMain";
-import { StatementSettings } from "./admin/StatementSettings";
 import StatmentRooms from "./rooms/Rooms";
 import StatementVote from "./vote/StatementVote";
 import StatementEvaluation from "./options/StatementEvaluation";
-import Document from "./doc/Document";
+import Map from "./doc/Map";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
+import AdminPage from "./admin/AdminPage";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -26,7 +26,7 @@ export default function SwitchScreens({
 
     switch (screen) {
         case Screen.DOC:
-            return <Document statement={statement} />;
+            return <Map statement={statement} />;
         case Screen.HOME:
             return (
                 <StatementMain
@@ -66,7 +66,7 @@ export default function SwitchScreens({
                 />
             );
         case Screen.SETTINGS:
-            return <StatementSettings />;
+            return <AdminPage />;
         default:
             return (
                 <StatementMain

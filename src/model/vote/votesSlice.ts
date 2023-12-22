@@ -3,8 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
 import { updateArray } from '../../functions/general/helpers';
-import { Vote, getVoteId } from './voteModel';
-import { Statement, StatementSchema } from "delib-npm";
+import { Statement, StatementSchema,getVoteId, Vote } from "delib-npm";
 
 
 

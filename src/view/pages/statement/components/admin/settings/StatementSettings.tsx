@@ -2,10 +2,11 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
 
 // Statment imports
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
-import { navArray } from "../nav/StatementNav";
+import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
+import { navArray } from "../../nav/StatementNav";
 
 // Third party imports
+import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     UserSchema,
@@ -18,40 +19,39 @@ import {
 } from "delib-npm";
 
 // Custom components
-import Loader from "../../../../components/loaders/Loader";
-import MembershipLine from "./MembershipLine";
+import Loader from "../../../../../components/loaders/Loader";
+import MembershipLine from "../membership/MembershipLine";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../functions/hooks/reduxHooks";
 import {
     removeMembership,
     setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
-} from "../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../model/users/userSlice";
+} from "../../../../../../model/statements/statementsSlice";
+import { userSelector } from "../../../../../../model/users/userSlice";
 
 // Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
-} from "../../../../../functions/db/statements/getStatement";
+} from "../../../../../../functions/db/statements/getStatement";
 
 // Mui imports
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
-import { store } from "../../../../../model/store";
+import { store } from "../../../../../../model/store";
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import { t } from "i18next";
-import { navigateToStatementTab } from "../../../../../functions/general/helpers";
-import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
+import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
+import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
+import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
 
 interface Props {
     simple?: boolean;
@@ -65,7 +65,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     // Redux
     const dispatch = useAppDispatch();
-    const statement:Statement|undefined = useAppSelector(statementSelector(statementId));
+    const statement: Statement | undefined = useAppSelector(
+        statementSelector(statementId)
+    );
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
@@ -214,13 +216,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         return statement.hasChildren;
     })();
 
-    const enableAddEvaluationOption: boolean = statement?.statementSettings?.enableAddEvaluationOption === false ? false : true;
+    const enableAddEvaluationOption: boolean =
+        statement?.statementSettings?.enableAddEvaluationOption === false
+            ? false
+            : true;
 
-    const enableAddVotingOption: boolean =  statement?.statementSettings?.enableAddVotingOption === false ? false :true;
-
+    const enableAddVotingOption: boolean =
+        statement?.statementSettings?.enableAddVotingOption === false
+            ? false
+            : true;
 
     return (
-        <ScreenFadeInOut className="setStatement">
+        <ScreenFadeIn className="setStatement">
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -300,7 +307,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             }
                                         />
                                     }
-                                    label={t("Allow participants to contribute options to the evaluation page")}
+                                    label={t(
+                                        "Allow participants to contribute options to the evaluation page"
+                                    )}
                                 />
                                 <FormControlLabel
                                     control={
@@ -311,7 +320,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             }
                                         />
                                     }
-                                    label={t("Allow participants to contribute options to the voting page")}
+                                    label={t(
+                                        "Allow participants to contribute options to the voting page"
+                                    )}
                                 />
                             </FormGroup>
                         </section>
@@ -363,6 +374,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <Loader />
                 </div>
             )}
-        </ScreenFadeInOut>
+        </ScreenFadeIn>
     );
 };

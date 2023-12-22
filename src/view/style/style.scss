@@ -84,22 +84,16 @@
 
 html,
 body {
-    width: 100%;
+    width: 100svw;
     height: 100svh;
     margin: 0px;
     font-family: "Fredoka", sans-serif;
     font-size: 13px;
     background: var(--pageBackground);
-    direction: ltr;
-}
-
-body {
-    direction: rtl;
     overflow: hidden;
 }
 
 h1 {
-   
     font-weight: 500;
 }
 
@@ -112,7 +106,7 @@ h1,
 h2 {
     text-align: center;
 }
-a{
+a {
     text-decoration: none;
     color: inherit;
 }
@@ -120,6 +114,8 @@ a{
 b {
     font-weight: 500;
 }
+
+
 
 .wrapperAll {
     position: relative;

@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { setUser, userSelector } from "./model/users/userSlice";
 
 // Type
-import { User } from "./model/users/userModel";
+import { User } from "delib-npm";
 
 // Custom components
 import Accessiblity from "./view/components/accessibility/Accessiblity";
@@ -51,9 +51,8 @@ export default function App() {
     }
 
     function navigateToInitialLocationCB(pathname: string) {
-        navigate(pathname, {
-            state: { from: window.location.pathname },
-        });
+        console.log("navigate to", pathname)
+        navigate(pathname);
     }
 
     function resetStoreCB() {
@@ -97,6 +96,8 @@ export default function App() {
             return;
         }
 
+        // navigate(getIntialLocationSessionStorage()||"/home")
+
         if (user.agreement?.date) {
             setShowSignAgreement(false);
         } else {
@@ -138,7 +139,7 @@ export default function App() {
         <>
             <Accessiblity />
             <Outlet />
-            {showSignAgreement ? (
+            {showSignAgreement && (
                 <Modal>
                     <div className={styles.modal}>
                         <h2>{t("terms of use")}</h2>
@@ -163,7 +164,7 @@ export default function App() {
                         </div>
                     </div>
                 </Modal>
-            ) : null}
+            )}
         </>
     );
 }
