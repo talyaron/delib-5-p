@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import AddIcon from "@mui/icons-material/Add";
+import { FaPlus } from "react-icons/fa6";
 
 interface Props {
     onclick?: Function;
@@ -18,15 +18,13 @@ const Fav: FC<Props> = ({ onclick, isHome }) => {
             className="fav fav--fixed"
             onClick={(ev) => (onclick ? onclick(ev) : null)}
         >
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <AddIcon
-                    style={{ transform: `translateX(0rem) scale(1.45)` }}
+            <div>
+                <FaPlus
+                    color="white"
+                    size="1.5rem"
+                    style={{
+                        transform: "translateX(.8rem) translateY(.8rem) ",
+                    }}
                 />
             </div>
         </div>

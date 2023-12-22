@@ -1,5 +1,5 @@
 /* Inputs */
-input,
+input[type="text"],
 textarea {
     background-color: white;
     border: none;
@@ -8,11 +8,11 @@ textarea {
     border-radius: 1rem;
     box-shadow: inset 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
     font-size: 1rem;
-    font-family: 'Fredoka', sans-serif;
+    font-family: "Fredoka", sans-serif;
 }
 
 select {
-    padding: .3rem;
+    padding: 0.3rem;
     border: none;
     border-bottom: 1px solid rgb(211, 211, 211);
     font-size: 1.3rem;
@@ -30,13 +30,13 @@ select {
 }
 
 .inputs {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
     padding: 20px 0px;
 }
 
-.inputs>* {
+.inputs > * {
     margin-bottom: 10px;
     resize: none;
 }
@@ -55,7 +55,7 @@ select {
     margin: 5px 0px;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
     transform: scale(1.5);
     -ms-transform: scale(1.5);
     -webkit-transform: scale(1.5);

@@ -1,25 +1,35 @@
 import { FC, useState } from "react";
+
+// Third party imports
 import { Screen, Statement, StatementType } from "delib-npm";
 import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { store } from "../../../model/store";
+
+// Helpers
 import { getUserPermissionToNotifications } from "../../../functions/notifications";
 
 //icons
-import HomeIcon from "@mui/icons-material/Home";
-import ShareIcon from "../../icons/ShareIcon";
-import ArrowBackIosIcon from "../../icons/ArrowBackIosIcon";
-import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import { IoMdHome } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoMdShare } from "react-icons/io";
+import { IoMdNotificationsOff } from "react-icons/io";
+import { IoMdNotifications } from "react-icons/io";
+
+// Statement helpers
 import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/statements/setStatments";
+
+// Redux Store
+import { store } from "../../../model/store";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
+
+// Custom components
 import StatementNav from "./components/nav/StatementNav";
 import EditTitle from "../../components/edit/EditTitle";
 
 interface Props {
     title: string;
-    screen:Screen;
+    screen: Screen;
     statement: Statement;
     direction: "row" | "row-reverse";
     langDirection: "ltr" | "rtl";
@@ -118,16 +128,16 @@ const StatementHeader: FC<Props> = ({
                 style={{ flexDirection: direction, direction: langDirection }}
             >
                 <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                    <ArrowBackIosIcon />
+                    <IoIosArrowBack size="1.5rem" />
                 </div>
                 <Link state={{ from: window.location.pathname }} to={"/home"}>
-                    <HomeIcon />
+                    <IoMdHome size="1.5rem" />
                 </Link>
                 <div onClick={handleRegisterToNotifications}>
                     {hasNotificationPermission && hasNotifications ? (
-                        <NotificationsActiveIcon />
+                        <IoMdNotifications size="1.5rem" />
                     ) : (
-                        <NotificationsOffIcon />
+                        <IoMdNotificationsOff size="1.5rem" />
                     )}
                 </div>
                 {!editHeader ? (
@@ -146,10 +156,12 @@ const StatementHeader: FC<Props> = ({
                     />
                 )}
                 <div onClick={handleShare}>
-                    <ShareIcon />
+                    <IoMdShare size="1.5rem" />
                 </div>
             </div>
-            {statement && <StatementNav statement={statement} screen={screen}/>}
+            {statement && (
+                <StatementNav statement={statement} screen={screen} />
+            )}
         </div>
     );
 };

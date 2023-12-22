@@ -1,55 +1,52 @@
-import AccessibleIcon from "@mui/icons-material/Accessible"
+import { MdAccessible } from "react-icons/md";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../functions/hooks/reduxHooks"
+} from "../../../functions/hooks/reduxHooks";
 import {
     fontSizeSelector,
     increaseFontSize,
     userSelector,
-} from "../../../model/users/userSlice"
-import { useEffect, useState } from "react"
-import { updateUserFontSize } from "../../../functions/db/users/setUsersDB"
-
+} from "../../../model/users/userSlice";
+import { useEffect, useState } from "react";
+import { updateUserFontSize } from "../../../functions/db/users/setUsersDB";
 
 const Accessiblity = () => {
-    const dispatch = useAppDispatch()
-    const fontSize = useAppSelector(fontSizeSelector)
-    const user = useAppSelector(userSelector)
+    const dispatch = useAppDispatch();
+    const fontSize = useAppSelector(fontSizeSelector);
+    const user = useAppSelector(userSelector);
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [_fontSize, setFontSize] = useState(fontSize || 14)
+    const [isOpen, setIsOpen] = useState(false);
+    const [_fontSize, setFontSize] = useState(fontSize || 14);
 
     useEffect(() => {
-        document.documentElement.style.fontSize = fontSize + "px"
-        document.body.style.fontSize = fontSize + "px"
-    }, [fontSize])
+        document.documentElement.style.fontSize = fontSize + "px";
+        document.body.style.fontSize = fontSize + "px";
+    }, [fontSize]);
 
     function handleChangeFontSize(number: number) {
-       
         if (!user) {
             //get curent font size from body
-            
+
             //update body font size
-            document.documentElement.style.fontSize = `${_fontSize+number}px`;
-            setFontSize(_fontSize+number)
+            document.documentElement.style.fontSize = `${_fontSize + number}px`;
+            setFontSize(_fontSize + number);
         } else {
-            updateUserFontSize(fontSize + number)
-            dispatch(increaseFontSize(number))
-           
+            updateUserFontSize(fontSize + number);
+            dispatch(increaseFontSize(number));
         }
     }
 
     function handleOpen() {
         if (isOpen) {
             // If it's not open, open it and start the timer to close it after 2 seconds
-            setIsOpen(false)
+            setIsOpen(false);
         } else {
             // If it's already open, close it immediately
-            setIsOpen(true)
+            setIsOpen(true);
             setTimeout(() => {
-                setIsOpen(false)
-            }, 14000)
+                setIsOpen(false);
+            }, 14000);
         }
     }
 
@@ -59,7 +56,7 @@ const Accessiblity = () => {
             style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}
         >
             <div className="accessibility__button" onClick={handleOpen}>
-                <AccessibleIcon htmlColor="white" />
+                <MdAccessible color="white" size="1.5rem"/>
             </div>
             <div className="accessibility__fonts">
                 <div
@@ -68,7 +65,9 @@ const Accessiblity = () => {
                 >
                     +
                 </div>
-                <div className="accessibility__fonts__size">{user?fontSize:_fontSize}px</div>
+                <div className="accessibility__fonts__size">
+                    {user ? fontSize : _fontSize}px
+                </div>
                 <div
                     className="accessibility__fonts__control"
                     onClick={() => handleChangeFontSize(-1)}
@@ -78,7 +77,7 @@ const Accessiblity = () => {
                 <span dir="ltr">Fonts:</span>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Accessiblity
+export default Accessiblity;

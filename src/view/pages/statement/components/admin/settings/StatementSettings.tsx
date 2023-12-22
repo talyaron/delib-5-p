@@ -1,6 +1,4 @@
 import { CSSProperties, FC, useEffect, useState } from "react";
-import Slider from "@mui/material/Slider";
-
 // Statment imports
 import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
 import { navArray } from "../../nav/StatementNav";
@@ -52,6 +50,7 @@ import {
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
 import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
 import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
+import CustomSwitch from "../../../../../components/CustomSwitch";
 
 interface Props {
     simple?: boolean;
@@ -75,7 +74,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
-    const [numOfResults] = useState(
+    const [numOfResults, setNumOfResults] = useState(
         statement?.resultsSettings?.numberOfResults || 1
     );
 
@@ -298,6 +297,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                     }
                                     label={t("Enable Sub-Conversations")}
                                 />
+                                <CustomSwitch />
                                 <FormControlLabel
                                     control={
                                         <Switch
@@ -338,17 +338,19 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </select>
                     <label style={{ fontSize: "1.3rem", marginBottom: "1rem" }}>
                         {t("Number of Results to Display")}
+                        {": "}
+                        <span style={{ fontSize: 20 }}>{numOfResults}</span>
                     </label>
-                    <Slider
-                        defaultValue={numOfResults}
-                        min={1}
-                        max={10}
-                        valueLabelDisplay="on"
-                        name={"numberOfResults"}
-                        style={{
-                            margin: "auto",
-                            width: "90%",
-                        }}
+                    <input
+                        className="range"
+                        type="range"
+                        name="numberOfResults"
+                        value={numOfResults}
+                        min="1"
+                        max="10"
+                        onChange={(e) =>
+                            setNumOfResults(Number(e.target.value))
+                        }
                     />
 
                     <div className="btnBox">
