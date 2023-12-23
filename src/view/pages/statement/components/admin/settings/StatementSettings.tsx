@@ -17,6 +17,7 @@ import {
 } from "delib-npm";
 
 // Custom components
+import CustomCheckboxLabel from "./CustomCheckboxLabel";
 import Loader from "../../../../../components/loaders/Loader";
 import MembershipLine from "../membership/MembershipLine";
 import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
@@ -34,6 +35,7 @@ import {
     statementSelector,
 } from "../../../../../../model/statements/statementsSlice";
 import { userSelector } from "../../../../../../model/users/userSlice";
+import { store } from "../../../../../../model/store";
 
 // Firestore functions
 import {
@@ -41,8 +43,7 @@ import {
     listenToMembers,
 } from "../../../../../../functions/db/statements/getStatement";
 
-// Mui imports
-import { store } from "../../../../../../model/store";
+// * Statement Settings functions * //
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
@@ -245,7 +246,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </div>
                     {!simple && (
                         <section className="checkboxSection">
-                            <div style={{ width: "50%" }}>
+                            <div style={{ width: "30%" }}>
                                 <h3
                                     style={{
                                         fontSize: "1.3rem",
@@ -260,22 +261,16 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             (navObj) =>
                                                 navObj.link !== Screen.SETTINGS
                                         )
-                                        .map((navObj) => (
-                                            <label
-                                                htmlFor={navObj.link}
-                                                className="label"
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    key={navObj.id}
-                                                    name={navObj.link}
-                                                    defaultChecked={isSubPageChecked(
-                                                        statement,
-                                                        navObj
-                                                    )}
-                                                />
-                                                {t(navObj.name)}
-                                            </label>
+                                        .map((navObj, index) => (
+                                            <CustomCheckboxLabel
+                                                key={index}
+                                                name={navObj.link}
+                                                title={navObj.name}
+                                                defaultChecked={isSubPageChecked(
+                                                    statement,
+                                                    navObj
+                                                )}
+                                            />
                                         ))}
                                 </div>
                             </div>
@@ -289,52 +284,27 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                     {t("Advanced")}
                                 </h3>
                                 <div className="checkboxSection__column">
-                                    <label
-                                        htmlFor="hasChildren"
-                                        className="label"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            name="hasChildren"
-                                            defaultChecked={hasChildren}
-                                        />
-                                        {t("Enable Sub-Conversations")}
-                                    </label>
-                                    <label
-                                        htmlFor="enableAddEvaluationOption"
-                                        className="label"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            name="enableAddEvaluationOption"
-                                            defaultChecked={
-                                                enableAddEvaluationOption
-                                            }
-                                        />
-
-                                        {t(
-                                            "Allow participants to contribute options to the evaluation page"
-                                        )}
-                                    </label>
-                                    <label
-                                        htmlFor="enableAddVotingOption"
-                                        className="label"
-                                    >
-                                        <input
-                                            style={{
-                                                width: "1.5rem",
-                                                height: "1.5rem",
-                                            }}
-                                            type="checkbox"
-                                            name="enableAddVotingOption"
-                                            defaultChecked={
-                                                enableAddVotingOption
-                                            }
-                                        />
-                                        {t(
+                                    <CustomCheckboxLabel
+                                        name={"hasChildren"}
+                                        title={"Enable Sub-Conversations"}
+                                        defaultChecked={hasChildren}
+                                    />
+                                    <CustomCheckboxLabel
+                                        name={"enableAddVotingOption"}
+                                        title={
                                             "Allow participants to contribute options to the voting page"
-                                        )}
-                                    </label>
+                                        }
+                                        defaultChecked={enableAddVotingOption}
+                                    />
+                                    <CustomCheckboxLabel
+                                        name={"enableAddEvaluationOption"}
+                                        title={
+                                            "Allow participants to contribute options to the evaluation page"
+                                        }
+                                        defaultChecked={
+                                            enableAddEvaluationOption
+                                        }
+                                    />
                                 </div>
                             </div>
                         </section>
@@ -348,6 +318,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {t("Favorite Option")}
                         </option>
                     </select>
+
                     <label style={{ fontSize: "1.3rem", marginBottom: "1rem" }}>
                         {t("Number of Results to Display")}
                         {": "}
