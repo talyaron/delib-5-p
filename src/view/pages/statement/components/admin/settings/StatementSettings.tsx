@@ -19,6 +19,8 @@ import {
 // Custom components
 import Loader from "../../../../../components/loaders/Loader";
 import MembershipLine from "../membership/MembershipLine";
+import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
+import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 
 // Redux Store
 import {
@@ -48,9 +50,12 @@ import {
     isSubPageChecked,
 } from "./statementSettingsCont";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
+
+// Hooks
 import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
-import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
-import CustomSwitch from "../../../../../components/CustomSwitch";
+
+// Style
+import "./settingsStyle.scss";
 
 interface Props {
     simple?: boolean;
@@ -80,9 +85,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     const tabsStyle: CSSProperties = {
         display: "flex",
-        flexWrap: "wrap",
-        justifyContent: width > 600 ? "space-between" : "space-around",
-        padding: width > 600 ? "0" : "0 1rem",
+        justifyContent: "space-between",
     };
 
     useEffect(() => {
@@ -250,54 +253,61 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         ></textarea>
                     </div>
                     {!simple && (
-                        <section>
-                            <label
-                                htmlFor="subPages"
-                                style={{ fontSize: "1.3rem" }}
-                            >
-                                {t("Tabs")}
-                            </label>
-                            <div style={tabsStyle}>
-                                {navArray
-                                    .filter(
-                                        (navObj) =>
-                                            navObj.link !== Screen.SETTINGS
-                                    )
-                                    .map((navObj) => (
-                                        <FormControlLabel
-                                            key={navObj.id}
-                                            control={
-                                                <Switch
+                        <section className="checkboxSection">
+                            <div>
+                                <h3
+                                    style={{
+                                        fontSize: "1.3rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    {t("Tabs")}
+                                </h3>
+                                <div className="checkboxSection__column">
+                                    {navArray
+                                        .filter(
+                                            (navObj) =>
+                                                navObj.link !== Screen.SETTINGS
+                                        )
+                                        .map((navObj) => (
+                                            <label
+                                                htmlFor={navObj.link}
+                                                className="label"
+                                                style={tabsStyle}
+                                            >
+                                                {t(navObj.name)}
+                                                <input
+                                                    type="checkbox"
+                                                    key={navObj.id}
                                                     name={navObj.link}
                                                     defaultChecked={isSubPageChecked(
                                                         statement,
                                                         navObj
                                                     )}
                                                 />
-                                            }
-                                            label={t(navObj.name)}
-                                        />
-                                    ))}
+                                            </label>
+                                        ))}
+                                </div>
                             </div>
-                            <label
-                                htmlFor="subPages"
-                                style={{
-                                    fontSize: "1.3rem",
-                                }}
-                            >
-                                {t("Advanced")}
-                            </label>
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            name="hasChildren"
-                                            defaultChecked={hasChildren}
-                                        />
-                                    }
-                                    label={t("Enable Sub-Conversations")}
-                                />
-                                <CustomSwitch />
+                            <div>
+                                <h3
+                                    style={{
+                                        fontSize: "1.3rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    {t("Advanced")}
+                                </h3>
+
+                                <label htmlFor="hasChildren" className="label">
+                                    {t("Enable Sub-Conversations")}
+                                    <input
+                                        type="checkbox"
+                                        name="hasChildren"
+                                        defaultChecked={hasChildren}
+                                    />
+                                </label>
+
                                 <FormControlLabel
                                     control={
                                         <Switch
@@ -324,7 +334,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                         "Allow participants to contribute options to the voting page"
                                     )}
                                 />
-                            </FormGroup>
+                            </div>
                         </section>
                     )}
 

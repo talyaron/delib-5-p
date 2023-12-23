@@ -1,10 +1,18 @@
-import { Statement } from "delib-npm";
 import { FC, useState } from "react";
+
+// Third party
+import { Statement } from "delib-npm";
+import { t } from "i18next";
+
+// Custom components
 import NewSetStatementSimple from "../../../set/NewStatementSimple";
 import Modal from "../../../../../../components/modal/Modal";
-import PostAddIcon from "@mui/icons-material/PostAdd";
+
+// Icons
+import { MdOutlinePostAdd } from "react-icons/md";
+
+// Styles
 import styles from "./AddSubQuestion.module.scss";
-import { t } from "i18next";
 
 interface Props {
     statement: Statement;
@@ -18,9 +26,8 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
     return (
         <>
             <div className={styles.box} onClick={handleShwQuestionModal}>
-            <span>{t("Add Question")}</span>
-                <PostAddIcon sx={{ width: `1.3rem` }} htmlColor="white" />
-               
+                <span>{t("Add Question")}</span>
+                <MdOutlinePostAdd color="white" size="1.5rem" />
             </div>
             {showQuestionModal && (
                 <Modal>

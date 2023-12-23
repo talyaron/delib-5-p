@@ -1,5 +1,6 @@
 import { FC } from "react";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import { MdLightbulb } from "react-icons/md";
+
 import { Statement } from "delib-npm";
 import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
 
@@ -38,9 +39,9 @@ const StatementChatSetOption: FC<Props> = ({ statement }) => {
     if (!_isAuthrized) return null;
     return (
         <div className="clickable" onClick={handleSetOption}>
-            {" "}
-            <LightbulbIcon
-                htmlColor={isOptionFn(statement) ? "orange" : "lightgray"}
+            <MdLightbulb
+                size="1.5rem"
+                color={isOptionFn(statement) ? "orange" : "lightgray"}
             />
         </div>
     );

@@ -4,7 +4,7 @@ import { t } from "i18next";
 
 // Custom components
 import { StatementSettings } from "../admin/settings/StatementSettings";
-import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon";
+import { IoIosArrowBack } from "react-icons/io";
 import useDirection from "../../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../../components/animation/ScreenSlide";
 
@@ -25,7 +25,7 @@ export const SetStatement = () => {
                     className="setStatement__back"
                 >
                     {" "}
-                    <ArrowBackIosIcon />
+                    <IoIosArrowBack size="1.5rem" />
                 </Link>
                 <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
                 <span></span>
