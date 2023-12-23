@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { MdEdit } from "react-icons/md";
-<MdEdit />;
+import EditIcon from "../../../../../components/icons/EditIcon";
 
 interface Props {
     isAuthrized: boolean;
@@ -13,7 +12,7 @@ const StatementChatSetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
         <div>
             {isAuthrized && (
                 <div className="clickable" onClick={() => setEdit(!edit)}>
-                    <MdEdit color={edit ? "blue" : "lightgray"} size="1.5rem" />
+                    <EditIcon color={edit ? "blue" : "lightgray"} />
                 </div>
             )}
         </div>

@@ -9,7 +9,7 @@ import NewSetStatementSimple from "../../../set/NewStatementSimple";
 import Modal from "../../../../../../components/modal/Modal";
 
 // Icons
-import { MdOutlinePostAdd } from "react-icons/md";
+import AddStatementIcon from "../../../../../../components/icons/AddStatementIcon";
 
 // Styles
 import styles from "./AddSubQuestion.module.scss";
@@ -27,7 +27,7 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
         <>
             <div className={styles.box} onClick={handleShwQuestionModal}>
                 <span>{t("Add Question")}</span>
-                <MdOutlinePostAdd color="white" size="1.5rem" />
+                <AddStatementIcon />
             </div>
             {showQuestionModal && (
                 <Modal>

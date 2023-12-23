@@ -1,15 +1,21 @@
 import { FC } from "react";
-import { MdLightbulb } from "react-icons/md";
 
+// Third Party
 import { Statement } from "delib-npm";
-import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
 
+// Statement Helpers
+import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
 import {
     isAuthorized,
     isOptionFn,
 } from "../../../../../../functions/general/helpers";
+
+// Redux Store
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
+
+// Icons
+import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
 
 interface Props {
     statement: Statement;
@@ -39,8 +45,7 @@ const StatementChatSetOption: FC<Props> = ({ statement }) => {
     if (!_isAuthrized) return null;
     return (
         <div className="clickable" onClick={handleSetOption}>
-            <MdLightbulb
-                size="1.5rem"
+            <LightBulbIcon
                 color={isOptionFn(statement) ? "orange" : "lightgray"}
             />
         </div>

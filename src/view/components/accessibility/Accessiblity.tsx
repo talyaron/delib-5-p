@@ -1,4 +1,6 @@
-import { MdAccessible } from "react-icons/md";
+import { useEffect, useState } from "react";
+
+// Redux Store
 import {
     useAppDispatch,
     useAppSelector,
@@ -8,8 +10,10 @@ import {
     increaseFontSize,
     userSelector,
 } from "../../../model/users/userSlice";
-import { useEffect, useState } from "react";
 import { updateUserFontSize } from "../../../functions/db/users/setUsersDB";
+
+// Icons
+import AccessiblityIcon from "../icons/AccessiblityIcon";
 
 const Accessiblity = () => {
     const dispatch = useAppDispatch();
@@ -56,7 +60,8 @@ const Accessiblity = () => {
             style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}
         >
             <div className="accessibility__button" onClick={handleOpen}>
-                <MdAccessible color="white" size="1.5rem"/>
+                =
+                <AccessiblityIcon />
             </div>
             <div className="accessibility__fonts">
                 <div

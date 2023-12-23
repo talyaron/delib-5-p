@@ -8,7 +8,7 @@ import { setStatmentToDB } from "../../../../functions/db/statements/setStatment
 import { getNewStatment } from "../../../../functions/general/helpers";
 
 // Icons
-import { MdSend } from "react-icons/md";
+import SendIcon from "../../../components/icons/SendIcon";
 
 // Redux Store
 import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
@@ -74,14 +74,22 @@ const StatementInput: FC<Props> = ({ statement }) => {
             style={{ flexDirection: direction }}
         >
             <button type="submit" className="statement__form__sendBtnBox">
-                <MdSend
+                {/* <MdSend
                     color="white"
                     size="1.5rem"
                     style={{
                         transform: "rotate(180deg) translateX(5%)",
                         zIndex: 1,
                     }}
-                />
+                /> */}
+                <div
+                    style={{
+                        transform: "rotate(180deg) translateX(5%)",
+                        zIndex: 1,
+                    }}
+                >
+                    <SendIcon />
+                </div>
             </button>
             <textarea
                 rows={3}

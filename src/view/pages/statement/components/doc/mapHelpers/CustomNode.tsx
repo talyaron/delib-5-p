@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useMapContext } from "../../../../../../functions/hooks/useMap";
 
 // Icons
-import { IoMdAdd } from "react-icons/io";
+import PlusIcon from "../../../../../components/icons/PlusIcon";
 
 // Statements functions
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
@@ -113,30 +113,30 @@ export default function CustomNode({ data, id }: NodeProps) {
             </div>
             {showBtns && (
                 <>
-                    <IoMdAdd
+                    <div
                         className="addIcon"
                         onClick={handleAddChildNode}
-                        size="1.5rem"
                         style={{
                             position: "absolute",
                             cursor: "pointer",
                             right: 0,
-                            bottom: "-2rem",
+                            bottom: "-2.2rem",
                         }}
-                        color="#9687F4"
-                    />
-                    <IoMdAdd
+                    >
+                        <PlusIcon color="#9687F4" />
+                    </div>
+                    <div
                         className="addIcon"
                         onClick={handleAddSiblingNode}
-                        size="1.5rem"
                         style={{
                             position: "absolute",
                             cursor: "pointer",
-                            left: "-2rem",
+                            left: "-2.2rem",
                             top: 0,
                         }}
-                        color="#9687F4"
-                    />
+                    >
+                        <PlusIcon color="#9687F4" />
+                    </div>
                     {/* <IconButton
                         onClick={handleAddChildNode}
                         size="small"

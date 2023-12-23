@@ -1,14 +1,14 @@
 import { FC } from "react";
 
 // Icons
-import { BsChatLeftText } from "react-icons/bs";
+import ChatIcon from "../../../../components/icons/ChatIcon";
 
 // Statements functions
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
 
 // Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { t } from "i18next";
 
 // Redux
@@ -20,6 +20,7 @@ interface Props {
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {
+    const { page } = useParams();
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
     let messagesRead = 0;
@@ -45,7 +46,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                             : `9+`}
                     </div>
                 )}
-                <BsChatLeftText size="1.5rem" />
+                {/* <BsChatLeftText size="1.5rem" /> */}
+                <ChatIcon color={page ? "black" : "white"} />
             </div>
             <div className="text">
                 {statement.lastMessage

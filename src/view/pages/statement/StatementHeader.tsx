@@ -8,13 +8,6 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 // Helpers
 import { getUserPermissionToNotifications } from "../../../functions/notifications";
 
-//icons
-import { IoMdHome } from "react-icons/io";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoMdShare } from "react-icons/io";
-import { IoMdNotificationsOff } from "react-icons/io";
-import { IoMdNotifications } from "react-icons/io";
-
 // Statement helpers
 import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/statements/setStatments";
 
@@ -26,6 +19,12 @@ import { statementNotificationSelector } from "../../../model/statements/stateme
 // Custom components
 import StatementNav from "./components/nav/StatementNav";
 import EditTitle from "../../components/edit/EditTitle";
+import BackArrowIcon from "../../components/icons/BackArrowIcon";
+import HomeIcon from "../../components/icons/HomeIcon";
+import BellSlashIcon from "../../components/icons/BellSlashIcon";
+import BellIcon from "../../components/icons/BellIcon";
+import ShareIcon from "../../components/icons/ShareIcon";
+import { isOptionFn } from "../../../functions/general/helpers";
 
 interface Props {
     title: string;
@@ -115,6 +114,8 @@ const StatementHeader: FC<Props> = ({
         setStatmentSubscriptionNotificationToDB(statement);
     }
 
+    const iconColor = isOptionFn(statement) ? "black" : "white";
+
     return (
         <div
             className={
@@ -128,16 +129,16 @@ const StatementHeader: FC<Props> = ({
                 style={{ flexDirection: direction, direction: langDirection }}
             >
                 <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                    <IoIosArrowBack size="1.5rem" />
+                    <BackArrowIcon color={iconColor} />
                 </div>
                 <Link state={{ from: window.location.pathname }} to={"/home"}>
-                    <IoMdHome size="1.5rem" />
+                    <HomeIcon color={iconColor} />
                 </Link>
                 <div onClick={handleRegisterToNotifications}>
                     {hasNotificationPermission && hasNotifications ? (
-                        <IoMdNotifications size="1.5rem" />
+                        <BellIcon color={iconColor} />
                     ) : (
-                        <IoMdNotificationsOff size="1.5rem" />
+                        <BellSlashIcon color={iconColor} />
                     )}
                 </div>
                 {!editHeader ? (
@@ -156,7 +157,7 @@ const StatementHeader: FC<Props> = ({
                     />
                 )}
                 <div onClick={handleShare}>
-                    <IoMdShare size="1.5rem" />
+                    <ShareIcon color={iconColor} />
                 </div>
             </div>
             {statement && (

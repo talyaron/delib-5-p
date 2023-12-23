@@ -2,10 +2,12 @@ import { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 // Statements functions
 import { updateIsQuestion } from "../../../../../../functions/db/statements/setStatments";
+
+// Custom components
+import QuestionCircleIcon from "../../../../../components/icons/QuestionCircleIcon";
 
 interface Props {
     statement: Statement;
@@ -21,8 +23,7 @@ const StatementChatSetQuestion: FC<Props> = ({ statement }) => {
             {/* <HelpOutlineIcon
                 htmlColor={isOptionFn(statement) ? "blue" : "lightgray"}
             /> */}
-            <AiOutlineQuestionCircle
-                size="1.5rem"
+            <QuestionCircleIcon
                 color={
                     statement.statementType === "question"
                         ? "blue"

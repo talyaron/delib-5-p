@@ -1,6 +1,5 @@
 import { FC } from "react";
-
-import { FaPlus } from "react-icons/fa6";
+import PlusIcon from "../icons/PlusIcon";
 
 interface Props {
     onclick?: Function;
@@ -19,13 +18,7 @@ const Fav: FC<Props> = ({ onclick, isHome }) => {
             onClick={(ev) => (onclick ? onclick(ev) : null)}
         >
             <div>
-                <FaPlus
-                    color="white"
-                    size="1.5rem"
-                    style={{
-                        transform: "translateX(.8rem) translateY(.8rem) ",
-                    }}
-                />
+                <PlusIcon color="white" />
             </div>
         </div>
     );

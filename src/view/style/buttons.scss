@@ -136,12 +136,9 @@ button,
         width: 3.2rem;
         height: 3.2rem;
         border-radius: 4rem;
-
-        svg {
-            transform: rotate(180deg) translate(10%, 20%);
-            align-items: center;
-            justify-content: center;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
