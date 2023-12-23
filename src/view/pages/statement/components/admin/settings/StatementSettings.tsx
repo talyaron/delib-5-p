@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 // Statment imports
 import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
 import { navArray } from "../../nav/StatementNav";
@@ -20,7 +20,6 @@ import {
 import Loader from "../../../../../components/loaders/Loader";
 import MembershipLine from "../membership/MembershipLine";
 import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
-import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 
 // Redux Store
 import {
@@ -43,16 +42,12 @@ import {
 } from "../../../../../../functions/db/statements/getStatement";
 
 // Mui imports
-import { Switch, FormControlLabel, FormGroup } from "@mui/material";
 import { store } from "../../../../../../model/store";
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
-
-// Hooks
-import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
 
 // Style
 import "./settingsStyle.scss";
@@ -65,7 +60,6 @@ interface Props {
 export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
-    const { width } = useWindowDimensions();
 
     // Redux
     const dispatch = useAppDispatch();
@@ -82,11 +76,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const [numOfResults, setNumOfResults] = useState(
         statement?.resultsSettings?.numberOfResults || 1
     );
-
-    const tabsStyle: CSSProperties = {
-        display: "flex",
-        justifyContent: "space-between",
-    };
 
     useEffect(() => {
         let unsubscribe: Function = () => {};
@@ -139,6 +128,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             UserSchema.parse(user);
 
             const newStatement: any = Object.fromEntries(data.entries());
+
+            console.log("newStatement", newStatement);
 
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
@@ -254,7 +245,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </div>
                     {!simple && (
                         <section className="checkboxSection">
-                            <div>
+                            <div style={{ width: "50%" }}>
                                 <h3
                                     style={{
                                         fontSize: "1.3rem",
@@ -273,9 +264,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                             <label
                                                 htmlFor={navObj.link}
                                                 className="label"
-                                                style={tabsStyle}
                                             >
-                                                {t(navObj.name)}
                                                 <input
                                                     type="checkbox"
                                                     key={navObj.id}
@@ -285,6 +274,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                                         navObj
                                                     )}
                                                 />
+                                                {t(navObj.name)}
                                             </label>
                                         ))}
                                 </div>
@@ -298,42 +288,54 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 >
                                     {t("Advanced")}
                                 </h3>
-
-                                <label htmlFor="hasChildren" className="label">
-                                    {t("Enable Sub-Conversations")}
-                                    <input
-                                        type="checkbox"
-                                        name="hasChildren"
-                                        defaultChecked={hasChildren}
-                                    />
-                                </label>
-
-                                <FormControlLabel
-                                    control={
-                                        <Switch
+                                <div className="checkboxSection__column">
+                                    <label
+                                        htmlFor="hasChildren"
+                                        className="label"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="hasChildren"
+                                            defaultChecked={hasChildren}
+                                        />
+                                        {t("Enable Sub-Conversations")}
+                                    </label>
+                                    <label
+                                        htmlFor="enableAddEvaluationOption"
+                                        className="label"
+                                    >
+                                        <input
+                                            type="checkbox"
                                             name="enableAddEvaluationOption"
                                             defaultChecked={
                                                 enableAddEvaluationOption
                                             }
                                         />
-                                    }
-                                    label={t(
-                                        "Allow participants to contribute options to the evaluation page"
-                                    )}
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
+
+                                        {t(
+                                            "Allow participants to contribute options to the evaluation page"
+                                        )}
+                                    </label>
+                                    <label
+                                        htmlFor="enableAddVotingOption"
+                                        className="label"
+                                    >
+                                        <input
+                                            style={{
+                                                width: "1.5rem",
+                                                height: "1.5rem",
+                                            }}
+                                            type="checkbox"
                                             name="enableAddVotingOption"
                                             defaultChecked={
                                                 enableAddVotingOption
                                             }
                                         />
-                                    }
-                                    label={t(
-                                        "Allow participants to contribute options to the voting page"
-                                    )}
-                                />
+                                        {t(
+                                            "Allow participants to contribute options to the voting page"
+                                        )}
+                                    </label>
+                                </div>
                             </div>
                         </section>
                     )}

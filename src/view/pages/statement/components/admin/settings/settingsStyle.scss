@@ -1,19 +1,23 @@
 .label {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
-    width: auto;
     gap: 10px;
 }
 
 .checkboxSection {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 50px;
     &__column {
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        gap: 10px;
+        gap: 20px;
+    }
+
+    input {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }
