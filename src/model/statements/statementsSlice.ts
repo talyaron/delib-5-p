@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 // Third party imports
-import equal from "fast-deep-equal";
+
 import {
     LobbyRooms,
     RoomAskToJoin,
@@ -71,7 +71,7 @@ export const statementsSlicer = createSlice({
                         statement.statementId === newStatement.statementId
                 );
 
-                const isEqualStatements = equal(oldStatement, newStatement);
+                const isEqualStatements = JSON.stringify(oldStatement) === JSON.stringify(newStatement);
                 if (!isEqualStatements)
                     state.statements = updateArray(
                         state.statements,
@@ -132,7 +132,7 @@ export const statementsSlicer = createSlice({
                     (statement) =>
                         statement.statementId === newStatement.statementId
                 );
-                const isEqualStatements = equal(oldStatement, newStatement);
+                const isEqualStatements = JSON.stringify(oldStatement) === JSON.stringify(newStatement);
                 if (!isEqualStatements)
                     state.statementSubscription = updateArray(
                         state.statementSubscription,
