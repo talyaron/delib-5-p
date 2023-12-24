@@ -132,24 +132,13 @@ button,
 
     & > div {
         z-index: 100;
-        color: white;
-        text-align: center;
-        font-size: 3rem;
         background: var(--accent);
         width: 3.2rem;
         height: 3.2rem;
         border-radius: 4rem;
-        // display: flex;
-        justify-content: center;
-        flex-direction: column;
+        display: flex;
         align-items: center;
-        box-sizing: border-box;
-
-        svg {
-            transform: rotate(180deg) translate(10%, 20%);
-            align-items: center;
-            justify-content: center;
-        }
+        justify-content: center;
     }
 }
 

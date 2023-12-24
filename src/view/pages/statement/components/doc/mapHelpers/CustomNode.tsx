@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
+
+// Third party
 import { Handle, NodeProps } from "reactflow";
-import { useMapContext } from "../../../../../../functions/hooks/useMap";
-import AddIcon from "@mui/icons-material/Add";
-import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
+
+// Hooks
+import { useMapContext } from "../../../../../../functions/hooks/useMap";
+
+// Icons
+import PlusIcon from "../../../../../components/icons/PlusIcon";
+
+// Statements functions
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 
 function calculateFontSize(text: string) {
@@ -106,7 +113,31 @@ export default function CustomNode({ data, id }: NodeProps) {
             </div>
             {showBtns && (
                 <>
-                    <IconButton
+                    <div
+                        className="addIcon"
+                        onClick={handleAddChildNode}
+                        style={{
+                            position: "absolute",
+                            cursor: "pointer",
+                            right: 0,
+                            bottom: "-2.2rem",
+                        }}
+                    >
+                        <PlusIcon color="#9687F4" />
+                    </div>
+                    <div
+                        className="addIcon"
+                        onClick={handleAddSiblingNode}
+                        style={{
+                            position: "absolute",
+                            cursor: "pointer",
+                            left: "-2.2rem",
+                            top: 0,
+                        }}
+                    >
+                        <PlusIcon color="#9687F4" />
+                    </div>
+                    {/* <IconButton
                         onClick={handleAddChildNode}
                         size="small"
                         sx={{
@@ -136,7 +167,7 @@ export default function CustomNode({ data, id }: NodeProps) {
                         color="secondary"
                     >
                         <AddIcon sx={{ fontSize: 12 }} />
-                    </IconButton>
+                    </IconButton> */}
                 </>
             )}
 
