@@ -1,20 +1,21 @@
-// import { Evaluation, Vote } from "delib-npm";
+import { Evaluation, Vote } from "delib-npm";
 import { StatementSettings } from "./settings/StatementSettings";
-// import { handleGetEvaluators, handleGetVoters } from "./AdminPageCont";
-// import { useParams } from "react-router-dom";
-// import { useState } from "react";
-// import anonymous from "../../../../../assets/anonymous1.png";
-// import styles from "./AdminPage.module.scss";
+import { handleGetEvaluators, handleGetVoters } from "./AdminPageCont";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+
+import styles from "./AdminPage.module.scss";
+import Chip from "../../../../components/chip/Chip";
 
 const AdminPage = () => {
-    // const { statementId } = useParams<{ statementId: string }>();
-    // const [voters, setVoters] = useState<Vote[]>([]);
-    // const [evaluators, setEvaluators] = useState<Evaluation[]>([]);
+    const { statementId } = useParams<{ statementId: string }>();
+    const [voters, setVoters] = useState<Vote[]>([]);
+    const [evaluators, setEvaluators] = useState<Evaluation[]>([]);
 
     return (
         <div className="page__main">
             <StatementSettings />
-            {/* <section className={styles.section}>
+            <section className={styles.section}>
                 <div className="btns">
                     <div
                         className="btn"
@@ -24,22 +25,13 @@ const AdminPage = () => {
                     </div>
                 </div>
                 <div className={styles.chips}>
-                    {voters.map((voter, i) => {
-                        const displayName =
-                            voter.voter?.displayName.slice(0, 15) ||
-                            `anonymous ${i + 1}`;
+                    {voters.map((voter) => {
+                        
                         return (
                             <Chip
-                                style={{ direction: "ltr" }}
+                              
                                 key={voter.voteId}
-                                avatar={
-                                    <Avatar
-                                        alt={displayName}
-                                        src={voter.voter?.photoURL || anonymous}
-                                    />
-                                }
-                                label={displayName}
-                                variant="outlined"
+                                user={voter.voter}
                             />
                         );
                     })}
@@ -56,31 +48,18 @@ const AdminPage = () => {
                         Get Evaluators
                     </div>
                 </div>
-                <div className={styles.chips}>
-                    {evaluators.map((evaluator, i) => {
-                        const displayName =
-                            evaluator.evaluator?.displayName.slice(0, 15) ||
-                            `anonymous ${i + 1}`;
+                <div className={styles.chips} style={{marginBottom:"150px"}}>
+                    {evaluators.map((evaluator) => {
                         return (
                             <Chip
-                                style={{ direction: "ltr" }}
                                 key={evaluator.evaluationId}
-                                avatar={
-                                    <Avatar
-                                        alt={displayName}
-                                        src={
-                                            evaluator.evaluator?.photoURL ||
-                                            anonymous
-                                        }
-                                    />
-                                }
-                                label={displayName}
-                                variant="outlined"
+                                user={evaluator.evaluator}
+                                
                             />
                         );
                     })}
                 </div>
-            </section> */}
+            </section>
         </div>
     );
 };
