@@ -1,15 +1,31 @@
 import { FC } from "react";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import { Statement } from "delib-npm";
-import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
 
-import { isOptionFn } from "../../../../../../functions/general/helpers";
+// Third Party
+import { Statement } from "delib-npm";
+
+// Statement Helpers
+import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
+import {
+    isAuthorized,
+    isOptionFn,
+} from "../../../../../../functions/general/helpers";
+
+// Redux Store
+import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
+
+// Icons
+import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
 
 interface Props {
     statement: Statement;
 }
 
 const StatementChatSetOption: FC<Props> = ({ statement }) => {
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statement.statementId)
+    );
+    const _isAuthrized = isAuthorized(statement, statementSubscription);
     function handleSetOption() {
         try {
             if (statement.statementType === "option") {
@@ -26,12 +42,11 @@ const StatementChatSetOption: FC<Props> = ({ statement }) => {
             console.error(error);
         }
     }
-
+    if (!_isAuthrized) return null;
     return (
         <div className="clickable" onClick={handleSetOption}>
-            {" "}
-            <LightbulbIcon
-                htmlColor={isOptionFn(statement) ? "orange" : "lightgray"}
+            <LightBulbIcon
+                color={isOptionFn(statement) ? "orange" : "lightgray"}
             />
         </div>
     );

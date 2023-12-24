@@ -1,13 +1,12 @@
-import { FC, useState } from "react"
+import { FC, useState } from "react";
 
 // Custom components
-import RoomParticpantBadge from "../comp/general/RoomParticpantBadge"
-import Text from "../../../../../components/text/Text"
-import Slider from "@mui/material/Slider"
+import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
+import Text from "../../../../../components/text/Text";
 
 // Redux
-import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks"
-import { participantsSelector } from "../../../../../../model/statements/statementsSlice"
+import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { participantsSelector } from "../../../../../../model/statements/statementsSlice";
 
 // Third party libraries
 import {
@@ -15,54 +14,54 @@ import {
     RoomDivied,
     RoomsStateSelection,
     Statement,
-} from "delib-npm"
-import { t } from "i18next"
+} from "delib-npm";
+import { t } from "i18next";
 
 // Statments functions
 import {
     setParticipantInRoom,
     setRoomsStateToDB,
-} from "../../../../../../functions/db/rooms/setRooms"
-import { setRoomSizeInStatement } from "../../../../../../functions/db/statements/setStatments"
+} from "../../../../../../functions/db/rooms/setRooms";
+import { setRoomSizeInStatement } from "../../../../../../functions/db/statements/setStatments";
 
 // Styles
-import _styles from "./admin.module.css"
+import _styles from "./admin.module.css";
 
-const styles = _styles as any
+const styles = _styles as any;
 
 interface Props {
-    statement: Statement
+    statement: Statement;
 }
 
 interface RoomAdmin {
-    room: Array<RoomAskToJoin>
-    roomNumber: number
-    statement: Statement
+    room: Array<RoomAskToJoin>;
+    roomNumber: number;
+    statement: Statement;
 }
 export interface ParticipantInRoom {
-    uid: string
-    room: number
-    roomNumber?: number
-    topic?: Statement
-    statementId?: string
+    uid: string;
+    room: number;
+    roomNumber?: number;
+    topic?: Statement;
+    statementId?: string;
 }
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     const participants = useAppSelector(
         participantsSelector(statement.statementId)
-    )
-    const [setRooms, setSetRooms] = useState<boolean>(true)
-    const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([])
+    );
+    const [setRooms, setSetRooms] = useState<boolean>(true);
+    const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
     const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] =
-        useState<number>(statement.roomSize || 5)
+        useState<number>(statement.roomSize || 5);
 
     function handleDivideIntoRooms() {
         try {
             const { rooms } = divideIntoTopics(
                 participants,
                 maxParticipantsPerRoom
-            )
-            setRoomsAdmin(rooms)
+            );
+            setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {
                 room.room.forEach((participant) => {
@@ -72,27 +71,27 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                         roomNumber: room.roomNumber,
                         topic: room.statement,
                         statementId: room.statement.statementId,
-                    }
-                    setParticipantInRoom(participantInRoom)
-                })
-            })
+                    };
+                    setParticipantInRoom(participantInRoom);
+                });
+            });
 
             const roomsState = setRooms
                 ? RoomsStateSelection.DIVIDE
-                : RoomsStateSelection.SELECT_ROOMS
-            setSetRooms((state) => !state)
+                : RoomsStateSelection.SELECT_ROOMS;
+            setSetRooms((state) => !state);
 
-            setRoomsStateToDB(statement, roomsState)
+            setRoomsStateToDB(statement, roomsState);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
     function handleRoomSize(ev: any) {
-        const value = ev.target.value
-        const valueAsNumber = Number(value)
-        setMaxParticipantsPerRoom(valueAsNumber)
-        setRoomSizeInStatement(statement, valueAsNumber)
+        const value = ev.target.value;
+        const valueAsNumber = Number(value);
+        setMaxParticipantsPerRoom(valueAsNumber);
+        setRoomSizeInStatement(statement, valueAsNumber);
     }
 
     return (
@@ -132,12 +131,22 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                 boxSizing: "border-box",
                             }}
                         >
-                            <Slider
+                            {/* <Slider
                                 defaultValue={statement.roomSize || 7}
                                 min={2}
                                 max={30}
                                 aria-label="Default"
                                 valueLabelDisplay="auto"
+                                onChange={handleRoomSize}
+                            /> */}
+
+                            <input
+                                className="range"
+                                type="range"
+                                name="numberOfResults"
+                                value={statement.roomSize || 7}
+                                min="2"
+                                max="30"
                                 onChange={handleRoomSize}
                             />
                         </div>
@@ -187,24 +196,24 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                             )}
                                         </div>
                                     </div>
-                                )
+                                );
                             })}
                         </div>
                     </>
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default AdminSeeAllGroups
+export default AdminSeeAllGroups;
 
 function divideIntoTopics(
     participants: RoomAskToJoin[],
     maxPerRoom: number = 7
 ): { rooms: Array<RoomDivied>; topicsParticipants: any } {
     try {
-        const topicsParticipants: any = {}
+        const topicsParticipants: any = {};
         //build topicsParticipantsObject
         participants.forEach((participant) => {
             try {
@@ -213,41 +222,41 @@ function divideIntoTopics(
                         statementId: "general",
                         statement: t("General"),
                         participants: [participant],
-                    }
+                    };
                 } else if (!(participant.statementId in topicsParticipants)) {
                     topicsParticipants[participant.statementId] = {
                         statementId: participant.statementId,
                         statement: participant.statement,
                         participants: [participant],
-                    }
+                    };
                 } else {
                     topicsParticipants[
                         participant.statementId
-                    ].participants.push(participant)
+                    ].participants.push(participant);
                 }
             } catch (error) {
-                console.error(error)
-                return undefined
+                console.error(error);
+                return undefined;
             }
-        })
+        });
 
         //divide participents according to topics and rooms
         // let rooms: Array<ParticipantInRoom> = [];
         for (const topic in topicsParticipants) {
-            const patricipantsInTopic = topicsParticipants[topic].participants
+            const patricipantsInTopic = topicsParticipants[topic].participants;
             topicsParticipants[topic].rooms =
                 divideParticipantsIntoRoomsRandomly(
                     patricipantsInTopic,
                     maxPerRoom
-                )
+                );
         }
 
-        const rooms = divideIntoGeneralRooms(topicsParticipants)
+        const rooms = divideIntoGeneralRooms(topicsParticipants);
 
-        return { rooms, topicsParticipants }
+        return { rooms, topicsParticipants };
     } catch (error) {
-        console.error(error)
-        return { rooms: [], topicsParticipants: undefined }
+        console.error(error);
+        return { rooms: [], topicsParticipants: undefined };
     }
 }
 
@@ -256,47 +265,47 @@ function divideParticipantsIntoRoomsRandomly(
     maxPerRoom: number
 ): Array<Array<RoomAskToJoin>> {
     try {
-        const numberOfRooms = Math.ceil(participants.length / maxPerRoom)
+        const numberOfRooms = Math.ceil(participants.length / maxPerRoom);
 
         //randomize participants
-        participants.sort(() => Math.random() - 0.5)
+        participants.sort(() => Math.random() - 0.5);
 
-        let roomNumber = 0
+        let roomNumber = 0;
 
-        const rooms: Array<Array<RoomAskToJoin>> = [[]]
+        const rooms: Array<Array<RoomAskToJoin>> = [[]];
         participants.forEach((participant: RoomAskToJoin) => {
-            if (!rooms[roomNumber]) rooms[roomNumber] = []
-            rooms[roomNumber].push(participant)
-            if (roomNumber < numberOfRooms - 1) roomNumber++
-            else roomNumber = 0
-        })
+            if (!rooms[roomNumber]) rooms[roomNumber] = [];
+            rooms[roomNumber].push(participant);
+            if (roomNumber < numberOfRooms - 1) roomNumber++;
+            else roomNumber = 0;
+        });
 
-        return rooms
+        return rooms;
     } catch (error) {
-        console.error(error)
-        return []
+        console.error(error);
+        return [];
     }
 }
 
 function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
-        let roomNumber = 1
-        let rooms: Array<RoomDivied> = []
+        let roomNumber = 1;
+        let rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
-            const topicRooms = topics[topic].rooms
+            const topicRooms = topics[topic].rooms;
             topicRooms.forEach((room: Array<RoomAskToJoin>) => {
                 rooms.push({
                     room,
                     roomNumber,
                     statement: topics[topic].statement,
-                })
-                roomNumber++
-            })
+                });
+                roomNumber++;
+            });
         }
 
-        return rooms
+        return rooms;
     } catch (error) {
-        console.error(error)
-        return []
+        console.error(error);
+        return [];
     }
 }

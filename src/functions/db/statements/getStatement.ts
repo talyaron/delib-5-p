@@ -28,7 +28,7 @@ import { DB } from "../config";
 
 // Redux Store
 import { store } from "../../../model/store";
-import _ from "lodash";
+
 
 export function listenToTopStatements(
     setStatementsCB: Function,

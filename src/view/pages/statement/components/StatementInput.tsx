@@ -7,9 +7,8 @@ import { Screen, Statement } from "delib-npm";
 import { setStatmentToDB } from "../../../../functions/db/statements/setStatments";
 import { getNewStatment } from "../../../../functions/general/helpers";
 
-// MUI
-import SendIcon from "@mui/icons-material/Send";
-import { IconButton } from "@mui/material";
+// Icons
+import SendIcon from "../../../components/icons/SendIcon";
 
 // Redux Store
 import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
@@ -25,8 +24,6 @@ const StatementInput: FC<Props> = ({ statement }) => {
     const user = useAppSelector(userSelector);
 
     const direction = useDirection();
-
-    
 
     function handleInput(e: any) {
         try {
@@ -71,16 +68,29 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
     return (
         <form
-            onSubmit={e=>handleAddStatement(e, statement, user)}
+            onSubmit={(e) => handleAddStatement(e, statement, user)}
             name="theForm"
             className="statement__form"
             style={{ flexDirection: direction }}
         >
-            <div className="statement__form__sendBtnBox">
-                <IconButton type="submit">
+            <button type="submit" className="statement__form__sendBtnBox">
+                {/* <MdSend
+                    color="white"
+                    size="1.5rem"
+                    style={{
+                        transform: "rotate(180deg) translateX(5%)",
+                        zIndex: 1,
+                    }}
+                /> */}
+                <div
+                    style={{
+                        transform: "rotate(180deg) translateX(5%)",
+                        zIndex: 1,
+                    }}
+                >
                     <SendIcon />
-                </IconButton>
-            </div>
+                </div>
+            </button>
             <textarea
                 rows={3}
                 className="statement__form__input"

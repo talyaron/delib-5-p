@@ -4,11 +4,11 @@ import { useState, FC, useEffect } from "react";
 import { Results, Statement } from "delib-npm";
 import { t } from "i18next";
 
-// Redux Store
-
 // Custom Components
-import ScreenFadeInOut from "../../../../components/animation/ScreenFadeInOut";
-import StatementMap from "./map/StatementMap";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
+import StatementMap from "./mapHelpers/StatementMap";
+import Modal from "../../../../components/modal/Modal";
+import { SuspenseFallback } from "../../../../../router";
 
 // Helpers
 import {
@@ -17,16 +17,16 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
-import { SuspenseFallback } from "../../../../../router";
-import { useMapContext } from "../../../../../functions/hooks/useMap";
-import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
+
+// Hooks
+import { useMapContext } from "../../../../../functions/hooks/useMap";
 
 interface Props {
     statement: Statement;
 }
 
-const Document: FC<Props> = ({ statement }) => {
+const Map: FC<Props> = ({ statement }) => {
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
@@ -80,7 +80,7 @@ const Document: FC<Props> = ({ statement }) => {
     };
 
     return results ? (
-        <ScreenFadeInOut className="page__main">
+        <ScreenFadeIn className="page__main">
             <select
                 onChange={(ev: any) => handleFilter(ev.target.value)}
                 defaultValue={FilterType.questionsResultsOptions}
@@ -122,10 +122,10 @@ const Document: FC<Props> = ({ statement }) => {
                     />
                 </Modal>
             )}
-        </ScreenFadeInOut>
+        </ScreenFadeIn>
     ) : (
         <SuspenseFallback />
     );
 };
 
-export default Document;
+export default Map;

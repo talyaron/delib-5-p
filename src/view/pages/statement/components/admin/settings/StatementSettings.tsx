@@ -1,11 +1,10 @@
-import { CSSProperties, FC, useEffect, useState } from "react";
-import Slider from "@mui/material/Slider";
-
+import { FC, useEffect, useState } from "react";
 // Statment imports
 import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
 import { navArray } from "../../nav/StatementNav";
 
 // Third party imports
+import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     UserSchema,
@@ -18,8 +17,10 @@ import {
 } from "delib-npm";
 
 // Custom components
+import CustomCheckboxLabel from "./CustomCheckboxLabel";
 import Loader from "../../../../../components/loaders/Loader";
 import MembershipLine from "../membership/MembershipLine";
+import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
 
 // Redux Store
 import {
@@ -34,6 +35,7 @@ import {
     statementSelector,
 } from "../../../../../../model/statements/statementsSlice";
 import { userSelector } from "../../../../../../model/users/userSlice";
+import { store } from "../../../../../../model/store";
 
 // Firestore functions
 import {
@@ -41,16 +43,15 @@ import {
     listenToMembers,
 } from "../../../../../../functions/db/statements/getStatement";
 
-// Mui imports
-import { Switch, FormControlLabel, FormGroup } from "@mui/material";
-import { store } from "../../../../../../model/store";
+// * Statement Settings functions * //
 import {
     parseScreensCheckBoxes,
     isSubPageChecked,
 } from "./statementSettingsCont";
-import { t } from "i18next";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
-import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
+
+// Style
+import "./settingsStyle.scss";
 
 interface Props {
     simple?: boolean;
@@ -60,11 +61,12 @@ interface Props {
 export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
-    const { width } = useWindowDimensions();
 
     // Redux
     const dispatch = useAppDispatch();
-    const statement:Statement|undefined = useAppSelector(statementSelector(statementId));
+    const statement: Statement | undefined = useAppSelector(
+        statementSelector(statementId)
+    );
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
@@ -72,16 +74,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
-    const [numOfResults] = useState(
+    const [numOfResults, setNumOfResults] = useState(
         statement?.resultsSettings?.numberOfResults || 1
     );
-
-    const tabsStyle: CSSProperties = {
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: width > 600 ? "space-between" : "space-around",
-        padding: width > 600 ? "0" : "0 1rem",
-    };
 
     useEffect(() => {
         let unsubscribe: Function = () => {};
@@ -134,6 +129,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             UserSchema.parse(user);
 
             const newStatement: any = Object.fromEntries(data.entries());
+
+            console.log("newStatement", newStatement);
 
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
@@ -213,13 +210,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         return statement.hasChildren;
     })();
 
-    const enableAddEvaluationOption: boolean = statement?.statementSettings?.enableAddEvaluationOption === false ? false : true;
+    const enableAddEvaluationOption: boolean =
+        statement?.statementSettings?.enableAddEvaluationOption === false
+            ? false
+            : true;
 
-    const enableAddVotingOption: boolean =  statement?.statementSettings?.enableAddVotingOption === false ? false :true;
-
+    const enableAddVotingOption: boolean =
+        statement?.statementSettings?.enableAddVotingOption === false
+            ? false
+            : true;
 
     return (
-        <>
+        <ScreenFadeIn className="setStatement">
             {!isLoading ? (
                 <form
                     onSubmit={handleSetStatment}
@@ -243,76 +245,68 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         ></textarea>
                     </div>
                     {!simple && (
-                        <section>
-                            <label
-                                htmlFor="subPages"
-                                style={{ fontSize: "1.3rem" }}
-                            >
-                                {t("Tabs")}
-                            </label>
-                            <div style={tabsStyle}>
-                                {navArray
-                                    .filter(
-                                        (navObj) =>
-                                            navObj.link !== Screen.SETTINGS
-                                    )
-                                    .map((navObj) => (
-                                        <FormControlLabel
-                                            key={navObj.id}
-                                            control={
-                                                <Switch
-                                                    name={navObj.link}
-                                                    defaultChecked={isSubPageChecked(
-                                                        statement,
-                                                        navObj
-                                                    )}
-                                                />
-                                            }
-                                            label={t(navObj.name)}
-                                        />
-                                    ))}
+                        <section className="checkboxSection">
+                            <div style={{ width: "30%" }}>
+                                <h3
+                                    style={{
+                                        fontSize: "1.3rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    {t("Tabs")}
+                                </h3>
+                                <div className="checkboxSection__column">
+                                    {navArray
+                                        .filter(
+                                            (navObj) =>
+                                                navObj.link !== Screen.SETTINGS
+                                        )
+                                        .map((navObj, index) => (
+                                            <CustomCheckboxLabel
+                                                key={index}
+                                                name={navObj.link}
+                                                title={navObj.name}
+                                                defaultChecked={isSubPageChecked(
+                                                    statement,
+                                                    navObj
+                                                )}
+                                            />
+                                        ))}
+                                </div>
                             </div>
-                            <label
-                                htmlFor="subPages"
-                                style={{
-                                    fontSize: "1.3rem",
-                                }}
-                            >
-                                {t("Advanced")}
-                            </label>
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            name="hasChildren"
-                                            defaultChecked={hasChildren}
-                                        />
-                                    }
-                                    label={t("Enable Sub-Conversations")}
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            name="enableAddEvaluationOption"
-                                            defaultChecked={
-                                                enableAddEvaluationOption
-                                            }
-                                        />
-                                    }
-                                    label={t("Allow participants to contribute options to the evaluation page")}
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            name="enableAddVotingOption"
-                                            defaultChecked={
-                                                enableAddVotingOption
-                                            }
-                                        />
-                                    }
-                                    label={t("Allow participants to contribute options to the voting page")}
-                                />
-                            </FormGroup>
+                            <div>
+                                <h3
+                                    style={{
+                                        fontSize: "1.3rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    {t("Advanced")}
+                                </h3>
+                                <div className="checkboxSection__column">
+                                    <CustomCheckboxLabel
+                                        name={"hasChildren"}
+                                        title={"Enable Sub-Conversations"}
+                                        defaultChecked={hasChildren}
+                                    />
+                                    <CustomCheckboxLabel
+                                        name={"enableAddVotingOption"}
+                                        title={
+                                            "Allow participants to contribute options to the voting page"
+                                        }
+                                        defaultChecked={enableAddVotingOption}
+                                    />
+                                    <CustomCheckboxLabel
+                                        name={"enableAddEvaluationOption"}
+                                        title={
+                                            "Allow participants to contribute options to the evaluation page"
+                                        }
+                                        defaultChecked={
+                                            enableAddEvaluationOption
+                                        }
+                                    />
+                                </div>
+                            </div>
                         </section>
                     )}
 
@@ -324,19 +318,22 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {t("Favorite Option")}
                         </option>
                     </select>
+
                     <label style={{ fontSize: "1.3rem", marginBottom: "1rem" }}>
                         {t("Number of Results to Display")}
+                        {": "}
+                        <span style={{ fontSize: 20 }}>{numOfResults}</span>
                     </label>
-                    <Slider
-                        defaultValue={numOfResults}
-                        min={1}
-                        max={10}
-                        valueLabelDisplay="on"
-                        name={"numberOfResults"}
-                        style={{
-                            margin: "auto",
-                            width: "90%",
-                        }}
+                    <input
+                        className="range"
+                        type="range"
+                        name="numberOfResults"
+                        value={numOfResults}
+                        min="1"
+                        max="10"
+                        onChange={(e) =>
+                            setNumOfResults(Number(e.target.value))
+                        }
                     />
 
                     <div className="btnBox">
@@ -362,6 +359,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <Loader />
                 </div>
             )}
-        </>
+        </ScreenFadeIn>
     );
 };

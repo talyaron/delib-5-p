@@ -1,0 +1,14 @@
+.react-flow__handle {
+    visibility: hidden;
+}
+
+.addIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addIcon:hover {
+    border-radius: 50%;
+    box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.2);
+}

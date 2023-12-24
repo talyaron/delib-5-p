@@ -1,10 +1,31 @@
 import { useEffect, useState } from "react";
+
+// Third party
 import { Handle, NodeProps } from "reactflow";
-import { useMapContext } from "../../../../../../functions/hooks/useMap";
-import AddIcon from "@mui/icons-material/Add";
-import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
+
+// Hooks
+import { useMapContext } from "../../../../../../functions/hooks/useMap";
+
+// Icons
+import PlusIcon from "../../../../../components/icons/PlusIcon";
+
+// Statements functions
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
+
+function calculateFontSize(text: string) {
+    // Set the base font size and a multiplier for adjusting based on text length
+    const baseFontSize = 20;
+    const fontSizeMultiplier = 0.2;
+
+    // Calculate the font size based on the length of the text
+    const fontSize = Math.max(
+        baseFontSize - fontSizeMultiplier * text.length,
+        8
+    );
+
+    return `${fontSize}px`;
+}
 
 const resultColor = "#8FF18F";
 const questionColor = "#5252FD";
@@ -16,21 +37,20 @@ const backgroundColor = (type: string) =>
         ? resultColor
         : "gold";
 
-const nodeStyle = (type: string) => {
+const nodeStyle = (data: any, nodeTitle: string) => {
     const style = {
-        backgroundColor: backgroundColor(type),
-        color: type === "question" ? "white" : "black",
-        // width: "auto",
-        // maxWidth: 150,
-        height: "auto",
+        backgroundColor:
+            data.parentId === "top" ? "darkblue" : backgroundColor(data.type),
+        color: data.type === "question" ? "white" : "black",
+        height: 70,
         width: 100,
-        // height: 20,
+        borderRadius: "5px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        fontSize: ".7rem",
         padding: ".5rem",
         cursor: "pointer",
+        fontSize: calculateFontSize(nodeTitle),
     };
     return style;
 };
@@ -83,13 +103,41 @@ export default function CustomNode({ data, id }: NodeProps) {
             <div
                 onClick={handleNodeClick}
                 data-id={id}
-                style={nodeStyle(data.type)}
+                style={{
+                    ...nodeStyle(data, nodeTitle),
+                    textAlign: "center",
+                    wordBreak: "break-word",
+                }}
             >
                 {nodeTitle}
             </div>
             {showBtns && (
                 <>
-                    <IconButton
+                    <div
+                        className="addIcon"
+                        onClick={handleAddChildNode}
+                        style={{
+                            position: "absolute",
+                            cursor: "pointer",
+                            right: 0,
+                            bottom: "-2.2rem",
+                        }}
+                    >
+                        <PlusIcon color="#9687F4" />
+                    </div>
+                    <div
+                        className="addIcon"
+                        onClick={handleAddSiblingNode}
+                        style={{
+                            position: "absolute",
+                            cursor: "pointer",
+                            left: "-2.2rem",
+                            top: 0,
+                        }}
+                    >
+                        <PlusIcon color="#9687F4" />
+                    </div>
+                    {/* <IconButton
                         onClick={handleAddChildNode}
                         size="small"
                         sx={{
@@ -119,7 +167,7 @@ export default function CustomNode({ data, id }: NodeProps) {
                         color="secondary"
                     >
                         <AddIcon sx={{ fontSize: 12 }} />
-                    </IconButton>
+                    </IconButton> */}
                 </>
             )}
 

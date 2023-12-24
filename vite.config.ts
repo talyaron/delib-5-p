@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, splitVendorChunkPlugin } from "vite";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import commonjs from "vite-plugin-commonjs";
 import react from "@vitejs/plugin-react-swc";
@@ -63,5 +63,6 @@ export default defineConfig({
         react(),
         VitePWA(manifestPlugin),
         visualizer({ open: true, gzipSize: true, brotliSize: true }),
+        splitVendorChunkPlugin(),
     ],
 });

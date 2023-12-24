@@ -1,25 +1,13 @@
 import React from "react";
 
-import { motion } from "framer-motion";
+import "./style.scss";
 
 export default function ScreenSlide({
     children,
-    slideFromRight = true,
-    className = "page__main",
+    className,
 }: {
     children: React.ReactNode;
-    slideFromRight?: boolean;
     className?: string;
 }) {
-    return (
-        <motion.div
-            initial={{ x: slideFromRight ? 1000 : -1000 }}
-            animate={{ x: "0%" }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            exit={{ opacity: 0 }}
-            className={className}
-        >
-            {children}
-        </motion.div>
-    );
+    return <div className={className}>{children}</div>;
 }

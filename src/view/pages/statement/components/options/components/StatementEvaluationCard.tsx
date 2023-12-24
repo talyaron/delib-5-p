@@ -1,26 +1,29 @@
 import { FC, useEffect, useState, useRef } from "react";
+
+// Third Party
 import { Statement, StatementType } from "delib-npm";
+import { useNavigate } from "react-router";
+
+// Redux Store
 import {
     useAppDispatch,
     useAppSelector,
 } from "../../../../../../functions/hooks/reduxHooks";
-// import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import {
     setStatementElementHight,
     statementSubscriptionSelector,
 } from "../../../../../../model/statements/statementsSlice";
 
+// Custom Components
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
-
-//images
-
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
 import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
-import { isAuthorized } from "../../../../../../functions/general/helpers";
-import StatementChatMore from "../../chat/StatementChatMore";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
-import { useNavigate } from "react-router";
+import StatementChatMore from "../../chat/StatementChatMore";
+
+// Helpers
+import { isAuthorized } from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;

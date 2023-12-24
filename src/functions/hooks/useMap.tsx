@@ -44,8 +44,8 @@ export const MapProvider: FC<MapProviderProps> = ({ children }) => {
         isQuestion: false,
         targetPosition: Position.Top,
         sourcePosition: Position.Bottom,
-        nodeWidth: 80,
-        nodeHeight: 80,
+        nodeWidth: 100,
+        nodeHeight: 100,
     });
 
     const contextValue: MapProps = {

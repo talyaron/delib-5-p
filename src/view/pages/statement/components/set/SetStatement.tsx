@@ -4,9 +4,9 @@ import { t } from "i18next";
 
 // Custom components
 import { StatementSettings } from "../admin/settings/StatementSettings";
-import ArrowBackIosIcon from "../../../../icons/ArrowBackIosIcon";
-import ScreenSlide from "../../../../components/animation/ScreenSlide";
 import useDirection from "../../../../../functions/hooks/useDirection";
+import ScreenSlide from "../../../../components/animation/ScreenSlide";
+import BackArrowIcon from "../../../../components/icons/BackArrowIcon";
 
 export const SetStatement = () => {
     const { statementId } = useParams();
@@ -14,7 +14,7 @@ export const SetStatement = () => {
     const direction = useDirection();
 
     return (
-        <ScreenSlide slideFromRight={true} className="setStatement">
+        <ScreenSlide className="setStatement slide-out">
             <div
                 className="setStatement__header"
                 style={{ flexDirection: direction }}
@@ -25,7 +25,7 @@ export const SetStatement = () => {
                     className="setStatement__back"
                 >
                     {" "}
-                    <ArrowBackIosIcon />
+                    <BackArrowIcon color="black" />
                 </Link>
                 <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
                 <span></span>
