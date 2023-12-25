@@ -29,6 +29,7 @@ const MassQuestionCard: FC<Props> = ({ statement }) => {
                 onBlur={(ev: any) =>
                     handleSetQuestionFromMassCard({
                         question: statement,
+                        answer,
                         text: ev.target.value,
                     })
                 }
