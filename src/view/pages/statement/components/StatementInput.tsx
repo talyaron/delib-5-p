@@ -52,11 +52,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 if (!newStatement) throw new Error("No statement");
 
-                newStatement.subScreens = [
-                    Screen.CHAT,
-                    Screen.OPTIONS,
-                    Screen.VOTE,
-                ];
+               
 
                 setStatmentToDB(newStatement);
                 e.target.value = "";

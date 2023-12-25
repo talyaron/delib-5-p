@@ -1,0 +1,16 @@
+.card{
+    padding: 1rem;
+    background-color: var(--question);
+    color: var(--question-text);
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    p{
+        margin-bottom: 1rem;
+    }
+}
+
+.answer{
+    padding: 1rem;
+    
+}
