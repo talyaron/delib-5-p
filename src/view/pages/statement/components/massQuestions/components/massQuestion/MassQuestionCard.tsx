@@ -1,29 +1,40 @@
 import { Statement } from "delib-npm";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./MassQuestion.module.scss";
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
+import { listenToUserAnswer } from "../../../../../../../functions/db/statements/getStatement";
 
 interface Props {
     statement: Statement;
-    answers: Statement[];
-    index: number;
 }
 
-const MassQuestionCard: FC<Props> = ({ statement, index, answers }) => {
+const MassQuestionCard: FC<Props> = ({ statement }) => {
+    const [answer, setAnswer] = useState<Statement | null>(null);
+    useEffect(() => {
+        let usub: Function = () => {};
+        listenToUserAnswer(statement.statementId, setAnswer).then(
+            (uns: Function) => {
+                usub = uns;
+            }
+        );
+        return () => {
+            usub();
+        };
+    }, []);
+
     return (
         <div className={styles.card}>
             <p>{statement.statement}</p>
             <textarea
                 onBlur={(ev: any) =>
-                    handleSetQuestionFromMassCard(
-                        statement,
-                        ev.target.value,
-                        answers,
-                        index
-                    )
+                    handleSetQuestionFromMassCard({
+                        question: statement,
+                        text: ev.target.value,
+                    })
                 }
                 className={styles.answer}
                 placeholder="תשובה"
+                defaultValue={answer?.statement}
                 name="answer"
                 id="answer"
             />

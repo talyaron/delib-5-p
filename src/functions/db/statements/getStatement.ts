@@ -640,3 +640,31 @@ export async function getChildStatements(
         return [];
     }
 }
+
+export async function listenToUserAnswer(questionId:string, cb:Function): Promise<Function> {
+    try {
+      
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        const statementsRef = collection(DB, Collections.statements);
+        const q = query(
+            statementsRef,
+            where("statementType", "==", StatementType.option),
+            where("parentId", "==", questionId),
+            where("creatorId", "==", user.uid),
+            orderBy("createdAt", "desc"),
+            limit(1)
+        );
+        return onSnapshot(q, (statementsDB) => {
+          
+            statementsDB.docChanges().forEach((change) => {
+                const statement = change.doc.data() as Statement;
+            
+                cb(statement);
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        return () => {};
+    }
+}

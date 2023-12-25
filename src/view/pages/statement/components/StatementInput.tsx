@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // Third Party Imports
-import { Screen, Statement } from "delib-npm";
+import { Statement } from "delib-npm";
 
 // Helpers
 import { setStatmentToDB } from "../../../../functions/db/statements/setStatments";
