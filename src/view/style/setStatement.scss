@@ -1,6 +1,6 @@
 .setStatement {
     width: 100vw;
-    min-height: 100svh;
+  overflow-y: auto;
     display: flex;
     flex-direction: column;
     &__header {
