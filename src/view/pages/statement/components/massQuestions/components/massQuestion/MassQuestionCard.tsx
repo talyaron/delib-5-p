@@ -6,10 +6,20 @@ import { listenToUserAnswer } from "../../../../../../../functions/db/statements
 
 interface Props {
     statement: Statement;
+    setAnswerd: Function;
+    index: number;
 }
 
-const MassQuestionCard: FC<Props> = ({ statement }) => {
+const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
     const [answer, setAnswer] = useState<Statement | null>(null);
+    useEffect(() => {
+        setAnswerd((answerd: boolean[]) => {
+            const _answerd = [...answerd];
+            _answerd[index] = answer ? true : false;
+            return _answerd;
+        });
+    }, [answer]);
+
     useEffect(() => {
         let usub: Function = () => {};
         listenToUserAnswer(statement.statementId, setAnswer).then(
@@ -26,13 +36,22 @@ const MassQuestionCard: FC<Props> = ({ statement }) => {
         <div className={styles.card}>
             <p>{statement.statement}</p>
             <textarea
-                onBlur={(ev: any) =>
+                onBlur={(ev: any) => {
                     handleSetQuestionFromMassCard({
                         question: statement,
                         answer,
                         text: ev.target.value,
-                    })
-                }
+                    });
+                }}
+                onKeyUp={(ev: any) => {
+                    if (ev.key === "Enter" && !ev.shiftKey) {
+                        handleSetQuestionFromMassCard({
+                            question: statement,
+                            answer,
+                            text: ev.target.value,
+                        });
+                    }
+                }}
                 className={styles.answer}
                 placeholder="תשובה"
                 defaultValue={answer?.statement}

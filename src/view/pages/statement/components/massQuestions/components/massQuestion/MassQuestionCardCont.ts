@@ -23,20 +23,22 @@ export const handleSetQuestionFromMassCard = ({
         if (!text) return;
 
         if (answer) {
-            console.log("update");
+            //update statement
             updateStatementText(answer, text);
             return undefined;
-        }
-console.log("create");
-        const statement: Statement | undefined = getNewStatment({
-            value: text,
-            statement: question,
-            statementType: StatementType.option,
-            user,
-        });
-        if (!statement) throw new Error("statement not created");
+        } else {
 
-        setStatmentToDB(statement);
+            //create new statement
+            const statement: Statement | undefined = getNewStatment({
+                value: text,
+                statement: question,
+                statementType: StatementType.option,
+                user,
+            });
+            if (!statement) throw new Error("statement not created");
+
+            setStatmentToDB(statement);
+        }
     } catch (error) {
         console.error(error);
         return undefined;
