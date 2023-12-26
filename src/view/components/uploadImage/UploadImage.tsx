@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import styles from "./UploadImage.module.scss";
 import { Statement } from "delib-npm";
 import { uploadImageToStorage } from "../../../functions/db/images/setImages";
+import { updateStatmentMainImage } from "../../../functions/db/statements/setStatments";
 
 interface Props {
     statement: Statement;
@@ -21,6 +22,7 @@ const UploadImage: FC<Props> = ({ statement }) => {
             setPercetage
         );
         console.log(imageURL);
+        updateStatmentMainImage(statement, imageURL);
     };
 
     const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {

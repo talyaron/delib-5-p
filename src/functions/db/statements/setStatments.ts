@@ -389,15 +389,17 @@ export async function updateIsQuestion(statement: Statement) {
     }
 }
 
-export async function updateStatmentMainImage(statement: Statement, imageURL: string) {
+export async function updateStatmentMainImage(statement: Statement, imageURL: string|undefined) {
     try {
+        if (!imageURL) throw new Error("Image URL is undefined");
         const statementRef = doc(
             DB,
             Collections.statements,
             statement.statementId
         );
-        const newImage = { image };
-        await updateDoc(statementRef, newImage);
+        
+       const t=  await updateDoc(statementRef, {imagesURL:{main: imageURL}});
+       console.log("t:", t);
     } catch (error) {
         console.error(error);
     }
