@@ -5,6 +5,9 @@ import styles from "./MassQuestions.module.scss";
 import StatementEvaluationNav from "../options/components/StatementEvaluationNav";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
+import { isAuthorized } from "../../../../../functions/general/helpers";
+import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
 
 interface Props {
     statement: Statement;
@@ -12,16 +15,18 @@ interface Props {
 }
 
 const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
-  
+
+    const statementSubscriptions = useAppSelector(statementSubscriptionSelector(statement.statementId))
 
     const [showThankYou, setShowThankYou] = useState<boolean>(false);
     const [answerd, setAnswerd] = useState<boolean[]>([]);
     const [showModal, setShowModal] = useState(false);
 
-   const questions = subStatements.filter(
-    (sub) => sub.statementType === StatementType.question
-);
-   
+    const questions = subStatements.filter(
+        (sub) => sub.statementType === StatementType.question
+    );
+
+    const _isAutorized = isAuthorized(statement,statementSubscriptions);
 
     return (
         <div className="page__main">
@@ -30,7 +35,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     <>
                         <h2>Questions</h2>
 
-                        {questions.map((question, index:number) => (
+                        {questions.map((question, index: number) => (
                             <MassQuestionCard
                                 key={question.statementId}
                                 statement={question}
@@ -39,29 +44,16 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                             />
                         ))}
                         <div className="btns">
-                            {answerd.filter(a=>a).length === questions.length && <div
-                                className="btn"
-                                onClick={() => setShowThankYou(true)}
-                            >
-                                <span>שליחה</span>
-                            </div>}
+                            {answerd.filter((a) => a).length ===
+                                questions.length && (
+                                <div
+                                    className="btn"
+                                    onClick={() => setShowThankYou(true)}
+                                >
+                                    <span>שליחה</span>
+                                </div>
+                            )}
                         </div>
-                        <div className="page__main__bottom">
-                    <StatementEvaluationNav
-                        setShowModal={setShowModal}
-                        statement={statement}
-                        showNav={false}
-                    />
-                    {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isQuestion={true}
-                            setShowModal={setShowModal}
-                        />
-                    </Modal>
-                )}
-                </div>
                     </>
                 ) : (
                     <div className={styles.thankyou}>
@@ -75,6 +67,24 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     </div>
                 )}
             </div>
+            {!showThankYou && _isAutorized ? (
+                <div className="page__main__bottom">
+                    <StatementEvaluationNav
+                        setShowModal={setShowModal}
+                        statement={statement}
+                        showNav={false}
+                    />
+                    {showModal && (
+                        <Modal>
+                            <NewSetStatementSimple
+                                parentStatement={statement}
+                                isQuestion={true}
+                                setShowModal={setShowModal}
+                            />
+                        </Modal>
+                    )}
+                </div>
+            ) : null}
         </div>
     );
 };

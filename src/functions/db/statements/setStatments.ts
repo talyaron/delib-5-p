@@ -40,9 +40,6 @@ export async function setStatmentToDB(
 
             const parentStatement = parentStatementDB.data() as Statement;
 
-            //prevent question under question and option under option
-           
-
             statement.parents = parentStatement.parents || [];
             statement.parents.push(parentStatement.statementId);
         }
