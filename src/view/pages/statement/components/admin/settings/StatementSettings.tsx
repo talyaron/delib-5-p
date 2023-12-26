@@ -52,6 +52,7 @@ import { navigateToStatementTab } from "../../../../../../functions/general/help
 
 // Style
 import "./settingsStyle.scss";
+import UploadImage from "../../../../../components/uploadImage/UploadImage";
 
 interface Props {
     simple?: boolean;
@@ -341,6 +342,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>
+                    <UploadImage />
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div className="setStatement__form__membersBox">
