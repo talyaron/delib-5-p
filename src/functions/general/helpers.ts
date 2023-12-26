@@ -96,6 +96,11 @@ export function getNewStatment({
             consensus: 0,
             statementType: statementType || StatementType.statement,
         };
+        newStatement.subScreens = [
+            Screen.CHAT,
+            Screen.OPTIONS,
+            Screen.VOTE,
+        ];
 
         return newStatement;
     } catch (error) {

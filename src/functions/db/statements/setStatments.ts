@@ -378,11 +378,7 @@ export async function updateIsQuestion(statement: Statement) {
         if (statementType === StatementType.question)
             statementType = StatementType.statement;
         else {
-            if (parentStatement.statementType === StatementType.question)
-                throw new Error(
-                    "Statement type question can not be created under a question"
-                );
-
+           
             statementType = StatementType.question;
         }
 

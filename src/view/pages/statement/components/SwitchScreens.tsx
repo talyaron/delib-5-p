@@ -8,6 +8,7 @@ import Map from "./doc/Map";
 // Third party imports
 import { Screen, Statement } from "delib-npm";
 import AdminPage from "./admin/AdminPage";
+import MassQuestions from "./massQuestions/MassQuestions";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -54,6 +55,13 @@ export default function SwitchScreens({
         case Screen.VOTE:
             return (
                 <StatementVote
+                    statement={statement}
+                    subStatements={subStatements}
+                />
+            );
+        case Screen.QUESTIONS_MASS:
+            return (
+                <MassQuestions
                     statement={statement}
                     subStatements={subStatements}
                 />

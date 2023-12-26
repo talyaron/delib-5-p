@@ -14,7 +14,14 @@ export const navArray: NavObject[] = [
     { link: Screen.CHAT, name: "Chat", id: "main" },
     { link: Screen.OPTIONS, name: "Evaluations", id: "options" },
     { link: Screen.VOTE, name: "Voting", id: "vote" },
+    {
+        link: Screen.QUESTIONS_MASS,
+        name: "Mass Questions",
+        id: "questions",
+        default: false,
+    },
     { link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false },
+   
     { link: Screen.SETTINGS, name: "Settings", id: "settings" },
 ];
 

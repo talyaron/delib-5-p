@@ -108,9 +108,7 @@ const StatementChat: FC<Props> = ({
                 parentStatement.statementType === StatementType.question ? (
                     <StatementChatSetOption statement={statement} />
                 ) : null}
-                {_isAuthrized &&
-                !isOption &&
-                parentStatement.statementType !== StatementType.question ? (
+                {_isAuthrized ? (
                     <StatementChatSetQuestion statement={statement} />
                 ) : null}
 
