@@ -62,7 +62,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
                 {showModal ? (
                     <Modal>
                         <NewSetStatementSimple
-                            parentStatementId={statement.statementId}
+                            parentStatement={statement}
                             isOption={true}
                             setShowModal={setShowModal}
                         />

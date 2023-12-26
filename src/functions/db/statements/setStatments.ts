@@ -41,8 +41,7 @@ export async function setStatmentToDB(
             const parentStatement = parentStatementDB.data() as Statement;
 
             //prevent question under question and option under option
-            if (!isStatementTypeAllowed(parentStatement, statement))
-                throw new Error("Statement type not allowed");
+           
 
             statement.parents = parentStatement.parents || [];
             statement.parents.push(parentStatement.statementId);
