@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import styles from "./UploadImage.module.scss";
+import { Statement } from "delib-npm";
+import { uploadImageToStorage } from "../../../functions/db/images/setImages";
 
-const UploadImage = () => {
+interface Props {
+    statement: Statement;
+}
+
+const UploadImage: FC<Props> = ({ statement }) => {
     const [image, setImage] = useState<File | null>(null);
+    const [percentage, setPercetage] = useState(0);
 
-    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         const file = event.dataTransfer.files[0];
         setImage(file);
-
-        
+        const imageURL = await uploadImageToStorage(
+            file,
+            statement,
+            setPercetage
+        );
+        console.log(imageURL);
     };
 
     const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -25,13 +36,14 @@ const UploadImage = () => {
             {image ? (
                 <div
                     style={{
-                        backgroundImage: `url(${URL.createObjectURL(image)})`
+                        backgroundImage: `url(${URL.createObjectURL(image)})`,
                     }}
                     className={styles.imagePreview}
                 />
             ) : (
                 <p>Drag and drop an image here</p>
             )}
+            {percentage > 0 && <progress value={percentage} max="100" />}
         </div>
     );
 };

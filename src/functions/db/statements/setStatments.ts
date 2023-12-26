@@ -388,3 +388,17 @@ export async function updateIsQuestion(statement: Statement) {
         console.error(error);
     }
 }
+
+export async function updateStatmentMainImage(statement: Statement, imageURL: string) {
+    try {
+        const statementRef = doc(
+            DB,
+            Collections.statements,
+            statement.statementId
+        );
+        const newImage = { image };
+        await updateDoc(statementRef, newImage);
+    } catch (error) {
+        console.error(error);
+    }
+}

@@ -342,7 +342,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>
-                    <UploadImage />
+                    <UploadImage statement={statement}/>
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div className="setStatement__form__membersBox">
