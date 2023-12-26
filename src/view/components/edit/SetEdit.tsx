@@ -1,5 +1,5 @@
 import { FC } from "react";
-import EditIcon from "../../../../../components/icons/EditIcon";
+import EditIcon from "../icons/EditIcon";
 
 interface Props {
     isAuthrized: boolean;
@@ -7,7 +7,7 @@ interface Props {
     edit: boolean;
 }
 
-const StatementChatSetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
+const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
     return (
         <div>
             {isAuthrized && (
@@ -19,4 +19,4 @@ const StatementChatSetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
     );
 };
 
-export default StatementChatSetEdit;
+export default SetEdit;
