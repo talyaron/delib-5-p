@@ -12,6 +12,7 @@ import PlusIcon from "../../../../../components/icons/PlusIcon";
 
 // Statements functions
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
+import { Statement } from "delib-npm";
 
 function calculateFontSize(text: string) {
     // Set the base font size and a multiplier for adjusting based on text length
@@ -37,11 +38,15 @@ const backgroundColor = (type: string) =>
         ? resultColor
         : "gold";
 
-const nodeStyle = (data: any, nodeTitle: string) => {
+const nodeStyle = (
+    parentData: any,
+    statementType: string,
+    nodeTitle: string
+) => {
     const style = {
         backgroundColor:
-            data.parentId === "top" ? "darkblue" : backgroundColor(data.type),
-        color: data.type === "question" ? "white" : "black",
+            parentData === "top" ? "darkblue" : backgroundColor(statementType),
+        color: statementType === "question" ? "white" : "black",
         height: 70,
         width: 100,
         borderRadius: "5px",
@@ -55,42 +60,49 @@ const nodeStyle = (data: any, nodeTitle: string) => {
     return style;
 };
 
-export default function CustomNode({ data, id }: NodeProps) {
+export default function CustomNode({ data }: NodeProps) {
     const navigate = useNavigate();
 
-    const { shortVersion: nodeTitle } = statementTitleToDisplay(data.label, 80);
+    const { result, parentData } = data;
+
+    const { statementId, statement, statementType } = result.top;
+
+    const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
 
     const { mapContext, setMapContext } = useMapContext();
 
     const [showBtns, setShowBtns] = useState(false);
 
     const handleNodeClick = () => {
+        console.log(parentData);
         if (!showBtns) {
             setShowBtns((prev) => !prev);
         } else {
-            navigate(`/statement/${id}/chat`, {
+            navigate(`/statement/${statementId}/chat`, {
                 state: { from: window.location.pathname },
             });
         }
     };
 
     const handleAddChildNode = () => {
+        console.log("handleAddChildNode");
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
-            parentId: id,
-            isOption: data.type !== "option",
-            isQuestion: data.type !== "question",
+            parentData: result.top,
+            isOption: statementType !== "option",
+            isQuestion: statementType !== "question",
         }));
     };
 
     const handleAddSiblingNode = () => {
+        console.log("handleAddSiblingNode");
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
-            parentId: data.parentId,
-            isOption: data.type !== "option",
-            isQuestion: data.type !== "question",
+            parentData: parentData,
+            isOption: statementType !== "option",
+            isQuestion: statementType !== "question",
         }));
     };
 
@@ -102,9 +114,9 @@ export default function CustomNode({ data, id }: NodeProps) {
         <>
             <div
                 onClick={handleNodeClick}
-                data-id={id}
+                data-id={statementId}
                 style={{
-                    ...nodeStyle(data, nodeTitle),
+                    ...nodeStyle(parentData, statementType, nodeTitle),
                     textAlign: "center",
                     wordBreak: "break-word",
                 }}

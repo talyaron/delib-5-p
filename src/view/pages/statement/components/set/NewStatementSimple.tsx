@@ -1,7 +1,12 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Statement, UserSchema ,parseUserFromFirebase, StatementType} from "delib-npm";
+import {
+    Statement,
+    UserSchema,
+    parseUserFromFirebase,
+    StatementType,
+} from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
@@ -15,7 +20,7 @@ import Loader from "../../../../components/loaders/Loader";
 import { store } from "../../../../../model/store";
 
 interface Props {
-    parentStatement: Statement;
+    parentData: Statement | string;
     isOption?: boolean;
     isQuestion?: boolean;
     setShowModal: Function;
@@ -23,14 +28,21 @@ interface Props {
 }
 
 const NewSetStatementSimple: FC<Props> = ({
-    parentStatement,
+    parentData,
     isOption,
     isQuestion,
     setShowModal,
     getSubStatements,
 }) => {
     try {
-        const parentStatementId = parentStatement.statementId;
+        const parentIsStatement = typeof parentData !== "string";
+
+        const parentStatementId = parentIsStatement
+            ? parentData.statementId
+            : "top";
+
+        console.log("parentStatementId", parentStatementId);
+
         if (!parentStatementId)
             throw new Error("parentStatementId is undefined");
 
@@ -47,6 +59,8 @@ const NewSetStatementSimple: FC<Props> = ({
                 //add to title * at the beggining
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
+
+                // Why do this?
                 const _user = store.getState().user.user;
                 if (!_user) throw new Error("user not found");
                 const { displayName, email, photoURL, uid } = _user;
@@ -58,11 +72,15 @@ const NewSetStatementSimple: FC<Props> = ({
                 newStatement.statement = _statement;
                 newStatement.statementId = crypto.randomUUID();
                 newStatement.creatorId = _user.uid;
+
                 newStatement.parentId = parentStatementId;
-                newStatement.topParentId = parentStatement.topParentId;
-                if (parentStatement.parents)
+
+                newStatement.topParentId =
+                    parentIsStatement && parentData.topParentId;
+
+                if (parentIsStatement && parentData.parents)
                     newStatement.parents = [
-                        ...parentStatement.parents,
+                        ...parentData.parents,
                         parentStatementId,
                     ];
 

@@ -60,13 +60,13 @@ const StatementChat: FC<Props> = ({
             navigate(`/statement/${statement.statementId}/chat`);
     }
 
-    console.log(
-        "is option",
-        isOption,
-        "can have children",
-        parentStatement.hasChildren
-    );
-    console.log(statement);
+    // console.log(
+    //     "is option",
+    //     isOption,
+    //     "can have children",
+    //     parentStatement.hasChildren
+    // );
+    // console.log(statement);
 
     return (
         <div
@@ -137,4 +137,3 @@ const StatementChat: FC<Props> = ({
 };
 
 export default StatementChat;
-
