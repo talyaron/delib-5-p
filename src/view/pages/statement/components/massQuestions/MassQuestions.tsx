@@ -8,6 +8,8 @@ import Modal from "../../../../components/modal/Modal";
 import { isAuthorized } from "../../../../../functions/general/helpers";
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import Text from "../../../../components/text/Text";
+
 
 interface Props {
     statement: Statement;
@@ -15,8 +17,9 @@ interface Props {
 }
 
 const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
-
-    const statementSubscriptions = useAppSelector(statementSubscriptionSelector(statement.statementId))
+    const statementSubscriptions = useAppSelector(
+        statementSubscriptionSelector(statement.statementId)
+    );
 
     const [showThankYou, setShowThankYou] = useState<boolean>(false);
     const [answerd, setAnswerd] = useState<boolean[]>([]);
@@ -26,7 +29,8 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
         (sub) => sub.statementType === StatementType.question
     );
 
-    const _isAutorized = isAuthorized(statement,statementSubscriptions);
+    const _isAutorized = isAuthorized(statement, statementSubscriptions);
+  
 
     return (
         <div className="page__main">
@@ -34,7 +38,19 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                 {!showThankYou ? (
                     <>
                         <h2>Questions</h2>
-
+                        {statement.imagesURL?.main ? (
+                            <div
+                                className={styles.image}
+                                style={{
+                                    backgroundImage: `url(${statement.imagesURL.main})`,
+                                }}
+                                // style={{backgroundColor: 'red'}}
+                            ></div>
+                        ) : null}
+                        <Text
+                            text={statement.statement}
+                            onlyDescription={true}
+                        />
                         {questions.map((question, index: number) => (
                             <MassQuestionCard
                                 key={question.statementId}

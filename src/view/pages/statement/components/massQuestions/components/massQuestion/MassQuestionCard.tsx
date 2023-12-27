@@ -56,6 +56,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
                         statement={statement}
                         isEdit={isEdit}
                         setEdit={setEdit}
+                        onlyTitle={true}
                     />
                 </h3>
             </div>
