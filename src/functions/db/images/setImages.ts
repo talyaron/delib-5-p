@@ -10,7 +10,7 @@ export function uploadImageToStorage(
     return new Promise((resolve, reject) => {
         const imageRef = ref(
             storage,
-            `${Collections.statements}/${statement.statementId}/${file.name}`
+            `${Collections.statements}/${statement.statementId}/imgId-${Math.random()}`
         );
 
         const uploadTask = uploadBytesResumable(imageRef, file);

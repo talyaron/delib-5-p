@@ -37,7 +37,6 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
             <div className="wrapper">
                 {!showThankYou ? (
                     <>
-                        <h2>Questions</h2>
                         {statement.imagesURL?.main ? (
                             <div
                                 className={styles.image}
