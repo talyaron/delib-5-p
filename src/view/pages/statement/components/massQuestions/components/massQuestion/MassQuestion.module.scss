@@ -5,9 +5,17 @@
     display: flex;
     flex-direction: column;
     border-radius: 1rem;
-    p{
-        margin-bottom: 1rem;
+    h3{
+        margin-bottom: .3rem;
+        font-weight: 500;
     }
+    label{
+        margin-bottom: .2rem;
+    }
+}
+.title{
+    display: flex;
+    gap:.4rem;
 }
 
 .answer{

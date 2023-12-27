@@ -18,7 +18,7 @@ import {
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
-import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
+import SetEdit from "../../../../../components/edit/SetEdit";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 import StatementChatMore from "../../chat/StatementChatMore";
 
@@ -80,7 +80,7 @@ const StatementEvaluationCard: FC<Props> = ({
         >
             <div className="options__card__main">
                 <div className="options__card__text text">
-                    <StatementChatSetEdit
+                    <SetEdit
                         isAuthrized={_isAuthrized}
                         edit={edit}
                         setEdit={setEdit}

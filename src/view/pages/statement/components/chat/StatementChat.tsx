@@ -15,7 +15,7 @@ import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
 import { store } from "../../../../../model/store";
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
 import { bubbleclass } from "./StatementChatCont";
-import StatementChatSetEdit from "./components/StatementChatSetEdit";
+import StatementChatSetEdit from "../../../../components/edit/SetEdit";
 import {
     isAuthorized,
     isOptionFn,

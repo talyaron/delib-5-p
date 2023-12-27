@@ -1,8 +1,14 @@
-import { Statement } from "delib-npm";
+import { Statement, StatementSubscription } from "delib-npm";
 import { FC, useEffect, useState } from "react";
 import styles from "./MassQuestion.module.scss";
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
 import { listenToUserAnswer } from "../../../../../../../functions/db/statements/getStatement";
+import { t } from "i18next";
+import EditTitle from "../../../../../../components/edit/EditTitle";
+import SetEdit from "../../../../../../components/edit/SetEdit";
+import { isAuthorized } from "../../../../../../../functions/general/helpers";
+import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
 
 interface Props {
     statement: Statement;
@@ -11,7 +17,11 @@ interface Props {
 }
 
 const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
+    const statementSubscription: StatementSubscription | undefined =
+        useAppSelector(statementSubscriptionSelector(statement.statementId));
+
     const [answer, setAnswer] = useState<Statement | null>(null);
+    const [isEdit, setEdit] = useState(false);
     useEffect(() => {
         setAnswerd((answerd: boolean[]) => {
             const _answerd = [...answerd];
@@ -34,7 +44,22 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
 
     return (
         <div className={styles.card}>
-            <p>{statement.statement}</p>
+            <div className={styles.title}>
+                <SetEdit
+                    isAuthrized={isAuthorized(statement, statementSubscription)}
+                    setEdit={setEdit}
+                    edit={isEdit}
+                />
+
+                <h3>
+                    <EditTitle
+                        statement={statement}
+                        isEdit={isEdit}
+                        setEdit={setEdit}
+                    />
+                </h3>
+            </div>
+            <label>{t("Answer")}:</label>
             <textarea
                 onBlur={(ev: any) => {
                     handleSetQuestionFromMassCard({

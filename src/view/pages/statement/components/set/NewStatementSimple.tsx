@@ -1,12 +1,11 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { UserSchema } from "delib-npm";
-import { parseUserFromFirebase } from "delib-npm";
+import { Statement, UserSchema ,parseUserFromFirebase, StatementType} from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
-import { StatementType } from "delib-npm";
+
 import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
@@ -16,7 +15,7 @@ import Loader from "../../../../components/loaders/Loader";
 import { store } from "../../../../../model/store";
 
 interface Props {
-    parentStatementId: string;
+    parentStatement: Statement;
     isOption?: boolean;
     isQuestion?: boolean;
     setShowModal: Function;
@@ -24,13 +23,14 @@ interface Props {
 }
 
 const NewSetStatementSimple: FC<Props> = ({
-    parentStatementId,
+    parentStatement,
     isOption,
     isQuestion,
     setShowModal,
     getSubStatements,
 }) => {
     try {
+        const parentStatementId = parentStatement.statementId;
         if (!parentStatementId)
             throw new Error("parentStatementId is undefined");
 
@@ -59,6 +59,12 @@ const NewSetStatementSimple: FC<Props> = ({
                 newStatement.statementId = crypto.randomUUID();
                 newStatement.creatorId = _user.uid;
                 newStatement.parentId = parentStatementId;
+                newStatement.topParentId = parentStatement.topParentId;
+                if (parentStatement.parents)
+                    newStatement.parents = [
+                        ...parentStatement.parents,
+                        parentStatementId,
+                    ];
 
                 newStatement.creator = parseUserFromFirebase(_user);
                 if (isOption) newStatement.statementType = StatementType.option;
@@ -84,6 +90,11 @@ const NewSetStatementSimple: FC<Props> = ({
                 console.error(error);
             }
         }
+        const title = (() => {
+            if (isOption) return "Add Option";
+            if (isQuestion) return "Add Question";
+            return "Add Statement";
+        })();
 
         return (
             <>
@@ -93,7 +104,7 @@ const NewSetStatementSimple: FC<Props> = ({
                         className="setStatement__form"
                         style={{ height: "auto" }}
                     >
-                        <h2>{t("Add Option")}</h2>
+                        <h2>{t(title)}</h2>
                         <input
                             autoFocus={true}
                             type="text"
