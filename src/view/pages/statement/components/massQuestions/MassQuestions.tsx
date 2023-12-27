@@ -92,7 +92,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     {showModal && (
                         <Modal>
                             <NewSetStatementSimple
-                                parentStatement={statement}
+                                parentData={statement}
                                 isQuestion={true}
                                 setShowModal={setShowModal}
                             />

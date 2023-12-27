@@ -12,17 +12,16 @@ import PlusIcon from "../../../../../components/icons/PlusIcon";
 
 // Statements functions
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
-import { Statement } from "delib-npm";
 
 function calculateFontSize(text: string) {
     // Set the base font size and a multiplier for adjusting based on text length
-    const baseFontSize = 20;
-    const fontSizeMultiplier = 0.2;
+    const baseFontSize = 16;
+    const fontSizeMultiplier = 0.5;
 
     // Calculate the font size based on the length of the text
     const fontSize = Math.max(
         baseFontSize - fontSizeMultiplier * text.length,
-        8
+        6
     );
 
     return `${fontSize}px`;
@@ -47,8 +46,8 @@ const nodeStyle = (
         backgroundColor:
             parentData === "top" ? "darkblue" : backgroundColor(statementType),
         color: statementType === "question" ? "white" : "black",
-        height: 70,
-        width: 100,
+        height: 40,
+        width: 70,
         borderRadius: "5px",
         display: "flex",
         justifyContent: "center",
@@ -74,7 +73,6 @@ export default function CustomNode({ data }: NodeProps) {
     const [showBtns, setShowBtns] = useState(false);
 
     const handleNodeClick = () => {
-        console.log(parentData);
         if (!showBtns) {
             setShowBtns((prev) => !prev);
         } else {
@@ -85,7 +83,6 @@ export default function CustomNode({ data }: NodeProps) {
     };
 
     const handleAddChildNode = () => {
-        console.log("handleAddChildNode");
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
@@ -96,13 +93,12 @@ export default function CustomNode({ data }: NodeProps) {
     };
 
     const handleAddSiblingNode = () => {
-        console.log("handleAddSiblingNode");
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
             parentData: parentData,
-            isOption: statementType !== "option",
-            isQuestion: statementType !== "question",
+            isOption: statementType === "option",
+            isQuestion: statementType === "question",
         }));
     };
 
@@ -131,8 +127,10 @@ export default function CustomNode({ data }: NodeProps) {
                         style={{
                             position: "absolute",
                             cursor: "pointer",
-                            right: 0,
-                            bottom: "-2.2rem",
+                            right:
+                                mapContext.direction === "TB" ? 0 : "-1.8rem",
+                            bottom:
+                                mapContext.direction === "TB" ? "-1.8rem" : 0,
                         }}
                     >
                         <PlusIcon color="#9687F4" />
@@ -143,43 +141,12 @@ export default function CustomNode({ data }: NodeProps) {
                         style={{
                             position: "absolute",
                             cursor: "pointer",
-                            left: "-2.2rem",
-                            top: 0,
+                            left: mapContext.direction === "TB" ? "-1.8rem" : 0,
+                            top: mapContext.direction === "TB" ? 0 : "-1.8rem",
                         }}
                     >
                         <PlusIcon color="#9687F4" />
                     </div>
-                    {/* <IconButton
-                        onClick={handleAddChildNode}
-                        size="small"
-                        sx={{
-                            position: "absolute",
-                            cursor: "pointer",
-                            right: -10,
-                            bottom: -25,
-                            zIndex: 100,
-                            width: 20,
-                            height: 20,
-                        }}
-                        color="secondary"
-                    >
-                        <AddIcon sx={{ fontSize: 12 }} />
-                    </IconButton>
-                    <IconButton
-                        onClick={handleAddSiblingNode}
-                        size="small"
-                        sx={{
-                            position: "absolute",
-                            cursor: "pointer",
-                            left: -25,
-                            top: 0,
-                            width: 20,
-                            height: 20,
-                        }}
-                        color="secondary"
-                    >
-                        <AddIcon sx={{ fontSize: 12 }} />
-                    </IconButton> */}
                 </>
             )}
 

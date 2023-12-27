@@ -16,7 +16,6 @@ import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
 
-
 const TextSchema = z.string().min(2);
 
 export async function setStatmentToDB(
@@ -374,7 +373,6 @@ export async function updateIsQuestion(statement: Statement) {
         if (statementType === StatementType.question)
             statementType = StatementType.statement;
         else {
-           
             statementType = StatementType.question;
         }
 
@@ -385,7 +383,10 @@ export async function updateIsQuestion(statement: Statement) {
     }
 }
 
-export async function updateStatmentMainImage(statement: Statement, imageURL: string|undefined) {
+export async function updateStatmentMainImage(
+    statement: Statement,
+    imageURL: string | undefined
+) {
     try {
         if (!imageURL) throw new Error("Image URL is undefined");
         const statementRef = doc(
@@ -393,9 +394,11 @@ export async function updateStatmentMainImage(statement: Statement, imageURL: st
             Collections.statements,
             statement.statementId
         );
-        
-       const t=  await updateDoc(statementRef, {imagesURL:{main: imageURL}});
-       console.log("t:", t);
+
+        const t = await updateDoc(statementRef, {
+            imagesURL: { main: imageURL },
+        });
+        console.log("t:", t);
     } catch (error) {
         console.error(error);
     }

@@ -49,7 +49,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
-    const { hasChildren } = parentStatement;
+    // const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);

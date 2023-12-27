@@ -24,7 +24,6 @@ const UploadImage: FC<Props> = ({ statement }) => {
                 statement,
                 setPercetage
             );
-            console.log(imageURL);
             updateStatmentMainImage(statement, imageURL);
         };
 
@@ -54,7 +53,7 @@ const UploadImage: FC<Props> = ({ statement }) => {
             </div>
         );
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return null;
     }
 };

@@ -41,8 +41,6 @@ const NewSetStatementSimple: FC<Props> = ({
             ? parentData.statementId
             : "top";
 
-        console.log("parentStatementId", parentStatementId);
-
         if (!parentStatementId)
             throw new Error("parentStatementId is undefined");
 
@@ -86,6 +84,7 @@ const NewSetStatementSimple: FC<Props> = ({
 
                 newStatement.creator = parseUserFromFirebase(_user);
                 if (isOption) newStatement.statementType = StatementType.option;
+
                 if (isQuestion)
                     newStatement.statementType = StatementType.question;
 

@@ -18,8 +18,18 @@ export const getLayoutedElements = (
 
     dagreGraph.setGraph({ rankdir: direction });
 
-    nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+    nodes.forEach((node, index) => {
+        if (index === 0) {
+            dagreGraph.setNode(node.id, {
+                width: nodeWidth * 1.5,
+                height: nodeHeight * 1.5,
+            });
+        } else {
+            dagreGraph.setNode(node.id, {
+                width: nodeWidth,
+                height: nodeHeight,
+            });
+        }
     });
 
     edges.forEach((edge) => {
@@ -56,11 +66,6 @@ const edgeStyle = {
 const nodeOptions = (result: Results, parentData: "top" | Statement) => {
     return {
         id: result.top.statementId,
-        // data: {
-        //     label: result.top.statement,
-        //     type: result.top.statementType,
-        //     parentData,
-        // },
         data: {
             result,
             parentData,
@@ -78,6 +83,7 @@ const edgeOptions = (result: Results, parentId: string): Edge => {
         style: edgeStyle,
     };
 };
+
 export const createInitialNodesAndEdges = (result: Results) => {
     try {
         const edges: Edge[] = [];

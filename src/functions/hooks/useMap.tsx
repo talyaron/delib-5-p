@@ -35,6 +35,7 @@ interface MapProviderState {
     sourcePosition: Position;
     nodeWidth: number;
     nodeHeight: number;
+    direction: "TB" | "LR";
 }
 
 export const MapProvider: FC<MapProviderProps> = ({ children }) => {
@@ -45,8 +46,9 @@ export const MapProvider: FC<MapProviderProps> = ({ children }) => {
         isQuestion: false,
         targetPosition: Position.Top,
         sourcePosition: Position.Bottom,
-        nodeWidth: 100,
-        nodeHeight: 100,
+        nodeWidth: 50,
+        nodeHeight: 50,
+        direction: "TB",
     });
 
     const contextValue: MapProps = {

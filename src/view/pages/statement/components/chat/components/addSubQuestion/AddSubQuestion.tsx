@@ -32,7 +32,7 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
             {showQuestionModal && (
                 <Modal>
                     <NewSetStatementSimple
-                        parentStatement={statement}
+                        parentData={statement}
                         isQuestion={true}
                         setShowModal={setAddQuestionModal}
                     />

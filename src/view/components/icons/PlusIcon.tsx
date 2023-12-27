@@ -5,8 +5,8 @@ export default function PlusIcon({ color }: { color: string }) {
             viewBox="0 0 24 24"
             id="plus"
             fill={color}
-            width="2rem"
-            height="2rem"
+            width="1.2rem"
+            height="1.2rem"
         >
             <g data-name="Layer 2">
                 <path
