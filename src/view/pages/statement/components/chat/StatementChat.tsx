@@ -20,6 +20,7 @@ import {
     isAuthorized,
     isOptionFn,
     isStatementTypeAllowed,
+    linkToChildren,
 } from "../../../../../functions/general/helpers";
 
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
@@ -55,8 +56,17 @@ const StatementChat: FC<Props> = ({
     const [isEdit, setIsEdit] = useState(false);
 
     function handleGoToStatement() {
-        if (!isEdit) navigate(`/statement/${statement.statementId}/chat`);
+        if (!isEdit && (parentStatement.hasChildren || isQuestion))
+            navigate(`/statement/${statement.statementId}/chat`);
     }
+
+    console.log(
+        "is option",
+        isOption,
+        "can have children",
+        parentStatement.hasChildren
+    );
+    console.log(statement);
 
     return (
         <div
@@ -79,7 +89,11 @@ const StatementChat: FC<Props> = ({
             >
                 <div className={bubbleclass(isQuestion, isMe)}>
                     <div
-                        className="statement__bubble__text clickable"
+                        className={
+                            linkToChildren(statement, parentStatement)
+                                ? "statement__bubble__text clickable"
+                                : "statement__bubble__text"
+                        }
                         onClick={handleGoToStatement}
                     >
                         <div className="statement__bubble__text__text">
@@ -95,11 +109,11 @@ const StatementChat: FC<Props> = ({
                         isStatementTypeAllowed(parentStatement, statement) && (
                             <AddSubQuestion statement={statement} />
                         )}
-                    {isQuestion || isOption ? (
+                    {linkToChildren(statement, parentStatement) && (
                         <div className="statement__bubble__more">
                             <StatementChatMore statement={statement} />
                         </div>
-                    ) : null}
+                    )}
                 </div>
             </div>
             <div className="statement__chatCard__right">
@@ -123,3 +137,4 @@ const StatementChat: FC<Props> = ({
 };
 
 export default StatementChat;
+

@@ -23,7 +23,10 @@ import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion"
 import StatementChatMore from "../../chat/StatementChatMore";
 
 // Helpers
-import { isAuthorized } from "../../../../../../functions/general/helpers";
+import {
+    isAuthorized,
+    linkToChildren,
+} from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -65,7 +68,7 @@ const StatementEvaluationCard: FC<Props> = ({
     }, []);
 
     function handleGoToOption() {
-        if (!edit) navigate(`/statement/${statement.statementId}/chat`);
+        if (!edit && linkToChildren(statement, parentStatement)) navigate(`/statement/${statement.statementId}/chat`);
     }
 
     return (
@@ -85,7 +88,14 @@ const StatementEvaluationCard: FC<Props> = ({
                         edit={edit}
                         setEdit={setEdit}
                     />
-                    <div className="clickable" onClick={handleGoToOption}>
+                    <div
+                        className={
+                            linkToChildren(statement, parentStatement)
+                                ? "clickable"
+                                : ""
+                        }
+                        onClick={handleGoToOption}
+                    >
                         <EditTitle
                             statement={statement}
                             isEdit={edit}
@@ -97,7 +107,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
                 <Evaluation statement={statement} />
             </div>
-            {hasChildren ? (
+            {linkToChildren(statement, parentStatement) ? (
                 <>
                     <AddSubQuestion statement={statement} />
                     <div className="options__card__chat">
