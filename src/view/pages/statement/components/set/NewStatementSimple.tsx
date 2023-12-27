@@ -1,12 +1,11 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Statement, UserSchema } from "delib-npm";
-import { parseUserFromFirebase } from "delib-npm";
+import { Statement, UserSchema ,parseUserFromFirebase, StatementType} from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
-import { StatementType } from "delib-npm";
+
 import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components

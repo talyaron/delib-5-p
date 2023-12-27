@@ -5,49 +5,58 @@ import { uploadImageToStorage } from "../../../functions/db/images/setImages";
 import { updateStatmentMainImage } from "../../../functions/db/statements/setStatments";
 
 interface Props {
-    statement: Statement;
+    statement: Statement | undefined;
 }
 
 const UploadImage: FC<Props> = ({ statement }) => {
-    const [image, setImage] = useState<File | null>(null);
-    const [percentage, setPercetage] = useState(0);
+    try {
+        if (!statement) throw new Error("statement is undefined");
 
-    const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        const file = event.dataTransfer.files[0];
-        setImage(file);
-        const imageURL = await uploadImageToStorage(
-            file,
-            statement,
-            setPercetage
+        const [image, setImage] = useState<File | null>(null);
+        const [percentage, setPercetage] = useState(0);
+
+        const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            setImage(file);
+            const imageURL = await uploadImageToStorage(
+                file,
+                statement,
+                setPercetage
+            );
+            console.log(imageURL);
+            updateStatmentMainImage(statement, imageURL);
+        };
+
+        const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+            event.preventDefault();
+        };
+
+        return (
+            <div
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                className={styles.dropZone}
+            >
+                {image ? (
+                    <div
+                        style={{
+                            backgroundImage: `url(${URL.createObjectURL(
+                                image
+                            )})`,
+                        }}
+                        className={styles.imagePreview}
+                    />
+                ) : (
+                    <p>Drag and drop an image here</p>
+                )}
+                {percentage > 0 && <progress value={percentage} max="100" />}
+            </div>
         );
-        console.log(imageURL);
-        updateStatmentMainImage(statement, imageURL);
-    };
-
-    const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-    };
-
-    return (
-        <div
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            className={styles.dropZone}
-        >
-            {image ? (
-                <div
-                    style={{
-                        backgroundImage: `url(${URL.createObjectURL(image)})`,
-                    }}
-                    className={styles.imagePreview}
-                />
-            ) : (
-                <p>Drag and drop an image here</p>
-            )}
-            {percentage > 0 && <progress value={percentage} max="100" />}
-        </div>
-    );
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 export default UploadImage;
