@@ -1,12 +1,16 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { UserSchema } from "delib-npm";
-import { parseUserFromFirebase } from "delib-npm";
+import {
+    Statement,
+    UserSchema,
+    parseUserFromFirebase,
+    StatementType,
+} from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
-import { StatementType } from "delib-npm";
+
 import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
@@ -16,7 +20,7 @@ import Loader from "../../../../components/loaders/Loader";
 import { store } from "../../../../../model/store";
 
 interface Props {
-    parentStatementId: string;
+    parentData: Statement | string;
     isOption?: boolean;
     isQuestion?: boolean;
     setShowModal: Function;
@@ -24,13 +28,19 @@ interface Props {
 }
 
 const NewSetStatementSimple: FC<Props> = ({
-    parentStatementId,
+    parentData,
     isOption,
     isQuestion,
     setShowModal,
     getSubStatements,
 }) => {
     try {
+        const parentIsStatement = typeof parentData !== "string";
+
+        const parentStatementId = parentIsStatement
+            ? parentData.statementId
+            : "top";
+
         if (!parentStatementId)
             throw new Error("parentStatementId is undefined");
 
@@ -47,6 +57,8 @@ const NewSetStatementSimple: FC<Props> = ({
                 //add to title * at the beggining
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
+
+                // Why do this?
                 const _user = store.getState().user.user;
                 if (!_user) throw new Error("user not found");
                 const { displayName, email, photoURL, uid } = _user;
@@ -58,10 +70,21 @@ const NewSetStatementSimple: FC<Props> = ({
                 newStatement.statement = _statement;
                 newStatement.statementId = crypto.randomUUID();
                 newStatement.creatorId = _user.uid;
+
                 newStatement.parentId = parentStatementId;
+
+                newStatement.topParentId =
+                    parentIsStatement && parentData.topParentId;
+
+                if (parentIsStatement && parentData.parents)
+                    newStatement.parents = [
+                        ...parentData.parents,
+                        parentStatementId,
+                    ];
 
                 newStatement.creator = parseUserFromFirebase(_user);
                 if (isOption) newStatement.statementType = StatementType.option;
+
                 if (isQuestion)
                     newStatement.statementType = StatementType.question;
 
@@ -84,6 +107,11 @@ const NewSetStatementSimple: FC<Props> = ({
                 console.error(error);
             }
         }
+        const title = (() => {
+            if (isOption) return "Add Option";
+            if (isQuestion) return "Add Question";
+            return "Add Statement";
+        })();
 
         return (
             <>
@@ -93,7 +121,7 @@ const NewSetStatementSimple: FC<Props> = ({
                         className="setStatement__form"
                         style={{ height: "auto" }}
                     >
-                        <h2>{t("Add Option")}</h2>
+                        <h2>{t(title)}</h2>
                         <input
                             autoFocus={true}
                             type="text"

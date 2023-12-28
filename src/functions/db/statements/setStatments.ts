@@ -15,7 +15,6 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import { isStatementTypeAllowed } from "../../general/helpers";
 
 const TextSchema = z.string().min(2);
 
@@ -39,10 +38,6 @@ export async function setStatmentToDB(
                 throw new Error("Parent statement not found");
 
             const parentStatement = parentStatementDB.data() as Statement;
-
-            //prevent question under question and option under option
-            if (!isStatementTypeAllowed(parentStatement, statement))
-                throw new Error("Statement type not allowed");
 
             statement.parents = parentStatement.parents || [];
             statement.parents.push(parentStatement.statementId);
@@ -378,12 +373,32 @@ export async function updateIsQuestion(statement: Statement) {
         if (statementType === StatementType.question)
             statementType = StatementType.statement;
         else {
-           
             statementType = StatementType.question;
         }
 
         const newStatementType = { statementType };
         await updateDoc(statementRef, newStatementType);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function updateStatmentMainImage(
+    statement: Statement,
+    imageURL: string | undefined
+) {
+    try {
+        if (!imageURL) throw new Error("Image URL is undefined");
+        const statementRef = doc(
+            DB,
+            Collections.statements,
+            statement.statementId
+        );
+
+        const t = await updateDoc(statementRef, {
+            imagesURL: { main: imageURL },
+        });
+        console.log("t:", t);
     } catch (error) {
         console.error(error);
     }

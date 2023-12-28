@@ -15,13 +15,13 @@ import { statementTitleToDisplay } from "../../../../../../functions/general/hel
 
 function calculateFontSize(text: string) {
     // Set the base font size and a multiplier for adjusting based on text length
-    const baseFontSize = 20;
-    const fontSizeMultiplier = 0.2;
+    const baseFontSize = 16;
+    const fontSizeMultiplier = 0.5;
 
     // Calculate the font size based on the length of the text
     const fontSize = Math.max(
         baseFontSize - fontSizeMultiplier * text.length,
-        8
+        6
     );
 
     return `${fontSize}px`;
@@ -37,13 +37,17 @@ const backgroundColor = (type: string) =>
         ? resultColor
         : "gold";
 
-const nodeStyle = (data: any, nodeTitle: string) => {
+const nodeStyle = (
+    parentData: any,
+    statementType: string,
+    nodeTitle: string
+) => {
     const style = {
         backgroundColor:
-            data.parentId === "top" ? "darkblue" : backgroundColor(data.type),
-        color: data.type === "question" ? "white" : "black",
-        height: 70,
-        width: 100,
+            parentData === "top" ? "darkblue" : backgroundColor(statementType),
+        color: statementType === "question" ? "white" : "black",
+        height: 40,
+        width: 70,
         borderRadius: "5px",
         display: "flex",
         justifyContent: "center",
@@ -55,10 +59,14 @@ const nodeStyle = (data: any, nodeTitle: string) => {
     return style;
 };
 
-export default function CustomNode({ data, id }: NodeProps) {
+export default function CustomNode({ data }: NodeProps) {
     const navigate = useNavigate();
 
-    const { shortVersion: nodeTitle } = statementTitleToDisplay(data.label, 80);
+    const { result, parentData } = data;
+
+    const { statementId, statement, statementType } = result.top;
+
+    const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
 
     const { mapContext, setMapContext } = useMapContext();
 
@@ -68,7 +76,7 @@ export default function CustomNode({ data, id }: NodeProps) {
         if (!showBtns) {
             setShowBtns((prev) => !prev);
         } else {
-            navigate(`/statement/${id}/chat`, {
+            navigate(`/statement/${statementId}/chat`, {
                 state: { from: window.location.pathname },
             });
         }
@@ -78,9 +86,9 @@ export default function CustomNode({ data, id }: NodeProps) {
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
-            parentId: id,
-            isOption: data.type !== "option",
-            isQuestion: data.type !== "question",
+            parentData: result.top,
+            isOption: statementType !== "option",
+            isQuestion: statementType !== "question",
         }));
     };
 
@@ -88,9 +96,9 @@ export default function CustomNode({ data, id }: NodeProps) {
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
-            parentId: data.parentId,
-            isOption: data.type !== "option",
-            isQuestion: data.type !== "question",
+            parentData: parentData,
+            isOption: statementType === "option",
+            isQuestion: statementType === "question",
         }));
     };
 
@@ -102,9 +110,9 @@ export default function CustomNode({ data, id }: NodeProps) {
         <>
             <div
                 onClick={handleNodeClick}
-                data-id={id}
+                data-id={statementId}
                 style={{
-                    ...nodeStyle(data, nodeTitle),
+                    ...nodeStyle(parentData, statementType, nodeTitle),
                     textAlign: "center",
                     wordBreak: "break-word",
                 }}
@@ -119,8 +127,10 @@ export default function CustomNode({ data, id }: NodeProps) {
                         style={{
                             position: "absolute",
                             cursor: "pointer",
-                            right: 0,
-                            bottom: "-2.2rem",
+                            right:
+                                mapContext.direction === "TB" ? 0 : "-1.8rem",
+                            bottom:
+                                mapContext.direction === "TB" ? "-1.8rem" : 0,
                         }}
                     >
                         <PlusIcon color="#9687F4" />
@@ -131,43 +141,12 @@ export default function CustomNode({ data, id }: NodeProps) {
                         style={{
                             position: "absolute",
                             cursor: "pointer",
-                            left: "-2.2rem",
-                            top: 0,
+                            left: mapContext.direction === "TB" ? "-1.8rem" : 0,
+                            top: mapContext.direction === "TB" ? 0 : "-1.8rem",
                         }}
                     >
                         <PlusIcon color="#9687F4" />
                     </div>
-                    {/* <IconButton
-                        onClick={handleAddChildNode}
-                        size="small"
-                        sx={{
-                            position: "absolute",
-                            cursor: "pointer",
-                            right: -10,
-                            bottom: -25,
-                            zIndex: 100,
-                            width: 20,
-                            height: 20,
-                        }}
-                        color="secondary"
-                    >
-                        <AddIcon sx={{ fontSize: 12 }} />
-                    </IconButton>
-                    <IconButton
-                        onClick={handleAddSiblingNode}
-                        size="small"
-                        sx={{
-                            position: "absolute",
-                            cursor: "pointer",
-                            left: -25,
-                            top: 0,
-                            width: 20,
-                            height: 20,
-                        }}
-                        color="secondary"
-                    >
-                        <AddIcon sx={{ fontSize: 12 }} />
-                    </IconButton> */}
                 </>
             )}
 

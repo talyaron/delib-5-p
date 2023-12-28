@@ -256,3 +256,24 @@ export const statementTitleToDisplay = (
 
     return { shortVersion: titleToSet, fullVersion: _title };
 };
+
+//function which check if the statement can be linked to children
+export function linkToChildren(
+    statement: Statement,
+    parentStatement: Statement
+): boolean {
+    try {
+        const isQuestion = statement.statementType === StatementType.question;
+        const isOption = isOptionFn(statement);
+        const hasChildren = parentStatement.hasChildren;
+
+        if (isQuestion) return true;
+        if (isOption && hasChildren) return true;
+
+        return false;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+

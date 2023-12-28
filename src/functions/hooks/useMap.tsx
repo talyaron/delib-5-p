@@ -1,3 +1,4 @@
+import { Statement } from "delib-npm";
 import React, { createContext, useContext, useState, FC } from "react";
 import { Position } from "reactflow";
 
@@ -27,25 +28,27 @@ interface MapProviderProps {
 
 interface MapProviderState {
     showModal: boolean;
-    parentId: string;
+    parentData: string | Statement;
     isOption: boolean;
     isQuestion: boolean;
     targetPosition: Position;
     sourcePosition: Position;
     nodeWidth: number;
     nodeHeight: number;
+    direction: "TB" | "LR";
 }
 
 export const MapProvider: FC<MapProviderProps> = ({ children }) => {
     const [mapContext, setMapContext] = useState<MapProviderState>({
         showModal: false,
-        parentId: "",
+        parentData: "",
         isOption: false,
         isQuestion: false,
         targetPosition: Position.Top,
         sourcePosition: Position.Bottom,
-        nodeWidth: 100,
-        nodeHeight: 100,
+        nodeWidth: 50,
+        nodeHeight: 50,
+        direction: "TB",
     });
 
     const contextValue: MapProps = {

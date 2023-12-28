@@ -12,9 +12,10 @@ interface Props {
     isEdit: boolean;
     setEdit: Function;
     isTextArea?: boolean;
+    onlyTitle?: boolean;
 }
 
-const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
+const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea, onlyTitle }) => {
     try {
         if (!statement) return null;
 
@@ -60,7 +61,7 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
         if (!isEdit)
             return (
                 <div style={{ direction: direction, textAlign: align }}>
-                    <Text text={statement.statement} />
+                    <Text text={statement.statement} onlyTitle={onlyTitle}/>
                 </div>
             );
 
@@ -91,3 +92,5 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
 };
 
 export default EditTitle;
+
+

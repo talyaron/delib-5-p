@@ -51,7 +51,6 @@ export default function App() {
     }
 
     function navigateToInitialLocationCB(pathname: string) {
-        console.log("navigate to", pathname)
         navigate(pathname);
     }
 

@@ -18,12 +18,15 @@ import {
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
-import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
+import SetEdit from "../../../../../components/edit/SetEdit";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 import StatementChatMore from "../../chat/StatementChatMore";
 
 // Helpers
-import { isAuthorized } from "../../../../../../functions/general/helpers";
+import {
+    isAuthorized,
+    linkToChildren,
+} from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -46,7 +49,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
-    const { hasChildren } = parentStatement;
+    // const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
@@ -65,7 +68,7 @@ const StatementEvaluationCard: FC<Props> = ({
     }, []);
 
     function handleGoToOption() {
-        if (!edit) navigate(`/statement/${statement.statementId}/chat`);
+        if (!edit && linkToChildren(statement, parentStatement)) navigate(`/statement/${statement.statementId}/chat`);
     }
 
     return (
@@ -80,12 +83,19 @@ const StatementEvaluationCard: FC<Props> = ({
         >
             <div className="options__card__main">
                 <div className="options__card__text text">
-                    <StatementChatSetEdit
+                    <SetEdit
                         isAuthrized={_isAuthrized}
                         edit={edit}
                         setEdit={setEdit}
                     />
-                    <div className="clickable" onClick={handleGoToOption}>
+                    <div
+                        className={
+                            linkToChildren(statement, parentStatement)
+                                ? "clickable"
+                                : ""
+                        }
+                        onClick={handleGoToOption}
+                    >
                         <EditTitle
                             statement={statement}
                             isEdit={edit}
@@ -97,7 +107,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
                 <Evaluation statement={statement} />
             </div>
-            {hasChildren ? (
+            {linkToChildren(statement, parentStatement) ? (
                 <>
                     <AddSubQuestion statement={statement} />
                     <div className="options__card__chat">

@@ -52,6 +52,7 @@ import { navigateToStatementTab } from "../../../../../../functions/general/help
 
 // Style
 import "./settingsStyle.scss";
+import UploadImage from "../../../../../components/uploadImage/UploadImage";
 
 interface Props {
     simple?: boolean;
@@ -130,32 +131,38 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             const newStatement: any = Object.fromEntries(data.entries());
 
-            console.log("newStatement", newStatement);
-
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
                 navArray
             );
 
             newStatement.statement = _statement;
+
             newStatement.resultsSettings = {
                 numberOfResults: numberOfResults,
                 resultsBy: resultsBy || ResultsBy.topOptions,
                 deep: 1,
                 minConsensus: 1,
             };
+
             newStatement.statementId =
                 statement?.statementId || crypto.randomUUID();
+
             newStatement.creatorId =
                 statement?.creator.uid || store.getState().user.user?.uid;
+
             newStatement.parentId = statement?.parentId || statementId || "top";
+
             newStatement.topParentId =
                 statement?.topParentId || statementId || "top";
+
             newStatement.statementType =
                 statementId === undefined
                     ? StatementType.question
                     : newStatement.statementType || statement?.statementType;
+
             newStatement.creator = statement?.creator || user;
+            
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
 
@@ -341,6 +348,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>
+                    <UploadImage statement={statement}/>
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div className="setStatement__form__membersBox">

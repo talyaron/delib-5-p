@@ -15,7 +15,10 @@ import "./reactFlow.scss";
 import "reactflow/dist/style.css";
 
 // Helper functions
-import { createInitialNodesAndEdges, getLayoutedElements } from "./mapCont";
+import {
+    createInitialNodesAndEdges,
+    getLayoutedElements,
+} from "./customNodeCont";
 
 // Custom components
 import CustomNode from "./CustomNode";
@@ -55,9 +58,9 @@ export default function StatementMap({ topResult }: Props) {
     }, [topResult]);
 
     const onLayout = useCallback(
-        (direction: string) => {
-            const width = direction === "TB" ? 80 : 120;
-            const height = direction === "TB" ? 80 : 50;
+        (direction: "TB" | "LR") => {
+            const width = direction === "TB" ? 50 : 90;
+            const height = direction === "TB" ? 50 : 30;
 
             setMapContext((prev) => ({
                 ...prev,
@@ -67,6 +70,7 @@ export default function StatementMap({ topResult }: Props) {
                     direction === "TB" ? Position.Bottom : Position.Right,
                 nodeWidth: width,
                 nodeHeight: height,
+                direction,
             }));
 
             const { nodes: layoutedNodes, edges: layoutedEdges } =

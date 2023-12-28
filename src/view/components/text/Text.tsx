@@ -5,8 +5,9 @@ import styles from './Text.module.scss';
 interface Props {
     text: string;
     onlyTitle?: boolean;
+    onlyDescription?: boolean;
 }
-const Text: FC<Props> = ({ text, onlyTitle }) => {
+const Text: FC<Props> = ({ text, onlyTitle,onlyDescription }) => {
     try{
         if(!text) return <></>
         z.string().parse(text);
@@ -32,7 +33,12 @@ const Text: FC<Props> = ({ text, onlyTitle }) => {
         return <span className={styles.p} key={`${textId}--${i}`}>{paragraph}</span>
     })
 
-    if(onlyTitle) return (<span className={styles.title}>{paragraphs[0]}</span>)
+    const title = paragraphs[0]
+    //description is all the paragraphs except the first one
+    const description = paragraphs.slice(1)
+
+    if(onlyTitle) return (<span className={styles.title}>{title}</span>)
+    else if(onlyDescription) return (<span className={styles.p}>{description}</span>)
     return (
         <span>{paragraphs}</span>
     )

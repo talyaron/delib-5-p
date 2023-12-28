@@ -2,6 +2,14 @@ import { Statement, StatementType } from "delib-npm";
 import { FC, useState } from "react";
 import MassQuestionCard from "./components/massQuestion/MassQuestionCard";
 import styles from "./MassQuestions.module.scss";
+import StatementEvaluationNav from "../options/components/StatementEvaluationNav";
+import NewSetStatementSimple from "../set/NewStatementSimple";
+import Modal from "../../../../components/modal/Modal";
+import { isAuthorized } from "../../../../../functions/general/helpers";
+import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import Text from "../../../../components/text/Text";
+
 
 interface Props {
     statement: Statement;
@@ -9,24 +17,40 @@ interface Props {
 }
 
 const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
-  
+    const statementSubscriptions = useAppSelector(
+        statementSubscriptionSelector(statement.statementId)
+    );
 
     const [showThankYou, setShowThankYou] = useState<boolean>(false);
     const [answerd, setAnswerd] = useState<boolean[]>([]);
- 
-   const questions = subStatements.filter(
-    (sub) => sub.statementType === StatementType.question
-);
-   
+    const [showModal, setShowModal] = useState(false);
+
+    const questions = subStatements.filter(
+        (sub) => sub.statementType === StatementType.question
+    );
+
+    const _isAutorized = isAuthorized(statement, statementSubscriptions);
+  
 
     return (
         <div className="page__main">
             <div className="wrapper">
                 {!showThankYou ? (
                     <>
-                        <h2>Questions</h2>
-
-                        {questions.map((question, index:number) => (
+                        {statement.imagesURL?.main ? (
+                            <div
+                                className={styles.image}
+                                style={{
+                                    backgroundImage: `url(${statement.imagesURL.main})`,
+                                }}
+                                // style={{backgroundColor: 'red'}}
+                            ></div>
+                        ) : null}
+                        <Text
+                            text={statement.statement}
+                            onlyDescription={true}
+                        />
+                        {questions.map((question, index: number) => (
                             <MassQuestionCard
                                 key={question.statementId}
                                 statement={question}
@@ -35,12 +59,15 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                             />
                         ))}
                         <div className="btns">
-                            {answerd.filter(a=>a).length === questions.length && <div
-                                className="btn"
-                                onClick={() => setShowThankYou(true)}
-                            >
-                                <span>שליחה</span>
-                            </div>}
+                            {answerd.filter((a) => a).length ===
+                                questions.length && (
+                                <div
+                                    className="btn"
+                                    onClick={() => setShowThankYou(true)}
+                                >
+                                    <span>שליחה</span>
+                                </div>
+                            )}
                         </div>
                     </>
                 ) : (
@@ -55,6 +82,24 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     </div>
                 )}
             </div>
+            {!showThankYou && _isAutorized ? (
+                <div className="page__main__bottom">
+                    <StatementEvaluationNav
+                        setShowModal={setShowModal}
+                        statement={statement}
+                        showNav={false}
+                    />
+                    {showModal && (
+                        <Modal>
+                            <NewSetStatementSimple
+                                parentData={statement}
+                                isQuestion={true}
+                                setShowModal={setShowModal}
+                            />
+                        </Modal>
+                    )}
+                </div>
+            ) : null}
         </div>
     );
 };
