@@ -4,8 +4,8 @@ import React, { FC, SetStateAction } from "react";
 import { Statement } from "delib-npm";
 
 // Assets
-import ThumbDown from "../../../assets/icons/voteDown.svg";
-import ThumbUp from "../../../assets/icons/voteUp.svg";
+import ThumbDown from "../../../assets/icons/frown.svg";
+import ThumbUp from "../../../assets/icons/smile.svg";
 import ThumbDownWhite from "../../../assets/icons/voteDownWhite.svg";
 import ThumbUpWhite from "../../../assets/icons/voteUpWhite.svg";
 
