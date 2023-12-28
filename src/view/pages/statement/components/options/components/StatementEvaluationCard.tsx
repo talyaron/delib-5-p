@@ -75,13 +75,13 @@ const StatementEvaluationCard: FC<Props> = ({
         <div
             className={
                 statement.statementType === StatementType.result
-                    ? "options__card options__card--result"
-                    : "options__card"
+                    ? "optionCard optionCard--result"
+                    : "optionCard"
             }
             style={{ top: `${newTop}px` }}
             ref={elementRef}
         >
-            <div className="options__card__main">
+            <div className="optionCard__info">
                 <div className="options__card__text text">
                     <SetEdit
                         isAuthrized={_isAuthrized}
