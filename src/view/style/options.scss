@@ -2,7 +2,7 @@
 .optionCard{
     border-radius: .35rem 0rem 0rem .35rem;
     background-color: white;
-    border-left: .71rem solid red;
+
     box-shadow: 2px 2px 4px var(--shadow);
     padding: var(--padding);
     transition: all 1s ease-in-out;
@@ -35,7 +35,7 @@
     &__bottom{
         height: 5rem;
         width: 100%;
-        background-color: pink;
+ 
       
     }
   

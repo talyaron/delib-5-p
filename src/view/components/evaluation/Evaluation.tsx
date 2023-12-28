@@ -79,7 +79,7 @@ const Evaluation: FC<Props> = ({ statement }) => {
                 )}
                 <span>{proVote}</span>
             </div>
-            <div className={styles.consensus}>{consensusToDisplay}</div>
+            <div>{consensusToDisplay}</div>
         </div>
     );
 };
