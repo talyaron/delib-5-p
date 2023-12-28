@@ -1,0 +1,60 @@
+.message {
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    &--me {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__box {
+        width: 80%;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: var(--mainColor);
+        padding: 1rem;
+        margin: 0 4rem;
+        border-radius: 10px;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        &__triangle {
+            // filter: drop-shadow(-1px 6px 3px rgba(0, 0, 0, 0.1));
+            height: 2rem;
+            width: 2rem;
+            position: absolute;
+            top: 0;
+            left: -1.5rem;
+            .triangle {
+                clip-path: polygon(30% 0, 100% 100%, 100% 0);
+                background-color: var(--mainColor);
+                height: 2rem;
+                width: 2rem;
+            }
+        }
+        &__info {
+            display: flex;
+            justify-content: space-between;
+        }
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+            > div {
+                display: flex;
+            }
+            &__type {
+                gap: 1rem;
+            }
+            &__evaluations {
+                gap: 3rem;
+            }
+        }
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+}

@@ -13,6 +13,7 @@
 @import "./badge.scss";
 @import "./buttons.scss";
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+@import "./message.scss";
 
 :root {
     --mainBackground: #32527b;
@@ -114,8 +115,6 @@ a {
 b {
     font-weight: 500;
 }
-
-
 
 .wrapperAll {
     position: relative;

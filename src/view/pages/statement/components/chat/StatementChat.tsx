@@ -25,6 +25,9 @@ import {
 
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 import { useNavigate } from "react-router";
+import QuestionCircleIcon from "../../../../components/icons/QuestionCircleIcon";
+import HappySmileyIcon from "../../../../components/icons/HappySmileyIcon";
+import SadSmileyIcon from "../../../../components/icons/SadSmileyIcon";
 
 interface Props {
     statement: Statement;
@@ -69,18 +72,40 @@ const StatementChat: FC<Props> = ({
     // console.log(statement);
 
     return (
-        <div
-            className={
-                isMe
-                    ? `statement__chatCard statement__chatCard--me`
-                    : "statement__chatCard statement__chatCard--other"
-            }
-        >
-            <div className="statement__chatCard__left">
+        <div className={isMe ? "message--me" : "message"}>
+            <div className="message__user">
                 <ProfileImage statement={statement} showImage={showImage} />
+                <h3>{statement.creator.displayName}</h3>
             </div>
 
-            <div
+            <div className="message__box">
+                <div className="message__box__triangle">
+                    <div className="triangle"></div>
+                </div>
+                <div className="message__box__info">
+                    <span>{statement.statement}</span>
+                    <StatementChatSetEdit
+                        isAuthrized={_isAuthrized}
+                        setEdit={setIsEdit}
+                        edit={isEdit}
+                    />
+                </div>
+                <div className="message__box__actions">
+                    <div className="message__box__actions__type">
+                        <StatementChatSetOption statement={statement} />
+                        <StatementChatSetQuestion statement={statement} />
+                    </div>
+                    <div className="message__box__actions__addQuestion">
+                        <AddSubQuestion statement={statement} />
+                    </div>
+                    <div className="message__box__actions__evaluations">
+                        <HappySmileyIcon color="black" />
+                        <SadSmileyIcon color="black" />
+                    </div>
+                </div>
+            </div>
+
+            {/* <div
                 className={
                     isOption
                         ? "statement__bubble statement__bubble--option"
@@ -115,8 +140,8 @@ const StatementChat: FC<Props> = ({
                         </div>
                     )}
                 </div>
-            </div>
-            <div className="statement__chatCard__right">
+            </div> */}
+            {/* <div className="statement__chatCard__right">
                 {_isAuthrized &&
                 !isQuestion &&
                 parentStatement.statementType === StatementType.question ? (
@@ -131,7 +156,7 @@ const StatementChat: FC<Props> = ({
                     setEdit={setIsEdit}
                     edit={isEdit}
                 />
-            </div>
+            </div> */}
         </div>
     );
 };
