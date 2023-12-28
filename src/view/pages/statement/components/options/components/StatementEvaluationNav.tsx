@@ -1,9 +1,8 @@
 import React, { FC } from "react";
 
 // Third party libraries
-import { Statement } from "delib-npm";
+import { Statement,Screen,NavObject } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
-import { NavObject, Screen } from "../../../../../../model/system";
 import { t } from "i18next";
 
 // Custom components
@@ -12,6 +11,7 @@ import Fav from "../../../../../components/fav/Fav";
 interface Props {
     statement: Statement;
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    showNav?: boolean;
 }
 
 const optionsArray: NavObject[] = [
@@ -45,7 +45,7 @@ const votesArray: NavObject[] = [
     { link: Screen.VOTES_UPDATED, name: "Update", id: Screen.VOTES_UPDATED },
 ];
 
-const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
+const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement, showNav = true }) => {
     const { page, sort } = useParams();
     const navArray = page === "vote" ? votesArray : optionsArray;
 
@@ -61,7 +61,7 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
 
     return (
         <nav className="options__nav" style={{ position: "relative" }}>
-            {navArray.map((navObject: NavObject) => (
+            {showNav&& navArray.map((navObject: NavObject) => (
                 <Link
                     key={navObject.id}
                     to={`${navObject.link}`}
@@ -80,6 +80,7 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
             {addVotingOption && page === Screen.VOTE && (
                 <Fav isHome={false} onclick={handleToggleModal} />
             )}
+            {page === Screen.QUESTIONS_MASS ? (<Fav isHome={false} onclick={handleToggleModal} />):null}
         </nav>
     );
 };

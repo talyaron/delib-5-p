@@ -196,19 +196,10 @@
             box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
             user-select: none;
             cursor: pointer;
-            button {
-                color: white;
-                text-align: center;
-                font-size: 3rem;
-                background: var(--accent);
-                width: 3rem;
-                height: 3rem;
-                &:hover {
-                    background-color: var(--accent);
-                }
-                svg {
-                    transform: rotate(180deg) translateX(5%);
-                }
+            .sendBtn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }

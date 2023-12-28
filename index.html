@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="./src/assets/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Delib 5</title>
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("/firebase-messaging-sw.js")
+                    .then((registration) => {
+                        console.info("firebase-messaging-sw.js was registerd");
 
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Delib 5</title>
-    <script>
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker
-                .register("/firebase-messaging-sw.js")
-                .then((registration) => {
-                    console.info("firebase-messaging-sw.js was registerd");
+                        registration.addEventListener("updatefound", () => {
+                            // If updatefound is fired, it means that there's
+                            // a new service worker being installed.
+                            console.info(
+                                "new firebase-messaging-sw.js being installed"
+                            );
+                            const installingWorker = registration.installing;
+                            console.info(
+                                "A new firebase-messaging-sw.js is being installed:",
+                                installingWorker
+                            );
 
-                    registration.addEventListener("updatefound", () => {
-                        // If updatefound is fired, it means that there's
-                        // a new service worker being installed.
-                        console.info(
-                            "new firebase-messaging-sw.js being installed"
-                        );
-                        const installingWorker = registration.installing;
-                        console.info(
-                            "A new firebase-messaging-sw.js is being installed:",
-                            installingWorker
-                        );
-
-                        // You can listen for changes to the installing service worker's
-                        // state via installingWorker.onstatechange
+                            // You can listen for changes to the installing service worker's
+                            // state via installingWorker.onstatechange
+                        });
                     });
-            })
-        }
+            }
         </script>
     </head>
     <style>

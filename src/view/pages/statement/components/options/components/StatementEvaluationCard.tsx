@@ -1,26 +1,32 @@
 import { FC, useEffect, useState, useRef } from "react";
+
+// Third Party
 import { Statement, StatementType } from "delib-npm";
+import { useNavigate } from "react-router";
+
+// Redux Store
 import {
     useAppDispatch,
     useAppSelector,
 } from "../../../../../../functions/hooks/reduxHooks";
-// import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import {
     setStatementElementHight,
     statementSubscriptionSelector,
 } from "../../../../../../model/statements/statementsSlice";
 
+// Custom Components
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
-
-//images
-
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
-import StatementChatSetEdit from "../../chat/components/StatementChatSetEdit";
-import { isAuthorized } from "../../../../../../functions/general/helpers";
-import StatementChatMore from "../../chat/StatementChatMore";
+import SetEdit from "../../../../../components/edit/SetEdit";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
-import { useNavigate } from "react-router";
+import StatementChatMore from "../../chat/StatementChatMore";
+
+// Helpers
+import {
+    isAuthorized,
+    linkToChildren,
+} from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -43,7 +49,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
-    const { hasChildren } = parentStatement;
+    // const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
@@ -62,7 +68,7 @@ const StatementEvaluationCard: FC<Props> = ({
     }, []);
 
     function handleGoToOption() {
-        if (!edit) navigate(`/statement/${statement.statementId}/chat`);
+        if (!edit && linkToChildren(statement, parentStatement)) navigate(`/statement/${statement.statementId}/chat`);
     }
 
     return (
@@ -77,12 +83,19 @@ const StatementEvaluationCard: FC<Props> = ({
         >
             <div className="options__card__main">
                 <div className="options__card__text text">
-                    <StatementChatSetEdit
+                    <SetEdit
                         isAuthrized={_isAuthrized}
                         edit={edit}
                         setEdit={setEdit}
                     />
-                    <div className="clickable" onClick={handleGoToOption}>
+                    <div
+                        className={
+                            linkToChildren(statement, parentStatement)
+                                ? "clickable"
+                                : ""
+                        }
+                        onClick={handleGoToOption}
+                    >
                         <EditTitle
                             statement={statement}
                             isEdit={edit}
@@ -94,7 +107,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
                 <Evaluation statement={statement} />
             </div>
-            {hasChildren ? (
+            {linkToChildren(statement, parentStatement) ? (
                 <>
                     <AddSubQuestion statement={statement} />
                     <div className="options__card__chat">

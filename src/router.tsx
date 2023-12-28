@@ -10,12 +10,12 @@ import Loader from "./view/components/loaders/Loader";
 import Home from "./view/pages/home/Home";
 import App from "./App";
 import Page404 from "./view/pages/page404/Page404";
-import Statement from "./view/pages/statement/Statement";
+// import Statement from "./view/pages/statement/Statement";
 // import Main from "./view/pages/main/Main";
 
 // Lazy loading
 const Main = lazy(() => import("./view/pages/main/Main"));
-// const Statement = lazy(() => import("./view/pages/statement/Statement"));
+const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const SetStatement = lazy(
     () => import("./view/pages/statement/components/set/SetStatement")
 );

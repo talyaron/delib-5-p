@@ -1,5 +1,4 @@
 import { FC } from "react";
-// import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import edit from "../../../assets/edit.svg";
 import { Statement } from "delib-npm";
 import { useNavigate } from "react-router-dom";

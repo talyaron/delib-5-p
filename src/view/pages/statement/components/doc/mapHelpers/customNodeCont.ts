@@ -1,5 +1,5 @@
 import dagre from "@dagrejs/dagre";
-import { Results } from "delib-npm";
+import { Results, Statement } from "delib-npm";
 import { Edge, Node, Position } from "reactflow";
 
 const position = { x: 0, y: 0 };
@@ -18,8 +18,18 @@ export const getLayoutedElements = (
 
     dagreGraph.setGraph({ rankdir: direction });
 
-    nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+    nodes.forEach((node, index) => {
+        if (index === 0) {
+            dagreGraph.setNode(node.id, {
+                width: nodeWidth * 1.5,
+                height: nodeHeight * 1.5,
+            });
+        } else {
+            dagreGraph.setNode(node.id, {
+                width: nodeWidth,
+                height: nodeHeight,
+            });
+        }
     });
 
     edges.forEach((edge) => {
@@ -53,13 +63,12 @@ const edgeStyle = {
     strokeOpacity: 0.5,
 };
 
-const nodeOptions = (result: Results, parentId: string) => {
+const nodeOptions = (result: Results, parentData: "top" | Statement) => {
     return {
         id: result.top.statementId,
         data: {
-            label: result.top.statement,
-            type: result.top.statementType,
-            parentId,
+            result,
+            parentData,
         },
         position,
         type: "custom",
@@ -74,6 +83,7 @@ const edgeOptions = (result: Results, parentId: string): Edge => {
         style: edgeStyle,
     };
 };
+
 export const createInitialNodesAndEdges = (result: Results) => {
     try {
         const edges: Edge[] = [];
@@ -85,24 +95,24 @@ export const createInitialNodesAndEdges = (result: Results) => {
         if (result?.sub?.length === 0) {
             return { nodes, edges };
         } else {
-            createNodes(result.sub, result.top.statementId);
+            createNodes(result.sub, result.top);
         }
 
-        function createNodes(results: Results[], parentId: string) {
+        function createNodes(results: Results[], parentData: Statement) {
             results.forEach((sub) => {
-                nodes.push(nodeOptions(sub, parentId));
+                nodes.push(nodeOptions(sub, parentData));
 
-                edges.push(edgeOptions(sub, parentId));
+                edges.push(edgeOptions(sub, parentData.statementId));
 
                 if (sub.sub && sub.sub.length > 0) {
-                    createNodes(sub.sub, sub.top.statementId);
+                    createNodes(sub.sub, sub.top);
                 }
             });
         }
 
         return { nodes, edges };
     } catch (error) {
-        console.log("createInitialElements() failed: ", error);
+        console.error("createInitialElements() failed: ", error);
         return { nodes: [], edges: [] };
     }
 };
