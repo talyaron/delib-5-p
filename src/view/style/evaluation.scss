@@ -1,0 +1,17 @@
+.evaluation{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    justify-content: center;
+
+    &__box{
+        display: flex;
+       
+        align-items: center;  
+        &__icon{
+            padding: .5rem;
+        }
+    }
+}

@@ -15,8 +15,6 @@ import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import StatementEvaluationNav from "./components/StatementEvaluationNav";
 
-
-
 interface Props {
     statement: Statement;
     subStatements: Statement[];
@@ -48,47 +46,51 @@ const StatementEvaluation: FC<Props> = ({
         let topSum = 10;
         let tops: number[] = [topSum];
 
-
         return (
-            <ScreenFadeIn className="page__main">
-                <div className="wrapper">
-                    {sortedSubStatements?.map(
-                        (statementSub: Statement, i: number) => {
-                            //get the top of the element
-                            if (statementSub.elementHight) {
-                                topSum += statementSub.elementHight + 30;
-                                tops.push(topSum);
-                            }
+            <>
+                <div className="page__main">
+                    <div className="wrapper">
+                        {sortedSubStatements?.map(
+                            (statementSub: Statement, i: number) => {
+                                //get the top of the element
+                                if (statementSub.elementHight) {
+                                    topSum += statementSub.elementHight + 30;
+                                    tops.push(topSum);
+                                }
 
-                            return (
-                                <StatementEvaluationCard
-                                    key={statementSub.statementId}
-                                    parentStatement={statement}
-                                    statement={statementSub}
-                                    showImage={handleShowTalker}
-                                    top={tops[i]}
-                                />
-                            );
-                        }
+                                return (
+                                    <StatementEvaluationCard
+                                        key={statementSub.statementId}
+                                        parentStatement={statement}
+                                        statement={statementSub}
+                                        showImage={handleShowTalker}
+                                        top={tops[i]}
+                                    />
+                                );
+                            }
+                        )}
+                        <div className="options__bottom" style={{height:`${topSum+70}px`}}></div>
+                    </div>
+
+                    {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
+                    {showModal && (
+                        <Modal>
+                            <NewSetStatementSimple
+                                parentData={statement}
+                                isOption={true}
+                                setShowModal={setShowModal}
+                            />
+                        </Modal>
                     )}
                 </div>
-                <div className="page__main__bottom">
+
+                <div className="page__footer">
                     <StatementEvaluationNav
                         setShowModal={setShowModal}
                         statement={statement}
                     />
                 </div>
-                {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
-                {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentData={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                        />
-                    </Modal>
-                )}
-            </ScreenFadeIn>
+            </>
         );
     } catch (error) {
         console.error(error);

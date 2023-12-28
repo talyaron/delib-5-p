@@ -48,17 +48,14 @@ const Evaluation: FC<Props> = ({ statement }) => {
     }, [statement.con, statement.pro]);
 
     return (
-        <div className={styles.evaluation}>
+        <div className="evaluation">
             <div
-                className="options__card__more__vote"
+                className="evaluation__box"
                 style={{ flexDirection: direction }}
             >
-                <div
-                    className="options__card__more__vote__down"
-                    style={{ flexDirection: direction }}
-                >
-                    <span>{conVote}</span>
-                    {isOption && (
+                <span>{conVote}</span>
+                {isOption && (
+                    <div className="evaluation__box__icon">
                         <Thumbs
                             evaluation={evaluation}
                             upDown="down"
@@ -66,13 +63,11 @@ const Evaluation: FC<Props> = ({ statement }) => {
                             setConVote={setConVote}
                             setProVote={setProVote}
                         />
-                    )}
-                </div>
-                <div
-                    className="options__card__more__vote__up"
-                    style={{ flexDirection: direction }}
-                >
-                    {isOption && (
+                    </div>
+                )}
+
+                {isOption && (
+                    <div className="evaluation__box__icon">
                         <Thumbs
                             evaluation={evaluation}
                             upDown="up"
@@ -80,9 +75,9 @@ const Evaluation: FC<Props> = ({ statement }) => {
                             setProVote={setProVote}
                             setConVote={setConVote}
                         />
-                    )}
-                    <span>{proVote}</span>
-                </div>
+                    </div>
+                )}
+                <span>{proVote}</span>
             </div>
             <div className={styles.consensus}>{consensusToDisplay}</div>
         </div>

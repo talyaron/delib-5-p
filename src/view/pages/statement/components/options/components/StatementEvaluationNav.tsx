@@ -60,15 +60,15 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement, showNav = 
         statement.statementSettings?.enableAddVotingOption;
 
     return (
-        <nav className="options__nav" style={{ position: "relative" }}>
+        <nav className="bottomNav" style={{ position: "relative" }}>
             {showNav&& navArray.map((navObject: NavObject) => (
                 <Link
                     key={navObject.id}
                     to={`${navObject.link}`}
                     className={
                         sort === navObject.link
-                            ? "options__nav__button options__nav__button--selected"
-                            : "options__nav__button"
+                            ? "bottomNav__button bottomNav__button--selected"
+                            : "bottomNav__button"
                     }
                 >
                     {t(navObject.name)}

@@ -33,6 +33,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
   
 
     return (
+        <>
         <div className="page__main">
             <div className="wrapper">
                 {!showThankYou ? (
@@ -82,7 +83,9 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     </div>
                 )}
             </div>
-            {!showThankYou && _isAutorized ? (
+           
+        </div>
+        {!showThankYou && _isAutorized ? (
                 <div className="page__main__bottom">
                     <StatementEvaluationNav
                         setShowModal={setShowModal}
@@ -100,7 +103,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     )}
                 </div>
             ) : null}
-        </div>
+            </>
     );
 };
 
