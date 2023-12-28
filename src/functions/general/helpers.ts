@@ -96,11 +96,7 @@ export function getNewStatment({
             consensus: 0,
             statementType: statementType || StatementType.statement,
         };
-        newStatement.subScreens = [
-            Screen.CHAT,
-            Screen.OPTIONS,
-            Screen.VOTE,
-        ];
+        newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
 
         return newStatement;
     } catch (error) {
@@ -277,3 +273,14 @@ export function linkToChildren(
     }
 }
 
+export function getPastelColor() {
+    return (
+        "hsl(" +
+        360 * Math.random() +
+        "," +
+        (25 + 70 * Math.random()) +
+        "%," +
+        (85 + 10 * Math.random()) +
+        "%)"
+    );
+}

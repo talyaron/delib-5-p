@@ -4,16 +4,12 @@ import React, { FC, SetStateAction } from "react";
 import { Statement } from "delib-npm";
 
 // Assets
-import ThumbDown from "../../../assets/icons/voteDown.svg";
-import ThumbUp from "../../../assets/icons/voteUp.svg";
-import ThumbDownWhite from "../../../assets/icons/voteDownWhite.svg";
-import ThumbUpWhite from "../../../assets/icons/voteUpWhite.svg";
+import SmileIcon from "../../../assets/icons/SmileIcon";
+import FrownIcon from "../../../assets/icons/FrownIcon";
 
 // Statement helpers
 import { setEvaluationToDB } from "../../../functions/db/evaluation/setEvaluation";
 
-// Style
-import styles from "./Thumbs.module.scss";
 
 interface ThumbsProps {
     evaluation: number;
@@ -63,41 +59,29 @@ const Thumbs: FC<ThumbsProps> = ({
     if (upDown === "up") {
         if (evaluation > 0) {
             return (
-                <div
-                    className={styles.pressedRight}
-                    onClick={() => handleVote(true)}
-                >
-                    <img src={ThumbUpWhite} alt="vote up" />
+                <div onClick={() => handleVote(true)}>
+                    <SmileIcon />
                 </div>
             );
         } else {
             return (
-                <div
-                    className={styles.pressRight}
-                    onClick={() => handleVote(true)}
-                >
+                <div onClick={() => handleVote(true)}>
                     {" "}
-                    <img src={ThumbUp} alt="vote up" />
+                    <SmileIcon color="lightgray" />
                 </div>
             );
         }
     } else {
         if (evaluation < 0) {
             return (
-                <div
-                    className={styles.pressedLeft}
-                    onClick={() => handleVote(false)}
-                >
-                    <img src={ThumbDownWhite} alt="vote down" />
+                <div onClick={() => handleVote(false)}>
+                    <FrownIcon />
                 </div>
             );
         } else {
             return (
-                <div
-                    className={styles.pressLeft}
-                    onClick={() => handleVote(false)}
-                >
-                    <img src={ThumbDown} alt="vote down" />
+                <div onClick={() => handleVote(false)}>
+                    <FrownIcon color="lightgray" />
                 </div>
             );
         }

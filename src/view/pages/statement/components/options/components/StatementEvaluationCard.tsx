@@ -24,6 +24,7 @@ import StatementChatMore from "../../chat/StatementChatMore";
 
 // Helpers
 import {
+    getPastelColor,
     isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
@@ -68,20 +69,21 @@ const StatementEvaluationCard: FC<Props> = ({
     }, []);
 
     function handleGoToOption() {
-        if (!edit && linkToChildren(statement, parentStatement)) navigate(`/statement/${statement.statementId}/chat`);
+        if (!edit && linkToChildren(statement, parentStatement))
+            navigate(`/statement/${statement.statementId}/chat`);
     }
 
     return (
         <div
             className={
                 statement.statementType === StatementType.result
-                    ? "options__card options__card--result"
-                    : "options__card"
+                    ? "optionCard optionCard--result"
+                    : "optionCard"
             }
-            style={{ top: `${newTop}px` }}
+            style={{ top: `${newTop}px` , borderLeft:`8px solid ${statement.color || getPastelColor()}`}}
             ref={elementRef}
         >
-            <div className="options__card__main">
+            <div className="optionCard__info">
                 <div className="options__card__text text">
                     <SetEdit
                         isAuthrized={_isAuthrized}
@@ -104,20 +106,14 @@ const StatementEvaluationCard: FC<Props> = ({
                         />
                     </div>
                 </div>
-
-                <Evaluation statement={statement} />
             </div>
-            {linkToChildren(statement, parentStatement) ? (
-                <>
-                    <AddSubQuestion statement={statement} />
-                    <div className="options__card__chat">
-                        <StatementChatMore statement={statement} />
-                        <div className="options__card__chat__settings">
-                            <StatementChatSetOption statement={statement} />
-                        </div>
-                    </div>
-                </>
-            ) : null}
+            <div className="optionCard__actions">
+                <Evaluation statement={statement} />
+                <AddSubQuestion statement={statement} />
+                <StatementChatSetOption statement={statement} />
+                {linkToChildren(statement, parentStatement) && <StatementChatMore statement={statement} />}
+            </div>
+           
         </div>
     );
 };
