@@ -7,7 +7,7 @@ import ChatIcon from "../../../../components/icons/ChatIcon";
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
 
 // Third party
-import { Statement, StatementSubscription, StatementType } from "delib-npm";
+import { Statement, StatementSubscription } from "delib-npm";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { t } from "i18next";
 

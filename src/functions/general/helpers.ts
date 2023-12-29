@@ -267,8 +267,7 @@ export function linkToChildren(
         const isStatement = statement.statementType === StatementType.statement;
         const isOption = isOptionFn(statement);
         const hasChildren = parentStatement.hasChildren;
-        console.log(statement.statement, "isQuestion",isQuestion, "isStatement", isStatement, hasChildren)
-
+       
         if (isQuestion) return true;
         if (isOption && hasChildren) return true;
         if(isStatement && hasChildren) return true;
