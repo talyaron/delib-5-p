@@ -63,16 +63,8 @@ const StatementChat: FC<Props> = ({
             navigate(`/statement/${statement.statementId}/chat`);
     }
 
-    // console.log(
-    //     "is option",
-    //     isOption,
-    //     "can have children",
-    //     parentStatement.hasChildren
-    // );
-    // console.log(statement);
-
     return (
-        <div className={isMe ? "message--me" : "message"}>
+        <div className={isMe ? "message message--me" : "message"}>
             <div className="message__user">
                 <ProfileImage statement={statement} showImage={showImage} />
                 <h3>{statement.creator.displayName}</h3>

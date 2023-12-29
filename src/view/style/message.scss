@@ -2,18 +2,23 @@
     display: flex;
     flex-direction: column;
     direction: rtl;
+    max-width: 75ch;
+    margin: auto;
+    padding: 1rem;
+
     &--me {
         display: flex;
         flex-direction: column;
+        direction: ltr;
     }
 
     &__box {
         width: 80%;
-        height: 150px;
+        height: 100px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-color: var(--mainColor);
+        background-color: var(--question);
         padding: 1rem;
         margin: 0 4rem;
         border-radius: 10px;
@@ -23,12 +28,13 @@
             // filter: drop-shadow(-1px 6px 3px rgba(0, 0, 0, 0.1));
             height: 2rem;
             width: 2rem;
-            position: absolute;
-            top: 0;
-            left: -1.5rem;
+            // position: absolute;
+            // top: 0;
+            // left: -1.2rem;
             .triangle {
                 clip-path: polygon(30% 0, 100% 100%, 100% 0);
-                background-color: var(--mainColor);
+                // background-color: var(--question);
+                background-color: #000;
                 height: 2rem;
                 width: 2rem;
             }

@@ -54,8 +54,7 @@ const StatementMain: FC<Props> = ({
 
     return !toSlide ? (
         <>
-        <ScreenFadeIn className="page__main fade-in">
-            <div className="wrapper wrapper--chat">
+            <div className="page__main">
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
@@ -67,34 +66,30 @@ const StatementMain: FC<Props> = ({
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-           
-        </ScreenFadeIn>
-        <div className="page__footer">
+            <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}
             </div>
         </>
     ) : (
         <>
-        <ScreenSlide className={"page__main" + " " + slideInOrOut}>
-            <div className="wrapper wrapper--chat">
-                {subStatements?.map((statementSub: Statement) => (
-                    <div key={statementSub.statementId}>
-                        <StatementChat
-                            statement={statementSub}
-                            parentStatement={statement}
-                            showImage={handleShowTalker}
-                        />
-                    </div>
-                ))}
-                <div ref={messagesEndRef} />
-            </div>
-            
-        </ScreenSlide>
-        <div className="page__footer">
+            <ScreenSlide className={"page__main" + " " + slideInOrOut}>
+                <div className="wrapper wrapper--chat">
+                    {subStatements?.map((statementSub: Statement) => (
+                        <div key={statementSub.statementId}>
+                            <StatementChat
+                                statement={statementSub}
+                                parentStatement={statement}
+                                showImage={handleShowTalker}
+                            />
+                        </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                </div>
+            </ScreenSlide>
+            <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}
             </div>
         </>
-       
     );
 };
 
