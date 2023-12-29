@@ -43,7 +43,7 @@ const StatementEvaluation: FC<Props> = ({
             );
         }, [sort, subStatements]);
 
-        let topSum = 10;
+        let topSum = 30;
         let tops: number[] = [topSum];
 
         return (

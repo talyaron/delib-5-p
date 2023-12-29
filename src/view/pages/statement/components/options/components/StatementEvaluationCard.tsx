@@ -28,6 +28,7 @@ import {
     isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
+import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 
 interface Props {
     statement: Statement;
@@ -80,16 +81,19 @@ const StatementEvaluationCard: FC<Props> = ({
                     ? "optionCard optionCard--result"
                     : "optionCard"
             }
-            style={{ top: `${newTop}px` , borderLeft:`8px solid ${statement.color || getPastelColor()}`}}
+            style={{
+                top: `${newTop}px`,
+                borderLeft: `8px solid ${statement.color || getPastelColor()}`,
+            }}
             ref={elementRef}
         >
             <div className="optionCard__info">
-                <div className="options__card__text text">
-                    <SetEdit
+                <div className="optionCard__info__text">
+                    {/* <SetEdit
                         isAuthrized={_isAuthrized}
                         edit={edit}
                         setEdit={setEdit}
-                    />
+                    /> */}
                     <div
                         className={
                             linkToChildren(statement, parentStatement)
@@ -104,16 +108,21 @@ const StatementEvaluationCard: FC<Props> = ({
                             setEdit={setEdit}
                             isTextArea={true}
                         />
+                      
                     </div>
+                    <MoreIcon />
                 </div>
+                {linkToChildren(statement, parentStatement) && (
+                        <div className="optionCard__info__chat">
+                            <StatementChatMore statement={statement} />
+                        </div>
+                    )}
             </div>
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
                 <AddSubQuestion statement={statement} />
                 <StatementChatSetOption statement={statement} />
-                {linkToChildren(statement, parentStatement) && <StatementChatMore statement={statement} />}
             </div>
-           
         </div>
     );
 };

@@ -1,5 +1,4 @@
-
-.optionCard{
+.optionCard {
     border-radius: .35rem 0rem 0rem .35rem;
     background-color: white;
 
@@ -7,16 +6,23 @@
     padding: var(--padding);
     transition: all 1s ease-in-out;
     position: absolute;
-   width:calc(100% - 2rem);
-    gap:.4rem;
+    width: calc(100% - 2rem);
+    gap: .4rem;
     box-sizing: border-box;
     margin-bottom: 20rem;
-   
 
-    &__info{
-        color:var(--header)
+
+    &__info {
+        color: var(--header);
+
+        &__text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
     }
-    &__actions{
+
+    &__actions {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -25,24 +31,25 @@
         gap: 1rem;
         border-top: 1px solid var(--shadow);
     }
-    &:nth-child(-1){
+
+    &:nth-child(-1) {
         border-left: .71rem solid var(--accent);
     }
 }
 
 .options {
 
-    &__bottom{
+    &__bottom {
         height: 5rem;
         width: 100%;
- 
-      
+
+
     }
-  
 
-   
 
-    
+
+
+
 }
 
 .press {
