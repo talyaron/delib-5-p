@@ -52,8 +52,6 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 if (!newStatement) throw new Error("No statement");
 
-               
-
                 setStatmentToDB(newStatement);
                 e.target.value = "";
             }
@@ -70,22 +68,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
             style={{ flexDirection: direction }}
         >
             <button type="submit" className="statement__form__sendBtnBox">
-                {/* <MdSend
-                    color="white"
-                    size="1.5rem"
-                    style={{
-                        transform: "rotate(180deg) translateX(5%)",
-                        zIndex: 1,
-                    }}
-                /> */}
-                <div
-                    style={{
-                        transform: "rotate(180deg) translateX(5%)",
-                        zIndex: 1,
-                    }}
-                >
-                    <SendIcon />
-                </div>
+                <SendIcon />
             </button>
             <textarea
                 rows={3}

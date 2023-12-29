@@ -6,7 +6,6 @@ import { Statement } from "delib-npm";
 // Custom Components
 import StatementChat from "./chat/StatementChat";
 import StatementInput from "./StatementInput";
-import ScreenFadeIn from "../../../components/animation/ScreenFadeIn";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
 
@@ -72,17 +71,15 @@ const StatementMain: FC<Props> = ({
     ) : (
         <>
             <ScreenSlide className={"page__main" + " " + slideInOrOut}>
-                <div className="wrapper wrapper--chat">
-                    {subStatements?.map((statementSub: Statement) => (
-                        <div key={statementSub.statementId}>
-                            <StatementChat
-                                statement={statementSub}
-                                showImage={handleShowTalker}
-                            />
-                        </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                </div>
+                {subStatements?.map((statementSub: Statement) => (
+                    <div key={statementSub.statementId}>
+                        <StatementChat
+                            statement={statementSub}
+                            showImage={handleShowTalker}
+                        />
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
             </ScreenSlide>
             <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}

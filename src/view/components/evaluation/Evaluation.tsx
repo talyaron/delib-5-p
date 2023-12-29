@@ -11,10 +11,6 @@ import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 
 // Stetement helpers
 import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice";
-import { isOptionFn } from "../../../functions/general/helpers";
-
-// Style
-import styles from "./Evaluation.module.scss";
 
 // Custom Hooks
 import useDirection from "../../../functions/hooks/useDirection";

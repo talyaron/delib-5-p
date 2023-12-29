@@ -8,7 +8,6 @@ import Modal from "../../../../components/modal/Modal";
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";

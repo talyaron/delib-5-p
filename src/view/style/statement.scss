@@ -167,13 +167,13 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 0 1rem;
 
         &__input {
             padding: 0.5rem 1rem;
             resize: none;
             outline: none;
             border: none;
+            border-radius: 3rem;
             flex: auto;
             box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
         }
@@ -184,7 +184,7 @@
         }
 
         &__sendBtnBox {
-            background: var(--halfPrimary);
+            background: var(--question);
             width: 4rem;
             height: 4rem;
             display: flex;
