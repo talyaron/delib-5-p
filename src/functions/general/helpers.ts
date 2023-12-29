@@ -284,3 +284,21 @@ export function getPastelColor() {
         "%)"
     );
 }
+
+export function calculateFontSize(
+    text: string,
+    maxSize: number = 6,
+    minSize: number = 14
+) {
+    // Set the base font size and a multiplier for adjusting based on text length
+    const baseFontSize = minSize;
+    const fontSizeMultiplier = 0.2;
+
+    // Calculate the font size based on the length of the text
+    const fontSize = Math.max(
+        baseFontSize - fontSizeMultiplier * text.length,
+        maxSize
+    );
+
+    return `${fontSize}px`;
+}

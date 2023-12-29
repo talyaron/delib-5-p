@@ -11,21 +11,9 @@ import { useMapContext } from "../../../../../../functions/hooks/useMap";
 import PlusIcon from "../../../../../components/icons/PlusIcon";
 
 // Statements functions
-import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
+import { calculateFontSize, statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 
-function calculateFontSize(text: string) {
-    // Set the base font size and a multiplier for adjusting based on text length
-    const baseFontSize = 16;
-    const fontSizeMultiplier = 0.5;
 
-    // Calculate the font size based on the length of the text
-    const fontSize = Math.max(
-        baseFontSize - fontSizeMultiplier * text.length,
-        6
-    );
-
-    return `${fontSize}px`;
-}
 
 const resultColor = "#8FF18F";
 const questionColor = "#5252FD";

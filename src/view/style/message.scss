@@ -19,15 +19,16 @@
 
     &__box {
         width: 80%;
-        height: 10rem;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        gap: 0.5rem;
         background-color: var(--white);
         padding: 1rem 1rem 0 1rem;
         margin: 0 4rem;
         border-radius: 10px;
-        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 3px 3px 3px var(--shadow);
         position: relative;
         &__triangle {
             clip-path: polygon(0 0, 0% 100%, 70% 0);
@@ -37,7 +38,7 @@
             width: 2rem;
             position: absolute;
             top: 0;
-            right: -1.4rem;
+            right: -1.2rem;
             &--me {
                 clip-path: polygon(30% 0, 100% 100%, 100% 0);
                 background-color: inherit;
@@ -46,7 +47,7 @@
                 width: 2rem;
                 position: absolute;
                 top: 0;
-                left: -1.4rem;
+                left: -1.2rem;
             }
         }
         &__info {

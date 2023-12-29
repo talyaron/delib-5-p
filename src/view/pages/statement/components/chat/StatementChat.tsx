@@ -83,9 +83,9 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                 ) : (
                     <div
                         style={{
-                            backgroundColor: "var(--statementBackground",
+                            backgroundColor: "var(--statementBackground)",
                             width: "100%",
-                            height: 1,
+                            height: 2,
                         }}
                     />
                 )}
