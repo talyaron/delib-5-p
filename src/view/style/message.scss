@@ -12,31 +12,41 @@
         direction: ltr;
     }
 
+    .isQuestion {
+        background-color: var(--question);
+        color: var(--question-text);
+    }
+
     &__box {
         width: 80%;
-        height: 100px;
+        height: 10rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-color: var(--question);
-        padding: 1rem;
+        background-color: var(--white);
+        padding: 1rem 1rem 0 1rem;
         margin: 0 4rem;
         border-radius: 10px;
         box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
         position: relative;
         &__triangle {
-            // filter: drop-shadow(-1px 6px 3px rgba(0, 0, 0, 0.1));
+            clip-path: polygon(0 0, 0% 100%, 70% 0);
+            background-color: inherit;
+            // background-color: #000;
             height: 2rem;
             width: 2rem;
-            // position: absolute;
-            // top: 0;
-            // left: -1.2rem;
-            .triangle {
+            position: absolute;
+            top: 0;
+            right: -1.4rem;
+            &--me {
                 clip-path: polygon(30% 0, 100% 100%, 100% 0);
-                // background-color: var(--question);
-                background-color: #000;
+                background-color: inherit;
+                // background-color: #000;
                 height: 2rem;
                 width: 2rem;
+                position: absolute;
+                top: 0;
+                left: -1.4rem;
             }
         }
         &__info {

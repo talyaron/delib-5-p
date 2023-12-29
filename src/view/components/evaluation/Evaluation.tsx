@@ -21,10 +21,10 @@ import useDirection from "../../../functions/hooks/useDirection";
 
 interface Props {
     statement: Statement;
+    displayScore?: boolean;
 }
 
-const Evaluation: FC<Props> = ({ statement }) => {
-    const isOption = isOptionFn(statement);
+const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
     const direction = useDirection();
 
     const initContVote = statement.con ? statement.con : 0;
@@ -53,33 +53,28 @@ const Evaluation: FC<Props> = ({ statement }) => {
                 className="evaluation__box"
                 style={{ flexDirection: direction }}
             >
-                <span>{conVote}</span>
-                {isOption && (
-                    <div className="evaluation__box__icon">
-                        <Thumbs
-                            evaluation={evaluation}
-                            upDown="down"
-                            statement={statement}
-                            setConVote={setConVote}
-                            setProVote={setProVote}
-                        />
-                    </div>
-                )}
-
-                {isOption && (
-                    <div className="evaluation__box__icon">
-                        <Thumbs
-                            evaluation={evaluation}
-                            upDown="up"
-                            statement={statement}
-                            setProVote={setProVote}
-                            setConVote={setConVote}
-                        />
-                    </div>
-                )}
-                <span>{proVote}</span>
+                {displayScore && <span>{conVote}</span>}
+                <div className="evaluation__box__icon">
+                    <Thumbs
+                        evaluation={evaluation}
+                        upDown="down"
+                        statement={statement}
+                        setConVote={setConVote}
+                        setProVote={setProVote}
+                    />
+                </div>
+                <div className="evaluation__box__icon">
+                    <Thumbs
+                        evaluation={evaluation}
+                        upDown="up"
+                        statement={statement}
+                        setProVote={setProVote}
+                        setConVote={setConVote}
+                    />
+                </div>
+                {displayScore && <span>{proVote}</span>}
             </div>
-            <div>{consensusToDisplay}</div>
+            {displayScore && <div>{consensusToDisplay}</div>}
         </div>
     );
 };

@@ -2,8 +2,8 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 import { updateStatementText } from "../../../functions/db/statements/setStatments";
 import styles from "./EditTitle.module.scss";
-import Text from "../text/Text";
 import useDirection from "../../../functions/hooks/useDirection";
+import { statementTitleToDisplay } from "../../../functions/general/helpers";
 
 // import { statementTitleToDisplay } from "../../../functions/general/helpers";
 
@@ -15,7 +15,12 @@ interface Props {
     onlyTitle?: boolean;
 }
 
-const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea, onlyTitle }) => {
+const EditTitle: FC<Props> = ({
+    statement,
+    isEdit,
+    setEdit,
+    isTextArea,
+}) => {
     try {
         if (!statement) return null;
 
@@ -58,10 +63,17 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea, onlyTitl
                 console.error(error);
             }
         }
+
+        const { shortVersion: titleToDisplay } = statementTitleToDisplay(
+            statement.statement,
+            100
+        );
+
         if (!isEdit)
             return (
                 <div style={{ direction: direction, textAlign: align }}>
-                    <Text text={statement.statement} onlyTitle={onlyTitle}/>
+                    {/* <Text text={statement.statement} onlyTitle={onlyTitle} /> */}
+                    <span>{titleToDisplay}</span>
                 </div>
             );
 
@@ -72,6 +84,7 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea, onlyTitl
                     defaultValue={statement.statement}
                     onBlur={handleSetTitle}
                     onKeyUp={handleSetTitle}
+                    autoFocus={true}
                 />
             );
         } else {
@@ -82,6 +95,7 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea, onlyTitl
                     defaultValue={title}
                     onBlur={handleSetTitle}
                     onKeyUp={handleSetTitle}
+                    autoFocus={true}
                 />
             );
         }
@@ -92,5 +106,3 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea, onlyTitl
 };
 
 export default EditTitle;
-
-

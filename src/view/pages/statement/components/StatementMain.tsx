@@ -58,7 +58,6 @@ const StatementMain: FC<Props> = ({
                 {subStatements?.map((statementSub: Statement) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
-                            parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}
                         />
@@ -78,7 +77,6 @@ const StatementMain: FC<Props> = ({
                         <div key={statementSub.statementId}>
                             <StatementChat
                                 statement={statementSub}
-                                parentStatement={statement}
                                 showImage={handleShowTalker}
                             />
                         </div>

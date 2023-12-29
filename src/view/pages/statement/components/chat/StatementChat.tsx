@@ -9,39 +9,28 @@ import StatementChatSetOption from "./components/StatementChatSetOption";
 import ProfileImage from "./components/ProfileImage";
 import EditTitle from "../../../../components/edit/EditTitle";
 import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
+import StatementChatSetEdit from "../../../../components/edit/SetEdit";
+import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
+import Evaluation from "../../../../components/evaluation/Evaluation";
 
 // Redux Store
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
 import { store } from "../../../../../model/store";
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
-import { bubbleclass } from "./StatementChatCont";
-import StatementChatSetEdit from "../../../../components/edit/SetEdit";
+
+// Helper functions
 import {
     isAuthorized,
     isOptionFn,
-    isStatementTypeAllowed,
-    linkToChildren,
 } from "../../../../../functions/general/helpers";
-
-import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
-import { useNavigate } from "react-router";
-import QuestionCircleIcon from "../../../../components/icons/QuestionCircleIcon";
-import HappySmileyIcon from "../../../../components/icons/HappySmileyIcon";
-import SadSmileyIcon from "../../../../components/icons/SadSmileyIcon";
 
 interface Props {
     statement: Statement;
-    parentStatement: Statement;
     showImage: Function;
     setShowModal?: Function;
 }
 
-const StatementChat: FC<Props> = ({
-    statement,
-    parentStatement,
-    showImage,
-}) => {
-    const navigate = useNavigate();
+const StatementChat: FC<Props> = ({ statement, showImage }) => {
     const { statementType } = statement;
 
     const statementSubscription = useAppSelector(
@@ -56,32 +45,40 @@ const StatementChat: FC<Props> = ({
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
 
-    const [isEdit, setIsEdit] = useState(false);
+    const displayChat = isQuestion || isOption;
 
-    function handleGoToStatement() {
-        if (!isEdit && (parentStatement.hasChildren || isQuestion))
-            navigate(`/statement/${statement.statementId}/chat`);
-    }
+    const [isEdit, setIsEdit] = useState(false);
 
     return (
         <div className={isMe ? "message message--me" : "message"}>
             <div className="message__user">
                 <ProfileImage statement={statement} showImage={showImage} />
-                <h3>{statement.creator.displayName}</h3>
+                <span>{statement.creator.displayName}</span>
             </div>
 
-            <div className="message__box">
-                <div className="message__box__triangle">
-                    <div className="triangle"></div>
-                </div>
+            <div className={`message__box ${isQuestion && "isQuestion"}`}>
+                <div
+                    className={
+                        isMe
+                            ? "message__box__triangle--me"
+                            : "message__box__triangle"
+                    }
+                ></div>
                 <div className="message__box__info">
-                    <span>{statement.statement}</span>
+                    <EditTitle
+                        statement={statement}
+                        isEdit={isEdit}
+                        setEdit={setIsEdit}
+                        isTextArea={true}
+                    />
                     <StatementChatSetEdit
                         isAuthrized={_isAuthrized}
                         setEdit={setIsEdit}
                         edit={isEdit}
                     />
                 </div>
+
+                {displayChat && <StatementChatMore statement={statement} />}
                 <div className="message__box__actions">
                     <div className="message__box__actions__type">
                         <StatementChatSetOption statement={statement} />
@@ -91,8 +88,10 @@ const StatementChat: FC<Props> = ({
                         <AddSubQuestion statement={statement} />
                     </div>
                     <div className="message__box__actions__evaluations">
-                        <HappySmileyIcon color="black" />
-                        <SadSmileyIcon color="black" />
+                        <Evaluation
+                            statement={statement}
+                            displayScore={false}
+                        />
                     </div>
                 </div>
             </div>
@@ -113,41 +112,8 @@ const StatementChat: FC<Props> = ({
                         }
                         onClick={handleGoToStatement}
                     >
-                        <div className="statement__bubble__text__text">
-                            <EditTitle
-                                statement={statement}
-                                isEdit={isEdit}
-                                setEdit={setIsEdit}
-                                isTextArea={true}
-                            />
-                        </div>
                     </div>
-                    {isOptionFn(statement) &&
-                        isStatementTypeAllowed(parentStatement, statement) && (
-                            <AddSubQuestion statement={statement} />
-                        )}
-                    {linkToChildren(statement, parentStatement) && (
-                        <div className="statement__bubble__more">
-                            <StatementChatMore statement={statement} />
-                        </div>
-                    )}
                 </div>
-            </div> */}
-            {/* <div className="statement__chatCard__right">
-                {_isAuthrized &&
-                !isQuestion &&
-                parentStatement.statementType === StatementType.question ? (
-                    <StatementChatSetOption statement={statement} />
-                ) : null}
-                {_isAuthrized ? (
-                    <StatementChatSetQuestion statement={statement} />
-                ) : null}
-
-                <StatementChatSetEdit
-                    isAuthrized={_isAuthrized}
-                    setEdit={setIsEdit}
-                    edit={isEdit}
-                />
             </div> */}
         </div>
     );

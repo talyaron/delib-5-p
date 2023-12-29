@@ -20,6 +20,8 @@
 :root {
     // --- MAIN COLORS ---
 
+    --statementBackground: #f2f6ff;
+
     //results
     --result: #a9adf4;
     --result-text: white;
@@ -158,7 +160,6 @@ b {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid red;
 }
 
 .card {
