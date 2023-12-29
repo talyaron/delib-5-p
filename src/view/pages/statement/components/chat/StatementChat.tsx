@@ -105,10 +105,9 @@ const StatementChat: FC<Props> = ({
                             />
                         </div>
                     </div>
-                    {isOptionFn(statement) &&
-                        isStatementTypeAllowed(parentStatement, statement) && (
-                            <AddSubQuestion statement={statement} />
-                        )}
+                    {isStatementTypeAllowed(parentStatement, statement) && (
+                        <AddSubQuestion statement={statement} />
+                    )}
                     {linkToChildren(statement, parentStatement) && (
                         <div className="statement__bubble__more">
                             <StatementChatMore statement={statement} />

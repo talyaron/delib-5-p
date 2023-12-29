@@ -30,8 +30,6 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     const navigate = useNavigate();
 
-    const { statementType } = statement;
-    if (statementType === StatementType.statement) return null;
 
     return (
         <div
