@@ -1,4 +1,4 @@
-export default function BellSlashIcon({ color }: { color: string }) {
+export default function BellSlashIcon({ color = 'black' }: { color: string }) {
     return (
         <svg
             width="1.3rem"

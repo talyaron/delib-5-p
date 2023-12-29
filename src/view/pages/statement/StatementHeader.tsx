@@ -24,7 +24,7 @@ import HomeIcon from "../../components/icons/HomeIcon";
 import BellSlashIcon from "../../components/icons/BellSlashIcon";
 import BellIcon from "../../components/icons/BellIcon";
 import ShareIcon from "../../components/icons/ShareIcon";
-import { isOptionFn } from "../../../functions/general/helpers";
+
 
 interface Props {
     title: string;
@@ -114,7 +114,8 @@ const StatementHeader: FC<Props> = ({
         setStatmentSubscriptionNotificationToDB(statement);
     }
 
-    const iconColor = isOptionFn(statement) ? "black" : "white";
+    const iconColor = statement.statementType === StatementType.question ? "white" : "black";
+    console.log('iconColor', iconColor)
 
     return (
         <div

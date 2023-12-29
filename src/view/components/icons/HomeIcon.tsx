@@ -1,4 +1,4 @@
-export default function HomeIcon({ color }: { color: string }) {
+export default function HomeIcon({ color = 'black' }: { color: string }) {
     return (
         <svg
             width="1.5rem"

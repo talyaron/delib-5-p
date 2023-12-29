@@ -1,4 +1,4 @@
-export default function BackArrowIcon({ color }: { color: string}) {
+export default function BackArrowIcon({ color = 'black'}: { color: string}) {
     return (
         <svg
             width="2rem"

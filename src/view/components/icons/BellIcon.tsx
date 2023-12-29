@@ -1,4 +1,4 @@
-export default function BellIcon({ color }: { color: string }) {
+export default function BellIcon({ color = 'black'}: { color: string }) {
     return (
         <svg
             width="1.3rem"
