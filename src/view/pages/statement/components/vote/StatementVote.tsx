@@ -91,7 +91,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
             {showModal && (
                 <Modal>
                     <NewSetStatementSimple
-                        parentData={statement}
+                        parentStatement={statement}
                         isOption={true}
                         setShowModal={setShowModal}
                     />

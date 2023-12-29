@@ -38,13 +38,13 @@ const backgroundColor = (type: string) =>
         : "gold";
 
 const nodeStyle = (
-    parentData: any,
+    parentStatement: any,
     statementType: string,
     nodeTitle: string
 ) => {
     const style = {
         backgroundColor:
-            parentData === "top" ? "darkblue" : backgroundColor(statementType),
+            parentStatement === "top" ? "darkblue" : backgroundColor(statementType),
         color: statementType === "question" ? "white" : "black",
         height: 40,
         width: 70,
@@ -62,7 +62,7 @@ const nodeStyle = (
 export default function CustomNode({ data }: NodeProps) {
     const navigate = useNavigate();
 
-    const { result, parentData } = data;
+    const { result, parentStatement } = data;
 
     const { statementId, statement, statementType } = result.top;
 
@@ -86,7 +86,7 @@ export default function CustomNode({ data }: NodeProps) {
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
-            parentData: result.top,
+            parentStatement: result.top,
             isOption: statementType !== "option",
             isQuestion: statementType !== "question",
         }));
@@ -96,7 +96,7 @@ export default function CustomNode({ data }: NodeProps) {
         setMapContext((prev) => ({
             ...prev,
             showModal: true,
-            parentData: parentData,
+            parentStatement: parentStatement,
             isOption: statementType === "option",
             isQuestion: statementType === "question",
         }));
@@ -112,7 +112,7 @@ export default function CustomNode({ data }: NodeProps) {
                 onClick={handleNodeClick}
                 data-id={statementId}
                 style={{
-                    ...nodeStyle(parentData, statementType, nodeTitle),
+                    ...nodeStyle(parentStatement, statementType, nodeTitle),
                     textAlign: "center",
                     wordBreak: "break-word",
                 }}

@@ -114,7 +114,7 @@ const Map: FC<Props> = ({ statement }) => {
             {mapContext.showModal && (
                 <Modal>
                     <NewSetStatementSimple
-                        parentData={mapContext.parentData}
+                        parentStatement={mapContext.parentStatement}
                         isOption={mapContext.isOption}
                         isQuestion={mapContext.isQuestion}
                         setShowModal={toggleModal}

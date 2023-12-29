@@ -63,12 +63,12 @@ const edgeStyle = {
     strokeOpacity: 0.5,
 };
 
-const nodeOptions = (result: Results, parentData: "top" | Statement) => {
+const nodeOptions = (result: Results, parentStatement: "top" | Statement) => {
     return {
         id: result.top.statementId,
         data: {
             result,
-            parentData,
+            parentStatement,
         },
         position,
         type: "custom",
@@ -98,11 +98,11 @@ export const createInitialNodesAndEdges = (result: Results) => {
             createNodes(result.sub, result.top);
         }
 
-        function createNodes(results: Results[], parentData: Statement) {
+        function createNodes(results: Results[], parentStatement: Statement) {
             results.forEach((sub) => {
-                nodes.push(nodeOptions(sub, parentData));
+                nodes.push(nodeOptions(sub, parentStatement));
 
-                edges.push(edgeOptions(sub, parentData.statementId));
+                edges.push(edgeOptions(sub, parentStatement.statementId));
 
                 if (sub.sub && sub.sub.length > 0) {
                     createNodes(sub.sub, sub.top);
