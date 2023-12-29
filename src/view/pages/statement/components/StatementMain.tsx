@@ -53,6 +53,7 @@ const StatementMain: FC<Props> = ({
     }, [subStatements]);
 
     return !toSlide ? (
+        <>
         <ScreenFadeIn className="page__main fade-in">
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
@@ -66,11 +67,14 @@ const StatementMain: FC<Props> = ({
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div className="page__main__bottom">
+           
+        </ScreenFadeIn>
+        <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </ScreenFadeIn>
+        </>
     ) : (
+        <>
         <ScreenSlide className={"page__main" + " " + slideInOrOut}>
             <div className="wrapper wrapper--chat">
                 {subStatements?.map((statementSub: Statement) => (
@@ -84,10 +88,13 @@ const StatementMain: FC<Props> = ({
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div className="page__main__bottom">
+            
+        </ScreenSlide>
+        <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </ScreenSlide>
+        </>
+       
     );
 };
 

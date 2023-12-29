@@ -9,10 +9,10 @@ import NewSetStatementSimple from "../../../set/NewStatementSimple";
 import Modal from "../../../../../../components/modal/Modal";
 
 // Icons
-import AddStatementIcon from "../../../../../../components/icons/AddStatementIcon";
+import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
 
 // Styles
-import styles from "./AddSubQuestion.module.scss";
+
 
 interface Props {
     statement: Statement;
@@ -25,9 +25,9 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
     }
     return (
         <>
-            <div className={styles.box} onClick={handleShwQuestionModal}>
-                <span>{t("Add Question")}</span>
-                <AddStatementIcon />
+            <div className="clickable" onClick={handleShwQuestionModal}>
+
+               <img src={addQuestion} alt={t("Add question")} />
             </div>
             {showQuestionModal && (
                 <Modal>

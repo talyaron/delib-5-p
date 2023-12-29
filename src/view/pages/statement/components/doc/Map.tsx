@@ -103,7 +103,7 @@ const Map: FC<Props> = ({ statement }) => {
             <div
                 style={{
                     flex: "auto",
-                    height: "10vh",
+                    height: "20vh",
                     width: "100%",
                     direction: "ltr",
                 }}

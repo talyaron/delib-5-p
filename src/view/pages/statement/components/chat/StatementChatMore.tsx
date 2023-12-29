@@ -47,7 +47,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                     </div>
                 )}
                 {/* <BsChatLeftText size="1.5rem" /> */}
-                <ChatIcon color={page ? "black" : "white"} />
+                <ChatIcon />
             </div>
             <div className="text">
                 {statement.lastMessage

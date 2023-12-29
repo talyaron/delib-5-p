@@ -1,7 +1,5 @@
 .pressLeft {
     padding: 1rem;
-    border-radius: 4rem 0rem 0px 4rem;
-    background-color: rgb(240, 240, 240);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,10 +15,8 @@
 }
 
 .pressedLeft {
-    background-color: rgb(142, 141, 230);
+  
     padding: 1rem;
-    border-radius: 4rem 0px 0px 4rem;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,8 +33,7 @@
 
 .pressRight {
     padding: 1rem;
-    border-radius: 0rem 4rem 4rem 0rem;
-    background-color: rgb(240, 240, 240);
+   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,9 +49,9 @@
 }
 
 .pressedRight {
-    background-color: rgb(142, 141, 230);
+  
     padding: 1rem;
-    border-radius: 0px 4rem 4rem 0px;
+  
 
     display: flex;
     justify-content: center;
