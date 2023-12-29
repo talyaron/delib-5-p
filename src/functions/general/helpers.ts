@@ -199,7 +199,7 @@ export function generateRandomLightColor(uuid: string) {
     const randomValue = (seed * 9301 + 49297) % 233280;
 
     // Convert the random number to a hexadecimal color code
-    const hexColor = `#${(randomValue & 0x00ffffff)
+    const hexColor = `#${((randomValue & 0x00ffffff) | 0xc0c0c0)
         .toString(16)
         .toUpperCase()}`;
 
