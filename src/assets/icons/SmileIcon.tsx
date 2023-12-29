@@ -1,9 +1,9 @@
-import{FC} from 'react';
+import { FC } from "react";
 
-interface Props{
+interface Props {
     color?: string;
 }
-const SmileIcon:FC<Props> = ({color='#57BCA4'}) => {
+const SmileIcon: FC<Props> = ({ color = "#57BCA4" }) => {
     return (
         <svg
             width="25"

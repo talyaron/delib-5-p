@@ -1,4 +1,4 @@
-export default function QuestionCircleIcon({ color }: { color: string }) {
+export default function QuestionMarkIcon({ color }: { color: string }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
