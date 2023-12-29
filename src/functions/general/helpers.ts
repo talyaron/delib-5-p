@@ -264,11 +264,13 @@ export function linkToChildren(
 ): boolean {
     try {
         const isQuestion = statement.statementType === StatementType.question;
+        const isStatement = statement.statementType === StatementType.statement;
         const isOption = isOptionFn(statement);
         const hasChildren = parentStatement.hasChildren;
 
         if (isQuestion) return true;
         if (isOption && hasChildren) return true;
+        if(isStatement && hasChildren) return true;
 
         return false;
     } catch (error) {
