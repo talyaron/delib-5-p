@@ -8,7 +8,7 @@ import Modal from "../../../../components/modal/Modal";
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
+
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
@@ -43,7 +43,7 @@ const StatementEvaluation: FC<Props> = ({
             );
         }, [sort, subStatements]);
 
-        let topSum = 10;
+        let topSum = 30;
         let tops: number[] = [topSum];
 
         return (
@@ -69,7 +69,10 @@ const StatementEvaluation: FC<Props> = ({
                                 );
                             }
                         )}
-                        <div className="options__bottom" style={{height:`${topSum+70}px`}}></div>
+                        <div
+                            className="options__bottom"
+                            style={{ height: `${topSum + 70}px` }}
+                        ></div>
                     </div>
 
                     {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
@@ -84,12 +87,10 @@ const StatementEvaluation: FC<Props> = ({
                     )}
                 </div>
 
-                <div className="page__footer">
-                    <StatementEvaluationNav
-                        setShowModal={setShowModal}
-                        statement={statement}
-                    />
-                </div>
+                <StatementEvaluationNav
+                    setShowModal={setShowModal}
+                    statement={statement}
+                />
             </>
         );
     } catch (error) {

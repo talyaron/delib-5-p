@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 // Third party libraries
-import { Statement,Screen,NavObject } from "delib-npm";
+import { Statement, Screen, NavObject } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 
@@ -45,7 +45,11 @@ const votesArray: NavObject[] = [
     { link: Screen.VOTES_UPDATED, name: "Update", id: Screen.VOTES_UPDATED },
 ];
 
-const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement, showNav = true }) => {
+const StatementEvaluationNav: FC<Props> = ({
+    setShowModal,
+    statement,
+    showNav = true,
+}) => {
     const { page, sort } = useParams();
     const navArray = page === "vote" ? votesArray : optionsArray;
 
@@ -60,28 +64,33 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement, showNav = 
         statement.statementSettings?.enableAddVotingOption;
 
     return (
-        <nav className="bottomNav" style={{ position: "relative" }}>
-            {showNav&& navArray.map((navObject: NavObject) => (
-                <Link
-                    key={navObject.id}
-                    to={`${navObject.link}`}
-                    className={
-                        sort === navObject.link
-                            ? "bottomNav__button bottomNav__button--selected"
-                            : "bottomNav__button"
-                    }
-                >
-                    {t(navObject.name)}
-                </Link>
-            ))}
-            {addOption && page === Screen.OPTIONS ? (
-                <Fav isHome={false} onclick={handleToggleModal} />
-            ) : null}
-            {addVotingOption && page === Screen.VOTE && (
-                <Fav isHome={false} onclick={handleToggleModal} />
-            )}
-            {page === Screen.QUESTIONS_MASS ? (<Fav isHome={false} onclick={handleToggleModal} />):null}
-        </nav>
+        <div className="page__footer">
+            <nav className="bottomNav" style={{ position: "relative" }}>
+                {showNav &&
+                    navArray.map((navObject: NavObject) => (
+                        <Link
+                            key={navObject.id}
+                            to={`${navObject.link}`}
+                            className={
+                                sort === navObject.link
+                                    ? "bottomNav__button bottomNav__button--selected"
+                                    : "bottomNav__button"
+                            }
+                        >
+                            {t(navObject.name)}
+                        </Link>
+                    ))}
+                {addOption && page === Screen.OPTIONS ? (
+                    <Fav isHome={false} onclick={handleToggleModal} />
+                ) : null}
+                {addVotingOption && page === Screen.VOTE && (
+                    <Fav isHome={false} onclick={handleToggleModal} />
+                )}
+                {page === Screen.QUESTIONS_MASS ? (
+                    <Fav isHome={false} onclick={handleToggleModal} />
+                ) : null}
+            </nav>
+        </div>
     );
 };
 
