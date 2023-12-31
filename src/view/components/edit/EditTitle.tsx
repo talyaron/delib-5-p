@@ -3,7 +3,7 @@ import { FC } from "react";
 import { updateStatementText } from "../../../functions/db/statements/setStatments";
 import styles from "./EditTitle.module.scss";
 import useDirection from "../../../functions/hooks/useDirection";
-import { statementTitleToDisplay } from "../../../functions/general/helpers";
+import Text from "../text/Text";
 
 // import { statementTitleToDisplay } from "../../../functions/general/helpers";
 
@@ -20,6 +20,7 @@ const EditTitle: FC<Props> = ({
     isEdit,
     setEdit,
     isTextArea,
+    onlyTitle
 }) => {
     try {
         if (!statement) return null;
@@ -64,16 +65,12 @@ const EditTitle: FC<Props> = ({
             }
         }
 
-        const { shortVersion: titleToDisplay } = statementTitleToDisplay(
-            statement.statement,
-            100
-        );
-
+  
         if (!isEdit)
             return (
                 <div style={{ direction: direction, textAlign: align }}>
-                    {/* <Text text={statement.statement} onlyTitle={onlyTitle} /> */}
-                    <span>{titleToDisplay}</span>
+                    <Text text={statement.statement} onlyTitle={onlyTitle} />
+                 
                 </div>
             );
 
