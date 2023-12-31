@@ -5,12 +5,8 @@ import { Statement, StatementType } from "delib-npm";
 import { useNavigate } from "react-router";
 
 // Redux Store
-import {
-    useAppDispatch,
-} from "../../../../../../functions/hooks/reduxHooks";
-import {
-    setStatementElementHight,
-} from "../../../../../../model/statements/statementsSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { setStatementElementHight, statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
 
 // Custom Components
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
@@ -18,13 +14,17 @@ import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 import StatementChatMore from "../../chat/StatementChatMore";
+import SetEdit from "../../../../../components/edit/SetEdit";
 
 // Helpers
 import {
     getPastelColor,
+    isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
 import MoreIcon from "../../../../../../assets/icons/MoreIcon";
+import CardMenu from "../../../../../components/cardMenu/CardMenu";
+
 
 interface Props {
     statement: Statement;
@@ -41,9 +41,9 @@ const StatementEvaluationCard: FC<Props> = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    // const statementSubscription = useAppSelector(
-    //     statementSubscriptionSelector(statement.statementId)
-    // );
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statement.statementId)
+    );
 
     // const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
@@ -51,6 +51,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
+    const [openMenu, setOpenMenu] = useState(false);
 
     useEffect(() => {
         setNewTop(top);
@@ -85,11 +86,6 @@ const StatementEvaluationCard: FC<Props> = ({
         >
             <div className="optionCard__info">
                 <div className="optionCard__info__text">
-                    {/* <SetEdit
-                        isAuthrized={_isAuthrized}
-                        edit={edit}
-                        setEdit={setEdit}
-                    /> */}
                     <div
                         className={
                             linkToChildren(statement, parentStatement)
@@ -104,15 +100,31 @@ const StatementEvaluationCard: FC<Props> = ({
                             setEdit={setEdit}
                             isTextArea={true}
                         />
-                      
                     </div>
-                    <MoreIcon />
+                    <div
+                        className="clickable"
+                        onClick={() => {
+                            setOpenMenu(!openMenu);
+                        }}
+                    >
+                        <MoreIcon />
+                        {openMenu && (
+                            <CardMenu setOpenMenu={setOpenMenu}>
+                                <span onClick={()=>setEdit(true)}>Edit Text</span>
+                                <SetEdit
+                                    isAuthrized={isAuthorized(statement,statementSubscription)}
+                                    edit={edit}
+                                    setEdit={setEdit}
+                                />
+                            </CardMenu>
+                        )}
+                    </div>
                 </div>
                 {linkToChildren(statement, parentStatement) && (
-                        <div className="optionCard__info__chat">
-                            <StatementChatMore statement={statement} />
-                        </div>
-                    )}
+                    <div className="optionCard__info__chat">
+                        <StatementChatMore statement={statement} />
+                    </div>
+                )}
             </div>
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
