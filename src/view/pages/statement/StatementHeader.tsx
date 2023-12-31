@@ -24,7 +24,10 @@ import HomeIcon from "../../components/icons/HomeIcon";
 import BellSlashIcon from "../../components/icons/BellSlashIcon";
 import BellIcon from "../../components/icons/BellIcon";
 import ShareIcon from "../../components/icons/ShareIcon";
-import { isOptionFn } from "../../../functions/general/helpers";
+import {
+    calculateFontSize,
+    isOptionFn,
+} from "../../../functions/general/helpers";
 
 interface Props {
     title: string;
@@ -56,11 +59,7 @@ const StatementHeader: FC<Props> = ({
 
     const [editHeader, setEditHeader] = useState<boolean>(false);
 
-    const titleStyle = {
-        fontSize:
-            title.length > 30 ? "1.3rem" : title.length > 40 ? "1rem" : "2rem",
-        maxWidth: "70%",
-    };
+    const titleFontSize = calculateFontSize(title, 12, 25);
 
     const isAdmin = statement?.creatorId === user?.uid;
 
@@ -145,7 +144,7 @@ const StatementHeader: FC<Props> = ({
                     <h1
                         className={isAdmin ? "clickable" : ""}
                         onClick={handleEditTitle}
-                        style={titleStyle}
+                        style={{ fontSize: titleFontSize, maxWidth: "65%" }}
                     >
                         {title}
                     </h1>

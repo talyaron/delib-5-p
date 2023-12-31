@@ -10,7 +10,6 @@ import FrownIcon from "../../../assets/icons/FrownIcon";
 // Statement helpers
 import { setEvaluationToDB } from "../../../functions/db/evaluation/setEvaluation";
 
-
 interface ThumbsProps {
     evaluation: number;
     upDown: "up" | "down";

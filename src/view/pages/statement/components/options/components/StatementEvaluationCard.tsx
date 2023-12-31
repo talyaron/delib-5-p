@@ -7,25 +7,21 @@ import { useNavigate } from "react-router";
 // Redux Store
 import {
     useAppDispatch,
-    useAppSelector,
 } from "../../../../../../functions/hooks/reduxHooks";
 import {
     setStatementElementHight,
-    statementSubscriptionSelector,
 } from "../../../../../../model/statements/statementsSlice";
 
 // Custom Components
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
-import SetEdit from "../../../../../components/edit/SetEdit";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 import StatementChatMore from "../../chat/StatementChatMore";
 
 // Helpers
 import {
     getPastelColor,
-    isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
 import MoreIcon from "../../../../../../assets/icons/MoreIcon";
@@ -45,11 +41,11 @@ const StatementEvaluationCard: FC<Props> = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statement.statementId)
-    );
+    // const statementSubscription = useAppSelector(
+    //     statementSubscriptionSelector(statement.statementId)
+    // );
 
-    const _isAuthrized = isAuthorized(statement, statementSubscription);
+    // const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
     // const { hasChildren } = parentStatement;
 

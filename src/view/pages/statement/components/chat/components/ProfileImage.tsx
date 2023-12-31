@@ -23,7 +23,7 @@ const ProfileImage: FC<Props> = ({ statement, showImage }) => {
     return (
         <div
             onClick={() => showImage(statement.creator)}
-            className="statement__chatCard__profile"
+            className="message__user__avatar"
             style={
                 userProfile
                     ? { backgroundImage: `url(${userProfile})` }

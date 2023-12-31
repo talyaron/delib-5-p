@@ -23,7 +23,6 @@ import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
 import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 interface Props {
     statement: Statement;
@@ -87,21 +86,19 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple
-                            parentData={statement}
+                            parentStatement={statement}
                             isOption={true}
                             setShowModal={setShowModal}
                         />
                     </Modal>
                 )}
-
-               
             </div>
             <div className="page__footer">
-                    <StatementOptionsNav
-                        setShowModal={setShowModal}
-                        statement={statement}
-                    />
-                </div>
+                <StatementOptionsNav
+                    setShowModal={setShowModal}
+                    statement={statement}
+                />
+            </div>
         </>
     );
 };

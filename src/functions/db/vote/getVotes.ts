@@ -5,6 +5,10 @@ import { VoteSchema, getVoteId } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { store } from "../../../model/store";
 
+
+// TODO: Refactor this function
+// Why get user from firebase when we can pass it as a parameter?
+// 
 export async function getToVoteOnParent(
     parentId: string,
     updateStoreWitehVoteCB: Function

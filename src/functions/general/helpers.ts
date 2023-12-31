@@ -199,7 +199,7 @@ export function generateRandomLightColor(uuid: string) {
     const randomValue = (seed * 9301 + 49297) % 233280;
 
     // Convert the random number to a hexadecimal color code
-    const hexColor = `#${(randomValue & 0x00ffffff)
+    const hexColor = `#${((randomValue & 0x00ffffff) | 0xc0c0c0)
         .toString(16)
         .toUpperCase()}`;
 
@@ -283,4 +283,22 @@ export function getPastelColor() {
         (85 + 10 * Math.random()) +
         "%)"
     );
+}
+
+export function calculateFontSize(
+    text: string,
+    maxSize: number = 6,
+    minSize: number = 14
+) {
+    // Set the base font size and a multiplier for adjusting based on text length
+    const baseFontSize = minSize;
+    const fontSizeMultiplier = 0.2;
+
+    // Calculate the font size based on the length of the text
+    const fontSize = Math.max(
+        baseFontSize - fontSizeMultiplier * text.length,
+        maxSize
+    );
+
+    return `${fontSize}px`;
 }

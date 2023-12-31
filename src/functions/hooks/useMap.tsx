@@ -28,7 +28,7 @@ interface MapProviderProps {
 
 interface MapProviderState {
     showModal: boolean;
-    parentData: string | Statement;
+    parentStatement: "top" | Statement;
     isOption: boolean;
     isQuestion: boolean;
     targetPosition: Position;
@@ -41,7 +41,7 @@ interface MapProviderState {
 export const MapProvider: FC<MapProviderProps> = ({ children }) => {
     const [mapContext, setMapContext] = useState<MapProviderState>({
         showModal: false,
-        parentData: "",
+        parentStatement: "top",
         isOption: false,
         isQuestion: false,
         targetPosition: Position.Top,

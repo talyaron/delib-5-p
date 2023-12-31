@@ -1,17 +1,16 @@
-.evaluation{
-
+.evaluation {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color:var(--text);
+    color: var(--text);
 
-    &__box{
+    &__box {
         display: flex;
-       
-        align-items: center;  
-        &__icon{
-            padding: .5rem;
+
+        align-items: center;
+        &__icon {
+            padding: 0.5rem;
         }
     }
 }

@@ -74,23 +74,24 @@ const StatementEvaluation: FC<Props> = ({
                             style={{ height: `${topSum + 70}px` }}
                         ></div>
                     </div>
-
-                    {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
-                    {showModal && (
-                        <Modal>
-                            <NewSetStatementSimple
-                                parentData={statement}
-                                isOption={true}
-                                setShowModal={setShowModal}
-                            />
-                        </Modal>
-                    )}
                 </div>
 
-                <StatementEvaluationNav
-                    setShowModal={setShowModal}
-                    statement={statement}
-                />
+                <div className="page__footer">
+                    <StatementEvaluationNav
+                        setShowModal={setShowModal}
+                        statement={statement}
+                    />
+                </div>
+                {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
+                {showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    </Modal>
+                )}
             </>
         );
     } catch (error) {

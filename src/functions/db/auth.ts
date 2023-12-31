@@ -6,18 +6,18 @@ import {
     onAuthStateChanged,
     signInAnonymously,
     Unsubscribe,
-} from "firebase/auth"
-import { app } from "./config"
-import { parseUserFromFirebase, User } from "delib-npm"
-import { setUserToDB } from "./users/setUsersDB"
+} from "firebase/auth";
+import { app } from "./config";
+import { parseUserFromFirebase, User } from "delib-npm";
+import { setUserToDB } from "./users/setUsersDB";
 import {
     getIntialLocationSessionStorage,
     setIntialLocationSessionStorage,
-} from "../general/helpers"
+} from "../general/helpers";
 
-const provider = new GoogleAuthProvider()
+const provider = new GoogleAuthProvider();
 
-export const auth = getAuth(app)
+export const auth = getAuth(app);
 
 export function googleLogin() {
     signInWithPopup(auth, provider)
@@ -28,7 +28,7 @@ export function googleLogin() {
 
             // The signed-in user info.
             // const user = result.user;
-            console.info("user signed in with google ", result.user)
+            console.info("user signed in with google ", result.user);
 
             // IdP data available using getAdditionalUserInfo(result)
             // ...
@@ -41,11 +41,11 @@ export function googleLogin() {
             // const email = error.customData.email;
 
             // The AuthCredential type that was used.
-            console.error(error)
+            console.error(error);
             // const credential = GoogleAuthProvider.credentialFromError(error);
 
             // ...
-        })
+        });
 }
 export function listenToAuth(
     cb: Function,
@@ -55,57 +55,56 @@ export function listenToAuth(
 ): Unsubscribe {
     return onAuthStateChanged(auth, async (userFB) => {
         try {
+            if (!userFB) navigationCB("/");
             if (userFB) {
                 // User is signed in
-                const user = { ...userFB }
+                const user = { ...userFB };
                 if (!user.displayName)
                     user.displayName =
-                        localStorage.getItem("displayName") || "anonymous"
-                const _user = parseUserFromFirebase(user)
-             
+                        localStorage.getItem("displayName") || "anonymous";
+                const _user = parseUserFromFirebase(user);
 
                 // console.info("User is signed in")
-                if (!_user) throw new Error("user is undefined")
+                if (!_user) throw new Error("user is undefined");
 
-                const userDB = (await setUserToDB(_user)) as User
+                const userDB = (await setUserToDB(_user)) as User;
 
-                const { fontSize } = userDB || { fontSize: 14 }
+                const { fontSize } = userDB || { fontSize: 14 };
 
-                fontSizeCB(fontSize)
+                fontSizeCB(fontSize);
 
-                document.documentElement.style.fontSize = fontSize + "px"
-                document.body.style.fontSize = fontSize + "px"
+                document.documentElement.style.fontSize = fontSize + "px";
+                document.body.style.fontSize = fontSize + "px";
 
-                if (!userDB) throw new Error("userDB is undefined")
-                cb(userDB)
+                if (!userDB) throw new Error("userDB is undefined");
+                cb(userDB);
 
-                const initialLocation = getIntialLocationSessionStorage()
+                const initialLocation = getIntialLocationSessionStorage();
                 //navigate to initial location
-                if (initialLocation) navigationCB(initialLocation)
+                if (initialLocation) navigationCB(initialLocation);
             } else {
                 // User is signed out
-                console.info("User is signed out")
-                resetCB()
-                cb(null)
-                
+                console.info("User is signed out");
+                resetCB();
+                cb(null);
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-    })
+    });
 }
 
 export function logOut() {
     signOut(auth)
         .then(() => {
             // Sign-out successful.
-            console.info("Sign-out successful.")
-            setIntialLocationSessionStorage("/")
+            console.info("Sign-out successful.");
+            setIntialLocationSessionStorage("/");
         })
         .catch((error) => {
             // An error happened.
-            console.error(error)
-        })
+            console.error(error);
+        });
 }
 
 //fireabse anounymous login
@@ -114,9 +113,9 @@ export function logOut() {
 export function signAnonymously() {
     signInAnonymously(auth)
         .then(() => {
-            console.info("user signed in anounymously")
+            console.info("user signed in anounymously");
         })
         .catch((error) => {
-            console.error(error)
-        })
+            console.error(error);
+        });
 }
