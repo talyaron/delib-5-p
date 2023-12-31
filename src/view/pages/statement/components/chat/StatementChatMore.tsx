@@ -16,7 +16,9 @@ import { t } from "i18next";
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
 
 // css
-import styles from "./StatementChatMore.module.scss";
+// import styles from "./StatementChatMore.module.scss";
+import "../../../../style/mainCard.scss"
+
 
 interface Props {
     statement: Statement;
@@ -41,13 +43,13 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
             className="more clickable"
             onClick={() => handleCreateSubStatements(statement, navigate)}
         >
-            <div className={styles.mainCard__actions}>
-                <div className={styles.mainCard__actions__text}>
+            <div className="mainCard__actions">
+                <div className="mainCard__actions__text">
                     {statement.lastMessage
                         ? statement.lastMessage
                         : t("Conversations")}
                 </div>
-                <div className={styles.mainCard__actions__icon}>
+                <div className="mainCard__actions__icon">
                     {messages - messagesRead > 0 ? (
                         <div className="redCircle">
                             {messages - messagesRead < 10
