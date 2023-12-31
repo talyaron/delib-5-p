@@ -20,7 +20,7 @@ import Loader from "../../../../components/loaders/Loader";
 import { store } from "../../../../../model/store";
 
 interface Props {
-    parentData: Statement | string;
+    parentStatement: Statement | "top";
     isOption?: boolean;
     isQuestion?: boolean;
     setShowModal: Function;
@@ -28,17 +28,17 @@ interface Props {
 }
 
 const NewSetStatementSimple: FC<Props> = ({
-    parentData,
+    parentStatement,
     isOption,
     isQuestion,
     setShowModal,
     getSubStatements,
 }) => {
     try {
-        const parentIsStatement = typeof parentData !== "string";
+        const parentIsStatement = parentStatement !== "top";
 
         const parentStatementId = parentIsStatement
-            ? parentData.statementId
+            ? parentStatement.statementId
             : "top";
 
         if (!parentStatementId)
@@ -73,12 +73,13 @@ const NewSetStatementSimple: FC<Props> = ({
 
                 newStatement.parentId = parentStatementId;
 
-                newStatement.topParentId =
-                    parentIsStatement && parentData.topParentId;
+                newStatement.topParentId = parentIsStatement
+                    ? parentStatement.topParentId
+                    : parentStatementId;
 
-                if (parentIsStatement && parentData.parents)
+                if (parentIsStatement && parentStatement.parents)
                     newStatement.parents = [
-                        ...parentData.parents,
+                        ...parentStatement.parents,
                         parentStatementId,
                     ];
 

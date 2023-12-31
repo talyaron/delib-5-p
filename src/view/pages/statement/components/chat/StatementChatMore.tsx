@@ -8,11 +8,12 @@ import { statementSubscriptionSelector } from "../../../../../model/statements/s
 
 // Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm";
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -20,7 +21,6 @@ interface Props {
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {
-    const { page } = useParams();
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
     let messagesRead = 0;
@@ -32,6 +32,10 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     const { statementType } = statement;
     if (statementType === StatementType.statement) return null;
+
+    const messageToDisplay = statement.lastMessage
+        ? statementTitleToDisplay(statement.lastMessage, 20).shortVersion
+        : t("Conversations");
 
     return (
         <div
@@ -47,13 +51,9 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                     </div>
                 )}
                 {/* <BsChatLeftText size="1.5rem" /> */}
-                <ChatIcon color={page ? "black" : "white"} />
+                <ChatIcon statementType={statementType} />
             </div>
-            <div className="text">
-                {statement.lastMessage
-                    ? statement.lastMessage
-                    : t("Conversations")}
-            </div>
+            <div className="text">{messageToDisplay}</div>
         </div>
     );
 };

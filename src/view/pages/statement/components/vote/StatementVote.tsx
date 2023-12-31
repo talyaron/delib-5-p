@@ -23,7 +23,6 @@ import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
 import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 interface Props {
     statement: Statement;
@@ -60,44 +59,47 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenFadeIn className="page__main">
-            <div className="statement">
-                <div>
-                    <h2>{t("Votes")}</h2>
-                    <p style={{ maxWidth: "50vw", margin: "0 auto" }}>
-                        {t("Voted")}: {totalVotes}
-                    </p>
+        <>
+            <div className="page__main">
+                <div className="statement">
+                    <div>
+                        <h2>{t("Votes")}</h2>
+                        <p style={{ maxWidth: "50vw", margin: "0 auto" }}>
+                            {t("Voted")}: {totalVotes}
+                        </p>
+                    </div>
+                    <div className="statement__vote">
+                        {options.map((option: Statement, i: number) => {
+                            return (
+                                <OptionBar
+                                    key={option.statementId}
+                                    order={i}
+                                    option={option}
+                                    totalVotes={totalVotes}
+                                    statement={statement}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
-                <div className="statement__vote">
-                    {options.map((option: Statement, i: number) => {
-                        return (
-                            <OptionBar
-                                key={option.statementId}
-                                order={i}
-                                option={option}
-                                totalVotes={totalVotes}
-                                statement={statement}
-                            />
-                        );
-                    })}
-                </div>
+
+                {showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    </Modal>
+                )}
             </div>
-            <div className="page__main__bottom">
+            <div className="page__footer">
                 <StatementOptionsNav
                     setShowModal={setShowModal}
                     statement={statement}
                 />
             </div>
-            {showModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentData={statement}
-                        isOption={true}
-                        setShowModal={setShowModal}
-                    />
-                </Modal>
-            )}
-        </ScreenFadeIn>
+        </>
     );
 };
 

@@ -1,4 +1,6 @@
 @import "./input.scss";
+@import "./bottomNav.scss";
+@import "./evaluation.scss";
 @import "./start.scss";
 @import "./statementCard.scss";
 @import "./statement.scss";
@@ -13,67 +15,90 @@
 @import "./badge.scss";
 @import "./buttons.scss";
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+@import "./message.scss";
 
 :root {
+    // --- MAIN COLORS ---
     --mainBackground: #32527b;
-    --subBackground: #ee7171;
-    --mainColor: white;
-    --pageBackground: #f3f7fd;
+    --statementBackground: #f2f6ff;
 
-    --h1Color: #0f1b68e3;
-    --h2Color: #7d8adf;
+    //results
+    --result: #a9adf4;
+    --result-text: white;
 
-    --textHeader: rgba(0, 0, 0, 0.78);
-    --textHeaderSize: 1.3rem;
-    --textHeaderWeight: 600;
-    --textSubHeader: rgba(0, 0, 0, 0.68);
-    --textHeaderSize: 1.1rem;
-    --textHeaderSubTitleSize: 1rem;
-    --textRegular: rgba(0, 0, 0, 0.55);
-    --textRegularSize: 1rem;
-    --maxWidthOnPC: 550px;
-
-    --question: #9687f4;
+    //question
+    --question: #787fff;
     --question-text: white;
 
-    --results: rgb(238, 238, 238);
-    --results-text: rgb(31, 31, 31);
+    //texts
+    --header: #3b4f7d;
+    --text: #6e8aa6;
+    --textOnDark: white;
+
+    //evaluation
+    --agree: #59beb6;
+    --disagree: #fe6ba2;
+
+    //shadow
+    --shadow: rgba(181, 197, 232, 0.486);
 
     --accent: #7cacf8;
-    --primary: #2b74b1;
-    --halfPrimary: #7994e7;
-    --secondary: #f0f4ff;
-    --additional: #f2f2f2;
+
+    // --- SIZES ---
+    --padding: 1rem;
+
+    // --subBackground: #ee7171;
+    // --mainColor: white;
+    // --pageBackground: #f3f7fd;
+
+    // --h1Color: #0f1b68e3;
+    // --h2Color: #7d8adf;
+
+    // --textHeader: rgba(0, 0, 0, 0.78);
+    // --textHeaderSize: 1.3rem;
+    // --textHeaderWeight: 600;
+    // --textSubHeader: rgba(0, 0, 0, 0.68);
+    // --textHeaderSize: 1.1rem;
+    // --textHeaderSubTitleSize: 1rem;
+    // --textRegular: rgba(0, 0, 0, 0.55);
+    // --textRegularSize: 1rem;
+    // --maxWidthOnPC: 550px;
+
+    // --accent: #7cacf8;
+    // --primary: #2b74b1;
+    // --halfPrimary: #7994e7;
+    // --secondary: #f0f4ff;
+    // --additional: #f2f2f2;
     --white: white;
-    --black: black;
-    --gray5: #f9f9f9;
-    --gray4: #f2f2f2;
-    --gray2: #d6d6d6;
-    --gray1: #7c7c7c;
-    --gray0: rgb(77, 77, 77);
+    // --black: black;
+    // --gray5: #f9f9f9;
+    // --gray4: #f2f2f2;
+    // --gray2: #d6d6d6;
+    // --gray1: #7c7c7c;
+    // --gray0: rgb(77, 77, 77);
 
-    --roundBorderSmall: 6px;
-    --roundBorder: 12px;
-    --roundBorderLarge: 16px;
+    // --roundBorderSmall: 6px;
+    // --roundBorder: 12px;
+    // --roundBorderLarge: 16px;
 
-    /* font sizes */
-    --size21: 2.2rem;
-    --size17: 1.4rem;
-    --size16: 1.3rem;
-    --size15: 1.2rem;
-    --size13: 1rem;
-    --size12: 0.9rem;
-    --size11: 0.8rem;
+    // /* font sizes */
+    // --size21: 2.2rem;
+    // --size17: 1.4rem;
+    // --size16: 1.3rem;
+    // --size15: 1.2rem;
+    // --size13: 1rem;
+    // --size12: 0.9rem;
+    // --size11: 0.8rem;
 
-    /* padding */
-    --regPadding: 16px;
+    // /* padding */
+    // --regPadding: 16px;
 
-    /* shadows */
-    --mediumShadow: 0px 10px 20px rgba(0, 0, 0, 0.04),
-        0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    // /* shadows */
+    // --mediumShadow: 0px 10px 20px rgba(0, 0, 0, 0.04),
+    //     0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
 
-    --menuHeight: 70px;
-    --press: gray;
+    // --menuHeight: 70px;
+    // --press: gray;
 }
 
 * {
@@ -106,6 +131,7 @@ h1,
 h2 {
     text-align: center;
 }
+
 a {
     text-decoration: none;
     color: inherit;
@@ -114,8 +140,6 @@ a {
 b {
     font-weight: 500;
 }
-
-
 
 .wrapperAll {
     position: relative;
@@ -127,31 +151,14 @@ b {
 
 .wrapper {
     flex: auto;
-    width: 100%;
+    width: 100vw;
     max-width: 75ch;
-    height: 20svh;
+    gap: 1rem;
     position: relative;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    padding-bottom: 1rem;
-    overflow-y: auto;
-
-    //on mobile set 20px padding
-
-    // &--chat {
-    //     gap: 20px;
-    // }
-}
-
-.wrapper::-webkit-scrollbar {
-    width: 1.5rem;
-}
-.wrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
-    border-radius: 1rem;
+    align-items: center;
 }
 
 .card {

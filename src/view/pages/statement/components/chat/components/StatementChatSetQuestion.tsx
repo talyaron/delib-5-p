@@ -7,7 +7,7 @@ import { Statement } from "delib-npm";
 import { updateIsQuestion } from "../../../../../../functions/db/statements/setStatments";
 
 // Custom components
-import QuestionCircleIcon from "../../../../../components/icons/QuestionCircleIcon";
+import QuestionMarkIcon from "../../../../../components/icons/QuestionMarkIcon";
 
 interface Props {
     statement: Statement;
@@ -23,7 +23,7 @@ const StatementChatSetQuestion: FC<Props> = ({ statement }) => {
             {/* <HelpOutlineIcon
                 htmlColor={isOptionFn(statement) ? "blue" : "lightgray"}
             /> */}
-            <QuestionCircleIcon
+            <QuestionMarkIcon
                 color={
                     statement.statementType === "question"
                         ? "blue"

@@ -83,7 +83,7 @@ export default function StatementMap({ topResult }: Props) {
     );
 
     return (
-        <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
+        <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView style={{height:`100vh`}}>
             <Controls />
             <Panel position="bottom-right">
                 <div className="btns">
