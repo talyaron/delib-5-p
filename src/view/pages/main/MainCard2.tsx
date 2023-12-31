@@ -22,6 +22,7 @@ const MainCard: FC<Props> = ({ statement }) => {
                     <Text text={statement.statement} />
                     <StatementChatMore statement={statement} />
                     {/* <ResultsComp statement={statement} /> */}
+
                 </div>
                
             </Link>
@@ -30,3 +31,5 @@ const MainCard: FC<Props> = ({ statement }) => {
 };
 
 export default MainCard;
+// export default MainCard;
+
