@@ -2,6 +2,7 @@ import { FC } from 'react';
 import {z} from 'zod';
 import styles from './Text.module.scss';
 
+
 interface Props {
     text: string;
     onlyTitle?: boolean;
@@ -34,6 +35,8 @@ const Text: FC<Props> = ({ text, onlyTitle,onlyDescription }) => {
     })
 
     const title = paragraphs[0]
+  
+
     //description is all the paragraphs except the first one
     const description = paragraphs.slice(1)
 
