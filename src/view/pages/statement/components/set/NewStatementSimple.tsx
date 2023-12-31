@@ -18,6 +18,7 @@ import Loader from "../../../../components/loaders/Loader";
 
 // Redux
 import { store } from "../../../../../model/store";
+import ModalImage from "../../../../components/icons/ModalImage";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -36,6 +37,8 @@ const NewSetStatementSimple: FC<Props> = ({
 }) => {
     try {
         const parentIsStatement = parentStatement !== "top";
+
+        const [isOptionChosen, setIsOptionChosen] = useState(isOption);
 
         const parentStatementId = parentIsStatement
             ? parentStatement.statementId
@@ -108,44 +111,65 @@ const NewSetStatementSimple: FC<Props> = ({
                 console.error(error);
             }
         }
-        const title = (() => {
-            if (isOption) return "Add Option";
-            if (isQuestion) return "Add Question";
-            return "Add Statement";
-        })();
 
         return (
             <>
                 {!isLoading ? (
-                    <form
-                        onSubmit={handleAddStatment}
-                        className="setStatement__form"
-                        style={{ height: "auto" }}
-                    >
-                        <h2>{t(title)}</h2>
-                        <input
-                            autoFocus={true}
-                            type="text"
-                            name="statement"
-                            placeholder={t("Title")}
-                        />
-                        <textarea
-                            name="description"
-                            placeholder={t("Description")}
-                            rows={4}
-                        ></textarea>
-
-                        <div className="btnBox">
-                            <button type="submit">{t("Add")}</button>
-                            <button
-                                onClick={() => setShowModal(false)}
-                                type="button"
-                                className="btn btn--cancel"
+                    <div className="overlay">
+                        <ModalImage />
+                        <div className="overlay__tabs">
+                            <p
+                                onClick={() => setIsOptionChosen(true)}
+                                className={
+                                    isOptionChosen
+                                        ? "overlay__tabs__tab overlay__tabs__tab--active"
+                                        : "overlay__tabs__tab"
+                                }
                             >
-                                {t("Cancel")}
-                            </button>
+                                Option
+                                {isOptionChosen && <div className="block" />}
+                            </p>
+                            <p
+                                onClick={() => setIsOptionChosen(false)}
+                                className={
+                                    isOptionChosen
+                                        ? "overlay__tabs__tab"
+                                        : "overlay__tabs__tab overlay__tabs__tab--active"
+                                }
+                            >
+                                Question
+                                {!isOptionChosen && <div className="block" />}
+                            </p>
                         </div>
-                    </form>
+                        <form
+                            onSubmit={handleAddStatment}
+                            className="overlay__form"
+                            style={{ height: "auto" }}
+                        >
+                            <input
+                                autoFocus={true}
+                                type="text"
+                                name="statement"
+                                placeholder={t("Title")}
+                            />
+                            <textarea
+                                name="description"
+                                placeholder={t("Description")}
+                                rows={4}
+                            ></textarea>
+
+                            <div className="btnBox">
+                                <button type="submit">{t("Add")}</button>
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    type="button"
+                                    className="btn btn--cancel"
+                                >
+                                    {t("Cancel")}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 ) : (
                     <div className="center">
                         <h2>{t("Updating")}</h2>

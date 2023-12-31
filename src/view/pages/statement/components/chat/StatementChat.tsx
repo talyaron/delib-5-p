@@ -105,26 +105,6 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                     </div>
                 </div>
             </div>
-
-            {/* <div
-                className={
-                    isOption
-                        ? "statement__bubble statement__bubble--option"
-                        : "statement__bubble"
-                }
-            >
-                <div className={bubbleclass(isQuestion, isMe)}>
-                    <div
-                        className={
-                            linkToChildren(statement, parentStatement)
-                                ? "statement__bubble__text clickable"
-                                : "statement__bubble__text"
-                        }
-                        onClick={handleGoToStatement}
-                    >
-                    </div>
-                </div>
-            </div> */}
         </div>
     );
 };

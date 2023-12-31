@@ -10,21 +10,14 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
+    padding: 0 2rem;
     &__box{
-        padding: 1.3rem;
-        background-color: var(--white);
+        padding: 1rem;
+        background-color: var(--statementBackground);
         border-radius: 10px;
         box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.66);
-
-        form{
-            input, select, textarea{
-                // width: 100%;
-                padding: 0.5rem;
-                border: 1px solid var(--accent);
-                border-radius: 5px;
-                margin-bottom: 1rem;
-            }
-        }
+        height: 80%;
+        width: 100%;
+        max-width: 400px;
     }
 }

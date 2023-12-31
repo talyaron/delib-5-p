@@ -16,11 +16,13 @@
 @import "./buttons.scss";
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
 @import "./message.scss";
+@import "./addStatementModal.scss";
 
 :root {
     // --- MAIN COLORS ---
     --mainBackground: #32527b;
     --statementBackground: #f2f6ff;
+    --inputBackground: #F5FCFF;
 
     //results
     --result: #a9adf4;
@@ -34,6 +36,7 @@
     --header: #3b4f7d;
     --text: #6e8aa6;
     --textOnDark: white;
+    --placeHolder: #93b6da;
 
     //evaluation
     --agree: #59beb6;
