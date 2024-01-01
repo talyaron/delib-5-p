@@ -1,23 +1,26 @@
-.modal{
+.modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.374);
-    z-index: 300;   
+    z-index: 300;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 0 2rem;
-    &__box{
+    &__box {
         padding: 1rem;
         background-color: var(--statementBackground);
         border-radius: 10px;
         box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.66);
-        height: 80%;
-        width: 100%;
-        max-width: 400px;
+        height: fit-content;
+        width: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 }

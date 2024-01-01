@@ -2,16 +2,27 @@
 .btns {
     display: flex;
     justify-content: center;
+    gap: 1rem;
     // width: 100%;
 }
 
+button {
+    border: none;
+    cursor: pointer;
+}
+
 .btn {
-    width: 12rem;
+    width: fit-content;
     height: 2rem;
     padding: 0.5rem;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
+    &--agree{
+        background-color: var(--agree);
+    }
+    &--disagree{
+        background-color: var(--disagree);
+    }
 }
 
 .buttonOutlineWhite {
