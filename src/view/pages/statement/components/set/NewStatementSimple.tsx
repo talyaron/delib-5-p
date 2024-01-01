@@ -22,8 +22,7 @@ import ModalImage from "../../../../components/icons/ModalImage";
 
 interface Props {
     parentStatement: Statement | "top";
-    isOption?: boolean;
-    isQuestion?: boolean;
+    isOption: boolean;
     setShowModal: Function;
     getSubStatements?: Function;
 }
@@ -31,7 +30,6 @@ interface Props {
 const NewSetStatementSimple: FC<Props> = ({
     parentStatement,
     isOption,
-    isQuestion,
     setShowModal,
     getSubStatements,
 }) => {
@@ -52,10 +50,14 @@ const NewSetStatementSimple: FC<Props> = ({
         async function handleAddStatment(ev: React.FormEvent<HTMLFormElement>) {
             try {
                 ev.preventDefault();
-                setIsLoading(true);
-                const data = new FormData(ev.currentTarget);
 
+                const data = new FormData(ev.currentTarget);
                 let title: any = data.get("statement");
+
+                if (!title) throw new Error("title is undefined");
+
+                setIsLoading(true);
+
                 const description = data.get("description");
                 //add to title * at the beggining
                 if (title && !title.startsWith("*")) title = `*${title}`;
@@ -86,11 +88,13 @@ const NewSetStatementSimple: FC<Props> = ({
                         parentStatementId,
                     ];
 
+                // Can only be Option or Question
                 newStatement.creator = parseUserFromFirebase(_user);
-                if (isOption) newStatement.statementType = StatementType.option;
-
-                if (isQuestion)
+                if (isOption) {
+                    newStatement.statementType = StatementType.option;
+                } else {
                     newStatement.statementType = StatementType.question;
+                }
 
                 newStatement.lastUpdate = new Date().getTime();
 
@@ -116,9 +120,12 @@ const NewSetStatementSimple: FC<Props> = ({
             <>
                 {!isLoading ? (
                     <div className="overlay">
-                        <ModalImage />
+                        <div className="overlay__imgBox">
+                            <ModalImage />
+                            <div className="overlay__imgBox__polygon" />
+                        </div>
                         <div className="overlay__tabs">
-                            <p
+                            <div
                                 onClick={() => setIsOptionChosen(true)}
                                 className={
                                     isOptionChosen
@@ -128,8 +135,8 @@ const NewSetStatementSimple: FC<Props> = ({
                             >
                                 Option
                                 {isOptionChosen && <div className="block" />}
-                            </p>
-                            <p
+                            </div>
+                            <div
                                 onClick={() => setIsOptionChosen(false)}
                                 className={
                                     isOptionChosen
@@ -139,7 +146,7 @@ const NewSetStatementSimple: FC<Props> = ({
                             >
                                 Question
                                 {!isOptionChosen && <div className="block" />}
-                            </p>
+                            </div>
                         </div>
                         <form
                             onSubmit={handleAddStatment}
@@ -151,6 +158,8 @@ const NewSetStatementSimple: FC<Props> = ({
                                 type="text"
                                 name="statement"
                                 placeholder={t("Title")}
+                                required
+                                minLength={3}
                             />
                             <textarea
                                 name="description"
@@ -158,12 +167,17 @@ const NewSetStatementSimple: FC<Props> = ({
                                 rows={4}
                             ></textarea>
 
-                            <div className="btnBox">
-                                <button type="submit">{t("Add")}</button>
+                            <div className="overlay__form__buttons">
+                                <button
+                                    className="overlay__form__buttons__add btn"
+                                    type="submit"
+                                >
+                                    {t("Add")}
+                                </button>
                                 <button
                                     onClick={() => setShowModal(false)}
                                     type="button"
-                                    className="btn btn--cancel"
+                                    className="overlay__form__buttons__cancel btn"
                                 >
                                     {t("Cancel")}
                                 </button>
