@@ -21,9 +21,9 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 // Custom components
 import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
-import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import HandsIcon from "../../../../../assets/icons/HandsIcon";
+import StatementInfo from "./StatementInfo";
 
 interface Props {
     statement: Statement;
@@ -36,6 +36,8 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const { sort } = useParams();
 
     const [showModal, setShowModal] = useState(false);
+    const [showInfo, setShowInfo] = useState(false);
+    const [statementInfo, setStatementInfo] = useState<Statement|null>(null);
 
     const __options = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement)
@@ -78,6 +80,8 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                                     option={option}
                                     totalVotes={totalVotes}
                                     statement={statement}
+                                    setShowInfo={setShowInfo}
+                                    setStatementInfo={setStatementInfo}
                                 />
                             );
                         })}
@@ -93,6 +97,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                         />
                     </Modal>
                 )}
+                {showInfo && (<Modal><StatementInfo statement={statementInfo} setShowInfo={setShowInfo} /></Modal>)}
             </div>
             <div className="page__footer">
                 <StatementOptionsNav
