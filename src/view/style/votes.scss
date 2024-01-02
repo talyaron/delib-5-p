@@ -18,7 +18,9 @@
 
         &__title{
             position:absolute;
-            transform: rotate(270deg) translate(16px, -51px)
+            transform: rotate(270deg) translate(9rem, -54px);
+            width: 18rem;
+            text-align: end;
         }
 
         &__column {

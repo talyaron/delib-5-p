@@ -64,7 +64,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
             <div className="page__main">
                 <div className="statement">
                     <div>
-                        <h2>{t("Votes")}</h2>
+                      
                         <p style={{ maxWidth: "50vw", margin: "0 auto", display:"flex", alignItems:"center" }} className="hand">
                             <HandsIcon color1="#6BBDED" color2="#ead55f" color3="#F76E9F" /> {totalVotes}
                         </p>
