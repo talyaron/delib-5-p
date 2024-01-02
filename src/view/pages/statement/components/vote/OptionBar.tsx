@@ -19,6 +19,7 @@ import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
 import InfoIcon from "../../../../../assets/icons/InfoIcon";
+import HandsIcon from "../../../../../assets/icons/HandsIcon";
 
 export interface OptionBarProps {
     option: Statement;
@@ -50,7 +51,7 @@ export const OptionBar: FC<OptionBarProps> = ({
     const padding = 10;
 
     const { shortVersion } = statementTitleToDisplay(option.statement, 30);
-    const barHeight = (selections / totalVotes) * 100;
+    const barHeight = Math.round((selections / totalVotes) * 100);
 
     return (
         <div
@@ -79,14 +80,16 @@ export const OptionBar: FC<OptionBarProps> = ({
                         backgroundColor: option.color,
                     }}
                 >
-                    <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
+                   
                 </div>
             </div>
             <div
                 style={{
                     width: `${barWidth - padding}px`,
                     direction: direction,
+                    backgroundColor: option.color,
                 }}
+
                 className={
                     vote?.statementId === option.statementId
                         ? "vote__bar__btn vote__bar__btn--selected"
@@ -94,8 +97,10 @@ export const OptionBar: FC<OptionBarProps> = ({
                 }
                 onClick={handlePressButton}
             >
-                {shortVersion}
+                
+                <HandsIcon color="white" />
             </div>
+            <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
         </div>
     );
 };

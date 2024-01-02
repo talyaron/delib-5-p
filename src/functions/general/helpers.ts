@@ -275,7 +275,7 @@ export function linkToChildren(
 
 export function getPastelColor() {
     return (
-        `hsl(${360 * Math.random()},100%,65%)` || "red"
+        `hsl(${360 * Math.random()},100%,75%)` || "red"
     );
 }
 
