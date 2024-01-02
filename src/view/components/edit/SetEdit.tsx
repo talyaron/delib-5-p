@@ -12,7 +12,7 @@ const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
         <div>
             {isAuthrized && (
                 <div className="clickable" onClick={() => setEdit(!edit)}>
-                    <EditIcon color={edit ? "blue" : "lightgray"} />
+                    <EditIcon />
                 </div>
             )}
         </div>
