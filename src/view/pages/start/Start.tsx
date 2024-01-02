@@ -42,15 +42,15 @@ const Start = () => {
             <h1 className="splashPage__title">{t("Delib 5")}</h1>
             <img src={Logo} alt="Delib logo" width={150} height={150} />
             <h2 className="splashPage__subTitle">{t("Creating Agreements")}</h2>
-            <button className="splashPage__loginButton" onClick={googleLogin}>
+            <button className="btn splashPage__loginButton" onClick={googleLogin}>
                 {t("Connect with Google")}
             </button>
-            <div
-                className="btn loginButton"
+            <button
+                className="btn"
                 onClick={() => setShowNameModul(true)}
             >
                 {t("Login with a temporary name")}
-            </div>
+            </button>
             <a
                 href="http://delib.org"
                 target="_blank"

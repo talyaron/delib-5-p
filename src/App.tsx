@@ -77,7 +77,7 @@ export default function App() {
             updateUserToStore,
             updateFonSize,
             navigateToInitialLocationCB,
-            resetStoreCB,
+            resetStoreCB
         );
 
         return () => {
@@ -133,26 +133,28 @@ export default function App() {
             <Outlet />
             {showSignAgreement && (
                 <Modal>
-                    <div className={styles.modal}>
-                        <h2>{t("terms of use")}</h2>
+                    <div className="termsOfUse">
+                        <h1 className="termsOfUse__title">
+                            {t("terms of use")}
+                        </h1>
                         <p>{t(agreement)}</p>
                         <div className="btns">
-                            <div
-                                className="btn"
+                            <button
+                                className="btn btn--agree"
                                 onClick={() =>
                                     handleAgreement(true, t(agreement))
                                 }
                             >
                                 {t("Agree")}
-                            </div>
-                            <div
-                                className="btn btn--danger"
+                            </button>
+                            <button
+                                className="btn btn--disagree"
                                 onClick={() =>
                                     handleAgreement(false, t(agreement))
                                 }
                             >
                                 {t("Dont agree")}
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </Modal>

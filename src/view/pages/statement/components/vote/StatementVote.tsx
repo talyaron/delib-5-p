@@ -23,6 +23,7 @@ import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
 import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
+import HandsIcon from "../../../../../assets/icons/HandsIcon";
 
 interface Props {
     statement: Statement;
@@ -64,11 +65,11 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                 <div className="statement">
                     <div>
                         <h2>{t("Votes")}</h2>
-                        <p style={{ maxWidth: "50vw", margin: "0 auto" }}>
-                            {t("Voted")}: {totalVotes}
+                        <p style={{ maxWidth: "50vw", margin: "0 auto", display:"flex", alignItems:"center" }} className="hand">
+                            <HandsIcon color1="#6BBDED" color2="#ead55f" color3="#F76E9F" /> {totalVotes}
                         </p>
                     </div>
-                    <div className="statement__vote">
+                    <div className="vote">
                         {options.map((option: Statement, i: number) => {
                             return (
                                 <OptionBar
