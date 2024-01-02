@@ -3,7 +3,7 @@ import React from "react";
 
 const initStyle = {
     backgroundColor: "var(--white)",
-    color: "var(--black)",
+    color: "lightgray",
 };
 
 export default function useStatementColor(statement: Statement) {

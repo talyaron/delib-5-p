@@ -123,33 +123,46 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
         }
     };
 
+    const navStyle = {
+        bottom: page === "vote" ? "unset" : "3rem",
+        height: page === "vote" ? "4.5rem" : "unset",
+    };
+
     return (
         showNavigation && (
-            <div className="bottomNav">
-                <div
-                    className="bottomNav__iconbox bottomNav__iconbox--burger"
-                    style={statementColor}
-                    onClick={hadleMidIconClick}
-                >
-                    {openNav ? (
-                        <PlusIcon color={statementColor.color} />
-                    ) : (
-                        <BurgerIcon color={statementColor.color} />
-                    )}
-                </div>
-
-                {navArray.map((navItem) => (
-                    <Link
-                        className={`bottomNav__iconbox ${
-                            openNav && "bottomNav__iconbox--active"
-                        }`}
-                        to={navItem.link}
-                        key={navItem.id}
+            <>
+                {openNav && (
+                    <div
+                        className="invisibleBackground"
+                        onClick={() => setOpenNav(false)}
+                    />
+                )}
+                <div className="bottomNav" style={navStyle}>
+                    <div
+                        className="bottomNav__iconbox bottomNav__iconbox--burger"
+                        style={statementColor}
+                        onClick={hadleMidIconClick}
                     >
-                        {icon(navItem.name, statementColor.backgroundColor)}
-                    </Link>
-                ))}
-            </div>
+                        {openNav ? (
+                            <PlusIcon color={statementColor.color} />
+                        ) : (
+                            <BurgerIcon color={statementColor.color} />
+                        )}
+                    </div>
+
+                    {navArray.map((navItem) => (
+                        <Link
+                            className={`bottomNav__iconbox ${
+                                openNav && "bottomNav__iconbox--active"
+                            }`}
+                            to={navItem.link}
+                            key={navItem.id}
+                        >
+                            {icon(navItem.name, statementColor.backgroundColor)}
+                        </Link>
+                    ))}
+                </div>
+            </>
         )
     );
 };

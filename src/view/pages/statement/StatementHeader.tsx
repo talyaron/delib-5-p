@@ -25,10 +25,11 @@ import BellSlashIcon from "../../components/icons/BellSlashIcon";
 import BellIcon from "../../components/icons/BellIcon";
 import ShareIcon from "../../components/icons/ShareIcon";
 import {
-    calculateFontSize,
-    isOptionFn,
+    calculateFontSize, handleLogout,
 } from "../../../functions/general/helpers";
 import useStatementColor from "../../../functions/hooks/useStatementColor";
+import MoreIcon from "../../../assets/icons/MoreIcon";
+import DisconnectIcon from "../../components/icons/DisconnectIcon";
 
 interface Props {
     title: string;
@@ -61,8 +62,9 @@ const StatementHeader: FC<Props> = ({
     );
 
     const [editHeader, setEditHeader] = useState<boolean>(false);
+    const [openMore, setOpenMore] = useState(false);
 
-    const titleFontSize = calculateFontSize(title, 12, 25);
+    const titleFontSize = calculateFontSize(title, 16, 25);
 
     const isAdmin = statement?.creatorId === user?.uid;
 
@@ -116,32 +118,28 @@ const StatementHeader: FC<Props> = ({
         setStatmentSubscriptionNotificationToDB(statement);
     }
 
-    const iconColor = isOptionFn(statement) ? "black" : "white";
-
     return (
         <div className="page__header" style={headerColor}>
             <div
                 className="page__header__wrapper"
                 style={{ flexDirection: direction, direction: langDirection }}
             >
-                <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                    <BackArrowIcon color={iconColor} />
-                </div>
-                <Link state={{ from: window.location.pathname }} to={"/home"}>
-                    <HomeIcon color={iconColor} />
-                </Link>
-                <div onClick={handleRegisterToNotifications}>
-                    {hasNotificationPermission && hasNotifications ? (
-                        <BellIcon color={iconColor} />
-                    ) : (
-                        <BellSlashIcon color={iconColor} />
-                    )}
+                <div className="page__header__wrapper__actions">
+                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                        <BackArrowIcon color={headerColor.color} />
+                    </div>
+                    <Link
+                        state={{ from: window.location.pathname }}
+                        to={"/home"}
+                    >
+                        <HomeIcon color={headerColor.color} />
+                    </Link>
                 </div>
                 {!editHeader ? (
                     <h1
                         className={isAdmin ? "clickable" : ""}
                         onClick={handleEditTitle}
-                        style={{ fontSize: titleFontSize, maxWidth: "65%" }}
+                        style={{ fontSize: titleFontSize, padding: "0 2rem" }}
                     >
                         {title}
                     </h1>
@@ -152,8 +150,55 @@ const StatementHeader: FC<Props> = ({
                         setEdit={setEditHeader}
                     />
                 )}
-                <div onClick={handleShare}>
-                    <ShareIcon color={iconColor} />
+                <div
+                    className="page__header__wrapper__moreIconBox"
+                    onClick={() => setOpenMore((prev) => !prev)}
+                >
+                    <MoreIcon color={headerColor.color} />
+                    {openMore && (
+                        <>
+                            <div className="invisibleBackground"></div>
+                            <div className="page__header__wrapper__moreIconBox__menu">
+                                <span
+                                    className="page__header__wrapper__moreIconBox__menu__item"
+                                    onClick={handleShare}
+                                >
+                                    <ShareIcon
+                                        color={headerColor.backgroundColor}
+                                    />
+                                    {t("Share")}
+                                </span>
+                                <span
+                                    className="page__header__wrapper__moreIconBox__menu__item"
+                                    onClick={handleRegisterToNotifications}
+                                >
+                                    <div>
+                                        {hasNotificationPermission &&
+                                        hasNotifications ? (
+                                            <BellIcon
+                                                color={
+                                                    headerColor.backgroundColor
+                                                }
+                                            />
+                                        ) : (
+                                            <BellSlashIcon
+                                                color={
+                                                    headerColor.backgroundColor
+                                                }
+                                            />
+                                        )}
+                                    </div>
+                                    {t("Notifications")}
+                                </span>
+                                <span className="page__header__wrapper__moreIconBox__menu__item" onClick={() => handleLogout()}>
+                                    <DisconnectIcon
+                                        color={headerColor.backgroundColor}
+                                    />
+                                    {t("Disconnect")}
+                                </span>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
             {statement && (
