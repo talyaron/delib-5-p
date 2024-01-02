@@ -16,6 +16,11 @@
         gap: 10px;
         transition: all 500ms ease-in-out;
 
+        &__title{
+            position:absolute;
+            transform: rotate(270deg) translate(16px, -51px)
+        }
+
         &__column {
             display: flex;
             flex-direction: column;

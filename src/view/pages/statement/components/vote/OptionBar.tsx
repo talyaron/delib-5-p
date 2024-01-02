@@ -48,7 +48,7 @@ export const OptionBar: FC<OptionBarProps> = ({
     const { width } = useWindowDimensions();
 
     const barWidth = width / 4 > 120 ? 120 : width / 4;
-    const padding = 10;
+    const padding = 40;
 
     const { shortVersion } = statementTitleToDisplay(option.statement, 30);
     const barHeight = Math.round((selections / totalVotes) * 100);
@@ -98,9 +98,12 @@ export const OptionBar: FC<OptionBarProps> = ({
                 onClick={handlePressButton}
             >
                 
-                <HandsIcon color="white" />
+                <HandsIcon color={vote?.statementId === option.statementId?"#434346":"white"} />
             </div>
             <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
+            <div className="vote__bar__title">
+                {shortVersion}
+            </div>
         </div>
     );
 };
