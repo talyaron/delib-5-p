@@ -1,12 +1,17 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 // Third party libraries
 import { Statement, Screen, NavObject } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 
-// Custom components
-import Fav from "../../../../../components/fav/Fav";
+// Icons
+import BurgerIcon from "../../../../../components/icons/BurgerIcon";
+import PlusIcon from "../../../../../components/icons/PlusIcon";
+import AgreementIcon from "../../../../../components/icons/AgreementIcon";
+import RandomIcon from "../../../../../components/icons/RandomIcon";
+import UpdateIcon from "../../../../../components/icons/UpdateIcon";
+import NewestIcon from "../../../../../components/icons/NewestIcon";
 
 interface Props {
     statement: Statement;
@@ -48,14 +53,12 @@ const votesArray: NavObject[] = [
 const StatementEvaluationNav: FC<Props> = ({
     setShowModal,
     statement,
-    showNav = true,
 }) => {
     const { page, sort } = useParams();
+
     const navArray = page === "vote" ? votesArray : optionsArray;
 
-    const handleToggleModal = () => {
-        setShowModal((prev) => !prev);
-    };
+    const [openNav, setOpenNav] = useState(false);
 
     //used to check if the user can add a new option in voting and in evaluation screens
     const addOption: boolean | undefined =
@@ -63,34 +66,68 @@ const StatementEvaluationNav: FC<Props> = ({
     const addVotingOption: boolean | undefined =
         statement.statementSettings?.enableAddVotingOption;
 
+    const showNavigation =
+        page === "options" && addOption
+            ? true
+            : page === "vote" && addVotingOption
+            ? true
+            : false;
+
+    const hadleMidIconClick = () => {
+        if (!openNav) return setOpenNav(true);
+
+        setShowModal(true);
+        setOpenNav(false);
+    };
     return (
-        <div className="page__footer">
-            <nav className="bottomNav" style={{ position: "relative" }}>
-                {showNav &&
-                    navArray.map((navObject: NavObject) => (
-                        <Link
-                            key={navObject.id}
-                            to={`${navObject.link}`}
-                            className={
-                                sort === navObject.link
-                                    ? "bottomNav__button bottomNav__button--selected"
-                                    : "bottomNav__button"
-                            }
-                        >
-                            {t(navObject.name)}
-                        </Link>
-                    ))}
-                {addOption && page === Screen.OPTIONS ? (
-                    <Fav isHome={false} onclick={handleToggleModal} />
-                ) : null}
-                {addVotingOption && page === Screen.VOTE && (
-                    <Fav isHome={false} onclick={handleToggleModal} />
-                )}
-                {page === Screen.QUESTIONS_MASS ? (
-                    <Fav isHome={false} onclick={handleToggleModal} />
-                ) : null}
-            </nav>
-        </div>
+        showNavigation && (
+            <div className="bottomNav">
+                <div
+                    className="bottomNav__iconbox bottomNav__iconbox--burger"
+                    onClick={hadleMidIconClick}
+                >
+                    {openNav ? (
+                        <PlusIcon color="white" />
+                    ) : (
+                        <BurgerIcon color="white" />
+                    )}
+                </div>
+
+                <Link
+                    className={`bottomNav__iconbox ${
+                        openNav && "bottomNav__iconbox--active"
+                    }`}
+                    to={"options-new"}
+                >
+                    <NewestIcon />
+                </Link>
+                <Link
+                    className={`bottomNav__iconbox ${
+                        openNav && "bottomNav__iconbox--active"
+                    }`}
+                    to={"options-updated"}
+                >
+                    <UpdateIcon />
+                </Link>
+                <Link
+                    className={`bottomNav__iconbox ${
+                        openNav && "bottomNav__iconbox--active"
+                    }`}
+                    to={"options-random"}
+                >
+                    <RandomIcon />
+                </Link>
+                <Link
+                    aria-label="Agreement"
+                    className={`bottomNav__iconbox ${
+                        openNav && "bottomNav__iconbox--active"
+                    }`}
+                    to={"options-consensus"}
+                >
+                    <AgreementIcon />
+                </Link>
+            </div>
+        )
     );
 };
 
