@@ -22,6 +22,14 @@
             justify-content: flex-end;
             align-items: center;
             height: 100%;
+            text-align: center;
+
+            &__stat{
+                display: flex;
+                flex-direction: column;
+                gap:.5rem;
+                padding-bottom: .5rem;
+            }
            
 
             &__bar {
@@ -30,9 +38,15 @@
 
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                align-items:end;
                 transition: all 500ms ease-in-out;
                 border-radius: 2rem 0rem 0rem 0rem;
+                svg {
+                    transform: scale(1.4) translateY(-1rem);
+                    user-select: none;
+                    cursor: pointer;
+                }
+              
             }
         }
 

@@ -18,6 +18,7 @@ import { setVote } from "../../../../../functions/db/vote/setVote";
 import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
+import InfoIcon from "../../../../../assets/icons/InfoIcon";
 
 export interface OptionBarProps {
     option: Statement;
@@ -48,11 +49,8 @@ export const OptionBar: FC<OptionBarProps> = ({
     const barWidth = width / 4 > 120 ? 120 : width / 4;
     const padding = 10;
 
-    const { shortVersion } = statementTitleToDisplay(
-        option.statement,
-        30
-    );
-    console.log(option.statement, option.color)
+    const { shortVersion } = statementTitleToDisplay(option.statement, 30);
+    const barHeight = (selections / totalVotes) * 100;
 
     return (
         <div
@@ -66,15 +64,22 @@ export const OptionBar: FC<OptionBarProps> = ({
                 className="vote__bar__column"
                 style={{ width: `${barWidth}px` }}
             >
+                {barHeight > 0 && (
+                    <div className="vote__bar__column__stat">
+                        <span>{barHeight}%</span>
+
+                        <span>{selections}</span>
+                    </div>
+                )}
                 <div
                     className="vote__bar__column__bar"
                     style={{
-                        height: `${(selections / totalVotes) * 100}%`,
+                        height: `${barHeight}%`,
                         width: `${barWidth - padding}px`,
-                        backgroundColor:option.color,
+                        backgroundColor: option.color,
                     }}
                 >
-                    {selections}
+                    <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
                 </div>
             </div>
             <div
