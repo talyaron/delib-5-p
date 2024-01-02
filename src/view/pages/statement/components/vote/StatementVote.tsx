@@ -68,7 +68,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                             {t("Voted")}: {totalVotes}
                         </p>
                     </div>
-                    <div className="statement__vote">
+                    <div className="vote">
                         {options.map((option: Statement, i: number) => {
                             return (
                                 <OptionBar

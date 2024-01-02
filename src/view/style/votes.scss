@@ -1,0 +1,81 @@
+.vote {
+    flex: auto;
+    display: flex;
+    direction: rtl;
+    padding: 1rem;
+    max-width: 100svw;
+    margin: 2.5rem auto;
+    overflow-x: auto;
+
+    &__bar {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        transition: all 500ms ease-in-out;
+
+        &__column {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100%;
+           
+
+            &__bar {
+                height: 0px;
+                width: 120px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all 500ms ease-in-out;
+                border-radius: 2rem 0rem 0rem 0rem;
+            }
+        }
+
+        &__btn {
+            border-radius: 5px;
+            background-color: teal;
+
+            color: white;
+            user-select: none;
+            cursor: pointer;
+            width: 120px;
+            height: 80px;
+            padding: 10px;
+            white-space: wrap;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-align: center;
+            // border-top:1em solid transparent;
+            // border-bottom:1em solid transparent;
+            text-overflow: ellipsis;
+
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 150ms ease-in-out;
+
+            :hover,
+            :active {
+                overflow: visible;
+            }
+
+            &--selected {
+                background-color: rgb(3, 167, 167);
+                box-shadow: 0px 0px 10px rgb(0, 0, 0);
+            }
+        }
+    }
+}
+vote::-webkit-scrollbar {
+    width: 1.5rem;
+}
+vote::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
+    border-radius: 1rem;
+}

@@ -52,24 +52,26 @@ export const OptionBar: FC<OptionBarProps> = ({
         option.statement,
         30
     );
+    console.log(option.statement, option.color)
 
     return (
         <div
-            className="statement__vote__bar"
+            className="vote__bar"
             style={{
                 right: `${(_optionOrder - order) * barWidth}px`,
                 width: `${barWidth}px`,
             }}
         >
             <div
-                className="statement__vote__bar__column"
+                className="vote__bar__column"
                 style={{ width: `${barWidth}px` }}
             >
                 <div
-                    className="statement__vote__bar__column__bar"
+                    className="vote__bar__column__bar"
                     style={{
                         height: `${(selections / totalVotes) * 100}%`,
                         width: `${barWidth - padding}px`,
+                        backgroundColor:option.color,
                     }}
                 >
                     {selections}
@@ -82,8 +84,8 @@ export const OptionBar: FC<OptionBarProps> = ({
                 }}
                 className={
                     vote?.statementId === option.statementId
-                        ? "statement__vote__bar__btn statement__vote__bar__btn--selected"
-                        : "statement__vote__bar__btn"
+                        ? "vote__bar__btn vote__bar__btn--selected"
+                        : "vote__bar__btn"
                 }
                 onClick={handlePressButton}
             >
