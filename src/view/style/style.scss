@@ -18,6 +18,9 @@
 @import "./message.scss";
 @import "./votes.scss";
 
+  @import url('https://fonts.googleapis.com/css2?family=Bona+Nova&family=Fredoka:wght@300;400;500;600;700&family=Patrick+Hand&display=swap');
+
+
 :root {
     // --- MAIN COLORS ---
     --mainBackground: #32527b;
@@ -182,6 +185,11 @@ b {
         color: var(--gray1);
         font-size: var(--size13);
     }
+}
+
+.hand{
+    font-family: 'Patrick Hand', cursive;
+
 }
 
 /*  --- title ---- */
