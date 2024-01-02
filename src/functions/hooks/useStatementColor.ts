@@ -1,25 +1,39 @@
 import { Statement } from "delib-npm";
 import React from "react";
 
+const initStyle = {
+    backgroundColor: "var(--white)",
+    color: "var(--black)",
+};
+
 export default function useStatementColor(statement: Statement) {
-    const [color, setColor] = React.useState("var(--question");
+    const [style, setstyle] = React.useState(initStyle);
 
     React.useEffect(() => {
         switch (statement.statementType) {
             case "question":
-                setColor("var(--question)");
+                setstyle({
+                    backgroundColor: "var(--question)",
+                    color: "var(--white)",
+                });
                 break;
             case "option":
-                setColor("var(--option)");
+                setstyle({
+                    backgroundColor: "var(--option)",
+                    color: "var(--black)",
+                });
                 break;
             case "result":
-                setColor("var(--agree)");
+                setstyle({
+                    backgroundColor: "var(--agree)",
+                    color: "black",
+                });
                 break;
             default:
-                setColor("var(--white)");
+                setstyle(initStyle);
                 break;
         }
     }, [statement]);
 
-    return color;
+    return style;
 }

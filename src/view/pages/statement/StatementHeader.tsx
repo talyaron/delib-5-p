@@ -119,7 +119,7 @@ const StatementHeader: FC<Props> = ({
     const iconColor = isOptionFn(statement) ? "black" : "white";
 
     return (
-        <div className="page__header" style={{ backgroundColor: headerColor }}>
+        <div className="page__header" style={headerColor}>
             <div
                 className="page__header__wrapper"
                 style={{ flexDirection: direction, direction: langDirection }}
