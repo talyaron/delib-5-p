@@ -21,14 +21,14 @@ const InfoIcon: FC<Props> = ({ color = "white" }) => {
             <path
                 d="M11.8818 15.1667V11.5"
                 stroke={color}
-                stroke-width="2"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
                 d="M11.8818 7.8335H11.891"
                 stroke={color}
-                stroke-width="1.99832"
+                strokeWidth="1.99832"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />

@@ -1,4 +1,4 @@
-export default function AgreementIcon() {
+export default function AgreementIcon({ color }: { color: string }) {
     return (
         <svg
             width="1.5rem"
@@ -24,10 +24,10 @@ export default function AgreementIcon() {
             />
             <path
                 d="M10.8352 1.4707L5.73763 7.55894L2.03516 4.61184"
-                stroke="#787FFF"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                stroke={color}
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             />
         </svg>
     );

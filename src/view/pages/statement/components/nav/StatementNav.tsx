@@ -27,7 +27,6 @@ export const navArray: NavObject[] = [
 
 const StatementNav: FC<Props> = ({ statement, screen }) => {
     const _navArray = showNavElements(statement, navArray);
-    const isQuestion = statement.statementType === StatementType.question;
 
     return (
         <nav className="statement__nav">

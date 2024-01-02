@@ -62,26 +62,36 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     return (
         <>
             <div className="page__main">
-                <div className="statement">
-                    <div>
-                        <h2>{t("Votes")}</h2>
-                        <p style={{ maxWidth: "50vw", margin: "0 auto", display:"flex", alignItems:"center" }} className="hand">
-                            <HandsIcon color1="#6BBDED" color2="#ead55f" color3="#F76E9F" /> {totalVotes}
-                        </p>
-                    </div>
-                    <div className="vote">
-                        {options.map((option: Statement, i: number) => {
-                            return (
-                                <OptionBar
-                                    key={option.statementId}
-                                    order={i}
-                                    option={option}
-                                    totalVotes={totalVotes}
-                                    statement={statement}
-                                />
-                            );
-                        })}
-                    </div>
+                <div>
+                    <p
+                        style={{
+                            maxWidth: "50vw",
+                            margin: "0 auto",
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                        className="hand"
+                    >
+                        <HandsIcon
+                            color1="#6BBDED"
+                            color2="#ead55f"
+                            color3="#F76E9F"
+                        />{" "}
+                        {totalVotes}
+                    </p>
+                </div>
+                <div className="vote">
+                    {options.map((option: Statement, i: number) => {
+                        return (
+                            <OptionBar
+                                key={option.statementId}
+                                order={i}
+                                option={option}
+                                totalVotes={totalVotes}
+                                statement={statement}
+                            />
+                        );
+                    })}
                 </div>
 
                 {showModal && (

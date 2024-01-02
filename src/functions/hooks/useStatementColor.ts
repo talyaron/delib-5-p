@@ -20,7 +20,7 @@ export default function useStatementColor(statement: Statement) {
             case "option":
                 setstyle({
                     backgroundColor: "var(--option)",
-                    color: "var(--black)",
+                    color: "black",
                 });
                 break;
             case "result":

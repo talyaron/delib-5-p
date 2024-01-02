@@ -79,9 +79,7 @@ export const OptionBar: FC<OptionBarProps> = ({
                         width: `${barWidth - padding}px`,
                         backgroundColor: option.color,
                     }}
-                >
-                   
-                </div>
+                />
             </div>
             <div
                 style={{
@@ -89,7 +87,6 @@ export const OptionBar: FC<OptionBarProps> = ({
                     direction: direction,
                     backgroundColor: option.color,
                 }}
-
                 className={
                     vote?.statementId === option.statementId
                         ? "vote__bar__btn vote__bar__btn--selected"
@@ -97,13 +94,16 @@ export const OptionBar: FC<OptionBarProps> = ({
                 }
                 onClick={handlePressButton}
             >
-                
-                <HandsIcon color={vote?.statementId === option.statementId?"#434346":"white"} />
+                <HandsIcon
+                    color={
+                        vote?.statementId === option.statementId
+                            ? "#434346"
+                            : "white"
+                    }
+                />
             </div>
             <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
-            <div className="vote__bar__title">
-                {shortVersion}
-            </div>
+            <div className="vote__bar__title">{shortVersion}</div>
         </div>
     );
 };
