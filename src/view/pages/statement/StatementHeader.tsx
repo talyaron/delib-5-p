@@ -28,6 +28,7 @@ import {
     calculateFontSize,
     isOptionFn,
 } from "../../../functions/general/helpers";
+import useStatementColor from "../../../functions/hooks/useStatementColor";
 
 interface Props {
     title: string;
@@ -52,6 +53,8 @@ const StatementHeader: FC<Props> = ({
     const { pathname } = useLocation();
     const { statementId, page } = useParams();
     const location = useLocation();
+
+    const headerColor = useStatementColor(statement);
 
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId)
@@ -116,13 +119,7 @@ const StatementHeader: FC<Props> = ({
     const iconColor = isOptionFn(statement) ? "black" : "white";
 
     return (
-        <div
-            className={
-                statement?.statementType === StatementType.question
-                    ? "page__header page__header--question"
-                    : "page__header"
-            }
-        >
+        <div className="page__header" style={{ backgroundColor: headerColor }}>
             <div
                 className="page__header__wrapper"
                 style={{ flexDirection: direction, direction: langDirection }}

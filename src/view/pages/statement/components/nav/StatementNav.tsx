@@ -21,7 +21,7 @@ export const navArray: NavObject[] = [
         default: false,
     },
     { link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false },
-   
+
     { link: Screen.SETTINGS, name: "Settings", id: "settings" },
 ];
 
@@ -37,13 +37,11 @@ const StatementNav: FC<Props> = ({ statement, screen }) => {
                     to={`/statement/${statement.statementId}/${navObject.link}${
                         navObject.link === Screen.VOTE ? "/votes-voted" : ""
                     }`}
-                    className={
-                        screen === navObject.link && isQuestion
-                            ? "statement__nav__button statement__nav__button--selected--question"
-                            : screen === navObject.link
-                            ? "statement__nav__button statement__nav__button--selected"
-                            : "statement__nav__button"
-                    }
+                    className={`statement__nav__button ${
+                        screen === navObject.link
+                            ? "statement__nav__button--selected"
+                            : ""
+                    }`}
                 >
                     {t(navObject.name)}
                 </Link>

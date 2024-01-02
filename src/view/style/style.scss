@@ -22,6 +22,9 @@
     --mainBackground: #32527b;
     --statementBackground: #f2f6ff;
 
+    // Option
+    --option: #f5deb3;
+
     //results
     --result: #a9adf4;
     --result-text: white;
@@ -112,7 +115,8 @@ body {
     width: 100svw;
     height: 100svh;
     margin: 0px;
-    font-family: "Fredoka", sans-serif;
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
     font-size: 14px;
     background: var(--pageBackground);
     overflow: hidden;
