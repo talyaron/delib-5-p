@@ -1,14 +1,27 @@
 /* Inputs */
-input[type="text"],
+input,
 textarea {
-    background-color: white;
+    width: 100%;
+    padding: 0.5rem;
     border: none;
-    border-bottom: 1px solid var(--accent);
-    padding: 5px;
-    border-radius: 1rem;
-    box-shadow: inset 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+    outline: none;
+    background-color: var(--inputBackground);
+    border-radius: 3px;
+}
+
+textarea {
+    resize: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--placeHolder);
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
+    font-weight: 400;
     font-size: 1rem;
-    font-family: "Fredoka", sans-serif;
+    line-height: 1.1rem;
+    letter-spacing: 0.2px;
 }
 
 select {

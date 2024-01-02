@@ -18,11 +18,11 @@ import Loader from "../../../../components/loaders/Loader";
 
 // Redux
 import { store } from "../../../../../model/store";
+import ModalImage from "../../../../components/icons/ModalImage";
 
 interface Props {
     parentStatement: Statement | "top";
-    isOption?: boolean;
-    isQuestion?: boolean;
+    isOption: boolean;
     setShowModal: Function;
     getSubStatements?: Function;
 }
@@ -30,12 +30,13 @@ interface Props {
 const NewSetStatementSimple: FC<Props> = ({
     parentStatement,
     isOption,
-    isQuestion,
     setShowModal,
     getSubStatements,
 }) => {
     try {
         const parentIsStatement = parentStatement !== "top";
+
+        const [isOptionChosen, setIsOptionChosen] = useState(isOption);
 
         const parentStatementId = parentIsStatement
             ? parentStatement.statementId
@@ -49,10 +50,14 @@ const NewSetStatementSimple: FC<Props> = ({
         async function handleAddStatment(ev: React.FormEvent<HTMLFormElement>) {
             try {
                 ev.preventDefault();
-                setIsLoading(true);
-                const data = new FormData(ev.currentTarget);
 
+                const data = new FormData(ev.currentTarget);
                 let title: any = data.get("statement");
+
+                if (!title) throw new Error("title is undefined");
+
+                setIsLoading(true);
+
                 const description = data.get("description");
                 //add to title * at the beggining
                 if (title && !title.startsWith("*")) title = `*${title}`;
@@ -83,11 +88,13 @@ const NewSetStatementSimple: FC<Props> = ({
                         parentStatementId,
                     ];
 
+                // Can only be Option or Question
                 newStatement.creator = parseUserFromFirebase(_user);
-                if (isOption) newStatement.statementType = StatementType.option;
-
-                if (isQuestion)
+                if (isOption) {
+                    newStatement.statementType = StatementType.option;
+                } else {
                     newStatement.statementType = StatementType.question;
+                }
 
                 newStatement.lastUpdate = new Date().getTime();
 
@@ -108,44 +115,75 @@ const NewSetStatementSimple: FC<Props> = ({
                 console.error(error);
             }
         }
-        const title = (() => {
-            if (isOption) return "Add Option";
-            if (isQuestion) return "Add Question";
-            return "Add Statement";
-        })();
 
         return (
             <>
                 {!isLoading ? (
-                    <form
-                        onSubmit={handleAddStatment}
-                        className="setStatement__form"
-                        style={{ height: "auto" }}
-                    >
-                        <h2>{t(title)}</h2>
-                        <input
-                            autoFocus={true}
-                            type="text"
-                            name="statement"
-                            placeholder={t("Title")}
-                        />
-                        <textarea
-                            name="description"
-                            placeholder={t("Description")}
-                            rows={4}
-                        ></textarea>
-
-                        <div className="btnBox">
-                            <button type="submit">{t("Add")}</button>
-                            <button
-                                onClick={() => setShowModal(false)}
-                                type="button"
-                                className="btn btn--cancel"
-                            >
-                                {t("Cancel")}
-                            </button>
+                    <div className="overlay">
+                        <div className="overlay__imgBox">
+                            <ModalImage />
+                            <div className="overlay__imgBox__polygon" />
                         </div>
-                    </form>
+                        <div className="overlay__tabs">
+                            <div
+                                onClick={() => setIsOptionChosen(true)}
+                                className={
+                                    isOptionChosen
+                                        ? "overlay__tabs__tab overlay__tabs__tab--active"
+                                        : "overlay__tabs__tab"
+                                }
+                            >
+                                Option
+                                {isOptionChosen && <div className="block" />}
+                            </div>
+                            <div
+                                onClick={() => setIsOptionChosen(false)}
+                                className={
+                                    isOptionChosen
+                                        ? "overlay__tabs__tab"
+                                        : "overlay__tabs__tab overlay__tabs__tab--active"
+                                }
+                            >
+                                Question
+                                {!isOptionChosen && <div className="block" />}
+                            </div>
+                        </div>
+                        <form
+                            onSubmit={handleAddStatment}
+                            className="overlay__form"
+                            style={{ height: "auto" }}
+                        >
+                            <input
+                                autoFocus={true}
+                                type="text"
+                                name="statement"
+                                placeholder={t("Title")}
+                                required
+                                minLength={3}
+                            />
+                            <textarea
+                                name="description"
+                                placeholder={t("Description")}
+                                rows={4}
+                            ></textarea>
+
+                            <div className="overlay__form__buttons">
+                                <button
+                                    className="overlay__form__buttons__add btn"
+                                    type="submit"
+                                >
+                                    {t("Add")}
+                                </button>
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    type="button"
+                                    className="overlay__form__buttons__cancel btn"
+                                >
+                                    {t("Cancel")}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 ) : (
                     <div className="center">
                         <h2>{t("Updating")}</h2>
