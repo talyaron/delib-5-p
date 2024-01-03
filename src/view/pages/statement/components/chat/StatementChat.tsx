@@ -35,6 +35,7 @@ import {
 import LightBulbIcon from "../../../../components/icons/LightBulbIcon";
 
 interface Props {
+    parentStatement: Statement;
     statement: Statement;
     showImage: Function;
     setShowModal?: Function;
@@ -43,9 +44,9 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({
+    parentStatement,
     statement,
     showImage,
-    index,
     previousStatement,
 }) => {
     const { statementType } = statement;
@@ -58,7 +59,7 @@ const StatementChat: FC<Props> = ({
     const statementColor = useStatementColor(statement);
 
     const creatorId = statement.creatorId;
-    const _isAuthrized = isAuthorized(statement, statementSubscription);
+    const _isAuthrized = isAuthorized(statement, statementSubscription,parentStatement.creatorId);
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;

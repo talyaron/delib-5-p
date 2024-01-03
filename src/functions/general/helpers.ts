@@ -110,6 +110,7 @@ export function getNewStatment({
 export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
+    parentStatementCreatorId?: string | undefined,
     authrizedRoles?: Array<Role>
 ) {
     try {
@@ -119,6 +120,7 @@ export function isAuthorized(
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
+        if(parentStatementCreatorId === user.uid) return true;
 
         if (!statementSubscription) return false;
 
