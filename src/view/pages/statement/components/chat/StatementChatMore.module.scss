@@ -1,0 +1,22 @@
+.mainCard {
+
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        &__text {
+            font-family: Roboto;
+            font-size: 0.938rem;
+            font-weight: 400;
+            line-height: 1.125rem;
+            color: #6E8AA6;
+        }
+
+        &__icon {
+            justify-self: self-end;
+        }
+
+    }
+}
