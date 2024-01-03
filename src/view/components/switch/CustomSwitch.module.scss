@@ -1,0 +1,37 @@
+.switch {
+    background-color: #F5FCFF;
+    height: 1.85rem;
+    position: relative;
+    border-radius: .285rem;
+    text-align: center;
+    font-size: .9rem;
+}
+
+.switch {
+    .tag {
+     
+        transform: scale(1.05);
+        height: 1.85rem;
+        width: 50%;
+        position: relative;
+        top:0px;
+        border-radius: .285rem;
+        transition: all .15s ease-in-out;
+
+        
+    }
+    .off {
+
+        height: 1.85rem;
+        width: 50%;
+        position: absolute;
+        border-radius: .285rem;
+        left: 0%;
+        top:0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+    }
+}
