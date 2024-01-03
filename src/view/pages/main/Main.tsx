@@ -36,10 +36,7 @@ const Main = () => {
                 <h2>{t("Conversations")}</h2>
 
                 {statements.map((statement) => (
-                    // <MainCardRes
-                    //     key={statement.statement.statementId}
-                    //     statement={statement.statement}
-                    // />
+                
 
                     <MainCard
                         key={statement.statement.statementId}
