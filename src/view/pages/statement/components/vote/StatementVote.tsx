@@ -13,7 +13,7 @@ import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 // Statements helpers
 import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
 import { setVoteToStore } from "../../../../../model/vote/votesSlice";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateSimpleStatement from "../createStatement/CreateSimpleStatement";
 import { setSelectionsToOptions } from "./setSelectionsToOptions";
 import { getTotalVoters } from "./getTotalVoters";
 import { sortOptionsIndex } from "./sortOptionsIndex";
@@ -102,7 +102,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
 
                 {showModal && (
                     <Modal>
-                        <NewSetStatementSimple
+                        <CreateSimpleStatement
                             parentStatement={statement}
                             isOption={true}
                             setShowModal={setShowModal}

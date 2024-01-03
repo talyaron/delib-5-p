@@ -1,7 +1,7 @@
 import { RoomAskToJoin, RoomsStateSelection, Statement } from "delib-npm";
 import { FC, useState, useEffect } from "react";
 import Modal from "../../../../components/modal/Modal";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateSimpleStatement from "../createStatement/CreateSimpleStatement";
 import { listenToAllRoomsRquest } from "../../../../../functions/db/rooms/getRooms";
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 import { setRoomRequests } from "../../../../../model/statements/statementsSlice";
@@ -61,7 +61,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
 
                 {showModal ? (
                     <Modal>
-                        <NewSetStatementSimple
+                        <CreateSimpleStatement
                             parentStatement={statement}
                             isOption={true}
                             setShowModal={setShowModal}

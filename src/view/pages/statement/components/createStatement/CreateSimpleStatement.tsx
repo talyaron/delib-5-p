@@ -27,7 +27,7 @@ interface Props {
     getSubStatements?: Function;
 }
 
-const NewSetStatementSimple: FC<Props> = ({
+const CreateSimpleStatement: FC<Props> = ({
     parentStatement,
     isOption,
     setShowModal,
@@ -198,7 +198,7 @@ const NewSetStatementSimple: FC<Props> = ({
     }
 };
 
-export default NewSetStatementSimple;
+export default CreateSimpleStatement;
 
 // function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
 //     try {

@@ -7,7 +7,7 @@ import Modal from "../../../../components/modal/Modal";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateSimpleStatement from "../createStatement/CreateSimpleStatement";
 
 
 // Utils & Helpers
@@ -85,7 +85,7 @@ const StatementEvaluation: FC<Props> = ({
                 {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
                 {showModal && (
                     <Modal>
-                        <NewSetStatementSimple
+                        <CreateSimpleStatement
                             parentStatement={statement}
                             isOption={true}
                             setShowModal={setShowModal}

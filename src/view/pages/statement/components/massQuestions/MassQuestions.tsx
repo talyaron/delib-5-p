@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import MassQuestionCard from "./components/massQuestion/MassQuestionCard";
 import styles from "./MassQuestions.module.scss";
 import StatementEvaluationNav from "../options/components/StatementEvaluationNav";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateSimpleStatement from "../createStatement/CreateSimpleStatement";
 import Modal from "../../../../components/modal/Modal";
 import { isAuthorized } from "../../../../../functions/general/helpers";
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
@@ -94,7 +94,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     />
                     {showModal && (
                         <Modal>
-                            <NewSetStatementSimple
+                            <CreateSimpleStatement
                                 parentStatement={statement}
                                 isOption={false}
                                 setShowModal={setShowModal}

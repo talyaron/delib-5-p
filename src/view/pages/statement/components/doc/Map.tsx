@@ -17,7 +17,7 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../../../functions/general/sorting";
 import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateSimpleStatement from "../createStatement/CreateSimpleStatement";
 
 // Hooks
 import { useMapContext } from "../../../../../functions/hooks/useMap";
@@ -113,7 +113,7 @@ const Map: FC<Props> = ({ statement }) => {
 
             {mapContext.showModal && (
                 <Modal>
-                    <NewSetStatementSimple
+                    <CreateSimpleStatement
                         parentStatement={mapContext.parentStatement}
                         isOption={mapContext.isOption}
                         setShowModal={toggleModal}

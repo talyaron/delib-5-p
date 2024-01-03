@@ -16,8 +16,8 @@ import Page404 from "./view/pages/page404/Page404";
 // Lazy loading
 const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
-const SetStatement = lazy(
-    () => import("./view/pages/statement/components/set/SetStatement")
+const AddStatement = lazy(
+    () => import("./view/pages/home/addStatement/AddStatement")
 );
 
 export const SuspenseFallback = () => {
@@ -73,20 +73,21 @@ export const router = createBrowserRouter([
                         path: "addStatment",
                         element: (
                             <Suspense fallback={<SuspenseFallback />}>
-                                <SetStatement />
+                                <AddStatement />
                             </Suspense>
                         ),
                         errorElement: <ErrorPage />,
                     },
-                    {
-                        path: "updateStatement/:statementId",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <SetStatement />
-                            </Suspense>
-                        ),
-                        errorElement: <ErrorPage />,
-                    },
+                    //TODO: Not used. Delete?
+                    // {
+                    //     path: "updateStatement/:statementId",
+                    //     element: (
+                    //         <Suspense fallback={<SuspenseFallback />}>
+                    //             <AddStatement />
+                    //         </Suspense>
+                    //     ),
+                    //     errorElement: <ErrorPage />,
+                    // },
                 ],
             },
             {

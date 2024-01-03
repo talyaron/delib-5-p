@@ -5,14 +5,13 @@ import { Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Custom components
-import NewSetStatementSimple from "../../../set/NewStatementSimple";
+import CreateSimpleStatement from "../../../createStatement/CreateSimpleStatement";
 import Modal from "../../../../../../components/modal/Modal";
 
 // Icons
 import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
 
 // Styles
-
 
 interface Props {
     statement: Statement;
@@ -26,12 +25,11 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
     return (
         <>
             <div className="clickable" onClick={handleShwQuestionModal}>
-
-               <img src={addQuestion} alt={t("Add question")} />
+                <img src={addQuestion} alt={t("Add question")} />
             </div>
             {showQuestionModal && (
                 <Modal>
-                    <NewSetStatementSimple
+                    <CreateSimpleStatement
                         parentStatement={statement}
                         isOption={false}
                         setShowModal={setAddQuestionModal}
