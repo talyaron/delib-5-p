@@ -67,7 +67,7 @@ const votesArray: NavItems[] = [
     },
     {
         link: Screen.VOTESֹֹֹ_VOTED,
-        name: t("Agreement"),
+        name: "Agreement",
         id: Screen.VOTESֹֹֹ_VOTED,
     },
     // {

@@ -1,4 +1,4 @@
-export default function AgreementIcon({ color }: { color: string }) {
+export default function AgreementIcon({ color="#C5DBE9" }: { color: string }) {
     return (
         <svg
             width="1.5rem"
