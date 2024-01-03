@@ -20,14 +20,16 @@
 @import "./termsOfUse.scss";
 @import "./votes.scss";
 
-  @import url('https://fonts.googleapis.com/css2?family=Bona+Nova&family=Fredoka:wght@300;400;500;600;700&family=Patrick+Hand&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Bona+Nova&family=Fredoka:wght@300;400;500;600;700&family=Patrick+Hand&display=swap");
 
 :root {
     // --- MAIN COLORS ---
     --mainBackground: #32527b;
     --statementBackground: #f2f6ff;
-    --inputBackground: #F5FCFF;
+    --inputBackground: #f5fcff;
+
+    // Option
+    --option: #f5deb3;
 
     //results
     --result: #a9adf4;
@@ -78,7 +80,7 @@
     // --secondary: #f0f4ff;
     // --additional: #f2f2f2;
     --white: white;
-    --red: #E8749E;
+    --red: #e8749e;
 
     // --black: black;
     // --gray5: #f9f9f9;
@@ -111,6 +113,14 @@
     // --press: gray;
 }
 
+svg {
+    cursor: pointer;
+}
+
+svg:hover {
+    transform: scale(1.1);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -122,7 +132,8 @@ body {
     width: 100svw;
     height: 100svh;
     margin: 0px;
-    font-family: "Fredoka", sans-serif;
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
     font-size: 14px;
     background: var(--pageBackground);
     overflow: hidden;
@@ -149,6 +160,15 @@ a {
 
 b {
     font-weight: 500;
+}
+
+.invisibleBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100svh;
+    z-index: 4;
 }
 
 .wrapperAll {
@@ -193,9 +213,8 @@ b {
     }
 }
 
-.hand{
-    font-family: 'Patrick Hand', cursive;
-
+.hand {
+    font-family: "Patrick Hand", cursive;
 }
 
 /*  --- title ---- */

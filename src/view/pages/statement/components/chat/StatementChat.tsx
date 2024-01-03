@@ -78,17 +78,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                     />
                 </div>
 
-                {displayChat ? (
-                    <StatementChatMore statement={statement} />
-                ) : (
-                    <div
-                        style={{
-                            backgroundColor: "var(--statementBackground)",
-                            width: "100%",
-                            height: 2,
-                        }}
-                    />
-                )}
+                {displayChat && <StatementChatMore statement={statement} />}
                 <div className="message__box__actions">
                     <div className="message__box__actions__type">
                         <StatementChatSetOption statement={statement} />

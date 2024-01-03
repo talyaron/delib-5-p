@@ -4,7 +4,7 @@
     direction: rtl;
     padding: 1rem;
     max-width: 100svw;
-    margin: 2.5rem auto;
+    margin: 0 auto;
     overflow-x: auto;
 
     &__bar {
@@ -34,12 +34,10 @@
             &__stat {
                 display: flex;
                 flex-direction: column;
-                gap: .5rem;
-                padding-bottom: .5rem;
-                font-family: 'Patrick Hand', cursive;
-
+                gap: 0.5rem;
+                padding-bottom: 0.5rem;
+                font-family: "Patrick Hand", cursive;
             }
-
 
             &__bar {
                 height: 0px;
@@ -50,11 +48,14 @@
                 align-items: end;
                 transition: all 500ms ease-in-out;
                 border-radius: 2rem 0rem 0rem 0rem;
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 21px), 0 100%);
+                clip-path: polygon(
+                    0 0,
+                    100% 0,
+                    100% 100%,
+                    50% calc(100% - 21px),
+                    0 100%
+                );
                 transform: translateY(21px);
-
-
-
             }
         }
 
@@ -88,10 +89,7 @@
                 overflow: visible;
             }
 
-
-
             &--selected {
-
                 border-bottom: rgba(0, 0, 0, 0.471) 3px solid;
             }
         }

@@ -1,12 +1,12 @@
 .bottomNav {
     width: 100%;
-    height: 4.5rem;
     max-width: 75ch;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
     position: relative;
+    z-index: 5;
     &__iconbox {
         width: 3rem;
         height: 3rem;
@@ -22,25 +22,25 @@
         left: calc(50% - 1.5rem);
         &--burger {
             background-color: var(--question);
-            z-index: 1;
+            z-index: 10;
         }
         &--active:nth-child(2) {
-            z-index: 2;
+            z-index: 20;
             transform: rotate(-360deg);
             left: calc(50% - 1.5rem - 8rem);
         }
         &--active:nth-child(3) {
-            z-index: 2;
+            z-index: 20;
             transform: rotate(360deg);
             left: calc(50% - 1.5rem - 4rem);
         }
         &--active:nth-child(4) {
-            z-index: 2;
+            z-index: 20;
             transform: rotate(-360deg);
             left: calc(50% - 1.5rem + 4rem);
         }
         &--active:nth-child(5) {
-            z-index: 2;
+            z-index: 20;
             transform: rotate(360deg);
             left: calc(50% - 1.5rem + 8rem);
         }

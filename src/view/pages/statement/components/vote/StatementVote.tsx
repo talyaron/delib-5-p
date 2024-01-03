@@ -87,6 +87,19 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                         })}
                     </div>
                 </div>
+                <div className="vote">
+                    {options.map((option: Statement, i: number) => {
+                        return (
+                            <OptionBar
+                                key={option.statementId}
+                                order={i}
+                                option={option}
+                                totalVotes={totalVotes}
+                                statement={statement}
+                            />
+                        );
+                    })}
+                </div>
 
                 {showModal && (
                     <Modal>

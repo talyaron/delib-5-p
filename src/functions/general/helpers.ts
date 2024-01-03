@@ -9,6 +9,8 @@ import {
 } from "delib-npm";
 import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
+import { logOut } from "../db/auth";
+import { setUser } from "../../model/users/userSlice";
 
 export function updateArray(
     currentArray: Array<any>,
@@ -274,9 +276,7 @@ export function linkToChildren(
 }
 
 export function getPastelColor() {
-    return (
-        `hsl(${360 * Math.random()},100%,75%)` || "red"
-    );
+    return `hsl(${360 * Math.random()},100%,75%)` || "red";
 }
 
 export function calculateFontSize(
@@ -295,4 +295,9 @@ export function calculateFontSize(
     );
 
     return `${fontSize}px`;
+}
+
+export function handleLogout() {
+    logOut();
+    store.dispatch(setUser(null));
 }

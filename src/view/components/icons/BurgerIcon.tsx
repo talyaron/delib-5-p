@@ -10,20 +10,20 @@ export default function BurgerIcon({ color }: { color: string }) {
             <path
                 d="M5 12H20"
                 stroke={color}
-                stroke-width="2"
-                stroke-linecap="round"
+                strokeWidth="2"
+                strokeLinecap="round"
             />
             <path
                 d="M5 17H20"
                 stroke={color}
-                stroke-width="2"
-                stroke-linecap="round"
+                strokeWidth="2"
+                strokeLinecap="round"
             />
             <path
                 d="M5 7H20"
                 stroke={color}
-                stroke-width="2"
-                stroke-linecap="round"
+                strokeWidth="2"
+                strokeLinecap="round"
             />
         </svg>
     );

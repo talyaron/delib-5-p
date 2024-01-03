@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { logOut } from "../../../functions/db/auth";
-import { setUser } from "../../../model/users/userSlice";
 import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
-import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
 import { t } from "i18next";
+import { handleLogout } from "../../../functions/general/helpers";
 
 export default function HomeHeader() {
-    const dispatch = useAppDispatch();
-
     //for deffered app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -17,10 +13,6 @@ export default function HomeHeader() {
         setDeferredPrompt(install.deferredPrompt);
     }, []);
 
-    function handleLogout() {
-        logOut();
-        dispatch(setUser(null));
-    }
     function handleInstallApp() {
         try {
             prompStore(setDeferredPrompt);

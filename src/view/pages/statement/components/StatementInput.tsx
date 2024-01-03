@@ -15,6 +15,7 @@ import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../../model/users/userSlice";
 import useDirection from "../../../../functions/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
+import useStatementColor from "../../../../functions/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;
@@ -22,6 +23,8 @@ interface Props {
 
 const StatementInput: FC<Props> = ({ statement }) => {
     const user = useAppSelector(userSelector);
+
+    const statementColor = useStatementColor(statement);
 
     const direction = useDirection();
 
@@ -67,8 +70,12 @@ const StatementInput: FC<Props> = ({ statement }) => {
             className="statement__form"
             style={{ flexDirection: direction }}
         >
-            <button type="submit" className="statement__form__sendBtnBox">
-                <SendIcon />
+            <button
+                type="submit"
+                className="statement__form__sendBtnBox"
+                style={statementColor}
+            >
+                <SendIcon color={statementColor.color} />
             </button>
             <textarea
                 rows={3}
