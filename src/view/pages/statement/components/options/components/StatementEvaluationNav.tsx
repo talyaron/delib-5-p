@@ -29,22 +29,22 @@ interface NavItems {
 const optionsArray: NavItems[] = [
     {
         link: Screen.OPTIONS_NEW,
-        name: t("New"),
+        name: "New",
         id: Screen.OPTIONS_NEW,
     },
     {
         link: Screen.OPTIONS_UPDATED,
-        name: t("Update"),
+        name: "Update",
         id: Screen.OPTIONS_UPDATED,
     },
     {
         link: Screen.OPTIONS_RANDOM,
-        name: t("Random"),
+        name: "Random",
         id: Screen.OPTIONS_RANDOM,
     },
     {
         link: Screen.OPTIONS_CONSENSUS,
-        name: t("Agreement"),
+        name: "Agreement",
         id: Screen.OPTIONS_CONSENSUS,
     },
 ];
@@ -95,16 +95,17 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
         statement.statementSettings?.enableAddVotingOption;
 
     const showNavigation =
-        page === "options" && addOption
-            ? true
-            : page === "vote" && addVotingOption
-            ? true
-            : false;
+        page === "options" ? true : page === "vote" ? true : false;
+
+    const showAddOptionEvaluation = page === "options" && addOption;
+    const showAddOptionVoting = page === "vote" && addVotingOption;
 
     const hadleMidIconClick = () => {
         if (!openNav) return setOpenNav(true);
-
-        setShowModal(true);
+        if (showAddOptionEvaluation || showAddOptionVoting) {
+            setShowModal(true);
+          
+        }
         setOpenNav(false);
     };
 
@@ -143,7 +144,8 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
                         style={statementColor}
                         onClick={hadleMidIconClick}
                     >
-                        {openNav ? (
+                        {openNav &&
+                        (showAddOptionEvaluation || showAddOptionVoting) ? (
                             <PlusIcon color={statementColor.color} />
                         ) : (
                             <BurgerIcon color={statementColor.color} />
