@@ -32,6 +32,7 @@
 
     // Option
     --option: #f5deb3;
+    --option-text: #3b4f7d;
 
     //results
     --result: #a9adf4;
@@ -117,10 +118,6 @@
 
 svg {
     cursor: pointer;
-}
-
-svg:hover {
-    transform: scale(1.1);
 }
 
 * {

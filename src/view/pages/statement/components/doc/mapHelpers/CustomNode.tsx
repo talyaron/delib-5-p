@@ -11,29 +11,23 @@ import { useMapContext } from "../../../../../../functions/hooks/useMap";
 import PlusIcon from "../../../../../components/icons/PlusIcon";
 
 // Statements functions
-import { calculateFontSize, statementTitleToDisplay } from "../../../../../../functions/general/helpers";
-
-
-
-const resultColor = "#8FF18F";
-const questionColor = "#5252FD";
-
-const backgroundColor = (type: string) =>
-    type === "question"
-        ? questionColor
-        : type === "result"
-        ? resultColor
-        : "gold";
+import {
+    calculateFontSize,
+    statementTitleToDisplay,
+} from "../../../../../../functions/general/helpers";
+import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
 
 const nodeStyle = (
     parentStatement: any,
-    statementType: string,
+    statementColor: { backgroundColor: string; color: string },
     nodeTitle: string
 ) => {
     const style = {
         backgroundColor:
-            parentStatement === "top" ? "darkblue" : backgroundColor(statementType),
-        color: statementType === "question" ? "white" : "black",
+            parentStatement === "top"
+                ? "darkblue"
+                : statementColor.backgroundColor,
+        color: statementColor.color,
         height: 40,
         width: 70,
         borderRadius: "5px",
@@ -55,6 +49,8 @@ export default function CustomNode({ data }: NodeProps) {
     const { statementId, statement, statementType } = result.top;
 
     const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
+
+    const statementColor = useStatementColor(statement);
 
     const { mapContext, setMapContext } = useMapContext();
 
@@ -100,7 +96,7 @@ export default function CustomNode({ data }: NodeProps) {
                 onClick={handleNodeClick}
                 data-id={statementId}
                 style={{
-                    ...nodeStyle(parentStatement, statementType, nodeTitle),
+                    ...nodeStyle(parentStatement, statementColor, nodeTitle),
                     textAlign: "center",
                     wordBreak: "break-word",
                 }}

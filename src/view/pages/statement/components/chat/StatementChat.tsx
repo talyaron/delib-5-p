@@ -27,6 +27,12 @@ import MoreIcon from "../../../../../assets/icons/MoreIcon";
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
 import { t } from "i18next";
 import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
+import QuestionMarkIcon from "../../../../components/icons/QuestionMarkIcon";
+import {
+    setStatementisOption,
+    updateIsQuestion,
+} from "../../../../../functions/db/statements/setStatments";
+import LightBulbIcon from "../../../../components/icons/LightBulbIcon";
 
 interface Props {
     statement: Statement;
@@ -68,6 +74,37 @@ const StatementChat: FC<Props> = ({
         ? true
         : false;
 
+    function handleSetQuestion() {
+        updateIsQuestion(statement);
+    }
+
+    function handleSetOption() {
+        try {
+            if (statement.statementType === "option") {
+                const cancelOption = window.confirm(
+                    "Are you sure you want to cancel this option?"
+                );
+                if (cancelOption) {
+                    setStatementisOption(statement);
+                }
+            } else {
+                setStatementisOption(statement);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const optionIcon = (
+        <div className="clickable">
+            {isOptionFn(statement) ? (
+                <LightBulbIcon color="gold" />
+            ) : (
+                <LightBulbIcon color="lightgray" />
+            )}
+        </div>
+    );
+
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (
@@ -77,7 +114,7 @@ const StatementChat: FC<Props> = ({
                 </div>
             )}
 
-            <div className={`message__box ${isQuestion && "isQuestion"}`}>
+            <div className={`message__box ${statementType}`}>
                 {displayUserName && (
                     <div
                         className={
@@ -103,13 +140,19 @@ const StatementChat: FC<Props> = ({
                         firstIcon={<AddSubQuestion statement={statement} />}
                         firstIconText="Add Sub-Question"
                         secondIcon={
-                            <StatementChatSetQuestion statement={statement} />
+                            <QuestionMarkIcon
+                                color={
+                                    statement.statementType === "question"
+                                        ? "blue"
+                                        : "lightgray"
+                                }
+                            />
                         }
-                        secondIconText="Set Question"
-                        thirdIcon={
-                            <StatementChatSetOption statement={statement} />
-                        }
-                        thirdIconText="Set Option"
+                        secondIconFunc={handleSetQuestion}
+                        secondIconText="Question"
+                        thirdIcon={optionIcon}
+                        thirdIconFunc={handleSetOption}
+                        thirdIconText="Option"
                         fourthIcon={
                             <StatementChatSetEdit
                                 isAuthrized={_isAuthrized}
@@ -120,12 +163,12 @@ const StatementChat: FC<Props> = ({
                         fourthIconText="Edit"
                     />
                 </div>
+                {displayChat && (
+                            <StatementChatMore statement={statement} />
+                        )}
 
                 <div className="message__box__actions">
                     <div className="message__box__actions__type">
-                        {displayChat && (
-                            <StatementChatMore statement={statement} />
-                        )}
                     </div>
                     <div className="message__box__actions__evaluations">
                         <Evaluation
