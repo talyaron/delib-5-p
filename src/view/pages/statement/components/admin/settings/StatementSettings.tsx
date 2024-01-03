@@ -49,9 +49,6 @@ import {
     isSubPageChecked,
 } from "./statementSettingsCont";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
-
-// Style
-import "./settingsStyle.scss";
 import UploadImage from "../../../../../components/uploadImage/UploadImage";
 import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 
@@ -129,11 +126,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const _statement = `${title}\n${description}`;
 
             UserSchema.parse(user);
-      
 
             const newStatement: any = Object.fromEntries(data.entries());
             const x = { ...newStatement };
-      
 
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
@@ -232,12 +227,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             : true;
 
     return (
-        <ScreenFadeIn className="setStatement">
+        <ScreenFadeIn className="page__main">
             {!isLoading ? (
-                <form
-                    onSubmit={handleSetStatment}
-                    className="setStatement__form"
-                >
+                <form onSubmit={handleSetStatment} className="settings">
                     <label htmlFor="statement">
                         <input
                             autoFocus={true}
@@ -247,79 +239,70 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             defaultValue={arrayOfStatementParagrphs[0]}
                         />
                     </label>
-                    <div>
+                    <label htmlFor="description">
                         <textarea
                             name="description"
                             placeholder={t("Group Description")}
                             rows={3}
                             defaultValue={description}
-                        ></textarea>
-                    </div>
-                    {!simple && (
-                        <section className="checkboxSection">
-                            <div style={{ width: "30%" }}>
-                                <h3
-                                    style={{
-                                        fontSize: "1.3rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    {t("Tabs")}
-                                </h3>
-                                <div className="checkboxSection__column">
-                                    {navArray
-                                        .filter(
-                                            (navObj) =>
-                                                navObj.link !== Screen.SETTINGS
-                                        )
-                                        .map((navObj, index) => (
-                                            <CustomSwitch
-                                                key={`tabs-${index}`}
-                                                link={navObj.link}
-                                                label={navObj.name}
-                                                defaultChecked={isSubPageChecked(
-                                                    statement,
-                                                    navObj
-                                                )}
-                                            />
-                                        ))}
-                                </div>
-                            </div>
-                            <div>
-                                <h3
-                                    style={{
-                                        fontSize: "1.3rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    {t("Advanced")}
-                                </h3>
-                                <div className="checkboxSection__column">
-                                    <CustomCheckboxLabel
-                                        name={"hasChildren"}
-                                        title={"Enable Sub-Conversations"}
-                                        defaultChecked={hasChildren}
+                        />
+                    </label>
+                    <section className="settings__checkboxSection">
+                        <div className="settings__checkboxSection__column">
+                            <h3
+                                style={{
+                                    fontSize: "1.3rem",
+                                    fontWeight: "500",
+                                }}
+                            >
+                                {t("Tabs")}
+                            </h3>
+                            {navArray
+                                .filter(
+                                    (navObj) => navObj.link !== Screen.SETTINGS
+                                )
+                                .map((navObj, index) => (
+                                    <CustomSwitch
+                                        key={`tabs-${index}`}
+                                        link={navObj.link}
+                                        label={navObj.name}
+                                        defaultChecked={isSubPageChecked(
+                                            statement,
+                                            navObj
+                                        )}
                                     />
-                                    <CustomCheckboxLabel
-                                        name={"enableAddVotingOption"}
-                                        title={
-                                            "Allow participants to contribute options to the voting page"
-                                        }
-                                        defaultChecked={enableAddVotingOption}
-                                    />
-                                    <CustomCheckboxLabel
-                                        name={"enableAddEvaluationOption"}
-                                        title={
-                                            "Allow participants to contribute options to the evaluation page"
-                                        }
-                                        defaultChecked={
-                                            enableAddEvaluationOption
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </section>
-                    )}
+                                ))}
+                        </div>
+                        <div className="settings__checkboxSection__column">
+                            <h3
+                                style={{
+                                    fontSize: "1.3rem",
+                                    fontWeight: "500",
+                                }}
+                            >
+                                {t("Advanced")}
+                            </h3>
+                            <CustomCheckboxLabel
+                                name={"hasChildren"}
+                                title={"Enable Sub-Conversations"}
+                                defaultChecked={hasChildren}
+                            />
+                            <CustomCheckboxLabel
+                                name={"enableAddVotingOption"}
+                                title={
+                                    "Allow participants to contribute options to the voting page"
+                                }
+                                defaultChecked={enableAddVotingOption}
+                            />
+                            <CustomCheckboxLabel
+                                name={"enableAddEvaluationOption"}
+                                title={
+                                    "Allow participants to contribute options to the evaluation page"
+                                }
+                                defaultChecked={enableAddEvaluationOption}
+                            />
+                        </div>
+                    </section>
 
                     <select name="resultsBy" defaultValue={resultsBy}>
                         <option value={ResultsBy.topVote}>

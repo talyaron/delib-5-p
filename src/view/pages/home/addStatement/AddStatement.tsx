@@ -32,9 +32,7 @@ export const AddStatement = () => {
                 <h1>{t("Add New Group")}</h1>
                 <span></span>
             </div>
-            <div className="page__main">
-                <StatementSettings />
-            </div>
+            <StatementSettings />
         </ScreenSlide>
     );
 };
