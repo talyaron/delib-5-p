@@ -23,20 +23,33 @@ import {
     isAuthorized,
     isOptionFn,
 } from "../../../../../functions/general/helpers";
+import MoreIcon from "../../../../../assets/icons/MoreIcon";
+import useStatementColor from "../../../../../functions/hooks/useStatementColor";
+import { t } from "i18next";
+import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
 
 interface Props {
     statement: Statement;
     showImage: Function;
     setShowModal?: Function;
+    index: number;
+    previousStatement: Statement | undefined;
 }
 
-const StatementChat: FC<Props> = ({ statement, showImage }) => {
+const StatementChat: FC<Props> = ({
+    statement,
+    showImage,
+    index,
+    previousStatement,
+}) => {
     const { statementType } = statement;
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId)
     );
     const userId = store.getState().user.user?.uid;
+
+    const statementColor = useStatementColor(statement);
 
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(statement, statementSubscription);
@@ -49,21 +62,31 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
 
     const [isEdit, setIsEdit] = useState(false);
 
+    const displayUserName = !previousStatement
+        ? true
+        : previousStatement.creatorId !== statement.creatorId
+        ? true
+        : false;
+
     return (
         <div className={isMe ? "message message--me" : "message"}>
-            <div className="message__user">
-                <ProfileImage statement={statement} showImage={showImage} />
-                <span>{statement.creator.displayName}</span>
-            </div>
+            {displayUserName && (
+                <div className="message__user">
+                    <ProfileImage statement={statement} showImage={showImage} />
+                    <span>{statement.creator.displayName}</span>
+                </div>
+            )}
 
             <div className={`message__box ${isQuestion && "isQuestion"}`}>
-                <div
-                    className={
-                        isMe
-                            ? "message__box__triangle--me"
-                            : "message__box__triangle"
-                    }
-                ></div>
+                {displayUserName && (
+                    <div
+                        className={
+                            isMe
+                                ? "message__box__triangle--me"
+                                : "message__box__triangle"
+                        }
+                    />
+                )}
                 <div className="message__box__info">
                     <EditTitle
                         statement={statement}
@@ -71,21 +94,38 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                         setEdit={setIsEdit}
                         isTextArea={true}
                     />
-                    <StatementChatSetEdit
+                    <PopUpMenu
                         isAuthrized={_isAuthrized}
-                        setEdit={setIsEdit}
-                        edit={isEdit}
+                        unAuthrizedIcon={
+                            <AddSubQuestion statement={statement} />
+                        }
+                        openMoreIconColor={statementColor.color}
+                        firstIcon={<AddSubQuestion statement={statement} />}
+                        firstIconText="Add Sub-Question"
+                        secondIcon={
+                            <StatementChatSetQuestion statement={statement} />
+                        }
+                        secondIconText="Set Question"
+                        thirdIcon={
+                            <StatementChatSetOption statement={statement} />
+                        }
+                        thirdIconText="Set Option"
+                        fourthIcon={
+                            <StatementChatSetEdit
+                                isAuthrized={_isAuthrized}
+                                setEdit={setIsEdit}
+                                edit={isEdit}
+                            />
+                        }
+                        fourthIconText="Edit"
                     />
                 </div>
 
-                {displayChat && <StatementChatMore statement={statement} />}
                 <div className="message__box__actions">
                     <div className="message__box__actions__type">
-                        <StatementChatSetOption statement={statement} />
-                        <StatementChatSetQuestion statement={statement} />
-                    </div>
-                    <div className="message__box__actions__addQuestion">
-                        <AddSubQuestion statement={statement} />
+                        {displayChat && (
+                            <StatementChatMore statement={statement} />
+                        )}
                     </div>
                     <div className="message__box__actions__evaluations">
                         <Evaluation

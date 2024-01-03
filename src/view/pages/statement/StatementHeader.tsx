@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Screen, Statement, StatementType } from "delib-npm";
+import { Screen, Statement } from "delib-npm";
 import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -25,11 +25,13 @@ import BellSlashIcon from "../../components/icons/BellSlashIcon";
 import BellIcon from "../../components/icons/BellIcon";
 import ShareIcon from "../../components/icons/ShareIcon";
 import {
-    calculateFontSize, handleLogout,
+    calculateFontSize,
+    handleLogout,
 } from "../../../functions/general/helpers";
 import useStatementColor from "../../../functions/hooks/useStatementColor";
 import MoreIcon from "../../../assets/icons/MoreIcon";
 import DisconnectIcon from "../../components/icons/DisconnectIcon";
+import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
 
 interface Props {
     title: string;
@@ -62,7 +64,6 @@ const StatementHeader: FC<Props> = ({
     );
 
     const [editHeader, setEditHeader] = useState<boolean>(false);
-    const [openMore, setOpenMore] = useState(false);
 
     const titleFontSize = calculateFontSize(title, 16, 25);
 
@@ -150,56 +151,30 @@ const StatementHeader: FC<Props> = ({
                         setEdit={setEditHeader}
                     />
                 )}
-                <div
-                    className="page__header__wrapper__moreIconBox"
-                    onClick={() => setOpenMore((prev) => !prev)}
-                >
-                    <MoreIcon color={headerColor.color} />
-                    {openMore && (
-                        <>
-                            <div className="invisibleBackground"></div>
-                            <div className="page__header__wrapper__moreIconBox__menu">
-                                <span
-                                    className="page__header__wrapper__moreIconBox__menu__item"
-                                    onClick={handleShare}
-                                >
-                                    <ShareIcon
-                                        color={headerColor.backgroundColor}
-                                    />
-                                    {t("Share")}
-                                </span>
-                                <span
-                                    className="page__header__wrapper__moreIconBox__menu__item"
-                                    onClick={handleRegisterToNotifications}
-                                >
-                                    <div>
-                                        {hasNotificationPermission &&
-                                        hasNotifications ? (
-                                            <BellIcon
-                                                color={
-                                                    headerColor.backgroundColor
-                                                }
-                                            />
-                                        ) : (
-                                            <BellSlashIcon
-                                                color={
-                                                    headerColor.backgroundColor
-                                                }
-                                            />
-                                        )}
-                                    </div>
-                                    {t("Notifications")}
-                                </span>
-                                <span className="page__header__wrapper__moreIconBox__menu__item" onClick={() => handleLogout()}>
-                                    <DisconnectIcon
-                                        color={headerColor.backgroundColor}
-                                    />
-                                    {t("Disconnect")}
-                                </span>
-                            </div>
-                        </>
-                    )}
-                </div>
+                <PopUpMenu
+                    openMoreIconColor={headerColor.color}
+                    firstIcon={
+                        <ShareIcon color={headerColor.backgroundColor} />
+                    }
+                    firstIconFunc={handleShare}
+                    firstIconText={"Share"}
+                    secondIcon={
+                        hasNotificationPermission && hasNotifications ? (
+                            <BellIcon color={headerColor.backgroundColor} />
+                        ) : (
+                            <BellSlashIcon
+                                color={headerColor.backgroundColor}
+                            />
+                        )
+                    }
+                    secondIconFunc={handleRegisterToNotifications}
+                    secondIconText={"Notifications"}
+                    thirdIcon={
+                        <DisconnectIcon color={headerColor.backgroundColor} />
+                    }
+                    thirdIconFunc={handleLogout}
+                    thirdIconText={"Disconnect"}
+                />
             </div>
             {statement && (
                 <StatementNav statement={statement} screen={screen} />

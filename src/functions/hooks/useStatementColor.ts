@@ -25,13 +25,13 @@ export default function useStatementColor(statement: Statement): StyleProps {
             case "option":
                 setstyle({
                     backgroundColor: "var(--option)",
-                    color: "black",
+                    color: "var(--header)",
                 });
                 break;
             case "result":
                 setstyle({
                     backgroundColor: "var(--agree)",
-                    color: "black",
+                    color: "var(--header)",
                 });
                 break;
             default:

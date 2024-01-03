@@ -5,7 +5,7 @@ export default function ModalImage() {
             viewBox="0 0 292 292"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            style={{zIndex: 5, maxWidth:"200px"}}
+            style={{ zIndex: 5, maxWidth: "200px", transform: "none" }}
         >
             <rect width="292" height="292" fill="url(#pattern0)" />
             <defs>
