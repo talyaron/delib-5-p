@@ -18,9 +18,10 @@ import { statementTitleToDisplay } from "../../../../../functions/general/helper
 interface Props {
     statement: Statement;
     page?: any;
+    color?: string;
 }
 
-const StatementChatMore: FC<Props> = ({ statement }) => {
+const StatementChatMore: FC<Props> = ({ statement, color }) => {
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
     let messagesRead = 0;
@@ -51,7 +52,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                     </div>
                 )}
                 {/* <BsChatLeftText size="1.5rem" /> */}
-                <ChatIcon statementType={statementType} color={'gray'} />
+                <ChatIcon statementType={statementType} color={color} />
             </div>
             <div className="text">{messageToDisplay}</div>
         </div>

@@ -21,7 +21,7 @@ const MainCard: FC<Props> = ({ statement }) => {
         >
             <Link to={`/statement/${statement.statementId}/chat`}>
                 <Text text={statement.statement} />
-                <StatementChatMore statement={statement} />
+                <StatementChatMore statement={statement} color={'gray'} />
             </Link>
         </div>
     );
