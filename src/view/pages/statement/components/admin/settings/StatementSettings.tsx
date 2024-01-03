@@ -51,6 +51,8 @@ import {
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
 import UploadImage from "../../../../../components/uploadImage/UploadImage";
 import CustomSwitch from "../../../../../components/switch/CustomSwitch";
+import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
+import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
 
 interface Props {
     simple?: boolean;
@@ -208,8 +210,12 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
-    const resultsBy: ResultsBy =
-        statement?.resultsSettings?.resultsBy || ResultsBy.topOptions;
+
+    const resultsBy = () => {
+        if (!statement) return ResultsBy.topOptions;
+
+        return statement.resultsSettings?.resultsBy || ResultsBy.topOptions;
+    };
     const hasChildren: boolean = (() => {
         if (!statement) return true;
         if (statement.hasChildren === undefined) return true;
@@ -225,6 +231,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         statement?.statementSettings?.enableAddVotingOption === false
             ? false
             : true;
+
+    const [resultsByVoting, setResultsByVoting] = useState(
+        resultsBy() === ResultsBy.topVote
+    );
 
     return (
         <ScreenFadeIn className="page__main">
@@ -249,12 +259,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     </label>
                     <section className="settings__checkboxSection">
                         <div className="settings__checkboxSection__column">
-                            <h3
-                                style={{
-                                    fontSize: "1.3rem",
-                                    fontWeight: "500",
-                                }}
-                            >
+                            <h3 className="settings__checkboxSection__column__title">
                                 {t("Tabs")}
                             </h3>
                             {navArray
@@ -274,12 +279,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 ))}
                         </div>
                         <div className="settings__checkboxSection__column">
-                            <h3
-                                style={{
-                                    fontSize: "1.3rem",
-                                    fontWeight: "500",
-                                }}
-                            >
+                            <h3 className="settings__checkboxSection__column__title">
                                 {t("Advanced")}
                             </h3>
                             <CustomCheckboxLabel
@@ -304,38 +304,78 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                         </div>
                     </section>
 
-                    <select name="resultsBy" defaultValue={resultsBy}>
-                        <option value={ResultsBy.topVote}>
-                            {t("Voting Results")}
-                        </option>
-                        <option value={ResultsBy.topOptions}>
-                            {t("Favorite Option")}
-                        </option>
-                    </select>
+                    <section className="settings__resultsBy">
+                        <h3 className="settings__resultsBy__title">
+                            {t("Results By")}
+                        </h3>
+                        <div
+                            className="settings__resultsBy__radioBox"
+                            onClick={() => setResultsByVoting(false)}
+                        >
+                            {!resultsByVoting ? (
+                                <RadioCheckedIcon />
+                            ) : (
+                                <RedioUncheckedIcon />
+                            )}
+                            <input
+                                type="radio"
+                                name="resultsBy"
+                                id="favoriteOption"
+                                checked={!resultsByVoting}
+                            />
+                            <label htmlFor="favoriteOption">
+                                {t("Favorite Option")}
+                            </label>
+                        </div>
+                        <div
+                            className="settings__resultsBy__radioBox"
+                            onClick={() => setResultsByVoting(true)}
+                        >
+                            {resultsByVoting ? (
+                                <RadioCheckedIcon />
+                            ) : (
+                                <RedioUncheckedIcon />
+                            )}
+                            <input
+                                type="radio"
+                                name="resultsBy"
+                                id="votingResults"
+                                checked={resultsByVoting}
+                            />
+                            <label htmlFor="votingResults">
+                                {t("Voting Results")}
+                            </label>
+                        </div>
+                    </section>
 
-                    <label style={{ fontSize: "1.3rem", marginBottom: "1rem" }}>
-                        {t("Number of Results to Display")}
-                        {": "}
-                        <span style={{ fontSize: 20 }}>{numOfResults}</span>
-                    </label>
-                    <input
-                        className="range"
-                        type="range"
-                        name="numberOfResults"
-                        value={numOfResults}
-                        min="1"
-                        max="10"
-                        onChange={(e) =>
-                            setNumOfResults(Number(e.target.value))
-                        }
-                    />
+                    <section className="settings__rangeSection">
+                        <label
+                            className="settings__rangeSection__label"
+                            style={{ fontSize: "1.3rem", marginBottom: "1rem" }}
+                        >
+                            {t("Number of Results to Display")}
+                            {": "}
+                        </label>
+                        <div className="settings__rangeSection__rangeBox">
+                            <input
+                                className="settings__rangeSection__rangeBox__range"
+                                type="range"
+                                name="numberOfResults"
+                                value={numOfResults}
+                                min="1"
+                                max="10"
+                                onChange={(e) =>
+                                    setNumOfResults(Number(e.target.value))
+                                }
+                            />
+                            <span style={{ fontSize: 20 }}>{numOfResults}</span>
+                        </div>
+                    </section>
 
-                    <div className="btnBox">
-                        <button type="submit">
-                            {!statementId ? t("Add") : t("Update")}
-                        </button>
-                    </div>
-                    <UploadImage statement={statement} />
+                    <button type="submit" className="settings__submitBtn">
+                        {!statementId ? t("Add") : t("Update")}
+                    </button>
+                    {/* <UploadImage statement={statement} />
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div className="setStatement__form__membersBox">
@@ -346,7 +386,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 />
                             ))}
                         </div>
-                    )}
+                    )} */}
                 </form>
             ) : (
                 <div className="center">
