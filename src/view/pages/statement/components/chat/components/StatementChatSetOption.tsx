@@ -19,9 +19,10 @@ import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
 
 interface Props {
     statement: Statement;
+    text?: string;
 }
 
-const StatementChatSetOption: FC<Props> = ({ statement }) => {
+const StatementChatSetOption: FC<Props> = ({ statement, text }) => {
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
     );
@@ -44,13 +45,17 @@ const StatementChatSetOption: FC<Props> = ({ statement }) => {
     }
     if (!_isAuthrized) return null;
     return (
+        <>
+        {text&&<span  onClick={handleSetOption}>{text}</span>}
         <div className="clickable" onClick={handleSetOption}>
+            
             {isOptionFn(statement) ? (
                 <LightBulbIcon color="gold"/>
             ) : (
                 <LightBulbIcon color="lightgray"/>
             )}
         </div>
+        </>
     );
 };
 

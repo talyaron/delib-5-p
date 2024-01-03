@@ -5,8 +5,14 @@ import { Statement, StatementType } from "delib-npm";
 import { useNavigate } from "react-router";
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
-import { setStatementElementHight, statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../../functions/hooks/reduxHooks";
+import {
+    setStatementElementHight,
+    statementSubscriptionSelector,
+} from "../../../../../../model/statements/statementsSlice";
 
 // Custom Components
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
@@ -24,7 +30,7 @@ import {
 } from "../../../../../../functions/general/helpers";
 import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
-
+import { t } from "i18next";
 
 interface Props {
     statement: Statement;
@@ -45,7 +51,6 @@ const StatementEvaluationCard: FC<Props> = ({
         statementSubscriptionSelector(statement.statementId)
     );
 
-    // const _isAuthrized = isAuthorized(statement, statementSubscription);
     const elementRef = useRef<HTMLDivElement>(null);
     // const { hasChildren } = parentStatement;
 
@@ -70,6 +75,12 @@ const StatementEvaluationCard: FC<Props> = ({
         if (!edit && linkToChildren(statement, parentStatement))
             navigate(`/statement/${statement.statementId}/chat`);
     }
+
+    const _isAuthorized = isAuthorized(
+        statement,
+        statementSubscription,
+        parentStatement.creatorId
+    );
 
     return (
         <div
@@ -107,16 +118,27 @@ const StatementEvaluationCard: FC<Props> = ({
                             setOpenMenu(!openMenu);
                         }}
                     >
-                        <MoreIcon />
-                        {openMenu && (
-                            <CardMenu setOpenMenu={setOpenMenu}>
-                                <span onClick={()=>setEdit(true)}>Edit Text</span>
-                                <SetEdit
-                                    isAuthrized={isAuthorized(statement,statementSubscription)}
-                                    edit={edit}
-                                    setEdit={setEdit}
-                                />
-                            </CardMenu>
+                        {_isAuthorized && (
+                            <>
+                                <MoreIcon />
+                                {openMenu && (
+                                    <CardMenu setOpenMenu={setOpenMenu}>
+                                        <span onClick={() => setEdit(true)}>
+                                            {t("Edit Text")}
+                                        </span>
+                                        <SetEdit
+                                            isAuthrized={isAuthorized(
+                                                statement,
+                                                statementSubscription
+                                            )}
+                                            edit={edit}
+                                            setEdit={setEdit}
+                                        />
+                                        
+                                         <StatementChatSetOption statement={statement} text={t("Remove Option")} />
+                                    </CardMenu>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
@@ -129,7 +151,7 @@ const StatementEvaluationCard: FC<Props> = ({
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
                 <AddSubQuestion statement={statement} />
-                <StatementChatSetOption statement={statement} />
+               
             </div>
         </div>
     );
