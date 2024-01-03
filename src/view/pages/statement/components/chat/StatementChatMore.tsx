@@ -51,7 +51,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                     </div>
                 )}
                 {/* <BsChatLeftText size="1.5rem" /> */}
-                <ChatIcon statementType={statementType} />
+                <ChatIcon statementType={statementType} color={'blue'} />
             </div>
             <div className="text">{messageToDisplay}</div>
         </div>
