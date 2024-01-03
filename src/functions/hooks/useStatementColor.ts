@@ -1,15 +1,20 @@
 import { Statement } from "delib-npm";
-import React from "react";
+import {useEffect, useState} from "react";
+
+export interface StyleProps{
+    backgroundColor: string;
+    color: string;
+}
 
 const initStyle = {
     backgroundColor: "var(--white)",
     color: "lightgray",
 };
 
-export default function useStatementColor(statement: Statement) {
-    const [style, setstyle] = React.useState(initStyle);
+export default function useStatementColor(statement: Statement): StyleProps {
+    const [style, setstyle] = useState(initStyle);
 
-    React.useEffect(() => {
+    useEffect(() => {
         switch (statement.statementType) {
             case "question":
                 setstyle({
