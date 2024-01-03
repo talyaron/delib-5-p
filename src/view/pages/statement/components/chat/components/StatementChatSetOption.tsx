@@ -15,8 +15,7 @@ import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
 
 // Icons
-import lightBulb from "../../../../../../assets/icons/light-bulb.svg";
-import lightBulbOff from "../../../../../../assets/icons/light-bulb-off.svg";
+import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
 
 interface Props {
     statement: Statement;
@@ -46,8 +45,11 @@ const StatementChatSetOption: FC<Props> = ({ statement }) => {
     if (!_isAuthrized) return null;
     return (
         <div className="clickable" onClick={handleSetOption}>
-            {isOptionFn(statement) ? <img src = {lightBulb} alt="turn into option" />:  <img src = {lightBulbOff} alt="turn off option" />}
-            
+            {isOptionFn(statement) ? (
+                <LightBulbIcon color="gold"/>
+            ) : (
+                <LightBulbIcon color="lightgray"/>
+            )}
         </div>
     );
 };

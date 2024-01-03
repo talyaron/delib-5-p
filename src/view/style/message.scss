@@ -4,7 +4,7 @@
     direction: rtl;
     max-width: 75ch;
     margin: auto;
-    padding: 1rem;
+    padding: 0.3rem;
 
     &--me {
         display: flex;
@@ -12,13 +12,23 @@
         direction: ltr;
     }
 
-    .isQuestion {
+    .question {
         background-color: var(--question);
         color: var(--question-text);
     }
 
+    .option {
+        background-color: var(--option);
+        color: var(--option-text);
+    }
+
+    .result {
+        background-color: var(--agree);
+        color: var(--result-text);
+    }
+
     &__box {
-        width: 70%;
+        width: 50%;
         height: fit-content;
         display: flex;
         flex-direction: column;
@@ -74,6 +84,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        padding-top: 0.5rem;
         &__avatar {
             width: 3rem;
             height: 3rem;

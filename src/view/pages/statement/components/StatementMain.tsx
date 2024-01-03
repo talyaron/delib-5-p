@@ -54,11 +54,13 @@ const StatementMain: FC<Props> = ({
     return !toSlide ? (
         <>
             <div className="page__main">
-                {subStatements?.map((statementSub: Statement) => (
+                {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
                             statement={statementSub}
                             showImage={handleShowTalker}
+                            index={index}
+                            previousStatement={subStatements[index - 1]}
                         />
                     </div>
                 ))}
@@ -71,11 +73,13 @@ const StatementMain: FC<Props> = ({
     ) : (
         <>
             <ScreenSlide className={"page__main" + " " + slideInOrOut}>
-                {subStatements?.map((statementSub: Statement) => (
+                {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
                             statement={statementSub}
                             showImage={handleShowTalker}
+                            index={index}
+                            previousStatement={subStatements[index - 1]}
                         />
                     </div>
                 ))}
