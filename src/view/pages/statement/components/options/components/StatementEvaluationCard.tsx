@@ -30,6 +30,7 @@ import {
 } from "../../../../../../functions/general/helpers";
 import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
+import { t } from "i18next";
 
 interface Props {
     statement: Statement;
@@ -123,7 +124,7 @@ const StatementEvaluationCard: FC<Props> = ({
                                 {openMenu && (
                                     <CardMenu setOpenMenu={setOpenMenu}>
                                         <span onClick={() => setEdit(true)}>
-                                            Edit Text
+                                            {t("Edit Text")}
                                         </span>
                                         <SetEdit
                                             isAuthrized={isAuthorized(
@@ -133,6 +134,8 @@ const StatementEvaluationCard: FC<Props> = ({
                                             edit={edit}
                                             setEdit={setEdit}
                                         />
+                                        
+                                         <StatementChatSetOption statement={statement} text={t("Remove Option")} />
                                     </CardMenu>
                                 )}
                             </>
@@ -148,7 +151,7 @@ const StatementEvaluationCard: FC<Props> = ({
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
                 <AddSubQuestion statement={statement} />
-                <StatementChatSetOption statement={statement} />
+               
             </div>
         </div>
     );
