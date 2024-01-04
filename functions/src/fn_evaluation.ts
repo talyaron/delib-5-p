@@ -9,10 +9,11 @@ import {
     ResultsBy,
     SimpleStatement,
     Statement,
-    StatementSchema,
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
+import { log } from "firebase-functions/logger";
+import { getTopSelectionKeys } from "./helpers";
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
@@ -48,7 +49,7 @@ export async function updateEvaluation(event: any) {
                   Math.sign(newPro - newCon) *
                   Math.log2(n)
                 : 0;
-    
+
         //set consensus to statement in DB
         await statementRef.update({ consensus });
 
@@ -223,32 +224,44 @@ async function updateParentStatementWithChildResults(
         if (!parentStatementDB.exists)
             throw new Error("parentStatement does not exist");
         const parentStatement = parentStatementDB.data() as Statement;
-        StatementSchema.parse(parentStatement);
 
         //get resutls settings
         const { resultsSettings } = parentStatement;
         const { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
 
+        logger.log("resultsBy", resultsBy, "numberOfResults", numberOfResults);
+
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
+           //topVote will be calculated in the votes function
             return;
-        }
-        //update child statements if they are results or options
+        } 
+
         const childStatementsRef = db
-            .collection(Collections.statements)
-            .where("parentId", "==", parentId)
-            .orderBy("consensus", "desc")
-            .limit(numberOfResults);
+        .collection(Collections.statements)
+        .where("parentId", "==", parentId)
+        .orderBy("consensus", "desc")
+        .limit(numberOfResults);
+       
 
         const childStatementsDB = await childStatementsRef.get();
         const childStatements = childStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement
         );
 
-        const childStatementsSimple = childStatements.map((st: Statement) =>
-            statementToSimpleStatement(st)
+       
+
+        await updateParentChildren(childStatements, numberOfResults);
+
+        //update childstatment selectd to be of type result
+    } catch (error) {
+        logger.error(error);
+    }
+
+    async function updateParentChildren(childStatements: Statement[], numberOfResults: number | undefined) {
+        const childStatementsSimple = childStatements.map((st: Statement) => statementToSimpleStatement(st)
         );
 
         const childIds = childStatements.map((st: Statement) => st.statementId);
@@ -280,10 +293,6 @@ async function updateParentStatementWithChildResults(
                     .update({ statementType: StatementType.option });
             }
         });
-
-        //update childstatment selectd to be of type result
-    } catch (error) {
-        logger.error(error);
     }
 }
 
