@@ -23,6 +23,24 @@ button {
     &--disagree{
         background-color: var(--disagree);
     }
+
+    &--large{
+        font-size: 1.4rem;
+        padding: 1rem;
+        height: auto;
+    }
+
+    &--img{
+        padding: .5rem 1rem;
+        display: flex;
+        height: auto;
+        align-items: center;
+        gap:1rem;
+        img{
+            width: 2rem;
+            height: 2rem;
+        }
+    }
 }
 
 .buttonOutlineWhite {
