@@ -16,20 +16,22 @@ import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
 
 interface Props {
     statement: Statement;
+    setShowModal: Function;
+    text?: string;
 }
 
-const AddSubQuestion: FC<Props> = ({ statement }) => {
-    const [showQuestionModal, setAddQuestionModal] = useState(false);
+const AddSubQuestion: FC<Props> = ({ statement,setShowModal, text}) => { const [showQuestionModal, setAddQuestionModal] = useState(false);
     function handleShwQuestionModal() {
-        setAddQuestionModal(true);
+        setShowModal(true);
     }
     return (
         <>
+        {text&&<span className="clickable" onClick={handleShwQuestionModal}>{text}</span>}
             <div className="clickable" onClick={handleShwQuestionModal}>
 
                <img src={addQuestion} alt={t("Add question")} />
             </div>
-            {showQuestionModal && (
+            {/* {showQuestionModal && (
                 <Modal>
                     <NewSetStatementSimple
                         parentStatement={statement}
@@ -37,7 +39,7 @@ const AddSubQuestion: FC<Props> = ({ statement }) => {
                         setShowModal={setAddQuestionModal}
                     />
                 </Modal>
-            )}
+            )} */}
         </>
     );
 };

@@ -127,6 +127,8 @@ export async function sendNotificationsCB(e: any) {
             .where("notification", "==", true)
 
         const subscribersDB = await q.get()
+
+        logger.info("subscribersDB size", subscribersDB.docs.length)
       
         //send push notifications to all subscribers
         subscribersDB.docs.forEach((doc: any) => {

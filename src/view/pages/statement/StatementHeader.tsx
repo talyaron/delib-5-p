@@ -29,7 +29,6 @@ import {
     handleLogout,
 } from "../../../functions/general/helpers";
 import useStatementColor from "../../../functions/hooks/useStatementColor";
-import MoreIcon from "../../../assets/icons/MoreIcon";
 import DisconnectIcon from "../../components/icons/DisconnectIcon";
 import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
 
@@ -126,15 +125,16 @@ const StatementHeader: FC<Props> = ({
                 style={{ flexDirection: direction, direction: langDirection }}
             >
                 <div className="page__header__wrapper__actions">
-                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                        <BackArrowIcon color={headerColor.color} />
-                    </div>
-                    <Link
+                <Link
                         state={{ from: window.location.pathname }}
                         to={"/home"}
                     >
                         <HomeIcon color={headerColor.color} />
                     </Link>
+                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                        <BackArrowIcon color={headerColor.color} />
+                    </div>
+                   
                 </div>
                 {!editHeader ? (
                     <h1

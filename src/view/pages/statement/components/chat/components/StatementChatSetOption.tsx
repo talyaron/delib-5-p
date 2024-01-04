@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // Third Party
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 
 // Statement Helpers
 import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
@@ -18,15 +18,19 @@ import { statementSubscriptionSelector } from "../../../../../../model/statement
 import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
 
 interface Props {
+    parentStatement: Statement | null;
     statement: Statement;
     text?: string;
 }
 
-const StatementChatSetOption: FC<Props> = ({ statement, text }) => {
+const StatementChatSetOption: FC<Props> = ({ statement, text,parentStatement }) => {
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
     );
-    const _isAuthrized = isAuthorized(statement, statementSubscription);
+
+    const _isAuthrized = isAuthorized(statement, statementSubscription, parentStatement?.creatorId);
+    
+    
     function handleSetOption() {
         try {
             if (statement.statementType === "option") {
@@ -44,9 +48,10 @@ const StatementChatSetOption: FC<Props> = ({ statement, text }) => {
         }
     }
     if (!_isAuthrized) return null;
+    if(statement.statementType === StatementType.question) return null;
     return (
         <>
-        {text&&<span  onClick={handleSetOption}>{text}</span>}
+        {text&&<span className="clickable" onClick={handleSetOption}>{text}</span>}
         <div className="clickable" onClick={handleSetOption}>
             
             {isOptionFn(statement) ? (

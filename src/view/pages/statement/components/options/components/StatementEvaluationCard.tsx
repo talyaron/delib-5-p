@@ -24,13 +24,15 @@ import SetEdit from "../../../../../components/edit/SetEdit";
 
 // Helpers
 import {
-    getPastelColor,
     isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
 import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import { t } from "i18next";
+import useStatementColor, { StyleProps } from "../../../../../../functions/hooks/useStatementColor";
+import Modal from "../../../../../components/modal/Modal";
+import NewSetStatementSimple from "../../set/NewStatementSimple";
 
 interface Props {
     statement: Statement;
@@ -46,6 +48,7 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const statementColor:StyleProps = useStatementColor(statement);
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
@@ -57,6 +60,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         setNewTop(top);
@@ -76,11 +80,13 @@ const StatementEvaluationCard: FC<Props> = ({
             navigate(`/statement/${statement.statementId}/chat`);
     }
 
+  
     const _isAuthorized = isAuthorized(
         statement,
         statementSubscription,
         parentStatement.creatorId
     );
+   
 
     return (
         <div
@@ -91,7 +97,8 @@ const StatementEvaluationCard: FC<Props> = ({
             }
             style={{
                 top: `${newTop}px`,
-                borderLeft: `8px solid ${statement.color || getPastelColor()}`,
+                borderLeft: `8px solid ${statementColor.backgroundColor || 'wheat'}`,
+                color: statementColor.color,
             }}
             ref={elementRef}
         >
@@ -129,13 +136,14 @@ const StatementEvaluationCard: FC<Props> = ({
                                         <SetEdit
                                             isAuthrized={isAuthorized(
                                                 statement,
-                                                statementSubscription
+                                                statementSubscription,
+                                                parentStatement.creatorId
                                             )}
                                             edit={edit}
                                             setEdit={setEdit}
                                         />
                                         
-                                         <StatementChatSetOption statement={statement} text={t("Remove Option")} />
+                                         <StatementChatSetOption parentStatement={parentStatement} statement={statement} text={t("Remove Option")} />
                                     </CardMenu>
                                 )}
                             </>
@@ -150,9 +158,18 @@ const StatementEvaluationCard: FC<Props> = ({
             </div>
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
-                <AddSubQuestion statement={statement} />
+                <AddSubQuestion statement={statement} setShowModal={setShowModal} />
                
             </div>
+            {showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    </Modal>
+                )}
         </div>
     );
 };

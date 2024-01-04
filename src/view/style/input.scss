@@ -7,10 +7,12 @@ textarea {
     outline: none;
     background-color: var(--inputBackground);
     border-radius: 3px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 textarea {
     resize: none;
+
 }
 
 input::placeholder,
@@ -29,6 +31,7 @@ select {
     border: none;
     border-bottom: 1px solid rgb(211, 211, 211);
     font-size: 1.3rem;
+    font-family: 'Open Sans', sans-serif;
 
     option {
         line-height: 1rem;

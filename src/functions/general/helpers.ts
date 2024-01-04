@@ -114,12 +114,13 @@ export function isAuthorized(
     authrizedRoles?: Array<Role>
 ) {
     try {
-        if (!statement) return false;
-        if (!statementSubscription) return false;
+        if (!statement) throw new Error("No statement");
+        
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
+      
         if(parentStatementCreatorId === user.uid) return true;
 
         if (!statementSubscription) return false;

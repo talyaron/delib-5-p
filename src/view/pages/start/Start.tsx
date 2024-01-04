@@ -14,6 +14,7 @@ import { userSelector } from "../../../model/users/userSlice";
 
 //img
 import Logo from "../../../assets/logo/logo-128px.png";
+import googleLogo from "../../../assets/google-seeklogo.com.svg";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
@@ -42,28 +43,9 @@ const Start = () => {
             <h1 className="splashPage__title">{t("Delib 5")}</h1>
             <img src={Logo} alt="Delib logo" width={150} height={150} />
             <h2 className="splashPage__subTitle">{t("Creating Agreements")}</h2>
-            <button className="btn splashPage__loginButton" onClick={googleLogin}>
-                {t("Connect with Google")}
-            </button>
-            <button
-                className="btn"
-                onClick={() => setShowNameModul(true)}
-            >
-                {t("Login with a temporary name")}
-            </button>
-            <a
-                href="http://delib.org"
-                target="_blank"
-                style={{
-                    marginTop: "30px",
-                    textDecoration: "none",
-                }}
-            >
-                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
-            </a>
             <select
-                style={{ position: "absolute", top: 20, left: 20 }}
-                defaultValue={savedLang || "en"}
+            style={{backgroundColor:"lightblue"}}
+                defaultValue={savedLang || "he"}
                 onChange={(e) => {
                     const lang = e.target.value;
                     i18n.changeLanguage(lang);
@@ -81,6 +63,28 @@ const Start = () => {
                     </option>
                 ))}
             </select>
+            <button className="btn btn--large" onClick={() => setShowNameModul(true)}>
+                {t("Login with a temporary name")}
+            </button>
+            <button
+                className="btn splashPage__loginButton btn--img"
+                onClick={googleLogin}
+            >
+                <img src={googleLogo} alt="login with google" />
+                {t("Connect with Google")}
+            </button>
+            
+            <a
+                href="http://delib.org"
+                target="_blank"
+                style={{
+                    marginTop: "30px",
+                    textDecoration: "none",
+                }}
+            >
+                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
+            </a>
+
             {showNameModul ? (
                 <EnterName setShowNameModul={setShowNameModul} />
             ) : null}

@@ -1,14 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType } from "delib-npm";
+import { t } from "i18next";
 
 // Custom Components
 import StatementChatMore from "./StatementChatMore";
-import StatementChatSetOption from "./components/StatementChatSetOption";
 import ProfileImage from "./components/ProfileImage";
 import EditTitle from "../../../../components/edit/EditTitle";
-import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
 import StatementChatSetEdit from "../../../../components/edit/SetEdit";
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 import Evaluation from "../../../../components/evaluation/Evaluation";
@@ -23,16 +22,26 @@ import {
     isAuthorized,
     isOptionFn,
 } from "../../../../../functions/general/helpers";
-import MoreIcon from "../../../../../assets/icons/MoreIcon";
+
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
-import { t } from "i18next";
-import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
-import QuestionMarkIcon from "../../../../components/icons/QuestionMarkIcon";
+
 import {
     setStatementisOption,
     updateIsQuestion,
 } from "../../../../../functions/db/statements/setStatments";
 import LightBulbIcon from "../../../../components/icons/LightBulbIcon";
+import CardMenu from "../../../../components/cardMenu/CardMenu";
+import MoreIcon from "../../../../../assets/icons/MoreIcon";
+import StatementChatSetOption from "./components/StatementChatSetOption";
+import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
+import NewSetStatementSimple from "../set/NewStatementSimple";
+import Modal from "../../../../components/modal/Modal";
+
+export interface NewQuestion {
+    statement: Statement;
+    isOption: boolean;
+    showModal: boolean;
+}
 
 interface Props {
     parentStatement: Statement;
@@ -59,7 +68,11 @@ const StatementChat: FC<Props> = ({
     const statementColor = useStatementColor(statement);
 
     const creatorId = statement.creatorId;
-    const _isAuthrized = isAuthorized(statement, statementSubscription,parentStatement.creatorId);
+    const _isAuthrized = isAuthorized(
+        statement,
+        statementSubscription,
+        parentStatement.creatorId
+    );
 
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
@@ -68,6 +81,8 @@ const StatementChat: FC<Props> = ({
     const displayChat = isQuestion || isOption;
 
     const [isEdit, setIsEdit] = useState(false);
+    const [openMenu, setOpenMenu] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const displayUserName = !previousStatement
         ? true
@@ -106,6 +121,9 @@ const StatementChat: FC<Props> = ({
         </div>
     );
 
+    useEffect(() => {
+        console.log(isEdit);
+    }, [isEdit]);
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (
@@ -115,7 +133,17 @@ const StatementChat: FC<Props> = ({
                 </div>
             )}
 
-            <div className={`message__box ${statementType}`}>
+            <div
+                className="message__box"
+                style={{
+                    borderRight: isMe
+                        ? `.65rem solid ${statementColor.backgroundColor}`
+                        : undefined,
+                    borderLeft: isMe
+                        ? undefined
+                        : `.65rem solid ${statementColor.backgroundColor}`,
+                }}
+            >
                 {displayUserName && (
                     <div
                         className={
@@ -125,52 +153,54 @@ const StatementChat: FC<Props> = ({
                         }
                     />
                 )}
+
                 <div className="message__box__info">
-                    <EditTitle
-                        statement={statement}
-                        isEdit={isEdit}
-                        setEdit={setIsEdit}
-                        isTextArea={true}
-                    />
-                    <PopUpMenu
-                        isAuthrized={_isAuthrized}
-                        unAuthrizedIcon={
-                            <AddSubQuestion statement={statement} />
-                        }
-                        openMoreIconColor={statementColor.color}
-                        firstIcon={<AddSubQuestion statement={statement} />}
-                        firstIconText="Add Sub-Question"
-                        secondIcon={
-                            <QuestionMarkIcon
-                                color={
-                                    statement.statementType === "question"
-                                        ? "blue"
-                                        : "lightgray"
-                                }
-                            />
-                        }
-                        secondIconFunc={handleSetQuestion}
-                        secondIconText="Question"
-                        thirdIcon={optionIcon}
-                        thirdIconFunc={handleSetOption}
-                        thirdIconText="Option"
-                        fourthIcon={
-                            <StatementChatSetEdit
-                                isAuthrized={_isAuthrized}
-                                setEdit={setIsEdit}
-                                edit={isEdit}
-                            />
-                        }
-                        fourthIconText="Edit"
-                    />
+                    <div onClick={() => setOpenMenu(true)}>
+                        <MoreIcon />
+                    </div>
+                    {openMenu && (
+                        <div
+                            onClick={() => {
+                                setOpenMenu(false);
+                            }}
+                        >
+                            <CardMenu setOpenMenu={setOpenMenu}>
+                                <StatementChatSetEdit
+                                    isAuthrized={_isAuthrized}
+                                    setEdit={setIsEdit}
+                                    edit={isEdit}
+                                    text={t("Edit Text")}
+                                />
+                                <StatementChatSetQuestion
+                                    statement={statement}
+                                    text={t("Question")}
+                                />
+                                <AddSubQuestion
+                                    statement={statement}
+                                    setShowModal={setShowModal}
+                                    text={t("Add Question")}
+                                />
+                                <StatementChatSetOption
+                                    parentStatement={parentStatement}
+                                    statement={statement}
+                                    text={t("Option")}
+                                />
+                            </CardMenu>
+                        </div>
+                    )}
+                    <div className="message__box__info__text">
+                        <EditTitle
+                            statement={statement}
+                            isEdit={isEdit}
+                            setEdit={setIsEdit}
+                            isTextArea={true}
+                        />
+                    </div>
                 </div>
-                {displayChat && (
-                            <StatementChatMore statement={statement} />
-                        )}
+                {displayChat && <StatementChatMore statement={statement} />}
 
                 <div className="message__box__actions">
-                    <div className="message__box__actions__type">
-                    </div>
+                    <div className="message__box__actions__type"></div>
                     <div className="message__box__actions__evaluations">
                         <Evaluation
                             statement={statement}
@@ -179,6 +209,15 @@ const StatementChat: FC<Props> = ({
                     </div>
                 </div>
             </div>
+            {showModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setShowModal}
+                    />
+                </Modal>
+            )}
         </div>
     );
 };

@@ -4,7 +4,7 @@ import { FC, useEffect, useRef } from "react";
 import { Statement } from "delib-npm";
 
 // Custom Components
-import StatementChat from "./chat/StatementChat";
+import StatementChat from "./chat/StatementChatCard";
 import StatementInput from "./StatementInput";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
