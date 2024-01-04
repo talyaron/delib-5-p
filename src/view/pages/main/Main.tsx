@@ -33,7 +33,7 @@ const Main = () => {
     return backFromAddStatment ? (
         <ScreenSlide className="page__main slide-in">
             <div className="wrapper">
-                <h2>{t("Conversations")}</h2>
+                {/* <h2>{t("Conversations")}</h2> */}
 
                 {statements.map((statement) => (
                     // <MainCardRes
@@ -52,7 +52,7 @@ const Main = () => {
     ) : (
         <ScreenFadeIn className="page__main">
             <div className="wrapper">
-                <h2>{t("Conversations")}</h2>
+                {/* <h2>{t("Conversations")}</h2> */}
 
                 {/* {statements.map((statement) => (
                     <MainCardRes

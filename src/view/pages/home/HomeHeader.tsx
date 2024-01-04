@@ -6,6 +6,10 @@ import { prompStore } from "../main/mainCont";
 import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
 import { t } from "i18next";
 
+// icons
+import elipsIcon from "../../../assets/elipsIcon.svg";
+import installIcon from "../../../assets/installIcon.svg";
+
 export default function HomeHeader() {
     const dispatch = useAppDispatch();
 
@@ -30,20 +34,33 @@ export default function HomeHeader() {
     }
 
     return (
-        <div className="page__header">
-            <div className="page__header__title">
-                <h1>{t("Delib 5")}</h1>
-                <b>-</b>
-                <h2>{t("Creating Agreements")}</h2>
+        <div className="homePage__header">
+            <div className="homePage__header__title">
+                <h1 className="homePage__header__title__homeTitle">
+                    Conversations
+                </h1>
             </div>
-            <div className="btns">
+            <div className="homePage__header__icons">
+                <img
+                    className="homePage__header__icons__headerIcon"
+                    src={installIcon}
+                    alt="install_icon"
+                    onClick={handleInstallApp}
+                />
+                <img
+                    className="homePage__header__icons__headerIcon"
+                    src={elipsIcon}
+                    alt="elips_icon"
+                />
+            </div>
+            {/* <div className="btns">
                 <button onClick={handleLogout}>{t("Disconnect")}</button>
                 {deferredPrompt && (
                     <button onClick={handleInstallApp}>
                         {t("Install the App")}
                     </button>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 }
