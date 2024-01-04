@@ -15,6 +15,7 @@ import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../../model/users/userSlice";
 import useDirection from "../../../../functions/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
+import useStatementColor from "../../../../functions/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;
@@ -22,6 +23,8 @@ interface Props {
 
 const StatementInput: FC<Props> = ({ statement }) => {
     const user = useAppSelector(userSelector);
+
+    const statementColor = useStatementColor(statement);
 
     const direction = useDirection();
 
@@ -52,8 +55,6 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 if (!newStatement) throw new Error("No statement");
 
-               
-
                 setStatmentToDB(newStatement);
                 e.target.value = "";
             }
@@ -69,23 +70,12 @@ const StatementInput: FC<Props> = ({ statement }) => {
             className="statement__form"
             style={{ flexDirection: direction }}
         >
-            <button type="submit" className="statement__form__sendBtnBox">
-                {/* <MdSend
-                    color="white"
-                    size="1.5rem"
-                    style={{
-                        transform: "rotate(180deg) translateX(5%)",
-                        zIndex: 1,
-                    }}
-                /> */}
-                <div
-                    style={{
-                        transform: "rotate(180deg) translateX(5%)",
-                        zIndex: 1,
-                    }}
-                >
-                    <SendIcon />
-                </div>
+            <button
+                type="submit"
+                className="statement__form__sendBtnBox"
+                style={statementColor}
+            >
+                <SendIcon color={statementColor.color} />
             </button>
             <textarea
                 rows={3}

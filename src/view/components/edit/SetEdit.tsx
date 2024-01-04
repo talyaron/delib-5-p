@@ -1,21 +1,31 @@
 import { FC } from "react";
-import EditIcon from "../icons/EditIcon";
+import EditIcon from "../../../assets/icons/EditIcon";
 
 interface Props {
     isAuthrized: boolean;
     setEdit: Function;
     edit: boolean;
+    text?: string;
 }
 
-const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
+const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit, text }) => {
+if(!isAuthrized) return null;
+
     return (
-        <div>
-            {isAuthrized && (
-                <div className="clickable" onClick={() => setEdit(!edit)}>
-                    <EditIcon color={edit ? "blue" : "lightgray"} />
-                </div>
+        <>
+            {text && (
+                <span className="clickable" onClick={() => setEdit(!edit)}>
+                    {text}
+                </span>
             )}
-        </div>
+            <div>
+                {isAuthrized && (
+                    <div className="clickable" onClick={() => setEdit(!edit)}>
+                        <EditIcon />
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
 

@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Screen, Statement, StatementType } from "delib-npm";
+import { Screen, Statement } from "delib-npm";
 import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -24,7 +24,13 @@ import HomeIcon from "../../components/icons/HomeIcon";
 import BellSlashIcon from "../../components/icons/BellSlashIcon";
 import BellIcon from "../../components/icons/BellIcon";
 import ShareIcon from "../../components/icons/ShareIcon";
-import { isOptionFn } from "../../../functions/general/helpers";
+import {
+    calculateFontSize,
+    handleLogout,
+} from "../../../functions/general/helpers";
+import useStatementColor from "../../../functions/hooks/useStatementColor";
+import DisconnectIcon from "../../components/icons/DisconnectIcon";
+import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
 
 interface Props {
     title: string;
@@ -50,17 +56,15 @@ const StatementHeader: FC<Props> = ({
     const { statementId, page } = useParams();
     const location = useLocation();
 
+    const headerColor = useStatementColor(statement);
+
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId)
     );
 
     const [editHeader, setEditHeader] = useState<boolean>(false);
 
-    const titleStyle = {
-        fontSize:
-            title.length > 30 ? "1.3rem" : title.length > 40 ? "1rem" : "2rem",
-        maxWidth: "70%",
-    };
+    const titleFontSize = calculateFontSize(title, 16, 25);
 
     const isAdmin = statement?.creatorId === user?.uid;
 
@@ -114,38 +118,29 @@ const StatementHeader: FC<Props> = ({
         setStatmentSubscriptionNotificationToDB(statement);
     }
 
-    const iconColor = isOptionFn(statement) ? "black" : "white";
-
     return (
-        <div
-            className={
-                statement?.statementType === StatementType.question
-                    ? "page__header page__header--question"
-                    : "page__header"
-            }
-        >
+        <div className="page__header" style={headerColor}>
             <div
                 className="page__header__wrapper"
                 style={{ flexDirection: direction, direction: langDirection }}
             >
-                <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                    <BackArrowIcon color={iconColor} />
-                </div>
-                <Link state={{ from: window.location.pathname }} to={"/home"}>
-                    <HomeIcon color={iconColor} />
-                </Link>
-                <div onClick={handleRegisterToNotifications}>
-                    {hasNotificationPermission && hasNotifications ? (
-                        <BellIcon color={iconColor} />
-                    ) : (
-                        <BellSlashIcon color={iconColor} />
-                    )}
+                <div className="page__header__wrapper__actions">
+                <Link
+                        state={{ from: window.location.pathname }}
+                        to={"/home"}
+                    >
+                        <HomeIcon color={headerColor.color} />
+                    </Link>
+                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                        <BackArrowIcon color={headerColor.color} />
+                    </div>
+                   
                 </div>
                 {!editHeader ? (
                     <h1
                         className={isAdmin ? "clickable" : ""}
                         onClick={handleEditTitle}
-                        style={titleStyle}
+                        style={{ fontSize: titleFontSize, padding: "0 2rem" }}
                     >
                         {title}
                     </h1>
@@ -156,9 +151,30 @@ const StatementHeader: FC<Props> = ({
                         setEdit={setEditHeader}
                     />
                 )}
-                <div onClick={handleShare}>
-                    <ShareIcon color={iconColor} />
-                </div>
+                <PopUpMenu
+                    openMoreIconColor={headerColor.color}
+                    firstIcon={
+                        <ShareIcon color={headerColor.backgroundColor} />
+                    }
+                    firstIconFunc={handleShare}
+                    firstIconText={"Share"}
+                    secondIcon={
+                        hasNotificationPermission && hasNotifications ? (
+                            <BellIcon color={headerColor.backgroundColor} />
+                        ) : (
+                            <BellSlashIcon
+                                color={headerColor.backgroundColor}
+                            />
+                        )
+                    }
+                    secondIconFunc={handleRegisterToNotifications}
+                    secondIconText={"Notifications"}
+                    thirdIcon={
+                        <DisconnectIcon color={headerColor.backgroundColor} />
+                    }
+                    thirdIconFunc={handleLogout}
+                    thirdIconText={"Disconnect"}
+                />
             </div>
             {statement && (
                 <StatementNav statement={statement} screen={screen} />

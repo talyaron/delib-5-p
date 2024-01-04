@@ -53,6 +53,7 @@ import { navigateToStatementTab } from "../../../../../../functions/general/help
 // Style
 import "./settingsStyle.scss";
 import UploadImage from "../../../../../components/uploadImage/UploadImage";
+import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 
 interface Props {
     simple?: boolean;
@@ -128,8 +129,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const _statement = `${title}\n${description}`;
 
             UserSchema.parse(user);
+      
 
             const newStatement: any = Object.fromEntries(data.entries());
+            const x = { ...newStatement };
+      
 
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
@@ -162,7 +166,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     : newStatement.statementType || statement?.statementType;
 
             newStatement.creator = statement?.creator || user;
-            
+
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
 
@@ -269,10 +273,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                                 navObj.link !== Screen.SETTINGS
                                         )
                                         .map((navObj, index) => (
-                                            <CustomCheckboxLabel
-                                                key={index}
-                                                name={navObj.link}
-                                                title={navObj.name}
+                                            <CustomSwitch
+                                                key={`tabs-${index}`}
+                                                link={navObj.link}
+                                                label={navObj.name}
                                                 defaultChecked={isSubPageChecked(
                                                     statement,
                                                     navObj
@@ -348,7 +352,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>
-                    <UploadImage statement={statement}/>
+                    <UploadImage statement={statement} />
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div className="setStatement__form__membersBox">

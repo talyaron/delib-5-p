@@ -18,18 +18,24 @@ import { setVote } from "../../../../../functions/db/vote/setVote";
 import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
+import InfoIcon from "../../../../../assets/icons/InfoIcon";
+import HandsIcon from "../../../../../assets/icons/HandsIcon";
 
 export interface OptionBarProps {
     option: Statement;
     totalVotes: number;
     statement: Statement;
     order: number;
+    setStatementInfo: Function;
+    setShowInfo: Function;
 }
 export const OptionBar: FC<OptionBarProps> = ({
     option,
     totalVotes,
     statement,
     order,
+    setStatementInfo,
+    setShowInfo,
 }) => {
     const dispatch = useAppDispatch();
     const vote = useAppSelector(parentVoteSelector(option.parentId));
@@ -46,49 +52,70 @@ export const OptionBar: FC<OptionBarProps> = ({
     const { width } = useWindowDimensions();
 
     const barWidth = width / 4 > 120 ? 120 : width / 4;
-    const padding = 10;
+    const padding = 40;
 
-    const { shortVersion } = statementTitleToDisplay(
-        option.statement,
-        30
-    );
+    const { shortVersion } = statementTitleToDisplay(option.statement, 30);
+    const barHeight = Math.round((selections / totalVotes) * 100);
 
     return (
         <div
-            className="statement__vote__bar"
+            className="vote__bar"
             style={{
                 right: `${(_optionOrder - order) * barWidth}px`,
                 width: `${barWidth}px`,
             }}
         >
             <div
-                className="statement__vote__bar__column"
+                className="vote__bar__column"
                 style={{ width: `${barWidth}px` }}
             >
+                {barHeight > 0 && (
+                    <div className="vote__bar__column__stat">
+                        <span>{barHeight}%</span>
+
+                        <span>{selections}</span>
+                    </div>
+                )}
                 <div
-                    className="statement__vote__bar__column__bar"
+                    className="vote__bar__column__bar"
                     style={{
-                        height: `${(selections / totalVotes) * 100}%`,
+                        height: `${barHeight}%`,
                         width: `${barWidth - padding}px`,
+                        backgroundColor: option.color,
                     }}
-                >
-                    {selections}
-                </div>
+                ></div>
             </div>
             <div
                 style={{
                     width: `${barWidth - padding}px`,
                     direction: direction,
+                    backgroundColor: option.color,
                 }}
                 className={
                     vote?.statementId === option.statementId
-                        ? "statement__vote__bar__btn statement__vote__bar__btn--selected"
-                        : "statement__vote__bar__btn"
+                        ? "vote__bar__btn vote__bar__btn--selected"
+                        : "vote__bar__btn"
                 }
                 onClick={handlePressButton}
             >
-                {shortVersion}
+                <HandsIcon
+                    color={
+                        vote?.statementId === option.statementId
+                            ? "#434346"
+                            : "white"
+                    }
+                />
             </div>
+            <div
+                className="infoIcon"
+                onClick={() => {
+                  
+                    setStatementInfo(option), setShowInfo(true);
+                }}
+            >
+                <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
+            </div>
+            <div className="vote__bar__title">{shortVersion}</div>
         </div>
     );
 };

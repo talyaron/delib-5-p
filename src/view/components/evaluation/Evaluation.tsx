@@ -11,20 +11,16 @@ import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 
 // Stetement helpers
 import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice";
-import { isOptionFn } from "../../../functions/general/helpers";
-
-// Style
-import styles from "./Evaluation.module.scss";
 
 // Custom Hooks
 import useDirection from "../../../functions/hooks/useDirection";
 
 interface Props {
     statement: Statement;
+    displayScore?: boolean;
 }
 
-const Evaluation: FC<Props> = ({ statement }) => {
-    const isOption = isOptionFn(statement);
+const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
     const direction = useDirection();
 
     const initContVote = statement.con ? statement.con : 0;
@@ -48,43 +44,33 @@ const Evaluation: FC<Props> = ({ statement }) => {
     }, [statement.con, statement.pro]);
 
     return (
-        <div className={styles.evaluation}>
+        <div className="evaluation">
             <div
-                className="options__card__more__vote"
+                className="evaluation__box"
                 style={{ flexDirection: direction }}
             >
-                <div
-                    className="options__card__more__vote__down"
-                    style={{ flexDirection: direction }}
-                >
-                    <span>{conVote}</span>
-                    {isOption && (
-                        <Thumbs
-                            evaluation={evaluation}
-                            upDown="down"
-                            statement={statement}
-                            setConVote={setConVote}
-                            setProVote={setProVote}
-                        />
-                    )}
+                {displayScore && <span>{conVote}</span>}
+                <div className="evaluation__box__icon">
+                    <Thumbs
+                        evaluation={evaluation}
+                        upDown="down"
+                        statement={statement}
+                        setConVote={setConVote}
+                        setProVote={setProVote}
+                    />
                 </div>
-                <div
-                    className="options__card__more__vote__up"
-                    style={{ flexDirection: direction }}
-                >
-                    {isOption && (
-                        <Thumbs
-                            evaluation={evaluation}
-                            upDown="up"
-                            statement={statement}
-                            setProVote={setProVote}
-                            setConVote={setConVote}
-                        />
-                    )}
-                    <span>{proVote}</span>
+                <div className="evaluation__box__icon">
+                    <Thumbs
+                        evaluation={evaluation}
+                        upDown="up"
+                        statement={statement}
+                        setProVote={setProVote}
+                        setConVote={setConVote}
+                    />
                 </div>
+                {displayScore && <span>{proVote}</span>}
             </div>
-            <div className={styles.consensus}>{consensusToDisplay}</div>
+            {displayScore && <div>{consensusToDisplay}</div>}
         </div>
     );
 };

@@ -7,23 +7,26 @@ import { Statement } from "delib-npm";
 import { updateIsQuestion } from "../../../../../../functions/db/statements/setStatments";
 
 // Custom components
-import QuestionCircleIcon from "../../../../../components/icons/QuestionCircleIcon";
+import QuestionMarkIcon from "../../../../../components/icons/QuestionMarkIcon";
+import { isOptionFn } from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
+    text?: string;
 }
 
-const StatementChatSetQuestion: FC<Props> = ({ statement }) => {
+const StatementChatSetQuestion: FC<Props> = ({ statement, text }) => {
     function handleSetQuestion() {
         updateIsQuestion(statement);
     }
 
+    if(isOptionFn(statement)) return null;
+
     return (
+        <>
+        {text&& <span className="clickable" onClick={handleSetQuestion}>{text}</span>}
         <div className="clickable" onClick={handleSetQuestion}>
-            {/* <HelpOutlineIcon
-                htmlColor={isOptionFn(statement) ? "blue" : "lightgray"}
-            /> */}
-            <QuestionCircleIcon
+            <QuestionMarkIcon
                 color={
                     statement.statementType === "question"
                         ? "blue"
@@ -31,6 +34,7 @@ const StatementChatSetQuestion: FC<Props> = ({ statement }) => {
                 }
             />
         </div>
+        </>
     );
 };
 

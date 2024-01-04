@@ -9,6 +9,8 @@ import {
 } from "delib-npm";
 import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
+import { logOut } from "../db/auth";
+import { setUser } from "../../model/users/userSlice";
 
 export function updateArray(
     currentArray: Array<any>,
@@ -96,11 +98,7 @@ export function getNewStatment({
             consensus: 0,
             statementType: statementType || StatementType.statement,
         };
-        newStatement.subScreens = [
-            Screen.CHAT,
-            Screen.OPTIONS,
-            Screen.VOTE,
-        ];
+        newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
 
         return newStatement;
     } catch (error) {
@@ -112,15 +110,18 @@ export function getNewStatment({
 export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
+    parentStatementCreatorId?: string | undefined,
     authrizedRoles?: Array<Role>
 ) {
     try {
-        if (!statement) return false;
-        if (!statementSubscription) return false;
+        if (!statement) throw new Error("No statement");
+        
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
+      
+        if(parentStatementCreatorId === user.uid) return true;
 
         if (!statementSubscription) return false;
 
@@ -203,7 +204,7 @@ export function generateRandomLightColor(uuid: string) {
     const randomValue = (seed * 9301 + 49297) % 233280;
 
     // Convert the random number to a hexadecimal color code
-    const hexColor = `#${(randomValue & 0x00ffffff)
+    const hexColor = `#${((randomValue & 0x00ffffff) | 0xc0c0c0)
         .toString(16)
         .toUpperCase()}`;
 
@@ -277,3 +278,29 @@ export function linkToChildren(
     }
 }
 
+export function getPastelColor() {
+    return `hsl(${360 * Math.random()},100%,75%)` || "red";
+}
+
+export function calculateFontSize(
+    text: string,
+    maxSize: number = 6,
+    minSize: number = 14
+) {
+    // Set the base font size and a multiplier for adjusting based on text length
+    const baseFontSize = minSize;
+    const fontSizeMultiplier = 0.2;
+
+    // Calculate the font size based on the length of the text
+    const fontSize = Math.max(
+        baseFontSize - fontSizeMultiplier * text.length,
+        maxSize
+    );
+
+    return `${fontSize}px`;
+}
+
+export function handleLogout() {
+    logOut();
+    store.dispatch(setUser(null));
+}

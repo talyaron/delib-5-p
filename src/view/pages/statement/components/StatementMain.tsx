@@ -4,9 +4,8 @@ import { FC, useEffect, useRef } from "react";
 import { Statement } from "delib-npm";
 
 // Custom Components
-import StatementChat from "./chat/StatementChat";
+import StatementChat from "./chat/StatementChatCard";
 import StatementInput from "./StatementInput";
-import ScreenFadeIn from "../../../components/animation/ScreenFadeIn";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
 
@@ -53,41 +52,45 @@ const StatementMain: FC<Props> = ({
     }, [subStatements]);
 
     return !toSlide ? (
-        <ScreenFadeIn className="page__main fade-in">
-            <div className="wrapper wrapper--chat">
-                {subStatements?.map((statementSub: Statement) => (
+        <>
+            <div className="page__main">
+                {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
                             parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}
+                            index={index}
+                            previousStatement={subStatements[index - 1]}
                         />
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div className="page__main__bottom">
+            <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </ScreenFadeIn>
+        </>
     ) : (
-        <ScreenSlide className={"page__main" + " " + slideInOrOut}>
-            <div className="wrapper wrapper--chat">
-                {subStatements?.map((statementSub: Statement) => (
+        <>
+            <ScreenSlide className={"page__main" + " " + slideInOrOut}>
+                {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChat
-                            statement={statementSub}
                             parentStatement={statement}
+                            statement={statementSub}
                             showImage={handleShowTalker}
+                            index={index}
+                            previousStatement={subStatements[index - 1]}
                         />
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
-            </div>
-            <div className="page__main__bottom">
+            </ScreenSlide>
+            <div className="page__footer">
                 {statement && <StatementInput statement={statement} />}
             </div>
-        </ScreenSlide>
+        </>
     );
 };
 

@@ -9,35 +9,37 @@ import NewSetStatementSimple from "../../../set/NewStatementSimple";
 import Modal from "../../../../../../components/modal/Modal";
 
 // Icons
-import AddStatementIcon from "../../../../../../components/icons/AddStatementIcon";
+import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
 
 // Styles
-import styles from "./AddSubQuestion.module.scss";
+
 
 interface Props {
     statement: Statement;
+    setShowModal: Function;
+    text?: string;
 }
 
-const AddSubQuestion: FC<Props> = ({ statement }) => {
-    const [showQuestionModal, setAddQuestionModal] = useState(false);
+const AddSubQuestion: FC<Props> = ({ statement,setShowModal, text}) => { const [showQuestionModal, setAddQuestionModal] = useState(false);
     function handleShwQuestionModal() {
-        setAddQuestionModal(true);
+        setShowModal(true);
     }
     return (
         <>
-            <div className={styles.box} onClick={handleShwQuestionModal}>
-                <span>{t("Add Question")}</span>
-                <AddStatementIcon />
+        {text&&<span className="clickable" onClick={handleShwQuestionModal}>{text}</span>}
+            <div className="clickable" onClick={handleShwQuestionModal}>
+
+               <img src={addQuestion} alt={t("Add question")} />
             </div>
-            {showQuestionModal && (
+            {/* {showQuestionModal && (
                 <Modal>
                     <NewSetStatementSimple
-                        parentData={statement}
-                        isQuestion={true}
+                        parentStatement={statement}
+                        isOption={false}
                         setShowModal={setAddQuestionModal}
                     />
                 </Modal>
-            )}
+            )} */}
         </>
     );
 };

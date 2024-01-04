@@ -9,7 +9,8 @@ import Fav from "../../components/fav/Fav";
 import ScreenFadeIn from "../../components/animation/ScreenFadeIn";
 
 // Other
-import MainCardRes from "./MainCard2";
+// import MainCardRes from "./MainCard2";
+import MainCard from "./MainCard2";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
 const Main = () => {
@@ -35,7 +36,9 @@ const Main = () => {
                 <h2>{t("Conversations")}</h2>
 
                 {statements.map((statement) => (
-                    <MainCardRes
+                
+
+                    <MainCard
                         key={statement.statement.statementId}
                         statement={statement.statement}
                     />
@@ -48,8 +51,15 @@ const Main = () => {
             <div className="wrapper">
                 <h2>{t("Conversations")}</h2>
 
-                {statements.map((statement) => (
+                {/* {statements.map((statement) => (
                     <MainCardRes
+                        key={statement.statement.statementId}
+                        statement={statement.statement}
+                    />
+                ))} */}
+
+                {statements.map((statement) => (
+                    <MainCard
                         key={statement.statement.statementId}
                         statement={statement.statement}
                     />

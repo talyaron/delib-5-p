@@ -21,9 +21,9 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 // Custom components
 import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
-import { t } from "i18next";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
+import HandsIcon from "../../../../../assets/icons/HandsIcon";
+import StatementInfo from "./StatementInfo";
 
 interface Props {
     statement: Statement;
@@ -36,6 +36,8 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const { sort } = useParams();
 
     const [showModal, setShowModal] = useState(false);
+    const [showInfo, setShowInfo] = useState(false);
+    const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
     const __options = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement)
@@ -60,44 +62,69 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     }
 
     return (
-        <ScreenFadeIn className="page__main">
-            <div className="statement">
-                <div>
-                    <h2>{t("Votes")}</h2>
-                    <p style={{ maxWidth: "50vw", margin: "0 auto" }}>
-                        {t("Voted")}: {totalVotes}
-                    </p>
+        <>
+            <div className="page__main">
+                <div className="statement">
+                    <div>
+                        <p
+                            style={{
+                                maxWidth: "50vw",
+                                margin: "0 auto",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                            className="hand"
+                        >
+                            <HandsIcon
+                                color1="#6BBDED"
+                                color2="#ead55f"
+                                color3="#F76E9F"
+                            />{" "}
+                            {totalVotes}
+                        </p>
+                    </div>
+                    <div className="vote">
+                        {options.map((option: Statement, i: number) => {
+                            return (
+                                <OptionBar
+                                    key={option.statementId}
+                                    order={i}
+                                    option={option}
+                                    totalVotes={totalVotes}
+                                    statement={statement}
+                                    setShowInfo={setShowInfo}
+                                    setStatementInfo={setStatementInfo}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
-                <div className="statement__vote">
-                    {options.map((option: Statement, i: number) => {
-                        return (
-                            <OptionBar
-                                key={option.statementId}
-                                order={i}
-                                option={option}
-                                totalVotes={totalVotes}
-                                statement={statement}
-                            />
-                        );
-                    })}
-                </div>
+
+                {showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    </Modal>
+                )}
+                {showInfo && (
+                    <Modal>
+                        <StatementInfo
+                            statement={statementInfo}
+                            setShowInfo={setShowInfo}
+                        />
+                    </Modal>
+                )}
             </div>
-            <div className="page__main__bottom">
+            <div className="page__footer">
                 <StatementOptionsNav
                     setShowModal={setShowModal}
                     statement={statement}
                 />
             </div>
-            {showModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentData={statement}
-                        isOption={true}
-                        setShowModal={setShowModal}
-                    />
-                </Modal>
-            )}
-        </ScreenFadeIn>
+        </>
     );
 };
 

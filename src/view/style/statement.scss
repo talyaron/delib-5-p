@@ -11,23 +11,11 @@
         margin: 0 auto;
     }
 
-    // .wrapper {
-    //     display: flex;
-    //     flex-direction: column;
-    //     gap: 15px;
-    // }
-
     &__nav {
         display: flex;
         width: 100vw;
         max-width: 75ch;
         margin: 0 auto;
-
-        a {
-            text-decoration: none;
-            box-sizing: border-box;
-            transition: all 0.2s ease-in-out;
-        }
 
         &__button {
             flex: 1;
@@ -36,14 +24,12 @@
             align-items: center;
             padding: 5px;
             border-bottom: 2px solid rgba(0, 0, 0, 0);
+            letter-spacing: 0.5px;
+            opacity: .7;
 
             &--selected {
-                border-bottom: 2px solid var(--accent);
-                font-weight: 500;
-
-                &--question {
-                    border-bottom: 2px solid white;
-                }
+               font-size: 1.1rem;
+                opacity:1;
             }
         }
     }
@@ -144,12 +130,9 @@
         }
 
         &__profile {
-            // position: absolute;
-            // top: -5px;
-            // right: -20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50px;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
             background-repeat: no-repeat;
             background-color: teal;
             background-size: cover;
@@ -174,6 +157,7 @@
             resize: none;
             outline: none;
             border: none;
+            border-radius: 3rem;
             flex: auto;
             box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
         }
@@ -184,7 +168,6 @@
         }
 
         &__sendBtnBox {
-            background: var(--halfPrimary);
             width: 4rem;
             height: 4rem;
             display: flex;
@@ -204,87 +187,7 @@
         }
     }
 
-    &__vote {
-        flex: auto;
-        display: flex;
-        direction: rtl;
-        padding: 1rem;
-        max-width: 100svw;
-        margin: 2.5rem auto;
-        overflow-x: auto;
-
-        &__bar {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            transition: all 500ms ease-in-out;
-
-            &__column {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                align-items: center;
-                height: 100%;
-
-                &__bar {
-                    height: 0px;
-                    width: 120px;
-
-                    background-color: #61b4e4;
-
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    transition: all 500ms ease-in-out;
-                }
-            }
-
-            &__btn {
-                border-radius: 5px;
-                background-color: teal;
-
-                color: white;
-                user-select: none;
-                cursor: pointer;
-                width: 120px;
-                height: 80px;
-                padding: 10px;
-                white-space: wrap;
-                word-wrap: break-word;
-                overflow: hidden;
-                text-align: center;
-                // border-top:1em solid transparent;
-                // border-bottom:1em solid transparent;
-                text-overflow: ellipsis;
-
-                box-sizing: border-box;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                transition: all 150ms ease-in-out;
-
-                :hover,
-                :active {
-                    overflow: visible;
-                }
-
-                &--selected {
-                    background-color: rgb(3, 167, 167);
-                    box-shadow: 0px 0px 10px rgb(0, 0, 0);
-                }
-            }
-        }
-    }
-    &__vote::-webkit-scrollbar {
-        width: 1.5rem;
-    }
-    &__vote::-webkit-scrollbar-thumb {
-        background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
-        border-radius: 1rem;
-    }
+   
 }
 
 .bubble {
