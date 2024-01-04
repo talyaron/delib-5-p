@@ -18,15 +18,16 @@ import { statementSubscriptionSelector } from "../../../../../../model/statement
 import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
 
 interface Props {
+    parentStatement: Statement | null;
     statement: Statement;
     text?: string;
 }
 
-const StatementChatSetOption: FC<Props> = ({ statement, text }) => {
+const StatementChatSetOption: FC<Props> = ({ statement, text,parentStatement }) => {
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
     );
-    const _isAuthrized = isAuthorized(statement, statementSubscription);
+    const _isAuthrized = isAuthorized(statement, statementSubscription, parentStatement?.creatorId);
     function handleSetOption() {
         try {
             if (statement.statementType === "option") {

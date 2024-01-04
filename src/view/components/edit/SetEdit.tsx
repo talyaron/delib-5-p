@@ -5,17 +5,25 @@ interface Props {
     isAuthrized: boolean;
     setEdit: Function;
     edit: boolean;
+    text?: string;
 }
 
-const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit }) => {
+const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit, text }) => {
     return (
-        <div>
-            {isAuthrized && (
-                <div className="clickable" onClick={() => setEdit(!edit)}>
-                    <EditIcon />
-                </div>
+        <>
+            {text && (
+                <span className="clickable" onClick={() => setEdit(!edit)}>
+                    {text}
+                </span>
             )}
-        </div>
+            <div>
+                {isAuthrized && (
+                    <div className="clickable" onClick={() => setEdit(!edit)}>
+                        <EditIcon />
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
 

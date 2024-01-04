@@ -95,9 +95,8 @@ const StatementEvaluationCard: FC<Props> = ({
             }
             style={{
                 top: `${newTop}px`,
-                borderLeft: `8px solid ${statement.color || getPastelColor()}`,
+                borderLeft: `8px solid ${statementColor.backgroundColor || 'wheat'}`,
                 color: statementColor.color,
-                backgroundColor: statementColor.backgroundColor,
             }}
             ref={elementRef}
         >
@@ -135,13 +134,14 @@ const StatementEvaluationCard: FC<Props> = ({
                                         <SetEdit
                                             isAuthrized={isAuthorized(
                                                 statement,
-                                                statementSubscription
+                                                statementSubscription,
+                                                parentStatement.creatorId
                                             )}
                                             edit={edit}
                                             setEdit={setEdit}
                                         />
                                         
-                                         <StatementChatSetOption statement={statement} text={t("Remove Option")} />
+                                         <StatementChatSetOption parentStatement={parentStatement} statement={statement} text={t("Remove Option")} />
                                     </CardMenu>
                                 )}
                             </>

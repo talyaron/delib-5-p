@@ -12,8 +12,7 @@ import {
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
-import { log } from "firebase-functions/logger";
-import { getTopSelectionKeys } from "./helpers";
+
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
