@@ -29,9 +29,9 @@ export default function HomeHeader() {
                 <h2>{t("Creating Agreements")}</h2>
             </div>
             <div className="btns">
-                <button onClick={handleLogout}>{t("Disconnect")}</button>
+                <button className="btn btn--add" onClick={handleLogout}>{t("Disconnect")}</button>
                 {deferredPrompt && (
-                    <button onClick={handleInstallApp}>
+                    <button className="btn btn--add" onClick={handleInstallApp}>
                         {t("Install the App")}
                     </button>
                 )}

@@ -4,7 +4,7 @@ import Text from "../../components/text/Text";
 // import chatIcon from "../../../assets/chatIcon.svg";
 
 //css
-import "../../style/mainCard.scss";
+
 // import styles from "./MainCard.module.scss";
 import StatementChatMore from "../statement/components/chat/StatementChatMore";
 import { Link } from "react-router-dom";

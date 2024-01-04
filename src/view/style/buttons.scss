@@ -13,33 +13,50 @@ button {
 
 .btn {
     width: fit-content;
-    height: 2rem;
+    height: fit-content;
     padding: 0.5rem;
     border-radius: 5px;
     cursor: pointer;
-    &--agree{
+    &--add {
+        width: fit-content;
+        background-color: var(--question);
+        color: var(--white);
+    }
+
+    &--cancel {
+        width: 30%;
+        background-color: var(--red);
+        color: var(--white);
+    }
+
+    &--agree {
         background-color: var(--agree);
     }
-    &--disagree{
+
+    &--disagree {
         background-color: var(--disagree);
     }
 
-    &--large{
+    &--large {
         font-size: 1.4rem;
         padding: 1rem;
         height: auto;
     }
 
-    &--img{
+    &--img {
         padding: .5rem 1rem;
         display: flex;
         height: auto;
         align-items: center;
-        gap:1rem;
-        img{
+        gap: 1rem;
+
+        img {
             width: 2rem;
             height: 2rem;
         }
+
+       
+
     }
 }
 
@@ -115,7 +132,7 @@ button {
         right: 5vw;
     }
 
-    & > div {
+    &>div {
         z-index: 100;
         background: var(--accent);
         width: 3.2rem;

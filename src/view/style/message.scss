@@ -62,6 +62,9 @@
             display: flex;
             justify-content: space-between;
             gap: 1rem;
+            &__text{
+                width: 100%;
+            }
         }
         &__actions {
             display: flex;

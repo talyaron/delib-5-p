@@ -84,8 +84,6 @@ const StatementChat: FC<Props> = ({
     const [openMenu, setOpenMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-   
-
     const displayUserName = !previousStatement
         ? true
         : previousStatement.creatorId !== statement.creatorId
@@ -141,7 +139,9 @@ const StatementChat: FC<Props> = ({
                     borderRight: isMe
                         ? `.65rem solid ${statementColor.backgroundColor}`
                         : undefined,
-                        borderLeft: isMe? undefined: `.65rem solid ${statementColor.backgroundColor}`
+                    borderLeft: isMe
+                        ? undefined
+                        : `.65rem solid ${statementColor.backgroundColor}`,
                 }}
             >
                 {displayUserName && (
@@ -179,7 +179,7 @@ const StatementChat: FC<Props> = ({
                                     statement={statement}
                                     setShowModal={setShowModal}
                                     text={t("Add Question")}
-                                /> 
+                                />
                                 <StatementChatSetOption
                                     parentStatement={parentStatement}
                                     statement={statement}
@@ -188,12 +188,14 @@ const StatementChat: FC<Props> = ({
                             </CardMenu>
                         </div>
                     )}
-                    <EditTitle
-                        statement={statement}
-                        isEdit={isEdit}
-                        setEdit={setIsEdit}
-                        isTextArea={true}
-                    />
+                    <div className="message__box__info__text">
+                        <EditTitle
+                            statement={statement}
+                            isEdit={isEdit}
+                            setEdit={setIsEdit}
+                            isTextArea={true}
+                        />
+                    </div>
                 </div>
                 {displayChat && <StatementChatMore statement={statement} />}
 
@@ -208,14 +210,14 @@ const StatementChat: FC<Props> = ({
                 </div>
             </div>
             {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                        />
-                    </Modal>
-                )}
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setShowModal}
+                    />
+                </Modal>
+            )}
         </div>
     );
 };
