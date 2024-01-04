@@ -34,7 +34,7 @@ const NewSetStatementSimple: FC<Props> = ({
     getSubStatements,
 }) => {
     try {
-        console.log('NewSetStatementSimple')
+       
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);

@@ -8,6 +8,7 @@ import { updateIsQuestion } from "../../../../../../functions/db/statements/setS
 
 // Custom components
 import QuestionMarkIcon from "../../../../../components/icons/QuestionMarkIcon";
+import { isOptionFn } from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -18,6 +19,8 @@ const StatementChatSetQuestion: FC<Props> = ({ statement, text }) => {
     function handleSetQuestion() {
         updateIsQuestion(statement);
     }
+
+    if(isOptionFn(statement)) return null;
 
     return (
         <>

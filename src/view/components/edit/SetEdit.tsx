@@ -9,6 +9,8 @@ interface Props {
 }
 
 const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit, text }) => {
+if(!isAuthrized) return null;
+
     return (
         <>
             {text && (

@@ -12,8 +12,9 @@ interface Props {
 const CardMenu: FC<Props> = ({ children, setOpenMenu }) => {
 
     const direction = useDirection();
-    // console.log(_direction)
-    // const direction = _direction === "row" ? "right:.9rem; left:unset" : "ltr";
+    if(!children) return null;
+
+   
     
     return (
         <>

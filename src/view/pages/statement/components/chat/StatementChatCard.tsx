@@ -24,21 +24,18 @@ import {
 } from "../../../../../functions/general/helpers";
 
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
-import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
-import QuestionMarkIcon from "../../../../components/icons/QuestionMarkIcon";
+
 import {
     setStatementisOption,
     updateIsQuestion,
 } from "../../../../../functions/db/statements/setStatments";
 import LightBulbIcon from "../../../../components/icons/LightBulbIcon";
-import { use } from "i18next";
 import CardMenu from "../../../../components/cardMenu/CardMenu";
 import MoreIcon from "../../../../../assets/icons/MoreIcon";
-import SetEdit from "../../../../components/edit/SetEdit";
 import StatementChatSetOption from "./components/StatementChatSetOption";
 import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
-import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
+import Modal from "../../../../components/modal/Modal";
 
 export interface NewQuestion {
     statement: Statement;
@@ -85,10 +82,9 @@ const StatementChat: FC<Props> = ({
 
     const [isEdit, setIsEdit] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
    
-    const [setNewQuestion, setSetNewQuestion] = useState<NewQuestion | null>(
-        null
-    );
 
     const displayUserName = !previousStatement
         ? true
@@ -139,7 +135,15 @@ const StatementChat: FC<Props> = ({
                 </div>
             )}
 
-            <div className={`message__box ${statementType}`}>
+            <div
+                className="message__box"
+                style={{
+                    borderRight: isMe
+                        ? `.65rem solid ${statementColor.backgroundColor}`
+                        : undefined,
+                        borderLeft: isMe? undefined: `.65rem solid ${statementColor.backgroundColor}`
+                }}
+            >
                 {displayUserName && (
                     <div
                         className={
@@ -155,7 +159,11 @@ const StatementChat: FC<Props> = ({
                         <MoreIcon />
                     </div>
                     {openMenu && (
-                        <div onClick={() => {setOpenMenu(false)}}>
+                        <div
+                            onClick={() => {
+                                setOpenMenu(false);
+                            }}
+                        >
                             <CardMenu setOpenMenu={setOpenMenu}>
                                 <StatementChatSetEdit
                                     isAuthrized={_isAuthrized}
@@ -167,10 +175,11 @@ const StatementChat: FC<Props> = ({
                                     statement={statement}
                                     text={t("Question")}
                                 />
-                                {/* <AddSubQuestion
+                                <AddSubQuestion
                                     statement={statement}
+                                    setShowModal={setShowModal}
                                     text={t("Add Question")}
-                                /> */}
+                                /> 
                                 <StatementChatSetOption
                                     parentStatement={parentStatement}
                                     statement={statement}
@@ -198,15 +207,15 @@ const StatementChat: FC<Props> = ({
                     </div>
                 </div>
             </div>
-            {/* {setNewQuestion?.showModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={setNewQuestion.statement}
-                        isOption={false}
-                        setShowModal={setNewQuestion}
-                    />
-                </Modal>
-            )} */}
+            {showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    </Modal>
+                )}
         </div>
     );
 };

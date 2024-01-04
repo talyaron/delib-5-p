@@ -24,7 +24,6 @@ import SetEdit from "../../../../../components/edit/SetEdit";
 
 // Helpers
 import {
-    getPastelColor,
     isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
@@ -32,6 +31,8 @@ import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import { t } from "i18next";
 import useStatementColor, { StyleProps } from "../../../../../../functions/hooks/useStatementColor";
+import Modal from "../../../../../components/modal/Modal";
+import NewSetStatementSimple from "../../set/NewStatementSimple";
 
 interface Props {
     statement: Statement;
@@ -59,6 +60,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         setNewTop(top);
@@ -156,9 +158,18 @@ const StatementEvaluationCard: FC<Props> = ({
             </div>
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
-                <AddSubQuestion statement={statement} />
+                <AddSubQuestion statement={statement} setShowModal={setShowModal} />
                
             </div>
+            {showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    </Modal>
+                )}
         </div>
     );
 };
