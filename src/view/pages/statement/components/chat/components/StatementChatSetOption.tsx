@@ -47,7 +47,7 @@ const StatementChatSetOption: FC<Props> = ({ statement, text,parentStatement }) 
     if (!_isAuthrized) return null;
     return (
         <>
-        {text&&<span  onClick={handleSetOption}>{text}</span>}
+        {text&&<span className="clickable" onClick={handleSetOption}>{text}</span>}
         <div className="clickable" onClick={handleSetOption}>
             
             {isOptionFn(statement) ? (

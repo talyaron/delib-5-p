@@ -34,6 +34,7 @@ const NewSetStatementSimple: FC<Props> = ({
     getSubStatements,
 }) => {
     try {
+        console.log('NewSetStatementSimple')
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);
@@ -119,7 +120,7 @@ const NewSetStatementSimple: FC<Props> = ({
         return (
             <>
                 {!isLoading ? (
-                    <div className="overlay">
+                    <div className="overlay" style={{zIndex:`2000`}}>
                         <div className="overlay__imgBox">
                             <ModalImage />
                             <div className="overlay__imgBox__polygon" />

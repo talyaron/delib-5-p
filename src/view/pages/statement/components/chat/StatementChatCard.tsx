@@ -36,6 +36,15 @@ import CardMenu from "../../../../components/cardMenu/CardMenu";
 import MoreIcon from "../../../../../assets/icons/MoreIcon";
 import SetEdit from "../../../../components/edit/SetEdit";
 import StatementChatSetOption from "./components/StatementChatSetOption";
+import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
+import Modal from "../../../../components/modal/Modal";
+import NewSetStatementSimple from "../set/NewStatementSimple";
+
+export interface NewQuestion {
+    statement: Statement;
+    isOption: boolean;
+    showModal: boolean;
+}
 
 interface Props {
     parentStatement: Statement;
@@ -76,6 +85,10 @@ const StatementChat: FC<Props> = ({
 
     const [isEdit, setIsEdit] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
+   
+    const [setNewQuestion, setSetNewQuestion] = useState<NewQuestion | null>(
+        null
+    );
 
     const displayUserName = !previousStatement
         ? true
@@ -138,26 +151,30 @@ const StatementChat: FC<Props> = ({
                 )}
 
                 <div className="message__box__info">
-                    
                     <div onClick={() => setOpenMenu(true)}>
                         <MoreIcon />
                     </div>
                     {openMenu && (
-                        <div onClick={() => setOpenMenu(false)}>
+                        <div onClick={() => {setOpenMenu(false)}}>
                             <CardMenu setOpenMenu={setOpenMenu}>
-                               
                                 <StatementChatSetEdit
                                     isAuthrized={_isAuthrized}
                                     setEdit={setIsEdit}
                                     edit={isEdit}
                                     text={t("Edit Text")}
                                 />
-                                <span>{t("Add Question")}</span>
-                                <AddSubQuestion statement={statement} />
+                                <StatementChatSetQuestion
+                                    statement={statement}
+                                    text={t("Question")}
+                                />
+                                {/* <AddSubQuestion
+                                    statement={statement}
+                                    text={t("Add Question")}
+                                /> */}
                                 <StatementChatSetOption
                                     parentStatement={parentStatement}
                                     statement={statement}
-                                    text={t("Remove Option")}
+                                    text={t("Option")}
                                 />
                             </CardMenu>
                         </div>
@@ -181,6 +198,15 @@ const StatementChat: FC<Props> = ({
                     </div>
                 </div>
             </div>
+            {/* {setNewQuestion?.showModal && (
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatement={setNewQuestion.statement}
+                        isOption={false}
+                        setShowModal={setNewQuestion}
+                    />
+                </Modal>
+            )} */}
         </div>
     );
 };

@@ -11,18 +11,18 @@ import QuestionMarkIcon from "../../../../../components/icons/QuestionMarkIcon";
 
 interface Props {
     statement: Statement;
+    text?: string;
 }
 
-const StatementChatSetQuestion: FC<Props> = ({ statement }) => {
+const StatementChatSetQuestion: FC<Props> = ({ statement, text }) => {
     function handleSetQuestion() {
         updateIsQuestion(statement);
     }
 
     return (
+        <>
+        {text&& <span className="clickable" onClick={handleSetQuestion}>{text}</span>}
         <div className="clickable" onClick={handleSetQuestion}>
-            {/* <HelpOutlineIcon
-                htmlColor={isOptionFn(statement) ? "blue" : "lightgray"}
-            /> */}
             <QuestionMarkIcon
                 color={
                     statement.statementType === "question"
@@ -31,6 +31,7 @@ const StatementChatSetQuestion: FC<Props> = ({ statement }) => {
                 }
             />
         </div>
+        </>
     );
 };
 
