@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { Statement, NavObject, Screen, StatementType } from "delib-npm";
+import { Statement, NavObject, Screen } from "delib-npm";
 import { showNavElements } from "./statementNavCont";
 import { t } from "i18next";
 

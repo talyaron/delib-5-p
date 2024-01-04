@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 // Third party libraries
 import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
-import { t } from "i18next";
+
 
 // Icons
 import BurgerIcon from "../../../../../components/icons/BurgerIcon";

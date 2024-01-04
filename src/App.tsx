@@ -27,7 +27,7 @@ import { resetResults } from "./model/results/resultsSlice";
 import Modal from "./view/components/modal/Modal";
 
 //css
-import styles from "./App.module.scss";
+
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";

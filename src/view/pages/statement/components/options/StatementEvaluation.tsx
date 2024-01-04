@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import { useParams } from "react-router";
 import Modal from "../../../../components/modal/Modal";
 
@@ -20,12 +20,14 @@ interface Props {
     subStatements: Statement[];
     handleShowTalker: Function;
     showNav?: boolean;
+    questions?:boolean;
 }
 
 const StatementEvaluation: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
+    questions = false,
 }) => {
     try {
         const { sort } = useParams();
@@ -37,8 +39,12 @@ const StatementEvaluation: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort).filter((s) =>
-                    isOptionFn(s)
+                sortSubStatements(subStatements, sort).filter((s) =>{
+                    if(questions){
+                        return s.statementType === StatementType.question
+                    }
+                    return isOptionFn(s)
+                }
                 )
             );
         }, [sort, subStatements]);
