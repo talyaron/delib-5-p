@@ -12,7 +12,6 @@ import {
     statementToSimpleStatement,
 } from "delib-npm";
 
-
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
     try {
@@ -225,31 +224,31 @@ async function updateParentStatementWithChildResults(
 
         //get resutls settings
         const { resultsSettings } = parentStatement;
-        const { resultsBy, numberOfResults } =
+        let { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
 
-        logger.log("resultsBy", resultsBy, "numberOfResults", numberOfResults);
+        if (numberOfResults === undefined) numberOfResults = 1;
+        if (resultsBy === undefined) resultsBy = ResultsBy.topOptions;
+
+       
 
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
-           //topVote will be calculated in the votes function
+            //topVote will be calculated in the votes function
             return;
-        } 
+        }
 
         const childStatementsRef = db
-        .collection(Collections.statements)
-        .where("parentId", "==", parentId)
-        .orderBy("consensus", "desc")
-        .limit(numberOfResults);
-       
+            .collection(Collections.statements)
+            .where("parentId", "==", parentId)
+            .orderBy("consensus", "desc")
+            .limit(numberOfResults);
 
         const childStatementsDB = await childStatementsRef.get();
         const childStatements = childStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement
         );
-
-       
 
         await updateParentChildren(childStatements, numberOfResults);
 
@@ -258,8 +257,12 @@ async function updateParentStatementWithChildResults(
         logger.error(error);
     }
 
-    async function updateParentChildren(childStatements: Statement[], numberOfResults: number | undefined) {
-        const childStatementsSimple = childStatements.map((st: Statement) => statementToSimpleStatement(st)
+    async function updateParentChildren(
+        childStatements: Statement[],
+        numberOfResults: number | undefined
+    ) {
+        const childStatementsSimple = childStatements.map((st: Statement) =>
+            statementToSimpleStatement(st)
         );
 
         const childIds = childStatements.map((st: Statement) => st.statementId);

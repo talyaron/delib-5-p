@@ -5,7 +5,7 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementType,
-    User,
+
 } from "delib-npm";
 import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -85,9 +85,15 @@ export function getNewStatment({
         const creator = user;
         if (!creator) throw new Error("User not logged in");
 
+        const parents = parentStatement.parents || [];
+        const paretnsSet = new Set(parents);
+        //convert bac to array
+        const _parents = [...paretnsSet];
+
         const newStatement: Statement = {
             statement: value,
             parentId: parentStatement.statementId,
+            parents: [..._parents, parentStatement.statementId],
             topParentId:
                 parentStatement.topParentId || parentStatement.statementId,
             statementId: crypto.randomUUID(),

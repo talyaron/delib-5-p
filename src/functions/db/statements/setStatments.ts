@@ -83,7 +83,7 @@ export const setStatmentToDB = async ({
                 enableAddVotingOption: true,
             };
 
-        statement.parents = getStatementsParents(statement);
+        // statement.parents = getStatementsParents(statement);
 
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator);
