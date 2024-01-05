@@ -116,9 +116,7 @@ const StatementChat: FC<Props> = ({
     //     </div>
     // );
 
-    useEffect(() => {
-        console.log(isEdit);
-    }, [isEdit]);
+ 
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (

@@ -59,7 +59,7 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                 />
             );
-        case Screen.QUESTIONS_MASS:
+        case Screen.MASS_QUESTIONS:
             return (
                 <MassQuestions
                     statement={statement}
@@ -75,6 +75,19 @@ export default function SwitchScreens({
             );
         case Screen.SETTINGS:
             return <AdminPage />;
+        case Screen.QUESTIONS:
+        case Screen.QUESTIONS_CONSENSUS:
+        case Screen.QUESTIONS_NEW:
+        case Screen.QUESTIONS_RANDOM:
+        case Screen.QUESTIONS_UPDATED:
+            return (
+                <StatementEvaluation
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                    questions={true}
+                />
+            );
         default:
             return (
                 <StatementMain

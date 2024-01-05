@@ -6,13 +6,13 @@ import { Link, useParams } from "react-router-dom";
 
 
 // Icons
-import BurgerIcon from "../../../../../components/icons/BurgerIcon";
-import PlusIcon from "../../../../../components/icons/PlusIcon";
-import AgreementIcon from "../../../../../components/icons/AgreementIcon";
-import RandomIcon from "../../../../../components/icons/RandomIcon";
-import UpdateIcon from "../../../../../components/icons/UpdateIcon";
-import NewestIcon from "../../../../../components/icons/NewestIcon";
-import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
+import BurgerIcon from "../../../../components/icons/BurgerIcon";
+import PlusIcon from "../../../../components/icons/PlusIcon";
+import AgreementIcon from "../../../../components/icons/AgreementIcon";
+import RandomIcon from "../../../../components/icons/RandomIcon";
+import UpdateIcon from "../../../../components/icons/UpdateIcon";
+import NewestIcon from "../../../../components/icons/NewestIcon";
+import useStatementColor from "../../../../../functions/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;
@@ -70,18 +70,36 @@ const votesArray: NavItems[] = [
         name: "Agreement",
         id: Screen.VOTESֹֹֹ_VOTED,
     },
-    // {
-    //     link: Screen.VOTES_CONSENSUS,
-    //     name: t("Agreement"),
-    //     id: Screen.VOTES_CONSENSUS,
-    //     icon: <AgreementIcon />,
-    // },
 ];
 
-const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
+const questionsArray: NavItems[] = [
+    {
+        link: Screen.QUESTIONS_NEW,
+        name: "New",
+        id: Screen.QUESTIONS_NEW,
+    },
+    {
+        link: Screen.QUESTIONS_UPDATED,
+        name: "Update",
+        id: Screen.QUESTIONS_UPDATED,
+    },
+    {
+        link: Screen.QUESTIONS_RANDOM,
+        name: "Random",
+        id: Screen.QUESTIONS_RANDOM,
+    },
+    {
+        link: Screen.QUESTIONS_CONSENSUS,
+        name: "Agreement",
+        id: Screen.QUESTIONS_CONSENSUS,
+    },
+];
+
+const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     const { page } = useParams();
 
-    const navArray = page === "vote" ? votesArray : optionsArray;
+    const navArray = getPageArray(page);
+        
 
     const [openNav, setOpenNav] = useState(false);
 
@@ -94,8 +112,6 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
     const addVotingOption: boolean | undefined =
         statement.statementSettings?.enableAddVotingOption;
 
-    const showNavigation =
-        page === "options" ? true : page === "vote" ? true : false;
 
     const showAddOptionEvaluation = page === "options" && addOption;
     const showAddOptionVoting = page === "vote" && addVotingOption;
@@ -130,7 +146,7 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
     };
 
     return (
-        showNavigation && (
+     
             <>
                 {openNav && (
                     <div
@@ -165,8 +181,23 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
                     ))}
                 </div>
             </>
-        )
+  
     );
 };
 
-export default StatementEvaluationNav;
+export default StatementBottomNav;
+
+function getPageArray(page: string|undefined){
+    if(!page) return optionsArray;
+    
+    switch (page) {
+        case Screen.VOTE:
+            return votesArray;
+        case Screen.OPTIONS:
+            return optionsArray;
+        case Screen.QUESTIONS:
+            return questionsArray;
+        default:
+            return optionsArray;
+    }
+}

@@ -31,6 +31,7 @@ export function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
         if (!dataObj) throw new Error("dataObj is undefined")
         if (!navArray) throw new Error("navArray is undefined")
         const _navArray = [...navArray]
+    console.log('_navArray', _navArray)
 
         const screens = _navArray
             //@ts-ignore

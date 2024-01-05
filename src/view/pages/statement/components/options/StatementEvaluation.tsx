@@ -13,7 +13,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import StatementEvaluationNav from "./components/StatementEvaluationNav";
+import StatementBottomNav from "../nav/StatementBottomNav";
 
 interface Props {
     statement: Statement;
@@ -83,12 +83,11 @@ const StatementEvaluation: FC<Props> = ({
                 </div>
 
                 <div className="page__footer">
-                    <StatementEvaluationNav
+                    <StatementBottomNav
                         setShowModal={setShowModal}
                         statement={statement}
                     />
                 </div>
-                {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple
