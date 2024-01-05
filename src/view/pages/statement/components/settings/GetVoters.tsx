@@ -1,7 +1,7 @@
 import { Vote } from "delib-npm";
 import React from "react";
-import { handleGetVoters } from "../AdminPageCont";
-import Chip from "../../../../../components/chip/Chip";
+import Chip from "../../../../components/chip/Chip";
+import { handleGetVoters } from "./statementSettingsCont";
 
 export default function GetVoters({
     statementId,
@@ -23,6 +23,7 @@ export default function GetVoters({
                 >
                     Get Voters
                 </button>
+
                 <div className="settings__getUsers__chipBox">
                     {voters.length > 0
                         ? voters.map((voter) => {
@@ -34,6 +35,7 @@ export default function GetVoters({
                               <p style={{ marginTop: 20 }}>No voters found</p>
                           )}
                 </div>
+                {clicked && <b>{voters.length} Voted</b>}
             </section>
         )
     );

@@ -51,28 +51,9 @@ const StatementMain: FC<Props> = ({
         scrollToBottom();
     }, [subStatements]);
 
-    return !toSlide ? (
+    return (
         <>
-            <div className="page__main">
-                {subStatements?.map((statementSub: Statement, index) => (
-                    <div key={statementSub.statementId}>
-                        <StatementChat
-                            statement={statementSub}
-                            showImage={handleShowTalker}
-                            index={index}
-                            previousStatement={subStatements[index - 1]}
-                        />
-                    </div>
-                ))}
-                <div ref={messagesEndRef} />
-            </div>
-            <div className="page__footer">
-                {statement && <StatementInput statement={statement} />}
-            </div>
-        </>
-    ) : (
-        <>
-            <ScreenSlide className={"page__main" + " " + slideInOrOut}>
+            <ScreenSlide className={`page__main ${toSlide && slideInOrOut}`}>
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChat

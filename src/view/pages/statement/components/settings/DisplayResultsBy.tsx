@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 // Custom components
-import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
-import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
+import RadioCheckedIcon from "../../../../components/icons/RadioCheckedIcon";
+import RedioUncheckedIcon from "../../../../components/icons/RedioUncheckedIcon";
 
 // Third party imports
 import { Statement, ResultsBy } from "delib-npm";

@@ -2,12 +2,12 @@
 import StatementMain from "./StatementMain";
 import StatmentRooms from "./rooms/Rooms";
 import StatementVote from "./vote/StatementVote";
-import StatementEvaluation from "./options/StatementEvaluation";
-import Map from "./doc/Map";
+import StatementEvaluation from "./evaluations/StatementEvaluation";
+import Map from "./map/Map";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
-import AdminPage from "./admin/AdminPage";
+import { StatementSettings } from "./settings/StatementSettings";
 import MassQuestions from "./massQuestions/MassQuestions";
 
 interface SwitchScreensProps {
@@ -28,14 +28,15 @@ export default function SwitchScreens({
     switch (screen) {
         case Screen.DOC:
             return <Map statement={statement} />;
-        case Screen.HOME:
-            return (
-                <StatementMain
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
-            );
+        //TODO: Delete? Not used.
+        // case Screen.HOME:
+        //     return (
+        //         <StatementMain
+        //             statement={statement}
+        //             subStatements={subStatements}
+        //             handleShowTalker={handleShowTalker}
+        //         />
+        //     );
         case Screen.CHAT:
             return (
                 <StatementMain
@@ -74,7 +75,7 @@ export default function SwitchScreens({
                 />
             );
         case Screen.SETTINGS:
-            return <AdminPage />;
+            return <StatementSettings />;
         default:
             return (
                 <StatementMain

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
-import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
+import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
 import { t } from "i18next";
@@ -15,41 +15,41 @@ import {
 } from "delib-npm";
 
 // Custom components
-import Loader from "../../../../../components/loaders/Loader";
-import MembershipLine from "../membership/MembershipLine";
-import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
+import Loader from "../../../../components/loaders/Loader";
+import MembershipLine from "./membership/MembershipLine";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../functions/hooks/reduxHooks";
 import {
     removeMembership,
     setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
-} from "../../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../../model/users/userSlice";
-import { store } from "../../../../../../model/store";
+} from "../../../../../model/statements/statementsSlice";
+import { userSelector } from "../../../../../model/users/userSlice";
+import { store } from "../../../../../model/store";
 
 // Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
-} from "../../../../../../functions/db/statements/getStatement";
+} from "../../../../../functions/db/statements/getStatement";
 
 // * Statement Settings functions * //
 import { parseScreensCheckBoxes } from "./statementSettingsCont";
-import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
-import UploadImage from "../../../../../components/uploadImage/UploadImage";
+import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+import UploadImage from "../../../../components/uploadImage/UploadImage";
 import DisplayResultsBy from "./DisplayResultsBy";
 import ResultsRange from "./ResultsRange";
 import GetVoters from "./GetVoters";
 import GetEvaluators from "./GetEvaluators";
 import CheckBoxeArea from "./CheckBoxeArea";
-import { navArray } from "../../nav/StatementNav";
+import { navArray } from "../nav/StatementNav";
 
 interface Props {
     simple?: boolean;
@@ -241,11 +241,8 @@ export const StatementSettings: FC<Props> = () => {
 
                     {membership && statementId && (
                         <>
-                            <h2>
-                                {t("Members in Group")}{": "}
-                                {membership.length}
-                            </h2>
-                            <div className="setStatement__form__membersBox">
+                            <h2>{t("Members in Group")}</h2>
+                            <div className="settings__membersBox">
                                 {membership.map((member) => (
                                     <MembershipLine
                                         key={member.userId}
@@ -253,6 +250,8 @@ export const StatementSettings: FC<Props> = () => {
                                     />
                                 ))}
                             </div>
+
+                            <b>{membership.length} Members</b>
                         </>
                     )}
 

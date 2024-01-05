@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 
 // Custom components
-import { StatementSettings } from "../../statement/components/admin/settings/StatementSettings";
+import { StatementSettings } from "../../statement/components/settings/StatementSettings";
 import useDirection from "../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import BackArrowIcon from "../../../components/icons/BackArrowIcon";

@@ -99,21 +99,23 @@
     &__getUsers {
         height: fit-content;
         min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
         &__evaluatorsBtn {
             background-color: var(--light-green);
             color: var(--white);
         }
-        &__votersBtn{
+        &__votersBtn {
             background-color: var(--light-purple);
             color: var(--white);
         }
         &__chipBox {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            max-width: 80rem;
-            padding: 1rem 0rem;
-            
+            gap: 0.5rem;
+            width: 100%;
         }
     }
 
@@ -137,6 +139,13 @@
             transform: scale(0.9);
         }
     }
+
+    &__membersBox {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -153,10 +162,9 @@
     }
 }
 
-.formBtn{
+.formBtn {
     height: 2rem;
-    padding: 0 .5rem;
-    margin: auto;
+    padding: 0 0.5rem;
     font-size: 1rem;
     border: none;
     outline: none;

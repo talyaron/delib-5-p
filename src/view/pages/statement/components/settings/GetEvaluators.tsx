@@ -1,7 +1,7 @@
 import React from "react";
-import { handleGetEvaluators } from "../AdminPageCont";
 import { Evaluation } from "delib-npm";
-import Chip from "../../../../../components/chip/Chip";
+import Chip from "../../../../components/chip/Chip";
+import { handleGetEvaluators } from "./statementSettingsCont";
 
 export default function GetEvaluators({
     statementId,
@@ -43,6 +43,7 @@ export default function GetEvaluators({
                               </p>
                           )}
                 </div>
+                {clicked && <b>{evaluators.length} Evaluated</b>}
             </section>
         )
     );

@@ -1,9 +1,9 @@
 import CustomCheckboxLabel from "./CustomCheckboxLabel";
 import { t } from "i18next";
 import { isSubPageChecked } from "./statementSettingsCont";
-import CustomSwitch from "../../../../../components/switch/CustomSwitch";
+import CustomSwitch from "../../../../components/switch/CustomSwitch";
 import { Screen, Statement } from "delib-npm";
-import { navArray } from "../../nav/StatementNav";
+import { navArray } from "../nav/StatementNav";
 
 export default function CheckBoxeArea({ statement }: { statement: Statement | undefined }) {
     const hasChildren: boolean = (() => {
