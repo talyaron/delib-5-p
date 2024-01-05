@@ -11,7 +11,7 @@ import { t } from "i18next";
 export default function DisplayResultsBy({
     statement,
 }: {
-    statement: Statement;
+    statement: Statement | undefined;
 }) {
     const resultsBy = () => {
         if (!statement) return ResultsBy.topOptions;
@@ -39,6 +39,8 @@ export default function DisplayResultsBy({
                     name="resultsBy"
                     id="favoriteOption"
                     checked={!resultsByVoting}
+                    value={ResultsBy.topOptions}
+                    onChange={(e) => console.log(e)}
                 />
                 <label htmlFor="favoriteOption">{t("Favorite Option")}</label>
             </div>
@@ -56,6 +58,8 @@ export default function DisplayResultsBy({
                     name="resultsBy"
                     id="votingResults"
                     checked={resultsByVoting}
+                    value={ResultsBy.topVote}
+                    onChange={(e) => console.log(e)}
                 />
                 <label htmlFor="votingResults">{t("Voting Results")}</label>
             </div>

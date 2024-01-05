@@ -96,10 +96,14 @@
         }
     }
 
-    &__getVoters {
+    &__getUsers {
         height: fit-content;
         min-height: 100px;
-        &__btn{
+        &__evaluatorsBtn {
+            background-color: var(--light-green);
+            color: var(--white);
+        }
+        &__votersBtn{
             background-color: var(--light-purple);
             color: var(--white);
         }
@@ -107,18 +111,9 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            margin: 0 auto;
             max-width: 80rem;
             padding: 1rem 0rem;
-        }
-    }
-
-    &__getEvaluators {
-        height: fit-content;
-        min-height: 100px;
-        &__btn {
-            background-color: var(--light-green);
-            color: var(--white);
+            
         }
     }
 

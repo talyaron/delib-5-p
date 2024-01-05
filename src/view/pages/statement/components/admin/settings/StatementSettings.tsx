@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
 import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
-import { navArray } from "../../nav/StatementNav";
 
 // Third party imports
 import { t } from "i18next";
@@ -11,15 +10,11 @@ import {
     User,
     StatementSubscription,
     ResultsBy,
-    Screen,
     StatementType,
     Statement,
-    Vote,
-    Evaluation,
 } from "delib-npm";
 
 // Custom components
-import CustomCheckboxLabel from "./CustomCheckboxLabel";
 import Loader from "../../../../../components/loaders/Loader";
 import MembershipLine from "../membership/MembershipLine";
 import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
@@ -46,18 +41,15 @@ import {
 } from "../../../../../../functions/db/statements/getStatement";
 
 // * Statement Settings functions * //
-import {
-    parseScreensCheckBoxes,
-    isSubPageChecked,
-} from "./statementSettingsCont";
+import { parseScreensCheckBoxes } from "./statementSettingsCont";
 import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
 import UploadImage from "../../../../../components/uploadImage/UploadImage";
-import CustomSwitch from "../../../../../components/switch/CustomSwitch";
-import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
-import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
-import { handleGetEvaluators, handleGetVoters } from "../AdminPageCont";
-import Chip from "../../../../../components/chip/Chip";
 import DisplayResultsBy from "./DisplayResultsBy";
+import ResultsRange from "./ResultsRange";
+import GetVoters from "./GetVoters";
+import GetEvaluators from "./GetEvaluators";
+import CheckBoxeArea from "./CheckBoxeArea";
+import { navArray } from "../../nav/StatementNav";
 
 interface Props {
     simple?: boolean;
@@ -80,12 +72,6 @@ export const StatementSettings: FC<Props> = () => {
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
-    const [numOfResults, setNumOfResults] = useState(
-        statement?.resultsSettings?.numberOfResults || 1
-    );
-
-    const [voters, setVoters] = useState<Vote[]>([]);
-    const [evaluators, setEvaluators] = useState<Evaluation[]>([]);
 
     useEffect(() => {
         let unsubscribe: Function = () => {};
@@ -126,6 +112,7 @@ export const StatementSettings: FC<Props> = () => {
             if (!title || title.length < 2) return;
             setIsLoading(true);
             const resultsBy = data.get("resultsBy") as ResultsBy;
+
             const numberOfResults: number = Number(data.get("numberOfResults"));
 
             const description = data.get("description");
@@ -138,7 +125,6 @@ export const StatementSettings: FC<Props> = () => {
             UserSchema.parse(user);
 
             const newStatement: any = Object.fromEntries(data.entries());
-            const x = { ...newStatement };
 
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
@@ -219,22 +205,6 @@ export const StatementSettings: FC<Props> = () => {
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
-    const hasChildren: boolean = (() => {
-        if (!statement) return true;
-        if (statement.hasChildren === undefined) return true;
-        return statement.hasChildren;
-    })();
-
-    const enableAddEvaluationOption: boolean =
-        statement?.statementSettings?.enableAddEvaluationOption === false
-            ? false
-            : true;
-
-    const enableAddVotingOption: boolean =
-        statement?.statementSettings?.enableAddVotingOption === false
-            ? false
-            : true;
-
     return (
         <ScreenFadeIn className="page__main">
             {!isLoading ? (
@@ -256,78 +226,12 @@ export const StatementSettings: FC<Props> = () => {
                             defaultValue={description}
                         />
                     </label>
-                    <section className="settings__checkboxSection">
-                        <div className="settings__checkboxSection__column">
-                            <h3 className="settings__checkboxSection__column__title">
-                                {t("Tabs")}
-                            </h3>
-                            {navArray
-                                .filter(
-                                    (navObj) => navObj.link !== Screen.SETTINGS
-                                )
-                                .map((navObj, index) => (
-                                    <CustomSwitch
-                                        key={`tabs-${index}`}
-                                        link={navObj.link}
-                                        label={navObj.name}
-                                        defaultChecked={isSubPageChecked(
-                                            statement,
-                                            navObj
-                                        )}
-                                    />
-                                ))}
-                        </div>
-                        <div className="settings__checkboxSection__column">
-                            <h3 className="settings__checkboxSection__column__title">
-                                {t("Advanced")}
-                            </h3>
-                            <CustomCheckboxLabel
-                                name={"hasChildren"}
-                                title={"Enable Sub-Conversations"}
-                                defaultChecked={hasChildren}
-                            />
-                            <CustomCheckboxLabel
-                                name={"enableAddVotingOption"}
-                                title={
-                                    "Allow participants to contribute options to the voting page"
-                                }
-                                defaultChecked={enableAddVotingOption}
-                            />
-                            <CustomCheckboxLabel
-                                name={"enableAddEvaluationOption"}
-                                title={
-                                    "Allow participants to contribute options to the evaluation page"
-                                }
-                                defaultChecked={enableAddEvaluationOption}
-                            />
-                        </div>
-                    </section>
+
+                    <CheckBoxeArea statement={statement} />
 
                     <DisplayResultsBy statement={statement} />
 
-                    <section className="settings__rangeSection">
-                        <label
-                            className="settings__rangeSection__label"
-                            style={{ fontSize: "1.3rem", marginBottom: "1rem" }}
-                        >
-                            {t("Number of Results to Display")}
-                            {": "}
-                        </label>
-                        <div className="settings__rangeSection__rangeBox">
-                            <input
-                                className="settings__rangeSection__rangeBox__range"
-                                type="range"
-                                name="numberOfResults"
-                                value={numOfResults}
-                                min="1"
-                                max="10"
-                                onChange={(e) =>
-                                    setNumOfResults(Number(e.target.value))
-                                }
-                            />
-                            <span style={{ fontSize: 20 }}>{numOfResults}</span>
-                        </div>
-                    </section>
+                    <ResultsRange statement={statement} />
 
                     <button type="submit" className="settings__submitBtn">
                         {!statementId ? t("Add") : t("Update")}
@@ -337,7 +241,10 @@ export const StatementSettings: FC<Props> = () => {
 
                     {membership && statementId && (
                         <>
-                            <h2>{t("Members in Group")}</h2>
+                            <h2>
+                                {t("Members in Group")}{": "}
+                                {membership.length}
+                            </h2>
                             <div className="setStatement__form__membersBox">
                                 {membership.map((member) => (
                                     <MembershipLine
@@ -349,56 +256,9 @@ export const StatementSettings: FC<Props> = () => {
                         </>
                     )}
 
-                    {statementId && (
-                        <section className="settings__getVoters">
-                            <button
-                                type="button"
-                                className="settings__getVoters__btn formBtn"
-                                onClick={() =>
-                                    handleGetVoters(statementId, setVoters)
-                                }
-                            >
-                                Get Voters
-                            </button>
-                            <div>
-                                {voters.map((voter) => {
-                                    return (
-                                        <Chip
-                                            key={voter.voteId}
-                                            user={voter.voter}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </section>
-                    )}
+                    <GetVoters statementId={statementId} />
 
-                    {statementId && (
-                        <section className="settings__getEvaluators">
-                            <button
-                                type="button"
-                                className="settings__getEvaluators__btn formBtn"
-                                onClick={() =>
-                                    handleGetEvaluators(
-                                        statementId,
-                                        setEvaluators
-                                    )
-                                }
-                            >
-                                Get Evaluators
-                            </button>
-                            <div>
-                                {evaluators.map((evaluator) => {
-                                    return (
-                                        <Chip
-                                            key={evaluator.evaluationId}
-                                            user={evaluator.evaluator}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </section>
-                    )}
+                    <GetEvaluators statementId={statementId} />
                 </form>
             ) : (
                 <div className="center">
