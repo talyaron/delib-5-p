@@ -13,7 +13,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import StatementBottomNav from "../nav/StatementBottomNav";
+import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
 interface Props {
     statement: Statement;

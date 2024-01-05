@@ -5,13 +5,13 @@ import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import BurgerIcon from "../../../../components/icons/BurgerIcon";
-import PlusIcon from "../../../../components/icons/PlusIcon";
-import AgreementIcon from "../../../../components/icons/AgreementIcon";
-import RandomIcon from "../../../../components/icons/RandomIcon";
-import UpdateIcon from "../../../../components/icons/UpdateIcon";
-import NewestIcon from "../../../../components/icons/NewestIcon";
-import useStatementColor from "../../../../../functions/hooks/useStatementColor";
+import BurgerIcon from "../../../../../components/icons/BurgerIcon";
+import PlusIcon from "../../../../../components/icons/PlusIcon";
+import AgreementIcon from "../../../../../components/icons/AgreementIcon";
+import RandomIcon from "../../../../../components/icons/RandomIcon";
+import UpdateIcon from "../../../../../components/icons/UpdateIcon";
+import NewestIcon from "../../../../../components/icons/NewestIcon";
+import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
 import {
     optionsArray,
     questionsArray,

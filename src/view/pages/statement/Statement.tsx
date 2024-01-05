@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     User,
     Statement,
@@ -66,13 +66,8 @@ const Statement: FC = () => {
     const page = useParams().page as Screen;
 
     const direction = useDirection();
+    const navigate = useNavigate();
     const langDirection = direction === "row" ? "ltr" : "rtl";
-
-    // Redux hooks
-    const dispatch: any = useAppDispatch();
-    const statement = useAppSelector(statementSelector(statementId));
-    const subStatements = useSelector(statementSubsSelector(statementId));
-    const screen = availableScreen(statement, page);
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -81,6 +76,13 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
+
+
+    // Redux hooks
+    const dispatch: any = useAppDispatch();
+    const statement = useAppSelector(statementSelector(statementId));
+    const subStatements = useSelector(statementSubsSelector(statementId));
+    const screen = availableScreen(statement, page);
 
     //store callbacks
     function updateStoreStatementCB(statement: Statement) {
@@ -118,6 +120,14 @@ const Statement: FC = () => {
 
     //use effects
 
+    //in case the url is of undefined screen, navigate to the first avilable screen
+    useEffect(() => {
+        if (screen && (screen !== page)) {
+
+            navigate(`/statement/${statementId}/${screen}`);
+        }
+    }, [screen]);
+
     //listen to statement
     useEffect(() => {
         let unsub: Function = () => {};
@@ -130,6 +140,7 @@ const Statement: FC = () => {
         };
     }, [statementId, user]);
 
+    //listne to sub statements
     useEffect(() => {
         let unsubSubStatements: Function = () => {};
         let unsubStatementSubscription: Function = () => {};
@@ -164,8 +175,6 @@ const Statement: FC = () => {
             unsubEvaluations();
         };
     }, [user, statementId]);
-
-    useEffect(() => {}, [statementId]);
 
     useEffect(() => {
         if (statement) {

@@ -1,5 +1,5 @@
 import { Statement, NavObject, Screen } from "delib-npm";
-import { store } from "../../../../../model/store";
+import { store } from "../../../../../../model/store";
 
 
 export function showNavElements(
