@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 import { useParams } from "react-router-dom";
 
 // Statements components
-import StatementOptionsNav from "../options/components/StatementEvaluationNav";
+import StatementOptionsNav from "../nav/bottom/StatementBottomNav";
 
 // Redux
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";

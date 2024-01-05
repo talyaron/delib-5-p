@@ -1,31 +1,18 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { Statement, NavObject, Screen, StatementType } from "delib-npm";
-import { showNavElements } from "./statementNavCont";
+import { showNavElements } from "./statementTopNavCont";
 import { t } from "i18next";
+import { NavObject, Statement,Screen } from "delib-npm";
+import { navArray } from "./StatementTopNavModel";
 
 interface Props {
     statement: Statement;
     screen: Screen;
 }
 
-export const navArray: NavObject[] = [
-    { link: Screen.DOC, name: "Main", id: "doc", default: true },
-    { link: Screen.CHAT, name: "Chat", id: "main" },
-    { link: Screen.OPTIONS, name: "Evaluations", id: "options" },
-    { link: Screen.VOTE, name: "Voting", id: "vote" },
-    {
-        link: Screen.QUESTIONS_MASS,
-        name: "Mass Questions",
-        id: "questions",
-        default: false,
-    },
-    { link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false },
 
-    { link: Screen.SETTINGS, name: "Settings", id: "settings" },
-];
 
-const StatementNav: FC<Props> = ({ statement, screen }) => {
+const StatementTopNav: FC<Props> = ({ statement, screen }) => {
     const _navArray = showNavElements(statement, navArray);
 
     return (
@@ -49,4 +36,4 @@ const StatementNav: FC<Props> = ({ statement, screen }) => {
     );
 };
 
-export default StatementNav;
+export default StatementTopNav;

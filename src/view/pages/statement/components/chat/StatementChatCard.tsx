@@ -25,11 +25,6 @@ import {
 
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
 
-import {
-    setStatementisOption,
-    updateIsQuestion,
-} from "../../../../../functions/db/statements/setStatments";
-import LightBulbIcon from "../../../../components/icons/LightBulbIcon";
 import CardMenu from "../../../../components/cardMenu/CardMenu";
 import MoreIcon from "../../../../../assets/icons/MoreIcon";
 import StatementChatSetOption from "./components/StatementChatSetOption";
@@ -90,40 +85,38 @@ const StatementChat: FC<Props> = ({
         ? true
         : false;
 
-    function handleSetQuestion() {
-        updateIsQuestion(statement);
-    }
+    // function handleSetQuestion() {
+    //     updateIsQuestion(statement);
+    // }
 
-    function handleSetOption() {
-        try {
-            if (statement.statementType === "option") {
-                const cancelOption = window.confirm(
-                    "Are you sure you want to cancel this option?"
-                );
-                if (cancelOption) {
-                    setStatementisOption(statement);
-                }
-            } else {
-                setStatementisOption(statement);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    // function handleSetOption() {
+    //     try {
+    //         if (statement.statementType === "option") {
+    //             const cancelOption = window.confirm(
+    //                 "Are you sure you want to cancel this option?"
+    //             );
+    //             if (cancelOption) {
+    //                 setStatementisOption(statement);
+    //             }
+    //         } else {
+    //             setStatementisOption(statement);
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
-    const optionIcon = (
-        <div className="clickable">
-            {isOptionFn(statement) ? (
-                <LightBulbIcon color="gold" />
-            ) : (
-                <LightBulbIcon color="lightgray" />
-            )}
-        </div>
-    );
+    // const optionIcon = (
+    //     <div className="clickable">
+    //         {isOptionFn(statement) ? (
+    //             <LightBulbIcon color="gold" />
+    //         ) : (
+    //             <LightBulbIcon color="lightgray" />
+    //         )}
+    //     </div>
+    // );
 
-    useEffect(() => {
-        console.log(isEdit);
-    }, [isEdit]);
+ 
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (

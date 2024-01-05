@@ -45,6 +45,7 @@ export async function setStatmentToDB(
         }
 
         TextSchema.parse(statement.statement);
+        console.log(statement.subScreens);
         statement.consensus = 0;
         statement.color = statement.color || getPastelColor();
 
