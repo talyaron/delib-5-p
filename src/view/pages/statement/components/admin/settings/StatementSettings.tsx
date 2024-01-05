@@ -6,15 +6,7 @@ import { navArray } from "../../nav/top/StatementTopNavModel";
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    UserSchema,
-    User,
-    StatementSubscription,
-    ResultsBy,
-    Screen,
-    StatementType,
-    Statement,
-} from "delib-npm";
+import { StatementSubscription, ResultsBy, Screen, Statement } from "delib-npm";
 
 // Custom components
 import CustomCheckboxLabel from "./CustomCheckboxLabel";
@@ -34,8 +26,6 @@ import {
     statementMembershipSelector,
     statementSelector,
 } from "../../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../../model/users/userSlice";
-import { store } from "../../../../../../model/store";
 
 // Firestore functions
 import {
@@ -63,6 +53,7 @@ interface Props {
 export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
+    console.log('statementId', statementId)
 
     // Redux
     const dispatch = useAppDispatch();
@@ -72,7 +63,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
-    const user: User | null = useAppSelector(userSelector);
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
@@ -109,12 +99,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         dispatch(removeMembership(membership.statementsSubscribeId));
     }
 
-    async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
+    async function handleSetStatment(ev: any) {
         try {
             ev.preventDefault();
             setIsLoading(true);
 
-            const user = store.getState().user.user as User | null;
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get("statement");
@@ -136,6 +125,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 navArray
             );
 
+            console.log(_statement)
+
             newStatement.statement = _statement;
 
             newStatement.resultsSettings = {
@@ -144,30 +135,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 deep: 1,
                 minConsensus: 1,
             };
-
-            //can transfer to a setStatmentToDB function
-            newStatement.statementId =
-                statement?.statementId || crypto.randomUUID();
-
-            //can transfer to a setStatmentToDB function
-            newStatement.creatorId =
-                statement?.creator.uid || store.getState().user.user?.uid;
-
-            //can transfer to a setStatmentToDB function
-            newStatement.parentId = statement?.parentId || statementId || "top";
-
-            //can transfer to a setStatmentToDB function
-            newStatement.topParentId =
-                statement?.topParentId || statementId || "top";
-
-            //can transfer to a setStatmentToDB function
-            newStatement.statementType =
-                statementId === undefined
-                    ? StatementType.question
-                    : newStatement.statementType || statement?.statementType;
-
-            //can transfer to a setStatmentToDB function
-            newStatement.creator = statement?.creator || user;
 
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
@@ -186,18 +153,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 },
             });
 
-             //can transfer to a setStatmentToDB function
-            if (statement) {
-                newStatement.lastUpdate = new Date().getTime();
-            }
-             //can transfer to a setStatmentToDB function
-            newStatement.createdAt =
-                statement?.createdAt || new Date().getTime();
-
-                 //can transfer to a setStatmentToDB function
+            //can transfer to a setStatmentToDB function
             newStatement.consensus = statement?.consensus || 0;
 
-             //can transfer to a setStatmentToDB function
+            //can transfer to a setStatmentToDB function
             const setSubsciption: boolean =
                 statementId === undefined ? true : false;
 
@@ -206,10 +165,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 if (newStatement[key] === "on") delete newStatement[key];
             }
 
-            const _statementId = await setStatmentToDB(
-                newStatement,
-                setSubsciption
-            );
+            const _statementId = await setStatmentToDB({
+                parentStatement: statementId ? statement : 'top',
+                statement: newStatement,
+                addSubscription: setSubsciption,
+            });
 
             if (_statementId) navigateToStatementTab(newStatement, navigate);
         } catch (error) {

@@ -5,7 +5,6 @@ import { db } from "./index";
 import {
     Collections,
     Evaluation,
-    EvaluationSchema,
     ResultsBy,
     SimpleStatement,
     Statement,
@@ -65,7 +64,7 @@ export async function updateEvaluation(event: any) {
     function getEvaluationInfo() {
         try {
             const statementEvaluation = event.data.after.data() as Evaluation;
-            EvaluationSchema.parse(statementEvaluation);
+
             const { evaluation, statementId, parentId } = statementEvaluation;
 
             const dataBefore = event.data.before.data();

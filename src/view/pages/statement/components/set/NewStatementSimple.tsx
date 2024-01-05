@@ -3,8 +3,6 @@ import { FC, useState } from "react";
 // Third party imports
 import {
     Statement,
-    UserSchema,
-    parseUserFromFirebase,
     StatementType,
 } from "delib-npm";
 import { t } from "i18next";
@@ -17,8 +15,10 @@ import { setStatmentToDB } from "../../../../../functions/db/statements/setStatm
 import Loader from "../../../../components/loaders/Loader";
 
 // Redux
-import { store } from "../../../../../model/store";
+
 import ModalImage from "../../../../components/icons/ModalImage";
+
+import { getNewStatment } from "../../../../../functions/general/helpers";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -34,7 +34,6 @@ const NewSetStatementSimple: FC<Props> = ({
     getSubStatements,
 }) => {
     try {
-       
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);
@@ -64,48 +63,49 @@ const NewSetStatementSimple: FC<Props> = ({
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
 
-                // Why do this?
-                const _user = store.getState().user.user;
-                if (!_user) throw new Error("user not found");
-                const { displayName, email, photoURL, uid } = _user;
-                const user = { displayName, email, photoURL, uid };
-                UserSchema.parse(user);
+                // // Why do this?
+                // const _user = store.getState().user.user;
+                // if (!_user) throw new Error("user not found");
+                // const { displayName, email, photoURL, uid } = _user;
+                // const user = { displayName, email, photoURL, uid };
+                // UserSchema.parse(user);
 
-                const newStatement: any = Object.fromEntries(data.entries());
+                // const newStatement: any = Object.fromEntries(data.entries());
 
-                newStatement.statement = _statement;
-                newStatement.statementId = crypto.randomUUID();
-                newStatement.creatorId = _user.uid;
+                // newStatement.statement = _statement;
 
-                newStatement.parentId = parentStatementId;
+                // newStatement.statementId = crypto.randomUUID();
+                // newStatement.parentId = parentStatementId;
+                // newStatement.topParentId = parentIsStatement
+                //     ? parentStatement.topParentId
+                //     : parentStatementId;
 
-                newStatement.topParentId = parentIsStatement
-                    ? parentStatement.topParentId
-                    : parentStatementId;
-
-                if (parentIsStatement && parentStatement.parents)
-                    newStatement.parents = [
-                        ...parentStatement.parents,
-                        parentStatementId,
-                    ];
+                // if (parentIsStatement && parentStatement.parents)
+                //     newStatement.parents = [
+                //         ...parentStatement.parents,
+                //         parentStatementId,
+                //     ];
+                // newStatement.creator = parseUserFromFirebase(_user);
 
                 // Can only be Option or Question
-                newStatement.creator = parseUserFromFirebase(_user);
-                if (isOption) {
-                    newStatement.statementType = StatementType.option;
-                } else {
-                    newStatement.statementType = StatementType.question;
-                }
-
-                newStatement.lastUpdate = new Date().getTime();
-
-                newStatement.createdAt = new Date().getTime();
-
-                newStatement.consensus = 0;
+                const statementType = isOption ? StatementType.option :  StatementType.question;
+                
 
                 const setSubsciption: boolean = true;
 
-                await setStatmentToDB(newStatement, setSubsciption);
+                const newStatement = getNewStatment({
+                    value: _statement,
+                    parentStatement:parentStatement === "top" ? undefined : parentStatement,
+                    statementType,
+                });
+
+                if(!newStatement) throw new Error("newStatement was not created");
+                
+                await setStatmentToDB({
+                    statement: newStatement,
+                    parentStatement: parentStatement === "top" ? undefined : parentStatement,
+                    addSubscription: setSubsciption,
+                });
 
                 if (getSubStatements) await getSubStatements();
 
@@ -120,7 +120,7 @@ const NewSetStatementSimple: FC<Props> = ({
         return (
             <>
                 {!isLoading ? (
-                    <div className="overlay" style={{zIndex:`2000`}}>
+                    <div className="overlay" style={{ zIndex: `2000` }}>
                         <div className="overlay__imgBox">
                             <ModalImage />
                             <div className="overlay__imgBox__polygon" />

@@ -64,19 +64,19 @@ export function getIntialLocationSessionStorage(): string | undefined {
 
 interface getNewStatmentProps {
     value?: string | undefined | null;
-    statement?: Statement;
+    parentStatement?: Statement;
     statementType?: StatementType;
-    user: User;
 }
 
 export function getNewStatment({
     value,
-    statement,
+    parentStatement,
     statementType,
-    user,
 }: getNewStatmentProps): Statement | undefined {
     try {
-        if (!statement) throw new Error("No statement");
+        const user = store.getState().user.user;
+
+        if (!parentStatement) throw new Error("No parentStatement");
         if (!user) throw new Error("No user");
         if (!value) throw new Error("No value");
 
@@ -87,14 +87,14 @@ export function getNewStatment({
 
         const newStatement: Statement = {
             statement: value,
+            parentId: parentStatement.statementId,
+            topParentId:
+                parentStatement.topParentId || parentStatement.statementId,
             statementId: crypto.randomUUID(),
             creatorId: userId,
             creator,
             createdAt: new Date().getTime(),
             lastUpdate: new Date().getTime(),
-            parentId: statement.statementId,
-            topParentId:
-                statement.topParentId || statement.statementId || "top",
             consensus: 0,
             statementType: statementType || StatementType.statement,
         };
@@ -115,13 +115,12 @@ export function isAuthorized(
 ) {
     try {
         if (!statement) throw new Error("No statement");
-        
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
-      
-        if(parentStatementCreatorId === user.uid) return true;
+
+        if (parentStatementCreatorId === user.uid) return true;
 
         if (!statementSubscription) return false;
 
