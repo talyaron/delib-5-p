@@ -53,10 +53,6 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     setOptions(_options);
-    // }, [_options]);
-
     function updateStoreWitehVoteCB(option: Statement) {
         dispatch(setVoteToStore(option));
     }

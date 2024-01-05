@@ -57,7 +57,7 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 // Hooks & Providers
 import useDirection from "../../../functions/hooks/useDirection";
 import { MapProvider } from "../../../functions/hooks/useMap";
-import { statementTitleToDisplay } from "../../../functions/general/helpers";
+import { statementTitleToDisplay } from "../../../functions/general/generating";
 import { availableScreen } from "./StatementCont";
 
 const Statement: FC = () => {

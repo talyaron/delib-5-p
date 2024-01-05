@@ -34,7 +34,6 @@ const NewSetStatementSimple: FC<Props> = ({
     getSubStatements,
 }) => {
     try {
-       
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);
@@ -51,61 +50,50 @@ const NewSetStatementSimple: FC<Props> = ({
         async function handleAddStatment(ev: React.FormEvent<HTMLFormElement>) {
             try {
                 ev.preventDefault();
-
-                const data = new FormData(ev.currentTarget);
-                let title: any = data.get("statement");
-
-                if (!title) throw new Error("title is undefined");
-
                 setIsLoading(true);
 
+                const data = new FormData(ev.currentTarget);
+
+                let title: any = data.get("statement");
+                if (!title) throw new Error("title is undefined");
+
                 const description = data.get("description");
-                //add to title * at the beggining
+
                 if (title && !title.startsWith("*")) title = `*${title}`;
-                const _statement = `${title}\n${description}`;
+
+                const titleAndDescription = `${title}\n${description}`;
 
                 // Why do this?
-                const _user = store.getState().user.user;
-                if (!_user) throw new Error("user not found");
-                const { displayName, email, photoURL, uid } = _user;
-                const user = { displayName, email, photoURL, uid };
+                const user = store.getState().user.user;
+                if (!user) throw new Error("No user");
+
                 UserSchema.parse(user);
 
-                const newStatement: any = Object.fromEntries(data.entries());
+                const parents =
+                    parentIsStatement && parentStatement.parents
+                        ? [...parentStatement.parents, parentStatementId]
+                        : [];
 
-                newStatement.statement = _statement;
-                newStatement.statementId = crypto.randomUUID();
-                newStatement.creatorId = _user.uid;
+                const newStatement: Statement = {
+                    statement: titleAndDescription,
+                    statementId: crypto.randomUUID(),
+                    creatorId: user.uid,
+                    parentId: parentStatementId,
+                    topParentId: parentIsStatement
+                        ? parentStatement.topParentId
+                        : parentStatementId,
+                    creator: parseUserFromFirebase(user) || user,
+                    parents,
+                    statementType: isOption
+                        ? StatementType.option
+                        : StatementType.question,
+                    lastUpdate: new Date().getTime(),
+                    createdAt: new Date().getTime(),
+                    consensus: 0,
 
-                newStatement.parentId = parentStatementId;
+                };
 
-                newStatement.topParentId = parentIsStatement
-                    ? parentStatement.topParentId
-                    : parentStatementId;
-
-                if (parentIsStatement && parentStatement.parents)
-                    newStatement.parents = [
-                        ...parentStatement.parents,
-                        parentStatementId,
-                    ];
-
-                // Can only be Option or Question
-                newStatement.creator = parseUserFromFirebase(_user);
-                if (isOption) {
-                    newStatement.statementType = StatementType.option;
-                } else {
-                    newStatement.statementType = StatementType.question;
-                }
-
-                newStatement.lastUpdate = new Date().getTime();
-
-                newStatement.createdAt = new Date().getTime();
-
-                newStatement.consensus = 0;
-
-                const setSubsciption: boolean = true;
-
-                await setStatmentToDB(newStatement, setSubsciption);
+                await setStatmentToDB(newStatement);
 
                 if (getSubStatements) await getSubStatements();
 
@@ -120,7 +108,7 @@ const NewSetStatementSimple: FC<Props> = ({
         return (
             <>
                 {!isLoading ? (
-                    <div className="overlay" style={{zIndex:`2000`}}>
+                    <div className="overlay" style={{ zIndex: `2000` }}>
                         <div className="overlay__imgBox">
                             <ModalImage />
                             <div className="overlay__imgBox__polygon" />
@@ -186,10 +174,7 @@ const NewSetStatementSimple: FC<Props> = ({
                         </form>
                     </div>
                 ) : (
-                    <div className="center">
-                        <h2>{t("Updating")}</h2>
-                        <Loader />
-                    </div>
+                    <Loader />
                 )}
             </>
         );

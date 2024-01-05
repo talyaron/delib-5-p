@@ -111,13 +111,15 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
+            setIsLoading(true);
             ev.preventDefault();
 
             const data = new FormData(ev.currentTarget);
-
             let title: any = data.get("statement");
+
             if (!title || title.length < 2) return;
-            setIsLoading(true);
+
+
             const resultsBy = data.get("resultsBy") as ResultsBy;
             const numberOfResults: number = Number(data.get("numberOfResults"));
 
@@ -129,7 +131,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
             const _statement = `${title}\n${description}`;
 
             UserSchema.parse(user);
-      
 
             const newStatement: any = Object.fromEntries(data.entries());
     

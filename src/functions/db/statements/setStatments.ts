@@ -15,7 +15,7 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import { getPastelColor } from "../../general/helpers";
+import { getPastelColor } from "../../general/generating";
 
 const TextSchema = z.string().min(2);
 
@@ -45,7 +45,7 @@ export async function setStatmentToDB(
         }
 
         TextSchema.parse(statement.statement);
-        console.log(statement.subScreens);
+        
         statement.consensus = 0;
         statement.color = statement.color || getPastelColor();
 

@@ -17,7 +17,7 @@ import {
 import { setVote } from "../../../../../functions/db/vote/setVote";
 import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
-import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
+import { statementTitleToDisplay } from "../../../../../functions/general/generating";
 import InfoIcon from "../../../../../assets/icons/InfoIcon";
 import HandsIcon from "../../../../../assets/icons/HandsIcon";
 

@@ -13,7 +13,7 @@ import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
-import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
+import { statementTitleToDisplay } from "../../../../../functions/general/generating";
 
 interface Props {
     statement: Statement;

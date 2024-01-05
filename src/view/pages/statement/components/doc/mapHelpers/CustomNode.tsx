@@ -13,8 +13,8 @@ import PlusIcon from "../../../../../components/icons/PlusIcon";
 // Statements functions
 import {
     calculateFontSize,
-    statementTitleToDisplay,
 } from "../../../../../../functions/general/helpers";
+import { statementTitleToDisplay } from "../../../../../../functions/general/generating";
 import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
 
 const nodeStyle = (
