@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import { useParams } from "react-router";
 import Modal from "../../../../components/modal/Modal";
 
@@ -13,19 +13,21 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import StatementEvaluationNav from "./components/StatementEvaluationNav";
+import StatementBottomNav from "../nav/StatementBottomNav";
 
 interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: Function;
     showNav?: boolean;
+    questions?:boolean;
 }
 
 const StatementEvaluation: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
+    questions = false,
 }) => {
     try {
         const { sort } = useParams();
@@ -37,8 +39,12 @@ const StatementEvaluation: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort).filter((s) =>
-                    isOptionFn(s)
+                sortSubStatements(subStatements, sort).filter((s) =>{
+                    if(questions){
+                        return s.statementType === StatementType.question
+                    }
+                    return isOptionFn(s)
+                }
                 )
             );
         }, [sort, subStatements]);
@@ -77,12 +83,11 @@ const StatementEvaluation: FC<Props> = ({
                 </div>
 
                 <div className="page__footer">
-                    <StatementEvaluationNav
+                    <StatementBottomNav
                         setShowModal={setShowModal}
                         statement={statement}
                     />
                 </div>
-                {/* {addOption?<Fav onclick={handleAddStatement} isHome={false} />:null} */}
                 {showModal && (
                     <Modal>
                         <NewSetStatementSimple

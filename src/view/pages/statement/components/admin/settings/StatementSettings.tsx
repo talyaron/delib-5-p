@@ -132,9 +132,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
       
 
             const newStatement: any = Object.fromEntries(data.entries());
-            const x = { ...newStatement };
-      
-
+    
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
                 navArray
@@ -348,7 +346,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     />
 
                     <div className="btnBox">
-                        <button type="submit">
+                        <button type="submit" className="btn btn--add btn--large">
                             {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>

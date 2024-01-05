@@ -1,12 +1,9 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
 import { t } from "i18next";
 
-// Custom components
-import NewSetStatementSimple from "../../../set/NewStatementSimple";
-import Modal from "../../../../../../components/modal/Modal";
 
 // Icons
 import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
@@ -20,7 +17,9 @@ interface Props {
     text?: string;
 }
 
-const AddSubQuestion: FC<Props> = ({ statement,setShowModal, text}) => { const [showQuestionModal, setAddQuestionModal] = useState(false);
+const AddSubQuestion: FC<Props> = ({ setShowModal, text}) => { 
+    
+   
     function handleShwQuestionModal() {
         setShowModal(true);
     }
