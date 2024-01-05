@@ -17,7 +17,7 @@ import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components
-import StatementNav from "./components/nav/StatementNav";
+import StatementTopNav from "./components/nav/top/StatementTopNav";
 import EditTitle from "../../components/edit/EditTitle";
 import BackArrowIcon from "../../components/icons/BackArrowIcon";
 import HomeIcon from "../../components/icons/HomeIcon";
@@ -177,7 +177,7 @@ const StatementHeader: FC<Props> = ({
                 />
             </div>
             {statement && (
-                <StatementNav statement={statement} screen={screen} />
+                <StatementTopNav statement={statement} screen={screen} />
             )}
         </div>
     );

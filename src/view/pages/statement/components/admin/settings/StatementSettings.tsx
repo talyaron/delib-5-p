@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
 import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
-import { navArray } from "../../nav/StatementNav";
+import { navArray } from "../../nav/top/StatementTopNavModel";
 
 // Third party imports
 import { t } from "i18next";
