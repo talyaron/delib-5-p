@@ -112,15 +112,16 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
             ev.preventDefault();
+            setIsLoading(true);
 
+            const user = store.getState().user.user as User | null;
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get("statement");
             if (!title || title.length < 2) return;
-            setIsLoading(true);
+
             const resultsBy = data.get("resultsBy") as ResultsBy;
             const numberOfResults: number = Number(data.get("numberOfResults"));
-
             const description = data.get("description");
 
             //add to title * at the beggining
@@ -128,11 +129,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
 
             const _statement = `${title}\n${description}`;
 
-            UserSchema.parse(user);
-      
-
             const newStatement: any = Object.fromEntries(data.entries());
-    
+
             newStatement.subScreens = parseScreensCheckBoxes(
                 newStatement,
                 navArray
@@ -147,27 +145,34 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 minConsensus: 1,
             };
 
+            //can transfer to a setStatmentToDB function
             newStatement.statementId =
                 statement?.statementId || crypto.randomUUID();
 
+            //can transfer to a setStatmentToDB function
             newStatement.creatorId =
                 statement?.creator.uid || store.getState().user.user?.uid;
 
+            //can transfer to a setStatmentToDB function
             newStatement.parentId = statement?.parentId || statementId || "top";
 
+            //can transfer to a setStatmentToDB function
             newStatement.topParentId =
                 statement?.topParentId || statementId || "top";
 
+            //can transfer to a setStatmentToDB function
             newStatement.statementType =
                 statementId === undefined
                     ? StatementType.question
                     : newStatement.statementType || statement?.statementType;
 
+            //can transfer to a setStatmentToDB function
             newStatement.creator = statement?.creator || user;
 
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
 
+            //enableAddOption in statement screens with bottom nav
             Object.assign(newStatement, {
                 statementSettings: {
                     enableAddEvaluationOption:
@@ -181,14 +186,18 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 },
             });
 
+             //can transfer to a setStatmentToDB function
             if (statement) {
                 newStatement.lastUpdate = new Date().getTime();
             }
+             //can transfer to a setStatmentToDB function
             newStatement.createdAt =
                 statement?.createdAt || new Date().getTime();
 
+                 //can transfer to a setStatmentToDB function
             newStatement.consensus = statement?.consensus || 0;
 
+             //can transfer to a setStatmentToDB function
             const setSubsciption: boolean =
                 statementId === undefined ? true : false;
 
@@ -346,7 +355,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     />
 
                     <div className="btnBox">
-                        <button type="submit" className="btn btn--add btn--large">
+                        <button
+                            type="submit"
+                            className="btn btn--add btn--large"
+                        >
                             {!statementId ? t("Add") : t("Update")}
                         </button>
                     </div>
