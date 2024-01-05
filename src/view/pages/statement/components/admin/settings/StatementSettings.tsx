@@ -14,6 +14,8 @@ import {
     Screen,
     StatementType,
     Statement,
+    Vote,
+    Evaluation,
 } from "delib-npm";
 
 // Custom components
@@ -53,13 +55,15 @@ import UploadImage from "../../../../../components/uploadImage/UploadImage";
 import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
 import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
+import { handleGetEvaluators, handleGetVoters } from "../AdminPageCont";
+import Chip from "../../../../../components/chip/Chip";
 
 interface Props {
     simple?: boolean;
     new?: boolean;
 }
 
-export const StatementSettings: FC<Props> = ({ simple }) => {
+export const StatementSettings: FC<Props> = () => {
     const navigate = useNavigate();
     const { statementId } = useParams();
 
@@ -78,6 +82,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const [numOfResults, setNumOfResults] = useState(
         statement?.resultsSettings?.numberOfResults || 1
     );
+
+    const [voters, setVoters] = useState<Vote[]>([]);
+    const [evaluators, setEvaluators] = useState<Evaluation[]>([]);
 
     useEffect(() => {
         let unsubscribe: Function = () => {};
@@ -375,7 +382,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                     <button type="submit" className="settings__submitBtn">
                         {!statementId ? t("Add") : t("Update")}
                     </button>
-                    {/* <UploadImage statement={statement} />
+
+                    {statementId && <UploadImage statement={statement} />}
+
                     <h2>{t("Members in Group")}</h2>
                     {membership && (
                         <div className="setStatement__form__membersBox">
@@ -386,7 +395,58 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                 />
                             ))}
                         </div>
-                    )} */}
+                    )}
+
+                    {statementId && (
+                        <section className="settings__getVoters">
+                            <button
+                                type="button"
+                                className="settings__getVoters__btn formBtn"
+                                onClick={() =>
+                                    handleGetVoters(statementId, setVoters)
+                                }
+                            >
+                                Get Voters
+                            </button>
+                            <div>
+                                {voters.map((voter) => {
+                                    return (
+                                        <Chip
+                                            key={voter.voteId}
+                                            user={voter.voter}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    )}
+
+                    {statementId && (
+                        <section className="settings__getEvaluators">
+                            <button
+                                type="button"
+                                className="settings__getEvaluators__btn formBtn"
+                                onClick={() =>
+                                    handleGetEvaluators(
+                                        statementId,
+                                        setEvaluators
+                                    )
+                                }
+                            >
+                                Get Evaluators
+                            </button>
+                            <div>
+                                {evaluators.map((evaluator) => {
+                                    return (
+                                        <Chip
+                                            key={evaluator.evaluationId}
+                                            user={evaluator.evaluator}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    )}
                 </form>
             ) : (
                 <div className="center">

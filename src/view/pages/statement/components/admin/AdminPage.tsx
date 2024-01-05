@@ -1,6 +1,6 @@
 import { Evaluation, Vote } from "delib-npm";
 import { StatementSettings } from "./settings/StatementSettings";
-import { handleGetEvaluators, handleGetVoters } from "./AdminPageCont";
+import { handleGetEvaluators } from "./AdminPageCont";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
@@ -9,59 +9,9 @@ import Chip from "../../../../components/chip/Chip";
 
 const AdminPage = () => {
     const { statementId } = useParams<{ statementId: string }>();
-    const [voters, setVoters] = useState<Vote[]>([]);
     const [evaluators, setEvaluators] = useState<Evaluation[]>([]);
 
-    return (
-        <div className="page__main">
-            <StatementSettings />
-            <section className={styles.section}>
-                <div className="btns">
-                    <div
-                        className="btn"
-                        onClick={() => handleGetVoters(statementId, setVoters)}
-                    >
-                        Get Voters
-                    </div>
-                </div>
-                <div className={styles.chips}>
-                    {voters.map((voter) => {
-                        
-                        return (
-                            <Chip
-                              
-                                key={voter.voteId}
-                                user={voter.voter}
-                            />
-                        );
-                    })}
-                </div>
-            </section>
-            <section className={styles.section}>
-                <div className="btns">
-                    <div
-                        className="btn"
-                        onClick={() =>
-                            handleGetEvaluators(statementId, setEvaluators)
-                        }
-                    >
-                        Get Evaluators
-                    </div>
-                </div>
-                <div className={styles.chips} style={{marginBottom:"150px"}}>
-                    {evaluators.map((evaluator) => {
-                        return (
-                            <Chip
-                                key={evaluator.evaluationId}
-                                user={evaluator.evaluator}
-                                
-                            />
-                        );
-                    })}
-                </div>
-            </section>
-        </div>
-    );
+    return <StatementSettings />;
 };
 
 export default AdminPage;

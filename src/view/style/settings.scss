@@ -1,5 +1,4 @@
 .settings {
-    border: 1px solid black;
     flex: auto;
     display: flex;
     flex-direction: column;
@@ -9,6 +8,7 @@
     gap: 1.5rem;
     margin: 0.5rem auto;
     padding: 2rem;
+    position: relative;
 
     textarea,
     input[type="text"] {
@@ -95,9 +95,35 @@
         }
     }
 
+    &__getVoters {
+        height: fit-content;
+        min-height: 100px;
+        &__btn{
+            background-color: var(--light-purple);
+            color: var(--white);
+        }
+        &__chipBox {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 0 auto;
+            max-width: 80rem;
+            padding: 1rem 0rem;
+        }
+    }
+
+    &__getEvaluators {
+        height: fit-content;
+        min-height: 100px;
+        margin-bottom: 5rem;
+        &__btn {
+            background-color: var(--light-green);
+            color: var(--white);
+        }
+    }
+
     &__submitBtn {
-        width: 30%;
-        max-width: 162px;
+        width: 20%;
         height: 2rem;
         margin: auto;
         font-size: 1rem;
@@ -109,6 +135,9 @@
         cursor: pointer;
         transition: all 0.2s ease-in-out;
         box-shadow: 0 10px 10px var(--shadow);
+        position: fixed;
+        bottom: 2rem;
+        left: 40%;
         &:hover {
             transform: scale(0.9);
         }
@@ -127,4 +156,16 @@
             padding-top: 1rem;
         }
     }
+}
+
+.formBtn{
+    height: 2rem;
+    padding: 0 .5rem;
+    margin: auto;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 10px 10px var(--shadow);
 }

@@ -7,7 +7,7 @@
 @import "./profileImage.scss";
 @import "./popup.scss";
 @import "./mainCard.scss";
-@import "./setStatement.scss";
+@import "./settings.scss";
 @import "./options.scss";
 @import "./modal.scss";
 @import "./room.scss";
@@ -59,6 +59,10 @@
 
     // --- SIZES ---
     --padding: 1rem;
+
+    // --- Button Colros ---
+    --light-purple: #B1A4FC;
+    --light-green: #84CCCF;
 
     // --subBackground: #ee7171;
     // --mainColor: white;
