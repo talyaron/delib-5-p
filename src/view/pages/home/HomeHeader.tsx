@@ -9,6 +9,7 @@ import { t } from "i18next";
 // icons
 import elipsIcon from "../../../assets/elipsIcon.svg";
 import installIcon from "../../../assets/installIcon.svg";
+import disconnectlIcon from "../../../assets/disconnectIcon.svg";
 
 export default function HomeHeader() {
     const dispatch = useAppDispatch();
@@ -35,11 +36,7 @@ export default function HomeHeader() {
 
     return (
         <div className="homePage__header">
-            <div className="homePage__header__title">
-                <h1 className="homePage__header__title__homeTitle">
-                    Conversations
-                </h1>
-            </div>
+            <h1 className="homePage__header__homeTitle">Conversations</h1>
             <div className="homePage__header__icons">
                 <img
                     className="homePage__header__icons__headerIcon"
@@ -52,6 +49,16 @@ export default function HomeHeader() {
                     src={elipsIcon}
                     alt="elips_icon"
                 />
+                <div className="homePage__header__icons__homeMenu">
+                    <img
+                        className="homePage__header__icons__homeMenu__icon"
+                        src={disconnectlIcon}
+                        alt="disconnect_icon"
+                    />
+                    <p className="homePage__header__icons__homeMenu__icon">
+                        Disconnect
+                    </p>
+                </div>
             </div>
             {/* <div className="btns">
                 <button onClick={handleLogout}>{t("Disconnect")}</button>
