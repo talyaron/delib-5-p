@@ -57,6 +57,7 @@ import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
 import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
 import { handleGetEvaluators, handleGetVoters } from "../AdminPageCont";
 import Chip from "../../../../../components/chip/Chip";
+import DisplayResultsBy from "./DisplayResultsBy";
 
 interface Props {
     simple?: boolean;
@@ -218,11 +219,6 @@ export const StatementSettings: FC<Props> = () => {
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
-    const resultsBy = () => {
-        if (!statement) return ResultsBy.topOptions;
-
-        return statement.resultsSettings?.resultsBy || ResultsBy.topOptions;
-    };
     const hasChildren: boolean = (() => {
         if (!statement) return true;
         if (statement.hasChildren === undefined) return true;
@@ -238,10 +234,6 @@ export const StatementSettings: FC<Props> = () => {
         statement?.statementSettings?.enableAddVotingOption === false
             ? false
             : true;
-
-    const [resultsByVoting, setResultsByVoting] = useState(
-        resultsBy() === ResultsBy.topVote
-    );
 
     return (
         <ScreenFadeIn className="page__main">
@@ -311,49 +303,7 @@ export const StatementSettings: FC<Props> = () => {
                         </div>
                     </section>
 
-                    <section className="settings__resultsBy">
-                        <h3 className="settings__resultsBy__title">
-                            {t("Results By")}
-                        </h3>
-                        <div
-                            className="settings__resultsBy__radioBox"
-                            onClick={() => setResultsByVoting(false)}
-                        >
-                            {!resultsByVoting ? (
-                                <RadioCheckedIcon />
-                            ) : (
-                                <RedioUncheckedIcon />
-                            )}
-                            <input
-                                type="radio"
-                                name="resultsBy"
-                                id="favoriteOption"
-                                checked={!resultsByVoting}
-                            />
-                            <label htmlFor="favoriteOption">
-                                {t("Favorite Option")}
-                            </label>
-                        </div>
-                        <div
-                            className="settings__resultsBy__radioBox"
-                            onClick={() => setResultsByVoting(true)}
-                        >
-                            {resultsByVoting ? (
-                                <RadioCheckedIcon />
-                            ) : (
-                                <RedioUncheckedIcon />
-                            )}
-                            <input
-                                type="radio"
-                                name="resultsBy"
-                                id="votingResults"
-                                checked={resultsByVoting}
-                            />
-                            <label htmlFor="votingResults">
-                                {t("Voting Results")}
-                            </label>
-                        </div>
-                    </section>
+                    <DisplayResultsBy statement={statement} />
 
                     <section className="settings__rangeSection">
                         <label
@@ -385,16 +335,18 @@ export const StatementSettings: FC<Props> = () => {
 
                     {statementId && <UploadImage statement={statement} />}
 
-                    <h2>{t("Members in Group")}</h2>
-                    {membership && (
-                        <div className="setStatement__form__membersBox">
-                            {membership.map((member) => (
-                                <MembershipLine
-                                    key={member.userId}
-                                    member={member}
-                                />
-                            ))}
-                        </div>
+                    {membership && statementId && (
+                        <>
+                            <h2>{t("Members in Group")}</h2>
+                            <div className="setStatement__form__membersBox">
+                                {membership.map((member) => (
+                                    <MembershipLine
+                                        key={member.userId}
+                                        member={member}
+                                    />
+                                ))}
+                            </div>
+                        </>
                     )}
 
                     {statementId && (

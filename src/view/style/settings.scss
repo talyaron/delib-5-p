@@ -9,6 +9,7 @@
     margin: 0.5rem auto;
     padding: 2rem;
     position: relative;
+    padding-bottom: 5rem;
 
     textarea,
     input[type="text"] {
@@ -115,7 +116,6 @@
     &__getEvaluators {
         height: fit-content;
         min-height: 100px;
-        margin-bottom: 5rem;
         &__btn {
             background-color: var(--light-green);
             color: var(--white);
