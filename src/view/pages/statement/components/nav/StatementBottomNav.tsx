@@ -4,7 +4,6 @@ import React, { FC, useState } from "react";
 import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
-
 // Icons
 import BurgerIcon from "../../../../components/icons/BurgerIcon";
 import PlusIcon from "../../../../components/icons/PlusIcon";
@@ -13,6 +12,11 @@ import RandomIcon from "../../../../components/icons/RandomIcon";
 import UpdateIcon from "../../../../components/icons/UpdateIcon";
 import NewestIcon from "../../../../components/icons/NewestIcon";
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
+import {
+    optionsArray,
+    questionsArray,
+    votesArray,
+} from "./StatementBottomNavModal";
 
 interface Props {
     statement: Statement;
@@ -20,86 +24,10 @@ interface Props {
     showNav?: boolean;
 }
 
-interface NavItems {
-    link: Screen;
-    name: string;
-    id: string;
-}
-
-const optionsArray: NavItems[] = [
-    {
-        link: Screen.OPTIONS_NEW,
-        name: "New",
-        id: Screen.OPTIONS_NEW,
-    },
-    {
-        link: Screen.OPTIONS_UPDATED,
-        name: "Update",
-        id: Screen.OPTIONS_UPDATED,
-    },
-    {
-        link: Screen.OPTIONS_RANDOM,
-        name: "Random",
-        id: Screen.OPTIONS_RANDOM,
-    },
-    {
-        link: Screen.OPTIONS_CONSENSUS,
-        name: "Agreement",
-        id: Screen.OPTIONS_CONSENSUS,
-    },
-];
-
-const votesArray: NavItems[] = [
-    {
-        link: Screen.VOTES_NEW,
-        name: "New",
-        id: Screen.VOTES_NEW,
-    },
-    {
-        link: Screen.VOTES_UPDATED,
-        name: "Update",
-        id: Screen.VOTES_UPDATED,
-    },
-    {
-        link: Screen.VOTES_RANDOM,
-        name: "Random",
-        id: Screen.VOTES_RANDOM,
-    },
-    {
-        link: Screen.VOTESֹֹֹ_VOTED,
-        name: "Agreement",
-        id: Screen.VOTESֹֹֹ_VOTED,
-    },
-];
-
-const questionsArray: NavItems[] = [
-    {
-        link: Screen.QUESTIONS_NEW,
-        name: "New",
-        id: Screen.QUESTIONS_NEW,
-    },
-    {
-        link: Screen.QUESTIONS_UPDATED,
-        name: "Update",
-        id: Screen.QUESTIONS_UPDATED,
-    },
-    {
-        link: Screen.QUESTIONS_RANDOM,
-        name: "Random",
-        id: Screen.QUESTIONS_RANDOM,
-    },
-    {
-        link: Screen.QUESTIONS_CONSENSUS,
-        name: "Agreement",
-        id: Screen.QUESTIONS_CONSENSUS,
-    },
-];
-
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     const { page } = useParams();
 
     const navArray = getPageArray(page);
-        
 
     const [openNav, setOpenNav] = useState(false);
 
@@ -112,15 +40,16 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     const addVotingOption: boolean | undefined =
         statement.statementSettings?.enableAddVotingOption;
 
-
-    const showAddOptionEvaluation = page === "options" && addOption;
-    const showAddOptionVoting = page === "vote" && addVotingOption;
+    const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
+    const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
+    const showAddQuestion = page === Screen.QUESTIONS;
+    const isAddOption =
+        showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
     const hadleMidIconClick = () => {
         if (!openNav) return setOpenNav(true);
-        if (showAddOptionEvaluation || showAddOptionVoting) {
+        if (isAddOption) {
             setShowModal(true);
-          
         }
         setOpenNav(false);
     };
@@ -146,50 +75,47 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     };
 
     return (
-     
-            <>
-                {openNav && (
-                    <div
-                        className="invisibleBackground"
-                        onClick={() => setOpenNav(false)}
-                    />
-                )}
-                <div className="bottomNav" style={navStyle}>
-                    <div
-                        className="bottomNav__iconbox bottomNav__iconbox--burger"
-                        style={statementColor}
-                        onClick={hadleMidIconClick}
-                    >
-                        {openNav &&
-                        (showAddOptionEvaluation || showAddOptionVoting) ? (
-                            <PlusIcon color={statementColor.color} />
-                        ) : (
-                            <BurgerIcon color={statementColor.color} />
-                        )}
-                    </div>
-
-                    {navArray.map((navItem) => (
-                        <Link
-                            className={`bottomNav__iconbox ${
-                                openNav && "bottomNav__iconbox--active"
-                            }`}
-                            to={navItem.link}
-                            key={navItem.id}
-                        >
-                            {icon(navItem.name, statementColor.backgroundColor)}
-                        </Link>
-                    ))}
+        <>
+            {openNav && (
+                <div
+                    className="invisibleBackground"
+                    onClick={() => setOpenNav(false)}
+                />
+            )}
+            <div className="bottomNav" style={navStyle}>
+                <div
+                    className="bottomNav__iconbox bottomNav__iconbox--burger"
+                    style={statementColor}
+                    onClick={hadleMidIconClick}
+                >
+                    {openNav && isAddOption ? (
+                        <PlusIcon color={statementColor.color} />
+                    ) : (
+                        <BurgerIcon color={statementColor.color} />
+                    )}
                 </div>
-            </>
-  
+
+                {navArray.map((navItem) => (
+                    <Link
+                        className={`bottomNav__iconbox ${
+                            openNav && "bottomNav__iconbox--active"
+                        }`}
+                        to={navItem.link}
+                        key={navItem.id}
+                    >
+                        {icon(navItem.name, statementColor.backgroundColor)}
+                    </Link>
+                ))}
+            </div>
+        </>
     );
 };
 
 export default StatementBottomNav;
 
-function getPageArray(page: string|undefined){
-    if(!page) return optionsArray;
-    
+function getPageArray(page: string | undefined) {
+    if (!page) return optionsArray;
+
     switch (page) {
         case Screen.VOTE:
             return votesArray;

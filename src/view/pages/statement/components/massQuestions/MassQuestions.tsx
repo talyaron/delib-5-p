@@ -2,7 +2,6 @@ import { Statement, StatementType } from "delib-npm";
 import { FC, useState } from "react";
 import MassQuestionCard from "./components/massQuestion/MassQuestionCard";
 import styles from "./MassQuestions.module.scss";
-import StatementBottomNav from "../nav/StatementBottomNav";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
 import { isAuthorized } from "../../../../../functions/general/helpers";
