@@ -57,7 +57,7 @@ const StatementHeader: FC<Props> = ({
     const { statementId, page } = useParams();
     const location = useLocation();
 
-    const headerColor = useStatementColor(statement);
+    const headerColor = useStatementColor(statement.statementType || "");
 
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId)

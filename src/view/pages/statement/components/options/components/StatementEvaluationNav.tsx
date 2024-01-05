@@ -85,7 +85,7 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
 
     const [openNav, setOpenNav] = useState(false);
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statement.statementType || "");
 
     //used to check if the user can add a new option in voting and in evaluation screens
     const addOption: boolean | undefined =
@@ -104,7 +104,6 @@ const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
         if (!openNav) return setOpenNav(true);
         if (showAddOptionEvaluation || showAddOptionVoting) {
             setShowModal(true);
-          
         }
         setOpenNav(false);
     };

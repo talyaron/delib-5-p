@@ -5,10 +5,8 @@ import { Statement, StatementType } from "delib-npm";
 
 // Custom Components
 import StatementChatMore from "./StatementChatMore";
-import StatementChatSetOption from "./components/StatementChatSetOption";
 import ProfileImage from "./components/ProfileImage";
 import EditTitle from "../../../../components/edit/EditTitle";
-import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
 import StatementChatSetEdit from "../../../../components/edit/SetEdit";
 import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
 import Evaluation from "../../../../components/evaluation/Evaluation";
@@ -23,9 +21,7 @@ import {
     isAuthorized,
     isOptionFn,
 } from "../../../../../functions/general/helpers";
-import MoreIcon from "../../../../../assets/icons/MoreIcon";
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
-import { t } from "i18next";
 import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
 import QuestionMarkIcon from "../../../../components/icons/QuestionMarkIcon";
 import {
@@ -45,7 +41,6 @@ interface Props {
 const StatementChat: FC<Props> = ({
     statement,
     showImage,
-    index,
     previousStatement,
 }) => {
     const { statementType } = statement;
@@ -55,7 +50,7 @@ const StatementChat: FC<Props> = ({
     );
     const userId = store.getState().user.user?.uid;
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statementType || "");
 
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(statement, statementSubscription);
@@ -163,13 +158,10 @@ const StatementChat: FC<Props> = ({
                         fourthIconText="Edit"
                     />
                 </div>
-                {displayChat && (
-                            <StatementChatMore statement={statement} />
-                        )}
+                {displayChat && <StatementChatMore statement={statement} />}
 
                 <div className="message__box__actions">
-                    <div className="message__box__actions__type">
-                    </div>
+                    <div className="message__box__actions__type"></div>
                     <div className="message__box__actions__evaluations">
                         <Evaluation
                             statement={statement}
