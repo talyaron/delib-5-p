@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 // Custom components
-import RadioCheckedIcon from "../../../../components/icons/RadioCheckedIcon";
-import RedioUncheckedIcon from "../../../../components/icons/RedioUncheckedIcon";
+
 
 // Third party imports
 import { Statement, ResultsBy } from "delib-npm";
 import { t } from "i18next";
+import RadioCheckedIcon from "../../../../components/icons/RadioCheckedIcon";
+import RedioUncheckedIcon from "../../../../components/icons/RedioUncheckedIcon";
 
 export default function DisplayResultsBy({
     statement,

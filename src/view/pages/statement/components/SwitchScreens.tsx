@@ -75,6 +75,7 @@ export default function SwitchScreens({
                 />
             );
         case Screen.SETTINGS:
+            return <StatementSettings />;
         case Screen.QUESTIONS:
         case Screen.QUESTIONS_CONSENSUS:
         case Screen.QUESTIONS_NEW:
@@ -88,7 +89,7 @@ export default function SwitchScreens({
                     questions={true}
                 />
             );
-            return <StatementSettings />;
+       
         default:
             return (
                 <StatementMain

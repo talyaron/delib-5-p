@@ -5,7 +5,7 @@ import { setStatmentToDB } from "../../../../../functions/db/statements/setStatm
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { StatementSubscription, ResultsBy, Screen, Statement } from "delib-npm";
+import { StatementSubscription, ResultsBy, Statement } from "delib-npm";
 
 // Custom components
 import Loader from "../../../../components/loaders/Loader";
@@ -24,8 +24,7 @@ import {
     statementMembershipSelector,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../model/users/userSlice";
-import { store } from "../../../../../model/store";
+
 
 // Firestore functions
 import {
@@ -39,17 +38,17 @@ import { navigateToStatementTab } from "../../../../../functions/general/helpers
 import UploadImage from "../../../../components/uploadImage/UploadImage";
 import DisplayResultsBy from "./DisplayResultsBy";
 import ResultsRange from "./ResultsRange";
-import GetVoters from "./GetVoters";
-import GetEvaluators from "./GetEvaluators";
+
 import CheckBoxeArea from "./CheckBoxeArea";
-import { navArray } from "../nav/StatementNav";
+import { navArray } from "../nav/top/StatementTopNavModel";
+
 
 interface Props {
     simple?: boolean;
     new?: boolean;
 }
 
-export const StatementSettings: FC<Props> = ({ simple }) => {
+export const StatementSettings: FC<Props> = () => {
     const navigate = useNavigate();
     const { statementId } = useParams();
 
@@ -181,21 +180,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
     const resultsBy: ResultsBy =
         statement?.resultsSettings?.resultsBy || ResultsBy.topOptions;
-    const hasChildren: boolean = (() => {
-        if (!statement) return true;
-        if (statement.hasChildren === undefined) return true;
-        return statement.hasChildren;
-    })();
 
-    const enableAddEvaluationOption: boolean =
-        statement?.statementSettings?.enableAddEvaluationOption === false
-            ? false
-            : true;
-
-    const enableAddVotingOption: boolean =
-        statement?.statementSettings?.enableAddVotingOption === false
-            ? false
-            : true;
 
     return (
         <ScreenFadeIn className="setStatement">
@@ -213,7 +198,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             defaultValue={arrayOfStatementParagrphs[0]}
                         />
                     </label>
-                    <div>
+                    <label>
                         <textarea
                             name="description"
                             placeholder={t("Group Description")}
@@ -243,23 +228,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                         key={member.userId}
                                         member={member}
                                     />
-                                    <CustomCheckboxLabel
-                                        name={"enableAddVotingOption"}
-                                        title={
-                                            "Allow participants to contribute options to the voting page"
-                                        }
-                                        defaultChecked={enableAddVotingOption}
-                                    />
-                                    <CustomCheckboxLabel
-                                        name={"enableAddEvaluationOption"}
-                                        title={
-                                            "Allow participants to contribute options to the evaluation page"
-                                        }
-                                        defaultChecked={
-                                            enableAddEvaluationOption
-                                        }
-                                    />
-                                </div>
+                                    
+                                ))}
                             </div>
 
                             <b>{membership.length} Members</b>
