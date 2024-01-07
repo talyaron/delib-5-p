@@ -7,11 +7,13 @@ import { handleLogout } from "../../../functions/general/helpers";
 // icons
 import elipsIcon from "../../../assets/elipsIcon.svg";
 import installIcon from "../../../assets/installIcon.svg";
-import disconnectlIcon from "../../../assets/disconnectIcon.svg";
+import HomeMenu from "../../components/homeMenu/HomeMenu";
+import { stubTrue } from "lodash";
 
 export default function HomeHeader() {
     //for deffered app install
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    const [openMenu, setOpenMenu] = useState(false);
 
     useEffect(() => {
         //for defferd app install
@@ -28,38 +30,26 @@ export default function HomeHeader() {
 
     return (
         <div className="homePage__header">
-            <h1 className="homePage__header__homeTitle">Conversations</h1>
-            <div className="homePage__header__icons">
-                <img
-                    className="homePage__header__icons__headerIcon"
-                    src={installIcon}
-                    alt="install_icon"
-                    onClick={handleInstallApp}
-                />
-                <img
-                    className="homePage__header__icons__headerIcon"
-                    src={elipsIcon}
-                    alt="elips_icon"
-                />
-                <div className="homePage__header__icons__homeMenu">
+            <div className="homePage__header__wrapper">
+                <h1 className="homePage__header__wrapper__homeTitle">
+                    Conversations
+                </h1>
+                <div className="homePage__header__wrapper__icons">
                     <img
-                        className="homePage__header__icons__homeMenu__icon"
-                        src={disconnectlIcon}
-                        alt="disconnect_icon"
+                        className="homePage__header__wrapper__icons__installIcon"
+                        src={installIcon}
+                        alt="install_icon"
+                        onClick={handleInstallApp}
                     />
-                    <p className="homePage__header__icons__homeMenu__icon">
-                        Disconnect
-                    </p>
+                    <img
+                        className="homePage__header__wrapper__icons__elipsIcon"
+                        src={elipsIcon}
+                        alt="elips_icon"
+                        onClick={() => setOpenMenu(true)}
+                    />
+                    {openMenu && <HomeMenu />}
                 </div>
             </div>
-            {/* <div className="btns">
-                <button onClick={handleLogout}>{t("Disconnect")}</button>
-                {deferredPrompt && (
-                    <button className="btn btn--add" onClick={handleInstallApp}>
-                        {t("Install the App")}
-                    </button>
-                )}
-            </div> */}
         </div>
     );
 }
