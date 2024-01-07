@@ -30,7 +30,9 @@ import {
 import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import { t } from "i18next";
-import useStatementColor, { StyleProps } from "../../../../../../functions/hooks/useStatementColor";
+import useStatementColor, {
+    StyleProps,
+} from "../../../../../../functions/hooks/useStatementColor";
 import Modal from "../../../../../components/modal/Modal";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
 
@@ -48,7 +50,8 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const statementColor:StyleProps = useStatementColor(statement);
+    const statementColor: StyleProps = useStatementColor(statement);
+    console.log(statement.statement, statementColor)
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
@@ -80,13 +83,11 @@ const StatementEvaluationCard: FC<Props> = ({
             navigate(`/statement/${statement.statementId}/chat`);
     }
 
-  
     const _isAuthorized = isAuthorized(
         statement,
         statementSubscription,
         parentStatement.creatorId
     );
-   
 
     return (
         <div
@@ -97,7 +98,9 @@ const StatementEvaluationCard: FC<Props> = ({
             }
             style={{
                 top: `${newTop}px`,
-                borderLeft: `8px solid ${statementColor.backgroundColor || 'wheat'}`,
+                borderLeft: `8px solid ${
+                    statementColor.backgroundColor || "wheat"
+                }`,
                 color: statementColor.color,
             }}
             ref={elementRef}
@@ -105,6 +108,7 @@ const StatementEvaluationCard: FC<Props> = ({
             <div className="optionCard__info">
                 <div className="optionCard__info__text">
                     <div
+                        style={{ width: "100%" }}
                         className={
                             linkToChildren(statement, parentStatement)
                                 ? "clickable"
@@ -142,8 +146,12 @@ const StatementEvaluationCard: FC<Props> = ({
                                             edit={edit}
                                             setEdit={setEdit}
                                         />
-                                        
-                                         <StatementChatSetOption parentStatement={parentStatement} statement={statement} text={t("Remove Option")} />
+
+                                        <StatementChatSetOption
+                                            parentStatement={parentStatement}
+                                            statement={statement}
+                                            text={t("Remove Option")}
+                                        />
                                     </CardMenu>
                                 )}
                             </>
@@ -152,24 +160,26 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
                 {linkToChildren(statement, parentStatement) && (
                     <div className="optionCard__info__chat">
-                        <StatementChatMore statement={statement} />
+                        <StatementChatMore statement={statement} color={statementColor.color}/>
                     </div>
                 )}
             </div>
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
-                <AddSubQuestion statement={statement} setShowModal={setShowModal} />
-               
+                <AddSubQuestion
+                    statement={statement}
+                    setShowModal={setShowModal}
+                />
             </div>
             {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                        />
-                    </Modal>
-                )}
+                <Modal>
+                    <NewSetStatementSimple
+                        parentStatement={statement}
+                        isOption={false}
+                        setShowModal={setShowModal}
+                    />
+                </Modal>
+            )}
         </div>
     );
 };

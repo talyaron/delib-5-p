@@ -5,7 +5,7 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementType,
-    User,
+
 } from "delib-npm";
 import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -64,19 +64,19 @@ export function getIntialLocationSessionStorage(): string | undefined {
 
 interface getNewStatmentProps {
     value?: string | undefined | null;
-    statement?: Statement;
+    parentStatement?: Statement;
     statementType?: StatementType;
-    user: User;
 }
 
 export function getNewStatment({
     value,
-    statement,
+    parentStatement,
     statementType,
-    user,
 }: getNewStatmentProps): Statement | undefined {
     try {
-        if (!statement) throw new Error("No statement");
+        const user = store.getState().user.user;
+
+        if (!parentStatement) throw new Error("No parentStatement");
         if (!user) throw new Error("No user");
         if (!value) throw new Error("No value");
 
@@ -85,16 +85,22 @@ export function getNewStatment({
         const creator = user;
         if (!creator) throw new Error("User not logged in");
 
+        const parents = parentStatement.parents || [];
+        const paretnsSet = new Set(parents);
+        //convert bac to array
+        const _parents = [...paretnsSet];
+
         const newStatement: Statement = {
             statement: value,
+            parentId: parentStatement.statementId,
+            parents: [..._parents, parentStatement.statementId],
+            topParentId:
+                parentStatement.topParentId || parentStatement.statementId,
             statementId: crypto.randomUUID(),
             creatorId: userId,
             creator,
             createdAt: new Date().getTime(),
             lastUpdate: new Date().getTime(),
-            parentId: statement.statementId,
-            topParentId:
-                statement.topParentId || statement.statementId || "top",
             consensus: 0,
             statementType: statementType || StatementType.statement,
         };
@@ -115,13 +121,12 @@ export function isAuthorized(
 ) {
     try {
         if (!statement) throw new Error("No statement");
-        
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
         if (statement.creatorId === user.uid) return true;
-      
-        if(parentStatementCreatorId === user.uid) return true;
+
+        if (parentStatementCreatorId === user.uid) return true;
 
         if (!statementSubscription) return false;
 
@@ -267,6 +272,7 @@ export function linkToChildren(
         const isQuestion = statement.statementType === StatementType.question;
         const isOption = isOptionFn(statement);
         const hasChildren = parentStatement.hasChildren;
+        console.log(statement.statement, isQuestion, isOption, hasChildren)
 
         if (isQuestion) return true;
         if (isOption && hasChildren) return true;

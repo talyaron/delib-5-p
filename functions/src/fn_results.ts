@@ -1,7 +1,6 @@
-import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm"
+import { Collections, ResultsBy, Statement } from "delib-npm"
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { z } from "zod";
 
 //results are dealing with the overall results of the deliberation
 
@@ -53,16 +52,14 @@ async function resultsByTopOptions(statementId: string): Promise<Statement[]> {
     try {
         //get top options
         // statementRef
-        const statementRef = db.collection(Collections.statements).doc(statementId);
-        const statementDB = await statementRef.get();
-        const statement = statementDB.data() as Statement;
-        StatementSchema.parse(statement);
+        // const statementRef = db.collection(Collections.statements).doc(statementId);
+        // const statementDB = await statementRef.get();
+        // const statement = statementDB.data() as Statement;
+ 
 
         //get top options
         const topOptionsDB = await db.collection(Collections.statements).where("parentId", "==", statementId).orderBy("consensus", "desc").limit(5).get();
         const topOptions = topOptionsDB.docs.map((doc: any) => doc.data() as Statement);
-
-        z.array(StatementSchema).parse(topOptions);
 
         return topOptions;
     } catch (error) {
@@ -78,7 +75,7 @@ async function resultsByTopVotes(statementId: string): Promise<Statement[]> {
         const statementRef = db.collection(Collections.statements).doc(statementId);
         const statementDB = await statementRef.get();
         const statement = statementDB.data() as Statement;
-        StatementSchema.parse(statement);
+
 
         //get top selection
         const {selections} = statement;
@@ -88,7 +85,7 @@ async function resultsByTopVotes(statementId: string): Promise<Statement[]> {
          const topStatementRef = db.collection(Collections.statements).doc(topStatementId);
         const topStatementDB = await topStatementRef.get();
         const topStatement = topStatementDB.data() as Statement;
-        StatementSchema.parse(topStatement);
+     
 
         return [topStatement];
 

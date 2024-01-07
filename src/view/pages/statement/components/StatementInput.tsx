@@ -22,6 +22,7 @@ interface Props {
 }
 
 const StatementInput: FC<Props> = ({ statement }) => {
+    if (!statement) throw new Error("No statement");
     const user = useAppSelector(userSelector);
 
     const statementColor = useStatementColor(statement);
@@ -49,13 +50,16 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 const newStatement: Statement | undefined = getNewStatment({
                     value: e.target.value,
-                    statement,
-                    user,
+                    parentStatement: statement,
                 });
 
                 if (!newStatement) throw new Error("No statement");
 
-                setStatmentToDB(newStatement);
+                setStatmentToDB({
+                    statement: newStatement,
+                    parentStatement: statement,
+                    addSubscription: true,
+                });
                 e.target.value = "";
             }
         } catch (error) {

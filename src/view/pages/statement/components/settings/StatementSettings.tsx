@@ -1,68 +1,57 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
-import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
-import { navArray } from "../../nav/top/StatementTopNavModel";
+import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    UserSchema,
-    User,
-    StatementSubscription,
-    ResultsBy,
-    Screen,
-    StatementType,
-    Statement,
-} from "delib-npm";
+import { StatementSubscription, ResultsBy, Statement } from "delib-npm";
 
 // Custom components
-import CustomCheckboxLabel from "./CustomCheckboxLabel";
-import Loader from "../../../../../components/loaders/Loader";
-import MembershipLine from "../membership/MembershipLine";
-import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
+import Loader from "../../../../components/loaders/Loader";
+import MembershipLine from "./membership/MembershipLine";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../functions/hooks/reduxHooks";
 import {
     removeMembership,
     setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
-} from "../../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../../model/users/userSlice";
-import { store } from "../../../../../../model/store";
+} from "../../../../../model/statements/statementsSlice";
+
 
 // Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
-} from "../../../../../../functions/db/statements/getStatement";
+} from "../../../../../functions/db/statements/getStatement";
 
 // * Statement Settings functions * //
-import {
-    parseScreensCheckBoxes,
-    isSubPageChecked,
-} from "./statementSettingsCont";
-import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
+import { parseScreensCheckBoxes } from "./statementSettingsCont";
+import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+import UploadImage from "../../../../components/uploadImage/UploadImage";
+import DisplayResultsBy from "./DisplayResultsBy";
+import ResultsRange from "./ResultsRange";
 
-// Style
-import "./settingsStyle.scss";
-import UploadImage from "../../../../../components/uploadImage/UploadImage";
-import CustomSwitch from "../../../../../components/switch/CustomSwitch";
+import CheckBoxeArea from "./CheckBoxeArea";
+import { navArray } from "../nav/top/StatementTopNavModel";
+
 
 interface Props {
     simple?: boolean;
     new?: boolean;
 }
 
-export const StatementSettings: FC<Props> = ({ simple }) => {
+export const StatementSettings: FC<Props> = () => {
     const navigate = useNavigate();
     const { statementId } = useParams();
+
 
     // Redux
     const dispatch = useAppDispatch();
@@ -72,7 +61,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
-    const user: User | null = useAppSelector(userSelector);
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
@@ -109,12 +97,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
         dispatch(removeMembership(membership.statementsSubscribeId));
     }
 
-    async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
+    async function handleSetStatment(ev: any) {
         try {
             ev.preventDefault();
             setIsLoading(true);
 
-            const user = store.getState().user.user as User | null;
             const data = new FormData(ev.currentTarget);
 
             let title: any = data.get("statement");
@@ -136,6 +123,8 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 navArray
             );
 
+          
+
             newStatement.statement = _statement;
 
             newStatement.resultsSettings = {
@@ -144,30 +133,6 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 deep: 1,
                 minConsensus: 1,
             };
-
-            //can transfer to a setStatmentToDB function
-            newStatement.statementId =
-                statement?.statementId || crypto.randomUUID();
-
-            //can transfer to a setStatmentToDB function
-            newStatement.creatorId =
-                statement?.creator.uid || store.getState().user.user?.uid;
-
-            //can transfer to a setStatmentToDB function
-            newStatement.parentId = statement?.parentId || statementId || "top";
-
-            //can transfer to a setStatmentToDB function
-            newStatement.topParentId =
-                statement?.topParentId || statementId || "top";
-
-            //can transfer to a setStatmentToDB function
-            newStatement.statementType =
-                statementId === undefined
-                    ? StatementType.question
-                    : newStatement.statementType || statement?.statementType;
-
-            //can transfer to a setStatmentToDB function
-            newStatement.creator = statement?.creator || user;
 
             newStatement.hasChildren =
                 newStatement.hasChildren === "on" ? true : false;
@@ -186,18 +151,10 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 },
             });
 
-             //can transfer to a setStatmentToDB function
-            if (statement) {
-                newStatement.lastUpdate = new Date().getTime();
-            }
-             //can transfer to a setStatmentToDB function
-            newStatement.createdAt =
-                statement?.createdAt || new Date().getTime();
-
-                 //can transfer to a setStatmentToDB function
+            //can transfer to a setStatmentToDB function
             newStatement.consensus = statement?.consensus || 0;
 
-             //can transfer to a setStatmentToDB function
+            //can transfer to a setStatmentToDB function
             const setSubsciption: boolean =
                 statementId === undefined ? true : false;
 
@@ -206,10 +163,11 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 if (newStatement[key] === "on") delete newStatement[key];
             }
 
-            const _statementId = await setStatmentToDB(
-                newStatement,
-                setSubsciption
-            );
+            const _statementId = await setStatmentToDB({
+                parentStatement: statementId ? statement : 'top',
+                statement: newStatement,
+                addSubscription: setSubsciption,
+            });
 
             if (_statementId) navigateToStatementTab(newStatement, navigate);
         } catch (error) {
@@ -222,21 +180,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
     const resultsBy: ResultsBy =
         statement?.resultsSettings?.resultsBy || ResultsBy.topOptions;
-    const hasChildren: boolean = (() => {
-        if (!statement) return true;
-        if (statement.hasChildren === undefined) return true;
-        return statement.hasChildren;
-    })();
 
-    const enableAddEvaluationOption: boolean =
-        statement?.statementSettings?.enableAddEvaluationOption === false
-            ? false
-            : true;
-
-    const enableAddVotingOption: boolean =
-        statement?.statementSettings?.enableAddVotingOption === false
-            ? false
-            : true;
 
     return (
         <ScreenFadeIn className="setStatement">
@@ -254,78 +198,42 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             defaultValue={arrayOfStatementParagrphs[0]}
                         />
                     </label>
-                    <div>
+                    <label>
                         <textarea
                             name="description"
                             placeholder={t("Group Description")}
                             rows={3}
                             defaultValue={description}
-                        ></textarea>
-                    </div>
-                    {!simple && (
-                        <section className="checkboxSection">
-                            <div style={{ width: "30%" }}>
-                                <h3
-                                    style={{
-                                        fontSize: "1.3rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    {t("Tabs")}
-                                </h3>
-                                <div className="checkboxSection__column">
-                                    {navArray
-                                        .filter(
-                                            (navObj) =>
-                                                navObj.link !== Screen.SETTINGS
-                                        )
-                                        .map((navObj, index) => (
-                                            <CustomSwitch
-                                                key={`tabs-${index}`}
-                                                link={navObj.link}
-                                                label={navObj.name}
-                                                defaultChecked={isSubPageChecked(
-                                                    statement,
-                                                    navObj
-                                                )}
-                                            />
-                                        ))}
-                                </div>
+                        />
+                    </label>
+
+                    <CheckBoxeArea statement={statement} />
+
+                    <DisplayResultsBy statement={statement} />
+
+                    <ResultsRange statement={statement} />
+
+                    <button type="submit" className="settings__submitBtn">
+                        {!statementId ? t("Add") : t("Update")}
+                    </button>
+
+                    {statementId && <UploadImage statement={statement} />}
+
+                    {membership && statementId && (
+                        <>
+                            <h2>{t("Members in Group")}</h2>
+                            <div className="settings__membersBox">
+                                {membership.map((member) => (
+                                    <MembershipLine
+                                        key={member.userId}
+                                        member={member}
+                                    />
+                                    
+                                ))}
                             </div>
-                            <div>
-                                <h3
-                                    style={{
-                                        fontSize: "1.3rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    {t("Advanced")}
-                                </h3>
-                                <div className="checkboxSection__column">
-                                    <CustomCheckboxLabel
-                                        name={"hasChildren"}
-                                        title={"Enable Sub-Conversations"}
-                                        defaultChecked={hasChildren}
-                                    />
-                                    <CustomCheckboxLabel
-                                        name={"enableAddVotingOption"}
-                                        title={
-                                            "Allow participants to contribute options to the voting page"
-                                        }
-                                        defaultChecked={enableAddVotingOption}
-                                    />
-                                    <CustomCheckboxLabel
-                                        name={"enableAddEvaluationOption"}
-                                        title={
-                                            "Allow participants to contribute options to the evaluation page"
-                                        }
-                                        defaultChecked={
-                                            enableAddEvaluationOption
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </section>
+
+                            <b>{membership.length} Members</b>
+                        </>
                     )}
 
                     <select name="resultsBy" defaultValue={resultsBy}>

@@ -20,7 +20,7 @@ const EditTitle: FC<Props> = ({
     isEdit,
     setEdit,
     isTextArea,
-    onlyTitle
+    onlyTitle,
 }) => {
     try {
         if (!statement) return null;
@@ -28,11 +28,6 @@ const EditTitle: FC<Props> = ({
         const _direction = useDirection();
         const direction = _direction === "row" ? "ltr" : "rtl";
         const align = _direction === "row" ? "left" : "right";
-
-        // const { shortVersion } = statementTitleToDisplay(
-        //     statement.statement,
-        //     80
-        // );
 
         const title = statement.statement.split("\n")[0];
         const description = statement.statement.split("\n").slice(1).join("\n");
@@ -65,18 +60,17 @@ const EditTitle: FC<Props> = ({
             }
         }
 
-  
         if (!isEdit)
             return (
                 <div style={{ direction: direction, textAlign: align }}>
                     <Text text={statement.statement} onlyTitle={onlyTitle} />
-                 
                 </div>
             );
 
         if (isTextArea) {
             return (
                 <textarea
+                    style={{ direction: direction, textAlign: align }}
                     className={styles.textarea}
                     defaultValue={statement.statement}
                     onBlur={handleSetTitle}
@@ -87,6 +81,7 @@ const EditTitle: FC<Props> = ({
         } else {
             return (
                 <input
+                    style={{ direction: direction, textAlign: align }}
                     className={styles.input}
                     type="text"
                     defaultValue={title}
