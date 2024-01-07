@@ -67,7 +67,6 @@ const Statement: FC = () => {
 
     const direction = useDirection();
     const navigate = useNavigate();
-    const langDirection = direction === "row" ? "ltr" : "rtl";
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -219,7 +218,6 @@ const Statement: FC = () => {
                     screen={screen || Screen.CHAT}
                     title={title}
                     direction={direction}
-                    langDirection={langDirection}
                     showAskPermission={showAskPermission}
                     setShowAskPermission={setShowAskPermission}
                 />

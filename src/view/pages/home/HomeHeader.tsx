@@ -52,14 +52,7 @@ export default function HomeHeader() {
                     </p>
                 </div>
             </div>
-            {/* <div className="btns">
-                <button onClick={handleLogout}>{t("Disconnect")}</button>
-                {deferredPrompt && (
-                    <button className="btn btn--add" onClick={handleInstallApp}>
-                        {t("Install the App")}
-                    </button>
-                )}
-            </div> */}
+            <button onClick={handleLogout}>{t("Disconnect")}</button>
         </div>
     );
 }
