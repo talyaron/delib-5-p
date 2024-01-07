@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
-import { setStatmentToDB } from "../../../../../../functions/db/statements/setStatments";
-import { navArray } from "../../nav/top/StatementTopNavModel";
+import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
 import { t } from "i18next";
@@ -9,41 +8,41 @@ import { useNavigate, useParams } from "react-router-dom";
 import { StatementSubscription, ResultsBy, Screen, Statement } from "delib-npm";
 
 // Custom components
-import CustomCheckboxLabel from "./CustomCheckboxLabel";
-import Loader from "../../../../../components/loaders/Loader";
-import MembershipLine from "../membership/MembershipLine";
-import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
+import Loader from "../../../../components/loaders/Loader";
+import MembershipLine from "./membership/MembershipLine";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../functions/hooks/reduxHooks";
 import {
     removeMembership,
     setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
-} from "../../../../../../model/statements/statementsSlice";
+} from "../../../../../model/statements/statementsSlice";
+import { userSelector } from "../../../../../model/users/userSlice";
+import { store } from "../../../../../model/store";
 
 // Firestore functions
 import {
     getStatementFromDB,
     listenToMembers,
-} from "../../../../../../functions/db/statements/getStatement";
+} from "../../../../../functions/db/statements/getStatement";
 
 // * Statement Settings functions * //
-import {
-    parseScreensCheckBoxes,
-    isSubPageChecked,
-} from "./statementSettingsCont";
-import { navigateToStatementTab } from "../../../../../../functions/general/helpers";
-
-// Style
-import "./settingsStyle.scss";
-import UploadImage from "../../../../../components/uploadImage/UploadImage";
-import CustomSwitch from "../../../../../components/switch/CustomSwitch";
+import { parseScreensCheckBoxes } from "./statementSettingsCont";
+import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+import UploadImage from "../../../../components/uploadImage/UploadImage";
+import DisplayResultsBy from "./DisplayResultsBy";
+import ResultsRange from "./ResultsRange";
+import GetVoters from "./GetVoters";
+import GetEvaluators from "./GetEvaluators";
+import CheckBoxeArea from "./CheckBoxeArea";
+import { navArray } from "../nav/StatementNav";
 
 interface Props {
     simple?: boolean;
@@ -220,52 +219,29 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                             placeholder={t("Group Description")}
                             rows={3}
                             defaultValue={description}
-                        ></textarea>
-                    </div>
-                    {!simple && (
-                        <section className="checkboxSection">
-                            <div style={{ width: "30%" }}>
-                                <h3
-                                    style={{
-                                        fontSize: "1.3rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    {t("Tabs")}
-                                </h3>
-                                <div className="checkboxSection__column">
-                                    {navArray
-                                        .filter(
-                                            (navObj) =>
-                                                navObj.link !== Screen.SETTINGS
-                                        )
-                                        .map((navObj, index) => (
-                                            <CustomSwitch
-                                                key={`tabs-${index}`}
-                                                link={navObj.link}
-                                                label={navObj.name}
-                                                defaultChecked={isSubPageChecked(
-                                                    statement,
-                                                    navObj
-                                                )}
-                                            />
-                                        ))}
-                                </div>
-                            </div>
-                            <div>
-                                <h3
-                                    style={{
-                                        fontSize: "1.3rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    {t("Advanced")}
-                                </h3>
-                                <div className="checkboxSection__column">
-                                    <CustomCheckboxLabel
-                                        name={"hasChildren"}
-                                        title={"Enable Sub-Conversations"}
-                                        defaultChecked={hasChildren}
+                        />
+                    </label>
+
+                    <CheckBoxeArea statement={statement} />
+
+                    <DisplayResultsBy statement={statement} />
+
+                    <ResultsRange statement={statement} />
+
+                    <button type="submit" className="settings__submitBtn">
+                        {!statementId ? t("Add") : t("Update")}
+                    </button>
+
+                    {statementId && <UploadImage statement={statement} />}
+
+                    {membership && statementId && (
+                        <>
+                            <h2>{t("Members in Group")}</h2>
+                            <div className="settings__membersBox">
+                                {membership.map((member) => (
+                                    <MembershipLine
+                                        key={member.userId}
+                                        member={member}
                                     />
                                     <CustomCheckboxLabel
                                         name={"enableAddVotingOption"}
@@ -285,7 +261,9 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                                     />
                                 </div>
                             </div>
-                        </section>
+
+                            <b>{membership.length} Members</b>
+                        </>
                     )}
 
                     <select name="resultsBy" defaultValue={resultsBy}>
