@@ -51,6 +51,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const statementColor: StyleProps = useStatementColor(statement);
+    console.log(statement.statement, statementColor)
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
@@ -174,7 +175,7 @@ const StatementEvaluationCard: FC<Props> = ({
                 <Modal>
                     <NewSetStatementSimple
                         parentStatement={statement}
-                        isOption={true}
+                        isOption={false}
                         setShowModal={setShowModal}
                     />
                 </Modal>

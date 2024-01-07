@@ -241,6 +241,7 @@ async function updateParentStatementWithChildResults(
 
         const childStatementsRef = db
             .collection(Collections.statements)
+            .where("statementType", "==", StatementType.option)
             .where("parentId", "==", parentId)
             .orderBy("consensus", "desc")
             .limit(numberOfResults);

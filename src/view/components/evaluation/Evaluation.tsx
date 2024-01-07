@@ -15,6 +15,9 @@ import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice"
 // Custom Hooks
 import useDirection from "../../../functions/hooks/useDirection";
 
+//css
+import styles from "./Evaluation.module.scss";
+
 interface Props {
     statement: Statement;
     displayScore?: boolean;
@@ -70,7 +73,7 @@ const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
                 </div>
                 {displayScore && <span>{proVote}</span>}
             </div>
-            {displayScore && <div>{consensusToDisplay}</div>}
+            {displayScore && <div className={styles.totalEvaluations}>{consensusToDisplay}</div>}
         </div>
     );
 };
