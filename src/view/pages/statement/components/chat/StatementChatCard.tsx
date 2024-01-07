@@ -85,36 +85,7 @@ const StatementChat: FC<Props> = ({
         ? true
         : false;
 
-    // function handleSetQuestion() {
-    //     updateIsQuestion(statement);
-    // }
-
-    // function handleSetOption() {
-    //     try {
-    //         if (statement.statementType === "option") {
-    //             const cancelOption = window.confirm(
-    //                 "Are you sure you want to cancel this option?"
-    //             );
-    //             if (cancelOption) {
-    //                 setStatementisOption(statement);
-    //             }
-    //         } else {
-    //             setStatementisOption(statement);
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-
-    // const optionIcon = (
-    //     <div className="clickable">
-    //         {isOptionFn(statement) ? (
-    //             <LightBulbIcon color="gold" />
-    //         ) : (
-    //             <LightBulbIcon color="lightgray" />
-    //         )}
-    //     </div>
-    // );
+    
 
  
     return (
