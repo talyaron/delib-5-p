@@ -53,7 +53,7 @@ interface Props {
 export const StatementSettings: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
-    console.log('statementId', statementId)
+
 
     // Redux
     const dispatch = useAppDispatch();
@@ -125,7 +125,7 @@ export const StatementSettings: FC<Props> = ({ simple }) => {
                 navArray
             );
 
-            console.log(_statement)
+          
 
             newStatement.statement = _statement;
 
