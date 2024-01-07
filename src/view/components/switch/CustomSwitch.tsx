@@ -16,6 +16,28 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
         setChecked(!checked);
     };
 
+    const tagPosition =
+        document.body.style.direction === "ltr"
+            ? {
+                  backgroundColor: `${checked ? "#787FFF" : "#D4D6F8"}`,
+                  left: checked ? "0%" : "50%",
+              }
+            : {
+                  backgroundColor: `${checked ? "#787FFF" : "#D4D6F8"}`,
+                  right: checked ? "0%" : "50%",
+              };
+
+    const labelPosition =
+        document.body.style.direction === "ltr"
+            ? {
+                  color: checked ? "#3B4F7D" : "#6E8AA6",
+                  right: checked ? "0%" : "50%",
+              }
+            : {
+                  color: checked ? "#3B4F7D" : "#6E8AA6",
+                  left: checked ? "0%" : "50%",
+              };
+
     return (
         <div className={styles.switch}>
             <div
@@ -23,20 +45,14 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 onClick={() => {
                     setChecked(!checked);
                 }}
-                style={{
-                    right: checked ? "0%" : "50%",
-                    backgroundColor: `${checked ? "#787FFF" : "#D4D6F8"}`,
-                }}
+                style={tagPosition}
             ></div>
             <div
-                className={styles.off}
+                className={styles.label}
                 onClick={() => {
                     setChecked(!checked);
                 }}
-                style={{
-                    left: checked ? "0%" : "50%",
-                    color: checked ? "#3B4F7D" : "#6E8AA6",
-                }}
+                style={labelPosition}
             >
                 {t(label)}
             </div>
