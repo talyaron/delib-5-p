@@ -159,7 +159,7 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
                 {linkToChildren(statement, parentStatement) && (
                     <div className="optionCard__info__chat">
-                        <StatementChatMore statement={statement} />
+                        <StatementChatMore statement={statement} color={statementColor.color}/>
                     </div>
                 )}
             </div>
