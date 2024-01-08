@@ -60,7 +60,7 @@ const StatementChat: FC<Props> = ({
     );
     const userId = store.getState().user.user?.uid;
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statementType || "");
 
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(
@@ -85,9 +85,6 @@ const StatementChat: FC<Props> = ({
         ? true
         : false;
 
-    
-
- 
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (

@@ -68,6 +68,7 @@ export const StatementSettings: FC<Props> = () => {
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
+    
     const user: User | null = useAppSelector(userSelector);
 
     // Use State

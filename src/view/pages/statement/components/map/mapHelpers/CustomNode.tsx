@@ -50,7 +50,7 @@ export default function CustomNode({ data }: NodeProps) {
 
     const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statementType);
 
     const { mapContext, setMapContext } = useMapContext();
 

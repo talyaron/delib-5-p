@@ -56,7 +56,7 @@ const StatementHeader: FC<Props> = ({
     const { statementId, page } = useParams();
     const location = useLocation();
 
-    const headerColor = useStatementColor(statement);
+    const headerColor = useStatementColor(statement.statementType || "");
 
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId)
@@ -125,7 +125,7 @@ const StatementHeader: FC<Props> = ({
                 style={{ flexDirection: direction, direction: langDirection }}
             >
                 <div className="page__header__wrapper__actions">
-                <Link
+                    <Link
                         state={{ from: window.location.pathname }}
                         to={"/home"}
                     >
@@ -134,7 +134,6 @@ const StatementHeader: FC<Props> = ({
                     <div onClick={handleBack} style={{ cursor: "pointer" }}>
                         <BackArrowIcon color={headerColor.color} />
                     </div>
-                   
                 </div>
                 {!editHeader ? (
                     <h1
