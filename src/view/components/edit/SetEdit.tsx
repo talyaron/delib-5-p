@@ -5,11 +5,11 @@ interface Props {
     isAuthrized: boolean;
     setEdit: Function;
     edit: boolean;
-    text?: string;
+    text: string;
 }
 
 const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit, text }) => {
-if(!isAuthrized) return null;
+    if (!isAuthrized) return null;
 
     return (
         <>

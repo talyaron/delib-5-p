@@ -27,7 +27,6 @@ import {
     isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
-import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import { t } from "i18next";
 import useStatementColor, {
@@ -50,8 +49,9 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const statementColor: StyleProps = useStatementColor(statement.statementType || "");
-    console.log(statement.statement, statementColor)
+    const statementColor: StyleProps = useStatementColor(
+        statement.statementType || ""
+    );
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
@@ -62,7 +62,6 @@ const StatementEvaluationCard: FC<Props> = ({
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
-    const [openMenu, setOpenMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -123,44 +122,33 @@ const StatementEvaluationCard: FC<Props> = ({
                             isTextArea={true}
                         />
                     </div>
-                    <div
-                        className="clickable"
-                        onClick={() => {
-                            setOpenMenu(!openMenu);
-                        }}
-                    >
-                        {_isAuthorized && (
-                            <>
-                                <MoreIcon />
-                                {openMenu && (
-                                    <CardMenu setOpenMenu={setOpenMenu}>
-                                        <span onClick={() => setEdit(true)}>
-                                            {t("Edit Text")}
-                                        </span>
-                                        <SetEdit
-                                            isAuthrized={isAuthorized(
-                                                statement,
-                                                statementSubscription,
-                                                parentStatement.creatorId
-                                            )}
-                                            edit={edit}
-                                            setEdit={setEdit}
-                                        />
-
-                                        <StatementChatSetOption
-                                            parentStatement={parentStatement}
-                                            statement={statement}
-                                            text={t("Remove Option")}
-                                        />
-                                    </CardMenu>
+                    {_isAuthorized && (
+                        <CardMenu>
+                            <SetEdit
+                                text={t("Edit Text")}
+                                isAuthrized={isAuthorized(
+                                    statement,
+                                    statementSubscription,
+                                    parentStatement.creatorId
                                 )}
-                            </>
-                        )}
-                    </div>
+                                edit={edit}
+                                setEdit={setEdit}
+                            />
+
+                            <StatementChatSetOption
+                                parentStatement={parentStatement}
+                                statement={statement}
+                                text={t("Remove Option")}
+                            />
+                        </CardMenu>
+                    )}
                 </div>
                 {linkToChildren(statement, parentStatement) && (
                     <div className="optionCard__info__chat">
-                        <StatementChatMore statement={statement} color={statementColor.color}/>
+                        <StatementChatMore
+                            statement={statement}
+                            color={statementColor.color}
+                        />
                     </div>
                 )}
             </div>

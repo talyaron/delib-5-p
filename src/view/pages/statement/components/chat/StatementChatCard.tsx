@@ -116,7 +116,7 @@ const StatementChat: FC<Props> = ({
                 )}
 
                 <div className="message__box__info">
-                    <CardMenu isMe={isMe}>
+                    <CardMenu>
                         <StatementChatSetEdit
                             isAuthrized={_isAuthrized}
                             setEdit={setIsEdit}

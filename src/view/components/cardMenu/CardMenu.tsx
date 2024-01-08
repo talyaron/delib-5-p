@@ -4,36 +4,23 @@ import MoreIcon from "../../../assets/icons/MoreIcon";
 
 interface Props {
     children: any;
-    isMe: boolean;
 }
 
-const CardMenu: FC<Props> = ({ children, isMe }) => {
+const CardMenu: FC<Props> = ({ children }) => {
     if (!children) return null;
     const [openMenu, setOpenMenu] = useState(false);
 
     return (
         <>
-            <div onClick={() => setOpenMenu(true)}>
+            <div onClick={() => setOpenMenu((prev) => !prev)}>
                 <MoreIcon />
+                {openMenu && (
+                    <>
+                        <div className={styles.menu}>{children}</div>
+                        <div className={styles.background}></div>
+                    </>
+                )}
             </div>
-            {openMenu && (
-                <>
-                    <div
-                        className={styles.menu}
-                        style={
-                            !isMe
-                                ? { right: `.9rem`, left: "unset" }
-                                : { left: ".9rem" }
-                        }
-                    >
-                        {children}
-                    </div>
-                    <div
-                        className={styles.background}
-                        onClick={() => setOpenMenu(false)}
-                    ></div>
-                </>
-            )}
         </>
     );
 };

@@ -21,7 +21,7 @@ interface Props {
     color?: string;
 }
 
-const StatementChatMore: FC<Props> = ({ statement, color }) => {
+const StatementChatMore: FC<Props> = ({ statement }) => {
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
     let messagesRead = 0;
