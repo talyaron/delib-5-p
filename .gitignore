@@ -23,7 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-configKey.ts
 
 .firebaserc
 dev_dist
