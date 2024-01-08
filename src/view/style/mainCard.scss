@@ -10,6 +10,27 @@
     box-shadow: 0px -2px 4px 0px #D0D9ED0D;
     left: 0.121rem;
     width: 100%;
+
+    
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        &__text {
+       
+            font-size: 0.938rem;
+            font-weight: 400;
+            line-height: 1.125rem;
+            color: #6E8AA6;
+        }
+
+        &__icon {
+            justify-self: self-end;
+        }
+
+    }
     //mobile
     @media (max-width: 768px) {
         width: 90%;

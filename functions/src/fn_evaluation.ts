@@ -1,6 +1,6 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { Filter } from "firebase-admin/firestore";
+
 
 // import { logBase } from "./helpers";
 import {
