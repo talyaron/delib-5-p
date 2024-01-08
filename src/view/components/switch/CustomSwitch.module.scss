@@ -1,33 +1,27 @@
 .switch {
-    background-color: #F5FCFF;
+    background-color: #f5fcff;
     height: 1.85rem;
     position: relative;
-    border-radius: .285rem;
+    border-radius: 0.285rem;
     text-align: center;
-    font-size: .9rem;
-}
-
-.switch {
+    font-size: 0.9rem;
     .tag {
-     
         transform: scale(1.05);
         height: 1.85rem;
         width: 50%;
         position: relative;
-        top:0px;
-        border-radius: .285rem;
-        transition: all .15s ease-in-out;
+        top: 0px;
+        border-radius: 0.285rem;
+        transition: all 0.15s ease-in-out;
         cursor: pointer;
         user-select: none;
     }
-    .off {
-
+    .label {
         height: 1.85rem;
         width: 50%;
         position: absolute;
-        border-radius: .285rem;
-        left: 0%;
-        top:0px;
+        border-radius: 0.285rem;
+        top: 0px;
         display: flex;
         justify-content: center;
         align-items: center;
