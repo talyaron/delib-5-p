@@ -1,5 +1,6 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
+import { Filter } from "firebase-admin/firestore";
 
 // import { logBase } from "./helpers";
 import {
@@ -11,6 +12,7 @@ import {
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
+
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
@@ -230,8 +232,6 @@ async function updateParentStatementWithChildResults(
         if (numberOfResults === undefined) numberOfResults = 1;
         if (resultsBy === undefined) resultsBy = ResultsBy.topOptions;
 
-       
-
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
@@ -239,49 +239,30 @@ async function updateParentStatementWithChildResults(
             return;
         }
 
-        const childStatementsRef = db
+        const allOptionsStatementsRef = db
             .collection(Collections.statements)
-            .where("statementType", "==", StatementType.option)
             .where("parentId", "==", parentId)
-            .orderBy("consensus", "desc")
-            .limit(numberOfResults);
+            .where("statementType", "in", [StatementType.option, StatementType.result]);
 
-        const childStatementsDB = await childStatementsRef.get();
-        const childStatements = childStatementsDB.docs.map(
+            const topOptionsStatementsRef = allOptionsStatementsRef.orderBy("consensus", "desc").limit(numberOfResults);
+
+        // .and.where("parentId", "==", parentId)
+        // .or.where("statementType", "==", StatementType.option)
+        // .where("statementType", "==", StatementType.result)
+        // .orderBy("consensus", "desc")
+        // .limit(numberOfResults);
+
+        //get all options of the parent statement and convert htme to either result, or an option
+        const topOptionsStatementsDB = await topOptionsStatementsRef.get();
+        const topOptionsStatements = topOptionsStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement
         );
 
-        await updateParentChildren(childStatements, numberOfResults);
+        const childIds = topOptionsStatements.map((st: Statement) => st.statementId)
+        
+        const optionsDB = await allOptionsStatementsRef.get();
 
-        //update childstatment selectd to be of type result
-    } catch (error) {
-        logger.error(error);
-    }
-
-    async function updateParentChildren(
-        childStatements: Statement[],
-        numberOfResults: number | undefined
-    ) {
-        const childStatementsSimple = childStatements.map((st: Statement) =>
-            statementToSimpleStatement(st)
-        );
-
-        const childIds = childStatements.map((st: Statement) => st.statementId);
-
-        //update parent with results
-        await db.collection(Collections.statements).doc(parentId).update({
-            totalResults: numberOfResults,
-            results: childStatementsSimple,
-        });
-
-        //update previous results to be of type option
-        const statementsDB = await db
-            .collection(Collections.statements)
-            .where("parentId", "==", parentId)
-            .where("statementType", "!=", StatementType.statement)
-            .get();
-
-        await statementsDB.forEach(async (stDB: any) => {
+        await optionsDB.forEach(async (stDB: any) => {
             const st = stDB.data() as Statement;
 
             //update childstatment selectd to be of type result
@@ -295,6 +276,33 @@ async function updateParentStatementWithChildResults(
                     .update({ statementType: StatementType.option });
             }
         });
+
+       
+
+        await updateParentChildren(topOptionsStatements, numberOfResults);
+
+        //update childstatment selectd to be of type result
+    } catch (error) {
+        logger.error(error);
+    }
+
+    async function updateParentChildren(
+        topOptionsStatements: Statement[],
+        numberOfResults: number | undefined
+    ) {
+        const childStatementsSimple = topOptionsStatements.map((st: Statement) =>
+            statementToSimpleStatement(st)
+        );
+
+       ;
+
+        //update parent with results
+        await db.collection(Collections.statements).doc(parentId).update({
+            totalResults: numberOfResults,
+            results: childStatementsSimple,
+        });
+
+        
     }
 }
 
