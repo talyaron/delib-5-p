@@ -6,11 +6,8 @@ import { setStatmentToDB } from "../../../../../functions/db/statements/setStatm
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-    UserSchema,
-    User,
     StatementSubscription,
     ResultsBy,
-    StatementType,
     Statement,
 } from "delib-npm";
 
@@ -31,8 +28,7 @@ import {
     statementMembershipSelector,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
-import { userSelector } from "../../../../../model/users/userSlice";
-import { store } from "../../../../../model/store";
+
 
 // Firestore functions
 import {
@@ -68,8 +64,7 @@ export const StatementSettings: FC<Props> = () => {
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
-    
-    const user: User | null = useAppSelector(userSelector);
+
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);

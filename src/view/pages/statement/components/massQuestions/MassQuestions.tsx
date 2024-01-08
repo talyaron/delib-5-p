@@ -2,13 +2,12 @@ import { Statement, StatementType } from "delib-npm";
 import { FC, useState } from "react";
 import MassQuestionCard from "./components/massQuestion/MassQuestionCard";
 import styles from "./MassQuestions.module.scss";
-import StatementEvaluationNav from "../evaluations/components/StatementEvaluationNav";
-import CreateSimpleStatement from "../createStatement/CreateSimpleStatement";
 import Modal from "../../../../components/modal/Modal";
 import { isAuthorized } from "../../../../../functions/general/helpers";
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
 import Text from "../../../../components/text/Text";
+import NewSetStatementSimple from "../set/NewStatementSimple";
 
 
 interface Props {

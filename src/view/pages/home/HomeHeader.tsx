@@ -6,9 +6,11 @@ import { prompStore } from "../main/mainCont";
 import elipsIcon from "../../../assets/elipsIcon.svg";
 import installIcon from "../../../assets/installIcon.svg";
 import HomeMenu from "../../components/homeMenu/HomeMenu";
+import { t } from "i18next";
 
 export default function HomeHeader() {
     //for deffered app install
+    //@ts-ignore TODO: fix this    
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [openMenu, setOpenMenu] = useState(false);
 
@@ -28,8 +30,9 @@ export default function HomeHeader() {
     return (
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
+            <div></div>
                 <h1 className="homePage__header__wrapper__homeTitle">
-                    Conversations
+                    {t("Delib 5")}
                 </h1>
                 <div className="homePage__header__wrapper__icons">
                     <img
@@ -46,6 +49,7 @@ export default function HomeHeader() {
                     />
                     {openMenu && <HomeMenu />}
                 </div>
+               
             </div>
         </div>
     );

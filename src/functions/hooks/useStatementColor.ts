@@ -1,4 +1,3 @@
-import { Statement } from "delib-npm";
 import {useEffect, useState} from "react";
 
 export interface StyleProps{

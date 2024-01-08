@@ -2,7 +2,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import { t } from "i18next";
+
 
 // Custom components
 import Fav from "../../components/fav/Fav";
@@ -33,7 +33,7 @@ const Main = () => {
     return backFromAddStatment ? (
         <ScreenSlide className="page__main slide-in">
             <div className="wrapper">
-                {/* <h2>{t("Conversations")}</h2> */}
+              
 
                 {statements.map((statement) => (
                 
@@ -49,14 +49,7 @@ const Main = () => {
     ) : (
         <ScreenFadeIn className="page__main">
             <div className="wrapper">
-                {/* <h2>{t("Conversations")}</h2> */}
-
-                {/* {statements.map((statement) => (
-                    <MainCardRes
-                        key={statement.statement.statementId}
-                        statement={statement.statement}
-                    />
-                ))} */}
+               <h2>Main page</h2>
 
                 {statements.map((statement) => (
                     <MainCard

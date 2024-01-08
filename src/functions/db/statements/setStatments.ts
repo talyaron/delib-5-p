@@ -132,24 +132,24 @@ export const setStatmentToDB = async ({
     }
 };
 
-function getStatementsParents(statement: Statement): string[] {
-    try {
-        if (!statement) throw new Error("Statement is undefined");
+// function getStatementsParents(statement: Statement): string[] {
+//     try {
+//         if (!statement) throw new Error("Statement is undefined");
 
-        StatementSchema.parse(statement);
+//         StatementSchema.parse(statement);
 
-        if (statement.parentId === "top") statement.parents = [];
-        else {
-            statement.parents = statement.parents || [];
-            statement.parents.push(statement.statementId);
-        }
+//         if (statement.parentId === "top") statement.parents = [];
+//         else {
+//             statement.parents = statement.parents || [];
+//             statement.parents.push(statement.statementId);
+//         }
 
-        return statement.parents;
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
-}
+//         return statement.parents;
+//     } catch (error) {
+//         console.error(error);
+//         return [];
+//     }
+// }
 
 export async function setStatmentSubscriptionToDB(
     statement: Statement,

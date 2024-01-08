@@ -133,7 +133,8 @@ const StatementEvaluationCard: FC<Props> = ({
                             <>
                                 <MoreIcon />
                                 {openMenu && (
-                                    <CardMenu setOpenMenu={setOpenMenu}>
+                                    // TODO: remove isMe prop anc change to direction
+                                    <CardMenu isMe={true}>
                                         <span onClick={() => setEdit(true)}>
                                             {t("Edit Text")}
                                         </span>

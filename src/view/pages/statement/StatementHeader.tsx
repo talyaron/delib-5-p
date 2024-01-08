@@ -14,10 +14,7 @@ import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/s
 // Redux Store
 import { store } from "../../../model/store";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import {
-    statementNotificationSelector,
-    statementSelector,
-} from "../../../model/statements/statementsSlice";
+import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components
 import StatementTopNav from "./components/nav/top/StatementTopNav";
@@ -35,8 +32,6 @@ import useStatementColor from "../../../functions/hooks/useStatementColor";
 import DisconnectIcon from "../../components/icons/DisconnectIcon";
 import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
 import useDirection from "../../../functions/hooks/useDirection";
-import CardMenu from "../../components/cardMenu/CardMenu";
-import MoreIcon from "../../../assets/icons/MoreIcon";
 
 interface Props {
     title: string;
@@ -120,8 +115,6 @@ const StatementHeader: FC<Props> = ({
         }
         setStatmentSubscriptionNotificationToDB(statement);
     }
-
-    const [openMenu, setOpenMenu] = useState(false);
 
     return (
         <div className="page__header" style={headerColor}>
