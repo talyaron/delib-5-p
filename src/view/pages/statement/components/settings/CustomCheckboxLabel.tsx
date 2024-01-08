@@ -1,6 +1,6 @@
 import { t } from "i18next";
-import CheckedIcon from "../../../../components/icons/CheckedIcon";
 import { useState } from "react";
+import CheckedIcon from "../../../../components/icons/CheckedIcon";
 import UncheckedIcon from "../../../../components/icons/UncheckedIcon";
 
 interface CustomLabelProps {
@@ -14,12 +14,21 @@ export default function CustomCheckboxLabel({
     title,
     defaultChecked,
 }: CustomLabelProps) {
+    const [checked, setChecked] = useState(defaultChecked);
     return (
-        <label htmlFor={name} className="label">
+        <label
+            htmlFor={name}
+            className="settings__checkboxSection__column__label"
+        >
+            <div onClick={() => setChecked((prev) => !prev)}>
+                {checked ? <CheckedIcon /> : <UncheckedIcon />}
+            </div>
             <input
                 type="checkbox"
                 name={name}
                 defaultChecked={defaultChecked}
+                value={checked ? "on" : "off"}
+                style={{ display: "none" }}
             />
             {t(`${title}`)}
         </label>

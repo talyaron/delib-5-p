@@ -1,6 +1,7 @@
 import React from "react";
 import "./homeMenu.scss";
 import disconnectlIcon from "../../../assets/disconnectIcon.svg";
+import { handleLogout } from "../../../functions/general/helpers";
 
 export default function HomeMenu() {
 
@@ -11,7 +12,7 @@ export default function HomeMenu() {
                 src={disconnectlIcon}
                 alt="disconnect_icon"
             />
-            <p className="homeMenu__name">
+            <p className="homeMenu__name" onClick={handleLogout}>
                 Disconnect
             </p>
         </div>

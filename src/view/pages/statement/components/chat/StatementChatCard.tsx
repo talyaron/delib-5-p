@@ -60,7 +60,7 @@ const StatementChat: FC<Props> = ({
     );
     const userId = store.getState().user.user?.uid;
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statementType || "");
 
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(
@@ -76,7 +76,6 @@ const StatementChat: FC<Props> = ({
     const displayChat = isQuestion || isOption;
 
     const [isEdit, setIsEdit] = useState(false);
-    const [openMenu, setOpenMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     const displayUserName = !previousStatement
@@ -85,9 +84,6 @@ const StatementChat: FC<Props> = ({
         ? true
         : false;
 
-    
-
- 
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (
@@ -99,14 +95,15 @@ const StatementChat: FC<Props> = ({
 
             <div
                 className="message__box"
-                style={{
-                    borderRight: isMe
-                        ? `.65rem solid ${statementColor.backgroundColor}`
-                        : undefined,
-                    borderLeft: isMe
-                        ? undefined
-                        : `.65rem solid ${statementColor.backgroundColor}`,
-                }}
+                style={
+                    isMe
+                        ? {
+                              borderRight: `.65rem solid ${statementColor.backgroundColor}`,
+                          }
+                        : {
+                              borderLeft: `.65rem solid ${statementColor.backgroundColor}`,
+                          }
+                }
             >
                 {displayUserName && (
                     <div
@@ -119,39 +116,28 @@ const StatementChat: FC<Props> = ({
                 )}
 
                 <div className="message__box__info">
-                    <div onClick={() => setOpenMenu(true)}>
-                        <MoreIcon />
-                    </div>
-                    {openMenu && (
-                        <div
-                            onClick={() => {
-                                setOpenMenu(false);
-                            }}
-                        >
-                            <CardMenu setOpenMenu={setOpenMenu}>
-                                <StatementChatSetEdit
-                                    isAuthrized={_isAuthrized}
-                                    setEdit={setIsEdit}
-                                    edit={isEdit}
-                                    text={t("Edit Text")}
-                                />
-                                <StatementChatSetQuestion
-                                    statement={statement}
-                                    text={t("Question")}
-                                />
-                                <AddSubQuestion
-                                    statement={statement}
-                                    setShowModal={setShowModal}
-                                    text={t("Add Question")}
-                                />
-                                <StatementChatSetOption
-                                    parentStatement={parentStatement}
-                                    statement={statement}
-                                    text={t("Option")}
-                                />
-                            </CardMenu>
-                        </div>
-                    )}
+                    <CardMenu isMe={isMe}>
+                        <StatementChatSetEdit
+                            isAuthrized={_isAuthrized}
+                            setEdit={setIsEdit}
+                            edit={isEdit}
+                            text={t("Edit Text")}
+                        />
+                        <StatementChatSetQuestion
+                            statement={statement}
+                            text={t("Question")}
+                        />
+                        <AddSubQuestion
+                            statement={statement}
+                            setShowModal={setShowModal}
+                            text={t("Add Question")}
+                        />
+                        <StatementChatSetOption
+                            parentStatement={parentStatement}
+                            statement={statement}
+                            text={t("Option")}
+                        />
+                    </CardMenu>
                     <div className="message__box__info__text">
                         <EditTitle
                             statement={statement}

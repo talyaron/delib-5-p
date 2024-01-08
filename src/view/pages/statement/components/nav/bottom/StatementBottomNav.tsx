@@ -31,7 +31,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
     const [openNav, setOpenNav] = useState(false);
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statement.statementType || "");
 
     //used to check if the user can add a new option in voting and in evaluation screens
     const addOption: boolean | undefined =

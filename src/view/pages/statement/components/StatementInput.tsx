@@ -25,7 +25,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
     if (!statement) throw new Error("No statement");
     const user = useAppSelector(userSelector);
 
-    const statementColor = useStatementColor(statement);
+    const statementColor = useStatementColor(statement.statementType || "");
 
     const direction = useDirection();
 
