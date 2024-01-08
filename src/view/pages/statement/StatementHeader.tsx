@@ -158,43 +158,7 @@ const StatementHeader: FC<Props> = ({
                         setEdit={setEditHeader}
                     />
                 )}
-                <div onClick={() => setOpenMenu(true)}>
-                    <MoreIcon color={headerColor.color} />
-                </div>
-                {openMenu && (
-                    <CardMenu setOpenMenu={setOpenMenu}>
-                        <span
-                            className="moreIconBox__menu__item"
-                            onClick={handleShare}
-                        >
-                            <ShareIcon color={headerColor.backgroundColor} />
-                            {t("Share")}
-                        </span>
-                        <span
-                            className="moreIconBox__menu__item"
-                            onClick={handleRegisterToNotifications}
-                        >
-                            {hasNotificationPermission && hasNotifications ? (
-                                <BellIcon color={headerColor.backgroundColor} />
-                            ) : (
-                                <BellSlashIcon
-                                    color={headerColor.backgroundColor}
-                                />
-                            )}
-                            {t("Notifications")}
-                        </span>
-                        <span
-                            className="moreIconBox__menu__item"
-                            onClick={handleLogout}
-                        >
-                            <DisconnectIcon
-                                color={headerColor.backgroundColor}
-                            />
-                            {t("Disconnect")}
-                        </span>
-                    </CardMenu>
-                )}
-                {/* <PopUpMenu
+                <PopUpMenu
                     openMoreIconColor={headerColor.color}
                     firstIcon={
                         <ShareIcon color={headerColor.backgroundColor} />
@@ -217,7 +181,7 @@ const StatementHeader: FC<Props> = ({
                     }
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
-                /> */}
+                />
             </div>
             {statement && (
                 <StatementTopNav statement={statement} screen={screen} />

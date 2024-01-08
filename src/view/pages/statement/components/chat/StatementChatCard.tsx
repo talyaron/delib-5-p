@@ -76,7 +76,6 @@ const StatementChat: FC<Props> = ({
     const displayChat = isQuestion || isOption;
 
     const [isEdit, setIsEdit] = useState(false);
-    const [openMenu, setOpenMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     const displayUserName = !previousStatement
@@ -96,14 +95,15 @@ const StatementChat: FC<Props> = ({
 
             <div
                 className="message__box"
-                style={{
-                    borderRight: isMe
-                        ? `.65rem solid ${statementColor.backgroundColor}`
-                        : undefined,
-                    borderLeft: isMe
-                        ? undefined
-                        : `.65rem solid ${statementColor.backgroundColor}`,
-                }}
+                style={
+                    isMe
+                        ? {
+                              borderRight: `.65rem solid ${statementColor.backgroundColor}`,
+                          }
+                        : {
+                              borderLeft: `.65rem solid ${statementColor.backgroundColor}`,
+                          }
+                }
             >
                 {displayUserName && (
                     <div
@@ -116,39 +116,28 @@ const StatementChat: FC<Props> = ({
                 )}
 
                 <div className="message__box__info">
-                    <div onClick={() => setOpenMenu(true)}>
-                        <MoreIcon />
-                    </div>
-                    {openMenu && (
-                        <div
-                            onClick={() => {
-                                setOpenMenu(false);
-                            }}
-                        >
-                            <CardMenu setOpenMenu={setOpenMenu}>
-                                <StatementChatSetEdit
-                                    isAuthrized={_isAuthrized}
-                                    setEdit={setIsEdit}
-                                    edit={isEdit}
-                                    text={t("Edit Text")}
-                                />
-                                <StatementChatSetQuestion
-                                    statement={statement}
-                                    text={t("Question")}
-                                />
-                                <AddSubQuestion
-                                    statement={statement}
-                                    setShowModal={setShowModal}
-                                    text={t("Add Question")}
-                                />
-                                <StatementChatSetOption
-                                    parentStatement={parentStatement}
-                                    statement={statement}
-                                    text={t("Option")}
-                                />
-                            </CardMenu>
-                        </div>
-                    )}
+                    <CardMenu isMe={isMe}>
+                        <StatementChatSetEdit
+                            isAuthrized={_isAuthrized}
+                            setEdit={setIsEdit}
+                            edit={isEdit}
+                            text={t("Edit Text")}
+                        />
+                        <StatementChatSetQuestion
+                            statement={statement}
+                            text={t("Question")}
+                        />
+                        <AddSubQuestion
+                            statement={statement}
+                            setShowModal={setShowModal}
+                            text={t("Add Question")}
+                        />
+                        <StatementChatSetOption
+                            parentStatement={parentStatement}
+                            statement={statement}
+                            text={t("Option")}
+                        />
+                    </CardMenu>
                     <div className="message__box__info__text">
                         <EditTitle
                             statement={statement}
