@@ -6,7 +6,7 @@ export async function handleSetAnswersToDB(answers: Statement[]) {
     try {
         z.array(StatementSchema).parse(answers);
         answers.forEach(async (answer) => {
-            setStatmentToDB(answer);
+            setStatmentToDB({statement:answer, addSubscription:false});
         });
     } catch (error) {
         console.error(error);

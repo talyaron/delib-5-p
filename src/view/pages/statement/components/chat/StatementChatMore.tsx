@@ -21,7 +21,7 @@ interface Props {
     color?: string;
 }
 
-const StatementChatMore: FC<Props> = ({ statement, color }) => {
+const StatementChatMore: FC<Props> = ({ statement }) => {
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
     let messagesRead = 0;
@@ -51,8 +51,7 @@ const StatementChatMore: FC<Props> = ({ statement, color }) => {
                             : `9+`}
                     </div>
                 )}
-                {/* <BsChatLeftText size="1.5rem" /> */}
-                <ChatIcon statementType={statementType} color={color} />
+                <ChatIcon statementType={statementType} color={"var(--question)"} />
             </div>
             <div className="text">{messageToDisplay}</div>
         </div>

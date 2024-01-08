@@ -30,15 +30,6 @@ const AddSubQuestion: FC<Props> = ({ setShowModal, text}) => {
 
                <img src={addQuestion} alt={t("Add question")} />
             </div>
-            {/* {showQuestionModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={statement}
-                        isOption={false}
-                        setShowModal={setAddQuestionModal}
-                    />
-                </Modal>
-            )} */}
         </>
     );
 };

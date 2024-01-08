@@ -31,13 +31,12 @@ import {
 import useStatementColor from "../../../functions/hooks/useStatementColor";
 import DisconnectIcon from "../../components/icons/DisconnectIcon";
 import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
+import useDirection from "../../../functions/hooks/useDirection";
 
 interface Props {
     title: string;
     screen: Screen;
     statement: Statement;
-    direction: "row" | "row-reverse";
-    langDirection: "ltr" | "rtl";
     showAskPermission: boolean;
     setShowAskPermission: Function;
 }
@@ -46,8 +45,6 @@ const StatementHeader: FC<Props> = ({
     title,
     screen,
     statement,
-    direction,
-    langDirection,
     setShowAskPermission,
 }) => {
     const user = store.getState().user.user;
@@ -55,8 +52,9 @@ const StatementHeader: FC<Props> = ({
     const { pathname } = useLocation();
     const { statementId, page } = useParams();
     const location = useLocation();
+    const direction = useDirection();
 
-    const headerColor = useStatementColor(statement);
+    const headerColor = useStatementColor(statement.statementType || "");
 
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId)
@@ -122,19 +120,21 @@ const StatementHeader: FC<Props> = ({
         <div className="page__header" style={headerColor}>
             <div
                 className="page__header__wrapper"
-                style={{ flexDirection: direction, direction: langDirection }}
+                style={{ flexDirection: direction }}
             >
-                <div className="page__header__wrapper__actions">
-                <Link
+                <div
+                    className="page__header__wrapper__actions"
+                    style={{ flexDirection: direction }}
+                >
+                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                        <BackArrowIcon color={headerColor.color} />
+                    </div>
+                    <Link
                         state={{ from: window.location.pathname }}
                         to={"/home"}
                     >
                         <HomeIcon color={headerColor.color} />
                     </Link>
-                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
-                        <BackArrowIcon color={headerColor.color} />
-                    </div>
-                   
                 </div>
                 {!editHeader ? (
                     <h1

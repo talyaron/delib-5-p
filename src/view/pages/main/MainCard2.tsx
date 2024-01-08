@@ -1,11 +1,8 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../components/text/Text";
-// import chatIcon from "../../../assets/chatIcon.svg";
 
-//css
 
-// import styles from "./MainCard.module.scss";
 import StatementChatMore from "../statement/components/chat/StatementChatMore";
 import { Link } from "react-router-dom";
 

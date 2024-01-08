@@ -3,10 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
 
 // Custom components
-import { StatementSettings } from "../admin/settings/StatementSettings";
+
 import useDirection from "../../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../../components/animation/ScreenSlide";
 import BackArrowIcon from "../../../../components/icons/BackArrowIcon";
+import { StatementSettings } from "../settings/StatementSettings";
 
 export const SetStatement = () => {
     const { statementId } = useParams();

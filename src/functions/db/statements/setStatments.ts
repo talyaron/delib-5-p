@@ -5,6 +5,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import {
     ResultsBy,
+    Screen,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -16,46 +17,64 @@ import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
 import { getPastelColor } from "../../general/helpers";
+import { store } from "../../../model/store";
 
 const TextSchema = z.string().min(2);
+interface SetStatmentToDBProps {
+    statement: Statement;
+    parentStatement?: Statement | "top";
+    addSubscription: boolean;
+}
 
-export async function setStatmentToDB(
-    statement: Statement,
-    addSubscription: boolean = true
-) {
+export const setStatmentToDB = async ({
+    statement,
+    parentStatement,
+    addSubscription = true,
+}: SetStatmentToDBProps): Promise<string | undefined> => {
     try {
         if (!statement) throw new Error("Statement is undefined");
+        if (!parentStatement) throw new Error("Parent statement is undefined");
 
-        if (statement.parentId === "top") statement.parents = [];
-        else {
-            const parentStatementRef = doc(
-                DB,
-                Collections.statements,
-                statement.parentId
-            );
-            const parentStatementDB = await getDoc(parentStatementRef);
-
-            if (!parentStatementDB.exists())
-                throw new Error("Parent statement not found");
-
-            const parentStatement = parentStatementDB.data() as Statement;
-
-            statement.parents = parentStatement.parents || [];
-            statement.parents.push(parentStatement.statementId);
-        }
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User is undefined");
 
         TextSchema.parse(statement.statement);
-        console.log(statement.subScreens);
+
+        statement.statementType =
+            statement.statementId === undefined
+                ? StatementType.question
+                : statement.statementType;
+
+        statement.creatorId = statement?.creator?.uid || user.uid;
+        statement.creator = statement?.creator || user;
+        statement.statementId = statement?.statementId || crypto.randomUUID();
+        statement.parentId =
+            parentStatement === "top"
+                ? "top"
+                : statement.parentId || parentStatement?.statementId || "top";
+        statement.topParentId =
+            parentStatement === "top"
+                ? statement.statementId
+                : statement?.topParentId ||
+                  parentStatement?.topParentId ||
+                  "top";
+        statement.subScreens = statement.subScreens || [
+            Screen.CHAT,
+            Screen.OPTIONS,
+        ];
+
         statement.consensus = 0;
         statement.color = statement.color || getPastelColor();
 
-        statement.lastUpdate = Timestamp.now().toMillis();
         statement.statementType =
             statement.statementType || StatementType.statement;
         const { results, resultsSettings } = statement;
         if (!results) statement.results = [];
         if (!resultsSettings)
-            statement.resultsSettings = { resultsBy: ResultsBy.topVote };
+            statement.resultsSettings = { resultsBy: ResultsBy.topOptions };
+
+        statement.lastUpdate = new Date().getTime();
+        statement.createdAt = statement?.createdAt || new Date().getTime();
 
         //statement settings
         if (!statement.statementSettings)
@@ -63,6 +82,8 @@ export async function setStatmentToDB(
                 enableAddEvaluationOption: true,
                 enableAddVotingOption: true,
             };
+
+        // statement.parents = getStatementsParents(statement);
 
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator);
@@ -75,6 +96,7 @@ export async function setStatmentToDB(
         );
         const statementPromises = [];
 
+        //update timestamp
         const statementPromise = await setDoc(statementRef, statement, {
             merge: true,
         });
@@ -108,7 +130,26 @@ export async function setStatmentToDB(
         console.error(error);
         return undefined;
     }
-}
+};
+
+// function getStatementsParents(statement: Statement): string[] {
+//     try {
+//         if (!statement) throw new Error("Statement is undefined");
+
+//         StatementSchema.parse(statement);
+
+//         if (statement.parentId === "top") statement.parents = [];
+//         else {
+//             statement.parents = statement.parents || [];
+//             statement.parents.push(statement.statementId);
+//         }
+
+//         return statement.parents;
+//     } catch (error) {
+//         console.error(error);
+//         return [];
+//     }
+// }
 
 export async function setStatmentSubscriptionToDB(
     statement: Statement,

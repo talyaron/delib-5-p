@@ -28,7 +28,7 @@
     }
 
     &__box {
-        width: 50%;
+        width: 75%;
         height: fit-content;
         display: flex;
         flex-direction: column;
@@ -60,10 +60,10 @@
         }
         &__info {
             display: flex;
-            justify-content: space-between;
-            gap: 1rem;
             &__text{
                 width: 100%;
+                display: flex;
+                justify-content: flex-end;
             }
         }
         &__actions {

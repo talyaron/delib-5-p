@@ -153,3 +153,46 @@ button {
         transform: scale(0.9);
     }
 }
+
+.homeFav {
+    background: #4E88C7;
+    width: 3.125rem;
+    height: 3.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    border-radius: 50%;
+    box-shadow: 0px 10px 30px 0px rgba(52, 103, 157, 0.108);
+    user-select: none;
+    cursor: pointer;
+    z-index: 200;
+
+    &:active {
+        box-shadow: 0px 10px 50px 0px #4f5478b2;
+    }
+
+    &--fixed {
+        position: absolute;
+
+        img {
+            width: 1.8rem;
+        }
+
+        @media (max-width: 650px) {
+            right: 1rem;
+        }
+
+        @media (max-width: 300px) {
+            right: calc(50vw - 15ch);
+        }
+    }
+
+    &--up {
+        bottom: 24vh;
+        right: 5vw;
+    }
+
+}
+

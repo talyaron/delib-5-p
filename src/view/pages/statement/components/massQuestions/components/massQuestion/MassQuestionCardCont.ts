@@ -31,13 +31,12 @@ export const handleSetQuestionFromMassCard = ({
             //create new statement
             const statement: Statement | undefined = getNewStatment({
                 value: text,
-                statement: question,
-                statementType: StatementType.option,
-                user,
+                parentStatement: question,
+                statementType: StatementType.option
             });
             if (!statement) throw new Error("statement not created");
 
-            setStatmentToDB(statement);
+            setStatmentToDB({statement, parentStatement: question, addSubscription:false});
         }
     } catch (error) {
         console.error(error);

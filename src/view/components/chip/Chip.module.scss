@@ -1,18 +1,15 @@
 .chip{
     display: flex;
-    background-color: rgb(234, 234, 234);
     align-items: center;
-    margin: 3px;
-  
-    border-radius: 2rem;
+    font-size: .8rem;
+    background-color: var(--white);
+    border: 1px solid var(--shadow);
+    border-radius: 20px;
+    padding: .3rem .5rem;
+
     img{
         width: 1.5rem;
         height: 1.5rem;
-       
-        border-radius: 1rem;
-        margin: .1rem;
-    }
-    span{
-        padding: .1rem .3rem;
+        border-radius: 50%;
     }
 }

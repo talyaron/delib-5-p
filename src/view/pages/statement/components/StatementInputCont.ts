@@ -1,11 +1,15 @@
-import { Screen, Statement, User } from "delib-npm";
+import { Screen, Statement, StatementType, User } from "delib-npm";
 import { getNewStatment } from "../../../../functions/general/helpers";
 import { setStatmentToDB } from "../../../../functions/db/statements/setStatments";
 
-export function handleAddStatement(e: any, statement: Statement, user: User|null) {
+export function handleAddStatement(
+    e: any,
+    statement: Statement,
+    user: User | null
+) {
     try {
         e.preventDefault();
-        if(!user) throw new Error("No user");   
+        if (!user) throw new Error("No user");
 
         if (!user) throw new Error("No user");
 
@@ -18,14 +22,18 @@ export function handleAddStatement(e: any, statement: Statement, user: User|null
 
         const newStatement: Statement | undefined = getNewStatment({
             value,
-            statement,
-            user,
+            parentStatement: statement,
+            statementType: StatementType.statement,
         });
         if (!newStatement) throw new Error("No statement");
 
         newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
 
-        setStatmentToDB(newStatement);
+        setStatmentToDB({
+            statement: newStatement,
+            parentStatement: statement,
+            addSubscription: true,
+        });
 
         e.target.reset();
     } catch (error) {

@@ -10,21 +10,24 @@ interface Props {
 
 const UploadImage: FC<Props> = ({ statement }) => {
     try {
-        if (!statement) throw new Error("statement is undefined");
-
         const [image, setImage] = useState<File | null>(null);
         const [percentage, setPercetage] = useState(0);
 
         const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
-            event.preventDefault();
-            const file = event.dataTransfer.files[0];
-            setImage(file);
-            const imageURL = await uploadImageToStorage(
-                file,
-                statement,
-                setPercetage
-            );
-            updateStatmentMainImage(statement, imageURL);
+            try {
+                if (!statement) throw new Error("statement is undefined");
+                event.preventDefault();
+                const file = event.dataTransfer.files[0];
+                setImage(file);
+                const imageURL = await uploadImageToStorage(
+                    file,
+                    statement,
+                    setPercetage
+                );
+                updateStatmentMainImage(statement, imageURL);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {

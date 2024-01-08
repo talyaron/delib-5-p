@@ -1,3 +1,4 @@
+@import "./homePage.scss";
 @import "./input.scss";
 @import "./bottomNav.scss";
 @import "./evaluation.scss";
@@ -8,6 +9,7 @@
 @import "./popup.scss";
 @import "./mainCard.scss";
 @import "./setStatement.scss";
+@import "./settings.scss";
 @import "./options.scss";
 @import "./modal.scss";
 @import "./room.scss";
@@ -19,12 +21,14 @@
 @import "./addStatementModal.scss";
 @import "./termsOfUse.scss";
 @import "./votes.scss";
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap');
+@import "./homePage.scss";
+@import "../components/homeMenu/homeMenu.scss";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap");
 
 :root {
     // --- MAIN COLORS ---
     --mainBackground: #32527b;
-    --statementBackground: #F2F6FF;
+    --statementBackground: #f2f6ff;
     --inputBackground: #f5fcff;
 
     // Option
@@ -53,6 +57,8 @@
     --shadow: rgba(181, 197, 232, 0.486);
 
     --accent: #7cacf8;
+    --light-green: #84cccf;
+    --light-purple: #b1a4fc;
 
     // --- SIZES ---
     --padding: 1rem;
@@ -128,7 +134,7 @@ body {
     width: 100svw;
     height: 100svh;
     margin: 0px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     background: var(--pageBackground);
     overflow: hidden;
@@ -154,7 +160,7 @@ a {
 }
 
 b {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 
 .wrapperAll {
@@ -424,7 +430,7 @@ b {
     background-color: var(--white);
 }
 
-.footerButton>div {
+.footerButton > div {
     font-size: var(--size11);
     color: var(--gray1);
 }
@@ -623,7 +629,7 @@ b {
     height: 100%;
 }
 
-.carousel>main {
+.carousel > main {
     width: 100vw;
     height: 100%;
     scroll-behavior: smooth;
@@ -659,7 +665,7 @@ b {
         grid-template-columns: repeat(3, 50vw);
     }
 
-    .carousel>main {
+    .carousel > main {
         width: 150vw;
     }
 }
@@ -669,7 +675,7 @@ b {
         grid-template-columns: repeat(3, 100vw);
     }
 
-    .carousel>main {
+    .carousel > main {
         width: 300vw;
     }
 }

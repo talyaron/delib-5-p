@@ -1,4 +1,3 @@
-import { Statement } from "delib-npm";
 import {useEffect, useState} from "react";
 
 export interface StyleProps{
@@ -11,11 +10,11 @@ const initStyle = {
     color: "lightgray",
 };
 
-export default function useStatementColor(statement: Statement): StyleProps {
+export default function useStatementColor(statementType: string): StyleProps {
     const [style, setstyle] = useState(initStyle);
 
     useEffect(() => {
-        switch (statement.statementType) {
+        switch (statementType) {
             case "question":
                 setstyle({
                     backgroundColor: "var(--question)",
@@ -38,7 +37,7 @@ export default function useStatementColor(statement: Statement): StyleProps {
                 setstyle(initStyle);
                 break;
         }
-    }, [statement]);
+    }, [statementType]);
 
     return style;
 }
