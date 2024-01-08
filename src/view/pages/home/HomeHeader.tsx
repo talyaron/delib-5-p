@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
-import { t } from "i18next";
-import { handleLogout } from "../../../functions/general/helpers";
 
 // icons
 import elipsIcon from "../../../assets/elipsIcon.svg";
 import installIcon from "../../../assets/installIcon.svg";
 import HomeMenu from "../../components/homeMenu/HomeMenu";
-import { stubTrue } from "lodash";
 
 export default function HomeHeader() {
     //for deffered app install

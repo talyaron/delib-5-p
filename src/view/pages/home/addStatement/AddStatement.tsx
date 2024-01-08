@@ -1,5 +1,5 @@
 // Third party imports
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { t } from "i18next";
 
 // Custom components

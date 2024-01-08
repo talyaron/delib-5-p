@@ -55,7 +55,6 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 // Helpers
 
 // Hooks & Providers
-import useDirection from "../../../functions/hooks/useDirection";
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
@@ -65,9 +64,7 @@ const Statement: FC = () => {
     const statementId = useParams().statementId;
     const page = useParams().page as Screen;
 
-    const direction = useDirection();
     const navigate = useNavigate();
-    const langDirection = direction === "row" ? "ltr" : "rtl";
 
     // const user = store.getState().user.user
     const user = useSelector(userSelector);
@@ -218,8 +215,6 @@ const Statement: FC = () => {
                     statement={statement}
                     screen={screen || Screen.CHAT}
                     title={title}
-                    direction={direction}
-                    langDirection={langDirection}
                     showAskPermission={showAskPermission}
                     setShowAskPermission={setShowAskPermission}
                 />

@@ -7,18 +7,22 @@ interface Props {
     setOpenMenu: Function;
 }
 
-
-
 const CardMenu: FC<Props> = ({ children, setOpenMenu }) => {
-
     const direction = useDirection();
-    if(!children) return null;
+    if (!children) return null;
 
-   
-    
     return (
         <>
-            <div className={styles.menu} style={direction === 'row'?{right:`.9rem`, left:'unset'}:{left:'.9rem'}}>{children}</div>
+            <div
+                className={styles.menu}
+                style={
+                    direction === "row"
+                        ? { right: `.9rem`, left: "unset" }
+                        : { left: ".9rem" }
+                }
+            >
+                {children}
+            </div>
             <div
                 className={styles.background}
                 onClick={() => setOpenMenu(false)}
