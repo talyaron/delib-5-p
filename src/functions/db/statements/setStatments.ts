@@ -132,7 +132,7 @@ export const setStatmentToDB = async ({
     }
 };
 
-function getStatementsParents(statement: Statement): string[] {
+export function getStatementsParents(statement: Statement): string[] {
     try {
         if (!statement) throw new Error("Statement is undefined");
 

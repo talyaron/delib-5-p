@@ -46,6 +46,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
         <div className={styles.card}>
             <div className={styles.title}>
                 <SetEdit
+                    text={t("Edit")}
                     isAuthrized={isAuthorized(statement, statementSubscription)}
                     setEdit={setEdit}
                     edit={isEdit}

@@ -26,7 +26,6 @@ import {
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
 
 import CardMenu from "../../../../components/cardMenu/CardMenu";
-import MoreIcon from "../../../../../assets/icons/MoreIcon";
 import StatementChatSetOption from "./components/StatementChatSetOption";
 import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
 import NewSetStatementSimple from "../set/NewStatementSimple";

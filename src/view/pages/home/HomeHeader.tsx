@@ -32,12 +32,14 @@ export default function HomeHeader() {
                     Conversations
                 </h1>
                 <div className="homePage__header__wrapper__icons">
-                    <img
-                        className="homePage__header__wrapper__icons__installIcon"
-                        src={installIcon}
-                        alt="install_icon"
-                        onClick={handleInstallApp}
-                    />
+                    {deferredPrompt && (
+                        <img
+                            className="homePage__header__wrapper__icons__installIcon"
+                            src={installIcon}
+                            alt="install_icon"
+                            onClick={handleInstallApp}
+                        />
+                    )}
                     <img
                         className="homePage__header__wrapper__icons__elipsIcon"
                         src={elipsIcon}

@@ -2,7 +2,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import { t } from "i18next";
 
 // Custom components
 import Fav from "../../components/fav/Fav";

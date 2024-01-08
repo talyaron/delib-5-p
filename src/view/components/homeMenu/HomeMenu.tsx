@@ -1,10 +1,8 @@
-import React from "react";
 import "./homeMenu.scss";
 import disconnectlIcon from "../../../assets/disconnectIcon.svg";
 import { handleLogout } from "../../../functions/general/helpers";
 
 export default function HomeMenu() {
-
     return (
         <div className="homeMenu">
             <img

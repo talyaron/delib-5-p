@@ -1,5 +1,4 @@
 import { FC } from "react";
-import PlusIcon from "../icons/PlusIcon";
 
 // icons
 // import AddIcon from "@mui/icons-material/Add";
@@ -19,23 +18,6 @@ const Fav: FC<Props> = ({ onclick, isHome }) => {
     };
 
     return (
-        // <div
-        //     style={position}
-        //     className="fav fav--fixed"
-        //     onClick={(ev) => (onclick ? onclick(ev) : null)}
-        // >
-        //     <div
-        //         style={{
-        //             display: "flex",
-        //             justifyContent: "center",
-        //             alignItems: "center",
-        //         }}
-        //     >
-        //         <AddIcon
-        //             style={{ transform: `translateX(0rem) scale(1.45)` }}
-        //         />
-        //     </div>
-        // </div>
 
         <div
             style={position}
