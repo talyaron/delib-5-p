@@ -14,8 +14,9 @@
 
     &__info {
         color: var(--header);
-        display: block;
+        display: flex;
         width: 100%;
+        
 
         &__text {
             display: flex;
@@ -24,6 +25,7 @@
             flex:1;
             width: 100%;
         }
+       
     }
 
     &__actions {
