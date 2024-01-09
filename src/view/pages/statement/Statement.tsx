@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import { createSelector } from "reselect";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
@@ -36,7 +37,6 @@ import {
     setStatement,
     setStatementSubscription,
     statementSelector,
-    statementSubsSelector,
 } from "../../../model/statements/statementsSlice";
 
 import { userSelector } from "../../../model/users/userSlice";
@@ -58,6 +58,7 @@ import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlic
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
+import { RootState } from "../../../model/store";
 
 const Statement: FC = () => {
     // Hooks
@@ -74,11 +75,23 @@ const Statement: FC = () => {
     const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
-
     // Redux hooks
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
-    const subStatements = useSelector(statementSubsSelector(statementId));
+
+
+    const subStatementsSelector = createSelector(
+        (state: RootState) => state.statements.statements,
+        (state: RootState, statementId: string | undefined) => statementId,
+        (statements, statementId) =>
+            statements
+                .filter((st) => st.parentId === statementId)
+                .sort((a, b) => a.createdAt - b.createdAt)
+    );
+
+    const subStatements = useAppSelector((state: RootState) =>
+        subStatementsSelector(state, statementId)
+    );
     const screen = availableScreen(statement, page);
 
     //store callbacks
@@ -119,8 +132,7 @@ const Statement: FC = () => {
 
     //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
-        if (screen && (screen !== page)) {
-
+        if (screen && screen !== page) {
             navigate(`/statement/${statementId}/${screen}`);
         }
     }, [screen]);
