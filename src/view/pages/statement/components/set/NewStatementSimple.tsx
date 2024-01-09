@@ -9,7 +9,7 @@ import { t } from "i18next";
 
 // Statements helpers
 
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import { createStatement, setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
@@ -18,7 +18,6 @@ import Loader from "../../../../components/loaders/Loader";
 
 import ModalImage from "../../../../components/icons/ModalImage";
 
-import { getNewStatment } from "../../../../../functions/general/helpers";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -63,55 +62,28 @@ const NewSetStatementSimple: FC<Props> = ({
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
 
-                // // Why do this?
-                // const _user = store.getState().user.user;
-                // if (!_user) throw new Error("user not found");
-                // const { displayName, email, photoURL, uid } = _user;
-                // const user = { displayName, email, photoURL, uid };
-                // UserSchema.parse(user);
-
-                // const newStatement: any = Object.fromEntries(data.entries());
-
-                // newStatement.statement = _statement;
-
-                // newStatement.statementId = crypto.randomUUID();
-                // newStatement.parentId = parentStatementId;
-                // newStatement.topParentId = parentIsStatement
-                //     ? parentStatement.topParentId
-                //     : parentStatementId;
-
-                // if (parentIsStatement && parentStatement.parents)
-                //     newStatement.parents = [
-                //         ...parentStatement.parents,
-                //         parentStatementId,
-                //     ];
-                // newStatement.creator = parseUserFromFirebase(_user);
-
-                // Can only be Option or Question
-                const statementType = isOption ? StatementType.option :  StatementType.question;
-                
-
-                const setSubsciption: boolean = true;
-
-                const newStatement = getNewStatment({
-                    value: _statement,
-                    parentStatement:parentStatement === "top" ? undefined : parentStatement,
-                    statementType,
+                const newStatement = createStatement({
+                    text: _statement,
+                    parentStatement,
+                    statementType: isOption ? StatementType.option : StatementType.question,
+                   
                 });
 
+   
                 if(!newStatement) throw new Error("newStatement was not created");
                 
                 await setStatmentToDB({
                     statement: newStatement,
                     parentStatement: parentStatement === "top" ? undefined : parentStatement,
-                    addSubscription: setSubsciption,
+                    addSubscription: true,
                 });
+                setIsLoading(false);
+                setShowModal(false);
 
                 if (getSubStatements) await getSubStatements();
 
-                setIsLoading(false);
 
-                setShowModal(false);
+                
             } catch (error) {
                 console.error(error);
             }

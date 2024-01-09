@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 // Third party imports
@@ -56,10 +56,9 @@ export const statementsSlicer = createSlice({
     reducers: {
         setStatement: (state, action: PayloadAction<Statement>) => {
             try {
-           
                 const newStatement = { ...action.payload };
-                const {success} = StatementSchema.safeParse(newStatement);
-                if(!success) return;
+                const { success } = StatementSchema.safeParse(newStatement);
+                if (!success) return;
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
@@ -71,7 +70,9 @@ export const statementsSlicer = createSlice({
                         statement.statementId === newStatement.statementId
                 );
 
-                const isEqualStatements = JSON.stringify(oldStatement) === JSON.stringify(newStatement);
+                const isEqualStatements =
+                    JSON.stringify(oldStatement) ===
+                    JSON.stringify(newStatement);
                 if (!isEqualStatements)
                     state.statements = updateArray(
                         state.statements,
@@ -132,7 +133,9 @@ export const statementsSlicer = createSlice({
                     (statement) =>
                         statement.statementId === newStatement.statementId
                 );
-                const isEqualStatements = JSON.stringify(oldStatement) === JSON.stringify(newStatement);
+                const isEqualStatements =
+                    JSON.stringify(oldStatement) ===
+                    JSON.stringify(newStatement);
                 if (!isEqualStatements)
                     state.statementSubscription = updateArray(
                         state.statementSubscription,
@@ -313,6 +316,7 @@ export const {
 export const screenSelector = (state: RootState) => state.statements.screen;
 export const statementsSelector = (state: RootState) =>
     state.statements.statements;
+
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
         state.statements.statements.filter((statement) =>
@@ -340,6 +344,53 @@ export const statementSubsSelector =
             .filter((statementSub) => statementSub.parentId === statementId)
             .sort((a, b) => a.createdAt - b.createdAt)
             .map((statement) => ({ ...statement }));
+
+const selectedStatementId = (statementId: string | undefined) => statementId;
+
+const slctSts = (state: RootState) => state.statements.statements;
+
+export const statementSubsSelectorMemo = createSelector(
+    [selectedStatementId, slctSts],
+    (statementId, statements) => {
+        if (!statementId) return [];
+        const sts = statements
+            .filter((statementSub) => statementSub.parentId === statementId)
+            .sort((a, b) => a.createdAt - b.createdAt)
+            .map((statement) => ({ ...statement }));
+
+        return sts;
+    }
+);
+
+// export const statementSubsSelectorMemo = createSelector(
+//     statementsSelector,
+//     (statementId: string | undefined) => statementId,
+//     (statements, statementId) =>
+//         statements
+//             .filter((statementSub) => statementSub.parentId === statementId)
+//             .sort((a, b) => a.createdAt - b.createdAt)
+//             .map((statement) => ({ ...statement }))
+// );
+
+// export const statementSubsSelectorMemo = createSelector(
+//     (state: RootState, statementId: string | undefined) => statementId,
+//     (state: RootState) => state.statements.statements,
+//     (statementId, statements) => {
+//         return statements
+//             .filter((statementSub) => statementSub.parentId === statementId)
+//             .sort((a, b) => a.createdAt - b.createdAt)
+//             .map((statement) => ({ ...statement }));
+//     }
+// );
+
+// export const statementSubsSelectorMemo = createSelector(
+//     (statementId: string | undefined) => (state: RootState) =>
+//         state.statements.statements
+//             .filter((statementSub) => statementSub.parentId === statementId)
+//             .sort((a, b) => a.createdAt - b.createdAt)
+//             .map((statement) => ({ ...statement })),
+//     (statements) => statements
+// );
 export const statementNotificationSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statementSubscription.find(

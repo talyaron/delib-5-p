@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import {
+    createStatement,
+    setStatmentToDB,
+    updateStatement,
+} from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    StatementSubscription,
-    ResultsBy,
-    Statement,
-} from "delib-npm";
+import { StatementSubscription, Statement, StatementType } from "delib-npm";
 
 // Custom components
 import Loader from "../../../../components/loaders/Loader";
@@ -29,7 +29,6 @@ import {
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
 
-
 // Firestore functions
 import {
     getStatementFromDB,
@@ -37,15 +36,17 @@ import {
 } from "../../../../../functions/db/statements/getStatement";
 
 // * Statement Settings functions * //
-import { parseScreensCheckBoxes } from "./statementSettingsCont";
-import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+
+import {
+    navigateToStatementTab,
+    parseScreensCheckBoxes,
+} from "../../../../../functions/general/helpers";
 import UploadImage from "../../../../components/uploadImage/UploadImage";
 import DisplayResultsBy from "./DisplayResultsBy";
 import ResultsRange from "./ResultsRange";
 import GetVoters from "./GetVoters";
 import GetEvaluators from "./GetEvaluators";
 import CheckBoxeArea from "./CheckBoxeArea";
-import { navArray } from "../nav/top/StatementTopNavModel";
 
 interface Props {
     simple?: boolean;
@@ -61,10 +62,10 @@ export const StatementSettings: FC<Props> = () => {
     const statement: Statement | undefined = useAppSelector(
         statementSelector(statementId)
     );
+
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
-
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
@@ -108,67 +109,78 @@ export const StatementSettings: FC<Props> = () => {
             let title: any = data.get("statement");
             if (!title || title.length < 2) return;
 
-            const resultsBy = data.get("resultsBy") as ResultsBy;
-            const numberOfResults: number = Number(data.get("numberOfResults"));
+            // const resultsBy = data.get("resultsBy") as ResultsBy;
+            // const numberOfResults: number = Number(data.get("numberOfResults"));
             const description = data.get("description");
 
             //add to title * at the beggining
             if (title && !title.startsWith("*")) title = "*" + title;
 
             const _statement = `${title}\n${description}`;
+            if (!_statement) return;
 
-            const newStatement: any = Object.fromEntries(data.entries());
+            const dataObj: any = Object.fromEntries(data.entries());
+            const screens = parseScreensCheckBoxes(dataObj);
+            const {
+                resultsBy,
+                numberOfResults,
+                hasChildren,
+                enableAddEvaluationOption,
+                enableAddVotingOption,
+            } = dataObj;
 
-            newStatement.subScreens = parseScreensCheckBoxes(
-                newStatement,
-                navArray
-            );
+            if (!statementId) {
+                const newStatement = createStatement({
+                    text: _statement,
+                    screens,
+                    statementType: StatementType.question,
+                    parentStatement: "top",
+                    resultsBy,
+                    numberOfResults,
+                    hasChildren,
+                    enableAddEvaluationOption,
+                    enableAddVotingOption,
+                });
+                if (!newStatement)
+                    throw new Error("newStatement had error in creating");
 
-            newStatement.statement = _statement;
+                await setStatmentToDB({
+                    parentStatement: "top",
+                    statement: newStatement,
+                    addSubscription: true,
+                });
+                setIsLoading(false);
+                navigateToStatementTab(newStatement, navigate);
+                return;
+            } else {
+                //update statement
+                if (!statement) throw new Error("statement is undefined");
 
-            newStatement.resultsSettings = {
-                numberOfResults: numberOfResults,
-                resultsBy: resultsBy || ResultsBy.topOptions,
-                deep: 1,
-                minConsensus: 1,
-            };
+                const newStatement = updateStatement({
+                    statement,
+                    text: _statement,
+                    screens,
+                    statementType: StatementType.question,
+                    resultsBy,
+                    numberOfResults,
+                    hasChildren,
+                    enableAddEvaluationOption,
+                    enableAddVotingOption,
+                });
+                if (!newStatement)
+                    throw new Error("newStatement had not been updated");
 
-            newStatement.hasChildren =
-                newStatement.hasChildren === "on" ? true : false;
-
-            //enableAddOption in statement screens with bottom nav
-            Object.assign(newStatement, {
-                statementSettings: {
-                    enableAddEvaluationOption:
-                        newStatement.enableAddEvaluationOption === "on"
-                            ? true
-                            : false,
-                    enableAddVotingOption:
-                        newStatement.enableAddVotingOption === "on"
-                            ? true
-                            : false,
-                },
-            });
-
-            //can transfer to a setStatmentToDB function
-            newStatement.consensus = statement?.consensus || 0;
-
-            //can transfer to a setStatmentToDB function
-            const setSubsciption: boolean =
-                statementId === undefined ? true : false;
-
-            //remove all "on" values
-            for (const key in newStatement) {
-                if (newStatement[key] === "on") delete newStatement[key];
+                await setStatmentToDB({
+                    parentStatement: statement,
+                    statement: newStatement,
+                    addSubscription: true
+                });
+                setIsLoading(false);
+                navigateToStatementTab(newStatement, navigate);
+                return;
             }
 
-            const _statementId = await setStatmentToDB({
-                parentStatement: statementId ? statement : "top",
-                statement: newStatement,
-                addSubscription: setSubsciption,
-            });
-
-            if (_statementId) navigateToStatementTab(newStatement, navigate);
+          
         } catch (error) {
             console.error(error);
         }
@@ -189,6 +201,7 @@ export const StatementSettings: FC<Props> = () => {
                             name="statement"
                             placeholder={t("Group Title")}
                             defaultValue={arrayOfStatementParagrphs[0]}
+                            required={true}
                         />
                     </label>
                     <label htmlFor="description">

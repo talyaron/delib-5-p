@@ -6,7 +6,7 @@ import { t } from "i18next";
 interface Props {
     label: string;
     link: string;
-    defaultChecked?: boolean;
+    defaultChecked: boolean;
 }
 
 const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
@@ -60,11 +60,12 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 style={{ display: "none" }}
                 type="checkbox"
                 name={link}
-                id="toggleSwitch"
+                id={`toggleSwitch-${link}`}
                 className="switch-input"
-                defaultChecked={checked}
+                // defaultChecked={checked}
                 onChange={handleChange}
                 value={checked ? "on" : "off"}
+                checked={checked}
             />
         </div>
     );

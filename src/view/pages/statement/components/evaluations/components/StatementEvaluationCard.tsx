@@ -27,7 +27,6 @@ import {
     isAuthorized,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
-import MoreIcon from "../../../../../../assets/icons/MoreIcon";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import { t } from "i18next";
 import useStatementColor, {
@@ -35,6 +34,7 @@ import useStatementColor, {
 } from "../../../../../../functions/hooks/useStatementColor";
 import Modal from "../../../../../components/modal/Modal";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
+import useDirection from "../../../../../../functions/hooks/useDirection";
 
 interface Props {
     statement: Statement;
@@ -50,19 +50,21 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const statementColor: StyleProps = useStatementColor(statement.statementType || "");
-    console.log(statement.statement, statementColor)
+    const statementColor: StyleProps = useStatementColor(
+        statement.statementType || ""
+    );
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)
     );
+    const direction = useDirection();
+    const isRtl = direction === "row-reverse";
 
     const elementRef = useRef<HTMLDivElement>(null);
     // const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
-    const [openMenu, setOpenMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -123,48 +125,40 @@ const StatementEvaluationCard: FC<Props> = ({
                             isTextArea={true}
                         />
                     </div>
-                    <div
-                        className="clickable"
-                        onClick={() => {
-                            setOpenMenu(!openMenu);
-                        }}
-                    >
-                        {_isAuthorized && (
-                            <>
-                                <MoreIcon />
-                                {openMenu && (
-                                    // TODO: remove isMe prop anc change to direction
-                                    <CardMenu isMe={true}>
-                                        <span onClick={() => setEdit(true)}>
-                                            {t("Edit Text")}
-                                        </span>
-                                        <SetEdit
-                                            isAuthrized={isAuthorized(
-                                                statement,
-                                                statementSubscription,
-                                                parentStatement.creatorId
-                                            )}
-                                            edit={edit}
-                                            setEdit={setEdit}
-                                        />
-
-                                        <StatementChatSetOption
-                                            parentStatement={parentStatement}
-                                            statement={statement}
-                                            text={t("Remove Option")}
-                                        />
-                                    </CardMenu>
-                                )}
-                            </>
-                        )}
-                    </div>
                 </div>
-                {linkToChildren(statement, parentStatement) && (
-                    <div className="optionCard__info__chat">
-                        <StatementChatMore statement={statement} color={statementColor.color}/>
-                    </div>
-                )}
+                <div className="optionCard__info__more">
+                    {_isAuthorized && (
+                        <CardMenu isMe={isRtl}>
+                            <span onClick={() => setEdit(true)}>
+                                {t("Edit Text")}
+                            </span>
+                            <SetEdit
+                                isAuthrized={isAuthorized(
+                                    statement,
+                                    statementSubscription,
+                                    parentStatement.creatorId
+                                )}
+                                edit={edit}
+                                setEdit={setEdit}
+                            />
+
+                            <StatementChatSetOption
+                                parentStatement={parentStatement}
+                                statement={statement}
+                                text={t("Remove Option")}
+                            />
+                        </CardMenu>
+                    )}
+                </div>
             </div>
+            {linkToChildren(statement, parentStatement) && (
+                <div className="optionCard__info__chat">
+                    <StatementChatMore
+                        statement={statement}
+                        color={statementColor.color}
+                    />
+                </div>
+            )}
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
                 <AddSubQuestion
