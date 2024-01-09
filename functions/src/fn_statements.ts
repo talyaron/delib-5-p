@@ -80,6 +80,7 @@ export async function updateParentWithNewMessageCB(e: any) {
 export async function sendNotificationsCB(e: any) {
     try {
         const statement = e.data.data();
+        if(!statement) throw new Error("statement not found");
 
         const parentId = statement.parentId;
 

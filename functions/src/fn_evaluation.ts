@@ -216,6 +216,7 @@ async function updateParentStatementWithChildResults(
 ) {
     try {
         if (!parentId) throw new Error("parentId is not defined");
+     
 
         //get parent statement
         const parentStatementRef = db.collection("statements").doc(parentId);

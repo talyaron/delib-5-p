@@ -13,13 +13,14 @@ const CardMenu: FC<Props> = ({ children, isMe }) => {
 
     return (
         <>
-            <div onClick={() => setOpenMenu(true)}>
+            <div onClick={() => setOpenMenu(!openMenu)}>
                 <MoreIcon />
             </div>
             {openMenu && (
                 <>
                     <div
                         className={styles.menu}
+                        onClick={() => setOpenMenu(!openMenu)}
                         style={
                             !isMe
                                 ? { right: `.9rem`, left: "unset" }

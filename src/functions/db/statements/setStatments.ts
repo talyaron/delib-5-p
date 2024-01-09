@@ -215,7 +215,7 @@ export function createStatement({
         newStatement.subScreens = screens;
         newStatement.statementSettings.subScreens = screens;
 
-        console.log(newStatement);
+     
         StatementSchema.parse(newStatement);
         return newStatement;
     } catch (error) {
