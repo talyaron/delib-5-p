@@ -4,8 +4,8 @@ import { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Helpers
-import { setStatmentToDB } from "../../../../functions/db/statements/setStatments";
-import { getNewStatment } from "../../../../functions/general/helpers";
+import { createStatement, setStatmentToDB } from "../../../../functions/db/statements/setStatments";
+
 
 // Icons
 import SendIcon from "../../../components/icons/SendIcon";
@@ -48,8 +48,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 // submit form
                 if (!user) throw new Error("No user");
 
-                const newStatement: Statement | undefined = getNewStatment({
-                    value: e.target.value,
+                const newStatement: Statement | undefined = createStatement({
+                    text: e.target.value,
                     parentStatement: statement,
                 });
 

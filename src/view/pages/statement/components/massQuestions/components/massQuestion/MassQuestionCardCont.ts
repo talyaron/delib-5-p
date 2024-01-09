@@ -1,7 +1,7 @@
 import { Statement, StatementType, User } from "delib-npm";
-import { getNewStatment } from "../../../../../../../functions/general/helpers";
 import { store } from "../../../../../../../model/store";
 import {
+    createStatement,
     setStatmentToDB,
     updateStatementText,
 } from "../../../../../../../functions/db/statements/setStatments";
@@ -29,8 +29,8 @@ export const handleSetQuestionFromMassCard = ({
         } else {
 
             //create new statement
-            const statement: Statement | undefined = getNewStatment({
-                value: text,
+            const statement: Statement | undefined = createStatement({
+                text,
                 parentStatement: question,
                 statementType: StatementType.option
             });

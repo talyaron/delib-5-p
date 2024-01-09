@@ -51,7 +51,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const statementColor: StyleProps = useStatementColor(statement.statementType || "");
-    console.log(statement.statement, statementColor)
+
 
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId)

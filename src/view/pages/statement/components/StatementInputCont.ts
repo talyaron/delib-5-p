@@ -1,6 +1,5 @@
-import { Screen, Statement, StatementType, User } from "delib-npm";
-import { getNewStatment } from "../../../../functions/general/helpers";
-import { setStatmentToDB } from "../../../../functions/db/statements/setStatments";
+import { Statement, StatementType, User } from "delib-npm";
+import { createStatement, setStatmentToDB } from "../../../../functions/db/statements/setStatments";
 
 export function handleAddStatement(
     e: any,
@@ -20,14 +19,13 @@ export function handleAddStatement(
 
         if (!_value) throw new Error("No value");
 
-        const newStatement: Statement | undefined = getNewStatment({
-            value,
+        const newStatement: Statement | undefined = createStatement({
+            text: _value,
             parentStatement: statement,
             statementType: StatementType.statement,
         });
-        if (!newStatement) throw new Error("No statement");
+        if (!newStatement) throw new Error("No statement was created");
 
-        newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
 
         setStatmentToDB({
             statement: newStatement,

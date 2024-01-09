@@ -19,24 +19,4 @@ export function isSubPageChecked(
         return true;
     }
 }
-export function parseScreensCheckBoxes(
-    dataObj: Object,
-    navArray: NavObject[]
-): string[] {
-    try {
-        if (!dataObj) throw new Error("dataObj is undefined");
-        if (!navArray) throw new Error("navArray is undefined");
-        const _navArray = [...navArray];
 
-        const screens = _navArray
-            //@ts-ignore
-            .filter((navObj) => dataObj[navObj.link] === "on")
-            .map((navObj) => navObj.link);
-
-        if (screens.length === 0) return [Screen.CHAT, Screen.OPTIONS];
-        return screens;
-    } catch (error) {
-        console.error(error);
-        return [Screen.CHAT, Screen.OPTIONS];
-    }
-}
