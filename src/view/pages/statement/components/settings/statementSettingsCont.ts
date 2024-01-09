@@ -28,7 +28,7 @@ export async function handleGetEvaluators(
 export function isSubPageChecked(
     statement: Statement | undefined,
     navObj: NavObject
-) {
+): boolean {
     try {
         //in case of a new statement
         if (!statement) {
@@ -39,6 +39,7 @@ export function isSubPageChecked(
         const subScreens = statement.subScreens as Screen[];
         if (subScreens === undefined) return true;
         if (subScreens?.includes(navObj.link)) return true;
+        return false;
     } catch (error) {
         console.error(error);
         return true;

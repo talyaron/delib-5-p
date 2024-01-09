@@ -16,7 +16,7 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import { getPastelColor, parseScreensCheckBoxes } from "../../general/helpers";
+import { getPastelColor } from "../../general/helpers";
 import { store } from "../../../model/store";
 
 const TextSchema = z.string().min(2);
@@ -135,7 +135,7 @@ export const setStatmentToDB = async ({
 interface CreateStatementProps {
     text: string;
     parentStatement: Statement | "top";
-    screens?: string[];
+    screens?: Screen[];
     statementType?: StatementType;
     enableAddEvaluationOption?: "on" | "off" | boolean;
     enableAddVotingOption?: "on" | "off" | boolean;
@@ -166,9 +166,8 @@ export function createStatement({
                 ? new Set(parentStatement?.parents)
                 : new Set();
         parentsSet.add(parentId);
-        const parents:string[] =[...parentsSet];
-       
-       
+        const parents: string[] = [...parentsSet];
+
         const topParentId =
             parentStatement !== "top"
                 ? parentStatement?.topParentId
@@ -214,6 +213,7 @@ export function createStatement({
         newStatement.results = [];
 
         newStatement.subScreens = screens;
+        newStatement.statementSettings.subScreens = screens;
 
         console.log(newStatement);
         StatementSchema.parse(newStatement);
@@ -221,6 +221,136 @@ export function createStatement({
     } catch (error) {
         console.error(error);
         return undefined;
+    }
+}
+
+interface UpdateStatementProps {
+    text: string;
+    statement: Statement;
+    screens?: Screen[];
+    statementType?: StatementType;
+    enableAddEvaluationOption?: "on" | "off" | boolean;
+    enableAddVotingOption?: "on" | "off" | boolean;
+    resultsBy?: ResultsBy;
+    numberOfResults?: number;
+    hasChildren?: "on" | "off" | boolean;
+}
+export function updateStatement({
+    text,
+    statement,
+    screens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+    statementType = StatementType.statement,
+    enableAddEvaluationOption,
+    enableAddVotingOption,
+    resultsBy,
+    numberOfResults,
+    hasChildren = true,
+}: UpdateStatementProps): Statement | undefined {
+    try {
+        const newStatement: Statement = JSON.parse(JSON.stringify(statement)) ;
+        console.log(newStatement)
+
+        if (text) newStatement.statement = text;
+
+        newStatement.lastUpdate = Timestamp.now().toMillis();
+
+        if (resultsBy && newStatement.resultsSettings)
+            newStatement.resultsSettings.resultsBy = resultsBy;
+        else if (resultsBy && !newStatement.resultsSettings) {
+            newStatement.resultsSettings = {
+                resultsBy: resultsBy,
+                numberOfResults: 1,
+            };
+        }
+        if (numberOfResults && newStatement.resultsSettings)
+            newStatement.resultsSettings.numberOfResults = Number(numberOfResults);
+        else if (numberOfResults && !newStatement.resultsSettings) {
+            newStatement.resultsSettings = {
+                resultsBy: ResultsBy.topOptions,
+                numberOfResults: numberOfResults,
+            };
+        }
+
+        newStatement.statementSettings = updateStatementSettings(
+            statement,
+            enableAddEvaluationOption,
+            enableAddVotingOption,
+            screens
+        );
+
+        if (hasChildren !== undefined)
+            newStatement.hasChildren = hasChildren === "on" ? true : false;
+
+        if (statementType !== undefined)
+            newStatement.statementType =
+                statement.statementType || StatementType.statement;
+
+        newStatement.subScreens =
+            screens !== undefined
+                ? screens
+                : statement.subScreens || [
+                      Screen.CHAT,
+                      Screen.OPTIONS,
+                      Screen.VOTE,
+                  ];
+
+        console.log(newStatement);
+        StatementSchema.parse(newStatement);
+        return newStatement;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
+
+function updateStatementSettings(
+    statement: Statement,
+    enableAddEvaluationOption: string | boolean | undefined,
+    enableAddVotingOption: string | boolean | undefined,
+    screens: Screen[] | undefined
+): {
+    enableAddEvaluationOption?: boolean;
+    enableAddVotingOption?: boolean;
+    screens?: Screen[];
+} {
+    try {
+        if (!statement) throw new Error("Statement is undefined");
+        if (!statement.statementSettings)
+            throw new Error("Statement settings is undefined");
+
+        const statementSettings = { ...statement.statementSettings };
+
+        if (
+            enableAddEvaluationOption === "on" ||
+            enableAddEvaluationOption === true
+        ) {
+            statementSettings.enableAddEvaluationOption = true;
+        } else if (
+            enableAddEvaluationOption === "off" ||
+            enableAddEvaluationOption === false
+        ) {
+            statementSettings.enableAddEvaluationOption = false;
+        }
+
+        if (enableAddVotingOption === "on" || enableAddVotingOption === true) {
+            statementSettings.enableAddVotingOption = true;
+        } else if (
+            enableAddVotingOption === "off" ||
+            enableAddVotingOption === false
+        ) {
+            statementSettings.enableAddVotingOption = false;
+        }
+
+        if (screens) statementSettings.subScreens = screens;
+
+        return statementSettings;
+    } catch (error) {
+        console.error(error);
+        return {
+            enableAddEvaluationOption: true,
+            enableAddVotingOption: true,
+            screens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+        };
     }
 }
 

@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 
 // Helpers
 import { createStatement, setStatmentToDB } from "../../../../functions/db/statements/setStatments";
-import { getNewStatment } from "../../../../functions/general/helpers";
+
 
 // Icons
 import SendIcon from "../../../components/icons/SendIcon";

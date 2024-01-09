@@ -6,7 +6,7 @@ import { t } from "i18next";
 interface Props {
     label: string;
     link: string;
-    defaultChecked?: boolean;
+    defaultChecked: boolean;
 }
 
 const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {

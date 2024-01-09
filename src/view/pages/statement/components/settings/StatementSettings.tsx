@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import {
     createStatement,
     setStatmentToDB,
+    updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
@@ -61,6 +62,7 @@ export const StatementSettings: FC<Props> = () => {
     const statement: Statement | undefined = useAppSelector(
         statementSelector(statementId)
     );
+
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
@@ -147,72 +149,38 @@ export const StatementSettings: FC<Props> = () => {
                     statement: newStatement,
                     addSubscription: true,
                 });
+                setIsLoading(false);
+                navigateToStatementTab(newStatement, navigate);
+                return;
+            } else {
+                //update statement
+                if (!statement) throw new Error("statement is undefined");
 
+                const newStatement = updateStatement({
+                    statement,
+                    text: _statement,
+                    screens,
+                    statementType: StatementType.question,
+                    resultsBy,
+                    numberOfResults,
+                    hasChildren,
+                    enableAddEvaluationOption,
+                    enableAddVotingOption,
+                });
+                if (!newStatement)
+                    throw new Error("newStatement had not been updated");
+
+                await setStatmentToDB({
+                    parentStatement: statement,
+                    statement: newStatement,
+                    addSubscription: true
+                });
+                setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
                 return;
             }
 
-            throw new Error("handleSetStatment not implemented for update");
-
-            // const newStatement: Statement = createStatement({
-            //     text:_statement,
-            //     parentStatement,
-            //     data,
-            //     statementType:StatementType.question
-            // })
-
-            // const newStatement: any = Object.fromEntries(data.entries());
-
-            // newStatement.subScreens = parseScreensCheckBoxes(
-            //     newStatement,
-            //     navArray
-            // );
-
-            // newStatement.statement = _statement;
-
-            // newStatement.resultsSettings = {
-            //     numberOfResults: numberOfResults,
-            //     resultsBy: resultsBy || ResultsBy.topOptions,
-            //     deep: 1,
-            //     minConsensus: 1,
-            // };
-
-            // newStatement.hasChildren =
-            //     newStatement.hasChildren === "on" ? true : false;
-
-            // //enableAddOption in statement screens with bottom nav
-            // Object.assign(newStatement, {
-            //     statementSettings: {
-            //         enableAddEvaluationOption:
-            //             newStatement.enableAddEvaluationOption === "on"
-            //                 ? true
-            //                 : false,
-            //         enableAddVotingOption:
-            //             newStatement.enableAddVotingOption === "on"
-            //                 ? true
-            //                 : false,
-            //     },
-            // });
-
-            // //can transfer to a setStatmentToDB function
-            // newStatement.consensus = statement?.consensus || 0;
-
-            // //can transfer to a setStatmentToDB function
-            // const setSubsciption: boolean =
-            //     statementId === undefined ? true : false;
-
-            // //remove all "on" values
-            // for (const key in newStatement) {
-            //     if (newStatement[key] === "on") delete newStatement[key];
-            // }
-
-            // const _statementId = await setStatmentToDB({
-            //     parentStatement: statementId ? statement : "top",
-            //     statement: newStatement,
-            //     addSubscription: setSubsciption,
-            // });
-
-            // if (_statementId) navigateToStatementTab(newStatement, navigate);
+          
         } catch (error) {
             console.error(error);
         }

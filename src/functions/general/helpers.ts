@@ -63,56 +63,7 @@ export function getIntialLocationSessionStorage(): string | undefined {
     }
 }
 
-interface getNewStatmentProps {
-    value?: string | undefined | null;
-    parentStatement?: Statement;
-    statementType?: StatementType;
-}
 
-export function getNewStatment({
-    value,
-    parentStatement,
-    statementType,
-}: getNewStatmentProps): Statement | undefined {
-    try {
-        const user = store.getState().user.user;
-
-        if (!parentStatement) throw new Error("No parentStatement");
-        if (!user) throw new Error("No user");
-        if (!value) throw new Error("No value");
-
-        const userId = user.uid;
-
-        const creator = user;
-        if (!creator) throw new Error("User not logged in");
-
-        const parents = parentStatement.parents || [];
-        const paretnsSet = new Set(parents);
-        //convert bac to array
-        const _parents = [...paretnsSet];
-
-        const newStatement: Statement = {
-            statement: value,
-            parentId: parentStatement.statementId,
-            parents: [..._parents, parentStatement.statementId],
-            topParentId:
-                parentStatement.topParentId || parentStatement.statementId,
-            statementId: crypto.randomUUID(),
-            creatorId: userId,
-            creator,
-            createdAt: new Date().getTime(),
-            lastUpdate: new Date().getTime(),
-            consensus: 0,
-            statementType: statementType || StatementType.statement,
-        };
-        newStatement.subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
-
-        return newStatement;
-    } catch (error) {
-        console.error(error);
-        return undefined;
-    }
-}
 
 export function isAuthorized(
     statement: Statement,
@@ -315,7 +266,7 @@ export function handleLogout() {
 
 export function parseScreensCheckBoxes(
     dataObj: Object
-): string[] {
+): Screen[] {
     try {
 
         if (!dataObj) throw new Error("dataObj is undefined");
@@ -326,12 +277,12 @@ export function parseScreensCheckBoxes(
         const screens = _navArray
             //@ts-ignore
             .filter((navObj) => dataObj[navObj.link] === "on")
-            .map((navObj) => navObj.link);
+            .map((navObj) => navObj.link) as Screen[];
 
         if (screens.length === 0) return [Screen.CHAT, Screen.OPTIONS];
         return screens;
     } catch (error) {
         console.error(error);
-        return [Screen.CHAT, Screen.OPTIONS];
+        return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
     }
 }
