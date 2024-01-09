@@ -31,6 +31,7 @@ import Modal from "./view/components/modal/Modal";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
+import { onLocalMessage } from "./functions/notifications";
 
 export default function App() {
     const navigate = useNavigate();
@@ -90,6 +91,8 @@ export default function App() {
             return;
         }
 
+        const unsub = onLocalMessage();
+
         if (user.agreement?.date) {
             setShowSignAgreement(false);
         } else {
@@ -100,6 +103,10 @@ export default function App() {
             setAgreement(agreement.text);
             setShowSignAgreement(true);
         }
+
+        return () => {
+            unsub;
+        };
     }, [user]);
 
     //handles
