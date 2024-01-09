@@ -12,6 +12,7 @@ import ScreenFadeIn from "../../components/animation/ScreenFadeIn";
 // import MainCardRes from "./MainCard2";
 import MainCard from "./MainCard2";
 import ScreenSlide from "../../components/animation/ScreenSlide";
+import { t } from "i18next";
 
 const Main = () => {
     // Hooks
@@ -49,7 +50,7 @@ const Main = () => {
     ) : (
         <ScreenFadeIn className="page__main">
             <div className="wrapper">
-               <h2>Main page</h2>
+               <h2>{t("Main Page")}</h2>
 
                 {statements.map((statement) => (
                     <MainCard
