@@ -2,6 +2,7 @@ import { Statement, NavObject, Screen } from "delib-npm";
 import { getVoters } from "../../../../../functions/db/vote/getVotes";
 import { getEvaluations } from "../../../../../functions/db/evaluation/getEvaluation";
 
+
 export async function handleGetVoters(
     parentId: string | undefined,
     setVoters: Function,
@@ -43,19 +44,4 @@ export function isSubPageChecked(
         return true;
     }
 }
-export function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
-    try {
-        if (!dataObj) throw new Error("dataObj is undefined");
-        if (!navArray) throw new Error("navArray is undefined");
-        const _navArray = [...navArray];
 
-        const screens = _navArray
-            //@ts-ignore
-            .filter((navObj) => dataObj[navObj.link] === "on")
-            .map((navObj) => navObj.link);
-        return screens;
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
-}

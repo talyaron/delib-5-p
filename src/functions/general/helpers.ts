@@ -11,6 +11,7 @@ import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
+import { navArray } from "../../view/pages/statement/components/nav/top/StatementTopNavModel";
 
 export function updateArray(
     currentArray: Array<any>,
@@ -272,7 +273,7 @@ export function linkToChildren(
         const isQuestion = statement.statementType === StatementType.question;
         const isOption = isOptionFn(statement);
         const hasChildren = parentStatement.hasChildren;
-        console.log(statement.statement, isQuestion, isOption, hasChildren)
+   
 
         if (isQuestion) return true;
         if (isOption && hasChildren) return true;
@@ -309,4 +310,27 @@ export function calculateFontSize(
 export function handleLogout() {
     logOut();
     store.dispatch(setUser(null));
+}
+
+
+export function parseScreensCheckBoxes(
+    dataObj: Object
+): string[] {
+    try {
+        if (!dataObj) throw new Error("dataObj is undefined");
+        if (!navArray) throw new Error("navArray is undefined");
+ 
+        const _navArray = [...navArray];
+
+        const screens = _navArray
+            //@ts-ignore
+            .filter((navObj) => dataObj[navObj.link] === "on")
+            .map((navObj) => navObj.link);
+
+        if (screens.length === 0) return [Screen.CHAT, Screen.OPTIONS];
+        return screens;
+    } catch (error) {
+        console.error(error);
+        return [Screen.CHAT, Screen.OPTIONS];
+    }
 }

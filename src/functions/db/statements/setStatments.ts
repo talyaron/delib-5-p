@@ -16,8 +16,10 @@ import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB, deviceToken } from "../config";
-import { getPastelColor } from "../../general/helpers";
+import { getPastelColor, parseScreensCheckBoxes } from "../../general/helpers";
 import { store } from "../../../model/store";
+
+
 
 const TextSchema = z.string().min(2);
 interface SetStatmentToDBProps {
@@ -131,6 +133,94 @@ export const setStatmentToDB = async ({
         return undefined;
     }
 };
+
+interface CreateStatementProps {
+    text: string;
+    parentStatement: Statement | "top";
+    resultBy?: ResultsBy;
+    numberOfResults?: number;
+    data?: any;
+    statementType?: StatementType;
+}
+export function createStatement({
+    text,
+    parentStatement,
+    resultBy = ResultsBy.topOptions,
+    numberOfResults = 1,
+    data,
+    statementType = StatementType.statement,
+}: CreateStatementProps): Statement | undefined {
+    try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User is undefined");
+        const statementId = crypto.randomUUID();
+
+        const parentId =
+            parentStatement !== "top" ? parentStatement?.statementId : "top";
+        const parents =
+            parentStatement !== "top" ? parentStatement?.parents || [] : [];
+        if (parentId !== "top") parents.push(parentId);
+        const topParentId =
+            parentStatement !== "top"
+                ? parentStatement?.topParentId
+                : statementId;
+
+        let newStatement: any = {
+            statement: text,
+            statementId,
+            parentId,
+            parents,
+            topParentId,
+            creator: user,
+            creatorId: user.uid,
+        };
+        if (data) {
+            newStatement = {
+                ...newStatement,
+                ...Object.fromEntries(data.entries()),
+            };
+        }
+     
+        newStatement.defaultLanguage = user.defaultLanguage || "en";
+        newStatement.createdAt = Timestamp.now().toMillis();
+        newStatement.lastUpdate = Timestamp.now().toMillis();
+        newStatement.color = getPastelColor();
+        newStatement.resultsSettings = {
+            resultsBy: resultBy,
+            numberOfResults,
+        };
+
+        Object.assign(newStatement, {
+            statementSettings: {
+                enableAddEvaluationOption:
+                    newStatement.enableAddEvaluationOption === "on"
+                        ? true
+                        : false,
+                enableAddVotingOption:
+                    newStatement.enableAddVotingOption === "on" ? true : false,
+            },
+        });
+        newStatement.hasChildren =
+            newStatement.hasChildren === "on" ? true : false;
+
+        newStatement.statementType = statementType;
+        newStatement.consensus = 0;
+        newStatement.results = [];
+
+        newStatement.subScreens = parseScreensCheckBoxes(Object.fromEntries(data.entries()));
+
+        //remove all "on" values
+        for (const key in newStatement) {
+            if (newStatement[key] === "on") delete newStatement[key];
+        }
+        console.log(newStatement);
+        StatementSchema.parse(newStatement);
+        return newStatement;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
 
 // function getStatementsParents(statement: Statement): string[] {
 //     try {

@@ -9,7 +9,7 @@ import { t } from "i18next";
 
 // Statements helpers
 
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import { createStatement, setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
@@ -18,7 +18,6 @@ import Loader from "../../../../components/loaders/Loader";
 
 import ModalImage from "../../../../components/icons/ModalImage";
 
-import { getNewStatment } from "../../../../../functions/general/helpers";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -63,6 +62,13 @@ const NewSetStatementSimple: FC<Props> = ({
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
 
+                const newStatement = createStatement({
+                    text: _statement,
+                    parentStatement,
+                    statementType: isOption ? StatementType.option : StatementType.question,
+                    data,
+                });
+
                 // // Why do this?
                 // const _user = store.getState().user.user;
                 // if (!_user) throw new Error("user not found");
@@ -88,16 +94,16 @@ const NewSetStatementSimple: FC<Props> = ({
                 // newStatement.creator = parseUserFromFirebase(_user);
 
                 // Can only be Option or Question
-                const statementType = isOption ? StatementType.option :  StatementType.question;
+                // const statementType = isOption ? StatementType.option :  StatementType.question;
                 
 
                 const setSubsciption: boolean = true;
 
-                const newStatement = getNewStatment({
-                    value: _statement,
-                    parentStatement:parentStatement === "top" ? undefined : parentStatement,
-                    statementType,
-                });
+                // const newStatement = getNewStatment({
+                //     value: _statement,
+                //     parentStatement:parentStatement === "top" ? undefined : parentStatement,
+                //     statementType,
+                // });
 
                 if(!newStatement) throw new Error("newStatement was not created");
                 
