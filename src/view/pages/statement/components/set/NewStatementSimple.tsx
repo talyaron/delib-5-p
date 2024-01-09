@@ -66,7 +66,7 @@ const NewSetStatementSimple: FC<Props> = ({
                     text: _statement,
                     parentStatement,
                     statementType: isOption ? StatementType.option : StatementType.question,
-                    data,
+                   
                 });
 
                 // // Why do this?

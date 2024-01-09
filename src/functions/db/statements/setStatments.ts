@@ -135,30 +135,40 @@ export const setStatmentToDB = async ({
 interface CreateStatementProps {
     text: string;
     parentStatement: Statement | "top";
-    resultBy?: ResultsBy;
-    numberOfResults?: number;
-    data?: any;
+    screens?: string[];
     statementType?: StatementType;
+    enableAddEvaluationOption?: "on" | "off" | boolean;
+    enableAddVotingOption?: "on" | "off" | boolean;
+    resultsBy?: ResultsBy;
+    numberOfResults?: number;
+    hasChildren?: "on" | "off" | boolean;
 }
 export function createStatement({
     text,
     parentStatement,
-    resultBy = ResultsBy.topOptions,
-    numberOfResults = 1,
-    data,
+    screens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
     statementType = StatementType.statement,
+    enableAddEvaluationOption = true,
+    enableAddVotingOption = true,
+    resultsBy = ResultsBy.topOptions,
+    numberOfResults = 1,
+    hasChildren = true,
 }: CreateStatementProps): Statement | undefined {
     try {
         const user = store.getState().user.user;
         if (!user) throw new Error("User is undefined");
         const statementId = crypto.randomUUID();
-        if (!data) throw new Error("Data is undefined");
 
         const parentId =
             parentStatement !== "top" ? parentStatement?.statementId : "top";
-        const parents =
-            parentStatement !== "top" ? parentStatement?.parents || [] : [];
-        if (parentId !== "top") parents.push(parentId);
+        const parentsSet: Set<string> =
+            parentStatement !== "top"
+                ? new Set(parentStatement?.parents)
+                : new Set();
+        parentsSet.add(parentId);
+        const parents:string[] =[...parentsSet];
+       
+       
         const topParentId =
             parentStatement !== "top"
                 ? parentStatement?.topParentId
@@ -173,42 +183,38 @@ export function createStatement({
             creator: user,
             creatorId: user.uid,
         };
-        const dataObj = Object.fromEntries(data.entries());
-
-      
 
         newStatement.defaultLanguage = user.defaultLanguage || "en";
         newStatement.createdAt = Timestamp.now().toMillis();
         newStatement.lastUpdate = Timestamp.now().toMillis();
         newStatement.color = getPastelColor();
         newStatement.resultsSettings = {
-            resultsBy: resultBy,
-            numberOfResults,
+            resultsBy: resultsBy || ResultsBy.topOptions,
+            numberOfResults: Number(numberOfResults),
         };
 
         Object.assign(newStatement, {
             statementSettings: {
                 enableAddEvaluationOption:
-                    newStatement.enableAddEvaluationOption === "on"
+                    enableAddEvaluationOption === "on" ||
+                    enableAddEvaluationOption === true
                         ? true
                         : false,
                 enableAddVotingOption:
-                    newStatement.enableAddVotingOption === "on" ? true : false,
+                    enableAddVotingOption === "on" ||
+                    enableAddVotingOption === true
+                        ? true
+                        : false,
             },
         });
-        newStatement.hasChildren =
-            newStatement.hasChildren === "on" ? true : false;
+        newStatement.hasChildren = hasChildren === "on" ? true : false;
 
         newStatement.statementType = statementType;
         newStatement.consensus = 0;
         newStatement.results = [];
 
-        newStatement.subScreens = parseScreensCheckBoxes(dataObj);
+        newStatement.subScreens = screens;
 
-        //remove all "on" values
-        for (const key in newStatement) {
-            if (newStatement[key] === "on") delete newStatement[key];
-        }
         console.log(newStatement);
         StatementSchema.parse(newStatement);
         return newStatement;

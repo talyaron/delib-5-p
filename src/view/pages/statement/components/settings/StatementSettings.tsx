@@ -1,15 +1,14 @@
 import { FC, useEffect, useState } from "react";
 // Statment imports
-import { createStatement, setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import {
+    createStatement,
+    setStatmentToDB,
+} from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    StatementSubscription,
-    Statement,
-    StatementType,
-} from "delib-npm";
+import { StatementSubscription, Statement, StatementType } from "delib-npm";
 
 // Custom components
 import Loader from "../../../../components/loaders/Loader";
@@ -29,7 +28,6 @@ import {
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
 
-
 // Firestore functions
 import {
     getStatementFromDB,
@@ -38,14 +36,16 @@ import {
 
 // * Statement Settings functions * //
 
-import { navigateToStatementTab } from "../../../../../functions/general/helpers";
+import {
+    navigateToStatementTab,
+    parseScreensCheckBoxes,
+} from "../../../../../functions/general/helpers";
 import UploadImage from "../../../../components/uploadImage/UploadImage";
 import DisplayResultsBy from "./DisplayResultsBy";
 import ResultsRange from "./ResultsRange";
 import GetVoters from "./GetVoters";
 import GetEvaluators from "./GetEvaluators";
 import CheckBoxeArea from "./CheckBoxeArea";
-
 
 interface Props {
     simple?: boolean;
@@ -64,7 +64,6 @@ export const StatementSettings: FC<Props> = () => {
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId)
     );
-
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
@@ -104,7 +103,6 @@ export const StatementSettings: FC<Props> = () => {
             setIsLoading(true);
 
             const data = new FormData(ev.currentTarget);
-        
 
             let title: any = data.get("statement");
             if (!title || title.length < 2) return;
@@ -117,15 +115,32 @@ export const StatementSettings: FC<Props> = () => {
             if (title && !title.startsWith("*")) title = "*" + title;
 
             const _statement = `${title}\n${description}`;
+            if (!_statement) return;
 
-            if(!statementId){
+            const dataObj: any = Object.fromEntries(data.entries());
+            const screens = parseScreensCheckBoxes(dataObj);
+            const {
+                resultsBy,
+                numberOfResults,
+                hasChildren,
+                enableAddEvaluationOption,
+                enableAddVotingOption,
+            } = dataObj;
+
+            if (!statementId) {
                 const newStatement = createStatement({
                     text: _statement,
+                    screens,
                     statementType: StatementType.question,
                     parentStatement: "top",
-                    data,
+                    resultsBy,
+                    numberOfResults,
+                    hasChildren,
+                    enableAddEvaluationOption,
+                    enableAddVotingOption,
                 });
-                if(!newStatement) throw new Error("newStatement had error in creating");
+                if (!newStatement)
+                    throw new Error("newStatement had error in creating");
 
                 await setStatmentToDB({
                     parentStatement: "top",
@@ -138,8 +153,6 @@ export const StatementSettings: FC<Props> = () => {
             }
 
             throw new Error("handleSetStatment not implemented for update");
-
-            
 
             // const newStatement: Statement = createStatement({
             //     text:_statement,
@@ -220,6 +233,7 @@ export const StatementSettings: FC<Props> = () => {
                             name="statement"
                             placeholder={t("Group Title")}
                             defaultValue={arrayOfStatementParagrphs[0]}
+                            required={true}
                         />
                     </label>
                     <label htmlFor="description">
