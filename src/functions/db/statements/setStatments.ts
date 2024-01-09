@@ -5,76 +5,57 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import {
     ResultsBy,
-    Screen,
     Statement,
     StatementSchema,
-    StatementSubscription,
     StatementType,
     UserSchema,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { getUserPermissionToNotifications } from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { DB, deviceToken } from "../config";
+import { DB } from "../config";
 import { getPastelColor } from "../../general/helpers";
-import { store } from "../../../model/store";
+import { setStatmentSubscriptionNotificationToDB } from "../../notifications";
 
 const TextSchema = z.string().min(2);
-interface SetStatmentToDBProps {
-    statement: Statement;
-    parentStatement?: Statement | "top";
-    addSubscription: boolean;
-}
 
-export const setStatmentToDB = async ({
-    statement,
-    parentStatement,
-    addSubscription = true,
-}: SetStatmentToDBProps): Promise<string | undefined> => {
+export async function setStatmentToDB(
+    statement: Statement,
+    addSubscription: boolean = true
+) {
     try {
         if (!statement) throw new Error("Statement is undefined");
-        if (!parentStatement) throw new Error("Parent statement is undefined");
 
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User is undefined");
+        if (statement.parentId === "top") statement.parents = [];
+        else {
+            const parentStatementRef = doc(
+                DB,
+                Collections.statements,
+                statement.parentId
+            );
+            const parentStatementDB = await getDoc(parentStatementRef);
+
+            if (!parentStatementDB.exists())
+                throw new Error("Parent statement not found");
+
+            const parentStatement = parentStatementDB.data() as Statement;
+
+            statement.parents = parentStatement.parents || [];
+            statement.parents.push(parentStatement.statementId);
+        }
 
         TextSchema.parse(statement.statement);
-
-        statement.statementType =
-            statement.statementId === undefined
-                ? StatementType.question
-                : statement.statementType;
-
-        statement.creatorId = statement?.creator?.uid || user.uid;
-        statement.creator = statement?.creator || user;
-        statement.statementId = statement?.statementId || crypto.randomUUID();
-        statement.parentId =
-            parentStatement === "top"
-                ? "top"
-                : statement.parentId || parentStatement?.statementId || "top";
-        statement.topParentId =
-            parentStatement === "top"
-                ? statement.statementId
-                : statement?.topParentId ||
-                  parentStatement?.topParentId ||
-                  "top";
-        statement.subScreens = statement.subScreens || [
-            Screen.CHAT,
-            Screen.OPTIONS,
-        ];
-
+        console.log(statement.subScreens);
         statement.consensus = 0;
         statement.color = statement.color || getPastelColor();
 
+        statement.lastUpdate = Timestamp.now().toMillis();
         statement.statementType =
             statement.statementType || StatementType.statement;
         const { results, resultsSettings } = statement;
         if (!results) statement.results = [];
         if (!resultsSettings)
-            statement.resultsSettings = { resultsBy: ResultsBy.topOptions };
-
-        statement.lastUpdate = new Date().getTime();
-        statement.createdAt = statement?.createdAt || new Date().getTime();
+            statement.resultsSettings = { resultsBy: ResultsBy.topVote };
 
         //statement settings
         if (!statement.statementSettings)
@@ -82,8 +63,6 @@ export const setStatmentToDB = async ({
                 enableAddEvaluationOption: true,
                 enableAddVotingOption: true,
             };
-
-        // statement.parents = getStatementsParents(statement);
 
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator);
@@ -96,7 +75,6 @@ export const setStatmentToDB = async ({
         );
         const statementPromises = [];
 
-        //update timestamp
         const statementPromise = await setDoc(statementRef, statement, {
             merge: true,
         });
@@ -130,248 +108,7 @@ export const setStatmentToDB = async ({
         console.error(error);
         return undefined;
     }
-};
-
-interface CreateStatementProps {
-    text: string;
-    parentStatement: Statement | "top";
-    screens?: Screen[];
-    statementType?: StatementType;
-    enableAddEvaluationOption?: "on" | "off" | boolean;
-    enableAddVotingOption?: "on" | "off" | boolean;
-    resultsBy?: ResultsBy;
-    numberOfResults?: number;
-    hasChildren?: "on" | "off" | boolean;
 }
-export function createStatement({
-    text,
-    parentStatement,
-    screens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
-    statementType = StatementType.statement,
-    enableAddEvaluationOption = true,
-    enableAddVotingOption = true,
-    resultsBy = ResultsBy.topOptions,
-    numberOfResults = 1,
-    hasChildren = true,
-}: CreateStatementProps): Statement | undefined {
-    try {
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User is undefined");
-        const statementId = crypto.randomUUID();
-
-        const parentId =
-            parentStatement !== "top" ? parentStatement?.statementId : "top";
-        const parentsSet: Set<string> =
-            parentStatement !== "top"
-                ? new Set(parentStatement?.parents)
-                : new Set();
-        parentsSet.add(parentId);
-        const parents: string[] = [...parentsSet];
-
-        const topParentId =
-            parentStatement !== "top"
-                ? parentStatement?.topParentId
-                : statementId;
-
-        let newStatement: any = {
-            statement: text,
-            statementId,
-            parentId,
-            parents,
-            topParentId,
-            creator: user,
-            creatorId: user.uid,
-        };
-
-        newStatement.defaultLanguage = user.defaultLanguage || "en";
-        newStatement.createdAt = Timestamp.now().toMillis();
-        newStatement.lastUpdate = Timestamp.now().toMillis();
-        newStatement.color = getPastelColor();
-        newStatement.resultsSettings = {
-            resultsBy: resultsBy || ResultsBy.topOptions,
-            numberOfResults: Number(numberOfResults),
-        };
-
-        Object.assign(newStatement, {
-            statementSettings: {
-                enableAddEvaluationOption:
-                    enableAddEvaluationOption === "on" ||
-                    enableAddEvaluationOption === true
-                        ? true
-                        : false,
-                enableAddVotingOption:
-                    enableAddVotingOption === "on" ||
-                    enableAddVotingOption === true
-                        ? true
-                        : false,
-            },
-        });
-        newStatement.hasChildren = hasChildren === "on" ? true : false;
-
-        newStatement.statementType = statementType;
-        newStatement.consensus = 0;
-        newStatement.results = [];
-
-        newStatement.subScreens = screens;
-        newStatement.statementSettings.subScreens = screens;
-
-        console.log(newStatement);
-        StatementSchema.parse(newStatement);
-        return newStatement;
-    } catch (error) {
-        console.error(error);
-        return undefined;
-    }
-}
-
-interface UpdateStatementProps {
-    text: string;
-    statement: Statement;
-    screens?: Screen[];
-    statementType?: StatementType;
-    enableAddEvaluationOption?: "on" | "off" | boolean;
-    enableAddVotingOption?: "on" | "off" | boolean;
-    resultsBy?: ResultsBy;
-    numberOfResults?: number;
-    hasChildren?: "on" | "off" | boolean;
-}
-export function updateStatement({
-    text,
-    statement,
-    screens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
-    statementType = StatementType.statement,
-    enableAddEvaluationOption,
-    enableAddVotingOption,
-    resultsBy,
-    numberOfResults,
-    hasChildren = true,
-}: UpdateStatementProps): Statement | undefined {
-    try {
-        const newStatement: Statement = JSON.parse(JSON.stringify(statement)) ;
-        console.log(newStatement)
-
-        if (text) newStatement.statement = text;
-
-        newStatement.lastUpdate = Timestamp.now().toMillis();
-
-        if (resultsBy && newStatement.resultsSettings)
-            newStatement.resultsSettings.resultsBy = resultsBy;
-        else if (resultsBy && !newStatement.resultsSettings) {
-            newStatement.resultsSettings = {
-                resultsBy: resultsBy,
-                numberOfResults: 1,
-            };
-        }
-        if (numberOfResults && newStatement.resultsSettings)
-            newStatement.resultsSettings.numberOfResults = Number(numberOfResults);
-        else if (numberOfResults && !newStatement.resultsSettings) {
-            newStatement.resultsSettings = {
-                resultsBy: ResultsBy.topOptions,
-                numberOfResults: numberOfResults,
-            };
-        }
-
-        newStatement.statementSettings = updateStatementSettings(
-            statement,
-            enableAddEvaluationOption,
-            enableAddVotingOption,
-            screens
-        );
-
-        if (hasChildren !== undefined)
-            newStatement.hasChildren = hasChildren === "on" ? true : false;
-
-        if (statementType !== undefined)
-            newStatement.statementType =
-                statement.statementType || StatementType.statement;
-
-        newStatement.subScreens =
-            screens !== undefined
-                ? screens
-                : statement.subScreens || [
-                      Screen.CHAT,
-                      Screen.OPTIONS,
-                      Screen.VOTE,
-                  ];
-
-        console.log(newStatement);
-        StatementSchema.parse(newStatement);
-        return newStatement;
-    } catch (error) {
-        console.error(error);
-        return undefined;
-    }
-}
-
-function updateStatementSettings(
-    statement: Statement,
-    enableAddEvaluationOption: string | boolean | undefined,
-    enableAddVotingOption: string | boolean | undefined,
-    screens: Screen[] | undefined
-): {
-    enableAddEvaluationOption?: boolean;
-    enableAddVotingOption?: boolean;
-    screens?: Screen[];
-} {
-    try {
-        if (!statement) throw new Error("Statement is undefined");
-        if (!statement.statementSettings)
-            throw new Error("Statement settings is undefined");
-
-        const statementSettings = { ...statement.statementSettings };
-
-        if (
-            enableAddEvaluationOption === "on" ||
-            enableAddEvaluationOption === true
-        ) {
-            statementSettings.enableAddEvaluationOption = true;
-        } else if (
-            enableAddEvaluationOption === "off" ||
-            enableAddEvaluationOption === false
-        ) {
-            statementSettings.enableAddEvaluationOption = false;
-        }
-
-        if (enableAddVotingOption === "on" || enableAddVotingOption === true) {
-            statementSettings.enableAddVotingOption = true;
-        } else if (
-            enableAddVotingOption === "off" ||
-            enableAddVotingOption === false
-        ) {
-            statementSettings.enableAddVotingOption = false;
-        }
-
-        if (screens) statementSettings.subScreens = screens;
-
-        return statementSettings;
-    } catch (error) {
-        console.error(error);
-        return {
-            enableAddEvaluationOption: true,
-            enableAddVotingOption: true,
-            screens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
-        };
-    }
-}
-
-// function getStatementsParents(statement: Statement): string[] {
-//     try {
-//         if (!statement) throw new Error("Statement is undefined");
-
-//         StatementSchema.parse(statement);
-
-//         if (statement.parentId === "top") statement.parents = [];
-//         else {
-//             statement.parents = statement.parents || [];
-//             statement.parents.push(statement.statementId);
-//         }
-
-//         return statement.parents;
-//     } catch (error) {
-//         console.error(error);
-//         return [];
-//     }
-// }
 
 export async function setStatmentSubscriptionToDB(
     statement: Statement,
@@ -436,69 +173,6 @@ export async function updateStatementText(
         };
         await updateDoc(statementRef, newStatement);
     } catch (error) {}
-}
-
-export async function setStatmentSubscriptionNotificationToDB(
-    statement: Statement | undefined
-) {
-    try {
-        const token = deviceToken;
-
-        if (!token) throw new Error("Token is undefined");
-
-        if (!statement) throw new Error("Statement is undefined");
-        const { statementId } = statement;
-
-        //ask user for permission to send notifications
-
-        await getUserPermissionToNotifications();
-
-        const user = getUserFromFirebase();
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-
-        const statementsSubscribeId = `${user.uid}--${statementId}`;
-        const statementsSubscribeRef = doc(
-            DB,
-            Collections.statementsSubscribe,
-            statementsSubscribeId
-        );
-        const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
-
-        if (!statementSubscriptionDB.exists()) {
-            //set new subscription
-
-            await setDoc(
-                statementsSubscribeRef,
-                {
-                    user,
-                    userId: user.uid,
-                    statementId,
-                    token,
-                    notification: true,
-                    lastUpdate: Timestamp.now().toMillis(),
-                    statementsSubscribeId,
-                    statement,
-                },
-                { merge: true }
-            );
-        } else {
-            //update subscription
-            const statementSubscription =
-                statementSubscriptionDB.data() as StatementSubscription;
-
-            let { notification } = statementSubscription;
-            notification = !notification;
-
-            await setDoc(
-                statementsSubscribeRef,
-                { token, notification },
-                { merge: true }
-            );
-        }
-    } catch (error) {
-        console.error(error);
-    }
 }
 
 export async function setStatementisOption(statement: Statement) {
