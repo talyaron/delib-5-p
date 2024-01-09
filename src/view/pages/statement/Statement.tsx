@@ -82,7 +82,7 @@ const Statement: FC = () => {
 
     const subStatementsSelector = createSelector(
         (state: RootState) => state.statements.statements,
-        (state: RootState, statementId: string | undefined) => statementId,
+        (_state: RootState, statementId: string | undefined) => statementId,
         (statements, statementId) =>
             statements
                 .filter((st) => st.parentId === statementId)
