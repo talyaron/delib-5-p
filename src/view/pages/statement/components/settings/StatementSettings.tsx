@@ -104,6 +104,7 @@ export const StatementSettings: FC<Props> = () => {
             setIsLoading(true);
 
             const data = new FormData(ev.currentTarget);
+        
 
             let title: any = data.get("statement");
             if (!title || title.length < 2) return;

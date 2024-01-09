@@ -317,6 +317,7 @@ export function parseScreensCheckBoxes(
     dataObj: Object
 ): string[] {
     try {
+
         if (!dataObj) throw new Error("dataObj is undefined");
         if (!navArray) throw new Error("navArray is undefined");
  

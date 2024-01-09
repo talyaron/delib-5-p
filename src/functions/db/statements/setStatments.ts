@@ -19,8 +19,6 @@ import { DB, deviceToken } from "../config";
 import { getPastelColor, parseScreensCheckBoxes } from "../../general/helpers";
 import { store } from "../../../model/store";
 
-
-
 const TextSchema = z.string().min(2);
 interface SetStatmentToDBProps {
     statement: Statement;
@@ -154,6 +152,7 @@ export function createStatement({
         const user = store.getState().user.user;
         if (!user) throw new Error("User is undefined");
         const statementId = crypto.randomUUID();
+        if (!data) throw new Error("Data is undefined");
 
         const parentId =
             parentStatement !== "top" ? parentStatement?.statementId : "top";
@@ -174,13 +173,10 @@ export function createStatement({
             creator: user,
             creatorId: user.uid,
         };
-        if (data) {
-            newStatement = {
-                ...newStatement,
-                ...Object.fromEntries(data.entries()),
-            };
-        }
-     
+        const dataObj = Object.fromEntries(data.entries());
+
+      
+
         newStatement.defaultLanguage = user.defaultLanguage || "en";
         newStatement.createdAt = Timestamp.now().toMillis();
         newStatement.lastUpdate = Timestamp.now().toMillis();
@@ -207,7 +203,7 @@ export function createStatement({
         newStatement.consensus = 0;
         newStatement.results = [];
 
-        newStatement.subScreens = parseScreensCheckBoxes(Object.fromEntries(data.entries()));
+        newStatement.subScreens = parseScreensCheckBoxes(dataObj);
 
         //remove all "on" values
         for (const key in newStatement) {
