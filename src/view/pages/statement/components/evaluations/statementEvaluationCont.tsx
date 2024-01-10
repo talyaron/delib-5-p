@@ -6,7 +6,7 @@ export function sortSubStatements(
     sort: string | undefined
 ) {
     try {
-        let _subStatements = [...subStatements];
+        let _subStatements = subStatements.map((statement: Statement) =>  statement);
         switch (sort) {
             case Screen.OPTIONS_CONSENSUS:
                 _subStatements = subStatements.sort(
@@ -29,8 +29,9 @@ export function sortSubStatements(
         }
         const __subStatements = _subStatements.map(
             (statement: Statement, i: number) => {
-                statement.order = i;
-                return statement;
+                const updatedStatement = Object.assign({}, statement);
+                updatedStatement.order = i;
+                return updatedStatement;
             }
         );
 

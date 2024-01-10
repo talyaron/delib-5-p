@@ -40,6 +40,9 @@ export default function App() {
 
     const [showSignAgreement, setShowSignAgreement] = useState(false);
     const [agreement, setAgreement] = useState<string>("");
+    const [visualViewportHeight, setVisualViewportHeight] = useState(
+        window.visualViewport?.height || 0
+      );
 
     function updateUserToStore(user: User | null) {
         dispatch(setUser(user));
@@ -85,6 +88,35 @@ export default function App() {
         };
     }, []);
 
+    
+  useEffect(() => {  
+
+    window.visualViewport?.addEventListener("resize", (event: any) => {
+    
+      setVisualViewportHeight(event.target?.height || 0);
+      document.body.style.height = `${event.target?.height}px`;
+   //change html height to visualViewportHeight state
+        const html = document.querySelector("html");
+        if (html) {
+            const html = document.querySelector("html") as HTMLElement;
+            html.style.height = `${event.target?.height}px`;
+        }
+
+
+      //chage height of .page class to visualViewportHeight state
+        const page = document.querySelector(".page");
+        if (page) {
+            const page = document.querySelector(".page") as HTMLElement;
+            page.style.height = `${event.target?.height}px`;
+        }
+  
+    });
+    return () => {
+      window.removeEventListener("resize", () => {});
+      window.visualViewport?.addEventListener("resize", () => {});
+    };
+  }, []);
+
     useEffect(() => {
         if (!user) {
             return;
@@ -128,8 +160,9 @@ export default function App() {
     }
 
     return (
-        <>
+        <div style={{height:`${visualViewportHeight}px`, overflowY:"hidden", position:"fixed", top:"0px", left:"0px"}}>
             <Accessiblity />
+           
             <Outlet />
             {showSignAgreement && (
                 <Modal>
@@ -159,6 +192,6 @@ export default function App() {
                     </div>
                 </Modal>
             )}
-        </>
+        </div>
     );
 }

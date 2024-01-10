@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml"
         href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAGKEAAACM/wD///8AGHUIAKWs+gAHEXgAAPv/AP8iAAAARP8AJjfrAAAA/wAEFswAJv8AAACq/wAIFZkAAAAIiIiAAAAACIiESIiAAACIQREREUgACIQR3d3RFIAIgR13d33USIgR13d3d31IgRd3d3d3dxiJLuM1Uz7imIkiLjqj4imYiZIiLMIimZiLmZIv8pmbmAi5mZZpmbuACIu5lmu7uIAAiGtmZrtoAAAIhmZmZoAAAAAIiIiIAAD4HwAA4AcAAMADAACAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAACAAQAAwAMAAOAHAAD4DwAA" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1" />
     <title>Delib 5</title>
     <script>
         if ("serviceWorker" in navigator) {
@@ -45,12 +45,13 @@
         id="vite-plugin-pwa:inline-sw">if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js', { scope: '/' }) }) }</script>
 </head>
 <style>
-body{
+    body {
         margin: 0;
         padding: 0;
         font-family: Arial, Helvetica, sans-serif;
     }
-    .boxTemp{
+
+    .boxTemp {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -60,22 +61,26 @@ body{
         color: rgb(83, 83, 221);
         margin: auto;
     }
-    .boxTemp h1{
+
+    .boxTemp h1 {
         font-size: 3rem;
         margin: 0;
     }
-    .boxTemp a{
+
+    .boxTemp a {
         color: rgb(83, 83, 221);
     }
-    .boxTemp img{
-        transform: scaleX(-1) ;
+
+    .boxTemp img {
+        transform: scaleX(-1);
     }
-    </style>
+</style>
+
 <body>
     <div id="root">
         <div class="boxTemp">
             <h1>דליב - יוצרים הסכמות ושיתופי פעולה</h1>
-            <img src="./logo-512 px.png" alt="לוגו המכון לדמוקרטיה דיונית" />
+            <img src="./assets/logo/logo-512px.png" alt="לוגו המכון לדמוקרטיה דיונית" />
             <h2><a href="http://delib.org">מבית המכון לדמוקרטיה דיונית</a></h2>
             טוען... נא להמתין
         </div>
