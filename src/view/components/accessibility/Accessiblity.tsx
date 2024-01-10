@@ -24,7 +24,7 @@ const Accessiblity = () => {
     const [_fontSize, setFontSize] = useState(fontSize || 14);
 
     useEffect(() => {
-        document.documentElement.style.fontSize = fontSize + "px";
+        // document.documentElement.style.fontSize = fontSize + "px";
         document.body.style.fontSize = fontSize + "px";
     }, [fontSize]);
 
@@ -33,7 +33,8 @@ const Accessiblity = () => {
             //get curent font size from body
 
             //update body font size
-            document.documentElement.style.fontSize = `${_fontSize + number}px`;
+            // document.documentElement.style.fontSize = `${_fontSize + number}px`;
+            document.body.style.fontSize = `${_fontSize + number}px`
             setFontSize(_fontSize + number);
         } else {
             updateUserFontSize(fontSize + number);

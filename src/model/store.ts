@@ -4,7 +4,6 @@ import { userSlicer } from './users/userSlice'
 import { evaluationsSlicer } from './evaluations/evaluationsSlice'
 import { votesSlicer } from './vote/votesSlice'
 import {resultsSlice} from './results/resultsSlice'
-import { modalSlicer } from './popups/modalSlice'
 
 
 export const store = configureStore({
@@ -13,8 +12,7 @@ export const store = configureStore({
     evaluations: evaluationsSlicer.reducer,
     user: userSlicer.reducer,
     votes: votesSlicer.reducer,
-    results: resultsSlice.reducer,
-    modal: modalSlicer.reducer,
+    results: resultsSlice.reducer
   },
 })
 
