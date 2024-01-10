@@ -9,7 +9,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getUserPermissionToNotifications } from "../../../functions/notifications";
 
 // Statement helpers
-import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/statements/setStatments";
+import { setStatmentSubscriptionNotificationToDB } from "../../../functions/notifications";
 
 // Redux Store
 import { store } from "../../../model/store";
@@ -106,7 +106,7 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
-    async function handleRegisterToNotifications() {
+    async function toggleNotifications() {
         const isPermited = await getUserPermissionToNotifications();
 
         if (!isPermited) {
@@ -167,7 +167,7 @@ const StatementHeader: FC<Props> = ({
                             />
                         )
                     }
-                    secondIconFunc={handleRegisterToNotifications}
+                    secondIconFunc={toggleNotifications}
                     secondIconText={"Notifications"}
                     thirdIcon={
                         <DisconnectIcon color={headerColor.backgroundColor} />

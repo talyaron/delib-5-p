@@ -53,12 +53,19 @@ export async function onLocalMessage() {
                         icon: logo,
                     });
 
+                    const notificationSound = new Audio(
+                        "https://delib-5.web.app/assets/sound/sweet_notification.mp3"
+                    );
+
+                    notificationSound.autoplay = true;
+                    notificationSound.volume = 0.3;
+
+                    notificationSound.play();
+
                     notification.onclick = (event) => {
                         const target = event.target as Notification;
 
                         const url = target.data.url;
-
-                        console.log("url - ", url);
 
                         window.open(url, "_blank");
                     };
@@ -77,10 +84,9 @@ export async function setStatmentSubscriptionNotificationToDB(
 ) {
     try {
         const msg = await messaging();
-        if (!msg) throw new Error("msg is undefined");
+        if (!msg) throw new Error("Notifications not supported");
 
         const token = await getToken(msg, { vapidKey });
-
         if (!token) throw new Error("Token is undefined");
 
         if (!statement) throw new Error("Statement is undefined");

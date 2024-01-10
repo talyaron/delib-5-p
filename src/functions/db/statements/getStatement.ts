@@ -29,7 +29,6 @@ import { DB } from "../config";
 // Redux Store
 import { store } from "../../../model/store";
 
-
 export function listenToTopStatements(
     setStatementsCB: Function,
     deleteStatementCB: Function
@@ -177,23 +176,23 @@ export function listenToStatementSubscription(
             try {
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;
-    
+
                 const { success } = StatementSubscriptionSchema.safeParse(
                     statementSubscription
                 );
                 if (!success) {
                     console.info("No subscription found");
-               
+
                     return;
                 }
-    
+
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
-    
+
                 if (!Array.isArray(statementSubscription.statement.results))
                     statementSubscription.statement.results = [];
-    
+
                 StatementSubscriptionSchema.parse(statementSubscription);
-    
+
                 updateStore(statementSubscription);
             } catch (error) {
                 console.error(error);
@@ -641,9 +640,11 @@ export async function getChildStatements(
     }
 }
 
-export async function listenToUserAnswer(questionId:string, cb:Function): Promise<Function> {
+export async function listenToUserAnswer(
+    questionId: string,
+    cb: Function
+): Promise<Function> {
     try {
-      
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const statementsRef = collection(DB, Collections.statements);
@@ -656,10 +657,9 @@ export async function listenToUserAnswer(questionId:string, cb:Function): Promis
             limit(1)
         );
         return onSnapshot(q, (statementsDB) => {
-          
             statementsDB.docChanges().forEach((change) => {
                 const statement = change.doc.data() as Statement;
-            
+
                 cb(statement);
             });
         });

@@ -61,7 +61,7 @@ import { availableScreen } from "./StatementCont";
 
 const Statement: FC = () => {
     // Hooks
-    const statementId = useParams().statementId;
+    const { statementId } = useParams();
     const page = useParams().page as Screen;
 
     const navigate = useNavigate();
@@ -73,7 +73,6 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
-
 
     // Redux hooks
     const dispatch: any = useAppDispatch();
@@ -119,8 +118,7 @@ const Statement: FC = () => {
 
     //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
-        if (screen && (screen !== page)) {
-
+        if (screen && screen !== page) {
             navigate(`/statement/${statementId}/${screen}`);
         }
     }, [screen]);
