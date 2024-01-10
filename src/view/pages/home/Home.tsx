@@ -55,7 +55,7 @@ export default function Home() {
                 unsubscribe = listenStatmentsSubsciptions(
                     updateStoreStSubCB,
                     deleteStoreStSubCB,
-                    10,
+                    30,
                     true
                 );
             }

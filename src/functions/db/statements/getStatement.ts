@@ -141,7 +141,7 @@ export async function getStatmentsSubsciptions(): Promise<
         const q = query(
             statementsSubscribeRef,
             where("userId", "==", user.uid),
-            limit(20)
+            limit(40)
         );
         const querySnapshot = await getDocs(q);
 
