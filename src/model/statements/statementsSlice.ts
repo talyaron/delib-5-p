@@ -56,10 +56,9 @@ export const statementsSlicer = createSlice({
     reducers: {
         setStatement: (state, action: PayloadAction<Statement>) => {
             try {
-           
                 const newStatement = { ...action.payload };
-                const {success} = StatementSchema.safeParse(newStatement);
-                if(!success) return;
+                const { success } = StatementSchema.safeParse(newStatement);
+                if (!success) return;
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
@@ -71,7 +70,9 @@ export const statementsSlicer = createSlice({
                         statement.statementId === newStatement.statementId
                 );
 
-                const isEqualStatements = JSON.stringify(oldStatement) === JSON.stringify(newStatement);
+                const isEqualStatements =
+                    JSON.stringify(oldStatement) ===
+                    JSON.stringify(newStatement);
                 if (!isEqualStatements)
                     state.statements = updateArray(
                         state.statements,
@@ -132,7 +133,9 @@ export const statementsSlicer = createSlice({
                     (statement) =>
                         statement.statementId === newStatement.statementId
                 );
-                const isEqualStatements = JSON.stringify(oldStatement) === JSON.stringify(newStatement);
+                const isEqualStatements =
+                    JSON.stringify(oldStatement) ===
+                    JSON.stringify(newStatement);
                 if (!isEqualStatements)
                     state.statementSubscription = updateArray(
                         state.statementSubscription,
@@ -411,5 +414,13 @@ export const statementMembershipSelector =
             (statement: StatementSubscription) =>
                 statement.statementId === statementId
         );
+
+export const hasTokenSelector =
+    (token: string, statementId: string) => (state: RootState) => {
+        const statement = state.statements.statementSubscription.find(
+            (statement) => statement.statementId === statementId
+        );
+        return statement?.token?.includes(token) || false;
+    };
 
 export default statementsSlicer.reducer;

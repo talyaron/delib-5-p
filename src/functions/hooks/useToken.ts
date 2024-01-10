@@ -5,14 +5,15 @@ import { messaging } from "../db/config";
 
 const useToken = () => {
     try {
-        const [token, setToken] = useState<undefined | string>(undefined);
+        const [token, setToken] = useState<string>("");
 
         const storeToken = async () => {
             const msg = await messaging();
+
             if (!msg) throw new Error("Notifications not supported");
 
             const token = await getToken(msg, { vapidKey });
-            if (!token) throw new Error("Token is undefined");
+            if (!token) throw new Error("Token is undefined in useToken.");
 
             setToken(token);
         };
@@ -24,6 +25,7 @@ const useToken = () => {
         return token;
     } catch (error) {
         console.log(error);
+        return "";
     }
 };
 

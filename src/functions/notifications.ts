@@ -87,7 +87,10 @@ export async function setStatmentSubscriptionNotificationToDB(
         if (!msg) throw new Error("Notifications not supported");
 
         const token = await getToken(msg, { vapidKey });
-        if (!token) throw new Error("Token is undefined");
+        if (!token)
+            throw new Error(
+                "Token is undefined in setstatementSubscriptionNotificationToDB."
+            );
 
         if (!statement) throw new Error("Statement is undefined");
         const { statementId } = statement;
@@ -109,13 +112,14 @@ export async function setStatmentSubscriptionNotificationToDB(
 
         if (!statementSubscriptionDB.exists()) {
             //set new subscription
+
             await setDoc(
                 statementsSubscribeRef,
                 {
                     user,
                     userId: user.uid,
                     statementId,
-                    token,
+                    token: [...token],
                     notification: true,
                     lastUpdate: Timestamp.now().toMillis(),
                     statementsSubscribeId,
@@ -124,16 +128,27 @@ export async function setStatmentSubscriptionNotificationToDB(
                 { merge: true }
             );
         } else {
-            //update subscription
+            // update subscription -> Remove notifications
             const statementSubscription =
                 statementSubscriptionDB.data() as StatementSubscription;
 
-            let { notification } = statementSubscription;
-            notification = !notification;
+            const tokenArr = statementSubscription.token
+                ? [...statementSubscription.token]
+                : [];
+
+            // If token is already in the array, remove it, otherwise add it
+            if (!tokenArr.includes(token)) {
+                tokenArr.push(token);
+            } else {
+                tokenArr.splice(tokenArr.indexOf(token), 1);
+            }
 
             await setDoc(
                 statementsSubscribeRef,
-                { token, notification },
+                {
+                    token: tokenArr,
+                    notification: !statementSubscription.notification,
+                },
                 { merge: true }
             );
         }

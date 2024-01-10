@@ -113,30 +113,35 @@ export async function sendNotificationsCB(e: any) {
 
         //send push notifications to all subscribers
         subscribersDB.docs.forEach((doc: any) => {
-            const token = doc.data().token;
+            const tokenArr = doc.data().token;
 
-            if (token) {
-                const message: any = {
-                    data: {
-                        title,
-                        body: statement.statement,
-                        // TODO: change to production url
-                        url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
-                        creatorId: statement.creatorId,
-                    },
-                    token,
-                };
+            logger.info("Data - ", doc.data());
+            logger.info("tokenArr", tokenArr);
 
-                admin
-                    .messaging()
-                    .send(message)
-                    .then((response: any) => {
-                        // Response is a message ID string.
-                        logger.info("Successfully sent message:", response);
-                    })
-                    .catch((error: any) => {
-                        logger.error("Error sending message:", error);
-                    });
+            if (tokenArr && tokenArr.length > 0) {
+                tokenArr.forEach((token: string) => {
+                    const message: any = {
+                        data: {
+                            title,
+                            body: statement.statement,
+                            // TODO: change to production url
+                            url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
+                            creatorId: statement.creatorId,
+                        },
+                        token,
+                    };
+
+                    admin
+                        .messaging()
+                        .send(message)
+                        .then((response: any) => {
+                            // Response is a message ID string.
+                            logger.info("Successfully sent message:", response);
+                        })
+                        .catch((error: any) => {
+                            logger.error("Error sending message:", error);
+                        });
+                });
             }
         });
     } catch (error) {
