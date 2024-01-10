@@ -122,15 +122,19 @@ const StatementChat: FC<Props> = ({
                             edit={isEdit}
                             text={t("Edit Text")}
                         />
+
                         <StatementChatSetQuestion
                             statement={statement}
                             text={t("Question")}
                         />
-                        <AddSubQuestion
-                            statement={statement}
-                            setShowModal={setShowModal}
-                            text={t("Add Question")}
-                        />
+
+                        {displayChat && (
+                            <AddSubQuestion
+                                statement={statement}
+                                setShowModal={setShowModal}
+                                text={t("Add Question")}
+                            />
+                        )}
                         <StatementChatSetOption
                             parentStatement={parentStatement}
                             statement={statement}
@@ -162,7 +166,7 @@ const StatementChat: FC<Props> = ({
                 <Modal>
                     <NewSetStatementSimple
                         parentStatement={statement}
-                        isOption={true}
+                        isOption={false}
                         setShowModal={setShowModal}
                     />
                 </Modal>
