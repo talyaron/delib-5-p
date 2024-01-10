@@ -12,7 +12,7 @@ export const store = configureStore({
     evaluations: evaluationsSlicer.reducer,
     user: userSlicer.reducer,
     votes: votesSlicer.reducer,
-    results: resultsSlice.reducer,
+    results: resultsSlice.reducer
   },
 })
 

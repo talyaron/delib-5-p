@@ -73,7 +73,7 @@ export function listenToAuth(
 
                 fontSizeCB(fontSize);
 
-                document.documentElement.style.fontSize = fontSize + "px";
+               
                 document.body.style.fontSize = fontSize + "px";
 
                 if (!userDB) throw new Error("userDB is undefined");
