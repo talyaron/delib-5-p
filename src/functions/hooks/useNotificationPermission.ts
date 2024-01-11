@@ -22,12 +22,6 @@ const useNotificationPermission = (token: string) => {
         const hasToken = useAppSelector(hasTokenSelector(token, statementId));
 
         useEffect(() => {
-            console.log(
-                "Permission changed",
-                hasNotifications,
-                hasToken,
-                Notification.permission
-            );
             setPermission(
                 Notification.permission === "granted" &&
                     hasNotifications &&
