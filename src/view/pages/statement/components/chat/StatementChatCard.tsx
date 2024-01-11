@@ -21,6 +21,7 @@ import { statementSubscriptionSelector } from "../../../../../model/statements/s
 import {
     isAuthorized,
     isOptionFn,
+    linkToChildren,
 } from "../../../../../functions/general/helpers";
 
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
@@ -30,6 +31,7 @@ import StatementChatSetOption from "./components/StatementChatSetOption";
 import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
+import { useNavigate } from "react-router";
 
 export interface NewQuestion {
     statement: Statement;
@@ -52,6 +54,7 @@ const StatementChat: FC<Props> = ({
     showImage,
     previousStatement,
 }) => {
+    const navigate = useNavigate();
     const { statementType } = statement;
 
     const statementSubscription = useAppSelector(
@@ -82,6 +85,11 @@ const StatementChat: FC<Props> = ({
         : previousStatement.creatorId !== statement.creatorId
         ? true
         : false;
+
+        function handleGoToOption() {
+            if (!isEdit && linkToChildren(statement, parentStatement))
+                navigate(`/statement/${statement.statementId}/chat`);
+        }
 
     return (
         <div className={isMe ? "message message--me" : "message"}>
@@ -128,20 +136,28 @@ const StatementChat: FC<Props> = ({
                             text={t("Question")}
                         />
 
-                        {displayChat && (
-                            <AddSubQuestion
-                                statement={statement}
-                                setShowModal={setShowModal}
-                                text={t("Add Question")}
-                            />
-                        )}
+                        {displayChat &&
+                            linkToChildren(statement, parentStatement) && (
+                                <AddSubQuestion
+                                    statement={statement}
+                                    setShowModal={setShowModal}
+                                    text={t("Add Question")}
+                                />
+                            )}
                         <StatementChatSetOption
                             parentStatement={parentStatement}
                             statement={statement}
                             text={t("Option")}
                         />
                     </CardMenu>
-                    <div className="message__box__info__text">
+                    <div
+                        className={
+                            linkToChildren(statement, parentStatement)
+                                ? "message__box__info__text clickable"
+                                : "message__box__info__text"
+                        }
+                        onClick={handleGoToOption}
+                    >
                         <EditTitle
                             statement={statement}
                             isEdit={isEdit}

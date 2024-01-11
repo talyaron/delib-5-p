@@ -82,7 +82,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     function handleGoToOption() {
         if (!edit && linkToChildren(statement, parentStatement))
-            navigate(`/statement/${statement.statementId}/chat`);
+            navigate(`/statement/${statement.statementId}/options`);
     }
 
     const _isAuthorized = isAuthorized(
