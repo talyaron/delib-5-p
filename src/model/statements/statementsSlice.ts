@@ -58,7 +58,10 @@ export const statementsSlicer = createSlice({
             try {
                 const newStatement = { ...action.payload };
                 const { success } = StatementSchema.safeParse(newStatement);
-                if (!success) return;
+                if (!success) {
+                    console.error("statement not valid on setStatement");
+                  
+                }
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
@@ -101,7 +104,13 @@ export const statementsSlicer = createSlice({
                         statement.results = [];
                 });
 
-                z.array(StatementSchema).parse(statements);
+                const { success } = z
+                    .array(StatementSchema)
+                    .safeParse(statements);
+                if (!success) {
+                    console.error("statements not valid on setStatements");
+                    
+                }
 
                 statements.forEach((statement) => {
                     updateArray(state.statements, statement, "statementId");
@@ -126,7 +135,13 @@ export const statementsSlicer = createSlice({
             action: PayloadAction<StatementSubscription>
         ) => {
             try {
-                StatementSubscriptionSchema.parse(action.payload);
+                const { success } = StatementSubscriptionSchema.safeParse(
+                    action.payload
+                );
+                if (!success) {
+                    console.error("statement subscription not valid");
+                 
+                }
 
                 const newStatement = action.payload;
                 const oldStatement = state.statements.find(

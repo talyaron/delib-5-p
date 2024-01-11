@@ -88,6 +88,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 onKeyUp={handleInput}
                 required
                 autoFocus={true}
+                onFocus={(e) => {e.preventDefault()}}
             />
         </form>
     );

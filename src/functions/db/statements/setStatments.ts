@@ -474,7 +474,7 @@ export async function setStatmentSubscriptionNotificationToDB(
                     user,
                     userId: user.uid,
                     statementId,
-                    token,
+                    token:[token],
                     notification: true,
                     lastUpdate: Timestamp.now().toMillis(),
                     statementsSubscribeId,
@@ -490,9 +490,11 @@ export async function setStatmentSubscriptionNotificationToDB(
             let { notification } = statementSubscription;
             notification = !notification;
 
+            //TODO: update token not replace like I did here...
+
             await setDoc(
                 statementsSubscribeRef,
-                { token, notification },
+                { token:[token], notification },
                 { merge: true }
             );
         }

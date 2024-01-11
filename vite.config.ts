@@ -62,7 +62,7 @@ const manifestPlugin: Partial<VitePWAOptions> = {
 export default defineConfig({
     plugins: [
         react(),
-        basicSsl(),
+        // basicSsl(),
         VitePWA(manifestPlugin),
         visualizer({ open: true, gzipSize: true, brotliSize: true }),
         splitVendorChunkPlugin(),

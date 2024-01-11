@@ -160,7 +160,7 @@ export default function App() {
     }
 
     return (
-        <div style={{height:`${visualViewportHeight}px`, overflowY:"hidden", position:"fixed", top:"0px", left:"0px"}}>
+        <div style={{height:`${visualViewportHeight}px`, overflowY:"hidden", position:'fixed'}}>
             <Accessiblity />
            
             <Outlet />
