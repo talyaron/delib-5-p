@@ -598,7 +598,7 @@ export async function updateStatmentMainImage(
             statement.statementId
         );
 
-        const t = await updateDoc(statementRef, {
+        await updateDoc(statementRef, {
             imagesURL: { main: imageURL },
         });
     } catch (error) {

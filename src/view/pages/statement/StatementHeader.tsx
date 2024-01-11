@@ -13,8 +13,6 @@ import { setStatmentSubscriptionNotificationToDB } from "../../../functions/noti
 
 // Redux Store
 import { store } from "../../../model/store";
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components
 import StatementTopNav from "./components/nav/top/StatementTopNav";
@@ -32,6 +30,8 @@ import useStatementColor from "../../../functions/hooks/useStatementColor";
 import DisconnectIcon from "../../components/icons/DisconnectIcon";
 import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
 import useDirection from "../../../functions/hooks/useDirection";
+import useNotificationPermission from "../../../functions/hooks/useNotificationPermission";
+import useToken from "../../../functions/hooks/useToken";
 
 interface Props {
     title: string;
@@ -50,15 +50,14 @@ const StatementHeader: FC<Props> = ({
     const user = store.getState().user.user;
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const { statementId, page } = useParams();
+    const { page } = useParams();
     const location = useLocation();
     const direction = useDirection();
+    const token = useToken();
 
     const headerColor = useStatementColor(statement.statementType || "");
 
-    const hasNotifications = useAppSelector(
-        statementNotificationSelector(statementId)
-    );
+    const permission = useNotificationPermission(token);
 
     const [editHeader, setEditHeader] = useState<boolean>(false);
 
@@ -81,13 +80,6 @@ const StatementHeader: FC<Props> = ({
             setEditHeader(true);
         }
     }
-
-    const hasNotificationPermission = (() => {
-        if (window.hasOwnProperty("Notification") === false) return false;
-        if (Notification.permission === "denied") return false;
-        if (Notification.permission === "granted") return true;
-        return false;
-    })();
 
     function handleBack() {
         if (location.state && location.state.from.includes("doc")) {
@@ -159,7 +151,7 @@ const StatementHeader: FC<Props> = ({
                     firstIconFunc={handleShare}
                     firstIconText={"Share"}
                     secondIcon={
-                        hasNotificationPermission && hasNotifications ? (
+                        permission ? (
                             <BellIcon color={headerColor.backgroundColor} />
                         ) : (
                             <BellSlashIcon
@@ -168,7 +160,7 @@ const StatementHeader: FC<Props> = ({
                         )
                     }
                     secondIconFunc={toggleNotifications}
-                    secondIconText={"Notifications"}
+                    secondIconText={permission ? "Turn off" : "Turn on"}
                     thirdIcon={
                         <DisconnectIcon color={headerColor.backgroundColor} />
                     }
