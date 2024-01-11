@@ -109,16 +109,15 @@ export async function sendNotificationsCB(e: any) {
 
         const subscribersDB = await q.get();
 
-        logger.info("subscribersDB size", subscribersDB.docs.length);
-
         //send push notifications to all subscribers
         subscribersDB.docs.forEach((doc: any) => {
-            const tokenArr = doc.data().token;
-
-            logger.info("Data - ", doc.data());
-            logger.info("tokenArr", tokenArr);
+            const tokenArr = doc.data().token as string[];
 
             if (tokenArr && tokenArr.length > 0) {
+                // Send a message to each device the user has registered for notifications.
+
+                // TODO: find a way to chack if token is still valid. If not, remove it from the DB.
+
                 tokenArr.forEach((token: string) => {
                     const message: any = {
                         data: {

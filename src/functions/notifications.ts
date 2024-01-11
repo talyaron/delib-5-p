@@ -37,14 +37,10 @@ export async function onLocalMessage() {
         if (!msg) throw new Error("msg is undefined");
 
         return onMessage(msg, (payload) => {
-            if (payload.data?.creatorId === getUserFromFirebase()?.uid)
-                return console.log(
-                    "This user created the statement, no need to notify him"
-                );
+            if (payload.data?.creatorId === getUserFromFirebase()?.uid) return;
 
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
-                    console.log("Message received. ", payload);
                     const title = payload.data?.title || "Delib";
 
                     const notification = new Notification(title, {
@@ -70,12 +66,12 @@ export async function onLocalMessage() {
                         window.open(url, "_blank");
                     };
                 } else {
-                    console.log("Unable to get permission to notify.");
+                    console.error("Unable to get permission to notify.");
                 }
             });
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -112,6 +108,7 @@ export async function setStatmentSubscriptionNotificationToDB(
 
         if (!statementSubscriptionDB.exists()) {
             //set new subscription
+            const tokenArr = [token];
 
             await setDoc(
                 statementsSubscribeRef,
@@ -119,7 +116,7 @@ export async function setStatmentSubscriptionNotificationToDB(
                     user,
                     userId: user.uid,
                     statementId,
-                    token: [...token],
+                    token: tokenArr,
                     notification: true,
                     lastUpdate: Timestamp.now().toMillis(),
                     statementsSubscribeId,

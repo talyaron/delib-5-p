@@ -217,7 +217,6 @@ export function createStatement({
         newStatement.subScreens = screens;
         newStatement.statementSettings.subScreens = screens;
 
-        console.log(newStatement);
         StatementSchema.parse(newStatement);
         return newStatement;
     } catch (error) {
@@ -250,7 +249,6 @@ export function updateStatement({
 }: UpdateStatementProps): Statement | undefined {
     try {
         const newStatement: Statement = JSON.parse(JSON.stringify(statement));
-        console.log(newStatement);
 
         if (text) newStatement.statement = text;
 
@@ -297,7 +295,6 @@ export function updateStatement({
                       Screen.VOTE,
                   ];
 
-        console.log(newStatement);
         StatementSchema.parse(newStatement);
         return newStatement;
     } catch (error) {
@@ -440,69 +437,6 @@ export async function updateStatementText(
         await updateDoc(statementRef, newStatement);
     } catch (error) {}
 }
-
-// export async function setStatmentSubscriptionNotificationToDB(
-//     statement: Statement | undefined
-// ) {
-//     try {
-//         const token = deviceToken;
-
-//         if (!token) throw new Error("Token is undefined");
-
-//         if (!statement) throw new Error("Statement is undefined");
-//         const { statementId } = statement;
-
-//         //ask user for permission to send notifications
-
-//         await getUserPermissionToNotifications();
-
-//         const user = getUserFromFirebase();
-//         if (!user) throw new Error("User not logged in");
-//         if (!user.uid) throw new Error("User not logged in");
-
-//         const statementsSubscribeId = `${user.uid}--${statementId}`;
-//         const statementsSubscribeRef = doc(
-//             DB,
-//             Collections.statementsSubscribe,
-//             statementsSubscribeId
-//         );
-//         const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
-
-//         if (!statementSubscriptionDB.exists()) {
-//             //set new subscription
-
-//             await setDoc(
-//                 statementsSubscribeRef,
-//                 {
-//                     user,
-//                     userId: user.uid,
-//                     statementId,
-//                     token,
-//                     notification: true,
-//                     lastUpdate: Timestamp.now().toMillis(),
-//                     statementsSubscribeId,
-//                     statement,
-//                 },
-//                 { merge: true }
-//             );
-//         } else {
-//             //update subscription
-//             const statementSubscription =
-//                 statementSubscriptionDB.data() as StatementSubscription;
-
-//             let { notification } = statementSubscription;
-//             notification = !notification;
-
-//             await setDoc(
-//                 statementsSubscribeRef,
-//                 { token, notification },
-//                 { merge: true }
-//             );
-//         }
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
 
 export async function setStatementisOption(statement: Statement) {
     try {
@@ -667,7 +601,6 @@ export async function updateStatmentMainImage(
         const t = await updateDoc(statementRef, {
             imagesURL: { main: imageURL },
         });
-        console.log("t:", t);
     } catch (error) {
         console.error(error);
     }

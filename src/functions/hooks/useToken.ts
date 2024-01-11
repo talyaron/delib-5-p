@@ -24,7 +24,7 @@ const useToken = () => {
 
         return token;
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return "";
     }
 };

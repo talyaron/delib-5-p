@@ -126,7 +126,7 @@ export const statementsSlicer = createSlice({
             action: PayloadAction<StatementSubscription>
         ) => {
             try {
-                StatementSubscriptionSchema.parse(action.payload);
+                StatementSubscriptionSchema.safeParse(action.payload);
 
                 const newStatement = action.payload;
                 const oldStatement = state.statements.find(
