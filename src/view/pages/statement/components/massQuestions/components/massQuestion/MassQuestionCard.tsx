@@ -1,5 +1,5 @@
 import { Statement, StatementSubscription } from "delib-npm";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./MassQuestion.module.scss";
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
 import { listenToUserAnswer } from "../../../../../../../functions/db/statements/getStatement";
@@ -12,7 +12,7 @@ import { statementSubscriptionSelector } from "../../../../../../../model/statem
 
 interface Props {
     statement: Statement;
-    setAnswerd: Function;
+    setAnswerd: React.Dispatch<React.SetStateAction<boolean[]>>;
     index: number;
 }
 
@@ -26,20 +26,18 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
         setAnswerd((answerd: boolean[]) => {
             const _answerd = [...answerd];
             _answerd[index] = answer ? true : false;
-            
-return _answerd;
+
+            return _answerd;
         });
     }, [answer]);
 
     useEffect(() => {
-        let usub: Function = () => {};
-        listenToUserAnswer(statement.statementId, setAnswer).then(
-            (uns: Function) => {
-                usub = uns;
-            }
-        );
-        
-return () => {
+        let usub: () => void;
+        listenToUserAnswer(statement.statementId, setAnswer).then((uns) => {
+            usub = uns;
+        });
+
+        return () => {
             usub();
         };
     }, []);

@@ -1,12 +1,11 @@
-import { Statement, NavObject, Screen } from "delib-npm";
+import { Statement, NavObject, Screen, Vote, Evaluation } from "delib-npm";
 import { getVoters } from "../../../../../functions/db/vote/getVotes";
 import { getEvaluations } from "../../../../../functions/db/evaluation/getEvaluation";
 
-
 export async function handleGetVoters(
     parentId: string | undefined,
-    setVoters: Function,
-    setClicked: Function
+    setVoters: React.Dispatch<React.SetStateAction<Vote[]>>,
+    setClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
     if (!parentId) return;
     const voters = await getVoters(parentId);
@@ -16,8 +15,8 @@ export async function handleGetVoters(
 
 export async function handleGetEvaluators(
     parentId: string | undefined,
-    setEvaluators: Function,
-    setClicked: Function
+    setEvaluators: React.Dispatch<React.SetStateAction<Evaluation[]>>,
+    setClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
     if (!parentId) return;
     const evaluators = await getEvaluations(parentId);
@@ -27,7 +26,7 @@ export async function handleGetEvaluators(
 
 export function isSubPageChecked(
     statement: Statement | undefined,
-    navObj: NavObject
+    navObj: NavObject,
 ): boolean {
     try {
         //in case of a new statement
@@ -40,12 +39,11 @@ export function isSubPageChecked(
         const subScreens = statement.subScreens as Screen[];
         if (subScreens === undefined) return true;
         if (subScreens?.includes(navObj.link)) return true;
-        
-return false;
+
+        return false;
     } catch (error) {
         console.error(error);
-        
-return true;
+
+        return true;
     }
 }
-

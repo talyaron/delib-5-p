@@ -1,5 +1,5 @@
 import { RoomAskToJoin, RoomsStateSelection, Statement } from "delib-npm";
-import { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import { listenToAllRoomsRquest } from "../../../../../functions/db/rooms/getRooms";
@@ -17,8 +17,7 @@ interface Props {
     subStatements: Statement[];
 }
 
-let unsub = () => {},
-    unsub3 = () => {};
+let unsub: () => void;
 
 const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const dispatch = useAppDispatch();
@@ -28,13 +27,12 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     useEffect(() => {
         enterRoomsDB(statement);
 
-        unsub3 = listenToAllRoomsRquest(statement, updateRequestForRooms);
+        unsub = listenToAllRoomsRquest(statement, updateRequestForRooms);
 
         //enter the room
 
         return () => {
             unsub();
-            unsub3();
         };
     }, []);
 
@@ -43,7 +41,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     }
 
     const __substatements = subStatements.filter((subStatement: Statement) =>
-        isOptionFn(subStatement)
+        isOptionFn(subStatement),
     );
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
 
@@ -54,7 +52,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
                     statement.roomsState,
                     __substatements,
                     statement,
-                    setShowModal
+                    setShowModal,
                 )}
 
                 {isAdmin ? <RoomsAdmin statement={statement} /> : null}
@@ -79,7 +77,7 @@ function switchRoomScreens(
     roomState: RoomsStateSelection | undefined,
     subStatements: Statement[],
     statement: Statement,
-    setShowModal: Function
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
     switch (roomState) {
         case RoomsStateSelection.SELECT_ROOMS:

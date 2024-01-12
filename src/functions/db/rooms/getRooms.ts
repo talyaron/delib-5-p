@@ -4,7 +4,7 @@ import {
     Statement,
     StatementSchema,
     StatementType,
-} from "delib-npm"
+} from "delib-npm";
 import {
     and,
     collection,
@@ -12,70 +12,79 @@ import {
     or,
     query,
     where,
-} from "firebase/firestore"
-import { DB } from "../config"
+} from "firebase/firestore";
+import { DB } from "../config";
 
-export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
+export function listenToAllRoomsRquest(
+    statement: Statement,
+    cb: (requests: RoomAskToJoin[]) => void,
+) {
     try {
-        const requestRef = collection(DB, Collections.statementRoomsAsked)
+        const requestRef = collection(DB, Collections.statementRoomsAsked);
         const q = query(
             requestRef,
-            where("parentId", "==", statement.statementId)
-        )
+            where("parentId", "==", statement.statementId),
+        );
 
         return onSnapshot(q, (requestsDB: any) => {
             try {
                 const requests = requestsDB.docs.map(
-                    (requestDB: any) => requestDB.data() as RoomAskToJoin
-                )
+                    (requestDB: any) => requestDB.data() as RoomAskToJoin,
+                );
 
-                cb(requests)
+                cb(requests);
             } catch (error) {
-                console.error(error)
-                cb([])
+                console.error(error);
+                cb([]);
             }
-        })
+        });
     } catch (error) {
-        console.error(error)
-        
-return () => {}
+        console.error(error);
     }
 }
 
-export function listenToRoomSolutions(statementId: string, cb: Function) {
+// TODO: this function is not used. Delete it?
+export function listenToRoomSolutions(
+    statementId: string,
+    cb: (rooms: Statement | null) => void,
+) {
     try {
-        const statementSolutionsRef = collection(DB, Collections.statements)
+        const statementSolutionsRef = collection(DB, Collections.statements);
         const q = query(
             statementSolutionsRef,
             and(
                 where("parentId", "==", statementId),
                 or(
                     where("statementType", "==", StatementType.option),
-                    where("statementType", "==", StatementType.result)
-                )
-            )
-        )
-        
-return onSnapshot(q, (roomSolutionsDB) => {
+                    where("statementType", "==", StatementType.result),
+                ),
+            ),
+        );
+
+        return onSnapshot(q, (roomSolutionsDB) => {
             try {
                 roomSolutionsDB.forEach((roomSolutionDB) => {
                     try {
-                        const roomSolution = roomSolutionDB.data() as Statement
-                        StatementSchema.parse(roomSolution)
+                        const roomSolution = roomSolutionDB.data() as Statement;
+                        const { success } =
+                            StatementSchema.safeParse(roomSolution);
 
-                        cb(roomSolution as Statement)
+                        if (!success)
+                            throw new Error(
+                                "roomSolution is not valid in listenToRoomSolutions()",
+                            );
+
+                        cb(roomSolution);
                     } catch (error) {
-                        console.error(error)
+                        console.error(error);
                     }
-                })
+                });
             } catch (error) {
-                console.error(error)
-                cb([])
+                console.error(error);
+                cb(null);
             }
-        })
+        });
     } catch (error) {
-        console.error(error)
-        
-return () => {}
+        console.error(error);
     }
 }

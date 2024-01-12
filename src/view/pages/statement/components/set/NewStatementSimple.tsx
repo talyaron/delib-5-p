@@ -1,15 +1,15 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import {
-    Statement,
-    StatementType,
-} from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
 
-import { createStatement, setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import {
+    createStatement,
+    setStatmentToDB,
+} from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
@@ -18,12 +18,11 @@ import Loader from "../../../../components/loaders/Loader";
 
 import ModalImage from "../../../../components/icons/ModalImage";
 
-
 interface Props {
     parentStatement: Statement | "top";
     isOption: boolean;
-    setShowModal: Function;
-    getSubStatements?: Function;
+    setShowModal: (bool: boolean) => void;
+    getSubStatements?: () => Promise<void>;
 }
 
 const NewSetStatementSimple: FC<Props> = ({
@@ -66,25 +65,24 @@ const NewSetStatementSimple: FC<Props> = ({
                 const newStatement = createStatement({
                     text: _statement,
                     parentStatement,
-                    statementType: isOption ? StatementType.option : StatementType.question,
-                   
+                    statementType: isOption
+                        ? StatementType.option
+                        : StatementType.question,
                 });
 
-   
-                if(!newStatement) throw new Error("newStatement was not created");
-                
+                if (!newStatement)
+                    throw new Error("newStatement was not created");
+
                 await setStatmentToDB({
                     statement: newStatement,
-                    parentStatement: parentStatement === "top" ? undefined : parentStatement,
+                    parentStatement:
+                        parentStatement === "top" ? undefined : parentStatement,
                     addSubscription: true,
                 });
                 setIsLoading(false);
                 setShowModal(false);
 
                 if (getSubStatements) await getSubStatements();
-
-
-                
             } catch (error) {
                 console.error(error);
             }
@@ -168,8 +166,8 @@ const NewSetStatementSimple: FC<Props> = ({
         );
     } catch (error) {
         console.error(error);
-        
-return null;
+
+        return null;
     }
 };
 

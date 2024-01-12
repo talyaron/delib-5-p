@@ -49,24 +49,24 @@ export default function Home() {
     //use effects
 
     useEffect(() => {
-        let unsubscribe: Function = () => {};
+        let unsubscribe: () => void;
         try {
             if (user) {
                 unsubscribe = listenStatmentsSubsciptions(
                     updateStoreStSubCB,
                     deleteStoreStSubCB,
                     30,
-                    true
+                    true,
                 );
             }
         } catch (error) {}
-        
-return () => {
+
+        return () => {
             unsubscribe();
         };
     }, [user]);
-    
-return (
+
+    return (
         <ScreenSlide className="page slide-in">
             {displayHeader && <HomeHeader />}
             <Outlet />

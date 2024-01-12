@@ -61,23 +61,23 @@ export const StatementSettings: FC<Props> = () => {
     // Redux
     const dispatch = useAppDispatch();
     const statement: Statement | undefined = useAppSelector(
-        statementSelector(statementId)
+        statementSelector(statementId),
     );
 
     const membership: StatementSubscription[] = useAppSelector(
-        statementMembershipSelector(statementId)
+        statementMembershipSelector(statementId),
     );
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        let unsubscribe: Function = () => {};
+        let unsubscribe: () => void;
         if (statementId) {
             unsubscribe = listenToMembers(
                 statementId,
                 setMembershipCB,
-                removeMembershipCB
+                removeMembershipCB,
             );
 
             if (!statement)
@@ -86,8 +86,8 @@ export const StatementSettings: FC<Props> = () => {
                     if (statementDB) dispatch(setStatement(statementDB));
                 })();
         }
-        
-return () => {
+
+        return () => {
             unsubscribe();
         };
     }, [statementId]);
@@ -153,8 +153,8 @@ return () => {
                 });
                 setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
-                
-return;
+
+                return;
             } else {
                 //update statement
                 if (!statement) throw new Error("statement is undefined");
@@ -176,15 +176,13 @@ return;
                 await setStatmentToDB({
                     parentStatement: statement,
                     statement: newStatement,
-                    addSubscription: true
+                    addSubscription: true,
                 });
                 setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
-                
-return;
-            }
 
-          
+                return;
+            }
         } catch (error) {
             console.error(error);
         }

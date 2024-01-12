@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
@@ -38,7 +38,7 @@ interface Props {
     screen: Screen;
     statement: Statement;
     showAskPermission: boolean;
-    setShowAskPermission: Function;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatementHeader: FC<Props> = ({
@@ -103,8 +103,8 @@ const StatementHeader: FC<Props> = ({
 
         if (!isPermited) {
             setShowAskPermission(true);
-            
-return;
+
+            return;
         }
         setStatmentSubscriptionNotificationToDB(statement, !permission);
     }
