@@ -86,34 +86,24 @@ export async function sendNotificationsCB(e: any) {
 
         if (!parentId) throw new Error("parentId not found");
 
-        let title: string = "",
-            parent;
+        const parentRef = db.doc(`statements/${parentId}`);
+        const parentDB = await parentRef.get();
+        const parent = parentDB.data() as Statement;
+        const _title = parent.statement.replace(/\*/g, "");
 
-        //get parent statement
-        if (parentId === "top") {
-            title = "New message";
-        } else {
-            const parentRef = db.doc(`statements/${parentId}`);
-            const parentDB = await parentRef.get();
-            parent = parentDB.data();
-            const _title = parent.statement.replace(/\*/g, "");
+        //bring only the first pargarpah
+        const _titleArr = _title.split("\n");
+        const _titleFirstParagraph = _titleArr[0];
 
-            //bring only the first pargarpah
-            const _titleArr = _title.split("\n");
-            const _titleFirstParagraph = _titleArr[0];
+        //limit to 20 chars
+        const parentStatementTitle = _titleFirstParagraph.substring(0, 20);
 
-            //limit to 20 chars
-            const __first20Chars = _titleFirstParagraph.substring(0, 20);
-
-            title =
-                parent && parent.statement
-                    ? "In conversation:" + __first20Chars
-                    : "New message";
-        }
-        //remove * from statement and bring only the first paragraph (pargraph are created by /n)
+        // const title = "In conversation: " + __first20Chars;
+        const title = `${statement.creator.displayName} sent a message in ${parentStatementTitle}`;
 
         //get all subscribers to this statement
         const subscribersRef = db.collection(Collections.statementsSubscribe);
+
         const q = subscribersRef
             .where("statementId", "==", parentId)
             .where("notification", "==", true);
@@ -122,37 +112,36 @@ export async function sendNotificationsCB(e: any) {
 
         //send push notifications to all subscribers
         subscribersDB.docs.forEach((doc: any) => {
-            const token = doc.data().token;
+            const tokenArr = doc.data().token as string[];
 
-            if (token) {
-                // const notifications = {
-                //   notification: {
-                //     title: 'הודעה חדשה',
-                //     body: statement.statement
-                //   },
-                //   token: token,
-                //   fcm_options: {
-                //     link: "http://delib.org"
-                //   }
-                // };
+            if (tokenArr && tokenArr.length > 0) {
+                // Send a message to each device the user has registered for notifications.
 
-                const message: any = {
-                    data: {
-                        title,
-                        body: statement.statement,
-                        url: `https://delib-5.web.app/statement/${parentId}`,
-                    },
-                    token,
-                };
-                admin
-                    .messaging()
-                    .send(message)
-                    .then((response: any) => {
-                        // Response is a message ID string.
-                    })
-                    .catch((error: any) => {
-                        logger.error("Error sending message:", error);
-                    });
+                // TODO: find a way to check if token is still valid. If not, remove it from the DB.
+
+                tokenArr.forEach((token: string) => {
+                    const message: any = {
+                        data: {
+                            title,
+                            body: statement.statement,
+                            // TODO: change to production url
+                            url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
+                            creatorId: statement.creatorId,
+                        },
+                        token,
+                    };
+
+                    admin
+                        .messaging()
+                        .send(message)
+                        .then((response: any) => {
+                            // Response is a message ID string.
+                            logger.info("Successfully sent message:", response);
+                        })
+                        .catch((error: any) => {
+                            logger.error("Error sending message:", error);
+                        });
+                });
             }
         });
     } catch (error) {

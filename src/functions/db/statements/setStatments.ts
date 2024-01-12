@@ -8,14 +8,16 @@ import {
     Screen,
     Statement,
     StatementSchema,
-    StatementSubscription,
     StatementType,
     UserSchema,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
-import { getUserPermissionToNotifications } from "../../notifications";
+import {
+    getUserPermissionToNotifications,
+    setStatmentSubscriptionNotificationToDB,
+} from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { DB, deviceToken } from "../config";
+import { DB } from "../config";
 import { getPastelColor } from "../../general/helpers";
 import { store } from "../../../model/store";
 
@@ -215,7 +217,6 @@ export function createStatement({
         newStatement.subScreens = screens;
         newStatement.statementSettings.subScreens = screens;
 
-     
         StatementSchema.parse(newStatement);
         return newStatement;
     } catch (error) {
@@ -247,8 +248,7 @@ export function updateStatement({
     hasChildren = true,
 }: UpdateStatementProps): Statement | undefined {
     try {
-        const newStatement: Statement = JSON.parse(JSON.stringify(statement)) ;
-        console.log(newStatement)
+        const newStatement: Statement = JSON.parse(JSON.stringify(statement));
 
         if (text) newStatement.statement = text;
 
@@ -263,7 +263,8 @@ export function updateStatement({
             };
         }
         if (numberOfResults && newStatement.resultsSettings)
-            newStatement.resultsSettings.numberOfResults = Number(numberOfResults);
+            newStatement.resultsSettings.numberOfResults =
+                Number(numberOfResults);
         else if (numberOfResults && !newStatement.resultsSettings) {
             newStatement.resultsSettings = {
                 resultsBy: ResultsBy.topOptions,
@@ -294,7 +295,6 @@ export function updateStatement({
                       Screen.VOTE,
                   ];
 
-        console.log(newStatement);
         StatementSchema.parse(newStatement);
         return newStatement;
     } catch (error) {
@@ -436,71 +436,6 @@ export async function updateStatementText(
         };
         await updateDoc(statementRef, newStatement);
     } catch (error) {}
-}
-
-export async function setStatmentSubscriptionNotificationToDB(
-    statement: Statement | undefined
-) {
-    try {
-        const token = deviceToken;
-
-        if (!token) throw new Error("Token is undefined");
-
-        if (!statement) throw new Error("Statement is undefined");
-        const { statementId } = statement;
-
-        //ask user for permission to send notifications
-
-        await getUserPermissionToNotifications();
-
-        const user = getUserFromFirebase();
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-
-        const statementsSubscribeId = `${user.uid}--${statementId}`;
-        const statementsSubscribeRef = doc(
-            DB,
-            Collections.statementsSubscribe,
-            statementsSubscribeId
-        );
-        const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
-
-        if (!statementSubscriptionDB.exists()) {
-            //set new subscription
-
-            await setDoc(
-                statementsSubscribeRef,
-                {
-                    user,
-                    userId: user.uid,
-                    statementId,
-                    token:[token],
-                    notification: true,
-                    lastUpdate: Timestamp.now().toMillis(),
-                    statementsSubscribeId,
-                    statement,
-                },
-                { merge: true }
-            );
-        } else {
-            //update subscription
-            const statementSubscription =
-                statementSubscriptionDB.data() as StatementSubscription;
-
-            let { notification } = statementSubscription;
-            notification = !notification;
-
-            //TODO: update token not replace like I did here...
-
-            await setDoc(
-                statementsSubscribeRef,
-                { token:[token], notification },
-                { merge: true }
-            );
-        }
-    } catch (error) {
-        console.error(error);
-    }
 }
 
 export async function setStatementisOption(statement: Statement) {
@@ -663,10 +598,9 @@ export async function updateStatmentMainImage(
             statement.statementId
         );
 
-        const t = await updateDoc(statementRef, {
+        await updateDoc(statementRef, {
             imagesURL: { main: imageURL },
         });
-        console.log("t:", t);
     } catch (error) {
         console.error(error);
     }

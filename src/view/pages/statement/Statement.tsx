@@ -62,7 +62,7 @@ import { RootState } from "../../../model/store";
 
 const Statement: FC = () => {
     // Hooks
-    const statementId = useParams().statementId;
+    const { statementId } = useParams();
     const page = useParams().page as Screen;
 
     const navigate = useNavigate();

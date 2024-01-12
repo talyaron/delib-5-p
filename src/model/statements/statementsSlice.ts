@@ -478,4 +478,12 @@ export const statementMembershipSelector =
                 statement.statementId === statementId
         );
 
+export const hasTokenSelector =
+    (token: string, statementId: string) => (state: RootState) => {
+        const statement = state.statements.statementSubscription.find(
+            (statement) => statement.statementId === statementId
+        );
+        return statement?.token?.includes(token) || false;
+    };
+
 export default statementsSlicer.reducer;
