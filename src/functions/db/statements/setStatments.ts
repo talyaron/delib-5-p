@@ -130,7 +130,8 @@ export const setStatmentToDB = async ({
         return statement.statementId;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 };
 
@@ -175,7 +176,7 @@ export function createStatement({
                 ? parentStatement?.topParentId
                 : statementId;
 
-        let newStatement: any = {
+        const newStatement: any = {
             statement: text,
             statementId,
             parentId,
@@ -218,10 +219,12 @@ export function createStatement({
         newStatement.statementSettings.subScreens = screens;
 
         StatementSchema.parse(newStatement);
-        return newStatement;
+        
+return newStatement;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }
 
@@ -296,10 +299,12 @@ export function updateStatement({
                   ];
 
         StatementSchema.parse(newStatement);
-        return newStatement;
+        
+return newStatement;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }
 
@@ -346,7 +351,8 @@ function updateStatementSettings(
         return statementSettings;
     } catch (error) {
         console.error(error);
-        return {
+        
+return {
             enableAddEvaluationOption: true,
             enableAddVotingOption: true,
             screens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
@@ -376,7 +382,7 @@ function updateStatementSettings(
 export async function setStatmentSubscriptionToDB(
     statement: Statement,
     role: Role,
-    setNotifications: boolean = false
+    setNotifications = false
 ) {
     try {
         const user = getUserFromFirebase();
@@ -450,6 +456,7 @@ export async function setStatementisOption(statement: Statement) {
             Collections.statements,
             statement.parentId
         );
+
         //get current statement
         const [statementDB, parentStatementDB] = await Promise.all([
             getDoc(statementRef),

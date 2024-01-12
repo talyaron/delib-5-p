@@ -10,6 +10,7 @@ export async function handleSetAnswersToDB(answers: Statement[]) {
         });
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }

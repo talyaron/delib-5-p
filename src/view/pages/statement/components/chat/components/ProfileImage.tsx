@@ -20,7 +20,8 @@ const ProfileImage: FC<Props> = ({ statement, showImage }) => {
     const displayName = getInitials(statement.creator.displayName);
 
     const color = generateRandomLightColor(statement.creator.uid);
-    return (
+    
+return (
         <div
             onClick={() => showImage(statement.creator)}
             className="message__user__avatar"

@@ -25,7 +25,8 @@ export const handleSetQuestionFromMassCard = ({
         if (answer) {
             //update statement
             updateStatementText(answer, text);
-            return undefined;
+            
+return undefined;
         } else {
 
             //create new statement
@@ -40,6 +41,7 @@ export const handleSetQuestionFromMassCard = ({
         }
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 };

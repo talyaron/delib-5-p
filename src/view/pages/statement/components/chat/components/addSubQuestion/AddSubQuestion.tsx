@@ -23,7 +23,8 @@ const AddSubQuestion: FC<Props> = ({ setShowModal, text}) => {
     function handleShwQuestionModal() {
         setShowModal(true);
     }
-    return (
+    
+return (
         <>
         {text&&<span className="clickable" onClick={handleShwQuestionModal}>{text}</span>}
             <div className="clickable" onClick={handleShwQuestionModal}>

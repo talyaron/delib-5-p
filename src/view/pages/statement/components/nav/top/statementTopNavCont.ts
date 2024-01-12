@@ -24,6 +24,7 @@ export function showNavElements(
         }
         if (subScreens.length > 0) {
             _navArray = _navArray
+
                 //@ts-ignore
                 .filter((navObj: NavObject) => subScreens.includes(navObj.link))
 
@@ -46,11 +47,13 @@ export function showNavElements(
                 if (userUid === creatorId) return true
             } catch (error) {
                 console.error(error)
-                return false
+                
+return false
             }
         }
     } catch (error) {
         console.error(error)
-        return navArray
+        
+return navArray
     }
 }

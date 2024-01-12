@@ -15,6 +15,7 @@ export function setSelectionsToOptions(statement: Statement, options: Statement[
         return _options;
     } catch (error) {
         console.error(error);
-        return options;
+        
+return options;
     }
 }

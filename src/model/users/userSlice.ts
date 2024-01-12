@@ -81,7 +81,8 @@ export const userSlicer = createSlice({
 
         if (!action.payload) {
           delete state.user.agreement;
-          return;
+          
+return;
         }
 
         const agreement = action.payload;

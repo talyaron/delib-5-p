@@ -26,7 +26,8 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
         setAnswerd((answerd: boolean[]) => {
             const _answerd = [...answerd];
             _answerd[index] = answer ? true : false;
-            return _answerd;
+            
+return _answerd;
         });
     }, [answer]);
 
@@ -37,7 +38,8 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
                 usub = uns;
             }
         );
-        return () => {
+        
+return () => {
             usub();
         };
     }, []);

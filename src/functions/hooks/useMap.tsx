@@ -18,7 +18,8 @@ export const useMapContext = (): MapProps => {
             "useMapContext must be used within a MyContextProvider"
         );
     }
-    return context;
+    
+return context;
 };
 
 // Create a provider component

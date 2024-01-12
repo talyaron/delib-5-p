@@ -96,6 +96,7 @@ export default function App() {
     
       setVisualViewportHeight(event.target?.height || 0);
       document.body.style.height = `${event.target?.height}px`;
+
    //change html height to visualViewportHeight state
         const html = document.querySelector("html");
         if (html) {
@@ -112,7 +113,8 @@ export default function App() {
         }
   
     });
-    return () => {
+    
+return () => {
       window.removeEventListener("resize", () => {});
       window.visualViewport?.addEventListener("resize", () => {});
     };

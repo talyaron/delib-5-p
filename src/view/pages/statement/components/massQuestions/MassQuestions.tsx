@@ -43,6 +43,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                                 style={{
                                     backgroundImage: `url(${statement.imagesURL.main})`,
                                 }}
+
                                 // style={{backgroundColor: 'red'}}
                             ></div>
                         ) : null}

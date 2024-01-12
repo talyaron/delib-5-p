@@ -70,6 +70,7 @@ const votesArray: NavItems[] = [
         name: "Agreement",
         id: Screen.VOTESֹֹֹ_VOTED,
     },
+
     // {
     //     link: Screen.VOTES_CONSENSUS,
     //     name: t("Agreement"),

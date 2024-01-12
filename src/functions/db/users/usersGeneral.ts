@@ -15,6 +15,7 @@ export function getUserFromFirebase(): User | null {
 
     } catch (error) {
         console.error(error)
-        return null;
+        
+return null;
     }
 }

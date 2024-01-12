@@ -11,7 +11,8 @@ export async function setUserToDB(user:User) {
         const userRef = doc(DB, Collections.users, user.uid);
         await setDoc(userRef, user, { merge: true });
         const userFromDB = await getDoc(userRef);
-        return userFromDB.data();
+        
+return userFromDB.data();
     } catch (error) {
         console.error(error)
     }
@@ -50,6 +51,7 @@ export async function updateUserAgreement(agreement:Agreement):Promise<boolean> 
         
     } catch (error) {
         console.error(error)
-        return false;
+        
+return false;
     }
 }

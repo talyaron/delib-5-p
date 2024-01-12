@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { DB } from '../config';
 import { Collections, ResultsBy } from 'delib-npm';
 
-export async function updateResultsSettings(statementId: string, resultsBy: ResultsBy = ResultsBy.topOptions, numberOfResults: number = 3) {
+export async function updateResultsSettings(statementId: string, resultsBy: ResultsBy = ResultsBy.topOptions, numberOfResults = 3) {
     try {
         z.string().parse(statementId);
         z.number().parse(numberOfResults);

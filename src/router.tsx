@@ -10,6 +10,7 @@ import Loader from "./view/components/loaders/Loader";
 import Home from "./view/pages/home/Home";
 import App from "./App";
 import Page404 from "./view/pages/page404/Page404";
+
 // import Statement from "./view/pages/statement/Statement";
 // import Main from "./view/pages/main/Main";
 

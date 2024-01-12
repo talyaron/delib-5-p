@@ -42,7 +42,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 const _value = e.target.value.replace(/\s+/g, " ").trim();
                 if (!_value) {
                     e.target.value = "";
-                    return;
+                    
+return;
                 }
 
                 // submit form

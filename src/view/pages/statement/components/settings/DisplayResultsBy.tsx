@@ -23,7 +23,8 @@ export default function DisplayResultsBy({
     const [resultsByVoting, setResultsByVoting] = useState(
         resultsBy() === ResultsBy.topVote
     );
-    return (
+    
+return (
         <section className="settings__resultsBy">
             <h3 className="settings__resultsBy__title">{t("Results By")}</h3>
             <div

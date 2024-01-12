@@ -9,7 +9,8 @@ export default function CheckBoxeArea({ statement }: { statement: Statement | un
     const hasChildren: boolean = (() => {
         if (!statement) return true;
         if (statement.hasChildren === undefined) return true;
-        return statement.hasChildren;
+        
+return statement.hasChildren;
     })();
 
     const enableAddEvaluationOption: boolean =
@@ -21,7 +22,8 @@ export default function CheckBoxeArea({ statement }: { statement: Statement | un
         statement?.statementSettings?.enableAddVotingOption === false
             ? false
             : true;
-    return (
+    
+return (
         <section className="settings__checkboxSection">
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">

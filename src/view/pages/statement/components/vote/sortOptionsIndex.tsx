@@ -24,7 +24,8 @@ export function sortOptionsIndex(options: Statement[], sort: string | undefined)
             _options = _options.sort((a: Statement, b: Statement) => {
                 const aVoted: number = a.voted === undefined ? 0 : a.voted;
                 const bVoted: number = b.voted === undefined ? 0 : b.voted;
-                return bVoted - aVoted;
+                
+return bVoted - aVoted;
             });
             break;
         case Screen.VOTES_UPDATED:
@@ -37,7 +38,8 @@ export function sortOptionsIndex(options: Statement[], sort: string | undefined)
     }
     _options = _options.map((option: Statement, i: number) => {
         option.order = i;
-        return option;
+        
+return option;
     });
     _options = _options.sort((a: Statement, b: Statement) => {
         return b.createdAt - a.createdAt;

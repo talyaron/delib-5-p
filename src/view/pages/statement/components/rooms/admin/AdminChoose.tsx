@@ -210,10 +210,11 @@ export default AdminSeeAllGroups;
 
 function divideIntoTopics(
     participants: RoomAskToJoin[],
-    maxPerRoom: number = 7
+    maxPerRoom = 7
 ): { rooms: Array<RoomDivied>; topicsParticipants: any } {
     try {
         const topicsParticipants: any = {};
+
         //build topicsParticipantsObject
         participants.forEach((participant) => {
             try {
@@ -236,7 +237,8 @@ function divideIntoTopics(
                 }
             } catch (error) {
                 console.error(error);
-                return undefined;
+                
+return undefined;
             }
         });
 
@@ -256,7 +258,8 @@ function divideIntoTopics(
         return { rooms, topicsParticipants };
     } catch (error) {
         console.error(error);
-        return { rooms: [], topicsParticipants: undefined };
+        
+return { rooms: [], topicsParticipants: undefined };
     }
 }
 
@@ -283,14 +286,15 @@ function divideParticipantsIntoRoomsRandomly(
         return rooms;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
 function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
         let roomNumber = 1;
-        let rooms: Array<RoomDivied> = [];
+        const rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
             const topicRooms = topics[topic].rooms;
             topicRooms.forEach((room: Array<RoomAskToJoin>) => {
@@ -306,6 +310,7 @@ function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
         return rooms;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }

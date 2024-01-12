@@ -9,7 +9,8 @@ const Page404 = () => {
         setIntialLocationSessionStorage("home");
         navigate("/", { state: { from: window.location.pathname } });
     }
-    return (
+    
+return (
         <div className={styles.page}>
             <div className={styles.box}>
                 <img src={img404} alt="404" />

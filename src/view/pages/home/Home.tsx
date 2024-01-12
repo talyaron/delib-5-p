@@ -60,11 +60,13 @@ export default function Home() {
                 );
             }
         } catch (error) {}
-        return () => {
+        
+return () => {
             unsubscribe();
         };
     }, [user]);
-    return (
+    
+return (
         <ScreenSlide className="page slide-in">
             {displayHeader && <HomeHeader />}
             <Outlet />

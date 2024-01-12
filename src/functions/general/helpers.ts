@@ -24,6 +24,7 @@ export function updateArray(
         if (!newItem[updateByProperty]) {
             throw new Error(`Item dont have property ${updateByProperty}`);
         }
+
         //find in array;
         const index = arrayTemp.findIndex(
             (item) => item[updateByProperty] === newItem[updateByProperty]
@@ -42,7 +43,8 @@ export function updateArray(
         return arrayTemp;
     } catch (error) {
         console.error(error);
-        return currentArray;
+        
+return currentArray;
     }
 }
 
@@ -59,7 +61,8 @@ export function getIntialLocationSessionStorage(): string | undefined {
         return sessionStorage.getItem("initialLocation") || undefined;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }
 
@@ -93,10 +96,12 @@ export function isAuthorized(
         }
 
         if (authrizedRoles && authrizedRoles.includes(role)) return true;
-        return false;
+        
+return false;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
@@ -108,7 +113,8 @@ export function isOptionFn(statement: Statement): boolean {
         );
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
@@ -196,7 +202,8 @@ export function isStatementTypeAllowed(
         return true;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
@@ -232,7 +239,8 @@ export function linkToChildren(
         return false;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
@@ -242,8 +250,8 @@ export function getPastelColor() {
 
 export function calculateFontSize(
     text: string,
-    maxSize: number = 6,
-    minSize: number = 14
+    maxSize = 6,
+    minSize = 14
 ) {
     // Set the base font size and a multiplier for adjusting based on text length
     const baseFontSize = minSize;
@@ -275,14 +283,17 @@ export function parseScreensCheckBoxes(
         const _navArray = [...navArray];
 
         const screens = _navArray
+
             //@ts-ignore
             .filter((navObj) => dataObj[navObj.link] === "on")
             .map((navObj) => navObj.link) as Screen[];
 
         if (screens.length === 0) return [Screen.CHAT, Screen.OPTIONS];
-        return screens;
+        
+return screens;
     } catch (error) {
         console.error(error);
-        return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
+        
+return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
     }
 }

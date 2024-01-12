@@ -31,13 +31,15 @@ export function sortSubStatements(
             (statement: Statement, i: number) => {
                 const updatedStatement = Object.assign({}, statement);
                 updatedStatement.order = i;
-                return updatedStatement;
+                
+return updatedStatement;
             }
         );
 
         return __subStatements;
     } catch (error) {
         console.error(error);
-        return subStatements;
+        
+return subStatements;
     }
 }

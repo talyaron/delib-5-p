@@ -113,6 +113,7 @@ export const createInitialNodesAndEdges = (result: Results) => {
         return { nodes, edges };
     } catch (error) {
         console.error("createInitialElements() failed: ", error);
-        return { nodes: [], edges: [] };
+        
+return { nodes: [], edges: [] };
     }
 };

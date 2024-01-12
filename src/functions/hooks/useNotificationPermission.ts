@@ -32,7 +32,8 @@ const useNotificationPermission = (token: string) => {
         return permission;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 };
 

@@ -49,6 +49,7 @@ const EditTitle: FC<Props> = ({
                         updateStatementText(statement, e.target.value);
                     } else {
                         const statementTitle = inputString + "\n" + description;
+
                         //update title in db
                         updateStatementText(statement, statementTitle);
                     }
@@ -93,7 +94,8 @@ const EditTitle: FC<Props> = ({
         }
     } catch (error) {
         console.error(error);
-        return null;
+        
+return null;
     }
 };
 

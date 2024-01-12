@@ -25,7 +25,7 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
         //convert string set to string array
 
         let counter = 0
-        let ids = new Set<string>()
+        const ids = new Set<string>()
 
         while (ids.size < statements.length && counter < 8) {
             //take firs statement
@@ -51,14 +51,15 @@ export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
         return results
     } catch (error) {
         console.error(error)
-        return []
+        
+return []
     }
 }
 
 function findMostTopStatement(
     statement: Statement,
     statements: Statement[],
-    maxLevels: number = 10
+    maxLevels = 10
 ): Statement {
     try {
         if (!statement) throw new Error("statement is undefined")
@@ -75,10 +76,12 @@ function findMostTopStatement(
             statement = parentStatement
             counter++
         }
-        return parentStatement
+        
+return parentStatement
     } catch (error) {
         console.error(error)
-        return statement
+        
+return statement
     }
 }
 
@@ -105,7 +108,8 @@ function createResultLevel(
         }
     } catch (error) {
         console.error(error)
-        return { result: { top: statement, sub: [] }, ids }
+        
+return { result: { top: statement, sub: [] }, ids }
     }
 }
 
@@ -153,7 +157,8 @@ export function filterByStatementType(filter: FilterType): Filter {
         }
     } catch (error) {
         console.error(error)
-        return {
+        
+return {
             types: [
                 StatementType.question,
                 StatementType.statement,

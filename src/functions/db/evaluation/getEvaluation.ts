@@ -26,7 +26,8 @@ export function listenToEvaluations(
             where("parentId", "==", parentId),
             where("evaluatorId", "==", evaluatorId)
         );
-        return onSnapshot(q, (evaluationsDB) => {
+        
+return onSnapshot(q, (evaluationsDB) => {
             try {
                 evaluationsDB.forEach((evaluationDB) => {
                     try {
@@ -43,7 +44,8 @@ export function listenToEvaluations(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -59,7 +61,8 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
             if (!evauatorsIds.has(evaluation.evaluatorId)) {
                 //prevent duplicate evaluators
                 evauatorsIds.add(evaluation.evaluatorId);
-                return evaluation;
+                
+return evaluation;
             }
         }).filter((evaluation) => evaluation) as Evaluation[];
 
@@ -72,7 +75,8 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
                     evaluation.evaluatorId
                 );
                 const promise = getDoc(evaluatorRef);
-                return promise;
+                
+return promise;
             }
         }).filter((promise) => promise) as Promise<any>[];
 
@@ -87,9 +91,11 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
             );
             if (evaluator) evaluation.evaluator = evaluator;
         });
-        return evaluations;
+        
+return evaluations;
     } catch (error) {
         console.error(error);
-        return [] as Evaluation[];
+        
+return [] as Evaluation[];
     }
 }

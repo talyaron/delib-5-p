@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+
 // Statment imports
 import {
     createStatement,
@@ -85,7 +86,8 @@ export const StatementSettings: FC<Props> = () => {
                     if (statementDB) dispatch(setStatement(statementDB));
                 })();
         }
-        return () => {
+        
+return () => {
             unsubscribe();
         };
     }, [statementId]);
@@ -151,7 +153,8 @@ export const StatementSettings: FC<Props> = () => {
                 });
                 setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
-                return;
+                
+return;
             } else {
                 //update statement
                 if (!statement) throw new Error("statement is undefined");
@@ -177,7 +180,8 @@ export const StatementSettings: FC<Props> = () => {
                 });
                 setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
-                return;
+                
+return;
             }
 
           
@@ -187,6 +191,7 @@ export const StatementSettings: FC<Props> = () => {
     }
 
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
+
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 

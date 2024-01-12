@@ -37,7 +37,8 @@ export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
         })
     } catch (error) {
         console.error(error)
-        return () => {}
+        
+return () => {}
     }
 }
 
@@ -54,7 +55,8 @@ export function listenToRoomSolutions(statementId: string, cb: Function) {
                 )
             )
         )
-        return onSnapshot(q, (roomSolutionsDB) => {
+        
+return onSnapshot(q, (roomSolutionsDB) => {
             try {
                 roomSolutionsDB.forEach((roomSolutionDB) => {
                     try {
@@ -73,6 +75,7 @@ export function listenToRoomSolutions(statementId: string, cb: Function) {
         })
     } catch (error) {
         console.error(error)
-        return () => {}
+        
+return () => {}
     }
 }

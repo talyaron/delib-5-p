@@ -29,7 +29,8 @@ export async function getResultsDB( statement:Statement): Promise<Statement[]> {
 
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
@@ -44,10 +45,12 @@ export async function getResultsByTopVoteDB(statement: Statement): Promise<State
         const statementRef = doc(DB, Collections.statements, topStatementId);
         const statementSnap = await getDoc(statementRef);
         const statementData = statementSnap.data() as Statement;
-        return [statementData];
+        
+return [statementData];
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
@@ -61,9 +64,11 @@ async function getTopOtionsDB(statement: Statement): Promise<Statement[]> {
         const topOptionsSnap = await getDocs(q);
 
         const topOptions = topOptionsSnap.docs.map(doc => doc.data() as Statement);
-        return topOptions;
+        
+return topOptions;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }

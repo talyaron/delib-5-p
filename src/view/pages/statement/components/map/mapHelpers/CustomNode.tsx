@@ -38,7 +38,8 @@ const nodeStyle = (
         cursor: "pointer",
         fontSize: calculateFontSize(nodeTitle),
     };
-    return style;
+    
+return style;
 };
 
 export default function CustomNode({ data }: NodeProps) {

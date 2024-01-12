@@ -62,6 +62,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 name={link}
                 id={`toggleSwitch-${link}`}
                 className="switch-input"
+
                 // defaultChecked={checked}
                 onChange={handleChange}
                 value={checked ? "on" : "off"}

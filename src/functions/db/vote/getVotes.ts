@@ -39,7 +39,8 @@ export async function getToVoteOnParent(
         updateStoreWitehVoteCB(statement);
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -56,6 +57,7 @@ export async function getVoters(parentId: string): Promise<Vote[]> {
         return voters;
     } catch (error) {
         console.error(error);
-        return[] as Vote[];
+        
+return[] as Vote[];
     }
 }

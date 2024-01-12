@@ -42,6 +42,7 @@ export function googleLogin() {
 
             // The AuthCredential type that was used.
             console.error(error);
+
             // const credential = GoogleAuthProvider.credentialFromError(error);
 
             // ...
@@ -80,6 +81,7 @@ export function listenToAuth(
                 cb(userDB);
 
                 const initialLocation = getIntialLocationSessionStorage();
+
                 //navigate to initial location
                 if (initialLocation) navigationCB(initialLocation);
             } else {

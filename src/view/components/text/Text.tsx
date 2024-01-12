@@ -25,7 +25,8 @@ const Text: FC<Props> = ({ text, onlyTitle,onlyDescription }) => {
 
             const boldedParagraph = paragraph.split('*').map((p, i) => {
                 if (i % 2 === 1) return <b key={`${textId}--${i}`}>{p}</b>
-                return p
+                
+return p
             })
 
             return <span className={styles.title} key={`${textId}--${i}`}>{boldedParagraph}</span>
@@ -42,12 +43,14 @@ const Text: FC<Props> = ({ text, onlyTitle,onlyDescription }) => {
 
     if(onlyTitle) return (<span className={styles.title}>{title}</span>)
     else if(onlyDescription) return (<span className={styles.p}>{description}</span>)
-    return (
+    
+return (
         <span>{paragraphs}</span>
     )
     }catch(error:any){
         console.error(error);
-        return (<span>error: {error.message}</span>)
+        
+return (<span>error: {error.message}</span>)
     }
 }
 

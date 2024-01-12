@@ -40,7 +40,8 @@ const Map: FC<Props> = ({ statement }) => {
 
         const filterSubStatements = subStatements.filter((state) => {
             if (!state.statementType) return false;
-            return filteredArray.includes(state.statementType);
+            
+return filteredArray.includes(state.statementType);
         });
 
         const sortedResults = sortStatementsByHirarrchy([

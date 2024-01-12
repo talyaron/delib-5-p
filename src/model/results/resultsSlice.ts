@@ -1,5 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit'
+
 // import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import {Results} from "delib-npm";
@@ -18,6 +19,7 @@ const initialState: ResultsState = {
 
 export const resultsSlice = createSlice({
     name: 'results',
+
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {

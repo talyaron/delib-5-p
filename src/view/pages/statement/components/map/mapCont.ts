@@ -31,7 +31,8 @@ export async function getResults(
             async (subResult: Results) => {
                 const subStatement = subResult.top
                 const subResults: Statement[] = await getResultsDB(subStatement)
-                return subResults
+                
+return subResults
             }
         )
 
@@ -50,7 +51,8 @@ export async function getResults(
         return result
     } catch (error) {
         console.error(error)
-        return { top: statement, sub: [] }
+        
+return { top: statement, sub: [] }
     }
 }
 function getResultsByOptions(
@@ -71,7 +73,8 @@ function getResultsByOptions(
         return _maxOptions
     } catch (error) {
         console.error(error)
-        return []
+        
+return []
     }
 }
 function getResultsByVotes(
@@ -90,7 +93,8 @@ function getResultsByVotes(
         return [result]
     } catch (error) {
         console.error(error)
-        return []
+        
+return []
     }
 }
 function getTopVoteStatementId(statement: Statement): string | undefined {
@@ -99,9 +103,11 @@ function getTopVoteStatementId(statement: Statement): string | undefined {
         if (!selections) return undefined
 
         const maxVoteKey = maxKeyInObject(selections)
-        return maxVoteKey
+        
+return maxVoteKey
     } catch (error) {
         console.error(error)
-        return undefined
+        
+return undefined
     }
 }

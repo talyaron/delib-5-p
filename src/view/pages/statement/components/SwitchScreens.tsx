@@ -28,6 +28,7 @@ export default function SwitchScreens({
     switch (screen) {
         case Screen.DOC:
             return <Map statement={statement} />;
+
         //TODO: Delete? Not used.
         // case Screen.HOME:
         //     return (

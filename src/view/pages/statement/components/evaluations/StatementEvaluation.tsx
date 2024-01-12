@@ -43,14 +43,15 @@ const StatementEvaluation: FC<Props> = ({
                     if(questions){
                         return s.statementType === StatementType.question
                     }
-                    return isOptionFn(s)
+                    
+return isOptionFn(s)
                 }
                 )
             );
         }, [sort, subStatements]);
 
         let topSum = 30;
-        let tops: number[] = [topSum];
+        const tops: number[] = [topSum];
 
         return (
             <>
@@ -101,7 +102,8 @@ const StatementEvaluation: FC<Props> = ({
         );
     } catch (error) {
         console.error(error);
-        return null;
+        
+return null;
     }
 };
 

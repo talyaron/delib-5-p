@@ -18,6 +18,7 @@ const initialState: EvaluationsState = {
 
 export const evaluationsSlicer = createSlice({
   name: 'evaluations',
+
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {

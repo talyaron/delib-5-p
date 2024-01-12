@@ -9,7 +9,8 @@ interface Props {
 const Chip: FC<Props> = ({ user }) => {
     if (!user) return null;
     const displayName = user.displayName.slice(0, 15);
-    return (
+    
+return (
         <div className={styles.chip}>
             {user.photoURL ? (
                 <img src={user.photoURL} alt={user.displayName} />

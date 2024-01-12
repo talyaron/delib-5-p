@@ -60,13 +60,15 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
 
 
                 await saveToDB(requestId, requestRef, statement);
-                return true;
+                
+return true;
 
 
             } else if (request.statement.statementId !== statement.statementId) {
 
                 await saveToDB(requestId, requestRef, statement);
-                return true;
+                
+return true;
 
             } else {
                 const { parentId, participant, requestId } = request;
@@ -74,7 +76,8 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
 
                 //set to undefined to show that the user is not in the room
                 await setDoc(requestRef, _request);
-                return false;
+                
+return false;
             }
 
 
@@ -82,7 +85,8 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
 
     } catch (error) {
         console.error(error)
-        return false
+        
+return false
     }
 
     async function saveToDB(requestId: string, requestRef: any, statement: Statement) {

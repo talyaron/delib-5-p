@@ -81,7 +81,8 @@ export function listenToTopStatements(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -95,6 +96,7 @@ function listenToSubStatements(
         const q = query(
             subStatementsRef,
             where("topParentId", "==", topStatementId),
+
             // where("statementType", "==", StatementType.question),
             orderBy("createdAt", "asc"),
             limit(50)
@@ -122,7 +124,8 @@ function listenToSubStatements(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -149,10 +152,12 @@ export async function getStatmentsSubsciptions(): Promise<
         querySnapshot.forEach((doc) => {
             statementsSubscriptions.push(doc.data() as StatementSubscription);
         });
-        return statementsSubscriptions;
+        
+return statementsSubscriptions;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
@@ -200,7 +205,8 @@ export function listenToStatementSubscription(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 export async function getSubscriptions(): Promise<StatementSubscription[]> {
@@ -233,7 +239,8 @@ export async function getSubscriptions(): Promise<StatementSubscription[]> {
         return subscriptions;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
@@ -278,7 +285,8 @@ export function listenToStatementSubSubscriptions(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -332,10 +340,11 @@ export function listenStatmentsSubsciptions(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 
-    function getQuery(onlyTop?: boolean, numberOfStatements: number = 40) {
+    function getQuery(onlyTop?: boolean, numberOfStatements = 40) {
         try {
             const user = store.getState().user.user;
             if (!user) throw new Error("User not logged in");
@@ -359,7 +368,8 @@ export function listenStatmentsSubsciptions(
                     limit(numberOfStatements)
                 );
             }
-            return query(
+            
+return query(
                 statementsSubscribeRef,
                 and(
                     where("userId", "==", user.uid),
@@ -394,7 +404,8 @@ export function listenStatmentsSubsciptions(
                 DB,
                 Collections.statementsSubscribe
             );
-            return query(
+            
+return query(
                 statementsSubscribeRef,
                 and(
                     where("userId", "==", user.uid),
@@ -439,24 +450,28 @@ export async function getIsSubscribed(
         const subscriptionDB = await getDoc(subscriptionRef);
 
         if (!subscriptionDB.exists()) return false;
-        return true;
+        
+return true;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
 export function listenToStatement(statementId: string, updateStore: Function) {
     try {
         const statementRef = doc(DB, Collections.statements, statementId);
-        return onSnapshot(statementRef, (statementDB) => {
+        
+return onSnapshot(statementRef, (statementDB) => {
             const statement = statementDB.data() as Statement;
 
             updateStore(statement);
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -466,10 +481,12 @@ export async function getStatementFromDB(
     try {
         const statementRef = doc(DB, Collections.statements, statementId);
         const statementDB = await getDoc(statementRef);
-        return statementDB.data() as Statement | undefined;
+        
+return statementDB.data() as Statement | undefined;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }
 
@@ -507,7 +524,8 @@ export function listenToStatementsOfStatment(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -542,7 +560,8 @@ export function listenToMembers(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }
 
@@ -552,7 +571,7 @@ export async function getStatementDepth(
     depth: number
 ): Promise<Statement[]> {
     try {
-        let statements: Statement[][] = [[statement]];
+        const statements: Statement[][] = [[statement]];
 
         //level 1 is allready in store
         //find second level
@@ -562,6 +581,7 @@ export async function getStatementDepth(
                 s.statementType === StatementType.result
         );
         statements.push(levleOneStatements);
+
         //get the next levels
 
         for (let i = 1; i < depth; i++) {
@@ -585,7 +605,8 @@ export async function getStatementDepth(
         return finalStatements;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 
     async function getLevelResults(statement: Statement): Promise<Statement[]> {
@@ -612,7 +633,8 @@ export async function getStatementDepth(
             return subStatements;
         } catch (error) {
             console.error(error);
-            return [];
+            
+return [];
         }
     }
 }
@@ -636,7 +658,8 @@ export async function getChildStatements(
         return subStatements;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
@@ -656,7 +679,8 @@ export async function listenToUserAnswer(
             orderBy("createdAt", "desc"),
             limit(1)
         );
-        return onSnapshot(q, (statementsDB) => {
+        
+return onSnapshot(q, (statementsDB) => {
             statementsDB.docChanges().forEach((change) => {
                 const statement = change.doc.data() as Statement;
 
@@ -665,6 +689,7 @@ export async function listenToUserAnswer(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+        
+return () => {};
     }
 }

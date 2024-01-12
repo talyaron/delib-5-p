@@ -61,6 +61,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const isRtl = direction === "row-reverse";
 
     const elementRef = useRef<HTMLDivElement>(null);
+
     // const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);

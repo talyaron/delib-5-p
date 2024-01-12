@@ -58,6 +58,7 @@ const NewSetStatementSimple: FC<Props> = ({
                 setIsLoading(true);
 
                 const description = data.get("description");
+
                 //add to title * at the beggining
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
@@ -167,7 +168,8 @@ const NewSetStatementSimple: FC<Props> = ({
         );
     } catch (error) {
         console.error(error);
-        return null;
+        
+return null;
     }
 };
 

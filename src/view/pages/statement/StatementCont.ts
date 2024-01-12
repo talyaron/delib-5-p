@@ -32,6 +32,7 @@ export function availableScreen(
         return returnedLink;
     } catch (error) {
         console.error(error);
-        return screenLink;
+        
+return screenLink;
     }
 }

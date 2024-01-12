@@ -45,18 +45,20 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
 
 export default StatementRoomCard
 
-function fillHieght(topicJoiners:RoomAskToJoin[], maxRoomJoiners:number = 5) {
+function fillHieght(topicJoiners:RoomAskToJoin[], maxRoomJoiners = 5) {
   try {
     if(!topicJoiners) return 0;
 
     const joinersCount = topicJoiners.length;
     const fill = joinersCount/maxRoomJoiners;
     if(fill > 1) return 1;
-    return fill;
+    
+return fill;
 
   } catch (error) {
     console.error(error);
-    return 0;
+    
+return 0;
   }
 }
 

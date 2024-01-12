@@ -24,10 +24,12 @@ export async function getUserPermissionToNotifications(): Promise<boolean> {
         const permission = await Notification.requestPermission();
 
         if (permission !== "granted") throw new Error("Permission not granted");
-        return true;
+        
+return true;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
@@ -77,7 +79,7 @@ export async function onLocalMessage() {
 
 export async function setStatmentSubscriptionNotificationToDB(
     statement: Statement | undefined,
-    notification: boolean = true
+    notification = true
 ) {
     try {
         const msg = await messaging();
