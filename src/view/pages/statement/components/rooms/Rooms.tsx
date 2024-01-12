@@ -17,7 +17,7 @@ interface Props {
     subStatements: Statement[];
 }
 
-let unsub: () => void;
+let unsub: undefined | (() => void);
 
 const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
         //enter the room
 
         return () => {
-            unsub();
+            if (unsub) unsub();
         };
     }, []);
 

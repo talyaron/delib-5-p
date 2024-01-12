@@ -72,7 +72,7 @@ export const StatementSettings: FC<Props> = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        let unsubscribe: () => void;
+        let unsubscribe: undefined | (() => void);
         if (statementId) {
             unsubscribe = listenToMembers(
                 statementId,
@@ -88,7 +88,7 @@ export const StatementSettings: FC<Props> = () => {
         }
 
         return () => {
-            unsubscribe();
+            if (unsubscribe) unsubscribe();
         };
     }, [statementId]);
 

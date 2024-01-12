@@ -32,13 +32,13 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
     }, [answer]);
 
     useEffect(() => {
-        let usub: () => void;
+        let usub: undefined | (() => void);
         listenToUserAnswer(statement.statementId, setAnswer).then((uns) => {
             usub = uns;
         });
 
         return () => {
-            usub();
+            if (usub) usub();
         };
     }, []);
 

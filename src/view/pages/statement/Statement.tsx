@@ -151,10 +151,10 @@ const Statement: FC = () => {
 
     //listne to sub statements
     useEffect(() => {
-        let unsubSubStatements: () => void;
-        let unsubStatementSubscription: () => void;
-        let unsubEvaluations: () => void;
-        let unsubSubSubscribedStatements: () => void;
+        let unsubSubStatements: undefined | (() => void);
+        let unsubStatementSubscription: undefined | (() => void);
+        let unsubEvaluations: undefined | (() => void);
+        let unsubSubSubscribedStatements: undefined | (() => void);
 
         if (user && statementId) {
             unsubSubStatements = listenToStatementsOfStatment(
@@ -178,10 +178,10 @@ const Statement: FC = () => {
         }
 
         return () => {
-            unsubSubStatements();
-            unsubStatementSubscription();
-            unsubSubSubscribedStatements();
-            unsubEvaluations();
+            if (unsubSubStatements) unsubSubStatements();
+            if (unsubStatementSubscription) unsubStatementSubscription();
+            if (unsubSubSubscribedStatements) unsubSubSubscribedStatements();
+            if (unsubEvaluations) unsubEvaluations();
         };
     }, [user, statementId]);
 
