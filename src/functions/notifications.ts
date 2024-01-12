@@ -76,7 +76,8 @@ export async function onLocalMessage() {
 }
 
 export async function setStatmentSubscriptionNotificationToDB(
-    statement: Statement | undefined
+    statement: Statement | undefined,
+    notification: boolean = true
 ) {
     try {
         const msg = await messaging();
@@ -117,7 +118,7 @@ export async function setStatmentSubscriptionNotificationToDB(
                     userId: user.uid,
                     statementId,
                     token: tokenArr,
-                    notification: true,
+                    notification,
                     lastUpdate: Timestamp.now().toMillis(),
                     statementsSubscribeId,
                     statement,
@@ -144,7 +145,7 @@ export async function setStatmentSubscriptionNotificationToDB(
                 statementsSubscribeRef,
                 {
                     token: tokenArr,
-                    notification: !statementSubscription.notification,
+                    notification,
                 },
                 { merge: true }
             );

@@ -116,7 +116,7 @@ export async function sendNotificationsCB(e: any) {
             if (tokenArr && tokenArr.length > 0) {
                 // Send a message to each device the user has registered for notifications.
 
-                // TODO: find a way to chack if token is still valid. If not, remove it from the DB.
+                // TODO: find a way to check if token is still valid. If not, remove it from the DB.
 
                 tokenArr.forEach((token: string) => {
                     const message: any = {

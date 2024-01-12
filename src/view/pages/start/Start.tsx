@@ -41,10 +41,15 @@ const Start = () => {
     return (
         <div className="splashPage">
             <h1 className="splashPage__title">{t("Delib 5")}</h1>
-            <img src={Logo} alt="Delib logo" width={150} height={150} />
+            <img
+                src={Logo}
+                alt="Delib logo"
+                width="10%"
+                style={{ maxWidth: "150px" }}
+            />
             <h2 className="splashPage__subTitle">{t("Creating Agreements")}</h2>
             <select
-            style={{backgroundColor:"lightblue"}}
+                style={{ backgroundColor: "lightblue" }}
                 defaultValue={savedLang || "he"}
                 onChange={(e) => {
                     const lang = e.target.value;
@@ -63,7 +68,10 @@ const Start = () => {
                     </option>
                 ))}
             </select>
-            <button className="btn btn--large" onClick={() => setShowNameModul(true)}>
+            <button
+                className="btn btn--large"
+                onClick={() => setShowNameModul(true)}
+            >
                 {t("Login with a temporary name")}
             </button>
             <button
@@ -73,7 +81,7 @@ const Start = () => {
                 <img src={googleLogo} alt="login with google" />
                 {t("Connect with Google")}
             </button>
-            
+
             <a
                 href="http://delib.org"
                 target="_blank"

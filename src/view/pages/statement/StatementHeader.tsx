@@ -105,7 +105,7 @@ const StatementHeader: FC<Props> = ({
             setShowAskPermission(true);
             return;
         }
-        setStatmentSubscriptionNotificationToDB(statement);
+        setStatmentSubscriptionNotificationToDB(statement, !permission);
     }
 
     return (
