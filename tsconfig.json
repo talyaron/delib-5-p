@@ -25,5 +25,5 @@
     "paths": {
         "@shared/*": ["../delib-models/*"]
     },
-    "files": ["./configKey.d.ts"]
+    "files": ["configKey.d.ts"]
 }
