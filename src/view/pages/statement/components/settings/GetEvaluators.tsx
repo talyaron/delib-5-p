@@ -21,7 +21,7 @@ export default function GetEvaluators({
                         handleGetEvaluators(
                             statementId,
                             setEvaluators,
-                            setClicked
+                            setClicked,
                         )
                     }
                 >

@@ -12,7 +12,7 @@ export const getLayoutedElements = (
     edges: Edge[],
     direction = "TB",
     nodeHeight: number,
-    nodeWidth: number
+    nodeWidth: number,
 ) => {
     const isHorizontal = direction === "LR";
 
@@ -113,6 +113,7 @@ export const createInitialNodesAndEdges = (result: Results) => {
         return { nodes, edges };
     } catch (error) {
         console.error("createInitialElements() failed: ", error);
+
         return { nodes: [], edges: [] };
     }
 };

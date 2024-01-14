@@ -2,15 +2,15 @@ import { NavObject, Screen } from "delib-npm";
 
 export const navArray: NavObject[] = [
     { link: Screen.DOC, name: "Main", id: "doc", default: false },
-    { link: Screen.CHAT, name: "Chat", id: "chat",default: true },
-    { link: Screen.OPTIONS, name: "Evaluations", id: "options", default:true},
+    { link: Screen.CHAT, name: "Chat", id: "chat", default: true },
+    { link: Screen.OPTIONS, name: "Evaluations", id: "options", default: true },
     {
         link: Screen.QUESTIONS,
         name: "Questions",
         id: "questions",
         default: false,
     },
-    { link: Screen.VOTE, name: "Voting", id: "vote", default:true },
+    { link: Screen.VOTE, name: "Voting", id: "vote", default: true },
     {
         link: Screen.MASS_QUESTIONS,
         name: "Mass Questions",

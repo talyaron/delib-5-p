@@ -1,15 +1,15 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import EditIcon from "../../../assets/icons/EditIcon";
 
 interface Props {
     isAuthrized: boolean;
-    setEdit: Function;
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
     edit: boolean;
     text?: string;
 }
 
 const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit, text }) => {
-if(!isAuthrized) return null;
+    if (!isAuthrized) return null;
 
     return (
         <>

@@ -9,6 +9,7 @@ const Page404 = () => {
         setIntialLocationSessionStorage("home");
         navigate("/", { state: { from: window.location.pathname } });
     }
+
     return (
         <div className={styles.page}>
             <div className={styles.box}>

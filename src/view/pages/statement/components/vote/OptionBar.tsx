@@ -26,8 +26,8 @@ export interface OptionBarProps {
     totalVotes: number;
     statement: Statement;
     order: number;
-    setStatementInfo: Function;
-    setShowInfo: Function;
+    setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
+    setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const OptionBar: FC<OptionBarProps> = ({
     option,
@@ -109,7 +109,6 @@ export const OptionBar: FC<OptionBarProps> = ({
             <div
                 className="infoIcon"
                 onClick={() => {
-                  
                     setStatementInfo(option), setShowInfo(true);
                 }}
             >

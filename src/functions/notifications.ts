@@ -18,15 +18,17 @@ export async function getUserPermissionToNotifications(): Promise<boolean> {
         //in case the user didn't set the notification permission yet
         alert(
             t(
-                "Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time"
-            )
+                "Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time",
+            ),
         );
         const permission = await Notification.requestPermission();
 
         if (permission !== "granted") throw new Error("Permission not granted");
+
         return true;
     } catch (error) {
         console.error(error);
+
         return false;
     }
 }
@@ -50,7 +52,7 @@ export async function onLocalMessage() {
                     });
 
                     const notificationSound = new Audio(
-                        "https://delib-5.web.app/assets/sound/sweet_notification.mp3"
+                        "https://delib-5.web.app/assets/sound/sweet_notification.mp3",
                     );
 
                     notificationSound.autoplay = true;
@@ -77,7 +79,7 @@ export async function onLocalMessage() {
 
 export async function setStatmentSubscriptionNotificationToDB(
     statement: Statement | undefined,
-    notification: boolean = true
+    notification = true,
 ) {
     try {
         const msg = await messaging();
@@ -86,7 +88,7 @@ export async function setStatmentSubscriptionNotificationToDB(
         const token = await getToken(msg, { vapidKey });
         if (!token)
             throw new Error(
-                "Token is undefined in setstatementSubscriptionNotificationToDB."
+                "Token is undefined in setstatementSubscriptionNotificationToDB.",
             );
 
         if (!statement) throw new Error("Statement is undefined");
@@ -103,7 +105,7 @@ export async function setStatmentSubscriptionNotificationToDB(
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
-            statementsSubscribeId
+            statementsSubscribeId,
         );
         const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
 
@@ -123,7 +125,7 @@ export async function setStatmentSubscriptionNotificationToDB(
                     statementsSubscribeId,
                     statement,
                 },
-                { merge: true }
+                { merge: true },
             );
         } else {
             // update subscription -> Remove notifications
@@ -147,7 +149,7 @@ export async function setStatmentSubscriptionNotificationToDB(
                     token: tokenArr,
                     notification,
                 },
-                { merge: true }
+                { merge: true },
             );
         }
     } catch (error) {

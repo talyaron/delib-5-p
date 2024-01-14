@@ -10,7 +10,7 @@ import Text from "../text/Text";
 interface Props {
     statement: Statement | undefined;
     isEdit: boolean;
-    setEdit: Function;
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
     isTextArea?: boolean;
     onlyTitle?: boolean;
 }
@@ -49,6 +49,7 @@ const EditTitle: FC<Props> = ({
                         updateStatementText(statement, e.target.value);
                     } else {
                         const statementTitle = inputString + "\n" + description;
+
                         //update title in db
                         updateStatementText(statement, statementTitle);
                     }
@@ -93,6 +94,7 @@ const EditTitle: FC<Props> = ({
         }
     } catch (error) {
         console.error(error);
+
         return null;
     }
 };

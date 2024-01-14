@@ -94,7 +94,7 @@ export const setStatmentToDB = async ({
         const statementRef = doc(
             DB,
             Collections.statements,
-            statement.statementId
+            statement.statementId,
         );
         const statementPromises = [];
 
@@ -112,14 +112,13 @@ export const setStatmentToDB = async ({
                 setStatmentSubscriptionToDB(
                     statement,
                     Role.statementCreator,
-                    true
-                )
+                    true,
+                ),
             );
             statementPromises.push(getUserPermissionToNotifications());
 
-            const [_, __, canGetNotifications] = await Promise.all(
-                statementPromises
-            );
+            const [, , canGetNotifications] =
+                await Promise.all(statementPromises);
 
             if (canGetNotifications)
                 await setStatmentSubscriptionNotificationToDB(statement);
@@ -130,6 +129,7 @@ export const setStatmentToDB = async ({
         return statement.statementId;
     } catch (error) {
         console.error(error);
+
         return undefined;
     }
 };
@@ -175,7 +175,7 @@ export function createStatement({
                 ? parentStatement?.topParentId
                 : statementId;
 
-        let newStatement: any = {
+        const newStatement: any = {
             statement: text,
             statementId,
             parentId,
@@ -218,9 +218,11 @@ export function createStatement({
         newStatement.statementSettings.subScreens = screens;
 
         StatementSchema.parse(newStatement);
+
         return newStatement;
     } catch (error) {
         console.error(error);
+
         return undefined;
     }
 }
@@ -276,7 +278,7 @@ export function updateStatement({
             statement,
             enableAddEvaluationOption,
             enableAddVotingOption,
-            screens
+            screens,
         );
 
         if (hasChildren !== undefined)
@@ -296,9 +298,11 @@ export function updateStatement({
                   ];
 
         StatementSchema.parse(newStatement);
+
         return newStatement;
     } catch (error) {
         console.error(error);
+
         return undefined;
     }
 }
@@ -307,7 +311,7 @@ function updateStatementSettings(
     statement: Statement,
     enableAddEvaluationOption: string | boolean | undefined,
     enableAddVotingOption: string | boolean | undefined,
-    screens: Screen[] | undefined
+    screens: Screen[] | undefined,
 ): {
     enableAddEvaluationOption?: boolean;
     enableAddVotingOption?: boolean;
@@ -346,6 +350,7 @@ function updateStatementSettings(
         return statementSettings;
     } catch (error) {
         console.error(error);
+
         return {
             enableAddEvaluationOption: true,
             enableAddVotingOption: true,
@@ -376,7 +381,7 @@ function updateStatementSettings(
 export async function setStatmentSubscriptionToDB(
     statement: Statement,
     role: Role,
-    setNotifications: boolean = false
+    setNotifications = false,
 ) {
     try {
         const user = getUserFromFirebase();
@@ -392,7 +397,7 @@ export async function setStatmentSubscriptionToDB(
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
-            statementsSubscribeId
+            statementsSubscribeId,
         );
 
         await setDoc(
@@ -408,7 +413,7 @@ export async function setStatmentSubscriptionToDB(
                 lastUpdate: Timestamp.now().toMillis(),
                 createdAt: Timestamp.now().toMillis(),
             },
-            { merge: true }
+            { merge: true },
         );
     } catch (error) {
         console.error(error);
@@ -417,7 +422,7 @@ export async function setStatmentSubscriptionToDB(
 
 export async function updateStatementText(
     statement: Statement | undefined,
-    newText: string
+    newText: string,
 ) {
     try {
         if (!newText) throw new Error("New text is undefined");
@@ -428,7 +433,7 @@ export async function updateStatementText(
         const statementRef = doc(
             DB,
             Collections.statements,
-            statement.statementId
+            statement.statementId,
         );
         const newStatement = {
             statement: newText,
@@ -443,13 +448,14 @@ export async function setStatementisOption(statement: Statement) {
         const statementRef = doc(
             DB,
             Collections.statements,
-            statement.statementId
+            statement.statementId,
         );
         const parentStatementRef = doc(
             DB,
             Collections.statements,
-            statement.parentId
+            statement.parentId,
         );
+
         //get current statement
         const [statementDB, parentStatementDB] = await Promise.all([
             getDoc(statementRef),
@@ -471,13 +477,13 @@ export async function setStatementisOption(statement: Statement) {
 
     async function toggleStatementOption(
         statement: Statement,
-        parentStatement: Statement
+        parentStatement: Statement,
     ) {
         try {
             const statementRef = doc(
                 DB,
                 Collections.statements,
-                statement.statementId
+                statement.statementId,
             );
 
             if (statement.statementType === StatementType.option) {
@@ -487,7 +493,7 @@ export async function setStatementisOption(statement: Statement) {
             } else if (statement.statementType === StatementType.statement) {
                 if (!(parentStatement.statementType === StatementType.question))
                     throw new Error(
-                        "You can't create option under option or statement"
+                        "You can't create option under option or statement",
                     );
 
                 await updateDoc(statementRef, {
@@ -507,7 +513,7 @@ export async function setStatmentGroupToDB(statement: Statement) {
         await setDoc(
             statementRef,
             { statementType: StatementType.statement },
-            { merge: true }
+            { merge: true },
         );
     } catch (error) {
         console.error(error);
@@ -515,7 +521,7 @@ export async function setStatmentGroupToDB(statement: Statement) {
 }
 
 export async function updateSubscriberForStatementSubStatements(
-    statement: Statement
+    statement: Statement,
 ) {
     try {
         const user = getUserFromFirebase();
@@ -527,7 +533,7 @@ export async function updateSubscriberForStatementSubStatements(
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
-            statementsSubscribeId
+            statementsSubscribeId,
         );
         const newSubStatmentsRead = {
             totalSubStatementsRead: statement.totalSubStatements || 0,
@@ -546,7 +552,7 @@ export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
         const statementRef = doc(
             DB,
             Collections.statements,
-            statement.statementId
+            statement.statementId,
         );
         const newRoomSize = { roomSize };
         updateDoc(statementRef, newRoomSize);
@@ -560,13 +566,13 @@ export async function updateIsQuestion(statement: Statement) {
         const statementRef = doc(
             DB,
             Collections.statements,
-            statement.statementId
+            statement.statementId,
         );
 
         const parentStatementRef = doc(
             DB,
             Collections.statements,
-            statement.parentId
+            statement.parentId,
         );
         const parentStatementDB = await getDoc(parentStatementRef);
         const parentStatement = parentStatementDB.data() as Statement;
@@ -588,14 +594,14 @@ export async function updateIsQuestion(statement: Statement) {
 
 export async function updateStatmentMainImage(
     statement: Statement,
-    imageURL: string | undefined
+    imageURL: string | undefined,
 ) {
     try {
         if (!imageURL) throw new Error("Image URL is undefined");
         const statementRef = doc(
             DB,
             Collections.statements,
-            statement.statementId
+            statement.statementId,
         );
 
         await updateDoc(statementRef, {

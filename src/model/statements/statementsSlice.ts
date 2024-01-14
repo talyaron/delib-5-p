@@ -61,6 +61,7 @@ export const statementsSlicer = createSlice({
                 if (!success) {
                     console.error("statement not valid on setStatement");
                 }
+
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
@@ -97,6 +98,7 @@ export const statementsSlicer = createSlice({
         setStatements: (state, action: PayloadAction<Statement[]>) => {
             try {
                 const statements = action.payload;
+
                 //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
                 statements.forEach((statement) => {
                     if (!Array.isArray(statement.results))
@@ -235,8 +237,10 @@ export const statementsSlicer = createSlice({
                     state.askToJoinRooms = state.askToJoinRooms.filter(
                         (room) => room.parentId !== parentId,
                     );
+
                     return;
                 }
+
                 //set request to join room
                 state.askToJoinRooms = updateArray(
                     state.askToJoinRooms,
@@ -339,8 +343,8 @@ export const statementsSelector = (state: RootState) =>
 
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter(
-            (statement) => statement.parents?.includes(statementId),
+        state.statements.statements.filter((statement) =>
+            statement.parents?.includes(statementId),
         );
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
@@ -433,6 +437,7 @@ export const statementElementHightSelector =
         )?.elementHight || 0;
 export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
     state.statements.statementSubscriptionLastUpdate;
+
 //rooms
 export const participantsSelector =
     (statementId: string | undefined) => (state: RootState) =>
@@ -467,6 +472,7 @@ export const userSelectedTopicSelector =
                 room.participant.uid === state.user.user?.uid &&
                 room.parentId === parentId,
         );
+
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) =>
     state.statements.lobbyRooms;
@@ -475,6 +481,7 @@ export const lobbyRoomSelector =
         state.statements.lobbyRooms.find(
             (room) => room.statementId === statementId,
         );
+
 //membeship
 export const statementMembershipSelector =
     (statementId: string | undefined) => (state: RootState) =>
@@ -488,6 +495,7 @@ export const hasTokenSelector =
         const statement = state.statements.statementSubscription.find(
             (statement) => statement.statementId === statementId,
         );
+
         return statement?.token?.includes(token) || false;
     };
 

@@ -1,33 +1,33 @@
-import { FC, useState } from "react"
-import Modal from "../../components/modal/Modal"
-import styles from "./enterName.module.scss"
-import { signAnonymously } from "../../../functions/db/auth"
-import { t } from "i18next"
+import React, { FC, useState } from "react";
+import Modal from "../../components/modal/Modal";
+import styles from "./enterName.module.scss";
+import { signAnonymously } from "../../../functions/db/auth";
+import { t } from "i18next";
 
 interface Props {
-    setShowNameModul: Function
+    setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EnterName: FC<Props> = ({ setShowNameModul }) => {
-    const [displayName, setDisplayName] = useState<string | null>(null)
-    const [showeStartBtn, setShowStartBtn] = useState<boolean>(false)
+    const [displayName, setDisplayName] = useState<string | null>(null);
+    const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
 
     function handleSetName(ev: any) {
-        setDisplayName(ev.target.value)
-        if (isReadyToStart(ev.target.value)) setShowStartBtn(true)
-        else setShowStartBtn(false)
+        setDisplayName(ev.target.value);
+        if (isReadyToStart(ev.target.value)) setShowStartBtn(true);
+        else setShowStartBtn(false);
     }
 
     function handleStart() {
         try {
             if (isReadyToStart(displayName)) {
-                signAnonymously()
-                const _displayName = displayName || "unonimous"
-                localStorage.setItem("displayName", _displayName)
-                setShowNameModul(false)
+                signAnonymously();
+                const _displayName = displayName || "unonimous";
+                localStorage.setItem("displayName", _displayName);
+                setShowNameModul(false);
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -58,13 +58,13 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                 </div>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
-export default EnterName
+export default EnterName;
 
 function isReadyToStart(displayName: string | null) {
-    if (displayName === null) return false
-    if (displayName.length > 3) return true
-    else return false
+    if (displayName === null) return false;
+    if (displayName.length > 3) return true;
+    else return false;
 }

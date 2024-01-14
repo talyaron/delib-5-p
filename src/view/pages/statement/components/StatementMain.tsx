@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from "react";
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { Statement, User } from "delib-npm";
 
 // Custom Components
 import StatementChat from "./chat/StatementChatCard";
@@ -12,7 +12,7 @@ import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubS
 interface Props {
     statement: Statement;
     subStatements: Statement[];
-    handleShowTalker: Function;
+    handleShowTalker: (statement: User | null) => void;
 }
 
 let firstTime = true;
@@ -25,7 +25,7 @@ const StatementMain: FC<Props> = ({
     const messagesEndRef = useRef(null);
 
     const { toSlide, slideInOrOut } = useSlideAndSubStatement(
-        statement.parentId
+        statement.parentId,
     );
 
     //scroll to bottom

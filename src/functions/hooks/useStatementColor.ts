@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-export interface StyleProps{
+export interface StyleProps {
     backgroundColor: string;
     color: string;
 }

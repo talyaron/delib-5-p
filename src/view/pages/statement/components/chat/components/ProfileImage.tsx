@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { User, Statement } from "delib-npm";
 
 // Helpers
 import {
@@ -11,7 +11,7 @@ import {
 
 interface Props {
     statement: Statement;
-    showImage: Function;
+    showImage: (statement: User | null) => void;
 }
 
 const ProfileImage: FC<Props> = ({ statement, showImage }) => {
@@ -20,6 +20,7 @@ const ProfileImage: FC<Props> = ({ statement, showImage }) => {
     const displayName = getInitials(statement.creator.displayName);
 
     const color = generateRandomLightColor(statement.creator.uid);
+
     return (
         <div
             onClick={() => showImage(statement.creator)}

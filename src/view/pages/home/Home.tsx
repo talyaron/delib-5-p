@@ -20,6 +20,8 @@ import { listenStatmentsSubsciptions } from "../../../functions/db/statements/ge
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
+import { Unsubscribe } from "@firebase/firestore";
+
 export const listenedStatements = new Set<string>();
 
 export default function Home() {
@@ -49,21 +51,23 @@ export default function Home() {
     //use effects
 
     useEffect(() => {
-        let unsubscribe: Function = () => {};
+        let unsubscribe: undefined | Unsubscribe;
         try {
             if (user) {
                 unsubscribe = listenStatmentsSubsciptions(
                     updateStoreStSubCB,
                     deleteStoreStSubCB,
                     30,
-                    true
+                    true,
                 );
             }
         } catch (error) {}
+
         return () => {
-            unsubscribe();
+            unsubscribe;
         };
     }, [user]);
+
     return (
         <ScreenSlide className="page slide-in">
             {displayHeader && <HomeHeader />}

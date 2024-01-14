@@ -17,7 +17,7 @@ root.render(
         <Provider store={store}>
             <RouterProvider router={router} />
         </Provider>
-    </React.StrictMode>
+    </React.StrictMode>,
 );
 
 setIntialLocationSessionStorage(window.location.pathname);

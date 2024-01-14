@@ -1,15 +1,15 @@
-import { FC } from "react"
+import { FC } from "react";
 
 // Third party
-import { Statement } from "delib-npm"
-import { t } from "i18next"
+import { Statement } from "delib-npm";
+import { t } from "i18next";
 
 // Custom components
-import StatementRoomCard from "./StatementRoomCard"
+import StatementRoomCard from "./StatementRoomCard";
 
 interface Props {
-    subStatements: Statement[]
-    setShowModal: Function
+    subStatements: Statement[];
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
@@ -23,14 +23,14 @@ const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
                             key={subStatement.statementId}
                             statement={subStatement}
                         />
-                    )
+                    );
                 })}
             </div>
             <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
                 <div>+</div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default SelectRoom
+export default SelectRoom;
