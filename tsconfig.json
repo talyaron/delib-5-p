@@ -21,9 +21,12 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": ["src"],
+    "exclude": [
+        "src/functions/db/config.ts"
+        // Add more patterns as necessary
+    ],
     "references": [{ "path": "./tsconfig.node.json" }],
     "paths": {
         "@shared/*": ["../delib-models/*"]
-    },
-    "files": ["configKey.d.ts"]
+    }
 }
