@@ -93,8 +93,8 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
             .filter((promise) => promise) as Promise<any>[];
 
         const evaluatorsDB = await Promise.all(evaluatorsPromise);
-        const evaluators = evaluatorsDB.map(
-            (evaluatorDB) => evaluatorDB?.data(),
+        const evaluators = evaluatorsDB.map((evaluatorDB) =>
+            evaluatorDB?.data(),
         ) as User[];
 
         evaluations.forEach((evaluation) => {

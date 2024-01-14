@@ -343,8 +343,8 @@ export const statementsSelector = (state: RootState) =>
 
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter(
-            (statement) => statement.parents?.includes(statementId),
+        state.statements.statements.filter((statement) =>
+            statement.parents?.includes(statementId),
         );
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
