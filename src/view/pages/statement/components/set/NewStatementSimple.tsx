@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, lazy } from "react";
 
 // Third party imports
 import { Statement, StatementType } from "delib-npm";
@@ -16,7 +16,11 @@ import Loader from "../../../../components/loaders/Loader";
 
 // Redux
 
-import ModalImage from "../../../../components/icons/ModalImage";
+// import ModalImage from "../../../../components/icons/ModalImage";
+
+const ModalImage = lazy(
+    () => import("../../../../components/icons/ModalImage"),
+);
 
 interface Props {
     parentStatement: Statement | "top";
