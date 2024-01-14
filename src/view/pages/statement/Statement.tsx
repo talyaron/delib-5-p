@@ -52,7 +52,8 @@ import SwitchScreens from "./components/SwitchScreens";
 import { Evaluation } from "../../../model/evaluations/evaluationModel";
 import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
 
-// Helpers
+// Types
+import { Unsubscribe } from "@firebase/firestore";
 
 // Hooks & Providers
 import { MapProvider } from "../../../functions/hooks/useMap";
@@ -79,18 +80,17 @@ const Statement: FC = () => {
     const dispatch: any = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
 
-
     const subStatementsSelector = createSelector(
         (state: RootState) => state.statements.statements,
         (_state: RootState, statementId: string | undefined) => statementId,
         (statements, statementId) =>
             statements
                 .filter((st) => st.parentId === statementId)
-                .sort((a, b) => a.createdAt - b.createdAt)
+                .sort((a, b) => a.createdAt - b.createdAt),
     );
 
     const subStatements = useAppSelector((state: RootState) =>
-        subStatementsSelector(state, statementId)
+        subStatementsSelector(state, statementId),
     );
     const screen = availableScreen(statement, page);
 
@@ -106,7 +106,7 @@ const Statement: FC = () => {
         dispatch(deleteStatement(statementId));
     }
     function updateStatementSubscriptionCB(
-        statementSubscription: StatementSubscription
+        statementSubscription: StatementSubscription,
     ) {
         dispatch(setStatementSubscription(statementSubscription));
     }
@@ -139,49 +139,49 @@ const Statement: FC = () => {
 
     //listen to statement
     useEffect(() => {
-        let unsub: Function = () => {};
+        let unsub: Unsubscribe | undefined;
         if (statementId && user) {
             unsub = listenToStatement(statementId, updateStoreStatementCB);
         }
 
         return () => {
-            unsub();
+            if (unsub) unsub();
         };
     }, [statementId, user]);
 
     //listne to sub statements
     useEffect(() => {
-        let unsubSubStatements: Function = () => {};
-        let unsubStatementSubscription: Function = () => {};
-        let unsubEvaluations: Function = () => {};
-        let unsubSubSubscribedStatements: Function = () => {};
+        let unsubSubStatements: undefined | (() => void);
+        let unsubStatementSubscription: undefined | (() => void);
+        let unsubEvaluations: undefined | (() => void);
+        let unsubSubSubscribedStatements: undefined | (() => void);
 
         if (user && statementId) {
             unsubSubStatements = listenToStatementsOfStatment(
                 statementId,
                 updateStoreStatementCB,
-                deleteStatementCB
+                deleteStatementCB,
             );
             unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
                 statementId,
                 updateStatementSubscriptionCB,
-                deleteSubscribedStatementCB
+                deleteSubscribedStatementCB,
             );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
-                updateStatementSubscriptionCB
+                updateStatementSubscriptionCB,
             );
             unsubEvaluations = listenToEvaluations(
                 statementId,
-                updateEvaluationsCB
+                updateEvaluationsCB,
             );
         }
 
         return () => {
-            unsubSubStatements();
-            unsubStatementSubscription();
-            unsubSubSubscribedStatements();
-            unsubEvaluations();
+            if (unsubSubStatements) unsubSubStatements();
+            if (unsubStatementSubscription) unsubStatementSubscription();
+            if (unsubSubSubscribedStatements) unsubSubSubscribedStatements();
+            if (unsubEvaluations) unsubEvaluations();
         };
     }, [user, statementId]);
 
@@ -189,7 +189,7 @@ const Statement: FC = () => {
         if (statement) {
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
-                100
+                100,
             );
 
             setTitle(shortVersion);

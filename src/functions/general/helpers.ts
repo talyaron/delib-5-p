@@ -5,7 +5,6 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementType,
-
 } from "delib-npm";
 import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -16,7 +15,7 @@ import { navArray } from "../../view/pages/statement/components/nav/top/Statemen
 export function updateArray(
     currentArray: Array<any>,
     newItem: any,
-    updateByProperty: string
+    updateByProperty: string,
 ): Array<any> {
     try {
         const arrayTemp = [...currentArray];
@@ -24,9 +23,10 @@ export function updateArray(
         if (!newItem[updateByProperty]) {
             throw new Error(`Item dont have property ${updateByProperty}`);
         }
+
         //find in array;
         const index = arrayTemp.findIndex(
-            (item) => item[updateByProperty] === newItem[updateByProperty]
+            (item) => item[updateByProperty] === newItem[updateByProperty],
         );
         if (index === -1) arrayTemp.push(newItem);
         else {
@@ -42,6 +42,7 @@ export function updateArray(
         return arrayTemp;
     } catch (error) {
         console.error(error);
+
         return currentArray;
     }
 }
@@ -59,17 +60,16 @@ export function getIntialLocationSessionStorage(): string | undefined {
         return sessionStorage.getItem("initialLocation") || undefined;
     } catch (error) {
         console.error(error);
+
         return undefined;
     }
 }
-
-
 
 export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
     parentStatementCreatorId?: string | undefined,
-    authrizedRoles?: Array<Role>
+    authrizedRoles?: Array<Role>,
 ) {
     try {
         if (!statement) throw new Error("No statement");
@@ -93,9 +93,11 @@ export function isAuthorized(
         }
 
         if (authrizedRoles && authrizedRoles.includes(role)) return true;
+
         return false;
     } catch (error) {
         console.error(error);
+
         return false;
     }
 }
@@ -108,13 +110,14 @@ export function isOptionFn(statement: Statement): boolean {
         );
     } catch (error) {
         console.error(error);
+
         return false;
     }
 }
 
 export function navigateToStatementTab(
     statement: Statement,
-    navigate: NavigateFunction
+    navigate: NavigateFunction,
 ) {
     try {
         if (!statement) throw new Error("No statement");
@@ -126,8 +129,8 @@ export function navigateToStatementTab(
         const tab = statement.subScreens?.includes(Screen.CHAT)
             ? Screen.CHAT
             : statement.subScreens
-            ? statement.subScreens[0]
-            : Screen.SETTINGS;
+              ? statement.subScreens[0]
+              : Screen.SETTINGS;
 
         navigate(`/statement/${statement.statementId}/${tab}`, {
             state: { from: window.location.pathname },
@@ -170,7 +173,7 @@ export function generateRandomLightColor(uuid: string) {
 
 export function isStatementTypeAllowed(
     parentStatement: Statement,
-    statement: Statement
+    statement: Statement,
 ): boolean {
     // check if statement type is allowed
     // if parent is option, dont allow options
@@ -179,7 +182,7 @@ export function isStatementTypeAllowed(
     try {
         if (!parentStatement)
             throw new Error(
-                `No parent statement at statement ${statement.statement}`
+                `No parent statement at statement ${statement.statement}`,
             );
         if (!statement) throw new Error("No statement");
 
@@ -196,13 +199,14 @@ export function isStatementTypeAllowed(
         return true;
     } catch (error) {
         console.error(error);
+
         return false;
     }
 }
 
 export const statementTitleToDisplay = (
     statement: string,
-    titleLength: number
+    titleLength: number,
 ) => {
     const _title =
         statement.split("\n")[0].replace("*", "") || statement.replace("*", "");
@@ -218,13 +222,12 @@ export const statementTitleToDisplay = (
 //function which check if the statement can be linked to children
 export function linkToChildren(
     statement: Statement,
-    parentStatement: Statement
+    parentStatement: Statement,
 ): boolean {
     try {
         const isQuestion = statement.statementType === StatementType.question;
         const isOption = isOptionFn(statement);
         const hasChildren = parentStatement.hasChildren;
-   
 
         if (isQuestion) return true;
         if (isOption && hasChildren) return true;
@@ -232,6 +235,7 @@ export function linkToChildren(
         return false;
     } catch (error) {
         console.error(error);
+
         return false;
     }
 }
@@ -240,11 +244,7 @@ export function getPastelColor() {
     return `hsl(${360 * Math.random()},100%,75%)` || "red";
 }
 
-export function calculateFontSize(
-    text: string,
-    maxSize: number = 6,
-    minSize: number = 14
-) {
+export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
     // Set the base font size and a multiplier for adjusting based on text length
     const baseFontSize = minSize;
     const fontSizeMultiplier = 0.2;
@@ -252,7 +252,7 @@ export function calculateFontSize(
     // Calculate the font size based on the length of the text
     const fontSize = Math.max(
         baseFontSize - fontSizeMultiplier * text.length,
-        maxSize
+        maxSize,
     );
 
     return `${fontSize}px`;
@@ -263,26 +263,29 @@ export function handleLogout() {
     store.dispatch(setUser(null));
 }
 
+interface dataObj {
+    [key: string]: string;
+}
 
-export function parseScreensCheckBoxes(
-    dataObj: Object
-): Screen[] {
+export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
     try {
-
         if (!dataObj) throw new Error("dataObj is undefined");
         if (!navArray) throw new Error("navArray is undefined");
- 
+
         const _navArray = [...navArray];
 
         const screens = _navArray
+
             //@ts-ignore
             .filter((navObj) => dataObj[navObj.link] === "on")
             .map((navObj) => navObj.link) as Screen[];
 
         if (screens.length === 0) return [Screen.CHAT, Screen.OPTIONS];
+
         return screens;
     } catch (error) {
         console.error(error);
+
         return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
     }
 }

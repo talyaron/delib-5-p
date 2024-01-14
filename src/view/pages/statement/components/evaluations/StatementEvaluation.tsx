@@ -1,14 +1,13 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement, StatementType } from "delib-npm";
+import { Statement, StatementType, User } from "delib-npm";
 import { useParams } from "react-router";
 import Modal from "../../../../components/modal/Modal";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
-
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
@@ -18,9 +17,9 @@ import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 interface Props {
     statement: Statement;
     subStatements: Statement[];
-    handleShowTalker: Function;
+    handleShowTalker: (talker: User | null) => void;
     showNav?: boolean;
-    questions?:boolean;
+    questions?: boolean;
 }
 
 const StatementEvaluation: FC<Props> = ({
@@ -39,18 +38,18 @@ const StatementEvaluation: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort).filter((s) =>{
-                    if(questions){
-                        return s.statementType === StatementType.question
+                sortSubStatements(subStatements, sort).filter((s) => {
+                    if (questions) {
+                        return s.statementType === StatementType.question;
                     }
-                    return isOptionFn(s)
-                }
-                )
+
+                    return isOptionFn(s);
+                }),
             );
         }, [sort, subStatements]);
 
         let topSum = 30;
-        let tops: number[] = [topSum];
+        const tops: number[] = [topSum];
 
         return (
             <>
@@ -73,7 +72,7 @@ const StatementEvaluation: FC<Props> = ({
                                         top={tops[i]}
                                     />
                                 );
-                            }
+                            },
                         )}
                         <div
                             className="options__bottom"
@@ -92,7 +91,7 @@ const StatementEvaluation: FC<Props> = ({
                     <Modal>
                         <NewSetStatementSimple
                             parentStatement={statement}
-                            isOption={questions?false:true}
+                            isOption={questions ? false : true}
                             setShowModal={setShowModal}
                         />
                     </Modal>
@@ -101,6 +100,7 @@ const StatementEvaluation: FC<Props> = ({
         );
     } catch (error) {
         console.error(error);
+
         return null;
     }
 };

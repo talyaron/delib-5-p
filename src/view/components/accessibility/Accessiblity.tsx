@@ -34,7 +34,7 @@ const Accessiblity = () => {
 
             //update body font size
             // document.documentElement.style.fontSize = `${_fontSize + number}px`;
-            document.body.style.fontSize = `${_fontSize + number}px`
+            document.body.style.fontSize = `${_fontSize + number}px`;
             setFontSize(_fontSize + number);
         } else {
             updateUserFontSize(fontSize + number);

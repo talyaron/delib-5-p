@@ -40,7 +40,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
     const __options = subStatements.filter((subStatement: Statement) =>
-        isOptionFn(subStatement)
+        isOptionFn(subStatement),
     );
     const _options = setSelectionsToOptions(statement, __options);
     const options = sortOptionsIndex(_options, sort);

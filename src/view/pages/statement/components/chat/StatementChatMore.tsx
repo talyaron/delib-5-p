@@ -51,7 +51,10 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                             : `9+`}
                     </div>
                 )}
-                <ChatIcon statementType={statementType} color={"var(--question)"} />
+                <ChatIcon
+                    statementType={statementType}
+                    color={"var(--question)"}
+                />
             </div>
             <div className="text">{messageToDisplay}</div>
         </div>
@@ -62,7 +65,7 @@ export default StatementChatMore;
 
 export function handleCreateSubStatements(
     statement: Statement,
-    navigate: NavigateFunction
+    navigate: NavigateFunction,
 ) {
     try {
         // setStatmentGroupToDB(statement)

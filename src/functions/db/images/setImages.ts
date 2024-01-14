@@ -5,12 +5,14 @@ import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 export function uploadImageToStorage(
     file: File,
     statement: Statement,
-    setProgress: Function
-): Promise<string | undefined> {
+    setProgress: (progress: number) => void,
+): Promise<string> {
     return new Promise((resolve, reject) => {
         const imageRef = ref(
             storage,
-            `${Collections.statements}/${statement.statementId}/imgId-${Math.random()}`
+            `${Collections.statements}/${
+                statement.statementId
+            }/imgId-${Math.random()}`,
         );
 
         const uploadTask = uploadBytesResumable(imageRef, file);
@@ -38,14 +40,14 @@ export function uploadImageToStorage(
             async () => {
                 try {
                     const downloadURL = await getDownloadURL(
-                        uploadTask.snapshot.ref
+                        uploadTask.snapshot.ref,
                     );
                     resolve(downloadURL);
                 } catch (error) {
                     console.error("Error retrieving download URL:", error);
                     reject(error);
                 }
-            }
+            },
         );
     });
 }

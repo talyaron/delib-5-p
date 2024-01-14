@@ -1,10 +1,13 @@
 import { Statement, StatementType, User } from "delib-npm";
-import { createStatement, setStatmentToDB } from "../../../../functions/db/statements/setStatments";
+import {
+    createStatement,
+    setStatmentToDB,
+} from "../../../../functions/db/statements/setStatments";
 
 export function handleAddStatement(
     e: any,
     statement: Statement,
-    user: User | null
+    user: User | null,
 ) {
     try {
         e.preventDefault();
@@ -25,7 +28,6 @@ export function handleAddStatement(
             statementType: StatementType.statement,
         });
         if (!newStatement) throw new Error("No statement was created");
-
 
         setStatmentToDB({
             statement: newStatement,

@@ -42,16 +42,17 @@ export function googleLogin() {
 
             // The AuthCredential type that was used.
             console.error(error);
+
             // const credential = GoogleAuthProvider.credentialFromError(error);
 
             // ...
         });
 }
 export function listenToAuth(
-    cb: Function,
-    fontSizeCB: Function,
-    navigationCB: Function,
-    resetCB: Function
+    cb: (user: User | null) => void,
+    fontSizeCB: (fontSize: number) => void,
+    navigationCB: (path: string) => void,
+    resetCB: () => void,
 ): Unsubscribe {
     return onAuthStateChanged(auth, async (userFB) => {
         try {
@@ -69,17 +70,17 @@ export function listenToAuth(
 
                 const userDB = (await setUserToDB(_user)) as User;
 
-                const { fontSize } = userDB || { fontSize: 14 };
+                const fontSize = userDB.fontSize ? userDB.fontSize : 14;
 
                 fontSizeCB(fontSize);
 
-               
                 document.body.style.fontSize = fontSize + "px";
 
                 if (!userDB) throw new Error("userDB is undefined");
                 cb(userDB);
 
                 const initialLocation = getIntialLocationSessionStorage();
+
                 //navigate to initial location
                 if (initialLocation) navigationCB(initialLocation);
             } else {

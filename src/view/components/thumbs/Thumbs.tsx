@@ -30,8 +30,10 @@ const Thumbs: FC<ThumbsProps> = ({
             if (evaluation > 0) {
                 // Set evaluation in DB
                 setEvaluationToDB(statement, 0);
+
                 // if evaluation is 0 user didn't vote yet so don't do anything
                 if (evaluation === 0) return;
+
                 // Set local state
                 setProVote((prev) => prev - 1);
             } else {

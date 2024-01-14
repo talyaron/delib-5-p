@@ -5,7 +5,7 @@ const useDirection = (): "row" | "row-reverse" => {
 
     useEffect(() => {
         setDirection(
-            document.body.style.direction === "rtl" ? "row-reverse" : "row"
+            document.body.style.direction === "rtl" ? "row-reverse" : "row",
         );
     }, [document.body.style.direction]);
 

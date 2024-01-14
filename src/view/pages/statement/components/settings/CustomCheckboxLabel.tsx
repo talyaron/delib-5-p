@@ -15,6 +15,7 @@ export default function CustomCheckboxLabel({
     defaultChecked,
 }: CustomLabelProps) {
     const [checked, setChecked] = useState(defaultChecked);
+
     return (
         <label
             htmlFor={name}

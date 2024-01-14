@@ -1,21 +1,22 @@
 import { z } from "zod";
-export enum Screen{
-    HOME = 'home',
-    STATEMENT = 'statement',
-    CHAT = 'chat',
-    OPTIONS = 'options',
-    VOTE = 'vote',
-    GROUPS = 'groups',
-    SETTINGS = 'settings',
-    OPTIONS_CONSENSUS = 'options-consensus',
-    OPTIONS_NEW = 'options-new',
-    OPTIONS_RANDOM = 'options-random',
-    OPTIONS_UPDATED = 'options-updated',
-    VOTES_CONSENSUS = 'votes-consensus',
-    VOTESֹֹֹ_VOTED = 'votes-voted',
-    VOTES_NEW = 'votes-new',
-    VOTES_RANDOM = 'votes-random',
-    VOTES_UPDATED = 'votes-updated',
+
+export enum Screen {
+    HOME = "home",
+    STATEMENT = "statement",
+    CHAT = "chat",
+    OPTIONS = "options",
+    VOTE = "vote",
+    GROUPS = "groups",
+    SETTINGS = "settings",
+    OPTIONS_CONSENSUS = "options-consensus",
+    OPTIONS_NEW = "options-new",
+    OPTIONS_RANDOM = "options-random",
+    OPTIONS_UPDATED = "options-updated",
+    VOTES_CONSENSUS = "votes-consensus",
+    VOTESֹֹֹ_VOTED = "votes-voted",
+    VOTES_NEW = "votes-new",
+    VOTES_RANDOM = "votes-random",
+    VOTES_UPDATED = "votes-updated",
 }
 
 //zod schema of screen

@@ -5,10 +5,15 @@ import CustomSwitch from "../../../../components/switch/CustomSwitch";
 import { Screen, Statement } from "delib-npm";
 import { navArray } from "../nav/top/StatementTopNavModel";
 
-export default function CheckBoxeArea({ statement }: { statement: Statement | undefined }) {
+export default function CheckBoxeArea({
+    statement,
+}: {
+    statement: Statement | undefined;
+}) {
     const hasChildren: boolean = (() => {
         if (!statement) return true;
         if (statement.hasChildren === undefined) return true;
+
         return statement.hasChildren;
     })();
 
@@ -21,6 +26,7 @@ export default function CheckBoxeArea({ statement }: { statement: Statement | un
         statement?.statementSettings?.enableAddVotingOption === false
             ? false
             : true;
+
     return (
         <section className="settings__checkboxSection">
             <div className="settings__checkboxSection__column">

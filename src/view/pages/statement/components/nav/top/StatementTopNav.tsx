@@ -2,15 +2,13 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { showNavElements } from "./statementTopNavCont";
 import { t } from "i18next";
-import { NavObject, Statement,Screen } from "delib-npm";
+import { NavObject, Statement, Screen } from "delib-npm";
 import { navArray } from "./StatementTopNavModel";
 
 interface Props {
     statement: Statement;
     screen: Screen;
 }
-
-
 
 const StatementTopNav: FC<Props> = ({ statement, screen }) => {
     const _navArray = showNavElements(statement, navArray);

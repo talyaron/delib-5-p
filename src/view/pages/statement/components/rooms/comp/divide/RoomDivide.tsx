@@ -1,29 +1,29 @@
-import { FC } from "react"
+import { FC } from "react";
 
 // Third Party Libraries
-import { RoomAskToJoin, Statement } from "delib-npm"
-import { t } from "i18next"
+import { RoomAskToJoin, Statement } from "delib-npm";
+import { t } from "i18next";
 
 // Redux
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks"
-import { userSelectedTopicSelector } from "../../../../../../../model/statements/statementsSlice"
+import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { userSelectedTopicSelector } from "../../../../../../../model/statements/statementsSlice";
 
 // Styles
-import _styles from "./roomDivide.module.scss"
+import _styles from "./roomDivide.module.scss";
 
 // Custom Components
-import Text from "../../../../../../components/text/Text"
+import Text from "../../../../../../components/text/Text";
 
-const styles = _styles as any
+const styles = _styles as any;
 
 interface Props {
-    statement: Statement
+    statement: Statement;
 }
 
 const RoomQuestions: FC<Props> = ({ statement }) => {
     const userTopic: RoomAskToJoin | undefined = useAppSelector(
-        userSelectedTopicSelector(statement.statementId)
-    )
+        userSelectedTopicSelector(statement.statementId),
+    );
 
     try {
         return (
@@ -53,10 +53,10 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
                     )}
                 </div>
             </>
-        )
+        );
     } catch (error: any) {
-        return <div>error: {error.message}</div>
+        return <div>error: {error.message}</div>;
     }
-}
+};
 
-export default RoomQuestions
+export default RoomQuestions;

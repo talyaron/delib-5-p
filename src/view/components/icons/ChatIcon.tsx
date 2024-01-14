@@ -7,6 +7,7 @@ export default function ChatIcon({
 }) {
     const _color = statementType === "question" ? "#fff" : "#787FFF";
     color = color || _color;
+
     return (
         <svg
             width="25"

@@ -9,7 +9,6 @@ import { statementSubscriptionSelector } from "../../../../../model/statements/s
 import Text from "../../../../components/text/Text";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 
-
 interface Props {
     statement: Statement;
     subStatements: Statement[];
@@ -17,7 +16,7 @@ interface Props {
 
 const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
     const statementSubscriptions = useAppSelector(
-        statementSubscriptionSelector(statement.statementId)
+        statementSubscriptionSelector(statement.statementId),
     );
 
     const [showThankYou, setShowThankYou] = useState<boolean>(false);
@@ -25,68 +24,66 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false);
 
     const questions = subStatements.filter(
-        (sub) => sub.statementType === StatementType.question
+        (sub) => sub.statementType === StatementType.question,
     );
 
     const _isAutorized = isAuthorized(statement, statementSubscriptions);
-  
 
     return (
         <>
-        <div className="page__main">
-            <div className="wrapper">
-                {!showThankYou ? (
-                    <>
-                        {statement.imagesURL?.main ? (
-                            <div
-                                className={styles.image}
-                                style={{
-                                    backgroundImage: `url(${statement.imagesURL.main})`,
-                                }}
-                                // style={{backgroundColor: 'red'}}
-                            ></div>
-                        ) : null}
-                        <Text
-                            text={statement.statement}
-                            onlyDescription={true}
-                        />
-                        {questions.map((question, index: number) => (
-                            <MassQuestionCard
-                                key={question.statementId}
-                                statement={question}
-                                index={index}
-                                setAnswerd={setAnswerd}
-                            />
-                        ))}
-                        <div className="btns">
-                            {answerd.filter((a) => a).length ===
-                                questions.length && (
+            <div className="page__main">
+                <div className="wrapper">
+                    {!showThankYou ? (
+                        <>
+                            {statement.imagesURL?.main ? (
                                 <div
-                                    className="btn"
-                                    onClick={() => setShowThankYou(true)}
-                                >
-                                    <span>שליחה</span>
-                                </div>
-                            )}
+                                    className={styles.image}
+                                    style={{
+                                        backgroundImage: `url(${statement.imagesURL.main})`,
+                                    }}
+
+                                    // style={{backgroundColor: 'red'}}
+                                ></div>
+                            ) : null}
+                            <Text
+                                text={statement.statement}
+                                onlyDescription={true}
+                            />
+                            {questions.map((question, index: number) => (
+                                <MassQuestionCard
+                                    key={question.statementId}
+                                    statement={question}
+                                    index={index}
+                                    setAnswerd={setAnswerd}
+                                />
+                            ))}
+                            <div className="btns">
+                                {answerd.filter((a) => a).length ===
+                                    questions.length && (
+                                    <div
+                                        className="btn"
+                                        onClick={() => setShowThankYou(true)}
+                                    >
+                                        <span>שליחה</span>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    ) : (
+                        <div className={styles.thankyou}>
+                            <h2>תודה על התשובות</h2>
+                            <div
+                                className="btn"
+                                onClick={() => setShowThankYou(false)}
+                            >
+                                <span>עריכה חדשה</span>
+                            </div>
                         </div>
-                    </>
-                ) : (
-                    <div className={styles.thankyou}>
-                        <h2>תודה על התשובות</h2>
-                        <div
-                            className="btn"
-                            onClick={() => setShowThankYou(false)}
-                        >
-                            <span>עריכה חדשה</span>
-                        </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-           
-        </div>
-        {!showThankYou && _isAutorized ? (
+            {!showThankYou && _isAutorized ? (
                 <div className="page__main__bottom">
-                   
                     {showModal && (
                         <Modal>
                             <NewSetStatementSimple
@@ -98,7 +95,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                     )}
                 </div>
             ) : null}
-            </>
+        </>
     );
 };
 

@@ -6,7 +6,7 @@ import StatementEvaluation from "./evaluations/StatementEvaluation";
 import Map from "./map/Map";
 
 // Third party imports
-import { Screen, Statement } from "delib-npm";
+import { Screen, Statement, User } from "delib-npm";
 import { StatementSettings } from "./settings/StatementSettings";
 import MassQuestions from "./massQuestions/MassQuestions";
 
@@ -14,7 +14,7 @@ interface SwitchScreensProps {
     screen: string | undefined;
     statement: Statement | undefined;
     subStatements: Statement[];
-    handleShowTalker: Function;
+    handleShowTalker: (statement: User | null) => void;
 }
 
 export default function SwitchScreens({
@@ -28,6 +28,7 @@ export default function SwitchScreens({
     switch (screen) {
         case Screen.DOC:
             return <Map statement={statement} />;
+
         //TODO: Delete? Not used.
         // case Screen.HOME:
         //     return (
@@ -89,7 +90,7 @@ export default function SwitchScreens({
                     questions={true}
                 />
             );
-       
+
         default:
             return (
                 <StatementMain

@@ -10,6 +10,7 @@ import Loader from "./view/components/loaders/Loader";
 import Home from "./view/pages/home/Home";
 import App from "./App";
 import Page404 from "./view/pages/page404/Page404";
+
 // import Statement from "./view/pages/statement/Statement";
 // import Main from "./view/pages/main/Main";
 
@@ -17,7 +18,7 @@ import Page404 from "./view/pages/page404/Page404";
 const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const AddStatement = lazy(
-    () => import("./view/pages/home/addStatement/AddStatement")
+    () => import("./view/pages/home/addStatement/AddStatement"),
 );
 
 export const SuspenseFallback = () => {

@@ -1,11 +1,11 @@
-import { FC } from "react"
-import Modal from "../modal/Modal"
-import notifications from "../../../assets/notifications.png"
-import styles from "./AskPermisssion.module.scss"
-import { t } from "i18next"
+import { FC } from "react";
+import Modal from "../modal/Modal";
+import notifications from "../../../assets/notifications.png";
+import styles from "./AskPermisssion.module.scss";
+import { t } from "i18next";
 
 interface Props {
-    showFn: Function
+    showFn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AskPermisssion: FC<Props> = ({ showFn }) => {
@@ -29,7 +29,7 @@ const AskPermisssion: FC<Props> = ({ showFn }) => {
                 </div>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
-export default AskPermisssion
+export default AskPermisssion;
