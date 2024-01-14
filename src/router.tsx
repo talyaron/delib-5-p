@@ -4,17 +4,14 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 // Custom components
-import Start from "./view/pages/start/Start";
 import ErrorPage from "./view/pages/error/ErrorPage";
 import Loader from "./view/components/loaders/Loader";
-import Home from "./view/pages/home/Home";
 import App from "./App";
-import Page404 from "./view/pages/page404/Page404";
-
-// import Statement from "./view/pages/statement/Statement";
-// import Main from "./view/pages/main/Main";
 
 // Lazy loading
+const Page404 = lazy(() => import("./view/pages/page404/Page404"));
+const Home = lazy(() => import("./view/pages/home/Home"));
+const Start = lazy(() => import("./view/pages/start/Start"));
 const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const AddStatement = lazy(
@@ -28,6 +25,7 @@ export const SuspenseFallback = () => {
                 width: "100svw",
                 height: "100svh",
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
             }}

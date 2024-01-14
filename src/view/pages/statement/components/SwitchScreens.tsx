@@ -1,14 +1,21 @@
-// Custom components
-import StatementMain from "./StatementMain";
-import StatmentRooms from "./rooms/Rooms";
-import StatementVote from "./vote/StatementVote";
-import StatementEvaluation from "./evaluations/StatementEvaluation";
-import Map from "./map/Map";
+import { Suspense, lazy } from "react";
 
 // Third party imports
 import { Screen, Statement, User } from "delib-npm";
-import { StatementSettings } from "./settings/StatementSettings";
-import MassQuestions from "./massQuestions/MassQuestions";
+
+// Custom components
+const StatementVote = lazy(() => import("./vote/StatementVote"));
+const StatementEvaluation = lazy(
+    () => import("./evaluations/StatementEvaluation"),
+);
+const StatmentRooms = lazy(() => import("./rooms/Rooms"));
+const StatementMain = lazy(() => import("./StatementMain"));
+const StatementSettings = lazy(() => import("./settings/StatementSettings"));
+const Map = lazy(() => import("./map/Map"));
+const MassQuestions = lazy(() => import("./massQuestions/MassQuestions"));
+
+// Custom components
+import { SuspenseFallback } from "../../../../router";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -27,17 +34,14 @@ export default function SwitchScreens({
 
     switch (screen) {
         case Screen.DOC:
-            return <Map statement={statement} />;
+            // const Map = lazy(() => import("./map/Map"));
 
-        //TODO: Delete? Not used.
-        // case Screen.HOME:
-        //     return (
-        //         <StatementMain
-        //             statement={statement}
-        //             subStatements={subStatements}
-        //             handleShowTalker={handleShowTalker}
-        //         />
-        //     );
+            return (
+                <Suspense fallback={<SuspenseFallback />}>
+                    <Map statement={statement} />;
+                </Suspense>
+            );
+
         case Screen.CHAT:
             return (
                 <StatementMain

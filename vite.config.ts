@@ -1,7 +1,6 @@
 import { defineConfig, splitVendorChunkPlugin } from "vite";
-import basicSsl from '@vitejs/plugin-basic-ssl'
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
-import commonjs from "vite-plugin-commonjs";
+// import commonjs from "vite-plugin-commonjs";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -62,7 +61,6 @@ const manifestPlugin: Partial<VitePWAOptions> = {
 export default defineConfig({
     plugins: [
         react(),
-        // basicSsl(),
         VitePWA(manifestPlugin),
         visualizer({ open: true, gzipSize: true, brotliSize: true }),
         splitVendorChunkPlugin(),
