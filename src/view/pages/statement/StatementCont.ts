@@ -4,10 +4,9 @@ import { navArray } from "./components/nav/top/StatementTopNavModel";
 
 export function availableScreen(
     statement: Statement | undefined,
-    screenLink: Screen | undefined
+    screenLink: Screen | undefined,
 ): Screen | undefined {
     try {
-     
         if (!statement) return screenLink;
         if (!screenLink) throw new Error("urlSubPage is undefined");
         if (statement.subScreens === undefined)
@@ -18,7 +17,7 @@ export function availableScreen(
         const subScreens: NavObject[] = showNavElements(statement, navArray);
 
         const subScreensLinks: Screen[] = subScreens.map(
-            (navObj: NavObject) => navObj.link
+            (navObj: NavObject) => navObj.link,
         );
         if (!subScreensLinks) throw new Error("subScreensLinks is undefined");
 
@@ -32,7 +31,7 @@ export function availableScreen(
         return returnedLink;
     } catch (error) {
         console.error(error);
-        
-return screenLink;
+
+        return screenLink;
     }
 }

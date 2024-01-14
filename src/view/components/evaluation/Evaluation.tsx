@@ -33,7 +33,7 @@ const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
     const [proVote, setProVote] = useState(initProVote);
 
     const evaluation = useAppSelector(
-        evaluationSelector(statement.statementId)
+        evaluationSelector(statement.statementId),
     );
 
     const { consensus } = statement;
@@ -73,7 +73,11 @@ const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
                 </div>
                 {displayScore && <span>{proVote}</span>}
             </div>
-            {displayScore && <div className={styles.totalEvaluations}>{consensusToDisplay}</div>}
+            {displayScore && (
+                <div className={styles.totalEvaluations}>
+                    {consensusToDisplay}
+                </div>
+            )}
         </div>
     );
 };

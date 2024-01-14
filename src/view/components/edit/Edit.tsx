@@ -23,8 +23,8 @@ const Edit: FC<Props> = ({ statement }) => {
             console.error(error);
         }
     }
-    
-return (
+
+    return (
         <>
             {user?.uid === statement.creatorId ? (
                 <div className="clickable" onClick={handleEdit}>

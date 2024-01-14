@@ -237,8 +237,8 @@ export const statementsSlicer = createSlice({
                     state.askToJoinRooms = state.askToJoinRooms.filter(
                         (room) => room.parentId !== parentId,
                     );
-                    
-return;
+
+                    return;
                 }
 
                 //set request to join room
@@ -495,8 +495,8 @@ export const hasTokenSelector =
         const statement = state.statements.statementSubscription.find(
             (statement) => statement.statementId === statementId,
         );
-        
-return statement?.token?.includes(token) || false;
+
+        return statement?.token?.includes(token) || false;
     };
 
 export default statementsSlicer.reducer;

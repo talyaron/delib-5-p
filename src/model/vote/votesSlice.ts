@@ -33,7 +33,7 @@ export const votesSlicer = createSlice({
                     lastUpdate: new Date().getTime(),
                 };
                 const oldVote = state.votes.find(
-                    (vote) => vote.voteId === newVote.voteId
+                    (vote) => vote.voteId === newVote.voteId,
                 );
                 if (!oldVote) {
                     state.votes = updateArray(state.votes, newVote, "parentId");

@@ -23,19 +23,26 @@ interface Props {
     text?: string;
 }
 
-const StatementChatSetOption: FC<Props> = ({ statement, text,parentStatement }) => {
+const StatementChatSetOption: FC<Props> = ({
+    statement,
+    text,
+    parentStatement,
+}) => {
     const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statement.statementId)
+        statementSubscriptionSelector(statement.statementId),
     );
 
-    const _isAuthrized = isAuthorized(statement, statementSubscription, parentStatement?.creatorId);
-    
-    
+    const _isAuthrized = isAuthorized(
+        statement,
+        statementSubscription,
+        parentStatement?.creatorId,
+    );
+
     function handleSetOption() {
         try {
             if (statement.statementType === "option") {
                 const cancelOption = window.confirm(
-                    "Are you sure you want to cancel this option?"
+                    "Are you sure you want to cancel this option?",
                 );
                 if (cancelOption) {
                     setStatementisOption(statement);
@@ -48,19 +55,22 @@ const StatementChatSetOption: FC<Props> = ({ statement, text,parentStatement }) 
         }
     }
     if (!_isAuthrized) return null;
-    if(statement.statementType === StatementType.question) return null;
-    
-return (
+    if (statement.statementType === StatementType.question) return null;
+
+    return (
         <>
-        {text&&<span className="clickable" onClick={handleSetOption}>{text}</span>}
-        <div className="clickable" onClick={handleSetOption}>
-            
-            {isOptionFn(statement) ? (
-                <LightBulbIcon color="gold"/>
-            ) : (
-                <LightBulbIcon color="lightgray"/>
+            {text && (
+                <span className="clickable" onClick={handleSetOption}>
+                    {text}
+                </span>
             )}
-        </div>
+            <div className="clickable" onClick={handleSetOption}>
+                {isOptionFn(statement) ? (
+                    <LightBulbIcon color="gold" />
+                ) : (
+                    <LightBulbIcon color="lightgray" />
+                )}
+            </div>
         </>
     );
 };

@@ -1,27 +1,26 @@
-import { FC } from "react"
+import { FC } from "react";
 
 // Third Party
-import { Link } from "react-router-dom"
-import { Statement } from "delib-npm"
+import { Link } from "react-router-dom";
+import { Statement } from "delib-npm";
 
 // Custom Components
-import Text from "../../../components/text/Text"
-import Edit from "../../../components/edit/Edit"
-import StatementChat from "./chat/StatementChatMore"
-
+import Text from "../../../components/text/Text";
+import Edit from "../../../components/edit/Edit";
+import StatementChat from "./chat/StatementChatMore";
 
 interface Props {
-    statement: Statement
+    statement: Statement;
 }
 
 const StatementCard: FC<Props> = ({ statement }) => {
-    const title = statement.statement.split("\n")[0]
+    const title = statement.statement.split("\n")[0];
 
     //get only 140 charcters from the statment
-    const _description = statement.statement.split("\n").slice(1).join("\n")
-    const description = _description.slice(0, 256) + "..."
-    
-return (
+    const _description = statement.statement.split("\n").slice(1).join("\n");
+    const description = _description.slice(0, 256) + "...";
+
+    return (
         <div className="statementCard">
             <Link
                 className="href--undecorated"
@@ -30,7 +29,6 @@ return (
                 <div className="statementCard__main">
                     <Text text={title} />
                     {_description ? <Text text={description} /> : null}
-                  
                 </div>
             </Link>
             <div className="statementCard__more">
@@ -38,7 +36,7 @@ return (
                 <Edit statement={statement} />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default StatementCard
+export default StatementCard;

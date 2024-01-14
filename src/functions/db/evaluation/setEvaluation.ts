@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
 import { Statement, Collections } from "delib-npm";
 import { DB } from "../config";
@@ -6,7 +6,7 @@ import { store } from "../../../model/store";
 
 export async function setEvaluationToDB(
     statement: Statement,
-    evaluation: number
+    evaluation: number,
 ): Promise<void> {
     try {
         z.number().parse(evaluation);
@@ -34,7 +34,7 @@ export async function setEvaluationToDB(
             evaluatorId: userId,
             updatedAt: Timestamp.now().toMillis(),
             evaluation,
-            evaluator: user
+            evaluator: user,
         });
     } catch (error) {
         console.error(error);

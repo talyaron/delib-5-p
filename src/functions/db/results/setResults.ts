@@ -1,9 +1,13 @@
-import { doc, setDoc } from 'firebase/firestore';
-import { z } from 'zod';
-import { DB } from '../config';
-import { Collections, ResultsBy } from 'delib-npm';
+import { doc, setDoc } from "firebase/firestore";
+import { z } from "zod";
+import { DB } from "../config";
+import { Collections, ResultsBy } from "delib-npm";
 
-export async function updateResultsSettings(statementId: string, resultsBy: ResultsBy = ResultsBy.topOptions, numberOfResults = 3) {
+export async function updateResultsSettings(
+    statementId: string,
+    resultsBy: ResultsBy = ResultsBy.topOptions,
+    numberOfResults = 3,
+) {
     try {
         z.string().parse(statementId);
         z.number().parse(numberOfResults);
@@ -13,12 +17,10 @@ export async function updateResultsSettings(statementId: string, resultsBy: Resu
 
         const results = {
             numberOfResults,
-            resultsBy
-        }
-        await setDoc(statementRef, {results}, { merge: true });
-
-
+            resultsBy,
+        };
+        await setDoc(statementRef, { results }, { merge: true });
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }

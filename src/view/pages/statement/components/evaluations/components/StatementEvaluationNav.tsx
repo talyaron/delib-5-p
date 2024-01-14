@@ -4,7 +4,6 @@ import React, { FC, useState } from "react";
 import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
-
 // Icons
 import BurgerIcon from "../../../../../components/icons/BurgerIcon";
 import PlusIcon from "../../../../../components/icons/PlusIcon";

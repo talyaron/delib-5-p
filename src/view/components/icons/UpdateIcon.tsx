@@ -1,4 +1,4 @@
-export default function UpdateIcon({color}: {color: string}) {
+export default function UpdateIcon({ color }: { color: string }) {
     return (
         <svg
             width="2.5rem"

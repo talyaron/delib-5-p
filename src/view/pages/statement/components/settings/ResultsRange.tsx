@@ -8,7 +8,7 @@ export default function ResultsRange({
     statement: Statement | undefined;
 }) {
     const [numOfResults, setNumOfResults] = React.useState(
-        statement?.resultsSettings?.numberOfResults || 1
+        statement?.resultsSettings?.numberOfResults || 1,
     );
 
     return (

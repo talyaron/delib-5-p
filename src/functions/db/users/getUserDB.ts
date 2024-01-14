@@ -1,6 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import { Agreement, Collections, User } from "delib-npm";
-import {t} from "i18next";
+import { t } from "i18next";
 import { DB } from "../config";
 import { store } from "../../../model/store";
 
@@ -30,8 +30,8 @@ export async function getUserFromDB(): Promise<User | undefined> {
         return userDB;
     } catch (error) {
         console.error(error);
-        
-return undefined;
+
+        return undefined;
     }
 }
 
@@ -51,7 +51,7 @@ export function getSigniture(version = "basic"): Agreement | undefined {
         return agreement;
     } catch (error) {
         console.error(error);
-        
-return undefined;
+
+        return undefined;
     }
 }

@@ -25,7 +25,7 @@ const StatementMain: FC<Props> = ({
     const messagesEndRef = useRef(null);
 
     const { toSlide, slideInOrOut } = useSlideAndSubStatement(
-        statement.parentId
+        statement.parentId,
     );
 
     //scroll to bottom

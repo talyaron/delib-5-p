@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const EditIcon: FC= () => {
+const EditIcon: FC = () => {
     return (
         <svg
             width="24"

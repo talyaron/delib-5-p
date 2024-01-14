@@ -1,9 +1,8 @@
 {
-    "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "prettier"
-    ],
+    "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+    "plugins": ["import", "react", "@typescript-eslint", "prettier"],
     "rules": {
+        "prettier/prettier": "error",
         "react/display-name": "off",
         "@next/next/no-img-element": "off",
         "react/no-unescaped-entities": "off",
@@ -43,7 +42,6 @@
             }
         ]
     },
-    "plugins": ["import"],
     "settings": {
         "import/parsers": {
             "@typescript-eslint/parser": [".ts", ".tsx"]

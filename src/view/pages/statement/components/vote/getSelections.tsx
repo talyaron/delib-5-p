@@ -8,14 +8,14 @@ export function getSelections(statement: Statement, option: Statement) {
         ) {
             const optionSelections = statement.selections[option.statementId];
             if (!optionSelections) return 0;
-            
-return optionSelections;
+
+            return optionSelections;
         }
-        
-return 0;
+
+        return 0;
     } catch (error) {
         console.error(error);
-        
-return 0;
+
+        return 0;
     }
 }

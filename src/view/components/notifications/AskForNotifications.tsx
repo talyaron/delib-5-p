@@ -1,4 +1,4 @@
-import { t } from "i18next"
+import { t } from "i18next";
 
 const AskForNotifications = () => {
     return (
@@ -6,7 +6,7 @@ const AskForNotifications = () => {
             <div className="popup__box">
                 <h1>
                     {t(
-                        "Would you like to receive notifications in this group?"
+                        "Would you like to receive notifications in this group?",
                     )}
                 </h1>
                 <div className="btnBox">
@@ -15,7 +15,7 @@ const AskForNotifications = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default AskForNotifications
+export default AskForNotifications;

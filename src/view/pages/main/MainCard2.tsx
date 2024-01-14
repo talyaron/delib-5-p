@@ -2,7 +2,6 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../components/text/Text";
 
-
 import StatementChatMore from "../statement/components/chat/StatementChatMore";
 import { Link } from "react-router-dom";
 
@@ -18,7 +17,7 @@ const MainCard: FC<Props> = ({ statement }) => {
         >
             <Link to={`/statement/${statement.statementId}/chat`}>
                 <Text text={statement.statement} />
-                <StatementChatMore statement={statement} color={'gray'} />
+                <StatementChatMore statement={statement} color={"gray"} />
             </Link>
         </div>
     );

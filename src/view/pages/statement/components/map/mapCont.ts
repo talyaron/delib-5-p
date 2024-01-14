@@ -1,113 +1,114 @@
-import { Statement, ResultsBy, Results,maxKeyInObject } from "delib-npm"
-import { getResultsDB } from "../../../../../functions/db/results/getResults"
-import { isOptionFn } from "../../../../../functions/general/helpers"
+import { Statement, ResultsBy, Results, maxKeyInObject } from "delib-npm";
+import { getResultsDB } from "../../../../../functions/db/results/getResults";
+import { isOptionFn } from "../../../../../functions/general/helpers";
 
 export async function getResults(
     statement: Statement,
     subStatements: Statement[],
     resultsBy: ResultsBy,
-    numberOfResults: number
+    numberOfResults: number,
 ): Promise<Results> {
     try {
         // const { results } = statement;
 
-        const result: Results = { top: statement, sub:[] }
+        const result: Results = { top: statement, sub: [] };
 
         switch (resultsBy) {
             case ResultsBy.topOne:
             case ResultsBy.topVote:
-                result.sub = [...getResultsByVotes(statement, subStatements)]
-                break
+                result.sub = [...getResultsByVotes(statement, subStatements)];
+                break;
             case ResultsBy.topOptions:
                 result.sub = [
                     ...getResultsByOptions(subStatements, numberOfResults),
-                ]
-                break
+                ];
+                break;
             default:
-                result.sub = []
+                result.sub = [];
         }
 
         const subResultsPromises = result.sub.map(
             async (subResult: Results) => {
-                const subStatement = subResult.top
-                const subResults: Statement[] = await getResultsDB(subStatement)
-                
-return subResults
-            }
-        )
+                const subStatement = subResult.top;
+                const subResults: Statement[] =
+                    await getResultsDB(subStatement);
 
-        const resultsStatements = await Promise.all(subResultsPromises)
+                return subResults;
+            },
+        );
+
+        const resultsStatements = await Promise.all(subResultsPromises);
 
         result.sub.forEach((_: Results, index: number) => {
-            if (!result.sub) return
+            if (!result.sub) return;
             result.sub[index].sub = [
                 ...resultsStatements[index].map((subStatement: Statement) => ({
                     top: subStatement,
-                    sub:[]
+                    sub: [],
                 })),
-            ]
-        })
+            ];
+        });
 
-        return result
+        return result;
     } catch (error) {
-        console.error(error)
-        
-return { top: statement, sub: [] }
+        console.error(error);
+
+        return { top: statement, sub: [] };
     }
 }
 function getResultsByOptions(
     subStatements: Statement[],
-    numberOfResults: number
+    numberOfResults: number,
 ): Results[] {
     try {
         const maxOptions: Statement[] = subStatements
             .filter((s) => isOptionFn(s))
             .sort((b, a) => a.consensus - b.consensus)
-            .slice(0, numberOfResults || 1)
+            .slice(0, numberOfResults || 1);
 
         const _maxOptions = maxOptions.map((topStatement: Statement) => ({
             top: topStatement,
             sub: [],
-        }))
+        }));
 
-        return _maxOptions
+        return _maxOptions;
     } catch (error) {
-        console.error(error)
-        
-return []
+        console.error(error);
+
+        return [];
     }
 }
 function getResultsByVotes(
     statement: Statement,
-    subStatements: Statement[]
+    subStatements: Statement[],
 ): Results[] {
     try {
-        const maxVoteKey = getTopVoteStatementId(statement)
-        if (!maxVoteKey) return []
+        const maxVoteKey = getTopVoteStatementId(statement);
+        if (!maxVoteKey) return [];
         const maxVoteStatement: Statement | undefined = subStatements.find(
-            (subStatement) => subStatement.statementId === maxVoteKey
-        )
-        if (!maxVoteStatement) return []
-        const result: Results = { top: maxVoteStatement, sub: [] }
+            (subStatement) => subStatement.statementId === maxVoteKey,
+        );
+        if (!maxVoteStatement) return [];
+        const result: Results = { top: maxVoteStatement, sub: [] };
 
-        return [result]
+        return [result];
     } catch (error) {
-        console.error(error)
-        
-return []
+        console.error(error);
+
+        return [];
     }
 }
 function getTopVoteStatementId(statement: Statement): string | undefined {
     try {
-        const { selections } = statement
-        if (!selections) return undefined
+        const { selections } = statement;
+        if (!selections) return undefined;
 
-        const maxVoteKey = maxKeyInObject(selections)
-        
-return maxVoteKey
+        const maxVoteKey = maxKeyInObject(selections);
+
+        return maxVoteKey;
     } catch (error) {
-        console.error(error)
-        
-return undefined
+        console.error(error);
+
+        return undefined;
     }
 }

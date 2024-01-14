@@ -14,11 +14,11 @@ export function getTotalVoters(statement: Statement) {
 
             return totalVoters;
         }
-        
-return 0;
+
+        return 0;
     } catch (error) {
         console.error(error);
-        
-return 0;
+
+        return 0;
     }
 }

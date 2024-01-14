@@ -38,12 +38,14 @@ export default function HomeHeader() {
                     {t("Delib 5")}
                 </div>
                 <div className="homePage__header__wrapper__icons">
-                    {deferredPrompt && <img
-                        className="homePage__header__wrapper__icons__installIcon"
-                        src={installIcon}
-                        alt="install_icon"
-                        onClick={handleInstallApp}
-                    />}
+                    {deferredPrompt && (
+                        <img
+                            className="homePage__header__wrapper__icons__installIcon"
+                            src={installIcon}
+                            alt="install_icon"
+                            onClick={handleInstallApp}
+                        />
+                    )}
                     <div
                         style={{
                             position: "relative",

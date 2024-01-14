@@ -20,7 +20,7 @@ import useStatementColor from "../../../../../../functions/hooks/useStatementCol
 const nodeStyle = (
     parentStatement: any,
     statementColor: { backgroundColor: string; color: string },
-    nodeTitle: string
+    nodeTitle: string,
 ) => {
     const style = {
         backgroundColor:
@@ -38,8 +38,8 @@ const nodeStyle = (
         cursor: "pointer",
         fontSize: calculateFontSize(nodeTitle),
     };
-    
-return style;
+
+    return style;
 };
 
 export default function CustomNode({ data }: NodeProps) {

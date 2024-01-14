@@ -1,7 +1,10 @@
 import { Statement } from "delib-npm";
 import { Screen } from "../../../../../model/system";
 
-export function sortOptionsIndex(options: Statement[], sort: string | undefined) {
+export function sortOptionsIndex(
+    options: Statement[],
+    sort: string | undefined,
+) {
     let _options = JSON.parse(JSON.stringify(options));
 
     // sort only the order of the options acording to the sort
@@ -24,8 +27,8 @@ export function sortOptionsIndex(options: Statement[], sort: string | undefined)
             _options = _options.sort((a: Statement, b: Statement) => {
                 const aVoted: number = a.voted === undefined ? 0 : a.voted;
                 const bVoted: number = b.voted === undefined ? 0 : b.voted;
-                
-return bVoted - aVoted;
+
+                return bVoted - aVoted;
             });
             break;
         case Screen.VOTES_UPDATED:
@@ -38,8 +41,8 @@ return bVoted - aVoted;
     }
     _options = _options.map((option: Statement, i: number) => {
         option.order = i;
-        
-return option;
+
+        return option;
     });
     _options = _options.sort((a: Statement, b: Statement) => {
         return b.createdAt - a.createdAt;

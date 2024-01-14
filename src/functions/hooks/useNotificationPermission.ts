@@ -13,10 +13,10 @@ const useNotificationPermission = (token: string) => {
         if (!statementId) throw new Error("statementId not found");
 
         const [permission, setPermission] = useState(
-            Notification.permission === "granted"
+            Notification.permission === "granted",
         );
         const hasNotifications = useAppSelector(
-            statementNotificationSelector(statementId)
+            statementNotificationSelector(statementId),
         );
 
         const hasToken = useAppSelector(hasTokenSelector(token, statementId));
@@ -25,15 +25,15 @@ const useNotificationPermission = (token: string) => {
             setPermission(
                 Notification.permission === "granted" &&
                     hasNotifications &&
-                    hasToken
+                    hasToken,
             );
         }, [hasToken, hasNotifications, Notification.permission]);
 
         return permission;
     } catch (error) {
         console.error(error);
-        
-return false;
+
+        return false;
     }
 };
 

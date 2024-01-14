@@ -3,6 +3,6 @@ export const LANGUAGES = [
     { label: "English", code: "en" },
     { label: "Nederlands", code: "nl" },
     { label: "العربية", code: "ar" },
-    { label: "Español", code: "es"},
+    { label: "Español", code: "es" },
     { label: "Deutsch", code: "de" },
-  ];
+];

@@ -22,7 +22,7 @@ const UploadImage: FC<Props> = ({ statement }) => {
                 const imageURL = await uploadImageToStorage(
                     file,
                     statement,
-                    setPercetage
+                    setPercetage,
                 );
                 updateStatmentMainImage(statement, imageURL);
             } catch (error) {
@@ -44,7 +44,7 @@ const UploadImage: FC<Props> = ({ statement }) => {
                     <div
                         style={{
                             backgroundImage: `url(${URL.createObjectURL(
-                                image
+                                image,
                             )})`,
                         }}
                         className={styles.imagePreview}
@@ -57,8 +57,8 @@ const UploadImage: FC<Props> = ({ statement }) => {
         );
     } catch (error) {
         console.error(error);
-        
-return null;
+
+        return null;
     }
 };
 

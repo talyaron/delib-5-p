@@ -4,8 +4,10 @@ import { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Helpers
-import { createStatement, setStatmentToDB } from "../../../../functions/db/statements/setStatments";
-
+import {
+    createStatement,
+    setStatmentToDB,
+} from "../../../../functions/db/statements/setStatments";
 
 // Icons
 import SendIcon from "../../../components/icons/SendIcon";
@@ -33,7 +35,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
         try {
             const _isMobile =
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                    navigator.userAgent
+                    navigator.userAgent,
                 )
                     ? true
                     : false;
@@ -42,8 +44,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 const _value = e.target.value.replace(/\s+/g, " ").trim();
                 if (!_value) {
                     e.target.value = "";
-                    
-return;
+
+                    return;
                 }
 
                 // submit form
@@ -89,7 +91,9 @@ return;
                 onKeyUp={handleInput}
                 required
                 autoFocus={true}
-                onFocus={(e) => {e.preventDefault()}}
+                onFocus={(e) => {
+                    e.preventDefault();
+                }}
             />
         </form>
     );

@@ -48,7 +48,7 @@ export interface ParticipantInRoom {
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     const participants = useAppSelector(
-        participantsSelector(statement.statementId)
+        participantsSelector(statement.statementId),
     );
     const [setRooms, setSetRooms] = useState<boolean>(true);
     const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
@@ -59,7 +59,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
         try {
             const { rooms } = divideIntoTopics(
                 participants,
-                maxParticipantsPerRoom
+                maxParticipantsPerRoom,
             );
             setRoomsAdmin(rooms);
 
@@ -118,7 +118,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                         <p>
                             {
                                 (t(
-                                    "Maximum number of participants in the room "
+                                    "Maximum number of participants in the room ",
                                 ),
                                 maxParticipantsPerRoom)
                             }
@@ -181,7 +181,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                         <div className={styles.room__badges}>
                                             {room.room.map(
                                                 (
-                                                    participant: RoomAskToJoin
+                                                    participant: RoomAskToJoin,
                                                 ) => (
                                                     <RoomParticpantBadge
                                                         key={
@@ -192,7 +192,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                                             participant.participant
                                                         }
                                                     />
-                                                )
+                                                ),
                                             )}
                                         </div>
                                     </div>
@@ -210,7 +210,7 @@ export default AdminSeeAllGroups;
 
 function divideIntoTopics(
     participants: RoomAskToJoin[],
-    maxPerRoom = 7
+    maxPerRoom = 7,
 ): { rooms: Array<RoomDivied>; topicsParticipants: any } {
     try {
         const topicsParticipants: any = {};
@@ -237,8 +237,8 @@ function divideIntoTopics(
                 }
             } catch (error) {
                 console.error(error);
-                
-return undefined;
+
+                return undefined;
             }
         });
 
@@ -249,7 +249,7 @@ return undefined;
             topicsParticipants[topic].rooms =
                 divideParticipantsIntoRoomsRandomly(
                     patricipantsInTopic,
-                    maxPerRoom
+                    maxPerRoom,
                 );
         }
 
@@ -258,14 +258,14 @@ return undefined;
         return { rooms, topicsParticipants };
     } catch (error) {
         console.error(error);
-        
-return { rooms: [], topicsParticipants: undefined };
+
+        return { rooms: [], topicsParticipants: undefined };
     }
 }
 
 function divideParticipantsIntoRoomsRandomly(
     participants: RoomAskToJoin[],
-    maxPerRoom: number
+    maxPerRoom: number,
 ): Array<Array<RoomAskToJoin>> {
     try {
         const numberOfRooms = Math.ceil(participants.length / maxPerRoom);
@@ -286,8 +286,8 @@ function divideParticipantsIntoRoomsRandomly(
         return rooms;
     } catch (error) {
         console.error(error);
-        
-return [];
+
+        return [];
     }
 }
 
@@ -310,7 +310,7 @@ function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
         return rooms;
     } catch (error) {
         console.error(error);
-        
-return [];
+
+        return [];
     }
 }

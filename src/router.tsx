@@ -18,7 +18,7 @@ import Page404 from "./view/pages/page404/Page404";
 const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
 const AddStatement = lazy(
-    () => import("./view/pages/home/addStatement/AddStatement")
+    () => import("./view/pages/home/addStatement/AddStatement"),
 );
 
 export const SuspenseFallback = () => {
