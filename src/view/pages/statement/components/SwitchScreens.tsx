@@ -44,64 +44,82 @@ export default function SwitchScreens({
 
         case Screen.CHAT:
             return (
-                <StatementMain
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatementMain
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                    />
+                </Suspense>
             );
         case Screen.OPTIONS:
             return (
-                <StatementEvaluation
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatementEvaluation
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                    />
+                </Suspense>
             );
         case Screen.VOTE:
             return (
-                <StatementVote
-                    statement={statement}
-                    subStatements={subStatements}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatementVote
+                        statement={statement}
+                        subStatements={subStatements}
+                    />
+                </Suspense>
             );
         case Screen.MASS_QUESTIONS:
             return (
-                <MassQuestions
-                    statement={statement}
-                    subStatements={subStatements}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <MassQuestions
+                        statement={statement}
+                        subStatements={subStatements}
+                    />
+                </Suspense>
             );
         case Screen.GROUPS:
             return (
-                <StatmentRooms
-                    statement={statement}
-                    subStatements={subStatements}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatmentRooms
+                        statement={statement}
+                        subStatements={subStatements}
+                    />
+                </Suspense>
             );
         case Screen.SETTINGS:
-            return <StatementSettings />;
+            return (
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatementSettings />;
+                </Suspense>
+            );
         case Screen.QUESTIONS:
         case Screen.QUESTIONS_CONSENSUS:
         case Screen.QUESTIONS_NEW:
         case Screen.QUESTIONS_RANDOM:
         case Screen.QUESTIONS_UPDATED:
             return (
-                <StatementEvaluation
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                    questions={true}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatementEvaluation
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                        questions={true}
+                    />
+                </Suspense>
             );
 
         default:
             return (
-                <StatementMain
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
+                <Suspense fallback={<SuspenseFallback />}>
+                    <StatementMain
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                    />
+                </Suspense>
             );
     }
 }

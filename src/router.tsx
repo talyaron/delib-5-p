@@ -14,9 +14,7 @@ const Home = lazy(() => import("./view/pages/home/Home"));
 const Start = lazy(() => import("./view/pages/start/Start"));
 const Main = lazy(() => import("./view/pages/main/Main"));
 const Statement = lazy(() => import("./view/pages/statement/Statement"));
-const AddStatement = lazy(
-    () => import("./view/pages/home/addStatement/AddStatement"),
-);
+const AddStatement = lazy(() => import("./view/pages/main/addStatement"));
 
 export const SuspenseFallback = () => {
     return (
