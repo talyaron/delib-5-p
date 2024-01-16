@@ -59,6 +59,7 @@ import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { RootState } from "../../../model/store";
+import { SuspenseFallback } from "../../../router";
 
 const Statement: FC = () => {
     // Hooks
@@ -72,7 +73,7 @@ const Statement: FC = () => {
 
     // Use state
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(("Group"));
+    const [title, setTitle] = useState<string>("Group");
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     // Redux hooks
@@ -221,24 +222,32 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement && (
-                <StatementHeader
-                    statement={statement}
-                    screen={screen || Screen.CHAT}
-                    title={title}
-                    showAskPermission={showAskPermission}
-                    setShowAskPermission={setShowAskPermission}
-                />
+            {statement ? (
+                <>
+                    <StatementHeader
+                        statement={statement}
+                        screen={screen || Screen.CHAT}
+                        title={title}
+                        showAskPermission={showAskPermission}
+                        setShowAskPermission={setShowAskPermission}
+                    />
+
+                    <MapProvider>
+                        <SwitchScreens
+                            key={window.location.pathname
+                                .split("/")
+                                .slice(2)
+                                .join(" ")}
+                            screen={screen}
+                            statement={statement}
+                            subStatements={subStatements}
+                            handleShowTalker={handleShowTalker}
+                        />
+                    </MapProvider>
+                </>
+            ) : (
+                <SuspenseFallback />
             )}
-            <MapProvider>
-                <SwitchScreens
-                    key={window.location.pathname.split("/").slice(2).join(" ")}
-                    screen={screen}
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
-            </MapProvider>
         </div>
     );
 };
