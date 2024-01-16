@@ -1,1 +1,0 @@
-console.info('firebase-messaging-sw.js')

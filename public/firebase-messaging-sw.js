@@ -46,6 +46,7 @@ messaging.onBackgroundMessage(function (payload) {
             notificationTitle,
             notificationOptions
         );
+        
         // navigator.setAppBadge(1);
         //play sound
 

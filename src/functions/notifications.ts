@@ -65,7 +65,8 @@ export async function onLocalMessage() {
 
                         const url = target.data.url;
 
-                        window.open(url, "_blank");
+                        // window.open(url, "_blank");
+                        window.open(url, "_self");
                     };
                 } else {
                     console.error("Unable to get permission to notify.");
