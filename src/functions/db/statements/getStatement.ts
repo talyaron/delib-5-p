@@ -19,6 +19,7 @@ import {
     StatementSubscription,
     StatementSubscriptionSchema,
     StatementType,
+    User,
 } from "delib-npm";
 
 // Helpers
@@ -27,6 +28,104 @@ import { DB } from "../config";
 
 // Redux Store
 import { store } from "../../../model/store";
+
+// TODO: this function is not used. Delete it?
+export function listenToTopStatements(
+    setStatementsCB: (statement: Statement) => void,
+    deleteStatementCB: (statementId: string) => void,
+) {
+    try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+
+        const statementsRef = collection(DB, Collections.statementsSubscribe);
+        const q = query(
+            statementsRef,
+            where("userId", "==", user.uid),
+            where("statement.parentId", "==", "top"),
+            orderBy("lastUpdate", "desc"),
+            limit(40),
+        );
+
+        return onSnapshot(q, (statementsDB) => {
+            statementsDB.docChanges().forEach((change) => {
+                const statementSubscription =
+                    change.doc.data() as StatementSubscription;
+
+                if (change.type === "added") {
+                    listenedStatements.add(
+                        statementSubscription.statement.statementId,
+                    );
+                    setStatementsCB(statementSubscription.statement);
+                    listenToSubStatements(
+                        statementSubscription.statement.statementId,
+                        setStatementsCB,
+                        deleteStatementCB,
+                    );
+                }
+
+                if (change.type === "modified") {
+                    listenedStatements.add(
+                        statementSubscription.statement.statementId,
+                    );
+                }
+
+                if (change.type === "removed") {
+                    listenedStatements.delete(
+                        statementSubscription.statement.statementId,
+                    );
+                    deleteStatementCB(
+                        statementSubscription.statement.statementId,
+                    );
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// TODO: this function is not used. Delete it?
+function listenToSubStatements(
+    topStatementId: string,
+    setStatementsCB: (statement: Statement) => void,
+    deleteStatementCB: (statementId: string) => void,
+) {
+    try {
+        const subStatementsRef = collection(DB, Collections.statements);
+        const q = query(
+            subStatementsRef,
+            where("topParentId", "==", topStatementId),
+
+            // where("statementType", "==", StatementType.question),
+            orderBy("createdAt", "asc"),
+            limit(50),
+        );
+
+        return onSnapshot(q, (statementsDB) => {
+            statementsDB.docChanges().forEach((change) => {
+                const statement = change.doc.data() as Statement;
+
+                if (change.type === "added") {
+                    listenedStatements.add(statement.statementId);
+                    setStatementsCB(statement);
+                }
+
+                if (change.type === "modified") {
+                    listenedStatements.add(statement.statementId);
+                    setStatementsCB(statement);
+                }
+
+                if (change.type === "removed") {
+                    listenedStatements.delete(statement.statementId);
+                    deleteStatementCB(statement.statementId);
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 export async function getStatmentsSubsciptions(): Promise<
     StatementSubscription[]
@@ -63,45 +162,65 @@ export async function getStatmentsSubsciptions(): Promise<
 export function listenToStatementSubscription(
     statementId: string,
     updateStore: (statementSubscription: StatementSubscription) => void,
+    user: User,
 ) {
     try {
-        if (!statementId) throw new Error("Statement id is undefined");
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
             `${user.uid}--${statementId}`,
         );
 
-        return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
-            try {
+        const state = getDoc(statementsSubscribeRef)
+            .then((doc) => {
                 const statementSubscription =
-                    statementSubscriptionDB.data() as StatementSubscription;
-
-                const { success } = StatementSubscriptionSchema.safeParse(
-                    statementSubscription,
-                );
-                if (!success) {
-                    console.info("No subscription found");
-
-                    return;
-                }
-
-                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
-
-                if (!Array.isArray(statementSubscription.statement.results))
-                    statementSubscription.statement.results = [];
-
-                StatementSubscriptionSchema.parse(statementSubscription);
+                    doc.data() as StatementSubscription;
 
                 updateStore(statementSubscription);
-            } catch (error) {
+            })
+            .catch((error) => {
                 console.error(error);
-            }
-        });
+            })
+            .finally(() => {
+                return onSnapshot(
+                    statementsSubscribeRef,
+                    (statementSubscriptionDB) => {
+                        try {
+                            const statementSubscription =
+                                statementSubscriptionDB.data() as StatementSubscription;
+
+                            const { success } =
+                                StatementSubscriptionSchema.safeParse(
+                                    statementSubscription,
+                                );
+                            if (!success) {
+                                console.info("No subscription found");
+
+                                return;
+                            }
+
+                            //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
+
+                            if (
+                                !Array.isArray(
+                                    statementSubscription.statement.results,
+                                )
+                            )
+                                statementSubscription.statement.results = [];
+
+                            StatementSubscriptionSchema.parse(
+                                statementSubscription,
+                            );
+
+                            updateStore(statementSubscription);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    },
+                );
+            });
+
+        return state;
     } catch (error) {
         console.error(error);
     }
@@ -143,9 +262,9 @@ export function listenToStatementSubSubscriptions(
     statementId: string,
     cbSet: (statementSubscription: StatementSubscription) => void,
     cbDelete: (statementId: string) => void,
+    user: User,
 ) {
     try {
-        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
@@ -159,6 +278,7 @@ export function listenToStatementSubSubscriptions(
             where("userId", "==", user.uid),
             limit(20),
         );
+        
 
         return onSnapshot(q, (subscriptionsDB) => {
             subscriptionsDB.docChanges().forEach((change) => {
@@ -357,11 +477,24 @@ export function listenToStatement(
     try {
         const statementRef = doc(DB, Collections.statements, statementId);
 
-        return onSnapshot(statementRef, (statementDB) => {
-            const statement = statementDB.data() as Statement;
+        const state = getDoc(statementRef)
+            .then((statementDB) => {
+                const statement = statementDB.data() as Statement;
 
-            updateStore(statement);
-        });
+                updateStore(statement);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+                return onSnapshot(statementRef, (statementDB) => {
+                    const statement = statementDB.data() as Statement;
+
+                    updateStore(statement);
+                });
+            });
+
+        return state;
     } catch (error) {
         console.error(error);
     }
@@ -405,7 +538,10 @@ export async function listenToStatementsOfStatment(
                     updateStore(statement);
                 });
             })
-            .then(() => {
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
                 return onSnapshot(q, (statementsDB) => {
                     statementsDB.docChanges().forEach((change) => {
                         const statement = change.doc.data() as Statement;
