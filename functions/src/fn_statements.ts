@@ -118,16 +118,14 @@ export async function sendNotificationsCB(e: any) {
             if (tokenArr && tokenArr.length > 0) {
                 // Send a message to each device the user has registered for notifications.
 
-                // TODO: find a way to check if token is still valid. If not, remove it from the DB.
-
                 tokenArr.forEach((token: string) => {
                     const message: any = {
                         data: {
                             title,
                             body: statement.statement,
-
-                            // TODO: change to production url
-                            url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
+                            url: `https://delib-5.web.app/statement/${parentId}/chat`,
+                            
+                            // url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
                             creatorId: statement.creatorId,
                         },
                         token,
