@@ -51,9 +51,6 @@ import SwitchScreens from "./components/SwitchScreens";
 import { Evaluation } from "../../../model/evaluations/evaluationModel";
 import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
 
-// Types
-import { Unsubscribe } from "@firebase/firestore";
-
 // Hooks & Providers
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
@@ -77,7 +74,7 @@ const Statement: FC = () => {
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     // Redux hooks
-    const dispatch: any = useAppDispatch();
+    const dispatch = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
 
     const subStatementsSelector = createSelector(
@@ -137,48 +134,48 @@ const Statement: FC = () => {
         }
     }, [screen]);
 
-    //listen to statement
+    // Listen to statement changes.
     useEffect(() => {
-        let unsub: Unsubscribe | undefined;
-        if (statementId && user) {
-            unsub = listenToStatement(statementId, updateStoreStatementCB);
-        }
-
-        return () => {
-            if (unsub) unsub();
-        };
-    }, [statementId, user]);
-
-    //listne to sub statements
-    useEffect(() => {
-        let unsubSubStatements: Promise<Unsubscribe | undefined>;
-        let unsubStatementSubscription: undefined | (() => void);
-        let unsubEvaluations: undefined | (() => void);
+        let unsubListenToStatement: Promise<void> | undefined;
+        let unsubSubStatements: Promise<void>;
+        let unsubStatementSubscription: Promise<void> | undefined;
+        let unsubEvaluations: Promise<void> | undefined;
         let unsubSubSubscribedStatements: undefined | (() => void);
 
-        if (user && statementId) {
+        if (statementId) {
+            unsubListenToStatement = listenToStatement(
+                statementId,
+                updateStoreStatementCB,
+            );
             unsubSubStatements = listenToStatementsOfStatment(
                 statementId,
                 updateStoreStatementCB,
                 deleteStatementCB,
             );
+            unsubEvaluations = listenToEvaluations(
+                statementId,
+                updateEvaluationsCB,
+                user?.uid,
+            );
+        }
+
+        if (user && statementId) {
             unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
                 statementId,
                 updateStatementSubscriptionCB,
                 deleteSubscribedStatementCB,
+                user,
             );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
                 updateStatementSubscriptionCB,
-            );
-            unsubEvaluations = listenToEvaluations(
-                statementId,
-                updateEvaluationsCB,
+                user,
             );
         }
 
         return () => {
             const unsub = Promise.all([
+                unsubListenToStatement,
                 unsubSubStatements,
                 unsubStatementSubscription,
                 unsubSubSubscribedStatements,
