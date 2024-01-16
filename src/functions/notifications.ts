@@ -1,7 +1,6 @@
 import { Statement, Collections, StatementSubscription } from "delib-npm";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
-import { t } from "i18next";
 import { messaging, DB } from "./db/config";
 import { getUserFromFirebase } from "./db/users/usersGeneral";
 import { vapidKey } from "./db/configKey";
@@ -17,9 +16,7 @@ export async function getUserPermissionToNotifications(): Promise<boolean> {
 
         //in case the user didn't set the notification permission yet
         alert(
-            t(
-                "Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time",
-            ),
+            "Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time",
         );
         const permission = await Notification.requestPermission();
 

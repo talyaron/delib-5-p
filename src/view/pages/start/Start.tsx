@@ -6,7 +6,6 @@ import { getIntialLocationSessionStorage } from "../../../functions/general/help
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // Redux
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
@@ -24,7 +23,6 @@ import EnterName from "./EnterName";
 
 const Start = () => {
     const navigate = useNavigate();
-    const { i18n, t } = useTranslation();
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
@@ -41,27 +39,17 @@ const Start = () => {
 
     return (
         <div className="splashPage">
-            <h1 className="splashPage__title">{t("Delib 5")}</h1>
+            <h1 className="splashPage__title">{"Delib 5"}</h1>
             <img
                 src={Logo}
                 alt="Delib logo"
                 width="10%"
                 style={{ maxWidth: "150px" }}
             />
-            <h2 className="splashPage__subTitle">{t("Creating Agreements")}</h2>
+            <h2 className="splashPage__subTitle">{"Creating Agreements"}</h2>
             <select
                 style={{ backgroundColor: "lightblue" }}
                 defaultValue={savedLang || "he"}
-                onChange={(e) => {
-                    const lang = e.target.value;
-                    i18n.changeLanguage(lang);
-                    if (lang === "he" || lang === "ar") {
-                        document.body.style.direction = "rtl";
-                    } else {
-                        document.body.style.direction = "ltr";
-                    }
-                    localStorage.setItem("lang", lang);
-                }}
             >
                 {LANGUAGES.map(({ code, label }) => (
                     <option key={code} value={code}>
@@ -73,14 +61,14 @@ const Start = () => {
                 className="btn btn--large"
                 onClick={() => setShowNameModul(true)}
             >
-                {t("Login with a temporary name")}
+                {"Login with a temporary name"}
             </button>
             <button
                 className="btn splashPage__loginButton btn--img"
                 onClick={googleLogin}
             >
                 <img src={googleLogo} alt="login with google" />
-                {t("Connect with Google")}
+                {"Connect with Google"}
             </button>
 
             <a
@@ -91,7 +79,7 @@ const Start = () => {
                     textDecoration: "none",
                 }}
             >
-                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
+                <h2>{"From the Institute for Deliberative Democracy"}</h2>
             </a>
 
             {showNameModul ? (

@@ -15,7 +15,6 @@ import {
     RoomsStateSelection,
     Statement,
 } from "delib-npm";
-import { t } from "i18next";
 
 // Statments functions
 import {
@@ -96,32 +95,28 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     return (
         <div>
-            <p className={styles.title}>{t("Management board")}</p>
+            <p className={styles.title}>{"Management board"}</p>
             <div>
                 <div className="btns">
                     {setRooms ? (
                         <button onClick={handleDivideIntoRooms}>
-                            {t("Divide into rooms")}
+                            {"Divide into rooms"}
                         </button>
                     ) : (
                         <button
                             className="btn--cancel"
                             onClick={handleDivideIntoRooms}
                         >
-                            {t("Cancellation of division")}
+                            {"Cancellation of division"}
                         </button>
                     )}
                 </div>
                 {setRooms ? (
                     <div>
-                        <h3>{t("Participants")}</h3>
+                        <h3>{"Participants"}</h3>
                         <p>
-                            {
-                                (t(
-                                    "Maximum number of participants in the room ",
-                                ),
-                                maxParticipantsPerRoom)
-                            }
+                            "Maximum number of participants in the room ",
+                            {maxParticipantsPerRoom}
                         </p>
 
                         <div
@@ -163,7 +158,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     </div>
                 ) : (
                     <>
-                        <h3>{t("Division into rooms")}</h3>
+                        <h3>{"Division into rooms"}</h3>
                         <div className={styles.roomWrapper}>
                             {roomsAdmin.map((room: RoomAdmin) => {
                                 return (
@@ -172,7 +167,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                         className={styles.room}
                                     >
                                         <h4>
-                                            {(t("Room"), room.roomNumber)} -{" "}
+                                            Room {room.roomNumber} -{" "}
                                             <Text
                                                 text={room.statement.statement}
                                                 onlyTitle={true}
@@ -221,7 +216,7 @@ function divideIntoTopics(
                 if (!participant.statementId) {
                     topicsParticipants["general"] = {
                         statementId: "general",
-                        statement: t("General"),
+                        statement: "General",
                         participants: [participant],
                     };
                 } else if (!(participant.statementId in topicsParticipants)) {

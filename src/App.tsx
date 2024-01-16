@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Third party imports
-import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
-import { t } from "i18next";
 
 // Firebase functions
 import { listenToAuth, logOut } from "./functions/db/auth";
@@ -36,7 +34,6 @@ import { onLocalMessage } from "./functions/notifications";
 export default function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { i18n } = useTranslation();
     const user = useAppSelector(userSelector);
 
     const [showSignAgreement, setShowSignAgreement] = useState(false);
@@ -61,18 +58,6 @@ export default function App() {
         dispatch(resetVotes());
         dispatch(resetResults());
     }
-    useEffect(() => {
-        // Default direction is ltr
-        document.body.style.direction = "ltr";
-
-        // Get language from local storage and change accordingly
-        const lang = localStorage.getItem("lang");
-        if (lang) {
-            i18n.changeLanguage(lang);
-            document.body.style.direction =
-                lang === "he" || lang === "ar" ? "rtl" : "ltr";
-        }
-    }, []);
 
     useEffect(() => {
         const usub: Unsubscribe = listenToAuth(
@@ -176,26 +161,22 @@ export default function App() {
             {showSignAgreement && (
                 <Modal>
                     <div className="termsOfUse">
-                        <h1 className="termsOfUse__title">
-                            {t("terms of use")}
-                        </h1>
-                        <p>{t(agreement)}</p>
+                        <h1 className="termsOfUse__title">{"terms of use"}</h1>
+                        <p>{agreement}</p>
                         <div className="btns">
                             <button
                                 className="btn btn--agree"
-                                onClick={() =>
-                                    handleAgreement(true, t(agreement))
-                                }
+                                onClick={() => handleAgreement(true, agreement)}
                             >
-                                {t("Agree")}
+                                {"Agree"}
                             </button>
                             <button
                                 className="btn btn--disagree"
                                 onClick={() =>
-                                    handleAgreement(false, t(agreement))
+                                    handleAgreement(false, agreement)
                                 }
                             >
-                                {t("Dont agree")}
+                                {"Dont agree"}
                             </button>
                         </div>
                     </div>

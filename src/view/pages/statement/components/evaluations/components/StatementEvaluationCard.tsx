@@ -28,7 +28,6 @@ import {
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
-import { t } from "i18next";
 import useStatementColor, {
     StyleProps,
 } from "../../../../../../functions/hooks/useStatementColor";
@@ -131,7 +130,7 @@ const StatementEvaluationCard: FC<Props> = ({
                     {_isAuthorized && (
                         <CardMenu isMe={isRtl}>
                             <span onClick={() => setEdit(true)}>
-                                {t("Edit Text")}
+                                {("Edit Text")}
                             </span>
                             <SetEdit
                                 isAuthrized={isAuthorized(
@@ -146,7 +145,7 @@ const StatementEvaluationCard: FC<Props> = ({
                             <StatementChatSetOption
                                 parentStatement={parentStatement}
                                 statement={statement}
-                                text={t("Remove Option")}
+                                text={("Remove Option")}
                             />
                         </CardMenu>
                     )}

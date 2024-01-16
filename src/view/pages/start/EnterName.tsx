@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import Modal from "../../components/modal/Modal";
 import styles from "./enterName.module.scss";
 import { signAnonymously } from "../../../functions/db/auth";
-import { t } from "i18next";
 
 interface Props {
     setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,7 +38,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     onKeyUp={handleSetName}
                     type="text"
                     name="displayName"
-                    placeholder={t("Nickname")}
+                    placeholder={("Nickname")}
                     autoFocus={true}
                 />
                 <div className="btns">
@@ -47,13 +46,13 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                         onClick={handleStart}
                         className={showeStartBtn ? "btn" : "btn btn--nonactive"}
                     >
-                        {t("Start")}
+                        {("Start")}
                     </button>
                     <div
                         className="btn btn--cancel"
                         onClick={() => setShowNameModul(false)}
                     >
-                        {t("Cancel")}
+                        {("Cancel")}
                     </div>
                 </div>
             </div>

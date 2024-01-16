@@ -2,7 +2,6 @@ import { useState, FC, useEffect } from "react";
 
 // Third party imports
 import { Results, Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
@@ -95,10 +94,10 @@ const Map: FC<Props> = ({ statement }) => {
                 }}
             >
                 <option value={FilterType.questionsResults}>
-                    {t("Questions and Results")}
+                    {("Questions and Results")}
                 </option>
                 <option value={FilterType.questionsResultsOptions}>
-                    {t("Questions, options and Results")}
+                    {("Questions, options and Results")}
                 </option>
             </select>
             <div

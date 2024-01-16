@@ -2,7 +2,6 @@ import { FC } from "react";
 import "./homeMenu.scss";
 import disconnectlIcon from "../../../assets/disconnectIcon.svg";
 import { handleLogout } from "../../../functions/general/helpers";
-import { t } from "i18next";
 
 interface Props {
     setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +16,7 @@ const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
                     alt="disconnect_icon"
                 />
                 <p className="homeMenu__name" onClick={handleLogout}>
-                    {t("Disconnect")}
+                    {("Disconnect")}
                 </p>
             </div>
 

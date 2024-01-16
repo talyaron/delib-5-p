@@ -1,5 +1,4 @@
 import CustomCheckboxLabel from "./CustomCheckboxLabel";
-import { t } from "i18next";
 import { isSubPageChecked } from "./statementSettingsCont";
 import CustomSwitch from "../../../../components/switch/CustomSwitch";
 import { Screen, Statement } from "delib-npm";
@@ -31,7 +30,7 @@ export default function CheckBoxeArea({
         <section className="settings__checkboxSection">
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">
-                    {t("Tabs")}
+                    {"Tabs"}
                 </h3>
                 {navArray
                     .filter((navObj) => navObj.link !== Screen.SETTINGS)
@@ -46,7 +45,7 @@ export default function CheckBoxeArea({
             </div>
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">
-                    {t("Advanced")}
+                    {"Advanced"}
                 </h3>
                 <CustomCheckboxLabel
                     name={"hasChildren"}

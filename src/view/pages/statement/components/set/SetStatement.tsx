@@ -1,6 +1,5 @@
 // Third party imports
 import { Link, useParams } from "react-router-dom";
-import { t } from "i18next";
 
 // Custom components
 
@@ -28,7 +27,7 @@ export const SetStatement = () => {
                     {" "}
                     <BackArrowIcon color="black" />
                 </Link>
-                <h1>{statementId ? t("Update") : t("Add New Group")}</h1>
+                <h1>{statementId ? ("Update") : ("Add New Group")}</h1>
                 <span></span>
             </div>
             <div className="page__main">

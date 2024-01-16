@@ -2,7 +2,6 @@ import { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Custom components
 import StatementRoomCard from "./StatementRoomCard";
@@ -15,7 +14,7 @@ interface Props {
 const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
     return (
         <>
-            <h2>"{t("Division into rooms")}"</h2>
+            <h2>"{("Division into rooms")}"</h2>
             <div className="roomsCards__wrapper">
                 {subStatements.map((subStatement: Statement) => {
                     return (

@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
-import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
@@ -69,8 +68,8 @@ const StatementHeader: FC<Props> = ({
         const baseUrl = window.location.origin;
 
         const shareData = {
-            title: t("Delib: We create agreements together"),
-            text: t("Invited:") + statement?.statement,
+            title: ("Delib: We create agreements together"),
+            text: ("Invited:") + statement?.statement,
             url: `${baseUrl}${pathname}`,
         };
         navigator.share(shareData);

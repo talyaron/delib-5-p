@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType, User } from "delib-npm";
-import { t } from "i18next";
 
 // Custom Components
 import StatementChatMore from "./StatementChatMore";
@@ -127,12 +126,12 @@ const StatementChat: FC<Props> = ({
                             isAuthrized={_isAuthrized}
                             setEdit={setIsEdit}
                             edit={isEdit}
-                            text={t("Edit Text")}
+                            text={("Edit Text")}
                         />
 
                         <StatementChatSetQuestion
                             statement={statement}
-                            text={t("Question")}
+                            text={("Question")}
                         />
 
                         {displayChat &&
@@ -140,13 +139,13 @@ const StatementChat: FC<Props> = ({
                                 <AddSubQuestion
                                     statement={statement}
                                     setShowModal={setShowModal}
-                                    text={t("Add Question")}
+                                    text={("Add Question")}
                                 />
                             )}
                         <StatementChatSetOption
                             parentStatement={parentStatement}
                             statement={statement}
-                            text={t("Option")}
+                            text={("Option")}
                         />
                     </CardMenu>
                     <div

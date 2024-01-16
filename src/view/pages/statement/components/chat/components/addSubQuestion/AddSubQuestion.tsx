@@ -2,7 +2,6 @@ import React, { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Icons
 import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
@@ -28,7 +27,7 @@ const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
                 </span>
             )}
             <div className="clickable" onClick={handleShwQuestionModal}>
-                <img src={addQuestion} alt={t("Add question")} />
+                <img src={addQuestion} alt={("Add question")} />
             </div>
         </>
     );

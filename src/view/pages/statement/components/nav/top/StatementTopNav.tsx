@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { showNavElements } from "./statementTopNavCont";
-import { t } from "i18next";
 import { NavObject, Statement, Screen } from "delib-npm";
 import { navArray } from "./StatementTopNavModel";
 
@@ -27,7 +26,7 @@ const StatementTopNav: FC<Props> = ({ statement, screen }) => {
                             : ""
                     }`}
                 >
-                    {t(navObject.name)}
+                    {(navObject.name)}
                 </Link>
             ))}
         </nav>
