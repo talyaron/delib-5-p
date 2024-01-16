@@ -9,16 +9,16 @@ import {
 } from "@firebase/firestore";
 import { DB } from "../config";
 import { Collections, Evaluation, User } from "delib-npm";
-import { getUserFromFirebase } from "../users/usersGeneral";
 import { EvaluationSchema } from "../../../model/evaluations/evaluationModel";
 
 export function listenToEvaluations(
     parentId: string,
     updateCallBack: (evaluation: Evaluation) => void,
+    evaluatorId: string | undefined,
 ) {
     try {
         const evaluationsRef = collection(DB, Collections.evaluations);
-        const evaluatorId = getUserFromFirebase()?.uid;
+
         if (!evaluatorId) throw new Error("User is undefined");
 
         const q = query(
@@ -27,31 +27,66 @@ export function listenToEvaluations(
             where("evaluatorId", "==", evaluatorId),
         );
 
-        return onSnapshot(q, (evaluationsDB) => {
-            try {
-                evaluationsDB.forEach((evaluationDB) => {
-                    try {
-                        //set evaluation to store
-                        const { success } = EvaluationSchema.safeParse(
-                            evaluationDB.data(),
-                        );
-
-                        if (!success)
-                            throw new Error(
-                                "evaluationDB is not valid in listenToEvaluations()",
+        const evaluationsDB = getDocs(q)
+            .then((evaluationsDB) => {
+                try {
+                    evaluationsDB.forEach((evaluationDB) => {
+                        try {
+                            //set evaluation to store
+                            const { success } = EvaluationSchema.safeParse(
+                                evaluationDB.data(),
                             );
 
-                        const evaluation = evaluationDB.data() as Evaluation;
+                            if (!success)
+                                throw new Error(
+                                    "evaluationDB is not valid in listenToEvaluations()",
+                                );
 
-                        updateCallBack(evaluation);
+                            const evaluation =
+                                evaluationDB.data() as Evaluation;
+
+                            updateCallBack(evaluation);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+                return onSnapshot(q, (evaluationsDB) => {
+                    try {
+                        evaluationsDB.forEach((evaluationDB) => {
+                            try {
+                                //set evaluation to store
+                                const { success } = EvaluationSchema.safeParse(
+                                    evaluationDB.data(),
+                                );
+
+                                if (!success)
+                                    throw new Error(
+                                        "evaluationDB is not valid in listenToEvaluations()",
+                                    );
+
+                                const evaluation =
+                                    evaluationDB.data() as Evaluation;
+
+                                updateCallBack(evaluation);
+                            } catch (error) {
+                                console.error(error);
+                            }
+                        });
                     } catch (error) {
                         console.error(error);
                     }
                 });
-            } catch (error) {
-                console.error(error);
-            }
-        });
+            });
+
+        return evaluationsDB;
     } catch (error) {
         console.error(error);
     }
@@ -93,8 +128,8 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
             .filter((promise) => promise) as Promise<any>[];
 
         const evaluatorsDB = await Promise.all(evaluatorsPromise);
-        const evaluators = evaluatorsDB.map((evaluatorDB) =>
-            evaluatorDB?.data(),
+        const evaluators = evaluatorsDB.map(
+            (evaluatorDB) => evaluatorDB?.data(),
         ) as User[];
 
         evaluations.forEach((evaluation) => {
