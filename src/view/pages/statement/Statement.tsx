@@ -143,7 +143,7 @@ const Statement: FC = () => {
         let unsubEvaluations: Promise<void> | undefined;
         let unsubSubSubscribedStatements: undefined | (() => void);
 
-        if (statementId) {
+        if (user && statementId) {
             unsubListenToStatement = listenToStatement(
                 statementId,
                 updateStoreStatementCB,
@@ -158,9 +158,6 @@ const Statement: FC = () => {
                 updateEvaluationsCB,
                 user?.uid,
             );
-        }
-
-        if (user && statementId) {
             unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
                 statementId,
                 updateStatementSubscriptionCB,
