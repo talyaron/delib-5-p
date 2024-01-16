@@ -10,6 +10,7 @@ import {
     Role,
     Screen,
 } from "delib-npm";
+import { t } from "i18next";
 
 // firestore
 import {
@@ -73,7 +74,7 @@ const Statement: FC = () => {
 
     // Use state
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>("Group");
+    const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     // Redux hooks
@@ -151,7 +152,7 @@ const Statement: FC = () => {
 
     //listne to sub statements
     useEffect(() => {
-        let unsubSubStatements: undefined | (() => void);
+        let unsubSubStatements: Promise<Unsubscribe | undefined>;
         let unsubStatementSubscription: undefined | (() => void);
         let unsubEvaluations: undefined | (() => void);
         let unsubSubSubscribedStatements: undefined | (() => void);
@@ -178,10 +179,22 @@ const Statement: FC = () => {
         }
 
         return () => {
-            if (unsubSubStatements) unsubSubStatements();
-            if (unsubStatementSubscription) unsubStatementSubscription();
-            if (unsubSubSubscribedStatements) unsubSubSubscribedStatements();
-            if (unsubEvaluations) unsubEvaluations();
+            const unsub = Promise.all([
+                unsubSubStatements,
+                unsubStatementSubscription,
+                unsubSubSubscribedStatements,
+                unsubEvaluations,
+            ]);
+
+            unsub
+                .then((unsub) => {
+                    unsub.forEach((unsub) => {
+                        if (unsub) unsub();
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         };
     }, [user, statementId]);
 
