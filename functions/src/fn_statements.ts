@@ -141,16 +141,12 @@ export async function sendNotificationsCB(e: any) {
                             logger.info("Successfully sent message:", response);
                         })
                         .catch((error: any) => {
-                            logger.info(
-                                "Error message:",
-                                error.message ===
-                                    "The registration token is not a valid FCM registration token",
+                            logger.error(
+                                "Error failed to sent notification: ",
+                                error,
                             );
 
-                            logger.info("Error message text: ", error.message);
-
-                            logger.info(error.code);
-
+                            // Delete token from DB if it is not valid.
                             if (
                                 error.code ===
                                     "messaging/invalid-registration-token" ||
@@ -158,13 +154,26 @@ export async function sendNotificationsCB(e: any) {
                                     "The registration token is not a valid FCM registration token" ||
                                 error.message ===
                                     "The registration token is not a valid FCM registration token"
-                            )
+                            ) {
                                 logger.info("Deleting token from DB");
-                            db.doc(
-                                `statementsSubscribe/${doc.statementId}`,
-                            ).update({
-                                token: FieldValue.arrayRemove(token),
-                            });
+
+                                db.collection(Collections.statementsSubscribe)
+                                    .where(
+                                        "statementsSubscribeId",
+                                        "==",
+                                        doc.data().statementsSubscribeId,
+                                    )
+                                    .get()
+                                    .then((querySnapshot) => {
+                                        querySnapshot.forEach((doc) => {
+                                            doc.ref.update({
+                                                token: FieldValue.arrayRemove(
+                                                    token,
+                                                ),
+                                            });
+                                        });
+                                    });
+                            }
                         });
                 });
             }
