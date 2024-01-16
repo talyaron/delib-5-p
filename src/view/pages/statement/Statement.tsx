@@ -3,13 +3,8 @@ import { createSelector } from "reselect";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    User,
-    Statement,
-    StatementSubscription,
-    Role,
-    Screen,
-} from "delib-npm";
+import { User, Role, Screen } from "delib-npm";
+import { t } from "i18next";
 
 // firestore
 import {
@@ -30,13 +25,7 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import {
-    deleteStatement,
-    deleteSubscribedStatement,
-    setStatement,
-    setStatementSubscription,
-    statementSelector,
-} from "../../../model/statements/statementsSlice";
+import { statementSelector } from "../../../model/statements/statementsSlice";
 
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -46,10 +35,6 @@ import ProfileImage from "../../components/profileImage/ProfileImage";
 import StatementHeader from "./StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
 import SwitchScreens from "./components/SwitchScreens";
-
-// Models
-import { Evaluation } from "../../../model/evaluations/evaluationModel";
-import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
 
 // Hooks & Providers
 import { MapProvider } from "../../../functions/hooks/useMap";
@@ -70,7 +55,7 @@ const Statement: FC = () => {
 
     // Use state
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>("Group");
+    const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     // Redux hooks
@@ -91,31 +76,6 @@ const Statement: FC = () => {
     );
     const screen = availableScreen(statement, page);
 
-    //store callbacks
-    function updateStoreStatementCB(statement: Statement) {
-        try {
-            dispatch(setStatement(statement));
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    function deleteStatementCB(statementId: string) {
-        dispatch(deleteStatement(statementId));
-    }
-    function updateStatementSubscriptionCB(
-        statementSubscription: StatementSubscription,
-    ) {
-        dispatch(setStatementSubscription(statementSubscription));
-    }
-
-    function deleteSubscribedStatementCB(statementId: string) {
-        dispatch(deleteSubscribedStatement(statementId));
-    }
-
-    function updateEvaluationsCB(evaluation: Evaluation) {
-        dispatch(setEvaluationToStore(evaluation));
-    }
-
     //handlers
     function handleShowTalker(_talker: User | null) {
         if (!talker) {
@@ -124,8 +84,6 @@ const Statement: FC = () => {
             setTalker(null);
         }
     }
-
-    //use effects
 
     //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
@@ -143,31 +101,20 @@ const Statement: FC = () => {
         let unsubSubSubscribedStatements: undefined | (() => void);
 
         if (user && statementId) {
-            unsubListenToStatement = listenToStatement(
-                statementId,
-                updateStoreStatementCB,
-            );
-            unsubSubStatements = listenToStatementsOfStatment(
-                statementId,
-                updateStoreStatementCB,
-                deleteStatementCB,
-            );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
-                statementId,
-                updateStatementSubscriptionCB,
-                deleteSubscribedStatementCB,
-                user,
-            );
-            unsubStatementSubscription = listenToStatementSubscription(
-                statementId,
-                updateStatementSubscriptionCB,
-                user,
-            );
+            unsubListenToStatement = listenToStatement(dispatch)(statementId);
+            unsubSubStatements =
+                listenToStatementsOfStatment(dispatch)(statementId);
             unsubEvaluations = listenToEvaluations(
+                dispatch,
                 statementId,
-                updateEvaluationsCB,
                 user?.uid,
             );
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+                dispatch,
+            )(statementId, user);
+            unsubStatementSubscription = listenToStatementSubscription(
+                dispatch,
+            )(statementId, user);
         }
 
         return () => {

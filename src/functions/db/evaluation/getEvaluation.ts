@@ -10,12 +10,14 @@ import {
 import { DB } from "../config";
 import { Collections, Evaluation, User } from "delib-npm";
 import { EvaluationSchema } from "../../../model/evaluations/evaluationModel";
+import { AppDispatch } from "../../../model/store";
+import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
 
-export function listenToEvaluations(
+export const listenToEvaluations = (
+    dispatch: AppDispatch,
     parentId: string,
-    updateCallBack: (evaluation: Evaluation) => void,
     evaluatorId: string | undefined,
-) {
+) => {
     try {
         const evaluationsRef = collection(DB, Collections.evaluations);
 
@@ -45,7 +47,7 @@ export function listenToEvaluations(
                             const evaluation =
                                 evaluationDB.data() as Evaluation;
 
-                            updateCallBack(evaluation);
+                            dispatch(setEvaluationToStore(evaluation));
                         } catch (error) {
                             console.error(error);
                         }
@@ -75,7 +77,7 @@ export function listenToEvaluations(
                                 const evaluation =
                                     evaluationDB.data() as Evaluation;
 
-                                updateCallBack(evaluation);
+                                dispatch(setEvaluationToStore(evaluation));
                             } catch (error) {
                                 console.error(error);
                             }
@@ -90,7 +92,7 @@ export function listenToEvaluations(
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
     try {
