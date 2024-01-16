@@ -60,6 +60,7 @@ import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { RootState } from "../../../model/store";
+import { SuspenseFallback } from "../../../router";
 
 const Statement: FC = () => {
     // Hooks
@@ -151,7 +152,7 @@ const Statement: FC = () => {
 
     //listne to sub statements
     useEffect(() => {
-        let unsubSubStatements: undefined | (() => void);
+        let unsubSubStatements: Promise<Unsubscribe | undefined>;
         let unsubStatementSubscription: undefined | (() => void);
         let unsubEvaluations: undefined | (() => void);
         let unsubSubSubscribedStatements: undefined | (() => void);
@@ -178,10 +179,22 @@ const Statement: FC = () => {
         }
 
         return () => {
-            if (unsubSubStatements) unsubSubStatements();
-            if (unsubStatementSubscription) unsubStatementSubscription();
-            if (unsubSubSubscribedStatements) unsubSubSubscribedStatements();
-            if (unsubEvaluations) unsubEvaluations();
+            const unsub = Promise.all([
+                unsubSubStatements,
+                unsubStatementSubscription,
+                unsubSubSubscribedStatements,
+                unsubEvaluations,
+            ]);
+
+            unsub
+                .then((unsub) => {
+                    unsub.forEach((unsub) => {
+                        if (unsub) unsub();
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         };
     }, [user, statementId]);
 
@@ -222,24 +235,32 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement && (
-                <StatementHeader
-                    statement={statement}
-                    screen={screen || Screen.CHAT}
-                    title={title}
-                    showAskPermission={showAskPermission}
-                    setShowAskPermission={setShowAskPermission}
-                />
+            {statement ? (
+                <>
+                    <StatementHeader
+                        statement={statement}
+                        screen={screen || Screen.CHAT}
+                        title={title}
+                        showAskPermission={showAskPermission}
+                        setShowAskPermission={setShowAskPermission}
+                    />
+
+                    <MapProvider>
+                        <SwitchScreens
+                            key={window.location.pathname
+                                .split("/")
+                                .slice(2)
+                                .join(" ")}
+                            screen={screen}
+                            statement={statement}
+                            subStatements={subStatements}
+                            handleShowTalker={handleShowTalker}
+                        />
+                    </MapProvider>
+                </>
+            ) : (
+                <SuspenseFallback />
             )}
-            <MapProvider>
-                <SwitchScreens
-                    key={window.location.pathname.split("/").slice(2).join(" ")}
-                    screen={screen}
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
-            </MapProvider>
         </div>
     );
 };

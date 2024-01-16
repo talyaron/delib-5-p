@@ -27,6 +27,7 @@ import { DB } from "../config";
 
 // Redux Store
 import { store } from "../../../model/store";
+import { get } from "lodash";
 
 // TODO: this function is not used. Delete it?
 export function listenToTopStatements(
@@ -480,7 +481,7 @@ export async function getStatementFromDB(
     }
 }
 
-export function listenToStatementsOfStatment(
+export async function listenToStatementsOfStatment(
     statementId: string | undefined,
     updateStore: (statement: Statement) => void,
     deleteStatementCB: (statementId: string) => void,
@@ -495,23 +496,35 @@ export function listenToStatementsOfStatment(
             limit(20),
         );
 
-        return onSnapshot(q, (subsDB) => {
-            subsDB.docChanges().forEach((change) => {
-                const statement = change.doc.data() as Statement;
+        const set = await getDocs(q)
+            .then((statementsDB) => {
+                statementsDB.forEach((doc) => {
+                    const statement = doc.data() as Statement;
 
-                if (change.type === "added") {
                     updateStore(statement);
-                }
+                });
+            })
+            .then(() => {
+                return onSnapshot(q, (statementsDB) => {
+                    statementsDB.docChanges().forEach((change) => {
+                        const statement = change.doc.data() as Statement;
 
-                if (change.type === "modified") {
-                    updateStore(statement);
-                }
+                        if (change.type === "added") {
+                            updateStore(statement);
+                        }
 
-                if (change.type === "removed") {
-                    deleteStatementCB(statement.statementId);
-                }
+                        if (change.type === "modified") {
+                            updateStore(statement);
+                        }
+
+                        if (change.type === "removed") {
+                            deleteStatementCB(statement.statementId);
+                        }
+                    });
+                });
             });
-        });
+
+        return set;
     } catch (error) {
         console.error(error);
     }
