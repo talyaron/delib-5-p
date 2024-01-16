@@ -54,7 +54,7 @@ interface Props {
     new?: boolean;
 }
 
-export const StatementSettings: FC<Props> = () => {
+const StatementSettings: FC<Props> = () => {
     const navigate = useNavigate();
     const { statementId } = useParams();
 
@@ -257,3 +257,5 @@ export const StatementSettings: FC<Props> = () => {
         </ScreenFadeIn>
     );
 };
+
+export default StatementSettings;

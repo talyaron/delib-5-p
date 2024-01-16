@@ -1,8 +1,8 @@
-const { logger } = require("firebase-functions");
+import { Collections, Statement } from "delib-npm";
+import { logger } from "firebase-functions";
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
-import admin = require("firebase-admin");
-import { Collections, Statement } from "delib-npm";
+import * as admin from "firebase-admin";
 
 export async function updateSubscribedListnersCB(event: any) {
     //get statement
@@ -25,12 +25,13 @@ export async function updateSubscribedListnersCB(event: any) {
                     statement: statement,
                     lastUpdate: Timestamp.now().toMillis(),
                 },
-                { merge: true }
+                { merge: true },
             );
         } catch (error) {
             logger.error("error updating subscribers", error);
         }
     });
+
     return;
 }
 
@@ -43,13 +44,13 @@ export async function updateParentWithNewMessageCB(e: any) {
         if (parentId === "top") return;
 
         if (!parentId) throw new Error("parentId not found");
-        //update map
 
         //get parent
         const parentRef = db.doc(`statements/${parentId}`);
         const parentDB = await parentRef.get();
         const parent = parentDB.data();
         if (!parent) throw new Error("parent not found");
+
         //update parent
         const lastMessage = statement.statement;
         const lastUpdate = Timestamp.now().toMillis();
@@ -58,12 +59,12 @@ export async function updateParentWithNewMessageCB(e: any) {
             lastUpdate,
             totalSubStatements: FieldValue.increment(1),
         });
-        //update topParent
 
+        //update topParent
         if (!topParentId) throw new Error("topParentId not found");
         if (topParentId === "top")
             throw new Error(
-                "topParentId is top, and it is an error in the client logic"
+                "topParentId is top, and it is an error in the client logic",
             );
 
         const topParentRef = db.doc(`statements/${topParentId}`);
@@ -80,7 +81,7 @@ export async function updateParentWithNewMessageCB(e: any) {
 export async function sendNotificationsCB(e: any) {
     try {
         const statement = e.data.data();
-        if(!statement) throw new Error("statement not found");
+        if (!statement) throw new Error("statement not found");
 
         const parentId = statement.parentId;
 
@@ -117,15 +118,14 @@ export async function sendNotificationsCB(e: any) {
             if (tokenArr && tokenArr.length > 0) {
                 // Send a message to each device the user has registered for notifications.
 
-                // TODO: find a way to check if token is still valid. If not, remove it from the DB.
-
                 tokenArr.forEach((token: string) => {
                     const message: any = {
                         data: {
                             title,
                             body: statement.statement,
-                            // TODO: change to production url
-                            url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
+                            url: `https://delib-5.web.app/statement/${parentId}/chat`,
+                            
+                            // url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
                             creatorId: statement.creatorId,
                         },
                         token,
@@ -139,7 +139,39 @@ export async function sendNotificationsCB(e: any) {
                             logger.info("Successfully sent message:", response);
                         })
                         .catch((error: any) => {
-                            logger.error("Error sending message:", error);
+                            logger.error(
+                                "Error failed to sent notification: ",
+                                error,
+                            );
+
+                            // Delete token from DB if it is not valid.
+                            if (
+                                error.code ===
+                                    "messaging/invalid-registration-token" ||
+                                error.message ===
+                                    "The registration token is not a valid FCM registration token" ||
+                                error.message ===
+                                    "The registration token is not a valid FCM registration token"
+                            ) {
+                                logger.info("Deleting token from DB");
+
+                                db.collection(Collections.statementsSubscribe)
+                                    .where(
+                                        "statementsSubscribeId",
+                                        "==",
+                                        doc.data().statementsSubscribeId,
+                                    )
+                                    .get()
+                                    .then((querySnapshot) => {
+                                        querySnapshot.forEach((doc) => {
+                                            doc.ref.update({
+                                                token: FieldValue.arrayRemove(
+                                                    token,
+                                                ),
+                                            });
+                                        });
+                                    });
+                            }
                         });
                 });
             }

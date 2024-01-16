@@ -2,7 +2,7 @@ import { Evaluation, Vote } from "delib-npm";
 import { handleGetEvaluators, handleGetVoters } from "./AdminPageCont";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { StatementSettings } from "../settings/StatementSettings";
+import StatementSettings from "../settings/StatementSettings";
 import styles from "./AdminPage.module.scss";
 import Chip from "../../../../components/chip/Chip";
 
