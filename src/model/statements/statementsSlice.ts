@@ -135,13 +135,6 @@ export const statementsSlicer = createSlice({
             action: PayloadAction<StatementSubscription>,
         ) => {
             try {
-                const { success } = StatementSubscriptionSchema.safeParse(
-                    action.payload,
-                );
-                if (!success) {
-                    console.error("statement subscription not valid");
-                }
-
                 const newStatement = action.payload;
                 const oldStatement = state.statements.find(
                     (statement) =>
@@ -343,8 +336,8 @@ export const statementsSelector = (state: RootState) =>
 
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter((statement) =>
-            statement.parents?.includes(statementId),
+        state.statements.statements.filter(
+            (statement) => statement.parents?.includes(statementId),
         );
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>

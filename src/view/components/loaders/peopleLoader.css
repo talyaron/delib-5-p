@@ -6,7 +6,7 @@
     border-radius: 50% 50% 0 0;
     position: relative;
     display: block;
-    margin: 60px auto 0;
+    margin: auto;
     box-sizing: border-box;
     animation: animpeopleLoader 4s linear infinite;
 }

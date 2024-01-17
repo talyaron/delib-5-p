@@ -30,7 +30,9 @@ import {
 } from "../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
+import {
+    getStatementFromDB,
+} from "../../../../../functions/db/statements/getStatement";
 import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
 // * Statement Settings functions * //

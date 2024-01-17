@@ -24,8 +24,6 @@ export async function getUserPermissionToNotifications(): Promise<boolean> {
 
         return true;
     } catch (error) {
-        console.error(error);
-
         return false;
     }
 }
@@ -82,7 +80,6 @@ export async function setStatmentSubscriptionNotificationToDB(
     try {
         const msg = await messaging();
         if (!msg) throw new Error("Notifications not supported");
-
         const token = await getToken(msg, { vapidKey });
         if (!token)
             throw new Error(

@@ -4,9 +4,12 @@ import { createSelector } from "reselect";
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
+import { t } from "i18next";
 
 // firestore
-import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
+import {
+    getIsSubscribed,
+} from "../../../functions/db/statements/getStatement";
 import { listenToStatementsOfStatment } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";

@@ -100,11 +100,8 @@ const StatementHeader: FC<Props> = ({
     async function toggleNotifications() {
         const isPermited = await getUserPermissionToNotifications();
 
-        if (!isPermited) {
-            setShowAskPermission(true);
+        if (!isPermited) return setShowAskPermission(true);
 
-            return;
-        }
         setStatmentSubscriptionNotificationToDB(statement, !permission);
     }
 
