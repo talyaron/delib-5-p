@@ -1,4 +1,4 @@
-import { FC, useState, lazy } from "react";
+import { FC, useState } from "react";
 
 // Third party imports
 import { Statement, StatementType } from "delib-npm";
@@ -14,13 +14,9 @@ import {
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
 
-// Redux
-
-// import ModalImage from "../../../../components/icons/ModalImage";
-
-const ModalImage = lazy(
-    () => import("../../../../components/icons/ModalImage"),
-);
+import questionModalImage from "../../../../../assets/questionModalImage.png";
+import optionModalImage from "../../../../../assets/optionModalImage.png";
+import ElipsIcon from "../../../../components/icons/ElipsIcon";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -96,22 +92,28 @@ const NewSetStatementSimple: FC<Props> = ({
             <>
                 {!isLoading ? (
                     <div className="overlay" style={{ zIndex: `2000` }}>
-                        <div className="overlay__imgBox">
-                            <ModalImage />
-                            <div className="overlay__imgBox__polygon" />
-                        </div>
-                        <div className="overlay__tabs">
-                            <div
-                                onClick={() => setIsOptionChosen(true)}
-                                className={
-                                    isOptionChosen
-                                        ? "overlay__tabs__tab overlay__tabs__tab--active"
-                                        : "overlay__tabs__tab"
-                                }
-                            >
-                                Option
-                                {isOptionChosen && <div className="block" />}
+                        {!isOptionChosen ? (
+                            <div className="overlay__imgBox">
+                                <img
+                                    src={questionModalImage}
+                                    alt="Qustion-Modal-Image"
+                                    width="70%"
+                                />
+                                <div className="overlay__imgBox__polygon" />
                             </div>
+                        ) : (
+                            <div className="overlay__imgBox">
+                                <img
+                                    src={optionModalImage}
+                                    alt="Option-Modal-Image"
+                                    width="70%"
+                                />
+                                <div className="overlay__imgBox__elips">
+                                    <ElipsIcon />
+                                </div>
+                            </div>
+                        )}
+                        <div className="overlay__tabs">
                             <div
                                 onClick={() => setIsOptionChosen(false)}
                                 className={
@@ -122,6 +124,17 @@ const NewSetStatementSimple: FC<Props> = ({
                             >
                                 Question
                                 {!isOptionChosen && <div className="block" />}
+                            </div>
+                            <div
+                                onClick={() => setIsOptionChosen(true)}
+                                className={
+                                    isOptionChosen
+                                        ? "overlay__tabs__tab overlay__tabs__tab--active"
+                                        : "overlay__tabs__tab"
+                                }
+                            >
+                                Option
+                                {isOptionChosen && <div className="block" />}
                             </div>
                         </div>
                         <form

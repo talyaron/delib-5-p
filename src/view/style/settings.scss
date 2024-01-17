@@ -43,12 +43,6 @@
                 display: flex;
                 align-items: center;
                 gap: 1rem;
-
-                // Preventing text selection
-                user-select: none;
-                -moz-user-select: none;
-                -webkit-user-select: none;
-                -ms-user-select: none;
             }
         }
     }
