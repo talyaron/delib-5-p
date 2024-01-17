@@ -8,7 +8,6 @@ import {
 } from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
-import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { StatementSubscription, Statement, StatementType } from "delib-npm";
 
@@ -200,7 +199,7 @@ const StatementSettings: FC<Props> = () => {
                             autoFocus={true}
                             type="text"
                             name="statement"
-                            placeholder={t("Group Title")}
+                            placeholder={"Group Title"}
                             defaultValue={arrayOfStatementParagrphs[0]}
                             required={true}
                         />
@@ -208,7 +207,7 @@ const StatementSettings: FC<Props> = () => {
                     <label htmlFor="description">
                         <textarea
                             name="description"
-                            placeholder={t("Group Description")}
+                            placeholder={"Group Description"}
                             rows={3}
                             defaultValue={description}
                         />
@@ -221,14 +220,14 @@ const StatementSettings: FC<Props> = () => {
                     <ResultsRange statement={statement} />
 
                     <button type="submit" className="settings__submitBtn">
-                        {!statementId ? t("Add") : t("Update")}
+                        {!statementId ? "Add" : "Update"}
                     </button>
 
                     {statementId && <UploadImage statement={statement} />}
 
                     {membership && statementId && (
                         <>
-                            <h2>{t("Members in Group")}</h2>
+                            <h2>{"Members in Group"}</h2>
                             <div className="settings__membersBox">
                                 {membership.map((member) => (
                                     <MembershipLine
@@ -248,7 +247,7 @@ const StatementSettings: FC<Props> = () => {
                 </form>
             ) : (
                 <div className="center">
-                    <h2>{t("Updating")}</h2>
+                    <h2>{"Updating"}</h2>
                     <Loader />
                 </div>
             )}
