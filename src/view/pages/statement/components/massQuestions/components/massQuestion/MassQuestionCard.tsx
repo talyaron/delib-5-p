@@ -2,7 +2,7 @@ import { Statement, StatementSubscription } from "delib-npm";
 import React, { FC, useEffect, useState } from "react";
 import styles from "./MassQuestion.module.scss";
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
-import { listenToUserAnswer } from "../../../../../../../functions/db/statements/getStatement";
+import { listenToUserAnswer } from "../../../../../../../functions/db/statements/listenToStatements";
 import EditTitle from "../../../../../../components/edit/EditTitle";
 import SetEdit from "../../../../../../components/edit/SetEdit";
 import { isAuthorized } from "../../../../../../../functions/general/helpers";
@@ -59,7 +59,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
                     />
                 </h3>
             </div>
-            <label>{("Answer")}:</label>
+            <label>{"Answer"}:</label>
             <textarea
                 onBlur={(ev: any) => {
                     handleSetQuestionFromMassCard({

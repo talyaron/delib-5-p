@@ -8,6 +8,7 @@ import {
 } from "../../../../../functions/db/statements/setStatments";
 
 // Third party imports
+import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { StatementSubscription, Statement, StatementType } from "delib-npm";
 
@@ -30,10 +31,8 @@ import {
 } from "../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import {
-    getStatementFromDB,
-    listenToMembers,
-} from "../../../../../functions/db/statements/getStatement";
+import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
+import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
 // * Statement Settings functions * //
 
@@ -201,7 +200,7 @@ const StatementSettings: FC<Props> = () => {
                             autoFocus={true}
                             type="text"
                             name="statement"
-                            placeholder={"Group Title"}
+                            placeholder={t("Group Title")}
                             defaultValue={arrayOfStatementParagrphs[0]}
                             required={true}
                         />
@@ -209,7 +208,7 @@ const StatementSettings: FC<Props> = () => {
                     <label htmlFor="description">
                         <textarea
                             name="description"
-                            placeholder={"Group Description"}
+                            placeholder={t("Group Description")}
                             rows={3}
                             defaultValue={description}
                         />
@@ -222,14 +221,14 @@ const StatementSettings: FC<Props> = () => {
                     <ResultsRange statement={statement} />
 
                     <button type="submit" className="settings__submitBtn">
-                        {!statementId ? "Add" : "Update"}
+                        {!statementId ? t("Add") : t("Update")}
                     </button>
 
                     {statementId && <UploadImage statement={statement} />}
 
                     {membership && statementId && (
                         <>
-                            <h2>{"Members in Group"}</h2>
+                            <h2>{t("Members in Group")}</h2>
                             <div className="settings__membersBox">
                                 {membership.map((member) => (
                                     <MembershipLine
@@ -249,7 +248,7 @@ const StatementSettings: FC<Props> = () => {
                 </form>
             ) : (
                 <div className="center">
-                    <h2>{"Updating"}</h2>
+                    <h2>{t("Updating")}</h2>
                     <Loader />
                 </div>
             )}
