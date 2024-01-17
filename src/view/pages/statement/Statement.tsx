@@ -9,11 +9,11 @@ import { t } from "i18next";
 // firestore
 import {
     getIsSubscribed,
-    listenToStatement,
-    listenToStatementSubSubscriptions,
-    listenToStatementSubscription,
-    listenToStatementsOfStatment,
 } from "../../../functions/db/statements/getStatement";
+import { listenToStatementsOfStatment } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
 import {
     setStatmentSubscriptionToDB,
     updateSubscriberForStatementSubStatements,

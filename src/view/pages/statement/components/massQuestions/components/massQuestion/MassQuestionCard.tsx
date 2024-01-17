@@ -2,7 +2,7 @@ import { Statement, StatementSubscription } from "delib-npm";
 import React, { FC, useEffect, useState } from "react";
 import styles from "./MassQuestion.module.scss";
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
-import { listenToUserAnswer } from "../../../../../../../functions/db/statements/getStatement";
+import { listenToUserAnswer } from "../../../../../../../functions/db/statements/listenToStatements";
 import { t } from "i18next";
 import EditTitle from "../../../../../../components/edit/EditTitle";
 import SetEdit from "../../../../../../components/edit/SetEdit";
