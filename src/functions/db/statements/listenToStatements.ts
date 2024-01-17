@@ -47,6 +47,16 @@ export const listenToStatementSubscription =
                     const statementSubscription =
                         doc.data() as StatementSubscription;
 
+                    const { success } = StatementSubscriptionSchema.safeParse(
+                        statementSubscription,
+                    );
+
+                    if (!success) {
+                        return console.info(
+                            "statement subscription not valid in listenToStatementSubscription.",
+                        );
+                    }
+
                     dispatch(setStatementSubscription(statementSubscription));
                 })
                 .catch((error) => {

@@ -12,10 +12,6 @@ import {
     UserSchema,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
-import {
-    getUserPermissionToNotifications,
-    setStatmentSubscriptionNotificationToDB,
-} from "../../notifications";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB } from "../config";
 import { getPastelColor } from "../../general/helpers";
@@ -115,13 +111,14 @@ export const setStatmentToDB = async ({
                     true,
                 ),
             );
-            statementPromises.push(getUserPermissionToNotifications());
+            
+            // statementPromises.push(getUserPermissionToNotifications());
 
-            const [, , canGetNotifications] =
-                await Promise.all(statementPromises);
+            // const [, , canGetNotifications] =
+            await Promise.all(statementPromises);
 
-            if (canGetNotifications)
-                await setStatmentSubscriptionNotificationToDB(statement);
+            // if (canGetNotifications)
+            //     await setStatmentSubscriptionNotificationToDB(statement);
         } else {
             await Promise.all(statementPromises);
         }
