@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ const MainCard = lazy(() => import("./mainCard/MainCard"));
 const Main = () => {
     // Hooks
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     const statements = [...useAppSelector(statementsSubscriptionsSelector)]
         .filter((state) => state.statement.parentId === "top")
@@ -28,29 +29,36 @@ const Main = () => {
         });
     }
 
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 3000);
+
+        if (statements.length > 0) {
+            setLoading(false);
+        }
+    }, [statements]);
+
     return (
         <ScreenSlide className="page__main slide-in">
-            {statements.length > 0 ? (
-                <>
-                    <div
-                        className="wrapper"
-                        style={{
-                            justifyContent:
-                                statements.length > 0 ? "start" : "center",
-                        }}
-                    >
-                        {statements.map((statement) => (
-                            <MainCard
-                                key={statement.statement.statementId}
-                                statement={statement.statement}
-                            />
-                        ))}
-                    </div>
-                    <Fav isHome={true} onclick={handleAddStatment} />
-                </>
-            ) : (
-                <PeopleLoader />
-            )}
+            <div
+                className="wrapper"
+                style={{
+                    justifyContent: statements.length > 0 ? "start" : "center",
+                }}
+            >
+                {!loading ? (
+                    statements.map((statement) => (
+                        <MainCard
+                            key={statement.statement.statementId}
+                            statement={statement.statement}
+                        />
+                    ))
+                ) : (
+                    <PeopleLoader />
+                )}
+            </div>
+            <Fav isHome={true} onclick={handleAddStatment} />
         </ScreenSlide>
     );
 };

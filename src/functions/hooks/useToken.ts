@@ -12,6 +12,8 @@ const useToken = () => {
 
             if (!msg) throw new Error("Notifications not supported");
 
+            if (Notification.permission !== "granted") return;
+
             const token = await getToken(msg, { vapidKey });
             if (!token) throw new Error("Token is undefined in useToken.");
 
@@ -20,7 +22,7 @@ const useToken = () => {
 
         useEffect(() => {
             storeToken();
-        }, []);
+        }, [Notification.permission]);
 
         return token;
     } catch (error) {
