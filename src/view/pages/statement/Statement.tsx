@@ -4,7 +4,6 @@ import { createSelector } from "reselect";
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
-import { t } from "i18next";
 
 // firestore
 import {
