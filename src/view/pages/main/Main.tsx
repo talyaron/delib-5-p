@@ -10,6 +10,7 @@ import Fav from "../../components/fav/Fav";
 
 // Other
 import ScreenSlide from "../../components/animation/ScreenSlide";
+import PeopleLoader from "../../components/loaders/PeopleLoader";
 
 const MainCard = lazy(() => import("./mainCard/MainCard"));
 
@@ -29,15 +30,27 @@ const Main = () => {
 
     return (
         <ScreenSlide className="page__main slide-in">
-            <div className="wrapper">
-                {statements.map((statement) => (
-                    <MainCard
-                        key={statement.statement.statementId}
-                        statement={statement.statement}
-                    />
-                ))}
-            </div>
-            <Fav isHome={true} onclick={handleAddStatment} />
+            {statements.length > 0 ? (
+                <>
+                    <div
+                        className="wrapper"
+                        style={{
+                            justifyContent:
+                                statements.length > 0 ? "start" : "center",
+                        }}
+                    >
+                        {statements.map((statement) => (
+                            <MainCard
+                                key={statement.statement.statementId}
+                                statement={statement.statement}
+                            />
+                        ))}
+                    </div>
+                    <Fav isHome={true} onclick={handleAddStatment} />
+                </>
+            ) : (
+                <PeopleLoader />
+            )}
         </ScreenSlide>
     );
 };

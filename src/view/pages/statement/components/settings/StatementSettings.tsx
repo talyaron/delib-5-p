@@ -33,8 +33,8 @@ import {
 // Firestore functions
 import {
     getStatementFromDB,
-    listenToMembers,
 } from "../../../../../functions/db/statements/getStatement";
+import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
 // * Statement Settings functions * //
 

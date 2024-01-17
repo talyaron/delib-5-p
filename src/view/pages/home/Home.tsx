@@ -2,25 +2,18 @@ import { useEffect, useState } from "react";
 
 // Third party imports
 import { Outlet, useLocation, useParams } from "react-router-dom";
-import { StatementSubscription } from "delib-npm";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import {
-    deleteSubscribedStatement,
-    setStatementSubscription,
-} from "../../../model/statements/statementsSlice";
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
-import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement";
+import { listenToStatementSubscriptions } from "../../../functions/db/statements/listenToStatements";
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
-
-import { Unsubscribe } from "@firebase/firestore";
 
 export const listenedStatements = new Set<string>();
 
@@ -40,23 +33,13 @@ export default function Home() {
         }
     }, [location]);
 
-    //callbacks
-    function updateStoreStSubCB(statementSubscription: StatementSubscription) {
-        dispatch(setStatementSubscription(statementSubscription));
-    }
-    function deleteStoreStSubCB(statementId: string) {
-        dispatch(deleteSubscribedStatement(statementId));
-    }
-
     //use effects
-
     useEffect(() => {
-        let unsubscribe: undefined | Unsubscribe;
+        let unsubscribe: Promise<void> | undefined;
         try {
             if (user) {
-                unsubscribe = listenStatmentsSubsciptions(
-                    updateStoreStSubCB,
-                    deleteStoreStSubCB,
+                unsubscribe = listenToStatementSubscriptions(dispatch)(
+                    user,
                     30,
                     true,
                 );
@@ -64,7 +47,11 @@ export default function Home() {
         } catch (error) {}
 
         return () => {
-            unsubscribe;
+            if (unsubscribe) {
+                unsubscribe.then((unsub) => {
+                    unsub;
+                });
+            }
         };
     }, [user]);
 
