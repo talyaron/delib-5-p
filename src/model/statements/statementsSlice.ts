@@ -135,13 +135,6 @@ export const statementsSlicer = createSlice({
             action: PayloadAction<StatementSubscription>,
         ) => {
             try {
-                const { success } = StatementSubscriptionSchema.safeParse(
-                    action.payload,
-                );
-                if (!success) {
-                    return console.info("statement subscription not valid");
-                }
-
                 const newStatement = action.payload;
                 const oldStatement = state.statements.find(
                     (statement) =>
