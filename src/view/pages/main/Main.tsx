@@ -30,19 +30,27 @@ const Main = () => {
 
     return (
         <ScreenSlide className="page__main slide-in">
-            <div className="wrapper" style={{justifyContent: statements.length > 0 ? "start": "center"}}>
-                {statements.length > 0 ? (
-                    statements.map((statement) => (
-                        <MainCard
-                            key={statement.statement.statementId}
-                            statement={statement.statement}
-                        />
-                    ))
-                ) : (
-                    <PeopleLoader />
-                )}
-            </div>
-            <Fav isHome={true} onclick={handleAddStatment} />
+            {statements.length > 0 ? (
+                <>
+                    <div
+                        className="wrapper"
+                        style={{
+                            justifyContent:
+                                statements.length > 0 ? "start" : "center",
+                        }}
+                    >
+                        {statements.map((statement) => (
+                            <MainCard
+                                key={statement.statement.statementId}
+                                statement={statement.statement}
+                            />
+                        ))}
+                    </div>
+                    <Fav isHome={true} onclick={handleAddStatment} />
+                </>
+            ) : (
+                <PeopleLoader />
+            )}
         </ScreenSlide>
     );
 };
