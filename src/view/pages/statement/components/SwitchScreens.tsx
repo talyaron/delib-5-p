@@ -1,6 +1,6 @@
 import { Screen, Statement, User } from "delib-npm";
 import Map from "./map/Map";
-import StatementMain from "./chat/StatementChat";
+import StatementChat from "./chat/StatementChat";
 import StatementEvaluation from "./evaluations/StatementEvaluation";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
@@ -14,6 +14,7 @@ interface SwitchScreensProps {
     statement: Statement | undefined;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function SwitchScreens({
@@ -21,6 +22,7 @@ export default function SwitchScreens({
     statement,
     subStatements,
     handleShowTalker,
+    setShowAskPermission,
 }: SwitchScreensProps) {
     if (!statement) return null;
 
@@ -30,10 +32,11 @@ export default function SwitchScreens({
 
         case Screen.CHAT:
             return (
-                <StatementMain
+                <StatementChat
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
+                    setShowAskPermission={setShowAskPermission}
                 />
             );
         case Screen.OPTIONS:
@@ -79,10 +82,11 @@ export default function SwitchScreens({
 
         default:
             return (
-                <StatementMain
+                <StatementChat
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
+                    setShowAskPermission={setShowAskPermission}
                 />
             );
     }

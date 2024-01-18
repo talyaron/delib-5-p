@@ -6,7 +6,7 @@ import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
-import toggleNotifications from "../../../../../functions/notifications/notificationsHelpers";
+import toggleNotifications from "../../../../../functions/db/notifications/notificationsHelpers";
 
 // Redux Store
 import { store } from "../../../../../model/store";

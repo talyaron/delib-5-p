@@ -12,7 +12,10 @@ import { userSelector } from "../../../../../../../model/users/userSlice";
 import useDirection from "../../../../../../../functions/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
 import useStatementColor from "../../../../../../../functions/hooks/useStatementColor";
-import { statementNotificationSelector } from "../../../../../../../model/statements/statementsSlice";
+import {
+    statementNotificationSelector,
+    statementSubscriptionSelector,
+} from "../../../../../../../model/statements/statementsSlice";
 
 interface Props {
     statement: Statement;
@@ -28,12 +31,16 @@ const StatementInput: FC<Props> = ({ statement, setAskNotifications }) => {
         statementNotificationSelector(statement.statementId),
     );
 
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statement.statementId),
+    );
+
     const statementColor = useStatementColor(statement.statementType || "");
 
     const direction = useDirection();
     const [message, setMessage] = useState("");
 
-    function handleInput(e: any) {
+    function handleKeyUp(e: any) {
         try {
             const _isMobile =
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -52,7 +59,6 @@ const StatementInput: FC<Props> = ({ statement, setAskNotifications }) => {
 
     const handleSubmitInput = (e: any) => {
         e.preventDefault();
-        console.log(hasNotifications);
 
         // Create statement
         handleAddStatement(message, statement, user);
@@ -60,7 +66,10 @@ const StatementInput: FC<Props> = ({ statement, setAskNotifications }) => {
         setMessage(""); // Clear input
 
         // Ask for notifications after user interaction.
-        if (!hasNotifications) {
+        if (
+            !hasNotifications &&
+            !statementSubscription?.userAskedForNotification
+        ) {
             setAskNotifications(true);
         }
     };
@@ -83,7 +92,7 @@ const StatementInput: FC<Props> = ({ statement, setAskNotifications }) => {
                 style={{ height: "4rem" }}
                 className="statement__form__input"
                 name="newStatement"
-                onKeyUp={handleInput}
+                onKeyUp={handleKeyUp}
                 autoFocus={true}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

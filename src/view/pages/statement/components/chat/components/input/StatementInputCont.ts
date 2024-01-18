@@ -27,7 +27,7 @@ export function handleAddStatement(
         setStatmentToDB({
             statement: newStatement,
             parentStatement: statement,
-            addSubscription: true,
+            addSubscription: false,
         });
     } catch (error) {
         console.error(error);

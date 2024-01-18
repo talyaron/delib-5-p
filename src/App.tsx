@@ -29,7 +29,7 @@ import { resetResults } from "./model/results/resultsSlice";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
-import { onLocalMessage } from "./functions/notifications/notifications";
+import { onLocalMessage } from "./functions/db/notifications/notifications";
 import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 export default function App() {

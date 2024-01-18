@@ -4,7 +4,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Statement, User } from "delib-npm";
 
 // Custom Components
-import StatementChat from "./StatementChatCard";
+import StatementChatCard from "./StatementChatCard";
 import StatementInput from "./components/input/StatementInput";
 import ScreenSlide from "../../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
@@ -14,14 +14,16 @@ interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 let firstTime = true;
 
-const StatementMain: FC<Props> = ({
+const StatementChat: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
+    setShowAskPermission,
 }) => {
     // TODO: Add to user schema if user was asket to recieve notifications
     const [askNotifications, setAskNotifications] = useState(false);
@@ -59,7 +61,7 @@ const StatementMain: FC<Props> = ({
             <ScreenSlide className={`page__main ${toSlide && slideInOrOut}`}>
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
-                        <StatementChat
+                        <StatementChatCard
                             parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}
@@ -78,9 +80,15 @@ const StatementMain: FC<Props> = ({
                     />
                 )}
             </div>
-            {askNotifications && <EnableNotifications setAskNotifications={setAskNotifications}/>}
+            {askNotifications && (
+                <EnableNotifications
+                    statement={statement}
+                    setAskNotifications={setAskNotifications}
+                    setShowAskPermission={setShowAskPermission}
+                />
+            )}
         </>
     );
 };
 
-export default StatementMain;
+export default StatementChat;

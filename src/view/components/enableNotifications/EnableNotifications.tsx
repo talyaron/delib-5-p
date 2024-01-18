@@ -1,12 +1,52 @@
 import "./enableNotifications.scss";
 import BellWithDots from "../icons/BellWithDots";
 import Modal from "../modal/Modal";
+import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
+import { Role, Statement } from "delib-npm";
+import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/notifications/notifications";
 
 interface Props {
     setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
+    statement: Statement;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function EnableNotifications({ setAskNotifications }: Props) {
+export default function EnableNotifications({
+    setAskNotifications,
+    statement,
+    setShowAskPermission,
+}: Props) {
+    const userAskedForNotification = true;
+    const getNotifications = true;
+
+    const handleCancelClick = async () => {
+        await setStatmentSubscriptionToDB(
+            statement,
+            Role.statementCreator,
+            userAskedForNotification,
+        );
+        setAskNotifications(false);
+    };
+
+    const handleEnableNotificationsClick = async () => {
+        const permission = await Notification.requestPermission();
+
+        if (permission === "granted")
+            await setStatmentSubscriptionNotificationToDB(
+                statement,
+                getNotifications,
+            );
+        else setShowAskPermission(true);
+
+        await setStatmentSubscriptionToDB(
+            statement,
+            Role.statementCreator,
+            userAskedForNotification,
+        );
+
+        setAskNotifications(false);
+    };
+
     return (
         <Modal>
             <div className="enableNotifications">
@@ -17,12 +57,15 @@ export default function EnableNotifications({ setAskNotifications }: Props) {
                 </p>
                 <div className="enableNotifications__btnBox">
                     <button
-                        onClick={() => setAskNotifications(false)}
+                        onClick={handleCancelClick}
                         className="enableNotifications__btnBox__cancel"
                     >
                         Not now
                     </button>
-                    <button className="enableNotifications__btnBox__enable">
+                    <button
+                        onClick={handleEnableNotificationsClick}
+                        className="enableNotifications__btnBox__enable"
+                    >
                         Enable notifications
                     </button>
                 </div>
