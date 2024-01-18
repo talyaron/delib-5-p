@@ -14,6 +14,7 @@ import {
     getIntialLocationSessionStorage,
     setIntialLocationSessionStorage,
 } from "../general/helpers";
+import { NavigateFunction } from "react-router-dom";
 
 const provider = new GoogleAuthProvider();
 
@@ -49,21 +50,29 @@ export function googleLogin() {
         });
 }
 export function listenToAuth(
+    isAnonymous: boolean,
     cb: (user: User | null) => void,
     fontSizeCB: (fontSize: number) => void,
-    navigationCB: (path: string) => void,
+    navigate: NavigateFunction,
     resetCB: () => void,
 ): Unsubscribe {
     return onAuthStateChanged(auth, async (userFB) => {
         try {
-            if (!userFB) navigationCB("/");
+            if (!userFB && isAnonymous !== true) {
+                navigate("/");
+            }
+            if (isAnonymous && !userFB){
+             
+                signAnonymously();
+            }
             if (userFB) {
                 // User is signed in
                 const user = { ...userFB };
                 if (!user.displayName)
                     user.displayName =
-                        localStorage.getItem("displayName") || "anonymous";
+                        localStorage.getItem("displayName") || `Anonymous ${Math.floor(Math.random() * 10000)}`;
                 const _user = parseUserFromFirebase(user);
+               
 
                 // console.info("User is signed in")
                 if (!_user) throw new Error("user is undefined");
@@ -82,7 +91,7 @@ export function listenToAuth(
                 const initialLocation = getIntialLocationSessionStorage();
 
                 //navigate to initial location
-                if (initialLocation) navigationCB(initialLocation);
+                if (initialLocation) navigate(initialLocation);
             } else {
                 // User is signed out
                 console.info("User is signed out");

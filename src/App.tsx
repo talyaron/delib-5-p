@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 // Third party imports
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { t } from "i18next";
 
 // Firebase functions
@@ -38,10 +38,13 @@ export default function App() {
     const dispatch = useDispatch();
     const { i18n } = useTranslation();
     const user = useAppSelector(userSelector);
+    const {anonymous} = useParams();
+
+
 
     const [showSignAgreement, setShowSignAgreement] = useState(false);
     const [agreement, setAgreement] = useState<string>("");
-    const [visualViewportHeight] = useState(window.visualViewport?.height || 0);
+    const [visualViewportHeight, setVisualViewportHeight] = useState(window.visualViewport?.height || 0);
 
     function updateUserToStore(user: User | null) {
         dispatch(setUser(user));
@@ -51,9 +54,7 @@ export default function App() {
         dispatch(setFontSize(fontSize));
     }
 
-    function navigateToInitialLocationCB(pathname: string) {
-        navigate(pathname);
-    }
+    
 
     function resetStoreCB() {
         dispatch(resetStatements());
@@ -76,9 +77,10 @@ export default function App() {
 
     useEffect(() => {
         const usub: Unsubscribe = listenToAuth(
+            anonymous === "true" ? true : false,
             updateUserToStore,
             updateFonSize,
-            navigateToInitialLocationCB,
+            navigate,
             resetStoreCB,
         );
 
@@ -88,31 +90,31 @@ export default function App() {
     }, []);
 
     // TODO: Check if this is needed. If not, remove it.
-    // useEffect(() => {
-    //     window.visualViewport?.addEventListener("resize", (event: any) => {
-    //         setVisualViewportHeight(event.target?.height || 0);
-    //         document.body.style.height = `${event.target?.height}px`;
+    useEffect(() => {
+        window.visualViewport?.addEventListener("resize", (event: any) => {
+            setVisualViewportHeight(event.target?.height || 0);
+            document.body.style.height = `${event.target?.height}px`;
 
-    //         //change html height to visualViewportHeight state
-    //         const html = document.querySelector("html");
-    //         if (html) {
-    //             const html = document.querySelector("html") as HTMLElement;
-    //             html.style.height = `${event.target?.height}px`;
-    //         }
+            //change html height to visualViewportHeight state
+            const html = document.querySelector("html");
+            if (html) {
+                const html = document.querySelector("html") as HTMLElement;
+                html.style.height = `${event.target?.height}px`;
+            }
 
-    //         //chage height of .page class to visualViewportHeight state
-    //         const page = document.querySelector(".page");
-    //         if (page) {
-    //             const page = document.querySelector(".page") as HTMLElement;
-    //             page.style.height = `${event.target?.height}px`;
-    //         }
-    //     });
+            //chage height of .page class to visualViewportHeight state
+            const page = document.querySelector(".page");
+            if (page) {
+                const page = document.querySelector(".page") as HTMLElement;
+                page.style.height = `${event.target?.height}px`;
+            }
+        });
 
-    //     return () => {
-    //         window.removeEventListener("resize", () => {console.log("window.removeEventListener");});
-    //         window.visualViewport?.addEventListener("resize", () => {});
-    //     };
-    // }, []);
+        return () => {
+            window.removeEventListener("resize", () => {});
+            window.visualViewport?.addEventListener("resize", () => {});
+        };
+    }, []);
 
     useEffect(() => {
         if (!user) {

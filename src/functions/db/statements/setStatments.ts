@@ -112,8 +112,6 @@ export const setStatmentToDB = async ({
                 ),
             );
             
-            // statementPromises.push(getUserPermissionToNotifications());
-
             // const [, , canGetNotifications] =
             await Promise.all(statementPromises);
 
