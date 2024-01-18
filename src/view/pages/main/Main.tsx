@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,9 @@ import Fav from "../../components/fav/Fav";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
 import {  StatementSubscription } from "delib-npm";
+import MainCard from "./mainCard/MainCard";
 
-const MainCard = lazy(() => import("./mainCard/MainCard"));
+
 
 const Main = () => {
     // Hooks
