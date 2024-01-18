@@ -108,7 +108,7 @@ const Map: FC<Props> = ({ statement }) => {
                     direction: "ltr",
                 }}
             >
-                <StatementMap topResult={results} />
+                {results && <StatementMap topResult={results} />}
             </div>
 
             {mapContext.showModal && (

@@ -11,6 +11,7 @@ import Fav from "../../components/fav/Fav";
 // Other
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
+import {  StatementSubscription } from "delib-npm";
 
 const MainCard = lazy(() => import("./mainCard/MainCard"));
 
@@ -19,8 +20,8 @@ const Main = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
-    const statements = [...useAppSelector(statementsSubscriptionsSelector)]
-        .filter((state) => state.statement.parentId === "top")
+    const statements: StatementSubscription[] = useAppSelector(statementsSubscriptionsSelector)
+        .filter((s) => s.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
     function handleAddStatment() {

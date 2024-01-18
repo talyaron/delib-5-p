@@ -33,6 +33,8 @@ interface Props {
 }
 
 export default function StatementMap({ topResult }: Props) {
+    if(!topResult) return null;
+    
     const [nodes, setNodes] = useNodesState([]);
     const [edges, setEdges] = useEdgesState([]);
 
