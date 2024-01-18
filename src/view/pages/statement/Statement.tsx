@@ -10,7 +10,7 @@ import { t } from "i18next";
 import {
     getIsSubscribed,
 } from "../../../functions/db/statements/getStatement";
-import { listenToStatementsOfStatment } from "../../../functions/db/statements/listenToStatements";
+import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
@@ -41,7 +41,6 @@ import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { RootState } from "../../../model/store";
-import { SuspenseFallback } from "../../../router";
 
 const Statement: FC = () => {
     // Hooks
@@ -94,47 +93,34 @@ const Statement: FC = () => {
 
     // Listen to statement changes.
     useEffect(() => {
-        let unsubListenToStatement: Promise<void> | undefined;
-        let unsubSubStatements: Promise<void>;
-        let unsubStatementSubscription: Promise<void> | undefined;
-        let unsubEvaluations: Promise<void> | undefined;
-        let unsubSubSubscribedStatements: undefined | (() => void);
+        let unsubListenToStatement: Function = () => {};
+        let unsubSubStatements:Function = () => {};
+        let unsubStatementSubscription: Function = () => {};
+        let unsubEvaluations: Function = () => {};
+        let unsubSubSubscribedStatements: Function = () => {};
 
         if (user && statementId) {
-            unsubListenToStatement = listenToStatement(dispatch)(statementId);
-            unsubSubStatements =
-                listenToStatementsOfStatment(dispatch)(statementId);
+            unsubListenToStatement = listenToStatement(statementId, dispatch);
+            unsubSubStatements = listenToSubStatements(statementId,dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
                 statementId,
                 user?.uid,
             );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
-                dispatch,
-            )(statementId, user);
-            unsubStatementSubscription = listenToStatementSubscription(
-                dispatch,
-            )(statementId, user);
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId, user, dispatch);
+            unsubStatementSubscription = listenToStatementSubscription(statementId, user,dispatch);
         }
 
         return () => {
-            const unsub = Promise.all([
-                unsubListenToStatement,
-                unsubSubStatements,
-                unsubStatementSubscription,
-                unsubSubSubscribedStatements,
-                unsubEvaluations,
-            ]);
+        
+                unsubListenToStatement();
+                unsubSubStatements();
+                unsubStatementSubscription();
+                unsubSubSubscribedStatements();
+                unsubEvaluations();
+           
 
-            unsub
-                .then((unsub) => {
-                    unsub.forEach((unsub) => {
-                        if (unsub) unsub();
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            
         };
     }, [user, statementId]);
 
@@ -161,6 +147,8 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
+  
+
     return (
         <div className="page">
             {showAskPermission && (
@@ -175,10 +163,10 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement ? (
+           
                 <>
                     <StatementHeader
-                        statement={statement}
+                        statement={statement }
                         screen={screen || Screen.CHAT}
                         title={title}
                         showAskPermission={showAskPermission}
@@ -198,9 +186,7 @@ const Statement: FC = () => {
                         />
                     </MapProvider>
                 </>
-            ) : (
-                <SuspenseFallback />
-            )}
+           
         </div>
     );
 };

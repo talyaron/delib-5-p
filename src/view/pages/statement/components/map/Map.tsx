@@ -8,7 +8,7 @@ import { t } from "i18next";
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 import StatementMap from "./mapHelpers/StatementMap";
 import Modal from "../../../../components/modal/Modal";
-import { SuspenseFallback } from "../../../../../router";
+
 
 // Helpers
 import {
@@ -79,8 +79,7 @@ const Map: FC<Props> = ({ statement }) => {
             showModal: show,
         }));
     };
-
-    return results ? (
+    return (
         <ScreenFadeIn className="page__main">
             <select
                 onChange={(ev: any) => handleFilter(ev.target.value)}
@@ -109,7 +108,7 @@ const Map: FC<Props> = ({ statement }) => {
                     direction: "ltr",
                 }}
             >
-                <StatementMap topResult={results} />
+                {results && <StatementMap topResult={results} />}
             </div>
 
             {mapContext.showModal && (
@@ -123,8 +122,6 @@ const Map: FC<Props> = ({ statement }) => {
                 </Modal>
             )}
         </ScreenFadeIn>
-    ) : (
-        <SuspenseFallback />
     );
 };
 

@@ -35,7 +35,7 @@ import useToken from "../../../../../functions/hooks/useToken";
 interface Props {
     title: string;
     screen: Screen;
-    statement: Statement;
+    statement: Statement |undefined;
     showAskPermission: boolean;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -54,7 +54,7 @@ const StatementHeader: FC<Props> = ({
     const direction = useDirection();
     const token = useToken();
 
-    const headerColor = useStatementColor(statement.statementType || "");
+    const headerColor = useStatementColor(statement?.statementType || "");
 
     const permission = useNotificationPermission(token);
 
