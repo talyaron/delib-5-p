@@ -4,22 +4,24 @@ import Text from "../../../../components/text/Text";
 import { t } from "i18next";
 
 interface Props {
-    statement: Statement |null;
-    setShowInfo: Function;
+    statement: Statement | null;
+    setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const StatementInfo: FC<Props> = ({ statement,setShowInfo }) => {
+const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
     if (!statement) return null;
 
-    return <div>
-        <h3 style={{textAlign:"center"}}>{t("Information")}</h3>
-        <Text text={statement.statement} />
-        <div className="btns">
-            <div className="btn" onClick={()=>setShowInfo(false)}>
-                OK
+    return (
+        <div>
+            <h3 style={{ textAlign: "center" }}>{t("Information")}</h3>
+            <Text text={statement.statement} />
+            <div className="btns">
+                <div className="btn" onClick={() => setShowInfo(false)}>
+                    OK
+                </div>
             </div>
         </div>
-        </div>;
+    );
 };
 
 export default StatementInfo;

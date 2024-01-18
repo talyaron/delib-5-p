@@ -29,7 +29,7 @@ const nodeTypes = {
 };
 
 interface Props {
-    topResult: Results;
+    topResult: Results | undefined;
 }
 
 export default function StatementMap({ topResult }: Props) {
@@ -50,7 +50,7 @@ export default function StatementMap({ topResult }: Props) {
                 createdEdges,
                 direction,
                 mapContext.nodeHeight,
-                mapContext.nodeWidth
+                mapContext.nodeWidth,
             );
 
         setNodes(layoutedNodes);
@@ -79,11 +79,17 @@ export default function StatementMap({ topResult }: Props) {
             setNodes([...layoutedNodes]);
             setEdges([...layoutedEdges]);
         },
-        [nodes, edges]
+        [nodes, edges],
     );
 
     return (
-        <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView style={{height:`100vh`}}>
+        <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            nodeTypes={nodeTypes}
+            fitView
+            style={{ height: `100vh` }}
+        >
             <Controls />
             <Panel position="bottom-right">
                 <div className="btns">

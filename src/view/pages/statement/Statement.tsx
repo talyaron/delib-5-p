@@ -3,23 +3,17 @@ import { createSelector } from "reselect";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    User,
-    Statement,
-    StatementSubscription,
-    Role,
-    Screen,
-} from "delib-npm";
+import { User, Role, Screen } from "delib-npm";
 import { t } from "i18next";
 
 // firestore
 import {
     getIsSubscribed,
-    listenToStatement,
-    listenToStatementSubSubscriptions,
-    listenToStatementSubscription,
-    listenToStatementsOfStatment,
 } from "../../../functions/db/statements/getStatement";
+import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
 import {
     setStatmentSubscriptionToDB,
     updateSubscriberForStatementSubStatements,
@@ -31,13 +25,7 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import {
-    deleteStatement,
-    deleteSubscribedStatement,
-    setStatement,
-    setStatementSubscription,
-    statementSelector,
-} from "../../../model/statements/statementsSlice";
+import { statementSelector } from "../../../model/statements/statementsSlice";
 
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -48,12 +36,6 @@ import StatementHeader from "./StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
 import SwitchScreens from "./components/SwitchScreens";
 
-// Models
-import { Evaluation } from "../../../model/evaluations/evaluationModel";
-import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
-
-// Helpers
-
 // Hooks & Providers
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
@@ -62,7 +44,7 @@ import { RootState } from "../../../model/store";
 
 const Statement: FC = () => {
     // Hooks
-    const statementId = useParams().statementId;
+    const { statementId } = useParams();
     const page = useParams().page as Screen;
 
     const navigate = useNavigate();
@@ -76,9 +58,8 @@ const Statement: FC = () => {
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     // Redux hooks
-    const dispatch: any = useAppDispatch();
+    const dispatch = useAppDispatch();
     const statement = useAppSelector(statementSelector(statementId));
-
 
     const subStatementsSelector = createSelector(
         (state: RootState) => state.statements.statements,
@@ -86,38 +67,13 @@ const Statement: FC = () => {
         (statements, statementId) =>
             statements
                 .filter((st) => st.parentId === statementId)
-                .sort((a, b) => a.createdAt - b.createdAt)
+                .sort((a, b) => a.createdAt - b.createdAt),
     );
 
     const subStatements = useAppSelector((state: RootState) =>
-        subStatementsSelector(state, statementId)
+        subStatementsSelector(state, statementId),
     );
     const screen = availableScreen(statement, page);
-
-    //store callbacks
-    function updateStoreStatementCB(statement: Statement) {
-        try {
-            dispatch(setStatement(statement));
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    function deleteStatementCB(statementId: string) {
-        dispatch(deleteStatement(statementId));
-    }
-    function updateStatementSubscriptionCB(
-        statementSubscription: StatementSubscription
-    ) {
-        dispatch(setStatementSubscription(statementSubscription));
-    }
-
-    function deleteSubscribedStatementCB(statementId: string) {
-        dispatch(deleteSubscribedStatement(statementId));
-    }
-
-    function updateEvaluationsCB(evaluation: Evaluation) {
-        dispatch(setEvaluationToStore(evaluation));
-    }
 
     //handlers
     function handleShowTalker(_talker: User | null) {
@@ -128,8 +84,6 @@ const Statement: FC = () => {
         }
     }
 
-    //use effects
-
     //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
         if (screen && screen !== page) {
@@ -137,51 +91,36 @@ const Statement: FC = () => {
         }
     }, [screen]);
 
-    //listen to statement
+    // Listen to statement changes.
     useEffect(() => {
-        let unsub: Function = () => {};
-        if (statementId && user) {
-            unsub = listenToStatement(statementId, updateStoreStatementCB);
-        }
-
-        return () => {
-            unsub();
-        };
-    }, [statementId, user]);
-
-    //listne to sub statements
-    useEffect(() => {
-        let unsubSubStatements: Function = () => {};
+        let unsubListenToStatement: Function = () => {};
+        let unsubSubStatements:Function = () => {};
         let unsubStatementSubscription: Function = () => {};
         let unsubEvaluations: Function = () => {};
         let unsubSubSubscribedStatements: Function = () => {};
 
         if (user && statementId) {
-            unsubSubStatements = listenToStatementsOfStatment(
-                statementId,
-                updateStoreStatementCB,
-                deleteStatementCB
-            );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
-                statementId,
-                updateStatementSubscriptionCB,
-                deleteSubscribedStatementCB
-            );
-            unsubStatementSubscription = listenToStatementSubscription(
-                statementId,
-                updateStatementSubscriptionCB
-            );
+            unsubListenToStatement = listenToStatement(statementId, dispatch);
+            unsubSubStatements = listenToSubStatements(statementId,dispatch);
             unsubEvaluations = listenToEvaluations(
+                dispatch,
                 statementId,
-                updateEvaluationsCB
+                user?.uid,
             );
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId, user, dispatch);
+            unsubStatementSubscription = listenToStatementSubscription(statementId, user,dispatch);
         }
 
         return () => {
-            unsubSubStatements();
-            unsubStatementSubscription();
-            unsubSubSubscribedStatements();
-            unsubEvaluations();
+        
+                unsubListenToStatement();
+                unsubSubStatements();
+                unsubStatementSubscription();
+                unsubSubSubscribedStatements();
+                unsubEvaluations();
+           
+
+            
         };
     }, [user, statementId]);
 
@@ -189,7 +128,7 @@ const Statement: FC = () => {
         if (statement) {
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
-                100
+                100,
             );
 
             setTitle(shortVersion);
@@ -208,6 +147,8 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
+  
+
     return (
         <div className="page">
             {showAskPermission && (
@@ -222,24 +163,30 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement && (
-                <StatementHeader
-                    statement={statement}
-                    screen={screen || Screen.CHAT}
-                    title={title}
-                    showAskPermission={showAskPermission}
-                    setShowAskPermission={setShowAskPermission}
-                />
-            )}
-            <MapProvider>
-                <SwitchScreens
-                    key={window.location.pathname.split("/").slice(2).join(" ")}
-                    screen={screen}
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                />
-            </MapProvider>
+           
+                <>
+                    <StatementHeader
+                        statement={statement }
+                        screen={screen || Screen.CHAT}
+                        title={title}
+                        showAskPermission={showAskPermission}
+                        setShowAskPermission={setShowAskPermission}
+                    />
+
+                    <MapProvider>
+                        <SwitchScreens
+                            key={window.location.pathname
+                                .split("/")
+                                .slice(2)
+                                .join(" ")}
+                            screen={screen}
+                            statement={statement}
+                            subStatements={subStatements}
+                            handleShowTalker={handleShowTalker}
+                        />
+                    </MapProvider>
+                </>
+           
         </div>
     );
 };

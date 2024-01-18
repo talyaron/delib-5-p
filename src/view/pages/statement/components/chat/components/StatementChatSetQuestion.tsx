@@ -20,20 +20,24 @@ const StatementChatSetQuestion: FC<Props> = ({ statement, text }) => {
         updateIsQuestion(statement);
     }
 
-    if(isOptionFn(statement)) return null;
+    if (isOptionFn(statement)) return null;
 
     return (
         <>
-        {text&& <span className="clickable" onClick={handleSetQuestion}>{text}</span>}
-        <div className="clickable" onClick={handleSetQuestion}>
-            <QuestionMarkIcon
-                color={
-                    statement.statementType === "question"
-                        ? "blue"
-                        : "lightgray"
-                }
-            />
-        </div>
+            {text && (
+                <span className="clickable" onClick={handleSetQuestion}>
+                    {text}
+                </span>
+            )}
+            <div className="clickable" onClick={handleSetQuestion}>
+                <QuestionMarkIcon
+                    color={
+                        statement.statementType === "question"
+                            ? "blue"
+                            : "lightgray"
+                    }
+                />
+            </div>
         </>
     );
 };

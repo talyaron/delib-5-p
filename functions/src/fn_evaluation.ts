@@ -1,7 +1,6 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 
-
 // import { logBase } from "./helpers";
 import {
     Collections,
@@ -12,7 +11,6 @@ import {
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
-
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
@@ -26,13 +24,14 @@ export async function updateEvaluation(event: any) {
             error,
         } = getEvaluationInfo();
         if (error) throw error;
+        if (!statementId) throw new Error("statementId is not defined");
 
         const statementRef = db.collection("statements").doc(statementId);
         const { newPro, newCon } = await setNewEvaluation(
             statementRef,
             evaluationDeferneces,
             evaluation,
-            previousEvaluation
+            previousEvaluation,
         );
 
         // Fairness calculations (social choice theory)
@@ -57,6 +56,7 @@ export async function updateEvaluation(event: any) {
         updateParentStatementWithChildResults(parentId);
     } catch (error) {
         logger.error(error);
+
         return;
     }
 
@@ -90,6 +90,7 @@ export async function updateEvaluation(event: any) {
             };
         } catch (error: any) {
             logger.error(error);
+
             return { error: error.message };
         }
     }
@@ -97,8 +98,8 @@ export async function updateEvaluation(event: any) {
     async function setNewEvaluation(
         statementRef: any,
         evaluationDeferneces: number | undefined,
-        evaluation: number = 0,
-        previousEvaluation: number | undefined
+        evaluation = 0,
+        previousEvaluation: number | undefined,
     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
         const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
         await db.runTransaction(async (t: any) => {
@@ -123,7 +124,7 @@ export async function updateEvaluation(event: any) {
                     oldPro,
                     oldCon,
                     evaluation,
-                    previousEvaluation
+                    previousEvaluation,
                 );
                 results.newCon = newCon;
                 results.newPro = newPro;
@@ -138,6 +139,7 @@ export async function updateEvaluation(event: any) {
                 return results;
             } catch (error) {
                 logger.error(error);
+
                 return results;
             }
         });
@@ -148,7 +150,7 @@ export async function updateEvaluation(event: any) {
             oldPro: number,
             oldCon: number,
             evaluation: number,
-            previousEvaluation: number
+            previousEvaluation: number,
         ): { newPro: number; newCon: number; totalEvaluators: number } {
             try {
                 let newPro = oldPro;
@@ -163,6 +165,7 @@ export async function updateEvaluation(event: any) {
                 return { newPro, newCon, totalEvaluators };
             } catch (error) {
                 logger.error(error);
+
                 return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
             }
         }
@@ -184,9 +187,11 @@ function clacProCon(prev: number, curr: number): { pro: number; con: number } {
         } else if (curr < 0) {
             con -= curr;
         }
+
         return { pro, con };
     } catch (error) {
         console.error(error);
+
         return { pro: 0, con: 0 };
     }
 }
@@ -200,7 +205,7 @@ interface ResultsSettings {
 }
 
 function getResultsSettings(
-    results: ResultsSettings | undefined
+    results: ResultsSettings | undefined,
 ): ResultsSettings {
     if (!results) {
         return {
@@ -212,11 +217,10 @@ function getResultsSettings(
 }
 
 async function updateParentStatementWithChildResults(
-    parentId: string | undefined
+    parentId: string | undefined,
 ) {
     try {
         if (!parentId) throw new Error("parentId is not defined");
-     
 
         //get parent statement
         const parentStatementRef = db.collection("statements").doc(parentId);
@@ -243,9 +247,14 @@ async function updateParentStatementWithChildResults(
         const allOptionsStatementsRef = db
             .collection(Collections.statements)
             .where("parentId", "==", parentId)
-            .where("statementType", "in", [StatementType.option, StatementType.result]);
+            .where("statementType", "in", [
+                StatementType.option,
+                StatementType.result,
+            ]);
 
-            const topOptionsStatementsRef = allOptionsStatementsRef.orderBy("consensus", "desc").limit(numberOfResults);
+        const topOptionsStatementsRef = allOptionsStatementsRef
+            .orderBy("consensus", "desc")
+            .limit(numberOfResults);
 
         // .and.where("parentId", "==", parentId)
         // .or.where("statementType", "==", StatementType.option)
@@ -256,11 +265,13 @@ async function updateParentStatementWithChildResults(
         //get all options of the parent statement and convert htme to either result, or an option
         const topOptionsStatementsDB = await topOptionsStatementsRef.get();
         const topOptionsStatements = topOptionsStatementsDB.docs.map(
-            (doc: any) => doc.data() as Statement
+            (doc: any) => doc.data() as Statement,
         );
 
-        const childIds = topOptionsStatements.map((st: Statement) => st.statementId)
-        
+        const childIds = topOptionsStatements.map(
+            (st: Statement) => st.statementId,
+        );
+
         const optionsDB = await allOptionsStatementsRef.get();
 
         await optionsDB.forEach(async (stDB: any) => {
@@ -278,8 +289,6 @@ async function updateParentStatementWithChildResults(
             }
         });
 
-       
-
         await updateParentChildren(topOptionsStatements, numberOfResults);
 
         //update childstatment selectd to be of type result
@@ -289,21 +298,19 @@ async function updateParentStatementWithChildResults(
 
     async function updateParentChildren(
         topOptionsStatements: Statement[],
-        numberOfResults: number | undefined
+        numberOfResults: number | undefined,
     ) {
-        const childStatementsSimple = topOptionsStatements.map((st: Statement) =>
-            statementToSimpleStatement(st)
+        const childStatementsSimple = topOptionsStatements.map(
+            (st: Statement) => statementToSimpleStatement(st),
         );
 
-       ;
+        if(!parentId) throw new Error("parentId is not defined");
 
         //update parent with results
         await db.collection(Collections.statements).doc(parentId).update({
             totalResults: numberOfResults,
             results: childStatementsSimple,
         });
-
-        
     }
 }
 

@@ -31,6 +31,7 @@ import Modal from "./view/components/modal/Modal";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
+import { onLocalMessage } from "./functions/notifications";
 
 export default function App() {
     const navigate = useNavigate();
@@ -40,9 +41,7 @@ export default function App() {
 
     const [showSignAgreement, setShowSignAgreement] = useState(false);
     const [agreement, setAgreement] = useState<string>("");
-    const [visualViewportHeight, setVisualViewportHeight] = useState(
-        window.visualViewport?.height || 0
-      );
+    const [visualViewportHeight] = useState(window.visualViewport?.height || 0);
 
     function updateUserToStore(user: User | null) {
         dispatch(setUser(user));
@@ -80,7 +79,7 @@ export default function App() {
             updateUserToStore,
             updateFonSize,
             navigateToInitialLocationCB,
-            resetStoreCB
+            resetStoreCB,
         );
 
         return () => {
@@ -88,39 +87,39 @@ export default function App() {
         };
     }, []);
 
-    
-  useEffect(() => {  
+    // TODO: Check if this is needed. If not, remove it.
+    // useEffect(() => {
+    //     window.visualViewport?.addEventListener("resize", (event: any) => {
+    //         setVisualViewportHeight(event.target?.height || 0);
+    //         document.body.style.height = `${event.target?.height}px`;
 
-    window.visualViewport?.addEventListener("resize", (event: any) => {
-    
-      setVisualViewportHeight(event.target?.height || 0);
-      document.body.style.height = `${event.target?.height}px`;
-   //change html height to visualViewportHeight state
-        const html = document.querySelector("html");
-        if (html) {
-            const html = document.querySelector("html") as HTMLElement;
-            html.style.height = `${event.target?.height}px`;
-        }
+    //         //change html height to visualViewportHeight state
+    //         const html = document.querySelector("html");
+    //         if (html) {
+    //             const html = document.querySelector("html") as HTMLElement;
+    //             html.style.height = `${event.target?.height}px`;
+    //         }
 
+    //         //chage height of .page class to visualViewportHeight state
+    //         const page = document.querySelector(".page");
+    //         if (page) {
+    //             const page = document.querySelector(".page") as HTMLElement;
+    //             page.style.height = `${event.target?.height}px`;
+    //         }
+    //     });
 
-      //chage height of .page class to visualViewportHeight state
-        const page = document.querySelector(".page");
-        if (page) {
-            const page = document.querySelector(".page") as HTMLElement;
-            page.style.height = `${event.target?.height}px`;
-        }
-  
-    });
-    return () => {
-      window.removeEventListener("resize", () => {});
-      window.visualViewport?.addEventListener("resize", () => {});
-    };
-  }, []);
+    //     return () => {
+    //         window.removeEventListener("resize", () => {console.log("window.removeEventListener");});
+    //         window.visualViewport?.addEventListener("resize", () => {});
+    //     };
+    // }, []);
 
     useEffect(() => {
         if (!user) {
             return;
         }
+
+        const unsub = onLocalMessage();
 
         if (user.agreement?.date) {
             setShowSignAgreement(false);
@@ -132,6 +131,10 @@ export default function App() {
             setAgreement(agreement.text);
             setShowSignAgreement(true);
         }
+
+        return () => {
+            unsub;
+        };
     }, [user]);
 
     //handles
@@ -148,7 +151,7 @@ export default function App() {
                 dispatch(updateAgreementToStore(agreement));
 
                 updateUserAgreement(agreement).then((isAgreed: boolean) =>
-                    setShowSignAgreement(!isAgreed)
+                    setShowSignAgreement(!isAgreed),
                 );
             } else {
                 setShowSignAgreement(false);
@@ -160,9 +163,15 @@ export default function App() {
     }
 
     return (
-        <div style={{height:`${visualViewportHeight}px`, overflowY:"hidden", position:'fixed'}}>
+        <div
+            style={{
+                height: `${visualViewportHeight}px`,
+                overflowY: "hidden",
+                position: "fixed",
+            }}
+        >
             <Accessiblity />
-           
+
             <Outlet />
             {showSignAgreement && (
                 <Modal>

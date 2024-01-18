@@ -2,21 +2,16 @@ import { useEffect, useState } from "react";
 
 // Third party imports
 import { Outlet, useLocation, useParams } from "react-router-dom";
-import { StatementSubscription } from "delib-npm";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import {
-    deleteSubscribedStatement,
-    setStatementSubscription,
-} from "../../../model/statements/statementsSlice";
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
-import { listenStatmentsSubsciptions } from "../../../functions/db/statements/getStatement";
+import { listenToStatementSubscriptions } from "../../../functions/db/statements/listenToStatements";
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
@@ -38,32 +33,28 @@ export default function Home() {
         }
     }, [location]);
 
-    //callbacks
-    function updateStoreStSubCB(statementSubscription: StatementSubscription) {
-        dispatch(setStatementSubscription(statementSubscription));
-    }
-    function deleteStoreStSubCB(statementId: string) {
-        dispatch(deleteSubscribedStatement(statementId));
-    }
-
     //use effects
-
     useEffect(() => {
-        let unsubscribe: Function = () => {};
+        let unsubscribe: Promise<void> | undefined;
         try {
             if (user) {
-                unsubscribe = listenStatmentsSubsciptions(
-                    updateStoreStSubCB,
-                    deleteStoreStSubCB,
+                unsubscribe = listenToStatementSubscriptions(dispatch)(
+                    user,
                     30,
-                    true
+                    true,
                 );
             }
         } catch (error) {}
+
         return () => {
-            unsubscribe();
+            if (unsubscribe) {
+                unsubscribe.then((unsub) => {
+                    unsub;
+                });
+            }
         };
     }, [user]);
+
     return (
         <ScreenSlide className="page slide-in">
             {displayHeader && <HomeHeader />}

@@ -1,29 +1,28 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import {
-    Statement,
-    StatementType,
-} from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import { t } from "i18next";
 
 // Statements helpers
 
-import { createStatement, setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import {
+    createStatement,
+    setStatmentToDB,
+} from "../../../../../functions/db/statements/setStatments";
 
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
 
-// Redux
-
-import ModalImage from "../../../../components/icons/ModalImage";
-
+import questionModalImage from "../../../../../assets/questionModalImage.png";
+import optionModalImage from "../../../../../assets/optionModalImage.png";
+import ElipsIcon from "../../../../components/icons/ElipsIcon";
 
 interface Props {
     parentStatement: Statement | "top";
     isOption: boolean;
-    setShowModal: Function;
-    getSubStatements?: Function;
+    setShowModal: (bool: boolean) => void;
+    getSubStatements?: () => Promise<void>;
 }
 
 const NewSetStatementSimple: FC<Props> = ({
@@ -58,6 +57,7 @@ const NewSetStatementSimple: FC<Props> = ({
                 setIsLoading(true);
 
                 const description = data.get("description");
+
                 //add to title * at the beggining
                 if (title && !title.startsWith("*")) title = `*${title}`;
                 const _statement = `${title}\n${description}`;
@@ -65,25 +65,24 @@ const NewSetStatementSimple: FC<Props> = ({
                 const newStatement = createStatement({
                     text: _statement,
                     parentStatement,
-                    statementType: isOption ? StatementType.option : StatementType.question,
-                   
+                    statementType: isOption
+                        ? StatementType.option
+                        : StatementType.question,
                 });
 
-   
-                if(!newStatement) throw new Error("newStatement was not created");
-                
+                if (!newStatement)
+                    throw new Error("newStatement was not created");
+
                 await setStatmentToDB({
                     statement: newStatement,
-                    parentStatement: parentStatement === "top" ? undefined : parentStatement,
+                    parentStatement:
+                        parentStatement === "top" ? undefined : parentStatement,
                     addSubscription: true,
                 });
                 setIsLoading(false);
                 setShowModal(false);
 
                 if (getSubStatements) await getSubStatements();
-
-
-                
             } catch (error) {
                 console.error(error);
             }
@@ -93,22 +92,28 @@ const NewSetStatementSimple: FC<Props> = ({
             <>
                 {!isLoading ? (
                     <div className="overlay" style={{ zIndex: `2000` }}>
-                        <div className="overlay__imgBox">
-                            <ModalImage />
-                            <div className="overlay__imgBox__polygon" />
-                        </div>
-                        <div className="overlay__tabs">
-                            <div
-                                onClick={() => setIsOptionChosen(true)}
-                                className={
-                                    isOptionChosen
-                                        ? "overlay__tabs__tab overlay__tabs__tab--active"
-                                        : "overlay__tabs__tab"
-                                }
-                            >
-                                Option
-                                {isOptionChosen && <div className="block" />}
+                        {!isOptionChosen ? (
+                            <div className="overlay__imgBox">
+                                <img
+                                    src={questionModalImage}
+                                    alt="Qustion-Modal-Image"
+                                    width="70%"
+                                />
+                                <div className="overlay__imgBox__polygon" />
                             </div>
+                        ) : (
+                            <div className="overlay__imgBox">
+                                <img
+                                    src={optionModalImage}
+                                    alt="Option-Modal-Image"
+                                    width="70%"
+                                />
+                                <div className="overlay__imgBox__elips">
+                                    <ElipsIcon />
+                                </div>
+                            </div>
+                        )}
+                        <div className="overlay__tabs">
                             <div
                                 onClick={() => setIsOptionChosen(false)}
                                 className={
@@ -119,6 +124,17 @@ const NewSetStatementSimple: FC<Props> = ({
                             >
                                 Question
                                 {!isOptionChosen && <div className="block" />}
+                            </div>
+                            <div
+                                onClick={() => setIsOptionChosen(true)}
+                                className={
+                                    isOptionChosen
+                                        ? "overlay__tabs__tab overlay__tabs__tab--active"
+                                        : "overlay__tabs__tab"
+                                }
+                            >
+                                Option
+                                {isOptionChosen && <div className="block" />}
                             </div>
                         </div>
                         <form
@@ -167,6 +183,7 @@ const NewSetStatementSimple: FC<Props> = ({
         );
     } catch (error) {
         console.error(error);
+
         return null;
     }
 };

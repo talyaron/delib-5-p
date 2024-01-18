@@ -14,6 +14,7 @@ const useSlideAndSubStatement = (parentId: string) => {
             setToSubStatement(true);
             setSlideInOrOut("slide-out");
             setToSlide(true);
+
             return;
         }
         const testToSlide = location.state

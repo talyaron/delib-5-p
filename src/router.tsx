@@ -1,44 +1,18 @@
-import { lazy, Suspense } from "react";
-
 // Third party imports
 import { createBrowserRouter } from "react-router-dom";
 
 // Custom components
-import Start from "./view/pages/start/Start";
 import ErrorPage from "./view/pages/error/ErrorPage";
-import Loader from "./view/components/loaders/Loader";
-import Home from "./view/pages/home/Home";
 import App from "./App";
+import Start from "./view/pages/start/Start";
+import Home from "./view/pages/home/Home";
+import Main from "./view/pages/main/Main";
+import AddStatement from "./view/pages/main/addStatement";
+import Statement from "./view/pages/statement/Statement";
 import Page404 from "./view/pages/page404/Page404";
-// import Statement from "./view/pages/statement/Statement";
-// import Main from "./view/pages/main/Main";
 
-// Lazy loading
-const Main = lazy(() => import("./view/pages/main/Main"));
-const Statement = lazy(() => import("./view/pages/statement/Statement"));
-const AddStatement = lazy(
-    () => import("./view/pages/home/addStatement/AddStatement")
-);
 
-export const SuspenseFallback = () => {
-    return (
-        <div
-            style={{
-                width: "100svw",
-                height: "100svh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <Loader />
-        </div>
-    );
-};
 
-export const SuspenseComp = ({ chlildren }: any) => {
-    return <Suspense fallback={<SuspenseFallback />}>{chlildren}</Suspense>;
-};
 
 export const router = createBrowserRouter([
     {
@@ -53,58 +27,34 @@ export const router = createBrowserRouter([
             },
             {
                 path: "home",
-                element: (
-                    <Suspense fallback={<SuspenseFallback />}>
-                        <Home />
-                    </Suspense>
-                ),
+                element: <Home />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: "",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <Main />
-                            </Suspense>
-                        ),
+                        element: <Main />,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "addStatment",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <AddStatement />
-                            </Suspense>
-                        ),
+                        element: <AddStatement />,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "updateStatement/:statementId",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <AddStatement />
-                            </Suspense>
-                        ),
+                        element: <AddStatement />,
                         errorElement: <ErrorPage />,
                     },
                 ],
             },
             {
                 path: "statement/:statementId/:page",
-                element: (
-                    <Suspense fallback={<SuspenseFallback />}>
-                        <Statement />
-                    </Suspense>
-                ),
+                element: <Statement />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: ":sort",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <Statement />
-                            </Suspense>
-                        ),
+                        element: <Statement />,
                         errorElement: <ErrorPage />,
                     },
                 ],

@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+
 // Statment imports
 import {
     createStatement,
@@ -32,8 +33,8 @@ import {
 // Firestore functions
 import {
     getStatementFromDB,
-    listenToMembers,
 } from "../../../../../functions/db/statements/getStatement";
+import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
 // * Statement Settings functions * //
 
@@ -53,30 +54,30 @@ interface Props {
     new?: boolean;
 }
 
-export const StatementSettings: FC<Props> = () => {
+const StatementSettings: FC<Props> = () => {
     const navigate = useNavigate();
     const { statementId } = useParams();
 
     // Redux
     const dispatch = useAppDispatch();
     const statement: Statement | undefined = useAppSelector(
-        statementSelector(statementId)
+        statementSelector(statementId),
     );
 
     const membership: StatementSubscription[] = useAppSelector(
-        statementMembershipSelector(statementId)
+        statementMembershipSelector(statementId),
     );
 
     // Use State
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        let unsubscribe: Function = () => {};
+        let unsubscribe: undefined | (() => void);
         if (statementId) {
             unsubscribe = listenToMembers(
                 statementId,
                 setMembershipCB,
-                removeMembershipCB
+                removeMembershipCB,
             );
 
             if (!statement)
@@ -85,8 +86,9 @@ export const StatementSettings: FC<Props> = () => {
                     if (statementDB) dispatch(setStatement(statementDB));
                 })();
         }
+
         return () => {
-            unsubscribe();
+            if (unsubscribe) unsubscribe();
         };
     }, [statementId]);
 
@@ -151,6 +153,7 @@ export const StatementSettings: FC<Props> = () => {
                 });
                 setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
+
                 return;
             } else {
                 //update statement
@@ -173,20 +176,20 @@ export const StatementSettings: FC<Props> = () => {
                 await setStatmentToDB({
                     parentStatement: statement,
                     statement: newStatement,
-                    addSubscription: true
+                    addSubscription: true,
                 });
                 setIsLoading(false);
                 navigateToStatementTab(newStatement, navigate);
+
                 return;
             }
-
-          
         } catch (error) {
             console.error(error);
         }
     }
 
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
+
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
@@ -254,3 +257,5 @@ export const StatementSettings: FC<Props> = () => {
         </ScreenFadeIn>
     );
 };
+
+export default StatementSettings;

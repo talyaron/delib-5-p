@@ -1,6 +1,7 @@
 .chip{
     display: flex;
     align-items: center;
+    gap: .5rem;
     font-size: .8rem;
     background-color: var(--white);
     border: 1px solid var(--shadow);

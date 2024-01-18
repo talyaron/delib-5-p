@@ -25,21 +25,26 @@ export const handleSetQuestionFromMassCard = ({
         if (answer) {
             //update statement
             updateStatementText(answer, text);
+
             return undefined;
         } else {
-
             //create new statement
             const statement: Statement | undefined = createStatement({
                 text,
                 parentStatement: question,
-                statementType: StatementType.option
+                statementType: StatementType.option,
             });
             if (!statement) throw new Error("statement not created");
 
-            setStatmentToDB({statement, parentStatement: question, addSubscription:false});
+            setStatmentToDB({
+                statement,
+                parentStatement: question,
+                addSubscription: false,
+            });
         }
     } catch (error) {
         console.error(error);
+
         return undefined;
     }
 };

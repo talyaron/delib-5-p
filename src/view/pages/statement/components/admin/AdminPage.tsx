@@ -2,10 +2,9 @@ import { Evaluation, Vote } from "delib-npm";
 import { handleGetEvaluators, handleGetVoters } from "./AdminPageCont";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { StatementSettings } from "../settings/StatementSettings";
+import StatementSettings from "../settings/StatementSettings";
 import styles from "./AdminPage.module.scss";
 import Chip from "../../../../components/chip/Chip";
-
 
 const AdminPage = () => {
     const { statementId } = useParams<{ statementId: string }>();
@@ -26,14 +25,7 @@ const AdminPage = () => {
                 </div>
                 <div className={styles.chips}>
                     {voters.map((voter) => {
-                        
-                        return (
-                            <Chip
-                              
-                                key={voter.voteId}
-                                user={voter.voter}
-                            />
-                        );
+                        return <Chip key={voter.voteId} user={voter.voter} />;
                     })}
                 </div>
             </section>
@@ -48,13 +40,12 @@ const AdminPage = () => {
                         Get Evaluators
                     </div>
                 </div>
-                <div className={styles.chips} style={{marginBottom:"150px"}}>
+                <div className={styles.chips} style={{ marginBottom: "150px" }}>
                     {evaluators.map((evaluator) => {
                         return (
                             <Chip
                                 key={evaluator.evaluationId}
                                 user={evaluator.evaluator}
-                                
                             />
                         );
                     })}

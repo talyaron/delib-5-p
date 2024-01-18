@@ -2,6 +2,7 @@ import { FC } from "react";
 import edit from "../../../assets/edit.svg";
 import { Statement } from "delib-npm";
 import { useNavigate } from "react-router-dom";
+
 // import { auth } from '../../../functions/db/auth';
 import { store } from "../../../model/store";
 
@@ -22,6 +23,7 @@ const Edit: FC<Props> = ({ statement }) => {
             console.error(error);
         }
     }
+
     return (
         <>
             {user?.uid === statement.creatorId ? (

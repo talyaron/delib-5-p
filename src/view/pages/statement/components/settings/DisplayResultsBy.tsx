@@ -2,7 +2,6 @@ import { useState } from "react";
 
 // Custom components
 
-
 // Third party imports
 import { Statement, ResultsBy } from "delib-npm";
 import { t } from "i18next";
@@ -21,8 +20,9 @@ export default function DisplayResultsBy({
     };
 
     const [resultsByVoting, setResultsByVoting] = useState(
-        resultsBy() === ResultsBy.topVote
+        resultsBy() === ResultsBy.topVote,
     );
+
     return (
         <section className="settings__resultsBy">
             <h3 className="settings__resultsBy__title">{t("Results By")}</h3>

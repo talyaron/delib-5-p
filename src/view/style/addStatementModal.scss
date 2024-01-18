@@ -23,9 +23,15 @@
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             transform: rotate(30deg);
             position: absolute;
-            bottom: 10%;
-            left: 25%;
-            z-index: 0;
+            bottom: 15%;
+            left: 15%;
+            z-index: -1;
+        }
+        &__elips {
+            position: absolute;
+            bottom: -30%;
+            left: 0%;
+            z-index: -1;
         }
     }
 

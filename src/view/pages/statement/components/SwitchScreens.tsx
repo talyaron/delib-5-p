@@ -1,20 +1,20 @@
-// Custom components
-import StatementMain from "./StatementMain";
-import StatmentRooms from "./rooms/Rooms";
-import StatementVote from "./vote/StatementVote";
-import StatementEvaluation from "./evaluations/StatementEvaluation";
+import { Screen, Statement, User } from "delib-npm";
 import Map from "./map/Map";
-
-// Third party imports
-import { Screen, Statement } from "delib-npm";
-import { StatementSettings } from "./settings/StatementSettings";
+import StatementMain from "./StatementMain";
+import StatementEvaluation from "./evaluations/StatementEvaluation";
+import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
+import StatmentRooms from "./rooms/Rooms";
+import StatementSettings from "./settings/StatementSettings";
+
+// Custom components
+
 
 interface SwitchScreensProps {
     screen: string | undefined;
     statement: Statement | undefined;
     subStatements: Statement[];
-    handleShowTalker: Function;
+    handleShowTalker: (statement: User | null) => void;
 }
 
 export default function SwitchScreens({
@@ -27,16 +27,10 @@ export default function SwitchScreens({
 
     switch (screen) {
         case Screen.DOC:
+            // const Map = lazy(() => import("./map/Map"));
+
             return <Map statement={statement} />;
-        //TODO: Delete? Not used.
-        // case Screen.HOME:
-        //     return (
-        //         <StatementMain
-        //             statement={statement}
-        //             subStatements={subStatements}
-        //             handleShowTalker={handleShowTalker}
-        //         />
-        //     );
+
         case Screen.CHAT:
             return (
                 <StatementMain
@@ -77,10 +71,6 @@ export default function SwitchScreens({
         case Screen.SETTINGS:
             return <StatementSettings />;
         case Screen.QUESTIONS:
-        case Screen.QUESTIONS_CONSENSUS:
-        case Screen.QUESTIONS_NEW:
-        case Screen.QUESTIONS_RANDOM:
-        case Screen.QUESTIONS_UPDATED:
             return (
                 <StatementEvaluation
                     statement={statement}
@@ -89,7 +79,7 @@ export default function SwitchScreens({
                     questions={true}
                 />
             );
-       
+
         default:
             return (
                 <StatementMain

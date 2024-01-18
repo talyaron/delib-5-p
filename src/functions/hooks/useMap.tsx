@@ -15,9 +15,10 @@ export const useMapContext = (): MapProps => {
     const context = useContext(MapModelContext);
     if (!context) {
         throw new Error(
-            "useMapContext must be used within a MyContextProvider"
+            "useMapContext must be used within a MyContextProvider",
         );
     }
+
     return context;
 };
 

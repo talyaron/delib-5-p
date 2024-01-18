@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third Party Imports
-import { Statement, StatementType } from "delib-npm";
+import { Statement, StatementType, User } from "delib-npm";
 import { t } from "i18next";
 
 // Custom Components
@@ -42,8 +42,7 @@ export interface NewQuestion {
 interface Props {
     parentStatement: Statement;
     statement: Statement;
-    showImage: Function;
-    setShowModal?: Function;
+    showImage: (statement: User | null) => void;
     index: number;
     previousStatement: Statement | undefined;
 }
@@ -58,7 +57,7 @@ const StatementChat: FC<Props> = ({
     const { statementType } = statement;
 
     const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statement.parentId)
+        statementSubscriptionSelector(statement.parentId),
     );
     const userId = store.getState().user.user?.uid;
 
@@ -68,7 +67,7 @@ const StatementChat: FC<Props> = ({
     const _isAuthrized = isAuthorized(
         statement,
         statementSubscription,
-        parentStatement.creatorId
+        parentStatement.creatorId,
     );
 
     const isMe = userId === creatorId;
@@ -83,13 +82,13 @@ const StatementChat: FC<Props> = ({
     const displayUserName = !previousStatement
         ? true
         : previousStatement.creatorId !== statement.creatorId
-        ? true
-        : false;
+          ? true
+          : false;
 
-        function handleGoToOption() {
-            if (!isEdit && linkToChildren(statement, parentStatement))
-                navigate(`/statement/${statement.statementId}/chat`);
-        }
+    function handleGoToOption() {
+        if (!isEdit && linkToChildren(statement, parentStatement))
+            navigate(`/statement/${statement.statementId}/chat`);
+    }
 
     return (
         <div className={isMe ? "message message--me" : "message"}>

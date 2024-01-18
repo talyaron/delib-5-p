@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react";
 
 // Third Party
-import { Statement, StatementType } from "delib-npm";
+import { Statement, StatementType, User } from "delib-npm";
 import { useNavigate } from "react-router";
 
 // Redux Store
@@ -39,7 +39,7 @@ import useDirection from "../../../../../../functions/hooks/useDirection";
 interface Props {
     statement: Statement;
     parentStatement: Statement;
-    showImage: Function;
+    showImage: (talker: User | null) => void;
     top: number;
 }
 
@@ -51,16 +51,17 @@ const StatementEvaluationCard: FC<Props> = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const statementColor: StyleProps = useStatementColor(
-        statement.statementType || ""
+        statement.statementType || "",
     );
 
     const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statement.statementId)
+        statementSubscriptionSelector(statement.statementId),
     );
     const direction = useDirection();
     const isRtl = direction === "row-reverse";
 
     const elementRef = useRef<HTMLDivElement>(null);
+
     // const { hasChildren } = parentStatement;
 
     const [newTop, setNewTop] = useState(top);
@@ -76,7 +77,7 @@ const StatementEvaluationCard: FC<Props> = ({
             setStatementElementHight({
                 statementId: statement.statementId,
                 height: elementRef.current?.clientHeight,
-            })
+            }),
         );
     }, []);
 
@@ -88,7 +89,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const _isAuthorized = isAuthorized(
         statement,
         statementSubscription,
-        parentStatement.creatorId
+        parentStatement.creatorId,
     );
 
     return (
@@ -136,7 +137,7 @@ const StatementEvaluationCard: FC<Props> = ({
                                 isAuthrized={isAuthorized(
                                     statement,
                                     statementSubscription,
-                                    parentStatement.creatorId
+                                    parentStatement.creatorId,
                                 )}
                                 edit={edit}
                                 setEdit={setEdit}
