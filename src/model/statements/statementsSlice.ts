@@ -99,11 +99,8 @@ export const statementsSlicer = createSlice({
             try {
                 const statements = action.payload;
 
-                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
-                statements.forEach((statement) => {
-                    if (!Array.isArray(statement.results))
-                        statement.results = [];
-                });
+              
+           
 
                 const { success } = z
                     .array(StatementSchema)
@@ -113,7 +110,7 @@ export const statementsSlicer = createSlice({
                 }
 
                 statements.forEach((statement) => {
-                    updateArray(state.statements, statement, "statementId");
+                    state.statements =  updateArray(state.statements, statement, "statementId");
                 });
             } catch (error) {
                 console.error(error);
@@ -163,6 +160,29 @@ export const statementsSlicer = createSlice({
                     state.statementSubscriptionLastUpdate =
                         newStatement.lastUpdate;
                 }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        setStatementsSubscription: (state, action: PayloadAction<StatementSubscription[]>) => {
+            try {
+                const newStatements = action.payload;
+                const { success } = z
+                    .array(StatementSubscriptionSchema)
+                    .safeParse(newStatements);
+                if (!success) {
+                    console.error(
+                        "statement subscription not valid on setStatementsSubscription",
+                    );
+                }
+
+                newStatements.forEach((statement) => {
+                    state.statementSubscription = updateArray(
+                        state.statementSubscription,
+                        statement,
+                        "statementsSubscribeId",
+                    );
+                });
             } catch (error) {
                 console.error(error);
             }
@@ -318,9 +338,10 @@ export const {
     setAskToJoinRooms,
     setStatement,
     setStatements,
+    setStatementSubscription,
+    setStatementsSubscription,
     deleteStatement,
     deleteSubscribedStatement,
-    setStatementSubscription,
     setStatementOrder,
     setScreen,
     setStatementElementHight,
