@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 // Third party imports
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
-import { t } from "i18next";
 
 // Firebase functions
 import { listenToAuth, logOut } from "./functions/db/auth";
@@ -24,7 +23,6 @@ import { resetStatements } from "./model/statements/statementsSlice";
 import { resetEvaluations } from "./model/evaluations/evaluationsSlice";
 import { resetVotes } from "./model/vote/votesSlice";
 import { resetResults } from "./model/results/resultsSlice";
-import Modal from "./view/components/modal/Modal";
 
 //css
 
@@ -32,6 +30,7 @@ import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
 import { onLocalMessage } from "./functions/notifications/notifications";
+import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 export default function App() {
     const navigate = useNavigate();
@@ -174,32 +173,10 @@ export default function App() {
 
             <Outlet />
             {showSignAgreement && (
-                <Modal>
-                    <div className="termsOfUse">
-                        <h1 className="termsOfUse__title">
-                            {t("terms of use")}
-                        </h1>
-                        <p>{t(agreement)}</p>
-                        <div className="btns">
-                            <button
-                                className="btn btn--agree"
-                                onClick={() =>
-                                    handleAgreement(true, t(agreement))
-                                }
-                            >
-                                {t("Agree")}
-                            </button>
-                            <button
-                                className="btn btn--disagree"
-                                onClick={() =>
-                                    handleAgreement(false, t(agreement))
-                                }
-                            >
-                                {t("Dont agree")}
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
+                <TermsOfUse
+                    handleAgreement={handleAgreement}
+                    agreement={agreement}
+                />
             )}
         </div>
     );

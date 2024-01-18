@@ -7,9 +7,7 @@ import { User, Role, Screen } from "delib-npm";
 import { t } from "i18next";
 
 // firestore
-import {
-    getIsSubscribed,
-} from "../../../functions/db/statements/getStatement";
+import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
 import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
@@ -93,34 +91,38 @@ const Statement: FC = () => {
 
     // Listen to statement changes.
     useEffect(() => {
-        let unsubListenToStatement: Function = () => {};
-        let unsubSubStatements:Function = () => {};
-        let unsubStatementSubscription: Function = () => {};
-        let unsubEvaluations: Function = () => {};
-        let unsubSubSubscribedStatements: Function = () => {};
+        let unsubListenToStatement: () => void;
+        let unsubSubStatements: () => void;
+        let unsubStatementSubscription: () => void;
+        let unsubEvaluations: () => void;
+        let unsubSubSubscribedStatements: () => void;
 
         if (user && statementId) {
             unsubListenToStatement = listenToStatement(statementId, dispatch);
-            unsubSubStatements = listenToSubStatements(statementId,dispatch);
+            unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
                 statementId,
                 user?.uid,
             );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId, user, dispatch);
-            unsubStatementSubscription = listenToStatementSubscription(statementId, user,dispatch);
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+                statementId,
+                user,
+                dispatch,
+            );
+            unsubStatementSubscription = listenToStatementSubscription(
+                statementId,
+                user,
+                dispatch,
+            );
         }
 
         return () => {
-        
-                unsubListenToStatement();
-                unsubSubStatements();
-                unsubStatementSubscription();
-                unsubSubSubscribedStatements();
-                unsubEvaluations();
-           
-
-            
+            unsubListenToStatement();
+            unsubSubStatements();
+            unsubStatementSubscription();
+            unsubSubSubscribedStatements();
+            unsubEvaluations();
         };
     }, [user, statementId]);
 
@@ -147,8 +149,6 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
-  
-
     return (
         <div className="page">
             {showAskPermission && (
@@ -163,30 +163,29 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-           
-                <>
-                    <StatementHeader
-                        statement={statement }
-                        screen={screen || Screen.CHAT}
-                        title={title}
-                        showAskPermission={showAskPermission}
-                        setShowAskPermission={setShowAskPermission}
-                    />
 
-                    <MapProvider>
-                        <SwitchScreens
-                            key={window.location.pathname
-                                .split("/")
-                                .slice(2)
-                                .join(" ")}
-                            screen={screen}
-                            statement={statement}
-                            subStatements={subStatements}
-                            handleShowTalker={handleShowTalker}
-                        />
-                    </MapProvider>
-                </>
-           
+            <>
+                <StatementHeader
+                    statement={statement}
+                    screen={screen || Screen.CHAT}
+                    title={title}
+                    showAskPermission={showAskPermission}
+                    setShowAskPermission={setShowAskPermission}
+                />
+
+                <MapProvider>
+                    <SwitchScreens
+                        key={window.location.pathname
+                            .split("/")
+                            .slice(2)
+                            .join(" ")}
+                        screen={screen}
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                    />
+                </MapProvider>
+            </>
         </div>
     );
 };

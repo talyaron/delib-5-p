@@ -9,7 +9,6 @@ import StatementSettings from "./settings/StatementSettings";
 
 // Custom components
 
-
 interface SwitchScreensProps {
     screen: string | undefined;
     statement: Statement | undefined;
@@ -27,8 +26,6 @@ export default function SwitchScreens({
 
     switch (screen) {
         case Screen.DOC:
-            // const Map = lazy(() => import("./map/Map"));
-
             return <Map statement={statement} />;
 
         case Screen.CHAT:

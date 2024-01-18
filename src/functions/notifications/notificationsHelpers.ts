@@ -5,13 +5,19 @@ import {
 } from "./notifications";
 
 export default async function toggleNotifications(
-    statement: Statement,
+    statement: Statement | undefined,
     permission: boolean,
     setShowAskPermission: (show: boolean) => void,
 ) {
-    const isPermited = await getUserPermissionToNotifications();
+    try {
+        if (!statement)
+            throw new Error("Statement is undefined in toggleNotifications");
+        const isPermited = await getUserPermissionToNotifications();
 
-    if (!isPermited) return setShowAskPermission(true);
+        if (!isPermited) return setShowAskPermission(true);
 
-    setStatmentSubscriptionNotificationToDB(statement, !permission);
+        setStatmentSubscriptionNotificationToDB(statement, !permission);
+    } catch (error) {
+        console.log(error);
+    }
 }
