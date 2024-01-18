@@ -9,7 +9,7 @@ const StatementEvaluation = lazy(
     () => import("./evaluations/StatementEvaluation"),
 );
 const StatmentRooms = lazy(() => import("./rooms/Rooms"));
-const StatementMain = lazy(() => import("./StatementMain"));
+const StatementMain = lazy(() => import("./chat/StatementChat"));
 const StatementSettings = lazy(() => import("./settings/StatementSettings"));
 const Map = lazy(() => import("./map/Map"));
 const MassQuestions = lazy(() => import("./massQuestions/MassQuestions"));

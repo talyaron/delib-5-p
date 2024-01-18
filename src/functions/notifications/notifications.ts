@@ -2,10 +2,10 @@ import { Statement, Collections, StatementSubscription } from "delib-npm";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { t } from "i18next";
-import { messaging, DB } from "./db/config";
-import { getUserFromFirebase } from "./db/users/usersGeneral";
-import { vapidKey } from "./db/configKey";
-import logo from "../assets/logo/logo-96px.png";
+import { messaging, DB } from "../db/config";
+import { getUserFromFirebase } from "../db/users/usersGeneral";
+import { vapidKey } from "../db/configKey";
+import logo from "../../assets/logo/logo-96px.png";
 
 export async function getUserPermissionToNotifications(): Promise<boolean> {
     try {

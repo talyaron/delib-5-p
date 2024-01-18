@@ -32,7 +32,7 @@ import { useSelector } from "react-redux";
 
 // Custom components
 import ProfileImage from "../../components/profileImage/ProfileImage";
-import StatementHeader from "./StatementHeader";
+import StatementHeader from "./components/header/StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
 import SwitchScreens from "./components/SwitchScreens";
 

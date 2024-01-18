@@ -31,7 +31,7 @@ import Modal from "./view/components/modal/Modal";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
-import { onLocalMessage } from "./functions/notifications";
+import { onLocalMessage } from "./functions/notifications/notifications";
 
 export default function App() {
     const navigate = useNavigate();
