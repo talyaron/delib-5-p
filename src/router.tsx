@@ -50,58 +50,34 @@ export const router = createBrowserRouter([
             },
             {
                 path: "home",
-                element: (
-                    <Suspense fallback={<SuspenseFallback />}>
-                        <Home />
-                    </Suspense>
-                ),
+                element: <Home />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: "",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <Main />
-                            </Suspense>
-                        ),
+                        element: <Main />,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "addStatment",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <AddStatement />
-                            </Suspense>
-                        ),
+                        element: <AddStatement />,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "updateStatement/:statementId",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <AddStatement />
-                            </Suspense>
-                        ),
+                        element: <AddStatement />,
                         errorElement: <ErrorPage />,
                     },
                 ],
             },
             {
                 path: "statement/:statementId/:page",
-                element: (
-                    <Suspense fallback={<SuspenseFallback />}>
-                        <Statement />
-                    </Suspense>
-                ),
+                element: <Statement />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: ":sort",
-                        element: (
-                            <Suspense fallback={<SuspenseFallback />}>
-                                <Statement />
-                            </Suspense>
-                        ),
+                        element: <Statement />,
                         errorElement: <ErrorPage />,
                     },
                 ],
