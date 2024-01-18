@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
@@ -11,16 +11,18 @@ import Fav from "../../components/fav/Fav";
 // Other
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
-
-const MainCard = lazy(() => import("./mainCard/MainCard"));
+import { StatementSubscription } from "delib-npm";
+import MainCard from "./mainCard/MainCard";
 
 const Main = () => {
     // Hooks
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
-    const statements = [...useAppSelector(statementsSubscriptionsSelector)]
-        .filter((state) => state.statement.parentId === "top")
+    const statements: StatementSubscription[] = useAppSelector(
+        statementsSubscriptionsSelector,
+    )
+        .filter((s) => s.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
     function handleAddStatment() {

@@ -84,8 +84,9 @@ const edgeOptions = (result: Results, parentId: string): Edge => {
     };
 };
 
-export const createInitialNodesAndEdges = (result: Results) => {
+export const createInitialNodesAndEdges = (result: Results|undefined) => {
     try {
+        if(!result) return { nodes: [], edges: [] };
         const edges: Edge[] = [];
 
         const nodes: Node[] = [nodeOptions(result, "top")];

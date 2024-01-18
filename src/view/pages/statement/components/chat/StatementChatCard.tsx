@@ -46,7 +46,7 @@ interface Props {
     previousStatement: Statement | undefined;
 }
 
-const StatementChat: FC<Props> = ({
+const StatementChatCard: FC<Props> = ({
     parentStatement,
     statement,
     showImage,
@@ -189,4 +189,4 @@ const StatementChat: FC<Props> = ({
     );
 };
 
-export default StatementChat;
+export default StatementChatCard;

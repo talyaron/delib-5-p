@@ -1,27 +1,32 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party Imports
 import { Statement, User } from "delib-npm";
 
 // Custom Components
-import StatementChat from "./chat/StatementChatCard";
-import StatementInput from "./StatementInput";
-import ScreenSlide from "../../../components/animation/ScreenSlide";
-import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
+import StatementChatCard from "./StatementChatCard";
+import StatementInput from "./components/input/StatementInput";
+import ScreenSlide from "../../../../components/animation/ScreenSlide";
+import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
+import EnableNotifications from "../../../../components/enableNotifications/EnableNotifications";
 
 interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 let firstTime = true;
 
-const StatementMain: FC<Props> = ({
+const StatementChat: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
+    setShowAskPermission,
 }) => {
+    // TODO: Add to user schema if user was asket to recieve notifications
+    const [askNotifications, setAskNotifications] = useState(false);
     const messagesEndRef = useRef(null);
 
     const { toSlide, slideInOrOut } = useSlideAndSubStatement(
@@ -56,7 +61,7 @@ const StatementMain: FC<Props> = ({
             <ScreenSlide className={`page__main ${toSlide && slideInOrOut}`}>
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
-                        <StatementChat
+                        <StatementChatCard
                             parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}
@@ -68,10 +73,22 @@ const StatementMain: FC<Props> = ({
                 <div ref={messagesEndRef} />
             </ScreenSlide>
             <div className="page__footer">
-                {statement && <StatementInput statement={statement} />}
+                {statement && (
+                    <StatementInput
+                        statement={statement}
+                        setAskNotifications={setAskNotifications}
+                    />
+                )}
             </div>
+            {askNotifications && (
+                <EnableNotifications
+                    statement={statement}
+                    setAskNotifications={setAskNotifications}
+                    setShowAskPermission={setShowAskPermission}
+                />
+            )}
         </>
     );
 };
 
-export default StatementMain;
+export default StatementChat;

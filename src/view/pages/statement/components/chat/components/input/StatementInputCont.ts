@@ -2,28 +2,23 @@ import { Statement, StatementType, User } from "delib-npm";
 import {
     createStatement,
     setStatmentToDB,
-} from "../../../../functions/db/statements/setStatments";
+} from "../../../../../../../functions/db/statements/setStatments";
 
 export function handleAddStatement(
-    e: any,
+    message: string,
     statement: Statement,
     user: User | null,
 ) {
     try {
-        e.preventDefault();
         if (!user) throw new Error("No user");
-
-        if (!user) throw new Error("No user");
-
-        const value = e.target.newStatement.value;
 
         //remove white spaces and \n
-        const _value = value.replace(/\s+/g, " ").trim();
+        const value = message.replace(/\s+/g, " ").trim();
 
-        if (!_value) throw new Error("No value");
+        if (!value) throw new Error("No value");
 
         const newStatement: Statement | undefined = createStatement({
-            text: _value,
+            text: value,
             parentStatement: statement,
             statementType: StatementType.statement,
         });
@@ -32,10 +27,8 @@ export function handleAddStatement(
         setStatmentToDB({
             statement: newStatement,
             parentStatement: statement,
-            addSubscription: true,
+            addSubscription: false,
         });
-
-        e.target.reset();
     } catch (error) {
         console.error(error);
     }

@@ -10,7 +10,6 @@ import {
     and,
     collection,
     doc,
-    getDoc,
     getDocs,
     limit,
     onSnapshot,
@@ -22,142 +21,120 @@ import {
 
 // Redux Store
 import {
-    deleteStatement,
     deleteSubscribedStatement,
     setStatement,
     setStatementSubscription,
+    setStatements,
+    setStatementsSubscription,
 } from "../../../model/statements/statementsSlice";
 import { AppDispatch, store } from "../../../model/store";
 import { DB } from "../config";
 
 // Helpers
 import { listenedStatements } from "../../../view/pages/home/Home";
+import { Unsubscribe } from "firebase/auth";
 
-export const listenToStatementSubscription =
-    (dispatch: AppDispatch) => (statementId: string, user: User) => {
-        try {
-            const statementsSubscribeRef = doc(
-                DB,
-                Collections.statementsSubscribe,
-                `${user.uid}--${statementId}`,
-            );
+export const listenToStatementSubscription = (
+    statementId: string,
+    user: User,
+    dispatch: AppDispatch,
+): Unsubscribe => {
+    try {
+        const statementsSubscribeRef = doc(
+            DB,
+            Collections.statementsSubscribe,
+            `${user.uid}--${statementId}`,
+        );
 
-            const state = getDoc(statementsSubscribeRef)
-                .then((doc) => {
-                    const statementSubscription =
-                        doc.data() as StatementSubscription;
+        return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
+            try {
+                const statementSubscription =
+                    statementSubscriptionDB.data() as StatementSubscription;
 
-                    const { success } = StatementSubscriptionSchema.safeParse(
-                        statementSubscription,
-                    );
+                const { success } = StatementSubscriptionSchema.safeParse(
+                    statementSubscription,
+                );
+                if (!success) {
+                    console.info("No subscription found");
 
-                    if (!success) {
-                        return console.info(
-                            "statement subscription not valid in listenToStatementSubscription.",
+                    return;
+                }
+
+                StatementSubscriptionSchema.parse(statementSubscription);
+
+                dispatch(setStatementSubscription(statementSubscription));
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {};
+    }
+};
+
+export const listenToStatementSubSubscriptions = (
+    statementId: string,
+    user: User,
+    dispatch: AppDispatch,
+): Unsubscribe => {
+    try {
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+
+        const statementsSubscribeRef = collection(
+            DB,
+            Collections.statementsSubscribe,
+        );
+        const q = query(
+            statementsSubscribeRef,
+            where("statement.parentId", "==", statementId),
+            where("userId", "==", user.uid),
+            limit(20),
+        );
+
+        return onSnapshot(q, (subscriptionsDB) => {
+            let firstCall = true;
+            const statementSubscriptions: StatementSubscription[] = [];
+
+            subscriptionsDB.docChanges().forEach((change) => {
+                const statementSubscription =
+                    change.doc.data() as StatementSubscription;
+
+                if (change.type === "added") {
+                    if (firstCall) {
+                        statementSubscriptions.push(statementSubscription);
+                    } else {
+                        dispatch(
+                            setStatementSubscription(statementSubscription),
                         );
                     }
+                }
 
+                if (change.type === "modified") {
                     dispatch(setStatementSubscription(statementSubscription));
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {
-                    return onSnapshot(
-                        statementsSubscribeRef,
-                        (statementSubscriptionDB) => {
-                            try {
-                                const statementSubscription =
-                                    statementSubscriptionDB.data() as StatementSubscription;
+                }
 
-                                const { success } =
-                                    StatementSubscriptionSchema.safeParse(
-                                        statementSubscription,
-                                    );
-                                if (!success) {
-                                    console.info("No subscription found");
-
-                                    return;
-                                }
-
-                                //for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
-                                if (
-                                    !Array.isArray(
-                                        statementSubscription.statement.results,
-                                    )
-                                )
-                                    statementSubscription.statement.results =
-                                        [];
-
-                                StatementSubscriptionSchema.parse(
-                                    statementSubscription,
-                                );
-
-                                dispatch(
-                                    setStatementSubscription(
-                                        statementSubscription,
-                                    ),
-                                );
-                            } catch (error) {
-                                console.error(error);
-                            }
-                        },
-                    );
-                });
-
-            return state;
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-export const listenToStatementSubSubscriptions =
-    (dispatch: AppDispatch) => (statementId: string, user: User) => {
-        try {
-            if (!user) throw new Error("User not logged in");
-            if (!user.uid) throw new Error("User not logged in");
-
-            const statementsSubscribeRef = collection(
-                DB,
-                Collections.statementsSubscribe,
-            );
-            const q = query(
-                statementsSubscribeRef,
-                where("statement.parentId", "==", statementId),
-                where("userId", "==", user.uid),
-                limit(20),
-            );
-
-            return onSnapshot(q, (subscriptionsDB) => {
-                subscriptionsDB.docChanges().forEach((change) => {
-                    const statementSubscription =
-                        change.doc.data() as StatementSubscription;
-
-                    if (change.type === "added") {
-                        dispatch(
-                            setStatementSubscription(statementSubscription),
-                        );
-                    }
-
-                    if (change.type === "modified") {
-                        dispatch(
-                            setStatementSubscription(statementSubscription),
-                        );
-                    }
-
-                    if (change.type === "removed") {
-                        dispatch(
-                            deleteSubscribedStatement(
-                                statementSubscription.statementId,
-                            ),
-                        );
-                    }
-                });
+                // if (change.type === "removed") {
+                //     dispatch(
+                //         deleteSubscribedStatement(
+                //             statementSubscription.statementId,
+                //         ),
+                //     );
+                // }
             });
-        } catch (error) {
-            console.error(error);
-        }
-    };
+            firstCall = false;
+            dispatch(setStatementsSubscription(statementSubscriptions));
+        });
+    } catch (error) {
+        console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {};
+    }
+};
 
 export const listenToStatementSubscriptions =
     (dispatch: AppDispatch) =>
@@ -323,82 +300,72 @@ export const listenToStatementSubscriptions =
         }
     };
 
-export const listenToStatement =
-    (dispatch: AppDispatch) => (statementId: string) => {
-        try {
-            const statementRef = doc(DB, Collections.statements, statementId);
+export const listenToStatement = (
+    statementId: string,
+    dispatch: AppDispatch,
+): Unsubscribe => {
+    try {
+        const statementRef = doc(DB, Collections.statements, statementId);
 
-            const state = getDoc(statementRef)
-                .then((statementDB) => {
-                    const statement = statementDB.data() as Statement;
+        return onSnapshot(statementRef, (statementDB) => {
+            const statement = statementDB.data() as Statement;
 
+            dispatch(setStatement(statement));
+        });
+    } catch (error) {
+        console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {};
+    }
+};
+
+export const listenToSubStatements = (
+    statementId: string | undefined,
+    dispatch: AppDispatch,
+): Unsubscribe => {
+    try {
+        if (!statementId) throw new Error("Statement id is undefined");
+        const statementsRef = collection(DB, Collections.statements);
+        const q = query(
+            statementsRef,
+            where("parentId", "==", statementId),
+            orderBy("createdAt", "desc"),
+            limit(20),
+        );
+        let isFirstCall = true;
+
+        return onSnapshot(q, (statementsDB) => {
+            const startStatements: Statement[] = [];
+            statementsDB.docChanges().forEach((change) => {
+                const statement = change.doc.data() as Statement;
+
+                if (change.type === "added") {
+                    if (isFirstCall) {
+                        startStatements.push(statement);
+                    } else {
+                        dispatch(setStatement(statement));
+                    }
+                }
+
+                if (change.type === "modified") {
                     dispatch(setStatement(statement));
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {
-                    return onSnapshot(statementRef, (statementDB) => {
-                        const statement = statementDB.data() as Statement;
+                }
 
-                        dispatch(setStatement(statement));
-                    });
-                });
+                // There shouldn't be deleted statements. instead the statement should be updated to status "deleted".
+                // If You will use delete, it will remove from the dom a messages that are outside of the limit of the query.
+            });
+            isFirstCall = false;
 
-            return state;
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-export const listenToStatementsOfStatment =
-    (dispatch: AppDispatch) => async (statementId: string | undefined) => {
-        try {
-            if (!statementId) throw new Error("Statement id is undefined");
-            const statementsRef = collection(DB, Collections.statements);
-            const q = query(
-                statementsRef,
-                where("parentId", "==", statementId),
-                orderBy("createdAt", "desc"),
-                limit(20),
-            );
-
-            const set = await getDocs(q)
-                .then((statementsDB) => {
-                    statementsDB.forEach((doc) => {
-                        const statement = doc.data() as Statement;
-
-                        dispatch(setStatement(statement));
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {
-                    return onSnapshot(q, (statementsDB) => {
-                        statementsDB.docChanges().forEach((change) => {
-                            const statement = change.doc.data() as Statement;
-
-                            if (change.type === "added") {
-                                dispatch(setStatement(statement));
-                            }
-
-                            if (change.type === "modified") {
-                                dispatch(setStatement(statement));
-                            }
-
-                            if (change.type === "removed") {
-                                dispatch(deleteStatement(statementId));
-                            }
-                        });
-                    });
-                });
-
-            return set;
-        } catch (error) {
-            console.error(error);
-        }
-    };
+            dispatch(setStatements(startStatements));
+        });
+    } catch (error) {
+        console.error(error);
+        
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {};
+    }
+};
 
 export function listenToMembers(
     statementId: string,

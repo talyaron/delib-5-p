@@ -1,10 +1,10 @@
 import { Statement, Collections, StatementSubscription } from "delib-npm";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
-import { messaging, DB } from "./db/config";
-import { getUserFromFirebase } from "./db/users/usersGeneral";
-import { vapidKey } from "./db/configKey";
-import logo from "../assets/logo/logo-96px.png";
+import { messaging, DB } from "../config";
+import { getUserFromFirebase } from "../users/usersGeneral";
+import { vapidKey } from "../configKey";
+import logo from "../.././../assets/logo/logo-96px.png";
 
 export async function getUserPermissionToNotifications(): Promise<boolean> {
     try {
@@ -88,9 +88,6 @@ export async function setStatmentSubscriptionNotificationToDB(
 
         if (!statement) throw new Error("Statement is undefined");
         const { statementId } = statement;
-
-        //ask user for permission to send notifications
-        await getUserPermissionToNotifications();
 
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");

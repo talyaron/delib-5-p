@@ -22,14 +22,14 @@ import { resetStatements } from "./model/statements/statementsSlice";
 import { resetEvaluations } from "./model/evaluations/evaluationsSlice";
 import { resetVotes } from "./model/vote/votesSlice";
 import { resetResults } from "./model/results/resultsSlice";
-import Modal from "./view/components/modal/Modal";
 
 //css
 
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
-import { onLocalMessage } from "./functions/notifications";
+import { onLocalMessage } from "./functions/db/notifications/notifications";
+import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 export default function App() {
     const navigate = useNavigate();
@@ -159,28 +159,10 @@ export default function App() {
 
             <Outlet />
             {showSignAgreement && (
-                <Modal>
-                    <div className="termsOfUse">
-                        <h1 className="termsOfUse__title">{"terms of use"}</h1>
-                        <p>{agreement}</p>
-                        <div className="btns">
-                            <button
-                                className="btn btn--agree"
-                                onClick={() => handleAgreement(true, agreement)}
-                            >
-                                {"Agree"}
-                            </button>
-                            <button
-                                className="btn btn--disagree"
-                                onClick={() =>
-                                    handleAgreement(false, agreement)
-                                }
-                            >
-                                {"Dont agree"}
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
+                <TermsOfUse
+                    handleAgreement={handleAgreement}
+                    agreement={agreement}
+                />
             )}
         </div>
     );

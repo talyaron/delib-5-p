@@ -12,12 +12,13 @@ import { Collections, Evaluation, User } from "delib-npm";
 import { EvaluationSchema } from "../../../model/evaluations/evaluationModel";
 import { AppDispatch } from "../../../model/store";
 import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
+import { Unsubscribe } from "firebase/auth";
 
 export const listenToEvaluations = (
     dispatch: AppDispatch,
     parentId: string,
     evaluatorId: string | undefined,
-) => {
+): Unsubscribe => {
     try {
         const evaluationsRef = collection(DB, Collections.evaluations);
 
@@ -29,68 +30,36 @@ export const listenToEvaluations = (
             where("evaluatorId", "==", evaluatorId),
         );
 
-        const evaluationsDB = getDocs(q)
-            .then((evaluationsDB) => {
-                try {
-                    evaluationsDB.forEach((evaluationDB) => {
-                        try {
-                            //set evaluation to store
-                            const { success } = EvaluationSchema.safeParse(
-                                evaluationDB.data(),
+        return onSnapshot(q, (evaluationsDB) => {
+            try {
+                evaluationsDB.forEach((evaluationDB) => {
+                    try {
+                        //set evaluation to store
+                        const { success } = EvaluationSchema.safeParse(
+                            evaluationDB.data(),
+                        );
+
+                        if (!success)
+                            throw new Error(
+                                "evaluationDB is not valid in listenToEvaluations()",
                             );
 
-                            if (!success)
-                                throw new Error(
-                                    "evaluationDB is not valid in listenToEvaluations()",
-                                );
+                        const evaluation = evaluationDB.data() as Evaluation;
 
-                            const evaluation =
-                                evaluationDB.data() as Evaluation;
-
-                            dispatch(setEvaluationToStore(evaluation));
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    });
-                } catch (error) {
-                    console.error(error);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-            .finally(() => {
-                return onSnapshot(q, (evaluationsDB) => {
-                    try {
-                        evaluationsDB.forEach((evaluationDB) => {
-                            try {
-                                //set evaluation to store
-                                const { success } = EvaluationSchema.safeParse(
-                                    evaluationDB.data(),
-                                );
-
-                                if (!success)
-                                    throw new Error(
-                                        "evaluationDB is not valid in listenToEvaluations()",
-                                    );
-
-                                const evaluation =
-                                    evaluationDB.data() as Evaluation;
-
-                                dispatch(setEvaluationToStore(evaluation));
-                            } catch (error) {
-                                console.error(error);
-                            }
-                        });
+                        dispatch(setEvaluationToStore(evaluation));
                     } catch (error) {
                         console.error(error);
                     }
                 });
-            });
-
-        return evaluationsDB;
+            } catch (error) {
+                console.error(error);
+            }
+        });
     } catch (error) {
         console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {};
     }
 };
 
