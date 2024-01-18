@@ -1,4 +1,4 @@
-export default function ShareIcon({ color }: { color: string }) {
+export default function ShareIcon({ color = "blue" }: { color?: string}) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
