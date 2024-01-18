@@ -29,7 +29,7 @@ const nodeTypes = {
 };
 
 interface Props {
-    topResult: Results;
+    topResult: Results | undefined;
 }
 
 export default function StatementMap({ topResult }: Props) {

@@ -41,7 +41,6 @@ import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { RootState } from "../../../model/store";
-import { SuspenseFallback } from "../../../router";
 
 const Statement: FC = () => {
     // Hooks
@@ -164,10 +163,10 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-            {statement ? (
+           
                 <>
                     <StatementHeader
-                        statement={statement}
+                        statement={statement }
                         screen={screen || Screen.CHAT}
                         title={title}
                         showAskPermission={showAskPermission}
@@ -187,9 +186,7 @@ const Statement: FC = () => {
                         />
                     </MapProvider>
                 </>
-            ) : (
-                <SuspenseFallback />
-            )}
+           
         </div>
     );
 };

@@ -1,21 +1,14 @@
-import { Suspense, lazy } from "react";
-
-// Third party imports
 import { Screen, Statement, User } from "delib-npm";
+import Map from "./map/Map";
+import StatementMain from "./StatementMain";
+import StatementEvaluation from "./evaluations/StatementEvaluation";
+import StatementVote from "./vote/StatementVote";
+import MassQuestions from "./massQuestions/MassQuestions";
+import StatmentRooms from "./rooms/Rooms";
+import StatementSettings from "./settings/StatementSettings";
 
 // Custom components
-const StatementVote = lazy(() => import("./vote/StatementVote"));
-const StatementEvaluation = lazy(
-    () => import("./evaluations/StatementEvaluation"),
-);
-const StatmentRooms = lazy(() => import("./rooms/Rooms"));
-const StatementMain = lazy(() => import("./StatementMain"));
-const StatementSettings = lazy(() => import("./settings/StatementSettings"));
-const Map = lazy(() => import("./map/Map"));
-const MassQuestions = lazy(() => import("./massQuestions/MassQuestions"));
 
-// Custom components
-import { SuspenseFallback } from "../../../../router";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -36,90 +29,64 @@ export default function SwitchScreens({
         case Screen.DOC:
             // const Map = lazy(() => import("./map/Map"));
 
-            return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <Map statement={statement} />;
-                </Suspense>
-            );
+            return <Map statement={statement} />;
 
         case Screen.CHAT:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatementMain
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                    />
-                </Suspense>
+                <StatementMain
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                />
             );
         case Screen.OPTIONS:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatementEvaluation
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                    />
-                </Suspense>
+                <StatementEvaluation
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                />
             );
         case Screen.VOTE:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatementVote
-                        statement={statement}
-                        subStatements={subStatements}
-                    />
-                </Suspense>
+                <StatementVote
+                    statement={statement}
+                    subStatements={subStatements}
+                />
             );
         case Screen.MASS_QUESTIONS:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <MassQuestions
-                        statement={statement}
-                        subStatements={subStatements}
-                    />
-                </Suspense>
+                <MassQuestions
+                    statement={statement}
+                    subStatements={subStatements}
+                />
             );
         case Screen.GROUPS:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatmentRooms
-                        statement={statement}
-                        subStatements={subStatements}
-                    />
-                </Suspense>
+                <StatmentRooms
+                    statement={statement}
+                    subStatements={subStatements}
+                />
             );
         case Screen.SETTINGS:
-            return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatementSettings />;
-                </Suspense>
-            );
+            return <StatementSettings />;
         case Screen.QUESTIONS:
-        case Screen.QUESTIONS_CONSENSUS:
-        case Screen.QUESTIONS_NEW:
-        case Screen.QUESTIONS_RANDOM:
-        case Screen.QUESTIONS_UPDATED:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatementEvaluation
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                        questions={true}
-                    />
-                </Suspense>
+                <StatementEvaluation
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                    questions={true}
+                />
             );
 
         default:
             return (
-                <Suspense fallback={<SuspenseFallback />}>
-                    <StatementMain
-                        statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
-                    />
-                </Suspense>
+                <StatementMain
+                    statement={statement}
+                    subStatements={subStatements}
+                    handleShowTalker={handleShowTalker}
+                />
             );
     }
 }
