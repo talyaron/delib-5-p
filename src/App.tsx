@@ -26,8 +26,6 @@ import { getSigniture } from "./functions/db/users/getUserDB";
 import { onLocalMessage } from "./functions/db/notifications/notifications";
 
 export default function App() {
-    console.log("App rendered");
-
     // Hooks
     const navigate = useNavigate();
     const dispatch = useDispatch();

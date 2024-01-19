@@ -11,9 +11,6 @@ import AddStatement from "./view/pages/main/addStatement";
 import Statement from "./view/pages/statement/Statement";
 import Page404 from "./view/pages/page404/Page404";
 
-
-
-
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -70,7 +67,7 @@ export const router = createBrowserRouter([
                         errorElement: <ErrorPage />,
                     },
                 ],
-            }
+            },
         ],
     },
     {
