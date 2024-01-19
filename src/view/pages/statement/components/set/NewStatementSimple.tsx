@@ -143,7 +143,7 @@ const NewSetStatementSimple: FC<Props> = ({
                             style={{ height: "auto" }}
                         >
                             <input
-                                autoFocus={true}
+                                autoFocus={false}
                                 type="text"
                                 name="statement"
                                 placeholder={t("Title")}
