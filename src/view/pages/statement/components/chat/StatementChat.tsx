@@ -6,7 +6,6 @@ import { Statement, User } from "delib-npm";
 // Custom Components
 import StatementChatCard from "./StatementChatCard";
 import StatementInput from "./components/input/StatementInput";
-import ScreenSlide from "../../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
 import EnableNotifications from "../../../../components/enableNotifications/EnableNotifications";
 
@@ -25,7 +24,6 @@ const StatementChat: FC<Props> = ({
     handleShowTalker,
     setShowAskPermission,
 }) => {
-    // TODO: Add to user schema if user was asket to recieve notifications
     const [askNotifications, setAskNotifications] = useState(false);
     const messagesEndRef = useRef(null);
 
@@ -58,7 +56,10 @@ const StatementChat: FC<Props> = ({
 
     return (
         <>
-            <ScreenSlide className={`page__main ${toSlide && slideInOrOut}`}>
+            <div
+                className={`page__main ${toSlide && slideInOrOut}`}
+                style={{ paddingBottom: "5rem" }}
+            >
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChatCard
@@ -71,7 +72,7 @@ const StatementChat: FC<Props> = ({
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
-            </ScreenSlide>
+            </div>
             <div className="page__footer">
                 {statement && (
                     <StatementInput
