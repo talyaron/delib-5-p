@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 // Third party imports
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { t } from "i18next";
 
 // Firebase functions
 import { listenToAuth, logOut } from "./functions/db/auth";
@@ -24,27 +23,27 @@ import { resetStatements } from "./model/statements/statementsSlice";
 import { resetEvaluations } from "./model/evaluations/evaluationsSlice";
 import { resetVotes } from "./model/vote/votesSlice";
 import { resetResults } from "./model/results/resultsSlice";
-import Modal from "./view/components/modal/Modal";
 
 //css
 
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { Agreement } from "delib-npm";
-import { onLocalMessage } from "./functions/notifications";
+import { onLocalMessage } from "./functions/db/notifications/notifications";
+import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 export default function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { i18n } = useTranslation();
     const user = useAppSelector(userSelector);
-    const {anonymous} = useParams();
-
-
+    const { anonymous } = useParams();
 
     const [showSignAgreement, setShowSignAgreement] = useState(false);
     const [agreement, setAgreement] = useState<string>("");
-    const [visualViewportHeight, setVisualViewportHeight] = useState(window.visualViewport?.height || 0);
+    const [visualViewportHeight, setVisualViewportHeight] = useState(
+        window.visualViewport?.height || 0,
+    );
 
     function updateUserToStore(user: User | null) {
         dispatch(setUser(user));
@@ -53,8 +52,6 @@ export default function App() {
     function updateFonSize(fontSize: number) {
         dispatch(setFontSize(fontSize));
     }
-
-    
 
     function resetStoreCB() {
         dispatch(resetStatements());
@@ -111,8 +108,12 @@ export default function App() {
         });
 
         return () => {
-            window.removeEventListener("resize", () => {});
-            window.visualViewport?.addEventListener("resize", () => {});
+            window.removeEventListener("resize", () => {
+                console.log("Resize event listener removed.");
+            });
+            window.visualViewport?.addEventListener("resize", () => {
+                console.log("visualViewport?.addEventListener");
+            });
         };
     }, []);
 
@@ -176,32 +177,10 @@ export default function App() {
 
             <Outlet />
             {showSignAgreement && (
-                <Modal>
-                    <div className="termsOfUse">
-                        <h1 className="termsOfUse__title">
-                            {t("terms of use")}
-                        </h1>
-                        <p>{t(agreement)}</p>
-                        <div className="btns">
-                            <button
-                                className="btn btn--agree"
-                                onClick={() =>
-                                    handleAgreement(true, t(agreement))
-                                }
-                            >
-                                {t("Agree")}
-                            </button>
-                            <button
-                                className="btn btn--disagree"
-                                onClick={() =>
-                                    handleAgreement(false, t(agreement))
-                                }
-                            >
-                                {t("Dont agree")}
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
+                <TermsOfUse
+                    handleAgreement={handleAgreement}
+                    agreement={agreement}
+                />
             )}
         </div>
     );

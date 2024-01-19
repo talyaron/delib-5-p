@@ -7,17 +7,13 @@ import { User, Role, Screen } from "delib-npm";
 import { t } from "i18next";
 
 // firestore
-import {
-    getIsSubscribed,
-} from "../../../functions/db/statements/getStatement";
+import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
 import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
-import {
-    setStatmentSubscriptionToDB,
-    updateSubscriberForStatementSubStatements,
-} from "../../../functions/db/statements/setStatments";
+import { updateSubscriberForStatementSubStatements } from "../../../functions/db/subscriptions/setSubscriptions";
+import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
 import { listenToEvaluations } from "../../../functions/db/evaluation/getEvaluation";
 
 // Redux Store
@@ -25,14 +21,14 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import { statementSelector } from "../../../model/statements/statementsSlice";
+import { statementNotificationSelector, statementSelector, statementSubscriptionSelector } from "../../../model/statements/statementsSlice";
 
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
 
 // Custom components
 import ProfileImage from "../../components/profileImage/ProfileImage";
-import StatementHeader from "./StatementHeader";
+import StatementHeader from "./components/header/StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
 import SwitchScreens from "./components/SwitchScreens";
 
@@ -41,11 +37,12 @@ import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { RootState } from "../../../model/store";
+import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
 
 const Statement: FC = () => {
     // Hooks
     const { statementId } = useParams();
-   
+
     const page = useParams().page as Screen;
 
     const navigate = useNavigate();
@@ -94,40 +91,53 @@ const Statement: FC = () => {
 
     // Listen to statement changes.
     useEffect(() => {
-        let unsubListenToStatement: Function = () => {};
-        let unsubSubStatements:Function = () => {};
-        let unsubStatementSubscription: Function = () => {};
-        let unsubEvaluations: Function = () => {};
-        let unsubSubSubscribedStatements: Function = () => {};
+        let unsubListenToStatement: () => void = () => {
+            return;
+        };
+        let unsubSubStatements: () => void = () => {
+            return;
+        };
+        let unsubStatementSubscription: () => void = () => {
+            return;
+        };
+        let unsubEvaluations: () => void = () => {
+            return;
+        };
+        let unsubSubSubscribedStatements: () => void = () => {
+            return;
+        };
 
         if (user && statementId) {
             unsubListenToStatement = listenToStatement(statementId, dispatch);
-            unsubSubStatements = listenToSubStatements(statementId,dispatch);
+            unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
                 statementId,
                 user?.uid,
             );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(statementId, user, dispatch);
-            unsubStatementSubscription = listenToStatementSubscription(statementId, user,dispatch);
+            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+                statementId,
+                user,
+                dispatch,
+            );
+            unsubStatementSubscription = listenToStatementSubscription(
+                statementId,
+                user,
+                dispatch,
+            );
         }
 
         return () => {
-        
-                unsubListenToStatement();
-                unsubSubStatements();
-                unsubStatementSubscription();
-                unsubSubSubscribedStatements();
-                unsubEvaluations();
-           
-
-            
+            unsubListenToStatement();
+            unsubSubStatements();
+            unsubStatementSubscription();
+            unsubSubSubscribedStatements();
+            unsubEvaluations();
         };
     }, [user, statementId]);
 
     useEffect(() => {
         if (statement) {
-         
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
                 100,
@@ -140,7 +150,7 @@ const Statement: FC = () => {
                 // if isSubscribed is false, then subscribe
                 if (!isSubscribed) {
                     // subscribe
-                    setStatmentSubscriptionToDB(statement, Role.member, true);
+                    setStatmentSubscriptionToDB(statement, Role.member);
                 } else {
                     //update subscribed field
                     updateSubscriberForStatementSubStatements(statement);
@@ -149,7 +159,25 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
-  
+    const [askNotifications, setAskNotifications] = useState(false);
+    
+    const hasNotifications = useAppSelector(
+        statementNotificationSelector(statementId),
+    );
+
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statementId),
+    );
+
+    const toggleAskNotifications = () => {
+        // Ask for notifications after user interaction.
+        if (
+            !hasNotifications &&
+            !statementSubscription?.userAskedForNotification
+        ) {
+            setAskNotifications(true);
+        }
+    };
 
     return (
         <div className="page">
@@ -165,30 +193,34 @@ const Statement: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
-           
-                <>
-                    <StatementHeader
-                        statement={statement }
-                        screen={screen || Screen.CHAT}
-                        title={title}
-                        showAskPermission={showAskPermission}
-                        setShowAskPermission={setShowAskPermission}
-                    />
+            {askNotifications && (
+                <EnableNotifications
+                    statement={statement}
+                    setAskNotifications={setAskNotifications}
+                    setShowAskPermission={setShowAskPermission}
+                />
+            )}
 
-                    <MapProvider>
-                        <SwitchScreens
-                            key={window.location.pathname
-                                .split("/")
-                                .slice(2)
-                                .join(" ")}
-                            screen={screen}
-                            statement={statement}
-                            subStatements={subStatements}
-                            handleShowTalker={handleShowTalker}
-                        />
-                    </MapProvider>
-                </>
-           
+            <>
+                <StatementHeader
+                    statement={statement}
+                    screen={screen || Screen.CHAT}
+                    title={title}
+                    showAskPermission={showAskPermission}
+                    setShowAskPermission={setShowAskPermission}
+                />
+
+                <MapProvider>
+                    <SwitchScreens
+                        screen={screen}
+                        statement={statement}
+                        subStatements={subStatements}
+                        handleShowTalker={handleShowTalker}
+                        setShowAskPermission={setShowAskPermission}
+                        toggleAskNotifications={toggleAskNotifications}
+                    />
+                </MapProvider>
+            </>
         </div>
     );
 };

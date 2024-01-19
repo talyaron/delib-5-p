@@ -11,17 +11,17 @@ import Fav from "../../components/fav/Fav";
 // Other
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
-import {  StatementSubscription } from "delib-npm";
+import { StatementSubscription } from "delib-npm";
 import MainCard from "./mainCard/MainCard";
-
-
 
 const Main = () => {
     // Hooks
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
-    const statements: StatementSubscription[] = useAppSelector(statementsSubscriptionsSelector)
+    const statements: StatementSubscription[] = useAppSelector(
+        statementsSubscriptionsSelector,
+    )
         .filter((s) => s.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 

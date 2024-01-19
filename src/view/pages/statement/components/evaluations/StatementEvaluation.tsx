@@ -20,6 +20,7 @@ interface Props {
     handleShowTalker: (talker: User | null) => void;
     showNav?: boolean;
     questions?: boolean;
+    toggleAskNotifications: () => void;
 }
 
 const StatementEvaluation: FC<Props> = ({
@@ -27,6 +28,7 @@ const StatementEvaluation: FC<Props> = ({
     subStatements,
     handleShowTalker,
     questions = false,
+    toggleAskNotifications,
 }) => {
     try {
         const { sort } = useParams();
@@ -93,6 +95,7 @@ const StatementEvaluation: FC<Props> = ({
                             parentStatement={statement}
                             isOption={questions ? false : true}
                             setShowModal={setShowModal}
+                            toggleAskNotifications={toggleAskNotifications}
                         />
                     </Modal>
                 )}

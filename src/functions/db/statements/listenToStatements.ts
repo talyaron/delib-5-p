@@ -32,12 +32,13 @@ import { DB } from "../config";
 
 // Helpers
 import { listenedStatements } from "../../../view/pages/home/Home";
+import { Unsubscribe } from "firebase/auth";
 
 export const listenToStatementSubscription = (
     statementId: string,
     user: User,
     dispatch: AppDispatch,
-): Function => {
+): Unsubscribe => {
     try {
         const statementsSubscribeRef = doc(
             DB,
@@ -68,6 +69,8 @@ export const listenToStatementSubscription = (
         });
     } catch (error) {
         console.error(error);
+        
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 };
@@ -76,7 +79,7 @@ export const listenToStatementSubSubscriptions = (
     statementId: string,
     user: User,
     dispatch: AppDispatch,
-): Function => {
+): Unsubscribe => {
     try {
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
@@ -127,6 +130,8 @@ export const listenToStatementSubSubscriptions = (
         });
     } catch (error) {
         console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 };
@@ -298,7 +303,7 @@ export const listenToStatementSubscriptions =
 export const listenToStatement = (
     statementId: string,
     dispatch: AppDispatch,
-): Function => {
+): Unsubscribe => {
     try {
         const statementRef = doc(DB, Collections.statements, statementId);
 
@@ -309,6 +314,8 @@ export const listenToStatement = (
         });
     } catch (error) {
         console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 };
@@ -316,9 +323,8 @@ export const listenToStatement = (
 export const listenToSubStatements = (
     statementId: string | undefined,
     dispatch: AppDispatch,
-): Function => {
+): Unsubscribe => {
     try {
-      
         if (!statementId) throw new Error("Statement id is undefined");
         const statementsRef = collection(DB, Collections.statements);
         const q = query(
@@ -328,6 +334,7 @@ export const listenToSubStatements = (
             limit(20),
         );
         let isFirstCall = true;
+
         return onSnapshot(q, (statementsDB) => {
             const startStatements: Statement[] = [];
             statementsDB.docChanges().forEach((change) => {
@@ -335,16 +342,13 @@ export const listenToSubStatements = (
 
                 if (change.type === "added") {
                     if (isFirstCall) {
-                    
                         startStatements.push(statement);
                     } else {
-                       
                         dispatch(setStatement(statement));
                     }
                 }
 
                 if (change.type === "modified") {
-              
                     dispatch(setStatement(statement));
                 }
 
@@ -352,11 +356,13 @@ export const listenToSubStatements = (
                 // If You will use delete, it will remove from the dom a messages that are outside of the limit of the query.
             });
             isFirstCall = false;
-          
+
             dispatch(setStatements(startStatements));
         });
     } catch (error) {
         console.error(error);
+        
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 };
