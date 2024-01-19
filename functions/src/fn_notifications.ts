@@ -1,9 +1,10 @@
 import * as admin from "firebase-admin";
-import { Collections, Statement } from "delib-npm";
+import { Collections, Statement, StatementSubscription } from "delib-npm";
 import { logger } from "firebase-functions";
-import {  FieldValue } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
-
+import { log } from "firebase-functions/logger";
+import { z } from "zod";
 
 export async function sendNotificationsCB(e: any) {
     try {
@@ -16,8 +17,9 @@ export async function sendNotificationsCB(e: any) {
 
         const parentRef = db.doc(`statements/${parentId}`);
         const parentDB = await parentRef.get();
-        const parent = parentDB.data() as Statement;
-        const _title = parent.statement.replace(/\*/g, "");
+
+        const parent = parentDB.exists ? (parentDB.data() as Statement) : null;
+        const _title = parent ? parent.statement.replace(/\*/g, "") : "Delib-5";
 
         //bring only the first pargarpah
         const _titleArr = _title.split("\n");
@@ -39,69 +41,87 @@ export async function sendNotificationsCB(e: any) {
         const subscribersDB = await q.get();
 
         //send push notifications to all subscribers
-        subscribersDB.docs.forEach((doc: any) => {
-            const tokenArr = doc.data().token as string[];
+        subscribersDB.docs.forEach((dosubscriberDB) => {
+            const subscriber = dosubscriberDB.data() as StatementSubscription;
+            const tokenArr = subscriber.token;
+            const { success } = z.array(z.string()).safeParse(tokenArr);
+            if (!success) {
+                log(`tokenArr is not an array of strings`, tokenArr);
+                return;
+            }
 
             if (tokenArr && tokenArr.length > 0) {
                 // Send a message to each device the user has registered for notifications.
 
-                tokenArr.forEach((token: string) => {
-                    const message: any = {
-                        data: {
-                            title,
-                            body: statement.statement,
+                try {
+                    tokenArr.forEach((token: string) => {
+                        const message: any = {
+                            data: {
+                                title,
+                                body: statement.statement,
 
-                            // url: `https://delib-5.web.app/statement/${parentId}/chat`,
+                                // url: `https://delib-5.web.app/statement/${parentId}/chat`,
 
-                            url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
-                            creatorId: statement.creatorId,
-                        },
-                        token,
-                    };
+                                url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
+                                creatorId: statement.creatorId,
+                            },
+                            token,
+                        };
 
-                    admin
-                        .messaging()
-                        .send(message)
-                        .then((response: any) => {
-                            // Response is a message ID string.
-                            logger.info("Successfully sent message:", response);
-                        })
-                        .catch((error: any) => {
-                            logger.error(
-                                "Error failed to sent notification: ",
-                                error,
-                            );
+                        admin
+                            .messaging()
+                            .send(message)
+                            .then((response: any) => {
+                                // Response is a message ID string.
+                                logger.info(
+                                    "Successfully sent message:",
+                                    response,
+                                );
+                            })
+                            .catch((error: any) => {
+                                logger.error(
+                                    "Error failed to sent notification: ",
+                                    error,
+                                );
 
-                            // Delete token from DB if it is not valid.
-                            if (
-                                error.code ===
-                                    "messaging/invalid-registration-token" ||
-                                error.code ===
-                                    "messaging/registration-token-not-registered" ||
-                                error.message ===
-                                    "The registration token is not a valid FCM registration token"
-                            ) {
-                                logger.info("Deleting token from DB");
+                                // Delete token from DB if it is not valid.
+                                if (
+                                    error.code ===
+                                        "messaging/invalid-registration-token" ||
+                                    error.code ===
+                                        "messaging/registration-token-not-registered" ||
+                                    error.message ===
+                                        "The registration token is not a valid FCM registration token"
+                                ) {
+                                    logger.info("Deleting token from DB");
 
-                                db.collection(Collections.statementsSubscribe)
-                                    .where(
-                                        "statementsSubscribeId",
-                                        "==",
-                                        doc.data().statementsSubscribeId,
+                                    db.collection(
+                                        Collections.statementsSubscribe,
                                     )
-                                    .get()
-                                    .then((querySnapshot) => {
-                                        querySnapshot.forEach((doc) => {
-                                            doc.ref.update({
-                                                token: FieldValue.arrayRemove(
-                                                    token,
-                                                ),
+                                        .where(
+                                            "statementsSubscribeId",
+                                            "==",
+                                            subscriber.statementsSubscribeId,
+                                        )
+                                        .get()
+                                        .then((querySnapshot) => {
+                                            querySnapshot.forEach((doc) => {
+                                                doc.ref.update({
+                                                    token: FieldValue.arrayRemove(
+                                                        token,
+                                                    ),
+                                                });
                                             });
                                         });
-                                    });
-                            }
-                        });
-                });
+                                }
+                            });
+                    });
+                } catch (error) {
+                    logger.error(
+                        `send push notifications to all subscriber `,
+                        error,
+                    );
+                }
             }
         });
     } catch (error) {
