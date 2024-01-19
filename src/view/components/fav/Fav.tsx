@@ -2,7 +2,7 @@ import { FC } from "react";
 
 // icons
 // import AddIcon from "@mui/icons-material/Add";
-import addIcon from "../../../assets/addIcon.svg";
+import addIcon from "../../../assets/icons/addIcon.svg";
 
 interface Props {
     onclick: () => void;

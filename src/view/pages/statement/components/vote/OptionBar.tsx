@@ -18,8 +18,8 @@ import { setVote } from "../../../../../functions/db/vote/setVote";
 import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
-import InfoIcon from "../../../../../assets/icons/InfoIcon";
-import HandsIcon from "../../../../../assets/icons/HandsIcon";
+import InfoIcon from "../../../../components/icons/InfoIcon";
+import HandsIcon from "../../../../components/icons/HandsIcon";
 
 export interface OptionBarProps {
     option: Statement;

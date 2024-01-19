@@ -3,8 +3,8 @@ import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 
 // icons
-import elipsIcon from "../../../assets/elipsIcon.svg";
-import installIcon from "../../../assets/installIcon.svg";
+import elipsIcon from "../../../assets/icons/elipsIcon.svg";
+import installIcon from "../../../assets/icons/installIcon.svg";
 import HomeMenu from "../../components/homeMenu/HomeMenu";
 import { t } from "i18next";
 import useDirection from "../../../functions/hooks/useDirection";

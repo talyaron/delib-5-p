@@ -1,7 +1,7 @@
 import { User } from "delib-npm";
 import { FC } from "react";
 import styles from "./Chip.module.scss";
-import SmileIcon from "../../../assets/icons/SmileIcon";
+import SmileIcon from "../icons/SmileIcon";
 
 // import anonymous from "../../../assets/anonymous1.png";
 

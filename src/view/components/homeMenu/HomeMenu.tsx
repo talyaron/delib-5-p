@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./homeMenu.scss";
-import disconnectlIcon from "../../../assets/disconnectIcon.svg";
+import disconnectlIcon from "../../../assets/icons/disconnectIcon.svg";
 import { handleLogout } from "../../../functions/general/helpers";
 import { t } from "i18next";
 

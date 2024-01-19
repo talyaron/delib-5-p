@@ -4,8 +4,7 @@ import { FC, useState } from "react";
 import { Statement, StatementType } from "delib-npm";
 import { t } from "i18next";
 
-// Statements helpers
-
+// Statements Helpers
 import {
     createStatement,
     setStatmentToDB,
@@ -14,8 +13,9 @@ import {
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
 
-import questionModalImage from "../../../../../assets/questionModalImage.png";
-import optionModalImage from "../../../../../assets/optionModalImage.png";
+// Images
+import questionModalImage from "../../../../../assets/images/questionModalImage.png";
+import optionModalImage from "../../../../../assets/images/optionModalImage.png";
 import ElipsIcon from "../../../../components/icons/ElipsIcon";
 
 interface Props {

@@ -14,7 +14,7 @@ import { userSelector } from "../../../model/users/userSlice";
 
 //img
 import Logo from "../../../assets/logo/logo-128px.png";
-import googleLogo from "../../../assets/google-seeklogo.com.svg";
+import googleLogo from "../../../assets/icons/google-seeklogo.com.svg";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
