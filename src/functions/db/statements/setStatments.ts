@@ -136,6 +136,7 @@ interface CreateStatementProps {
     resultsBy?: ResultsBy;
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
+    toggleAskNotifications?: () => void;
 }
 export function createStatement({
     text,
@@ -147,10 +148,14 @@ export function createStatement({
     resultsBy = ResultsBy.topOptions,
     numberOfResults = 1,
     hasChildren = true,
+    toggleAskNotifications,
 }: CreateStatementProps): Statement | undefined {
     try {
+        if (toggleAskNotifications) toggleAskNotifications();
+
         const user = store.getState().user.user;
         if (!user) throw new Error("User is undefined");
+
         const statementId = crypto.randomUUID();
 
         const parentId =

@@ -20,7 +20,7 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import { statementSelector } from "../../../model/statements/statementsSlice";
+import { statementNotificationSelector, statementSelector, statementSubscriptionSelector } from "../../../model/statements/statementsSlice";
 
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -36,10 +36,12 @@ import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { RootState } from "../../../model/store";
+import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
 
 const Statement: FC = () => {
     // Hooks
     const { statementId } = useParams();
+
     const page = useParams().page as Screen;
 
     const navigate = useNavigate();
@@ -156,6 +158,26 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
+    const [askNotifications, setAskNotifications] = useState(false);
+    
+    const hasNotifications = useAppSelector(
+        statementNotificationSelector(statementId),
+    );
+
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statementId),
+    );
+
+    const toggleAskNotifications = () => {
+        // Ask for notifications after user interaction.
+        if (
+            !hasNotifications &&
+            !statementSubscription?.userAskedForNotification
+        ) {
+            setAskNotifications(true);
+        }
+    };
+
     return (
         <div className="page">
             {showAskPermission && (
@@ -169,6 +191,13 @@ const Statement: FC = () => {
                 >
                     <ProfileImage user={talker} />
                 </div>
+            )}
+            {askNotifications && (
+                <EnableNotifications
+                    statement={statement}
+                    setAskNotifications={setAskNotifications}
+                    setShowAskPermission={setShowAskPermission}
+                />
             )}
 
             <>
@@ -187,6 +216,7 @@ const Statement: FC = () => {
                         subStatements={subStatements}
                         handleShowTalker={handleShowTalker}
                         setShowAskPermission={setShowAskPermission}
+                        toggleAskNotifications={toggleAskNotifications}
                     />
                 </MapProvider>
             </>

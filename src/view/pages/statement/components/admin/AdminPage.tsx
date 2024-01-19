@@ -15,6 +15,7 @@ const AdminPage = () => {
         <div className="page__main">
             <StatementSettings />
             <section className={styles.section}>
+                <h1>dfsdf dssdf sdf sdf</h1>
                 <div className="btns">
                     <div
                         className="btn"

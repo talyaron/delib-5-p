@@ -12,28 +12,17 @@ import { userSelector } from "../../../../../../../model/users/userSlice";
 import useDirection from "../../../../../../../functions/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
 import useStatementColor from "../../../../../../../functions/hooks/useStatementColor";
-import {
-    statementNotificationSelector,
-    statementSubscriptionSelector,
-} from "../../../../../../../model/statements/statementsSlice";
 
 interface Props {
     statement: Statement;
-    setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleAskNotifications: () => void;
 }
 
-const StatementInput: FC<Props> = ({ statement, setAskNotifications }) => {
+const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
     if (!statement) throw new Error("No statement");
 
     // Redux hooks
     const user = useAppSelector(userSelector);
-    const hasNotifications = useAppSelector(
-        statementNotificationSelector(statement.statementId),
-    );
-
-    const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statement.statementId),
-    );
 
     const statementColor = useStatementColor(statement.statementType || "");
 
@@ -61,17 +50,9 @@ const StatementInput: FC<Props> = ({ statement, setAskNotifications }) => {
         e.preventDefault();
 
         // Create statement
-        handleAddStatement(message, statement, user);
+        handleAddStatement(message, statement, user, toggleAskNotifications);
 
         setMessage(""); // Clear input
-
-        // Ask for notifications after user interaction.
-        if (
-            !hasNotifications &&
-            !statementSubscription?.userAskedForNotification
-        ) {
-            setAskNotifications(true);
-        }
     };
 
     return (

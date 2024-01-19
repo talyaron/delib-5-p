@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 
 // Third Party Imports
 import { Statement, User } from "delib-npm";
@@ -6,15 +6,14 @@ import { Statement, User } from "delib-npm";
 // Custom Components
 import StatementChatCard from "./StatementChatCard";
 import StatementInput from "./components/input/StatementInput";
-import ScreenSlide from "../../../../components/animation/ScreenSlide";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
-import EnableNotifications from "../../../../components/enableNotifications/EnableNotifications";
 
 interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleAskNotifications: () => void;
 }
 
 let firstTime = true;
@@ -23,10 +22,8 @@ const StatementChat: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
-    setShowAskPermission,
+    toggleAskNotifications,
 }) => {
-    // TODO: Add to user schema if user was asket to recieve notifications
-    const [askNotifications, setAskNotifications] = useState(false);
     const messagesEndRef = useRef(null);
 
     const { toSlide, slideInOrOut } = useSlideAndSubStatement(
@@ -58,7 +55,10 @@ const StatementChat: FC<Props> = ({
 
     return (
         <>
-            <ScreenSlide className={`page__main ${toSlide && slideInOrOut}`}>
+            <div
+                className={`page__main ${toSlide && slideInOrOut}`}
+                style={{ paddingBottom: "5rem" }}
+            >
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
                         <StatementChatCard
@@ -71,22 +71,15 @@ const StatementChat: FC<Props> = ({
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
-            </ScreenSlide>
+            </div>
             <div className="page__footer">
                 {statement && (
                     <StatementInput
+                        toggleAskNotifications={toggleAskNotifications}
                         statement={statement}
-                        setAskNotifications={setAskNotifications}
                     />
                 )}
             </div>
-            {askNotifications && (
-                <EnableNotifications
-                    statement={statement}
-                    setAskNotifications={setAskNotifications}
-                    setShowAskPermission={setShowAskPermission}
-                />
-            )}
         </>
     );
 };

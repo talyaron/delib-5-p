@@ -8,6 +8,7 @@ export function handleAddStatement(
     message: string,
     statement: Statement,
     user: User | null,
+    toggleAskNotifications: () => void,
 ) {
     try {
         if (!user) throw new Error("No user");
@@ -21,6 +22,7 @@ export function handleAddStatement(
             text: value,
             parentStatement: statement,
             statementType: StatementType.statement,
+            toggleAskNotifications,
         });
         if (!newStatement) throw new Error("No statement was created");
 

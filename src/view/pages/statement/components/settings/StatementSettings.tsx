@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import styles from "./StatementSettings.module.scss";
 
 // Statment imports
 import {
@@ -30,9 +31,7 @@ import {
 } from "../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import {
-    getStatementFromDB,
-} from "../../../../../functions/db/statements/getStatement";
+import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
 import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
 // * Statement Settings functions * //
@@ -47,6 +46,7 @@ import ResultsRange from "./ResultsRange";
 import GetVoters from "./GetVoters";
 import GetEvaluators from "./GetEvaluators";
 import CheckBoxeArea from "./CheckBoxeArea";
+import ShareIcon from "../../../../components/icons/ShareIcon";
 
 interface Props {
     simple?: boolean;
@@ -187,6 +187,17 @@ const StatementSettings: FC<Props> = () => {
         }
     }
 
+    function handleShare() {
+        const baseUrl = window.location.origin;
+
+        const shareData = {
+            title: "Delib: We create agreements together",
+            text: "Invited:" + statement?.statement,
+            url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
+        };
+        navigator.share(shareData);
+    }
+
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
 
     //get all elements of the array except the first one
@@ -230,6 +241,15 @@ const StatementSettings: FC<Props> = () => {
                     {membership && statementId && (
                         <>
                             <h2>{"Members in Group"}</h2>
+
+                            <div
+                                className={styles.linkAnonymous}
+                                onClick={handleShare}
+                            >
+                                {"Send a link to anonymous users"}
+                                <ShareIcon />
+                            </div>
+
                             <div className="settings__membersBox">
                                 {membership.map((member) => (
                                     <MembershipLine

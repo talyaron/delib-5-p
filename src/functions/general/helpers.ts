@@ -289,3 +289,4 @@ export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
         return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
     }
 }
+
