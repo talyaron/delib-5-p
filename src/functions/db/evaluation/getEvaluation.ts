@@ -12,12 +12,13 @@ import { Collections, Evaluation, User } from "delib-npm";
 import { EvaluationSchema } from "../../../model/evaluations/evaluationModel";
 import { AppDispatch } from "../../../model/store";
 import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
+import { Unsubscribe } from "firebase/auth";
 
 export const listenToEvaluations = (
     dispatch: AppDispatch,
     parentId: string,
     evaluatorId: string | undefined,
-): Function => {
+): Unsubscribe => {
     try {
         const evaluationsRef = collection(DB, Collections.evaluations);
 
@@ -54,10 +55,10 @@ export const listenToEvaluations = (
                 console.error(error);
             }
         });
-
-      
     } catch (error) {
         console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 };

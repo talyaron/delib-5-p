@@ -23,6 +23,7 @@ interface Props {
     isOption: boolean;
     setShowModal: (bool: boolean) => void;
     getSubStatements?: () => Promise<void>;
+    toggleAskNotifications?: () => void;
 }
 
 const NewSetStatementSimple: FC<Props> = ({
@@ -30,6 +31,7 @@ const NewSetStatementSimple: FC<Props> = ({
     isOption,
     setShowModal,
     getSubStatements,
+    toggleAskNotifications,
 }) => {
     try {
         const parentIsStatement = parentStatement !== "top";
@@ -68,6 +70,7 @@ const NewSetStatementSimple: FC<Props> = ({
                     statementType: isOption
                         ? StatementType.option
                         : StatementType.question,
+                    toggleAskNotifications,
                 });
 
                 if (!newStatement)

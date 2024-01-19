@@ -12,10 +12,11 @@ import {
     UserSchema,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
-import { getUserFromFirebase } from "../users/usersGeneral";
 import { DB } from "../config";
 import { getPastelColor } from "../../general/helpers";
 import { store } from "../../../model/store";
+import { setStatmentSubscriptionNotificationToDB } from "../notifications/notifications";
+import { setStatmentSubscriptionToDB } from "../subscriptions/setSubscriptions";
 
 const TextSchema = z.string().min(2);
 interface SetStatmentToDBProps {
@@ -81,8 +82,6 @@ export const setStatmentToDB = async ({
                 enableAddVotingOption: true,
             };
 
-        // statement.parents = getStatementsParents(statement);
-
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator);
 
@@ -104,19 +103,17 @@ export const setStatmentToDB = async ({
         //add subscription
 
         if (addSubscription) {
+            await Notification.requestPermission();
             statementPromises.push(
-                setStatmentSubscriptionToDB(
-                    statement,
-                    Role.statementCreator,
-                    true,
-                ),
+                setStatmentSubscriptionToDB(statement, Role.statementCreator),
             );
-            
-            // const [, , canGetNotifications] =
-            await Promise.all(statementPromises);
 
-            // if (canGetNotifications)
-            //     await setStatmentSubscriptionNotificationToDB(statement);
+            if (Notification.permission === "granted")
+                statementPromises.push(
+                    setStatmentSubscriptionNotificationToDB(statement),
+                );
+
+            await Promise.all(statementPromises);
         } else {
             await Promise.all(statementPromises);
         }
@@ -139,6 +136,7 @@ interface CreateStatementProps {
     resultsBy?: ResultsBy;
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
+    toggleAskNotifications?: () => void;
 }
 export function createStatement({
     text,
@@ -150,10 +148,14 @@ export function createStatement({
     resultsBy = ResultsBy.topOptions,
     numberOfResults = 1,
     hasChildren = true,
+    toggleAskNotifications,
 }: CreateStatementProps): Statement | undefined {
     try {
+        if (toggleAskNotifications) toggleAskNotifications();
+
         const user = store.getState().user.user;
         if (!user) throw new Error("User is undefined");
+
         const statementId = crypto.randomUUID();
 
         const parentId =
@@ -354,67 +356,6 @@ function updateStatementSettings(
     }
 }
 
-// function getStatementsParents(statement: Statement): string[] {
-//     try {
-//         if (!statement) throw new Error("Statement is undefined");
-
-//         StatementSchema.parse(statement);
-
-//         if (statement.parentId === "top") statement.parents = [];
-//         else {
-//             statement.parents = statement.parents || [];
-//             statement.parents.push(statement.statementId);
-//         }
-
-//         return statement.parents;
-//     } catch (error) {
-//         console.error(error);
-//         return [];
-//     }
-// }
-
-export async function setStatmentSubscriptionToDB(
-    statement: Statement,
-    role: Role,
-    setNotifications = false,
-) {
-    try {
-        const user = getUserFromFirebase();
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-        const { statementId } = statement;
-        StatementSchema.parse(statement);
-
-        const statementsSubscribeId = `${user.uid}--${statementId}`;
-
-        if (role === Role.admin) setNotifications = true;
-
-        const statementsSubscribeRef = doc(
-            DB,
-            Collections.statementsSubscribe,
-            statementsSubscribeId,
-        );
-
-        await setDoc(
-            statementsSubscribeRef,
-            {
-                user,
-                notification: setNotifications,
-                statement,
-                statementsSubscribeId,
-                role,
-                userId: user.uid,
-                statementId,
-                lastUpdate: Timestamp.now().toMillis(),
-                createdAt: Timestamp.now().toMillis(),
-            },
-            { merge: true },
-        );
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 export async function updateStatementText(
     statement: Statement | undefined,
     newText: string,
@@ -510,31 +451,6 @@ export async function setStatmentGroupToDB(statement: Statement) {
             { statementType: StatementType.statement },
             { merge: true },
         );
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-export async function updateSubscriberForStatementSubStatements(
-    statement: Statement,
-) {
-    try {
-        const user = getUserFromFirebase();
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-
-        const statementsSubscribeId = `${user.uid}--${statement.statementId}`;
-
-        const statementsSubscribeRef = doc(
-            DB,
-            Collections.statementsSubscribe,
-            statementsSubscribeId,
-        );
-        const newSubStatmentsRead = {
-            totalSubStatementsRead: statement.totalSubStatements || 0,
-        };
-
-        await updateDoc(statementsSubscribeRef, newSubStatmentsRead);
     } catch (error) {
         console.error(error);
     }
