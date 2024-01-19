@@ -15,7 +15,6 @@ import { addSignature, removeSignature } from "./fn_signatures";
 import {
     updateSubscribedListnersCB,
     updateParentWithNewMessageCB,
-    sendNotificationsCB,
 } from "./fn_statements";
 import { updateVote } from "./fn_vote";
 
@@ -29,6 +28,7 @@ import {
 // The Firebase Admin SDK to access Firestore.
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { sendNotificationsCB } from "./fn_notifications";
 
 initializeApp();
 export const db = getFirestore();
