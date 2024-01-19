@@ -4,6 +4,9 @@ import React, { FC, useState } from "react";
 import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
+// Hooks
+import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
+
 // Icons
 import BurgerIcon from "../../../../../components/icons/BurgerIcon";
 import PlusIcon from "../../../../../components/icons/PlusIcon";
@@ -11,7 +14,6 @@ import AgreementIcon from "../../../../../components/icons/AgreementIcon";
 import RandomIcon from "../../../../../components/icons/RandomIcon";
 import UpdateIcon from "../../../../../components/icons/UpdateIcon";
 import NewestIcon from "../../../../../components/icons/NewestIcon";
-import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;
@@ -79,13 +81,15 @@ const votesArray: NavItems[] = [
 ];
 
 const StatementEvaluationNav: FC<Props> = ({ setShowModal, statement }) => {
+    // Hooks
     const { page } = useParams();
+    const statementColor = useStatementColor(statement.statementType || "");
 
-    const navArray = page === "vote" ? votesArray : optionsArray;
-
+    // Use States
     const [openNav, setOpenNav] = useState(false);
 
-    const statementColor = useStatementColor(statement.statementType || "");
+    // Variables
+    const navArray = page === "vote" ? votesArray : optionsArray;
 
     //used to check if the user can add a new option in voting and in evaluation screens
     const addOption: boolean | undefined =

@@ -6,20 +6,18 @@ import addIcon from "../../../assets/icons/addIcon.svg";
 
 interface Props {
     onclick: () => void;
-    isHome: boolean;
 }
-const Fav: FC<Props> = ({ onclick, isHome }) => {
+const Fav: FC<Props> = ({ onclick }) => {
     const position = {
-        transform: isHome ? "translate(-50%, -10%)" : "translate(-50%, -10%)",
-        left: isHome ? "50%" : "50%",
-        bottom: isHome ? "6%" : "6%",
+        transform: "translate(-50%, -10%)",
+        left: "50%",
+        bottom: "6%",
     };
 
     return (
         <div
             style={position}
-            className="f
-            homeFav homeFav--fixed"
+            className="homeFav homeFav--fixed"
             onClick={onclick}
         >
             <img src={addIcon} alt="add_icon" />
