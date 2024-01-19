@@ -8,7 +8,7 @@ import Start from "./view/pages/start/Start";
 import Home from "./view/pages/home/Home";
 import Main from "./view/pages/main/Main";
 import AddStatement from "./view/pages/main/addStatement";
-import Statement from "./view/pages/statement/Statement";
+import Statement from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
 
 export const router = createBrowserRouter([

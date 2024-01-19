@@ -21,8 +21,12 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import { statementNotificationSelector, statementSelector, statementSubscriptionSelector } from "../../../model/statements/statementsSlice";
-
+import {
+    statementNotificationSelector,
+    statementSelector,
+    statementSubscriptionSelector,
+} from "../../../model/statements/statementsSlice";
+import { RootState } from "../../../model/store";
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
 
@@ -31,34 +35,31 @@ import ProfileImage from "../../components/profileImage/ProfileImage";
 import StatementHeader from "./components/header/StatementHeader";
 import AskPermisssion from "../../components/askPermission/AskPermisssion";
 import SwitchScreens from "./components/SwitchScreens";
+import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
 
-// Hooks & Providers
+// Hooks & Helpers
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
-import { RootState } from "../../../model/store";
-import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
 
-const Statement: FC = () => {
+const StatementMain: FC = () => {
     // Hooks
     const { statementId } = useParams();
-
     const page = useParams().page as Screen;
-
     const navigate = useNavigate();
 
-    // const user = store.getState().user.user
-    const user = useSelector(userSelector);
-
-    // Use state
-    const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(t("Group"));
-    const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
-
-    // Redux hooks
+    // Redux store
     const dispatch = useAppDispatch();
+    const user = useSelector(userSelector);
     const statement = useAppSelector(statementSelector(statementId));
+    const hasNotifications = useAppSelector(
+        statementNotificationSelector(statementId),
+    );
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statementId),
+    );
 
+    // Create selectors
     const subStatementsSelector = createSelector(
         (state: RootState) => state.statements.statements,
         (_state: RootState, statementId: string | undefined) => statementId,
@@ -71,16 +72,34 @@ const Statement: FC = () => {
     const subStatements = useAppSelector((state: RootState) =>
         subStatementsSelector(state, statementId),
     );
+
+    // Use states
+    const [talker, setTalker] = useState<User | null>(null);
+    const [title, setTitle] = useState<string>(t("Group"));
+    const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
+    const [askNotifications, setAskNotifications] = useState(false);
+
+    // Constants
     const screen = availableScreen(statement, page);
 
-    //handlers
-    function handleShowTalker(_talker: User | null) {
+    // Functions
+    const toggleAskNotifications = () => {
+        // Ask for notifications after user interaction.
+        if (
+            !hasNotifications &&
+            !statementSubscription?.userAskedForNotification
+        ) {
+            setAskNotifications(true);
+        }
+    };
+
+    const handleShowTalker = (_talker: User | null) => {
         if (!talker) {
             setTalker(_talker);
         } else {
             setTalker(null);
         }
-    }
+    };
 
     //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
@@ -159,26 +178,6 @@ const Statement: FC = () => {
         }
     }, [statement]);
 
-    const [askNotifications, setAskNotifications] = useState(false);
-    
-    const hasNotifications = useAppSelector(
-        statementNotificationSelector(statementId),
-    );
-
-    const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statementId),
-    );
-
-    const toggleAskNotifications = () => {
-        // Ask for notifications after user interaction.
-        if (
-            !hasNotifications &&
-            !statementSubscription?.userAskedForNotification
-        ) {
-            setAskNotifications(true);
-        }
-    };
-
     return (
         <div className="page">
             {showAskPermission && (
@@ -225,4 +224,4 @@ const Statement: FC = () => {
     );
 };
 
-export default Statement;
+export default StatementMain;
