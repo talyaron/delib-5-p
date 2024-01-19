@@ -10,55 +10,40 @@ import { Unsubscribe } from "firebase/auth";
 
 // Redux Store
 import { useAppSelector } from "./functions/hooks/reduxHooks";
-import { setFontSize, updateAgreementToStore } from "./model/users/userSlice";
 import { useDispatch } from "react-redux";
-import { setUser, userSelector } from "./model/users/userSlice";
+import { updateAgreementToStore, userSelector } from "./model/users/userSlice";
 
 // Type
-import { User } from "delib-npm";
+import { Agreement } from "delib-npm";
 
 // Custom components
 import Accessiblity from "./view/components/accessibility/Accessiblity";
-import { resetStatements } from "./model/statements/statementsSlice";
-import { resetEvaluations } from "./model/evaluations/evaluationsSlice";
-import { resetVotes } from "./model/vote/votesSlice";
-import { resetResults } from "./model/results/resultsSlice";
-
-//css
-
-import { updateUserAgreement } from "./functions/db/users/setUsersDB";
-import { getSigniture } from "./functions/db/users/getUserDB";
-import { Agreement } from "delib-npm";
-import { onLocalMessage } from "./functions/db/notifications/notifications";
 import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
+// Helpers
+import { updateUserAgreement } from "./functions/db/users/setUsersDB";
+import { getSigniture } from "./functions/db/users/getUserDB";
+import { onLocalMessage } from "./functions/db/notifications/notifications";
+
 export default function App() {
+    console.log("App rendered");
+
+    // Hooks
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { i18n } = useTranslation();
-    const user = useAppSelector(userSelector);
     const { anonymous } = useParams();
 
+    // Redux Store
+    const user = useAppSelector(userSelector);
+
+    // Use State
     const [showSignAgreement, setShowSignAgreement] = useState(false);
     const [agreement, setAgreement] = useState<string>("");
     const [visualViewportHeight, setVisualViewportHeight] = useState(
         window.visualViewport?.height || 0,
     );
 
-    function updateUserToStore(user: User | null) {
-        dispatch(setUser(user));
-    }
-
-    function updateFonSize(fontSize: number) {
-        dispatch(setFontSize(fontSize));
-    }
-
-    function resetStoreCB() {
-        dispatch(resetStatements());
-        dispatch(resetEvaluations());
-        dispatch(resetVotes());
-        dispatch(resetResults());
-    }
     useEffect(() => {
         // Default direction is ltr
         document.body.style.direction = "ltr";
@@ -73,12 +58,9 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-        const usub: Unsubscribe = listenToAuth(
+        const usub: Unsubscribe = listenToAuth(dispatch)(
             anonymous === "true" ? true : false,
-            updateUserToStore,
-            updateFonSize,
             navigate,
-            resetStoreCB,
         );
 
         return () => {
