@@ -45,6 +45,7 @@ import { RootState } from "../../../model/store";
 const Statement: FC = () => {
     // Hooks
     const { statementId } = useParams();
+   
     const page = useParams().page as Screen;
 
     const navigate = useNavigate();
@@ -126,6 +127,7 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (statement) {
+         
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
                 100,

@@ -369,7 +369,7 @@ export const statementsRoomSolutions =
                     statement.statementType === StatementType.result,
             )
             .sort((a, b) => a.createdAt - b.createdAt);
-export const statementsSubscriptionsSelector = (state: RootState) =>
+export const statementsSubscriptionsSelector = (state: RootState):StatementSubscription[] =>
     state.statements.statementSubscription;
 export const statementSelector =
     (statementId: string | undefined) => (state: RootState) =>
