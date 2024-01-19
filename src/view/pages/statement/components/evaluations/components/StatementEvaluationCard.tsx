@@ -19,7 +19,7 @@ import StatementChatSetOption from "../../chat/components/StatementChatSetOption
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
 import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
-import StatementChatMore from "../../chat/StatementChatMore";
+import StatementChatMore from "../../chat/components/StatementChatMore";
 import SetEdit from "../../../../../components/edit/SetEdit";
 
 // Helpers

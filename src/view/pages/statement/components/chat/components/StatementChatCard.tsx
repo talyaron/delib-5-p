@@ -4,34 +4,34 @@ import { FC, useState } from "react";
 import { Statement, StatementType, User } from "delib-npm";
 import { t } from "i18next";
 
-// Custom Components
-import StatementChatMore from "./StatementChatMore";
-import ProfileImage from "./components/ProfileImage";
-import EditTitle from "../../../../components/edit/EditTitle";
-import StatementChatSetEdit from "../../../../components/edit/SetEdit";
-import AddSubQuestion from "./components/addSubQuestion/AddSubQuestion";
-import Evaluation from "../../../../components/evaluation/Evaluation";
-
 // Redux Store
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
-import { store } from "../../../../../model/store";
-import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { store } from "../../../../../../model/store";
+import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
 
 // Helper functions
 import {
     isAuthorized,
     isOptionFn,
     linkToChildren,
-} from "../../../../../functions/general/helpers";
+} from "../../../../../../functions/general/helpers";
 
-import useStatementColor from "../../../../../functions/hooks/useStatementColor";
-
-import CardMenu from "../../../../components/cardMenu/CardMenu";
-import StatementChatSetOption from "./components/StatementChatSetOption";
-import StatementChatSetQuestion from "./components/StatementChatSetQuestion";
-import NewSetStatementSimple from "../set/NewStatementSimple";
-import Modal from "../../../../components/modal/Modal";
+// Hooks
+import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
 import { useNavigate } from "react-router";
+
+// Custom Components
+import StatementChatMore from "./StatementChatMore";
+import ProfileImage from "./ProfileImage";
+import EditTitle from "../../../../../components/edit/EditTitle";
+import StatementChatSetEdit from "../../../../../components/edit/SetEdit";
+import AddSubQuestion from "./addSubQuestion/AddSubQuestion";
+import Evaluation from "../../../../../components/evaluation/Evaluation";
+import CardMenu from "../../../../../components/cardMenu/CardMenu";
+import StatementChatSetOption from "./StatementChatSetOption";
+import StatementChatSetQuestion from "./StatementChatSetQuestion";
+import NewSetStatementSimple from "../../set/NewStatementSimple";
+import Modal from "../../../../../components/modal/Modal";
 
 export interface NewQuestion {
     statement: Statement;
@@ -53,16 +53,22 @@ const StatementChatCard: FC<Props> = ({
     showImage,
     previousStatement,
 }) => {
+    // Hooks
     const navigate = useNavigate();
     const { statementType } = statement;
+    const statementColor = useStatementColor(statementType || "");
 
+    // Redux store
+    const userId = store.getState().user.user?.uid;
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.parentId),
     );
-    const userId = store.getState().user.user?.uid;
 
-    const statementColor = useStatementColor(statementType || "");
+    // Use States
+    const [isEdit, setIsEdit] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
+    // Variables
     const creatorId = statement.creatorId;
     const _isAuthrized = isAuthorized(
         statement,
@@ -75,9 +81,6 @@ const StatementChatCard: FC<Props> = ({
     const isOption = isOptionFn(statement);
 
     const displayChat = isQuestion || isOption;
-
-    const [isEdit, setIsEdit] = useState(false);
-    const [showModal, setShowModal] = useState(false);
 
     const displayUserName = !previousStatement
         ? true

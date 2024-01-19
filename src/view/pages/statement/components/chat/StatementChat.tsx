@@ -4,7 +4,7 @@ import { FC, useEffect, useRef } from "react";
 import { Statement, User } from "delib-npm";
 
 // Custom Components
-import StatementChatCard from "./StatementChatCard";
+import StatementChatCard from "./components/StatementChatCard";
 import StatementInput from "./components/input/StatementInput";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
 
