@@ -59,6 +59,18 @@ export const router = createBrowserRouter([
                     },
                 ],
             },
+            {
+                path: "statement-an/:anonymous/:statementId/:page",
+                element: <Statement />,
+                errorElement: <ErrorPage />,
+                children: [
+                    {
+                        path: ":sort",
+                        element: <Statement />,
+                        errorElement: <ErrorPage />,
+                    },
+                ],
+            }
         ],
     },
     {
