@@ -28,10 +28,15 @@ import StatementInfo from "./StatementInfo";
 interface Props {
     statement: Statement;
     subStatements: Statement[];
+    toggleAskNotifications: () => void;
 }
 let getVoteFromDB = false;
 
-const StatementVote: FC<Props> = ({ statement, subStatements }) => {
+const StatementVote: FC<Props> = ({
+    statement,
+    subStatements,
+    toggleAskNotifications,
+}) => {
     const dispatch = useAppDispatch();
     const { sort } = useParams();
 
@@ -52,10 +57,6 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
             getVoteFromDB = true;
         }
     }, []);
-
-    // useEffect(() => {
-    //     setOptions(_options);
-    // }, [_options]);
 
     function updateStoreWitehVoteCB(option: Statement) {
         dispatch(setVoteToStore(option));
@@ -106,6 +107,7 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                             parentStatement={statement}
                             isOption={true}
                             setShowModal={setShowModal}
+                            toggleAskNotifications={toggleAskNotifications}
                         />
                     </Modal>
                 )}

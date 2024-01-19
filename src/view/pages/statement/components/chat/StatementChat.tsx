@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 
 // Third Party Imports
 import { Statement, User } from "delib-npm";
@@ -7,13 +7,13 @@ import { Statement, User } from "delib-npm";
 import StatementChatCard from "./StatementChatCard";
 import StatementInput from "./components/input/StatementInput";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
-import EnableNotifications from "../../../../components/enableNotifications/EnableNotifications";
 
 interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleAskNotifications: () => void;
 }
 
 let firstTime = true;
@@ -22,9 +22,8 @@ const StatementChat: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
-    setShowAskPermission,
+    toggleAskNotifications,
 }) => {
-    const [askNotifications, setAskNotifications] = useState(false);
     const messagesEndRef = useRef(null);
 
     const { toSlide, slideInOrOut } = useSlideAndSubStatement(
@@ -76,18 +75,11 @@ const StatementChat: FC<Props> = ({
             <div className="page__footer">
                 {statement && (
                     <StatementInput
+                        toggleAskNotifications={toggleAskNotifications}
                         statement={statement}
-                        setAskNotifications={setAskNotifications}
                     />
                 )}
             </div>
-            {askNotifications && (
-                <EnableNotifications
-                    statement={statement}
-                    setAskNotifications={setAskNotifications}
-                    setShowAskPermission={setShowAskPermission}
-                />
-            )}
         </>
     );
 };

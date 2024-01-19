@@ -15,6 +15,7 @@ interface SwitchScreensProps {
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleAskNotifications: () => void;
 }
 
 export default function SwitchScreens({
@@ -23,6 +24,7 @@ export default function SwitchScreens({
     subStatements,
     handleShowTalker,
     setShowAskPermission,
+    toggleAskNotifications
 }: SwitchScreensProps) {
     if (!statement) return null;
 
@@ -37,6 +39,7 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                     setShowAskPermission={setShowAskPermission}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
         case Screen.OPTIONS:
@@ -45,6 +48,7 @@ export default function SwitchScreens({
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
         case Screen.VOTE:
@@ -52,6 +56,7 @@ export default function SwitchScreens({
                 <StatementVote
                     statement={statement}
                     subStatements={subStatements}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
         case Screen.MASS_QUESTIONS:
@@ -77,6 +82,7 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                     questions={true}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
 
@@ -87,6 +93,7 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                     setShowAskPermission={setShowAskPermission}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
     }

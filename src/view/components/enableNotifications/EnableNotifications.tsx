@@ -7,7 +7,7 @@ import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/n
 
 interface Props {
     setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
-    statement: Statement;
+    statement: Statement | undefined;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -16,6 +16,8 @@ export default function EnableNotifications({
     statement,
     setShowAskPermission,
 }: Props) {
+    if (!statement) throw new Error("No statement");
+
     const userAskedForNotification = true;
     const getNotifications = true;
 
