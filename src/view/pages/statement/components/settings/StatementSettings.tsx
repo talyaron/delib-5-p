@@ -1,21 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./components/StatementSettings.module.scss";
 
-// Statment helper functions
-import {
-    createStatement,
-    setStatmentToDB,
-    updateStatement,
-} from "../../../../../functions/db/statements/setStatments";
-import {
-    navigateToStatementTab,
-    parseScreensCheckBoxes,
-} from "../../../../../functions/general/helpers";
-
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { StatementSubscription, Statement, StatementType } from "delib-npm";
+import { StatementSubscription, Statement } from "delib-npm";
 
 // Redux Store
 import {
@@ -23,8 +12,6 @@ import {
     useAppSelector,
 } from "../../../../../functions/hooks/reduxHooks";
 import {
-    removeMembership,
-    setMembership,
     setStatement,
     statementMembershipSelector,
     statementSelector,
@@ -45,6 +32,7 @@ import GetVoters from "./components/GetVoters";
 import GetEvaluators from "./components/GetEvaluators";
 import CheckBoxeArea from "./components/CheckBoxeArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
+import { handleSetStatment, handleShare } from "./statementSettingsCont";
 
 interface Props {
     simple?: boolean;
@@ -52,30 +40,33 @@ interface Props {
 }
 
 const StatementSettings: FC<Props> = () => {
+    // * Hooks * //
     const navigate = useNavigate();
     const { statementId } = useParams();
 
-    // Redux
+    // * Redux * //
     const dispatch = useAppDispatch();
     const statement: Statement | undefined = useAppSelector(
         statementSelector(statementId),
     );
 
+    // * Use State * //
+    const [isLoading, setIsLoading] = useState(false);
+
+    // * Variables * //
     const membership: StatementSubscription[] = useAppSelector(
         statementMembershipSelector(statementId),
     );
+    const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
+    
+    //get all elements of the array except the first one
+    const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
-    // Use State
-    const [isLoading, setIsLoading] = useState(false);
-
+    // * Use Effect * //
     useEffect(() => {
         let unsubscribe: undefined | (() => void);
         if (statementId) {
-            unsubscribe = listenToMembers(
-                statementId,
-                setMembershipCB,
-                removeMembershipCB,
-            );
+            unsubscribe = listenToMembers(dispatch)(statementId);
 
             if (!statement)
                 (async () => {
@@ -89,126 +80,18 @@ const StatementSettings: FC<Props> = () => {
         };
     }, [statementId]);
 
-    //CBs
-    function setMembershipCB(membership: StatementSubscription) {
-        dispatch(setMembership(membership));
-    }
+    // * Funtions * //
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        setIsLoading(true);
+        await handleSetStatment(e, navigate, statementId, statement);
 
-    function removeMembershipCB(membership: StatementSubscription) {
-        dispatch(removeMembership(membership.statementsSubscribeId));
-    }
-
-    async function handleSetStatment(ev: any) {
-        try {
-            ev.preventDefault();
-            setIsLoading(true);
-
-            const data = new FormData(ev.currentTarget);
-
-            let title: any = data.get("statement");
-            if (!title || title.length < 2) return;
-
-            // const resultsBy = data.get("resultsBy") as ResultsBy;
-            // const numberOfResults: number = Number(data.get("numberOfResults"));
-            const description = data.get("description");
-
-            //add to title * at the beggining
-            if (title && !title.startsWith("*")) title = "*" + title;
-
-            const _statement = `${title}\n${description}`;
-            if (!_statement) return;
-
-            const dataObj: any = Object.fromEntries(data.entries());
-            const screens = parseScreensCheckBoxes(dataObj);
-            const {
-                resultsBy,
-                numberOfResults,
-                hasChildren,
-                enableAddEvaluationOption,
-                enableAddVotingOption,
-            } = dataObj;
-
-            // If no statementId, user is on AddStatement page
-            if (!statementId) {
-                const newStatement = createStatement({
-                    text: _statement,
-                    screens,
-                    statementType: StatementType.question,
-                    parentStatement: "top",
-                    resultsBy,
-                    numberOfResults,
-                    hasChildren,
-                    enableAddEvaluationOption,
-                    enableAddVotingOption,
-                });
-                if (!newStatement)
-                    throw new Error("newStatement had error in creating");
-
-                await setStatmentToDB({
-                    parentStatement: "top",
-                    statement: newStatement,
-                    addSubscription: true,
-                });
-                setIsLoading(false);
-                navigateToStatementTab(newStatement, navigate);
-
-                return;
-            }
-
-            // If statementId, user is on Settings tab in statement page
-            else {
-                //update statement
-                if (!statement) throw new Error("statement is undefined");
-
-                const newStatement = updateStatement({
-                    statement,
-                    text: _statement,
-                    screens,
-                    statementType: StatementType.question,
-                    resultsBy,
-                    numberOfResults,
-                    hasChildren,
-                    enableAddEvaluationOption,
-                    enableAddVotingOption,
-                });
-                if (!newStatement)
-                    throw new Error("newStatement had not been updated");
-
-                await setStatmentToDB({
-                    parentStatement: statement,
-                    statement: newStatement,
-                    addSubscription: true,
-                });
-                setIsLoading(false);
-                navigateToStatementTab(newStatement, navigate);
-
-                return;
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    function handleShare() {
-        const baseUrl = window.location.origin;
-
-        const shareData = {
-            title: t("Delib: We create agreements together"),
-            text: t("Invited:") + statement?.statement,
-            url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
-        };
-        navigator.share(shareData);
-    }
-
-    const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
-
-    //get all elements of the array except the first one
-    const description = arrayOfStatementParagrphs?.slice(1).join("\n");
+        setIsLoading(false);
+    };
 
     return (
         <ScreenFadeIn className="page__main">
             {!isLoading ? (
-                <form onSubmit={handleSetStatment} className="settings">
+                <form onSubmit={handleSubmit} className="settings">
                     <label htmlFor="statement">
                         <input
                             autoFocus={true}
@@ -246,7 +129,7 @@ const StatementSettings: FC<Props> = () => {
 
                             <div
                                 className={styles.linkAnonymous}
-                                onClick={handleShare}
+                                onClick={() => handleShare(statement)}
                             >
                                 {t("Send a link to anonymous users")}
                                 <ShareIcon />
