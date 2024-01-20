@@ -1,22 +1,21 @@
 import { FC, useEffect, useState } from "react";
-import styles from "./StatementSettings.module.scss";
+import styles from "./components/StatementSettings.module.scss";
 
-// Statment imports
+// Statment helper functions
 import {
     createStatement,
     setStatmentToDB,
     updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
+import {
+    navigateToStatementTab,
+    parseScreensCheckBoxes,
+} from "../../../../../functions/general/helpers";
 
 // Third party imports
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { StatementSubscription, Statement, StatementType } from "delib-npm";
-
-// Custom components
-import Loader from "../../../../components/loaders/Loader";
-import MembershipLine from "./membership/MembershipLine";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Redux Store
 import {
@@ -35,18 +34,16 @@ import {
 import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
 import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
-// * Statement Settings functions * //
-
-import {
-    navigateToStatementTab,
-    parseScreensCheckBoxes,
-} from "../../../../../functions/general/helpers";
+// Custom components
+import Loader from "../../../../components/loaders/Loader";
+import MembershipLine from "./components/membership/MembershipLine";
+import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 import UploadImage from "../../../../components/uploadImage/UploadImage";
-import DisplayResultsBy from "./DisplayResultsBy";
-import ResultsRange from "./ResultsRange";
-import GetVoters from "./GetVoters";
-import GetEvaluators from "./GetEvaluators";
-import CheckBoxeArea from "./CheckBoxeArea";
+import DisplayResultsBy from "./components/DisplayResultsBy";
+import ResultsRange from "./components/ResultsRange";
+import GetVoters from "./components/GetVoters";
+import GetEvaluators from "./components/GetEvaluators";
+import CheckBoxeArea from "./components/CheckBoxeArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
 
 interface Props {
@@ -131,6 +128,7 @@ const StatementSettings: FC<Props> = () => {
                 enableAddVotingOption,
             } = dataObj;
 
+            // If no statementId, user is on AddStatement page
             if (!statementId) {
                 const newStatement = createStatement({
                     text: _statement,
@@ -155,7 +153,10 @@ const StatementSettings: FC<Props> = () => {
                 navigateToStatementTab(newStatement, navigate);
 
                 return;
-            } else {
+            }
+
+            // If statementId, user is on Settings tab in statement page
+            else {
                 //update statement
                 if (!statement) throw new Error("statement is undefined");
 
@@ -188,17 +189,16 @@ const StatementSettings: FC<Props> = () => {
         }
     }
 
-     function handleShare( ) {
+    function handleShare() {
         const baseUrl = window.location.origin;
-    
+
         const shareData = {
-            title: t ("Delib: We create agreements together"),
+            title: t("Delib: We create agreements together"),
             text: t("Invited:") + statement?.statement,
             url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
         };
         navigator.share(shareData);
     }
-    
 
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
 
@@ -242,12 +242,14 @@ const StatementSettings: FC<Props> = () => {
 
                     {membership && statementId && (
                         <>
-                           
                             <h2>{t("Members in Group")}</h2>
 
-                            <div className={styles.linkAnonymous} onClick={handleShare}>
+                            <div
+                                className={styles.linkAnonymous}
+                                onClick={handleShare}
+                            >
                                 {t("Send a link to anonymous users")}
-                                <ShareIcon  />
+                                <ShareIcon />
                             </div>
 
                             <div className="settings__membersBox">

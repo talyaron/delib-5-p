@@ -1,7 +1,7 @@
 import { Vote } from "delib-npm";
 import React from "react";
-import Chip from "../../../../components/chip/Chip";
-import { handleGetVoters } from "./statementSettingsCont";
+import Chip from "../../../../../components/chip/Chip";
+import { handleGetVoters } from "../statementSettingsCont";
 
 export default function GetVoters({
     statementId,
