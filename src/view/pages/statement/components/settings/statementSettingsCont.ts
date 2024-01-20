@@ -6,6 +6,9 @@ import {
     Evaluation,
     StatementType,
 } from "delib-npm";
+import { t } from "i18next";
+
+// Helpers
 import { getVoters } from "../../../../../functions/db/vote/getVotes";
 import { getEvaluations } from "../../../../../functions/db/evaluation/getEvaluation";
 import {
@@ -17,8 +20,8 @@ import {
     setStatmentToDB,
     updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
-import { t } from "i18next";
 
+// Get users that voted on options in this statement
 export async function handleGetVoters(
     parentId: string | undefined,
     setVoters: React.Dispatch<React.SetStateAction<Vote[]>>,
@@ -30,6 +33,7 @@ export async function handleGetVoters(
     setClicked(true);
 }
 
+// Get users that evaluated on options in this statement
 export async function handleGetEvaluators(
     parentId: string | undefined,
     setEvaluators: React.Dispatch<React.SetStateAction<Evaluation[]>>,
@@ -41,6 +45,7 @@ export async function handleGetEvaluators(
     setClicked(true);
 }
 
+// Check if subpage is checked in stored sttatement
 export function isSubPageChecked(
     statement: Statement | undefined,
     navObj: NavObject,
