@@ -46,7 +46,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                 <div className="btns">
                     <button
                         onClick={handleStart}
-                        className={showeStartBtn ? "btn" : "btn btn--nonactive"}
+                        className={showeStartBtn ? "btn btn--agree" : "btn btn--inactive"}
                     >
                         {t("Start")}
                     </button>
@@ -66,6 +66,6 @@ export default EnterName;
 
 function isReadyToStart(displayName: string | null) {
     if (displayName === null) return false;
-    if (displayName.length > 3) return true;
+    if (displayName.length > 2) return true;
     else return false;
 }
