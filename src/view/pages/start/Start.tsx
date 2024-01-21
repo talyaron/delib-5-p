@@ -15,7 +15,7 @@ import { userSelector } from "../../../model/users/userSlice";
 
 //img
 import Logo from "../../../assets/logo/logo-128px.png";
-import googleLogo from "../../../assets/google-seeklogo.com.svg";
+import googleLogo from "../../../assets/icons/googleSimpleLogo.svg"
 import moreRight from "../../../assets/icons/moreRight.svg";
 import moreLeft from "../../../assets/icons/moreLeft.svg";
 
