@@ -32,7 +32,7 @@ const Start = () => {
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
-    const direction = useDirection() === "row" ? "row" : "row-reverse";
+    const direction = (useDirection() === "row") ? "row" : "row-reverse";
 
     useEffect(() => {
         if (user) {
@@ -81,7 +81,8 @@ const Start = () => {
             <div
                 className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
-                style={{ direction: direction }}
+                //@ts-ignore
+                style={{ direction }}
             >
                 {t("Login with a temporary name")}{" "}
                 <img

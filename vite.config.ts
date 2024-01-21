@@ -18,8 +18,8 @@ const manifestPlugin: Partial<VitePWAOptions> = {
         name: "Delib 5",
         short_name: "Delib 5",
         description: "Delib: Building Consensus",
-        theme_color: "#2B74B1",
-        background_color: "#2B74B1",
+        theme_color: "#486FFA",
+        background_color: "#486FFA",
         display: "standalone",
         orientation: "portrait",
         icons: [
