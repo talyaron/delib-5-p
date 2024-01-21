@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import React, { MouseEventHandler } from "react";
-import MoreIcon from "../../../assets/icons/MoreIcon";
+import MoreIcon from "../icons/MoreIcon";
 import "./popUpStyle.scss";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 

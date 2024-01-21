@@ -1,7 +1,7 @@
 import React from "react";
 import { Evaluation } from "delib-npm";
-import Chip from "../../../../components/chip/Chip";
-import { handleGetEvaluators } from "./statementSettingsCont";
+import Chip from "../../../../../components/chip/Chip";
+import { handleGetEvaluators } from "../statementSettingsCont";
 
 export default function GetEvaluators({
     statementId,

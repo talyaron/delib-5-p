@@ -22,6 +22,8 @@ import {
 // Redux Store
 import {
     deleteSubscribedStatement,
+    removeMembership,
+    setMembership,
     setStatement,
     setStatementSubscription,
     setStatements,
@@ -69,7 +71,7 @@ export const listenToStatementSubscription = (
         });
     } catch (error) {
         console.error(error);
-        
+
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
@@ -361,45 +363,44 @@ export const listenToSubStatements = (
         });
     } catch (error) {
         console.error(error);
-        
+
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 };
 
-export function listenToMembers(
-    statementId: string,
-    setMembershipCB: (member: StatementSubscription) => void,
-    removeMembership: (member: StatementSubscription) => void,
-) {
-    try {
-        const membersRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(
-            membersRef,
-            where("statementId", "==", statementId),
-            orderBy("createdAt", "desc"),
-        );
+export const listenToMembers =
+    (dispatch: AppDispatch) => (statementId: string) => {
+        try {
+            const membersRef = collection(DB, Collections.statementsSubscribe);
+            const q = query(
+                membersRef,
+                where("statementId", "==", statementId),
+                orderBy("createdAt", "desc"),
+            );
 
-        return onSnapshot(q, (subsDB) => {
-            subsDB.docChanges().forEach((change) => {
-                const member = change.doc.data() as StatementSubscription;
-                if (change.type === "added") {
-                    setMembershipCB(member);
-                }
+            return onSnapshot(q, (subsDB) => {
+                subsDB.docChanges().forEach((change) => {
+                    const member = change.doc.data() as StatementSubscription;
+                    if (change.type === "added") {
+                        dispatch(setMembership(member));
+                    }
 
-                if (change.type === "modified") {
-                    setMembershipCB(member);
-                }
+                    if (change.type === "modified") {
+                        dispatch(setMembership(member));
+                    }
 
-                if (change.type === "removed") {
-                    removeMembership(member);
-                }
+                    if (change.type === "removed") {
+                        dispatch(
+                            removeMembership(member.statementsSubscribeId),
+                        );
+                    }
+                });
             });
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
 export async function listenToUserAnswer(
     questionId: string,

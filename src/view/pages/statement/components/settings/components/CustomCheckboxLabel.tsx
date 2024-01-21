@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { useState } from "react";
-import CheckedIcon from "../../../../components/icons/CheckedIcon";
-import UncheckedIcon from "../../../../components/icons/UncheckedIcon";
+import CheckedIcon from "../../../../../components/icons/CheckedIcon";
+import UncheckedIcon from "../../../../../components/icons/UncheckedIcon";
 
 interface CustomLabelProps {
     defaultChecked: boolean | undefined;

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import styles from "./CardMenu.module.scss";
-import MoreIcon from "../../../assets/icons/MoreIcon";
+import MoreIcon from "../icons/MoreIcon";
 
 interface Props {
     children: any;

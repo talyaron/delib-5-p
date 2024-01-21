@@ -1,8 +1,16 @@
 import React, { FC, useState } from "react";
-import Modal from "../../components/modal/Modal";
-import styles from "./enterName.module.scss";
-import { signAnonymously } from "../../../functions/db/auth";
+
+// Third party libs
 import { t } from "i18next";
+
+// Styles
+import styles from "./enterName.module.scss";
+
+// Custom components
+import Modal from "../../components/modal/Modal";
+
+// Functions
+import { signAnonymously } from "../../../functions/db/auth";
 
 interface Props {
     setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
