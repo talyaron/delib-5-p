@@ -14,14 +14,6 @@ import {
     statementSubscriptionSelector,
 } from "../../../../../../model/statements/statementsSlice";
 
-// Custom Components
-import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
-import EditTitle from "../../../../../components/edit/EditTitle";
-import Evaluation from "../../../../../components/evaluation/Evaluation";
-import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
-import StatementChatMore from "../../chat/StatementChatMore";
-import SetEdit from "../../../../../components/edit/SetEdit";
-
 // Helpers
 import {
     isAuthorized,
@@ -29,12 +21,22 @@ import {
 } from "../../../../../../functions/general/helpers";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import { t } from "i18next";
+
+// Hooks
 import useStatementColor, {
     StyleProps,
 } from "../../../../../../functions/hooks/useStatementColor";
+import useDirection from "../../../../../../functions/hooks/useDirection";
+
+// Custom Components
+import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
+import EditTitle from "../../../../../components/edit/EditTitle";
+import Evaluation from "../../../../../components/evaluation/Evaluation";
+import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
+import StatementChatMore from "../../chat/components/StatementChatMore";
+import SetEdit from "../../../../../components/edit/SetEdit";
 import Modal from "../../../../../components/modal/Modal";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
-import useDirection from "../../../../../../functions/hooks/useDirection";
 
 interface Props {
     statement: Statement;
@@ -48,25 +50,35 @@ const StatementEvaluationCard: FC<Props> = ({
     statement,
     top,
 }) => {
-    const dispatch = useAppDispatch();
+    // Hooks
     const navigate = useNavigate();
+    const direction = useDirection();
+
+    // Redux Store
+    const dispatch = useAppDispatch();
     const statementColor: StyleProps = useStatementColor(
         statement.statementType || "",
     );
-
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId),
     );
-    const direction = useDirection();
-    const isRtl = direction === "row-reverse";
 
+    // Use Refs
     const elementRef = useRef<HTMLDivElement>(null);
 
-    // const { hasChildren } = parentStatement;
-
+    // Use States
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
     const [showModal, setShowModal] = useState(false);
+
+    // Vriables
+    const isRtl = direction === "row-reverse";
+
+    const _isAuthorized = isAuthorized(
+        statement,
+        statementSubscription,
+        parentStatement.creatorId,
+    );
 
     useEffect(() => {
         setNewTop(top);
@@ -85,12 +97,6 @@ const StatementEvaluationCard: FC<Props> = ({
         if (!edit && linkToChildren(statement, parentStatement))
             navigate(`/statement/${statement.statementId}/options`);
     }
-
-    const _isAuthorized = isAuthorized(
-        statement,
-        statementSubscription,
-        parentStatement.creatorId,
-    );
 
     return (
         <div

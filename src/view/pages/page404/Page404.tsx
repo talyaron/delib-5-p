@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import img404 from "../../../assets/404.jpg";
+import img404 from "../../../assets/images/404.jpg";
 import styles from "./page404.module.scss";
 import { setIntialLocationSessionStorage } from "../../../functions/general/helpers";
 

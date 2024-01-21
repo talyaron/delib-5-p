@@ -1,8 +1,15 @@
-import { Statement } from "delib-npm";
 import { FC } from "react";
+
+// Third party
+import { Statement } from "delib-npm";
+
+// Statements Helpers
 import { updateStatementText } from "../../../functions/db/statements/setStatments";
+
+// Styles
 import styles from "./EditTitle.module.scss";
-import useDirection from "../../../functions/hooks/useDirection";
+
+// Custom components
 import Text from "../text/Text";
 
 // import { statementTitleToDisplay } from "../../../functions/general/helpers";
@@ -25,9 +32,8 @@ const EditTitle: FC<Props> = ({
     try {
         if (!statement) return null;
 
-        const _direction = useDirection();
-        const direction = _direction === "row" ? "ltr" : "rtl";
-        const align = _direction === "row" ? "left" : "right";
+        const direction = document.body.style.direction as "ltr" | "rtl";
+        const align = direction === "ltr" ? "left" : "right";
 
         const title = statement.statement.split("\n")[0];
         const description = statement.statement.split("\n").slice(1).join("\n");

@@ -9,7 +9,6 @@ import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 import StatementMap from "./mapHelpers/StatementMap";
 import Modal from "../../../../components/modal/Modal";
 
-
 // Helpers
 import {
     FilterType,
@@ -79,6 +78,7 @@ const Map: FC<Props> = ({ statement }) => {
             showModal: show,
         }));
     };
+    
     return (
         <ScreenFadeIn className="page__main">
             <select

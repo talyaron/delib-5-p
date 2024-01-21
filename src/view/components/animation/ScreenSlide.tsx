@@ -1,7 +1,5 @@
 import React from "react";
 
-import "./style.scss";
-
 export default function ScreenSlide({
     children,
     className,

@@ -2,7 +2,7 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../../components/text/Text";
 
-import StatementChatMore from "../../statement/components/chat/StatementChatMore";
+import StatementChatMore from "../../statement/components/chat/components/StatementChatMore";
 import { Link } from "react-router-dom";
 
 interface Props {

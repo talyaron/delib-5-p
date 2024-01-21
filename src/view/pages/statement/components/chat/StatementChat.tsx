@@ -4,23 +4,25 @@ import { FC, useEffect, useRef } from "react";
 import { Statement, User } from "delib-npm";
 
 // Custom Components
-import StatementChat from "./chat/StatementChatCard";
-import StatementInput from "./StatementInput";
-import ScreenSlide from "../../../components/animation/ScreenSlide";
-import useSlideAndSubStatement from "../../../../functions/hooks/useSlideAndSubStatement";
+import StatementChatCard from "./components/StatementChatCard";
+import StatementInput from "./components/input/StatementInput";
+import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
 
 interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleAskNotifications: () => void;
 }
 
 let firstTime = true;
 
-const StatementMain: FC<Props> = ({
+const StatementChat: FC<Props> = ({
     statement,
     subStatements,
     handleShowTalker,
+    toggleAskNotifications,
 }) => {
     const messagesEndRef = useRef(null);
 
@@ -53,10 +55,13 @@ const StatementMain: FC<Props> = ({
 
     return (
         <>
-            <ScreenSlide className={`page__main ${toSlide && slideInOrOut}`}>
+            <div
+                className={`page__main ${toSlide && slideInOrOut}`}
+                style={{ paddingBottom: "5rem" }}
+            >
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
-                        <StatementChat
+                        <StatementChatCard
                             parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}
@@ -66,12 +71,17 @@ const StatementMain: FC<Props> = ({
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
-            </ScreenSlide>
+            </div>
             <div className="page__footer">
-                {statement && <StatementInput statement={statement} />}
+                {statement && (
+                    <StatementInput
+                        toggleAskNotifications={toggleAskNotifications}
+                        statement={statement}
+                    />
+                )}
             </div>
         </>
     );
 };
 
-export default StatementMain;
+export default StatementChat;

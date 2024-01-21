@@ -6,37 +6,36 @@ import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
-import { getUserPermissionToNotifications } from "../../../functions/notifications";
-
-// Statement helpers
-import { setStatmentSubscriptionNotificationToDB } from "../../../functions/notifications";
+import toggleNotifications from "../../../../../functions/db/notifications/notificationsHelpers";
 
 // Redux Store
-import { store } from "../../../model/store";
+import { store } from "../../../../../model/store";
 
 // Custom components
-import StatementTopNav from "./components/nav/top/StatementTopNav";
-import EditTitle from "../../components/edit/EditTitle";
-import BackArrowIcon from "../../components/icons/BackArrowIcon";
-import HomeIcon from "../../components/icons/HomeIcon";
-import BellSlashIcon from "../../components/icons/BellSlashIcon";
-import BellIcon from "../../components/icons/BellIcon";
-import ShareIcon from "../../components/icons/ShareIcon";
+import StatementTopNav from "../nav/top/StatementTopNav";
+import EditTitle from "../../../../components/edit/EditTitle";
+import BackArrowIcon from "../../../../components/icons/BackArrowIcon";
+import HomeIcon from "../../../../components/icons/HomeIcon";
+import BellSlashIcon from "../../../../components/icons/BellSlashIcon";
+import BellIcon from "../../../../components/icons/BellIcon";
+import ShareIcon from "../../../../components/icons/ShareIcon";
 import {
     calculateFontSize,
     handleLogout,
-} from "../../../functions/general/helpers";
-import useStatementColor from "../../../functions/hooks/useStatementColor";
-import DisconnectIcon from "../../components/icons/DisconnectIcon";
-import PopUpMenu from "../../components/popUpMenu/PopUpMenu";
-import useDirection from "../../../functions/hooks/useDirection";
-import useNotificationPermission from "../../../functions/hooks/useNotificationPermission";
-import useToken from "../../../functions/hooks/useToken";
+} from "../../../../../functions/general/helpers";
+import DisconnectIcon from "../../../../components/icons/DisconnectIcon";
+import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
+
+// Hooks
+import useStatementColor from "../../../../../functions/hooks/useStatementColor";
+import useDirection from "../../../../../functions/hooks/useDirection";
+import useNotificationPermission from "../../../../../functions/hooks/useNotificationPermission";
+import useToken from "../../../../../functions/hooks/useToken";
 
 interface Props {
     title: string;
     screen: Screen;
-    statement: Statement |undefined;
+    statement: Statement | undefined;
     showAskPermission: boolean;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -47,22 +46,24 @@ const StatementHeader: FC<Props> = ({
     statement,
     setShowAskPermission,
 }) => {
-    const user = store.getState().user.user;
+    // Hooks
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const { page } = useParams();
     const location = useLocation();
     const direction = useDirection();
     const token = useToken();
-
     const headerColor = useStatementColor(statement?.statementType || "");
-
     const permission = useNotificationPermission(token);
 
+    // Redux Store
+    const user = store.getState().user.user;
+
+    // Use States
     const [editHeader, setEditHeader] = useState<boolean>(false);
 
+    // Variables
     const titleFontSize = calculateFontSize(title, 16, 25);
-
     const isAdmin = statement?.creatorId === user?.uid;
 
     function handleShare() {
@@ -96,14 +97,6 @@ const StatementHeader: FC<Props> = ({
                 state: { from: window.location.pathname },
             });
         }
-    }
-
-    async function toggleNotifications() {
-        const isPermited = await getUserPermissionToNotifications();
-
-        if (!isPermited) return setShowAskPermission(true);
-
-        setStatmentSubscriptionNotificationToDB(statement, !permission);
     }
 
     return (
@@ -157,7 +150,13 @@ const StatementHeader: FC<Props> = ({
                             />
                         )
                     }
-                    secondIconFunc={toggleNotifications}
+                    secondIconFunc={() =>
+                        toggleNotifications(
+                            statement,
+                            permission,
+                            setShowAskPermission,
+                        )
+                    }
                     secondIconText={permission ? "Turn off" : "Turn on"}
                     thirdIcon={
                         <DisconnectIcon color={headerColor.backgroundColor} />

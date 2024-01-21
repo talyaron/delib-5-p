@@ -1,20 +1,24 @@
+// This file contains the SwitchScreens component which is used to switch between the different tabs whithin statement
+
+// Third party imports
 import { Screen, Statement, User } from "delib-npm";
+
+// Custom components
 import Map from "./map/Map";
-import StatementMain from "./StatementMain";
+import StatementChat from "./chat/StatementChat";
 import StatementEvaluation from "./evaluations/StatementEvaluation";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
 import StatmentRooms from "./rooms/Rooms";
 import StatementSettings from "./settings/StatementSettings";
 
-// Custom components
-
-
 interface SwitchScreensProps {
     screen: string | undefined;
     statement: Statement | undefined;
     subStatements: Statement[];
     handleShowTalker: (statement: User | null) => void;
+    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleAskNotifications: () => void;
 }
 
 export default function SwitchScreens({
@@ -22,21 +26,23 @@ export default function SwitchScreens({
     statement,
     subStatements,
     handleShowTalker,
+    setShowAskPermission,
+    toggleAskNotifications,
 }: SwitchScreensProps) {
     if (!statement) return null;
 
     switch (screen) {
         case Screen.DOC:
-            // const Map = lazy(() => import("./map/Map"));
-
             return <Map statement={statement} />;
 
         case Screen.CHAT:
             return (
-                <StatementMain
+                <StatementChat
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
+                    setShowAskPermission={setShowAskPermission}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
         case Screen.OPTIONS:
@@ -45,6 +51,7 @@ export default function SwitchScreens({
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
         case Screen.VOTE:
@@ -52,6 +59,7 @@ export default function SwitchScreens({
                 <StatementVote
                     statement={statement}
                     subStatements={subStatements}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
         case Screen.MASS_QUESTIONS:
@@ -77,15 +85,18 @@ export default function SwitchScreens({
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
                     questions={true}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
 
         default:
             return (
-                <StatementMain
+                <StatementChat
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
+                    setShowAskPermission={setShowAskPermission}
+                    toggleAskNotifications={toggleAskNotifications}
                 />
             );
     }

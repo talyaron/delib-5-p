@@ -4,8 +4,7 @@ import { FC, useState } from "react";
 import { Statement, StatementType } from "delib-npm";
 import { t } from "i18next";
 
-// Statements helpers
-
+// Statements Helpers
 import {
     createStatement,
     setStatmentToDB,
@@ -14,8 +13,9 @@ import {
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
 
-import questionModalImage from "../../../../../assets/questionModalImage.png";
-import optionModalImage from "../../../../../assets/optionModalImage.png";
+// Images
+import questionModalImage from "../../../../../assets/images/questionModalImage.png";
+import optionModalImage from "../../../../../assets/images/optionModalImage.png";
 import ElipsIcon from "../../../../components/icons/ElipsIcon";
 
 interface Props {
@@ -23,6 +23,7 @@ interface Props {
     isOption: boolean;
     setShowModal: (bool: boolean) => void;
     getSubStatements?: () => Promise<void>;
+    toggleAskNotifications?: () => void;
 }
 
 const NewSetStatementSimple: FC<Props> = ({
@@ -30,6 +31,7 @@ const NewSetStatementSimple: FC<Props> = ({
     isOption,
     setShowModal,
     getSubStatements,
+    toggleAskNotifications,
 }) => {
     try {
         const parentIsStatement = parentStatement !== "top";
@@ -68,6 +70,7 @@ const NewSetStatementSimple: FC<Props> = ({
                     statementType: isOption
                         ? StatementType.option
                         : StatementType.question,
+                    toggleAskNotifications,
                 });
 
                 if (!newStatement)
@@ -143,7 +146,7 @@ const NewSetStatementSimple: FC<Props> = ({
                             style={{ height: "auto" }}
                         >
                             <input
-                                autoFocus={true}
+                                autoFocus={false}
                                 type="text"
                                 name="statement"
                                 placeholder={t("Title")}

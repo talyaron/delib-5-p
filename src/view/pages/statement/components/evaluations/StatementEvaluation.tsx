@@ -5,13 +5,13 @@ import { Statement, StatementType, User } from "delib-npm";
 import { useParams } from "react-router";
 import Modal from "../../../../components/modal/Modal";
 
-// Custom Components
-import StatementEvaluationCard from "./components/StatementEvaluationCard";
-import NewSetStatementSimple from "../set/NewStatementSimple";
-
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
 import { isOptionFn } from "../../../../../functions/general/helpers";
+
+// Custom Components
+import StatementEvaluationCard from "./components/StatementEvaluationCard";
+import NewSetStatementSimple from "../set/NewStatementSimple";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
 interface Props {
@@ -20,6 +20,7 @@ interface Props {
     handleShowTalker: (talker: User | null) => void;
     showNav?: boolean;
     questions?: boolean;
+    toggleAskNotifications: () => void;
 }
 
 const StatementEvaluation: FC<Props> = ({
@@ -27,10 +28,13 @@ const StatementEvaluation: FC<Props> = ({
     subStatements,
     handleShowTalker,
     questions = false,
+    toggleAskNotifications,
 }) => {
     try {
+        // Hooks
         const { sort } = useParams();
 
+        // Use States
         const [showModal, setShowModal] = useState(false);
         const [sortedSubStatements, setSortedSubStatements] = useState<
             Statement[]
@@ -48,6 +52,7 @@ const StatementEvaluation: FC<Props> = ({
             );
         }, [sort, subStatements]);
 
+        // Variables
         let topSum = 30;
         const tops: number[] = [topSum];
 
@@ -93,6 +98,7 @@ const StatementEvaluation: FC<Props> = ({
                             parentStatement={statement}
                             isOption={questions ? false : true}
                             setShowModal={setShowModal}
+                            toggleAskNotifications={toggleAskNotifications}
                         />
                     </Modal>
                 )}

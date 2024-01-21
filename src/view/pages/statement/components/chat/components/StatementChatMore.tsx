@@ -1,19 +1,21 @@
 import { FC } from "react";
 
 // Icons
-import ChatIcon from "../../../../components/icons/ChatIcon";
+import ChatIcon from "../../../../../components/icons/ChatIcon";
 
 // Statements functions
-import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
 
 // Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 
 // Redux
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
-import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
+import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+
+// Helpers
+import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -22,17 +24,19 @@ interface Props {
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {
-    const statementSubscription: StatementSubscription | undefined =
-        useAppSelector(statementSubscriptionSelector(statement.statementId));
-    let messagesRead = 0;
-    if (statementSubscription)
-        messagesRead = statementSubscription.totalSubStatementsRead || 0;
-    const messages = statement.totalSubStatements || 0;
-
+    // Hooks
     const navigate = useNavigate();
 
+    // Redux store
+    const statementSubscription: StatementSubscription | undefined =
+        useAppSelector(statementSubscriptionSelector(statement.statementId));
+
+    // Variables
+    const messagesRead = statementSubscription?.totalSubStatementsRead || 0;
+    const messages = statement.totalSubStatements || 0;
+
     const { statementType } = statement;
-    if (statementType === StatementType.statement) return null;
+    if (statementType === StatementType.statement) return;
 
     const messageToDisplay = statement.lastMessage
         ? statementTitleToDisplay(statement.lastMessage, 20).shortVersion
@@ -41,7 +45,11 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
     return (
         <div
             className="more clickable"
-            onClick={() => handleCreateSubStatements(statement, navigate)}
+            onClick={() =>
+                navigate(`/statement/${statement.statementId}/chat`, {
+                    state: { from: window.location.pathname },
+                })
+            }
         >
             <div className="icon">
                 {messages - messagesRead > 0 && (
@@ -62,17 +70,3 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 };
 
 export default StatementChatMore;
-
-export function handleCreateSubStatements(
-    statement: Statement,
-    navigate: NavigateFunction,
-) {
-    try {
-        // setStatmentGroupToDB(statement)
-        navigate(`/statement/${statement.statementId}/chat`, {
-            state: { from: window.location.pathname },
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}

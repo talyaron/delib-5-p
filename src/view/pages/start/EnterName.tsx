@@ -1,8 +1,16 @@
 import React, { FC, useState } from "react";
-import Modal from "../../components/modal/Modal";
-import styles from "./enterName.module.scss";
-import { signAnonymously } from "../../../functions/db/auth";
+
+// Third party libs
 import { t } from "i18next";
+
+// Styles
+import styles from "./enterName.module.scss";
+
+// Custom components
+import Modal from "../../components/modal/Modal";
+
+// Functions
+import { signAnonymously } from "../../../functions/db/auth";
 
 interface Props {
     setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,11 +49,12 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     name="displayName"
                     placeholder={t("Nickname")}
                     autoFocus={true}
+                    autoComplete="off"
                 />
                 <div className="btns">
                     <button
                         onClick={handleStart}
-                        className={showeStartBtn ? "btn" : "btn btn--nonactive"}
+                        className={showeStartBtn ? "btn btn--agree" : "btn btn--inactive"}
                     >
                         {t("Start")}
                     </button>
@@ -65,6 +74,6 @@ export default EnterName;
 
 function isReadyToStart(displayName: string | null) {
     if (displayName === null) return false;
-    if (displayName.length > 3) return true;
+    if (displayName.length > 2) return true;
     else return false;
 }

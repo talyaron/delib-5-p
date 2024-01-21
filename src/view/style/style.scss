@@ -21,6 +21,7 @@
 @import "./addStatementModal.scss";
 @import "./termsOfUse.scss";
 @import "./votes.scss";
+@import "./pageAnimation.scss";
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap");
 
@@ -59,64 +60,21 @@
     --light-green: #84cccf;
     --light-purple: #b1a4fc;
 
+    //buttons
+    --inactive:rgb(207, 207, 207);
+    --inactive-text: #acacac;
+
     // --- SIZES ---
     --padding: 1rem;
 
-    // --subBackground: #ee7171;
-    // --mainColor: white;
-    // --pageBackground: #f3f7fd;
+ 
 
-    // --h1Color: #0f1b68e3;
-    // --h2Color: #7d8adf;
-
-    // --textHeader: rgba(0, 0, 0, 0.78);
-    // --textHeaderSize: 1.3rem;
-    // --textHeaderWeight: 600;
-    // --textSubHeader: rgba(0, 0, 0, 0.68);
-    // --textHeaderSize: 1.1rem;
-    // --textHeaderSubTitleSize: 1rem;
-    // --textRegular: rgba(0, 0, 0, 0.55);
-    // --textRegularSize: 1rem;
-    // --maxWidthOnPC: 550px;
-
-    // --accent: #7cacf8;
-    // --primary: #2b74b1;
-    // --halfPrimary: #7994e7;
-    // --secondary: #f0f4ff;
-    // --additional: #f2f2f2;
+  
     --white: white;
     --red: #e8749e;
-
-    // --black: black;
-    // --gray5: #f9f9f9;
-    // --gray4: #f2f2f2;
-    // --gray2: #d6d6d6;
-    // --gray1: #7c7c7c;
-    // --gray0: rgb(77, 77, 77);
-
-    // --roundBorderSmall: 6px;
-    // --roundBorder: 12px;
-    // --roundBorderLarge: 16px;
-
-    // /* font sizes */
-    // --size21: 2.2rem;
-    // --size17: 1.4rem;
-    // --size16: 1.3rem;
-    // --size15: 1.2rem;
-    // --size13: 1rem;
-    // --size12: 0.9rem;
-    // --size11: 0.8rem;
-
-    // /* padding */
-    // --regPadding: 16px;
-
-    // /* shadows */
-    // --mediumShadow: 0px 10px 20px rgba(0, 0, 0, 0.04),
-    //     0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
-
-    // --menuHeight: 70px;
-    // --press: gray;
 }
+
+   
 
 svg {
     cursor: pointer;

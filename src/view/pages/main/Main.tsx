@@ -2,26 +2,26 @@ import { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
-import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
+import { StatementSubscription } from "delib-npm";
+
+// Redux store
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components
 import Fav from "../../components/fav/Fav";
-
-// Other
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
-import {  StatementSubscription } from "delib-npm";
 import MainCard from "./mainCard/MainCard";
-
-
 
 const Main = () => {
     // Hooks
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
-    const statements: StatementSubscription[] = useAppSelector(statementsSubscriptionsSelector)
+    const statements: StatementSubscription[] = useAppSelector(
+        statementsSubscriptionsSelector,
+    )
         .filter((s) => s.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
@@ -60,7 +60,7 @@ const Main = () => {
                     <PeopleLoader />
                 )}
             </div>
-            <Fav isHome={true} onclick={handleAddStatment} />
+            <Fav onclick={handleAddStatment} />
         </ScreenSlide>
     );
 };
