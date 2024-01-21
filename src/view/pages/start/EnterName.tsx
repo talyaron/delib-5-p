@@ -41,6 +41,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     name="displayName"
                     placeholder={t("Nickname")}
                     autoFocus={true}
+                    autoComplete="off"
                 />
                 <div className="btns">
                     <button

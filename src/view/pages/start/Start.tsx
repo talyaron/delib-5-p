@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from "./Start.module.scss";
 
 // firestore functions
 import { googleLogin } from "../../../functions/db/auth";
@@ -15,10 +16,13 @@ import { userSelector } from "../../../model/users/userSlice";
 //img
 import Logo from "../../../assets/logo/logo-128px.png";
 import googleLogo from "../../../assets/google-seeklogo.com.svg";
+import moreRight from "../../../assets/icons/moreRight.svg";
+import moreLeft from "../../../assets/icons/moreLeft.svg";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
 import EnterName from "./EnterName";
+import useDirection from "../../../functions/hooks/useDirection";
 
 // import EnterName from './EnterName';
 
@@ -28,6 +32,7 @@ const Start = () => {
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
+    const direction = useDirection() === "row" ? "row" : "row-reverse";
 
     useEffect(() => {
         if (user) {
@@ -41,16 +46,20 @@ const Start = () => {
 
     return (
         <div className="splashPage">
-            <h1 className="splashPage__title">{t("Delib 5")}</h1>
+            <div className={styles.h1}>
+                {t("Delib")} <span className={styles.number}>5</span>
+            </div>
+            <div className={styles.h2}>{t("Creating Agreements")}</div>
             <img
+                className={styles.logo}
                 src={Logo}
                 alt="Delib logo"
                 width="10%"
-                style={{ maxWidth: "150px" }}
+                style={{}}
             />
-            <h2 className="splashPage__subTitle">{t("Creating Agreements")}</h2>
+
             <select
-                style={{ backgroundColor: "lightblue" }}
+                className={styles.language}
                 defaultValue={savedLang || "he"}
                 onChange={(e) => {
                     const lang = e.target.value;
@@ -69,18 +78,28 @@ const Start = () => {
                     </option>
                 ))}
             </select>
-            <button
-                className="btn btn--large"
+            <div
+                className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
+                style={{ direction: direction }}
             >
-                {t("Login with a temporary name")}
-            </button>
+                {t("Login with a temporary name")}{" "}
+                <img
+                    src={direction === "row" ? moreRight : moreLeft}
+                    alt="login anonymously"
+                />
+            </div>
             <button
-                className="btn splashPage__loginButton btn--img"
+                className={styles.googleLogin}
                 onClick={googleLogin}
             >
+                <img
+                    src={direction === "row-reverse" ? moreRight : moreLeft}
+                    alt="login anonymously"
+                />
                 <img src={googleLogo} alt="login with google" />
                 {t("Connect with Google")}
+                
             </button>
 
             <a
@@ -91,7 +110,7 @@ const Start = () => {
                     textDecoration: "none",
                 }}
             >
-                <h2>{t("From the Institute for Deliberative Democracy")}</h2>
+                <footer className={styles.ddi}>{t("From the Institute for Deliberative Democracy")}</footer>
             </a>
 
             {showNameModul ? (
