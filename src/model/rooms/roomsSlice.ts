@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RoomAskToJoin, Statement } from 'delib-npm';
+import { LobbyRooms, RoomAskToJoin, Statement } from 'delib-npm';
 import { updateArray } from '../../functions/general/helpers';
 import { z } from 'zod';
 import { RootState } from '../store';
@@ -12,11 +12,13 @@ export interface RoomAdmin {
 interface RoomsState {
     rooms: RoomAskToJoin[];
     askToJoinRooms: RoomAskToJoin[];
+    lobbyRooms: LobbyRooms[];
 }
 
 const initialState: RoomsState = {
     rooms: [],
     askToJoinRooms: [],
+    lobbyRooms: [],
 };
 
 export const roomsSlice = createSlice({
@@ -78,31 +80,36 @@ export const roomsSlice = createSlice({
 
 export const { setAskToJoinRooms, setRoomRequests, removeFromAskToJoinRooms } = roomsSlice.actions;
 
+export const participantsSelector =
+    (statementId: string | undefined) => (state: RootState) =>
+        state.rooms.askToJoinRooms.filter(
+            (room) => room.parentId === statementId,
+        );
 
 export const askToJoinRoomsSelector = (state: RootState) =>
-    state.statements.askToJoinRooms;
+    state.rooms.askToJoinRooms;
 export const askToJoinRoomSelector =
     (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.find(
+        state.rooms.askToJoinRooms.find(
             (room) => room.statementId === statementId,
         );
 export const userSelectedRoomSelector =
     (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.find(
+        state.rooms.askToJoinRooms.find(
             (room) =>
                 room.participant.uid === state.user.user?.uid &&
                 room.parentId === statementId,
         );
 export const topicParticipantsSelector =
     (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.filter(
+        state.rooms.askToJoinRooms.filter(
             (room) => room.statementId === statementId,
         );
 
 //find the user selected topic
 export const userSelectedTopicSelector =
     (parentId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.find(
+        state.rooms.askToJoinRooms.find(
             (room) =>
                 room.participant.uid === state.user.user?.uid &&
                 room.parentId === parentId,
@@ -110,10 +117,10 @@ export const userSelectedTopicSelector =
 
 //loby rooms
 export const lobbyRoomsSelector = (state: RootState) =>
-    state.statements.lobbyRooms;
+    state.rooms.lobbyRooms;
 export const lobbyRoomSelector =
     (statementId: string | undefined) => (state: RootState) =>
-        state.statements.lobbyRooms.find(
+        state.rooms.lobbyRooms.find(
             (room) => room.statementId === statementId,
         );
 

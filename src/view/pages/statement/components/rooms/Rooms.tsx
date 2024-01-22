@@ -44,6 +44,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const __substatements = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement),
     );
+  
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
 
     return (

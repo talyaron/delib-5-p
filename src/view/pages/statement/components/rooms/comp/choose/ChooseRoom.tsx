@@ -13,6 +13,7 @@ interface Props {
 }
 
 const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+
     return (
         <>
             <h2>"{t("Division into rooms")}"</h2>

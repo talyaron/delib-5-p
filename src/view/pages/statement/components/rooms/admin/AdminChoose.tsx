@@ -5,7 +5,7 @@ import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
 
 // Redux
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
-import { participantsSelector } from "../../../../../../model/statements/statementsSlice";
+import { participantsSelector } from "../../../../../../model/rooms/roomsSlice";
 
 // Third party libraries
 import {

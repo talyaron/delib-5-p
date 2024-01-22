@@ -4,8 +4,7 @@ import { RootState } from "../store";
 // Third party imports
 
 import {
-    LobbyRooms,
-    RoomAskToJoin,
+
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -30,8 +29,8 @@ interface StatementsState {
     statementSubscriptionLastUpdate: number;
     statementMembership: StatementSubscription[];
     screen: StatementScreen;
-    askToJoinRooms: RoomAskToJoin[];
-    lobbyRooms: LobbyRooms[];
+
+  
 }
 
 interface StatementOrder {
@@ -46,8 +45,6 @@ const initialState: StatementsState = {
     statementSubscriptionLastUpdate: 0,
     statementMembership: [],
     screen: StatementScreen.chat,
-    askToJoinRooms: [],
-    lobbyRooms: [],
 };
 
 export const statementsSlicer = createSlice({
@@ -277,8 +274,6 @@ export const statementsSlicer = createSlice({
             state.statementSubscriptionLastUpdate = 0;
             state.statementMembership = [];
             state.screen = StatementScreen.chat;
-            state.askToJoinRooms = [];
-            state.lobbyRooms = [];
         },
     },
 });
@@ -348,35 +343,7 @@ export const statementSubsSelectorMemo = createSelector(
     },
 );
 
-// export const statementSubsSelectorMemo = createSelector(
-//     statementsSelector,
-//     (statementId: string | undefined) => statementId,
-//     (statements, statementId) =>
-//         statements
-//             .filter((statementSub) => statementSub.parentId === statementId)
-//             .sort((a, b) => a.createdAt - b.createdAt)
-//             .map((statement) => ({ ...statement }))
-// );
 
-// export const statementSubsSelectorMemo = createSelector(
-//     (state: RootState, statementId: string | undefined) => statementId,
-//     (state: RootState) => state.statements.statements,
-//     (statementId, statements) => {
-//         return statements
-//             .filter((statementSub) => statementSub.parentId === statementId)
-//             .sort((a, b) => a.createdAt - b.createdAt)
-//             .map((statement) => ({ ...statement }));
-//     }
-// );
-
-// export const statementSubsSelectorMemo = createSelector(
-//     (statementId: string | undefined) => (state: RootState) =>
-//         state.statements.statements
-//             .filter((statementSub) => statementSub.parentId === statementId)
-//             .sort((a, b) => a.createdAt - b.createdAt)
-//             .map((statement) => ({ ...statement })),
-//     (statements) => statements
-// );
 export const statementNotificationSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statementSubscription.find(
@@ -400,12 +367,7 @@ export const statementElementHightSelector =
 export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
     state.statements.statementSubscriptionLastUpdate;
 
-//rooms
-export const participantsSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.filter(
-            (room) => room.parentId === statementId,
-        );
+
 
 
 //membeship

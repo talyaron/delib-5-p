@@ -11,6 +11,8 @@ interface Props {
 }
 
 const Room: FC<Props> = ({ room }) => {
+  
+
     function handleMoveParticipantToRoom(ev: any) {
         try {
             ev.preventDefault();
@@ -35,6 +37,7 @@ const Room: FC<Props> = ({ room }) => {
                 ev.preventDefault();
             }}
             onDrop={handleMoveParticipantToRoom}
+        
         >
             <h4>
                 {(t("Room"), room.roomNumber)} -{" "}

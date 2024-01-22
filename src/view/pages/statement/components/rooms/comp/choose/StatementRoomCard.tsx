@@ -24,6 +24,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
 
     function handleAskToJoinRoom() {
         try {
+            console.log("ask to join room", statement.statement)
             askToJoinRoomDB(statement);
         } catch (error) {
             console.error(error);
