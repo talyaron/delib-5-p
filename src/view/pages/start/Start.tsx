@@ -21,7 +21,7 @@ import moreLeft from "../../../assets/icons/moreLeft.svg";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
-import EnterName from "./EnterName";
+import EnterName from "../../components/enterName/EnterName";
 import useDirection from "../../../functions/hooks/useDirection";
 
 // import EnterName from './EnterName';

@@ -100,12 +100,12 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             <div>
                 <div className="btns">
                     {setRooms ? (
-                        <button onClick={handleDivideIntoRooms}>
+                        <button className="btn btn--agree btn--large" onClick={handleDivideIntoRooms}>
                             {t("Divide into rooms")}
                         </button>
                     ) : (
                         <button
-                            className="btn--cancel"
+                            className="btn btn--cancel btn--large"
                             onClick={handleDivideIntoRooms}
                         >
                             {t("Cancellation of division")}
