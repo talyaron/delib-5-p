@@ -4,13 +4,14 @@ import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import { listenToAllRoomsRquest } from "../../../../../functions/db/rooms/getRooms";
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
-import { setRoomRequests } from "../../../../../model/statements/statementsSlice";
+
 import RoomsAdmin from "./admin/RoomsAdmin";
 import SelectRoom from "./comp/choose/ChooseRoom";
 import RoomQuestions from "./comp/divide/RoomDivide";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";
+import { setRoomRequests } from "../../../../../model/rooms/roomsSlice";
 
 interface Props {
     statement: Statement;

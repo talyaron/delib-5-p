@@ -234,56 +234,7 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
-        setAskToJoinRooms: (
-            state,
-            action: PayloadAction<{
-                request: RoomAskToJoin | undefined;
-                parentId: string;
-            }>,
-        ) => {
-            try {
-                const { request, parentId } = action.payload;
-
-                if (!request) {
-                    //remove preivous room request
-
-                    state.askToJoinRooms = state.askToJoinRooms.filter(
-                        (room) => room.parentId !== parentId,
-                    );
-
-                    return;
-                }
-
-                //set request to join room
-                state.askToJoinRooms = updateArray(
-                    state.askToJoinRooms,
-                    request,
-                    "requestId",
-                );
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        setRoomRequests: (state, action: PayloadAction<RoomAskToJoin[]>) => {
-            try {
-                const requests = action.payload;
-                z.array(z.any()).parse(requests);
-
-                state.askToJoinRooms = requests;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        removeFromAskToJoinRooms: (state, action: PayloadAction<string>) => {
-            try {
-                const requestId = action.payload;
-                state.askToJoinRooms = state.askToJoinRooms.filter(
-                    (room) => room.requestId !== requestId,
-                );
-            } catch (error) {
-                console.error(error);
-            }
-        },
+        
         setMembership: (
             state,
             action: PayloadAction<StatementSubscription>,
@@ -333,9 +284,6 @@ export const statementsSlicer = createSlice({
 });
 
 export const {
-    setRoomRequests,
-    removeFromAskToJoinRooms,
-    setAskToJoinRooms,
     setStatement,
     setStatements,
     setStatementSubscription,
@@ -458,43 +406,7 @@ export const participantsSelector =
         state.statements.askToJoinRooms.filter(
             (room) => room.parentId === statementId,
         );
-export const askToJoinRoomsSelector = (state: RootState) =>
-    state.statements.askToJoinRooms;
-export const askToJoinRoomSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.find(
-            (room) => room.statementId === statementId,
-        );
-export const userSelectedRoomSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.find(
-            (room) =>
-                room.participant.uid === state.user.user?.uid &&
-                room.parentId === statementId,
-        );
-export const topicParticipantsSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.filter(
-            (room) => room.statementId === statementId,
-        );
 
-//find the user selected topic
-export const userSelectedTopicSelector =
-    (parentId: string | undefined) => (state: RootState) =>
-        state.statements.askToJoinRooms.find(
-            (room) =>
-                room.participant.uid === state.user.user?.uid &&
-                room.parentId === parentId,
-        );
-
-//loby rooms
-export const lobbyRoomsSelector = (state: RootState) =>
-    state.statements.lobbyRooms;
-export const lobbyRoomSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.lobbyRooms.find(
-            (room) => room.statementId === statementId,
-        );
 
 //membeship
 export const statementMembershipSelector =

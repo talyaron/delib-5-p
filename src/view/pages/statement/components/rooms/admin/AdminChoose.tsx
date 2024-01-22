@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Custom components
 import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
-import Text from "../../../../../components/text/Text";
 
 // Redux
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
@@ -26,6 +25,8 @@ import { setRoomSizeInStatement } from "../../../../../../functions/db/statement
 
 // Styles
 import _styles from "./admin.module.css";
+import Room from "./room/Room";
+import { RoomAdmin } from "../../../../../../model/rooms/roomsSlice";
 
 const styles = _styles as any;
 
@@ -33,11 +34,7 @@ interface Props {
     statement: Statement;
 }
 
-interface RoomAdmin {
-    room: Array<RoomAskToJoin>;
-    roomNumber: number;
-    statement: Statement;
-}
+
 export interface ParticipantInRoom {
     uid: string;
     room: number;
@@ -100,7 +97,10 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             <div>
                 <div className="btns">
                     {setRooms ? (
-                        <button className="btn btn--agree btn--large" onClick={handleDivideIntoRooms}>
+                        <button
+                            className="btn btn--agree btn--large"
+                            onClick={handleDivideIntoRooms}
+                        >
                             {t("Divide into rooms")}
                         </button>
                     ) : (
@@ -131,15 +131,6 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                 boxSizing: "border-box",
                             }}
                         >
-                            {/* <Slider
-                                defaultValue={statement.roomSize || 7}
-                                min={2}
-                                max={30}
-                                aria-label="Default"
-                                valueLabelDisplay="auto"
-                                onChange={handleRoomSize}
-                            /> */}
-
                             <input
                                 className="range"
                                 type="range"
@@ -167,35 +158,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                         <div className={styles.roomWrapper}>
                             {roomsAdmin.map((room: RoomAdmin) => {
                                 return (
-                                    <div
-                                        key={room.roomNumber}
-                                        className={styles.room}
-                                    >
-                                        <h4>
-                                            {(t("Room"), room.roomNumber)} -{" "}
-                                            <Text
-                                                text={room.statement.statement}
-                                                onlyTitle={true}
-                                            />
-                                        </h4>
-                                        <div className={styles.room__badges}>
-                                            {room.room.map(
-                                                (
-                                                    participant: RoomAskToJoin,
-                                                ) => (
-                                                    <RoomParticpantBadge
-                                                        key={
-                                                            participant
-                                                                .participant.uid
-                                                        }
-                                                        participant={
-                                                            participant.participant
-                                                        }
-                                                    />
-                                                ),
-                                            )}
-                                        </div>
-                                    </div>
+                                    <Room key={room.roomNumber} room={room} />
                                 );
                             })}
                         </div>

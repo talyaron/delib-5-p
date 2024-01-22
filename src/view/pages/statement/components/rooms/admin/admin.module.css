@@ -85,13 +85,7 @@
       }
 }
 
-.room {
-    border: 1px solid black;
-    padding: 1rem;
-    border-radius: .6rem;
-   
-   
-}
+
 
 .room__badges{
     display: flex;

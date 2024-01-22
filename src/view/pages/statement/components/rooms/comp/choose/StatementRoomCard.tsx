@@ -3,11 +3,8 @@ import { FC } from "react";
 import Text from "../../../../../../components/text/Text";
 import { askToJoinRoomDB } from "../../../../../../../functions/db/rooms/setRooms";
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-import {
-    statementSelector,
-    topicParticipantsSelector,
-    userSelectedTopicSelector,
-} from "../../../../../../../model/statements/statementsSlice";
+import { statementSelector } from "../../../../../../../model/statements/statementsSlice";
+import { topicParticipantsSelector, userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 interface Props {
     statement: Statement;

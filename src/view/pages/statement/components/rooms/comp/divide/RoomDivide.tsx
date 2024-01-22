@@ -6,13 +6,14 @@ import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-import { userSelectedTopicSelector } from "../../../../../../../model/statements/statementsSlice";
+import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // Styles
 import _styles from "./roomDivide.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
+
 
 const styles = _styles as any;
 
