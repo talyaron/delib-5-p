@@ -4,11 +4,13 @@ import {
     RoomAskToJoin,
     getRequestIdToJoinRoom,
     RoomsStateSelection,
+    User,
 } from "delib-npm";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/admin/AdminChoose";
+import { store } from "../../../model/store";
 
 export function enterRoomsDB(parentStatement: Statement) {
     try {
@@ -40,9 +42,12 @@ export function enterRoomsDB(parentStatement: Statement) {
     }
 }
 
-export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
+export async function askToJoinRoomDB(
+    statement: Statement,
+    participant?: User,
+): Promise<boolean> {
     try {
-        const user = getUserFromFirebase();
+        const user = participant ? participant : store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const userId = user.uid;
         if (!userId) throw new Error("User not logged in");
@@ -53,22 +58,28 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
         const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
 
         const requestDB = await getDoc(requestRef);
-        const request = requestDB.data() as RoomAskToJoin;
+       
 
         if (!requestDB.exists()) {
+            //if there is no request, create one
             console.log("statement do not exists on request");
             await saveToDB(requestId, requestRef, statement);
 
             return true;
         } else {
+            const request = requestDB.data() as RoomAskToJoin;
+            console.log(request)
             if (request.statement === undefined) {
-                await saveToDB(requestId, requestRef, statement);
+                
+                await saveToDB(requestId, requestRef, statement, request.approved);
 
                 return true;
             } else if (
                 request.statement.statementId !== statement.statementId
             ) {
-                await saveToDB(requestId, requestRef, statement);
+
+                //in case the user is already in the room and wants to join another room
+                await saveToDB(requestId, requestRef, statement, request.approved);
 
                 return true;
             } else {
@@ -96,8 +107,9 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
         requestId: string,
         requestRef: any,
         statement: Statement,
+        approved: boolean = false,
     ) {
-        const user = getUserFromFirebase();
+        const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const request: RoomAskToJoin = {
             statementId: statement.statementId,
@@ -105,6 +117,7 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
             parentId: statement.parentId,
             requestId: requestId,
             statement,
+            approved
         };
 
         await setDoc(requestRef, request);

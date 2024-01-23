@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LobbyRooms, RoomAskToJoin, Statement } from 'delib-npm';
-import { updateArray } from '../../functions/general/helpers';
-import { z } from 'zod';
-import { RootState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { LobbyRooms, RoomAskToJoin, Statement } from "delib-npm";
+import { updateArray } from "../../functions/general/helpers";
+import { z } from "zod";
+import { RootState } from "../store";
 
 export interface RoomAdmin {
     room: Array<RoomAskToJoin>;
@@ -22,7 +22,7 @@ const initialState: RoomsState = {
 };
 
 export const roomsSlice = createSlice({
-    name: 'rooms',
+    name: "rooms",
     initialState,
     reducers: {
         setAskToJoinRooms: (
@@ -78,7 +78,8 @@ export const roomsSlice = createSlice({
     },
 });
 
-export const { setAskToJoinRooms, setRoomRequests, removeFromAskToJoinRooms } = roomsSlice.actions;
+export const { setAskToJoinRooms, setRoomRequests, removeFromAskToJoinRooms } =
+    roomsSlice.actions;
 
 export const participantsSelector =
     (statementId: string | undefined) => (state: RootState) =>
@@ -106,6 +107,12 @@ export const topicParticipantsSelector =
             (room) => room.statementId === statementId,
         );
 
+export const participantSelector =
+    (userId: string | undefined) => (state: RootState) =>
+        state.rooms.askToJoinRooms.filter(
+            (room) => room.participant.uid === userId,
+        );
+
 //find the user selected topic
 export const userSelectedTopicSelector =
     (parentId: string | undefined) => (state: RootState) =>
@@ -116,12 +123,9 @@ export const userSelectedTopicSelector =
         );
 
 //loby rooms
-export const lobbyRoomsSelector = (state: RootState) =>
-    state.rooms.lobbyRooms;
+export const lobbyRoomsSelector = (state: RootState) => state.rooms.lobbyRooms;
 export const lobbyRoomSelector =
     (statementId: string | undefined) => (state: RootState) =>
-        state.rooms.lobbyRooms.find(
-            (room) => room.statementId === statementId,
-        );
+        state.rooms.lobbyRooms.find((room) => room.statementId === statementId);
 
 export default roomsSlice.reducer;

@@ -5,6 +5,8 @@ import { RoomAskToJoin } from "delib-npm";
 import RoomParticpantBadge from "../../comp/general/RoomParticpantBadge";
 import { t } from "i18next";
 import { RoomAdmin } from "../../../../../../../model/rooms/roomsSlice";
+import { askToJoinRoomDB } from "../../../../../../../functions/db/rooms/setRooms";
+import { store } from "../../../../../../../model/store";
 
 interface Props {
     room: RoomAdmin;
@@ -16,9 +18,14 @@ const Room: FC<Props> = ({ room }) => {
     function handleMoveParticipantToRoom(ev: any) {
         try {
             ev.preventDefault();
-            console.log("drop");
-            const draggedParticipant = ev.dataTransfer.getData("text/plain");
-            console.log(room.roomNumber, draggedParticipant);
+          
+            const draggedParticipantId = ev.dataTransfer.getData("text/plain");
+         
+            const participant = store.getState().rooms.askToJoinRooms.find((participant: RoomAskToJoin) => participant.participant.uid === draggedParticipantId);
+            console.log(participant?.participant.displayName)
+            if(!participant) throw new Error("participant not found");
+        
+            askToJoinRoomDB(room.statement, participant.participant);
         } catch (error) {
             console.error(error);
         }
