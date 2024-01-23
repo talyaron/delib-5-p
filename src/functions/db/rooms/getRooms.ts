@@ -33,7 +33,7 @@ export function listenToAllRoomsRquest(
                 const requests = requestsDB.docs.map(
                     (requestDB: any) => requestDB.data() as RoomAskToJoin,
                 );
-                console.log("update requests");
+            
                 dispatch(setRoomRequests(requests));
             } catch (error) {
                 console.error(error);

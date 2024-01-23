@@ -22,7 +22,7 @@ const Room: FC<Props> = ({ room }) => {
             const draggedParticipantId = ev.dataTransfer.getData("text/plain");
          
             const participant = store.getState().rooms.askToJoinRooms.find((participant: RoomAskToJoin) => participant.participant.uid === draggedParticipantId);
-            console.log(participant?.participant.displayName)
+        
             if(!participant) throw new Error("participant not found");
         
             askToJoinRoomDB(room.statement, participant.participant);

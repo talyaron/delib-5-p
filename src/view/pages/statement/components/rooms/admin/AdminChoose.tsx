@@ -98,8 +98,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     }
 
     return (
-        <div>
-            <p className={styles.title}>{t("Management board")}</p>
+        <div>     
             <div>
                 <div className="btns">
                     {setRooms ? (
