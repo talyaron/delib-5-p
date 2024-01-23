@@ -4,6 +4,8 @@ import { userSlicer } from "./users/userSlice";
 import { evaluationsSlicer } from "./evaluations/evaluationsSlice";
 import { votesSlicer } from "./vote/votesSlice";
 import { resultsSlice } from "./results/resultsSlice";
+import {roomsSlice} from "./rooms/roomsSlice";
+
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +14,7 @@ export const store = configureStore({
         user: userSlicer.reducer,
         votes: votesSlicer.reducer,
         results: resultsSlice.reducer,
+        rooms: roomsSlice.reducer,
     },
 });
 

@@ -7,7 +7,7 @@ import { t } from "i18next";
 import styles from "./enterName.module.scss";
 
 // Custom components
-import Modal from "../../components/modal/Modal";
+import Modal from "../modal/Modal";
 
 // Functions
 import { signAnonymously } from "../../../functions/db/auth";

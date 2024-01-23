@@ -74,7 +74,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
                 className="statement__form__input"
                 name="newStatement"
                 onKeyUp={handleKeyUp}
-                autoFocus={true}
+                autoFocus={false}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required

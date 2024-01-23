@@ -6,21 +6,22 @@ import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-import { userSelectedTopicSelector } from "../../../../../../../model/statements/statementsSlice";
+import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // Styles
-import _styles from "./roomDivide.module.scss";
+import styles from "./inRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
 
-const styles = _styles as any;
+
+
 
 interface Props {
     statement: Statement;
 }
 
-const RoomQuestions: FC<Props> = ({ statement }) => {
+const InRoom: FC<Props> = ({ statement }) => {
     const userTopic: RoomAskToJoin | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
@@ -43,7 +44,7 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
                                 />
                             </h2>
                             <div className={styles.text}>
-                                {t("Welcome to Room Number")}{" "}
+                                {t("Welcome to Room Number")}
                                 <span>{userTopic.roomNumber}</span>
                                 {t("In Zoom")}
                             </div>
@@ -59,4 +60,4 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
     }
 };
 
-export default RoomQuestions;
+export default InRoom;

@@ -68,7 +68,7 @@ const Thumbs: FC<ThumbsProps> = ({
             return (
                 <div onClick={() => handleVote(true)}>
                     {" "}
-                    <SmileIcon color="lightgray" />
+                    <SmileIcon active={false} />
                 </div>
             );
         }
@@ -82,7 +82,7 @@ const Thumbs: FC<ThumbsProps> = ({
         } else {
             return (
                 <div onClick={() => handleVote(false)}>
-                    <FrownIcon color="lightgray" />
+                    <FrownIcon active={false} />
                 </div>
             );
         }

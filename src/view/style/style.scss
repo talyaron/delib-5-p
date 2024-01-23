@@ -699,6 +699,9 @@ b {
     cursor: pointer;
     user-select: none;
 }
+.dragable{
+    cursor: grab;
+}
 
 .href {
     &--undecorated {
