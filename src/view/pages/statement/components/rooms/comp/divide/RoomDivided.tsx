@@ -9,19 +9,19 @@ import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks"
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // Styles
-import _styles from "./roomDivide.module.scss";
+import styles from "./roomDivided.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
 
 
-const styles = _styles as any;
+
 
 interface Props {
     statement: Statement;
 }
 
-const RoomQuestions: FC<Props> = ({ statement }) => {
+const RoomDivided: FC<Props> = ({ statement }) => {
     const userTopic: RoomAskToJoin | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
@@ -60,4 +60,4 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
     }
 };
 
-export default RoomQuestions;
+export default RoomDivided;

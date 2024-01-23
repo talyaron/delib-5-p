@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
 import RoomsAdmin from "./admin/RoomsAdmin";
 import SelectRoom from "./comp/choose/ChooseRoom";
-import RoomQuestions from "./comp/divide/RoomDivide";
+import RoomQuestions from "./comp/divide/RoomDivided";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";

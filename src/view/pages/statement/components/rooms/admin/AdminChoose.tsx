@@ -163,7 +163,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                         <div className={styles.roomWrapper}>
                             {roomsAdmin.map((room: RoomAdmin) => {
                                 return (
-                                    <Room key={room.roomNumber} room={room} />
+                                    <Room key={room.roomNumber} room={room} maxParticipantsPerRoom={maxParticipantsPerRoom} />
                                 );
                             })}
                         </div>

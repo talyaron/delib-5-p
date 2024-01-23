@@ -10,25 +10,36 @@ import { store } from "../../../../../../../model/store";
 
 interface Props {
     room: RoomAdmin;
+    maxParticipantsPerRoom: number;
 }
 
-const Room: FC<Props> = ({ room }) => {
-  
-
+const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
     function handleMoveParticipantToRoom(ev: any) {
         try {
             ev.preventDefault();
-          
-            const draggedParticipantId = ev.dataTransfer.getData("text/plain");
-         
-            const participant = store.getState().rooms.askToJoinRooms.find((participant: RoomAskToJoin) => participant.participant.uid === draggedParticipantId);
-        
-            if(!participant) throw new Error("participant not found");
 
-            if(participant.roomNumber === room.roomNumber) return;
-            
-        
-            askToJoinRoomDB(room.statement, participant.participant, room.roomNumber);
+            const draggedParticipantId = ev.dataTransfer.getData("text/plain");
+
+            const participant = store
+                .getState()
+                .rooms.askToJoinRooms.find(
+                    (participant: RoomAskToJoin) =>
+                        participant.participant.uid === draggedParticipantId,
+                );
+
+            if (!participant) throw new Error("participant not found");
+
+            if (participant.roomNumber === room.roomNumber) return;
+
+            if (room.room.length >= maxParticipantsPerRoom) {
+                alert("room is full");
+                return;
+            }
+            askToJoinRoomDB(
+                room.statement,
+                participant.participant,
+                room.roomNumber,
+            );
         } catch (error) {
             console.error(error);
         }
@@ -47,7 +58,6 @@ const Room: FC<Props> = ({ room }) => {
                 ev.preventDefault();
             }}
             onDrop={handleMoveParticipantToRoom}
-        
         >
             <h4>
                 {(t("Room"), room.roomNumber)} -{" "}
