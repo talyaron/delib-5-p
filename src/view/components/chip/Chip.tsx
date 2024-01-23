@@ -17,7 +17,7 @@ const Chip: FC<Props> = ({ user }) => {
             {user.photoURL ? (
                 <img src={user.photoURL} alt={user.displayName} />
             ) : (
-                <SmileIcon color="lightgray" />
+                <SmileIcon active={false} />
             )}
             <span>{displayName}</span>
         </div>
