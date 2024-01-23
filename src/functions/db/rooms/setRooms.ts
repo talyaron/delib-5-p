@@ -9,7 +9,7 @@ import {
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/admin/AdminChoose";
+import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/admin/AdminArrange";
 import { store } from "../../../model/store";
 
 export function enterRoomsDB(parentStatement: Statement) {

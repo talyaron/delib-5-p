@@ -6,8 +6,8 @@ import { listenToAllRoomsRquest } from "../../../../../functions/db/rooms/getRoo
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
 import RoomsAdmin from "./admin/RoomsAdmin";
-import SelectRoom from "./comp/choose/ChooseRoom";
-import RoomQuestions from "./comp/divide/RoomDivided";
+import ChooseRoom from "./user/choose/ChooseRoom";
+import RoomQuestions from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";
@@ -79,18 +79,18 @@ function switchRoomScreens(
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
     switch (roomState) {
-        case RoomsStateSelection.SELECT_ROOMS:
+        case RoomsStateSelection.chooseRoom:
             return (
-                <SelectRoom
+                <ChooseRoom
                     subStatements={subStatements}
                     setShowModal={setShowModal}
                 />
             );
-        case RoomsStateSelection.DIVIDE:
+        case RoomsStateSelection.inRoom:
             return <RoomQuestions statement={statement} />;
         default:
             return (
-                <SelectRoom
+                <ChooseRoom
                     subStatements={subStatements}
                     setShowModal={setShowModal}
                 />

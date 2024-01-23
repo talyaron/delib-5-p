@@ -63,7 +63,7 @@ export const statementsSlicer = createSlice({
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
 
-                StatementSchema.parse(newStatement);
+               
                 newStatement.order = 0;
                 const oldStatement = state.statements.find(
                     (statement) =>

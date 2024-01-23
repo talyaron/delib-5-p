@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks"
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // Styles
-import styles from "./roomDivided.module.scss";
+import styles from "./inRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -21,7 +21,7 @@ interface Props {
     statement: Statement;
 }
 
-const RoomDivided: FC<Props> = ({ statement }) => {
+const InRoom: FC<Props> = ({ statement }) => {
     const userTopic: RoomAskToJoin | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
@@ -60,4 +60,4 @@ const RoomDivided: FC<Props> = ({ statement }) => {
     }
 };
 
-export default RoomDivided;
+export default InRoom;

@@ -12,7 +12,7 @@ interface Props {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
 
     return (
         <>
@@ -34,4 +34,4 @@ const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
     );
 };
 
-export default SelectRoom;
+export default ChooseRoom;

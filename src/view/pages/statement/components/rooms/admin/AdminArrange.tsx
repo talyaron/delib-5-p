@@ -80,8 +80,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             });
 
             const roomsState = setRooms
-                ? RoomsStateSelection.DIVIDE
-                : RoomsStateSelection.SELECT_ROOMS;
+                ? RoomsStateSelection.chooseRoom
+                : RoomsStateSelection.inRoom;
             setSetRooms((state) => !state);
 
             setRoomsStateToDB(statement, roomsState);

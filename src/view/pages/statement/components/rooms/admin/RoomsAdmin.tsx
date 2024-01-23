@@ -1,6 +1,6 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
-import AdminChoose from "./AdminChoose";
+import AdminArrange from "./AdminArrange";
 import _styles from "./admin.module.css";
 import { t } from "i18next";
 
@@ -15,7 +15,7 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
         <>
             <div className={styles.admin}>
                 <p className={styles.title}>{t("Management board")}</p>
-                <AdminChoose statement={statement} />
+                <AdminArrange statement={statement} />
             </div>
         </>
     );
