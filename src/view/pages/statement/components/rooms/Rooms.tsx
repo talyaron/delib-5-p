@@ -1,4 +1,4 @@
-import { RoomAskToJoin, RoomsStateSelection, Statement } from "delib-npm";
+import { RoomsStateSelection, Statement } from "delib-npm";
 import React, { FC, useState, useEffect } from "react";
 import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
@@ -11,7 +11,7 @@ import RoomQuestions from "./comp/divide/RoomDivide";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import { setRoomRequests } from "../../../../../model/rooms/roomsSlice";
+
 
 interface Props {
     statement: Statement;
@@ -28,7 +28,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     useEffect(() => {
         enterRoomsDB(statement);
 
-        unsub = listenToAllRoomsRquest(statement, updateRequestForRooms);
+        unsub = listenToAllRoomsRquest(statement, dispatch);
 
         //enter the room
 
@@ -37,9 +37,6 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
         };
     }, []);
 
-    function updateRequestForRooms(roomsAsked: RoomAskToJoin[]) {
-        dispatch(setRoomRequests(roomsAsked));
-    }
 
     const __substatements = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement),

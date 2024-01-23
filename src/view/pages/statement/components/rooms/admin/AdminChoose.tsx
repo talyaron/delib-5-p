@@ -28,12 +28,12 @@ import _styles from "./admin.module.css";
 import Room from "./room/Room";
 import { RoomAdmin } from "../../../../../../model/rooms/roomsSlice";
 
+
 const styles = _styles as any;
 
 interface Props {
     statement: Statement;
 }
-
 
 export interface ParticipantInRoom {
     uid: string;
@@ -47,10 +47,16 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     const participants = useAppSelector(
         participantsSelector(statement.statementId),
     );
+
+    // const roomsAdmin = useAdminRooms(statement,statement.roomSize || 5);
     const [setRooms, setSetRooms] = useState<boolean>(true);
-    const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
+    // const [roomsAdmin, setRoomsAdmin] = useState<RoomAdmin[]>([]);
     const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] =
         useState<number>(statement.roomSize || 5);
+
+    const { rooms:roomsAdmin } = divideIntoTopics(participants, maxParticipantsPerRoom);
+
+    
 
     function handleDivideIntoRooms() {
         try {
@@ -58,7 +64,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                 participants,
                 maxParticipantsPerRoom,
             );
-            setRoomsAdmin(rooms);
+            // setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {
                 room.room.forEach((participant) => {
@@ -171,7 +177,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
 export default AdminSeeAllGroups;
 
-function divideIntoTopics(
+export function divideIntoTopics(
     participants: RoomAskToJoin[],
     maxPerRoom = 7,
 ): { rooms: Array<RoomDivied>; topicsParticipants: any } {
