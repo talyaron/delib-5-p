@@ -44,6 +44,7 @@ export interface ParticipantInRoom {
 }
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
+    const roomsState  = statement.roomsState || RoomsStateSelection.chooseRoom;
     const participants = useAppSelector(
         participantsSelector(statement.statementId),
     );
@@ -101,7 +102,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
         <div>     
             <div>
                 <div className="btns">
-                    {setRooms ? (
+                    {roomsState === RoomsStateSelection.chooseRoom ? (
                         <button
                             className="btn btn--agree btn--large"
                             onClick={handleDivideIntoRooms}
@@ -117,7 +118,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                         </button>
                     )}
                 </div>
-                {setRooms ? (
+                {roomsState === RoomsStateSelection.chooseRoom ? (
                     <div>
                         <h3>{t("Participants")}</h3>
                         <p>

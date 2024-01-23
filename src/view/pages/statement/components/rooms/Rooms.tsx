@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
 import RoomsAdmin from "./admin/RoomsAdmin";
 import ChooseRoom from "./user/choose/ChooseRoom";
-import RoomQuestions from "./user/inRoom/InRoom";
+import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";
@@ -43,6 +43,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     );
   
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
+   
 
     return (
         <div className="page__main">
@@ -87,7 +88,7 @@ function switchRoomScreens(
                 />
             );
         case RoomsStateSelection.inRoom:
-            return <RoomQuestions statement={statement} />;
+            return <InRoom statement={statement} />;
         default:
             return (
                 <ChooseRoom
