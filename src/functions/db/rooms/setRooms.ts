@@ -58,22 +58,7 @@ export async function setRoomJoinToDB(
         } else {
             //if there is a request
             const request = requestDB.data() as RoomAskToJoin;
-
-            if (request.statement === undefined) {
-                // If the user is not in a room
-                await saveToDB({ requestId, requestRef, statement, user, approved: request.approved });
-                return true;
-            } else if (request.statement.statementId !== statement.statementId) {
-                // If the user is already in a room and wants to join another room
-                await saveToDB({ requestId, requestRef, statement, user, approved: request.approved, newRoomNumber: roomNumber });
-                return true;
-            } else {
-                // If the user is already in the same room, remove the user from the room
-                const { parentId, participant, requestId } = request;
-                const updatedRequest = { parentId, participant, requestId, lastUpdate: new Date().getTime() };
-                await setDoc(requestRef, updatedRequest);
-                return false;
-            }
+            return await updateRequestToDB(request, requestRef);
         }
     } catch (error) {
         console.error(error);
@@ -89,6 +74,8 @@ export async function setRoomJoinToDB(
         approved?: boolean;
         newRoomNumber?: number;
     }
+
+    //helpers functions
     async function saveToDB({
         requestId,
         requestRef,
@@ -126,6 +113,51 @@ export async function setRoomJoinToDB(
         const requestDB = await getDoc(requestRef);
 
         return { requestDB, user, requestId, requestRef };
+    }
+
+    async function updateRequestToDB(request: RoomAskToJoin, requestRef: any) {
+        try {
+            const user = store.getState().user.user;
+            if (!user) throw new Error("User not logged in");
+            if (request.statement === undefined) {
+                // If the user is not in a room
+                await saveToDB({
+                    requestId: request.requestId,
+                    requestRef,
+                    statement,
+                    user,
+                    approved: request.approved,
+                });
+                return true;
+            } else if (
+                request.statement.statementId !== statement.statementId
+            ) {
+                // If the user is already in a room and wants to join another room
+                await saveToDB({
+                    requestId: request.requestId,
+                    requestRef,
+                    statement,
+                    user,
+                    approved: request.approved,
+                    newRoomNumber: roomNumber,
+                });
+                return true;
+            } else {
+                // If the user is already in the same room, remove the user from the room
+                const { parentId, participant, requestId } = request;
+                const updatedRequest = {
+                    parentId,
+                    participant,
+                    requestId,
+                    lastUpdate: new Date().getTime(),
+                };
+                await setDoc(requestRef, updatedRequest);
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
     }
 }
 
