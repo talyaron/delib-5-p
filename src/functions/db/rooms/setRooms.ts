@@ -178,7 +178,7 @@ export async function setRoomsStateToDB(
     }
 }
 
-export function setParticipantInRoom(participant: ParticipantInRoom) {
+export function setParticipantInRoomToDB(participant: ParticipantInRoom) {
     try {
         const { uid, topic, roomNumber } = participant;
         if (!topic) return;

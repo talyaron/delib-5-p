@@ -29,8 +29,6 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
 
         unsub = listenToAllRoomsRquest(statement, dispatch);
 
-        //enter the room
-
         return () => {
             if (unsub) unsub();
         };
