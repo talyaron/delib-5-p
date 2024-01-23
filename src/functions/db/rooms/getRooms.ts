@@ -16,11 +16,12 @@ import {
 import { DB } from "../config";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { setRoomRequests } from "../../../model/rooms/roomsSlice";
+import { Unsubscribe } from "firebase/auth";
 
 export function listenToAllRoomsRquest(
     statement: Statement,
     dispatch: ThunkDispatch<any, any, any>,
-) {
+):Unsubscribe {
     try {
         const requestRef = collection(DB, Collections.statementRoomsAsked);
         const q = query(
@@ -42,6 +43,7 @@ export function listenToAllRoomsRquest(
         });
     } catch (error) {
         console.error(error);
+        return () => {};
     }
 }
 
