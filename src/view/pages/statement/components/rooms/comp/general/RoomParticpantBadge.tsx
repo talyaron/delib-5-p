@@ -7,8 +7,8 @@ interface Props {
 
 const RoomParticpantBadge: FC<Props> = ({ participant }) => {
     return (
-        <div className="badge">
-            <div className="badge__text">{participant.displayName}</div>
+        <div className="badge dragable" draggable={true} onDragStart={(e)=>{e.dataTransfer.setData('text/plain', participant.uid);}}>
+            <div className="badge__text" >{participant.displayName}</div>
             {participant.photoURL ? (
                 <div
                     className="badge__img"

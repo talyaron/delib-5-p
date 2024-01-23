@@ -46,7 +46,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     const isAddOption =
         showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
-    const hadleMidIconClick = () => {
+    const handleMidIconClick = () => {
         if (!openNav) return setOpenNav(true);
         if (isAddOption) {
             setShowModal(true);
@@ -86,7 +86,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                 <div
                     className="bottomNav__iconbox bottomNav__iconbox--burger"
                     style={statementColor}
-                    onClick={hadleMidIconClick}
+                    onClick={handleMidIconClick}
                 >
                     {openNav && isAddOption ? (
                         <PlusIcon color={statementColor.color} />
@@ -102,6 +102,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                         }`}
                         to={navItem.link}
                         key={navItem.id}
+                        onClick={() => setOpenNav(false)}
                     >
                         {icon(navItem.name, statementColor.backgroundColor)}
                     </Link>

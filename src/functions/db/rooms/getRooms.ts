@@ -14,11 +14,14 @@ import {
     where,
 } from "firebase/firestore";
 import { DB } from "../config";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { setRoomRequests } from "../../../model/rooms/roomsSlice";
+import { Unsubscribe } from "firebase/auth";
 
 export function listenToAllRoomsRquest(
     statement: Statement,
-    cb: (requests: RoomAskToJoin[]) => void,
-) {
+    dispatch: ThunkDispatch<any, any, any>,
+):Unsubscribe {
     try {
         const requestRef = collection(DB, Collections.statementRoomsAsked);
         const q = query(
@@ -31,15 +34,16 @@ export function listenToAllRoomsRquest(
                 const requests = requestsDB.docs.map(
                     (requestDB: any) => requestDB.data() as RoomAskToJoin,
                 );
-
-                cb(requests);
+            
+                dispatch(setRoomRequests(requests));
             } catch (error) {
                 console.error(error);
-                cb([]);
+                dispatch(setRoomRequests([]));
             }
         });
     } catch (error) {
         console.error(error);
+        return () => {};
     }
 }
 

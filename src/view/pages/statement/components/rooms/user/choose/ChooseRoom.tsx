@@ -5,21 +5,22 @@ import { Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Custom components
-import StatementRoomCard from "./StatementRoomCard";
+import RoomChoosingCard from "./RoomChoosingCard";
 
 interface Props {
     subStatements: Statement[];
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+
     return (
         <>
             <h2>"{t("Division into rooms")}"</h2>
             <div className="roomsCards__wrapper">
                 {subStatements.map((subStatement: Statement) => {
                     return (
-                        <StatementRoomCard
+                        <RoomChoosingCard
                             key={subStatement.statementId}
                             statement={subStatement}
                         />
@@ -33,4 +34,4 @@ const SelectRoom: FC<Props> = ({ subStatements, setShowModal }) => {
     );
 };
 
-export default SelectRoom;
+export default ChooseRoom;
