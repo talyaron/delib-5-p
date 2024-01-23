@@ -1,16 +1,19 @@
 import { RoomAskToJoin, Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../../../../../components/text/Text";
-import { askToJoinRoomDB } from "../../../../../../../functions/db/rooms/setRooms";
+import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
 import { statementSelector } from "../../../../../../../model/statements/statementsSlice";
-import { topicParticipantsSelector, userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
+import {
+    topicParticipantsSelector,
+    userSelectedTopicSelector,
+} from "../../../../../../../model/rooms/roomsSlice";
 
 interface Props {
     statement: Statement;
 }
 
-const StatementRoomCard: FC<Props> = ({ statement }) => {
+const RoomChoosingCard: FC<Props> = ({ statement }) => {
     const request = useAppSelector(
         userSelectedTopicSelector(statement.parentId),
     );
@@ -23,12 +26,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
     ) as RoomAskToJoin[];
 
     function handleAskToJoinRoom() {
-        try {
-            console.log("ask to join room", statement.statement)
-            askToJoinRoomDB(statement);
-        } catch (error) {
-            console.error(error);
-        }
+        setRoomJoinToDB(statement);
     }
 
     const fill = fillHieght(topicJoiners, roomSize);
@@ -62,7 +60,7 @@ const StatementRoomCard: FC<Props> = ({ statement }) => {
     );
 };
 
-export default StatementRoomCard;
+export default RoomChoosingCard;
 
 function fillHieght(topicJoiners: RoomAskToJoin[], maxRoomJoiners = 5) {
     try {

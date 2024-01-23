@@ -42,7 +42,7 @@ export function enterRoomsDB(parentStatement: Statement) {
     }
 }
 
-export async function askToJoinRoomDB(
+export async function setRoomJoinToDB(
     statement: Statement,
     participant?: User,
     roomNumber?: number,

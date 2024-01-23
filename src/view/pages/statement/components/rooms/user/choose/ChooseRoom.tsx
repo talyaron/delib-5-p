@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Custom components
-import StatementRoomCard from "./StatementRoomCard";
+import RoomChoosingCard from "./RoomChoosingCard";
 
 interface Props {
     subStatements: Statement[];
@@ -20,7 +20,7 @@ const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
             <div className="roomsCards__wrapper">
                 {subStatements.map((subStatement: Statement) => {
                     return (
-                        <StatementRoomCard
+                        <RoomChoosingCard
                             key={subStatement.statementId}
                             statement={subStatement}
                         />

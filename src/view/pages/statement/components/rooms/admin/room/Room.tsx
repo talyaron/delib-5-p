@@ -5,7 +5,7 @@ import { RoomAskToJoin } from "delib-npm";
 import RoomParticpantBadge from "../../comp/general/RoomParticpantBadge";
 import { t } from "i18next";
 import { RoomAdmin } from "../../../../../../../model/rooms/roomsSlice";
-import { askToJoinRoomDB } from "../../../../../../../functions/db/rooms/setRooms";
+import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
 import { store } from "../../../../../../../model/store";
 
 interface Props {
@@ -35,7 +35,7 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
                 alert("room is full");
                 return;
             }
-            askToJoinRoomDB(
+            setRoomJoinToDB(
                 room.statement,
                 participant.participant,
                 room.roomNumber,
