@@ -24,8 +24,9 @@ const Room: FC<Props> = ({ room }) => {
             const participant = store.getState().rooms.askToJoinRooms.find((participant: RoomAskToJoin) => participant.participant.uid === draggedParticipantId);
         
             if(!participant) throw new Error("participant not found");
+            
         
-            askToJoinRoomDB(room.statement, participant.participant);
+            askToJoinRoomDB(room.statement, participant.participant, room.roomNumber);
         } catch (error) {
             console.error(error);
         }

@@ -44,7 +44,7 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
                                 />
                             </h2>
                             <div className={styles.text}>
-                                {t("Welcome to Room Number")}{" "}
+                                {t("Welcome to Room Number")}
                                 <span>{userTopic.roomNumber}</span>
                                 {t("In Zoom")}
                             </div>

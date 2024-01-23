@@ -45,9 +45,9 @@ export function enterRoomsDB(parentStatement: Statement) {
 export async function askToJoinRoomDB(
     statement: Statement,
     participant?: User,
+    roomNumber?: number,
 ): Promise<boolean> {
     try {
-       
         const user = participant ? participant : store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const userId = user.uid;
@@ -59,28 +59,38 @@ export async function askToJoinRoomDB(
         const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
 
         const requestDB = await getDoc(requestRef);
-       
 
         if (!requestDB.exists()) {
             //if there is no request, create one
-           
-            await saveToDB(requestId, requestRef, statement, user);
+
+            await saveToDB({ requestId, requestRef, statement, user });
 
             return true;
         } else {
             const request = requestDB.data() as RoomAskToJoin;
-         
+
             if (request.statement === undefined) {
-                
-                await saveToDB(requestId, requestRef, statement, user, request.approved);
+                await saveToDB({
+                    requestId,
+                    requestRef,
+                    statement,
+                    user,
+                    approved: request.approved,
+                });
 
                 return true;
             } else if (
                 request.statement.statementId !== statement.statementId
             ) {
-
                 //in case the user is already in the room and wants to join another room
-                await saveToDB(requestId, requestRef, statement,user, request.approved);
+                await saveToDB({
+                    requestId,
+                    requestRef,
+                    statement,
+                    user,
+                    approved: request.approved,
+                    newRoomNumber: roomNumber,
+                });
 
                 return true;
             } else {
@@ -104,23 +114,35 @@ export async function askToJoinRoomDB(
         return false;
     }
 
-    async function saveToDB(
-        requestId: string,
-        requestRef: any,
-        statement: Statement,
-        user?: User,
-        approved?: boolean,
-    ) {
-        const _user = user|| store.getState().user.user;
+    interface SaveToDB {
+        requestId: string;
+        requestRef: any;
+        statement: Statement;
+        user?: User;
+        approved?: boolean;
+        newRoomNumber?: number;
+    }
+    async function saveToDB({
+        requestId,
+        requestRef,
+        statement,
+        user,
+        approved,
+        newRoomNumber,
+    }: SaveToDB) {
+  
+        const _user = user || store.getState().user.user;
         if (!_user) throw new Error("User not logged in");
         const request: RoomAskToJoin = {
             statementId: statement.statementId,
             participant: _user,
             parentId: statement.parentId,
             requestId: requestId,
-            statement,
-            approved
+            statement
         };
+        if (typeof newRoomNumber === "number")
+            request.roomNumber = newRoomNumber;
+        if (typeof approved === "boolean") request.approved = approved;
 
         await setDoc(requestRef, request);
     }
