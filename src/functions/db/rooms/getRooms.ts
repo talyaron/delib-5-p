@@ -1,6 +1,6 @@
 import {
     Collections,
-    RoomAskToJoin,
+    Participant,
     Statement,
     StatementSchema,
     StatementType,
@@ -32,7 +32,7 @@ export function listenToAllRoomsRquest(
         return onSnapshot(q, (requestsDB: any) => {
             try {
                 const requests = requestsDB.docs.map(
-                    (requestDB: any) => requestDB.data() as RoomAskToJoin,
+                    (requestDB: any) => requestDB.data() as Participant,
                 );
             
                 dispatch(setRoomRequests(requests));

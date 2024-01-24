@@ -1,7 +1,7 @@
 import {
     Collections,
     Statement,
-    RoomAskToJoin,
+    Participant,
     getRequestIdToJoinRoom,
     RoomsStateSelection,
     User,
@@ -30,7 +30,7 @@ export function enterRoomsDB(parentStatement: Statement) {
         );
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
-        const room: RoomAskToJoin = {
+        const room: Participant = {
             participant: user,
             parentId: parentStatement.statementId,
             requestId: requestId,
@@ -57,7 +57,7 @@ export async function setRoomJoinToDB(
             return true;
         } else {
             //if there is a request
-            const request = requestDB.data() as RoomAskToJoin;
+            const request = requestDB.data() as Participant;
             return await updateRequestToDB(request, requestRef);
         }
     } catch (error) {
@@ -86,7 +86,7 @@ export async function setRoomJoinToDB(
     }: SaveToDB) {
         const _user = user || store.getState().user.user;
         if (!_user) throw new Error("User not logged in");
-        const request: RoomAskToJoin = {
+        const request: Participant = {
             statementId: statement.statementId,
             participant: _user,
             parentId: statement.parentId,
@@ -115,7 +115,7 @@ export async function setRoomJoinToDB(
         return { requestDB, user, requestId, requestRef };
     }
 
-    async function updateRequestToDB(request: RoomAskToJoin, requestRef: any) {
+    async function updateRequestToDB(request: Participant, requestRef: any) {
         try {
             const user = store.getState().user.user;
             if (!user) throw new Error("User not logged in");

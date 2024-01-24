@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // Third Party Libraries
-import { RoomAskToJoin, Statement } from "delib-npm";
+import { Participant, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Redux
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const InRoom: FC<Props> = ({ statement }) => {
-    const userTopic: RoomAskToJoin | undefined = useAppSelector(
+    const userTopic: Participant | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
 
