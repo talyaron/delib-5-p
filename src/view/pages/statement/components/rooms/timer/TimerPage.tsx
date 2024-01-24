@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Images
 import timerImage from "../../../../../../assets/images/timer.png";
@@ -7,18 +7,62 @@ import timerImage from "../../../../../../assets/images/timer.png";
 import "./timerPage.scss";
 import { t } from "i18next";
 import Timer from "../../../../../components/icons/Timer";
+import PlayIcon from "../../../../../components/icons/PlayIcon";
+import PauseIcon from "../../../../../components/icons/PauseIcon";
+import StopIcon from "../../../../../components/icons/StopIcon";
+import ChevronRightIcon from "../../../../../components/icons/ChevronRightIcon";
+import ChevronLeftIcon from "../../../../../components/icons/ChevronLeftIcon";
 
 export default function TimerPage() {
+    // useState
     const [tab, setTab] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(60 * 90);
+    const [initTime] = useState(1000 * 90); // 90 seconds
+    const [timeLeft, setTimeLeft] = useState(initTime);
+    const [minutes, setMinutes] = useState(
+        getMinutesAndSeconds(initTime).minutes,
+    );
+    const [seconds, setSeconds] = useState(
+        getMinutesAndSeconds(initTime).seconds,
+    );
+    const [isActive, setIsActive] = useState(false);
+    const [timer, setTimer] = useState<NodeJS.Timer>();
 
-    const timer = () =>
+    const percent = (timeLeft / initTime) * 100;
+
+    const interval = () =>
         setInterval(() => {
-            setTimeLeft(timeLeft - 1);
+            setTimeLeft((prev) => {
+                const newTime = prev - 1000;
+                if (newTime < 0) {
+                    clearInterval(timer);
+
+                    return 0;
+                }
+
+                setMinutes(getMinutesAndSeconds(newTime).minutes);
+                setSeconds(getMinutesAndSeconds(newTime).seconds);
+
+                return newTime;
+            });
         }, 1000);
 
-    const startTimer = () => {
-        timer();
+    useEffect(() => {
+        if (isActive) {
+            setTimer(interval());
+        } else {
+            clearInterval(timer);
+        }
+
+        return () => {
+            clearInterval(interval());
+        };
+    }, [isActive]);
+
+    const stopAndResetTimer = () => {
+        setIsActive(false);
+        setTimeLeft(initTime);
+        setMinutes(getMinutesAndSeconds(initTime).minutes);
+        setSeconds(getMinutesAndSeconds(initTime).seconds);
     };
 
     return (
@@ -74,11 +118,45 @@ export default function TimerPage() {
                     </h1>
                     <img src={timerImage} alt="Sand-timer-image" />
                 </div>
-                <div className="roomsWrapper__timer" onClick={startTimer}>
-                    <Timer />
-                    <p className="roomsWrapper__timer__time">{timeLeft}</p>
+                <div className="roomsWrapper__timer">
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "2rem",
+                        }}
+                    >
+                        <ChevronRightIcon onClick={() => console.log("Chevron Right clicked")}/>
+                        <Timer percent={percent} />
+                        <ChevronLeftIcon
+                            onClick={() => console.log("Chevron Left clicked")}
+                        />
+                    </div>
+                    <p className="roomsWrapper__timer__time">{`${
+                        minutes < 10 ? "0" + minutes : minutes
+                    }:${seconds < 10 ? "0" + seconds : seconds}`}</p>
+                    {!isActive && (
+                        <PlayIcon onClick={() => setIsActive(true)} />
+                    )}
+                    {isActive && (
+                        <div className="roomsWrapper__timer__time__actions">
+                            <StopIcon onClick={stopAndResetTimer} />
+                            <PauseIcon onClick={() => setIsActive(false)} />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
+}
+
+function getMinutesAndSeconds(milliseconds: number) {
+    // Convert milliseconds to seconds
+    const totalSeconds = Math.floor(milliseconds / 1000);
+
+    // Calculate minutes and remaining seconds
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return { minutes, seconds };
 }

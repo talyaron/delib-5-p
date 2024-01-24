@@ -60,15 +60,24 @@
     }
     &__timer {
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
         &__time {
             position: absolute;
-            top: 35%;
-            right: 30%;
+            top: 30%;
+            margin: 0 auto;
             color: var(--light-blue);
             font-size: 2rem;
             font-style: normal;
             font-weight: 500;
             line-height: normal;
+            &__actions{
+                display: flex;
+                gap: 1rem;
+            }
         }
     }
 }
