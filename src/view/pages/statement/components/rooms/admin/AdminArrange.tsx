@@ -5,7 +5,7 @@ import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
 
 // Redux
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
-import { participantsSelector } from "../../../../../../model/rooms/roomsSlice";
+
 
 // Third party libraries
 import {
@@ -23,9 +23,11 @@ import { setRoomSizeInStatement } from "../../../../../../functions/db/statement
 
 // Styles
 import _styles from "./admin.module.css";
-import Room from "./room/Room";
-import { RoomAdmin } from "../../../../../../model/rooms/roomsSlice";
+
 import { divideIntoTopics } from "./AdminArrangeCont";
+import { RoomAdmin, participantsSelector } from "../../../../../../model/rooms/roomsSlice";
+import Room from "./room/Room";
+
 
 
 const styles = _styles as any;
