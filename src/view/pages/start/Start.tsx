@@ -14,7 +14,7 @@ import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 //img
-import Logo from "../../../assets/logo/logo-128px.png";
+import Logo from "../../../assets/logo/512 px SVG.svg";
 import googleLogo from "../../../assets/icons/googleSimpleLogo.svg"
 import moreRight from "../../../assets/icons/moreRight.svg";
 import moreLeft from "../../../assets/icons/moreLeft.svg";
