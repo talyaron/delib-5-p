@@ -8,6 +8,7 @@ import { RouterProvider } from "react-router-dom";
 import { store } from "./model/store";
 import { Provider } from "react-redux";
 import { setIntialLocationSessionStorage } from "./functions/general/helpers";
+
 import { router } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
