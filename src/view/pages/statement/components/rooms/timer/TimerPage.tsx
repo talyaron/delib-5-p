@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Images
 import timerImage from "../../../../../../assets/images/timer.png";
@@ -12,11 +12,17 @@ import PauseIcon from "../../../../../components/icons/PauseIcon";
 import StopIcon from "../../../../../components/icons/StopIcon";
 import ChevronRightIcon from "../../../../../components/icons/ChevronRightIcon";
 import ChevronLeftIcon from "../../../../../components/icons/ChevronLeftIcon";
+import { getMinutesAndSeconds } from "./timerPagecont";
+import { startTimerDB } from "../../../../../../functions/db/timer/setTimer";
+import { Statement } from "delib-npm";
+interface Props {
+    statement:Statement
+}
 
-export default function TimerPage() {
+export default function TimerPage({statement}:Props):JSX.Element {
     // useState
     const [tab, setTab] = useState(0);
-    const [initTime] = useState(1000 * 90); // 90 seconds
+    const [initTime] = useState(1000 * 300); // 90 seconds
     const [timeLeft, setTimeLeft] = useState(initTime);
     const [minutes, setMinutes] = useState(
         getMinutesAndSeconds(initTime).minutes,
@@ -63,6 +69,12 @@ export default function TimerPage() {
         setTimeLeft(initTime);
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
+    };
+    const startTimer = ():void => {
+        setIsActive(true);
+
+        //send a message to the server that the timer has started
+        startTimerDB();
     };
 
     return (
@@ -126,7 +138,9 @@ export default function TimerPage() {
                             gap: "2rem",
                         }}
                     >
-                        <ChevronRightIcon onClick={() => console.log("Chevron Right clicked")}/>
+                        <ChevronRightIcon
+                            onClick={() => console.log("Chevron Right clicked")}
+                        />
                         <Timer percent={percent} />
                         <ChevronLeftIcon
                             onClick={() => console.log("Chevron Left clicked")}
@@ -135,9 +149,7 @@ export default function TimerPage() {
                     <p className="roomsWrapper__timer__time">{`${
                         minutes < 10 ? "0" + minutes : minutes
                     }:${seconds < 10 ? "0" + seconds : seconds}`}</p>
-                    {!isActive && (
-                        <PlayIcon onClick={() => setIsActive(true)} />
-                    )}
+                    {!isActive && <PlayIcon onClick={startTimer} />}
                     {isActive && (
                         <div className="roomsWrapper__timer__time__actions">
                             <StopIcon onClick={stopAndResetTimer} />
@@ -148,15 +160,4 @@ export default function TimerPage() {
             </div>
         </div>
     );
-}
-
-function getMinutesAndSeconds(milliseconds: number) {
-    // Convert milliseconds to seconds
-    const totalSeconds = Math.floor(milliseconds / 1000);
-
-    // Calculate minutes and remaining seconds
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-
-    return { minutes, seconds };
 }
