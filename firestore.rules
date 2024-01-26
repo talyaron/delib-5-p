@@ -39,6 +39,11 @@ service cloud.firestore {
 
     }
 
+     match /timers/{evluationId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
      match /evaluations/{evluationId=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;

@@ -14,7 +14,7 @@ import ChevronRightIcon from "../../../../../components/icons/ChevronRightIcon";
 import ChevronLeftIcon from "../../../../../components/icons/ChevronLeftIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
 import { startTimerDB } from "../../../../../../functions/db/timer/setTimer";
-import { Statement } from "delib-npm";
+import { Stage, Statement, TimerStatus } from "delib-npm";
 interface Props {
     statement:Statement
 }
@@ -74,7 +74,7 @@ export default function TimerPage({statement}:Props):JSX.Element {
         setIsActive(true);
 
         //send a message to the server that the timer has started
-        startTimerDB();
+        startTimerDB({statement, roomNumber:0,stage:Stage.discussion, timeToCount:initTime, timerStatus:TimerStatus.start});
     };
 
     return (

@@ -73,9 +73,8 @@ export default function SwitchScreens({
         case Screen.GROUPS:
             return (
                 <TimerPage
-                
-                // statement={statement}
-                // subStatements={subStatements}
+                    statement={statement}
+                    // subStatements={subStatements}
                 />
             );
         case Screen.SETTINGS:
