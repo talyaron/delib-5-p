@@ -12,6 +12,7 @@ import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
 import TimerPage from "./rooms/timer/TimerPage";
 import StatementSettings from "./settings/StatementSettings";
+import StatmentRooms from "./rooms/Rooms";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -72,10 +73,11 @@ export default function SwitchScreens({
             );
         case Screen.GROUPS:
             return (
-                <TimerPage
-                    statement={statement}
-                    // subStatements={subStatements}
-                />
+                // <TimerPage
+                //     statement={statement}
+                //     // subStatements={subStatements}
+                // />
+                <StatmentRooms statement={statement} subStatements={subStatements}/>
             );
         case Screen.SETTINGS:
             return <StatementSettings />;

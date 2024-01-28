@@ -1,0 +1,23 @@
+.timer{
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    direction: ltr;
+    span{
+        height: 3rem;
+        font-size: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+    }
+    input{ 
+        width: 3.7rem;
+        border:1px solid gray;
+        appearance: textfield;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        margin: 0; 
+        font-size: 2rem;
+    }
+}
