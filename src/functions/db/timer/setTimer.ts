@@ -1,58 +1,42 @@
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
-import { Collections, Stage, Statement, Timer, TimerStatus } from "delib-npm";
-import { store } from "../../../model/store";
+import {
+    Collections,
+    SetTimer,
+    SetTimerSchema,
+    Statement,
+} from "delib-npm";
+import { z } from "zod";
 
-interface StartTimerProps {
-    statement: Statement;
-    roomNumber: number;
-    stage: Stage;
-    timeToCount: number;
-    timerStatus: TimerStatus;
+interface setParentTimersProps {
+    parentStatement: Statement;
+    timers: SetTimer[];
 }
 
-export async function startTimerDB({
-    statement,
-    roomNumber,
-    stage,
-    timeToCount,
-    timerStatus,
-}: StartTimerProps) {
+export async function setParentTimersToDB({
+    parentStatement,
+    timers,
+}: setParentTimersProps): Promise<{ success: boolean; error?: string }> {
     try {
-        const creatorId = store.getState().user.user?.uid;
-        if (!creatorId) throw new Error("Missing creatorId");
-
-        const timerId = getTimerId({
-            statementId: statement.statementId,
-            roomNumber,
-            stage,
-        });
-        if (!timerId) throw new Error("Missing timerId");
-        const timerRef = doc(DB, Collections.timers, timerId);
-
-        const r = await fetch(
-            "http://worldtimeapi.org/api/timezone/Asia/Jerusalem",
+        const timersRef = doc(
+            DB,
+            Collections.timers,
+            parentStatement.statementId,
         );
-        let { unixtime } = await r.json();
-        if(!unixtime) unixtime = new Date().getTime();
-
-        //@ts-ignore
-        await setDoc(timerRef, {
-            parentId: statement.parentId,
-            statementId: statement.statementId,
-            roomNumber: roomNumber || 0,
-            stage: stage || "parent-statement",
-            creatorId,
-            startTime: unixtime,
-            timeToCount: timeToCount || 1000 * 90,
-            timerStatus,
+        z.array(SetTimerSchema).parse(timers);
+        await setDoc(timersRef, {
+            statement: parentStatement,
+            userCanChangeTimer: true,
+            timers,
         });
-        return;
-    } catch (error) {
+        return { success: true };
+    } catch (error: any) {
         console.error(error);
-        return;
+        return { success: false, error: error.message };
     }
 }
+
+
 interface GetTimerProps {
     statementId: string;
     roomNumber: number;

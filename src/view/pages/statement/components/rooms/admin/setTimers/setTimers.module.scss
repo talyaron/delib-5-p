@@ -1,3 +1,10 @@
+.timers{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
 .timer{
     display: flex;
     align-items: center;
@@ -11,7 +18,7 @@
         justify-content: center;
       
     }
-    input{ 
+    input[type="number"]{ 
         width: 3.7rem;
         border:1px solid gray;
         appearance: textfield;
@@ -19,5 +26,9 @@
         -moz-appearance: textfield;
         margin: 0; 
         font-size: 2rem;
+    }
+    label{
+        font-size: .8rem;
+        color: gray;
     }
 }

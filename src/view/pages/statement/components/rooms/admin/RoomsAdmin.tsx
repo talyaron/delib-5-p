@@ -17,7 +17,7 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
             <div className={styles.admin}>
                 <p className={styles.title}>{t("Management board")}</p>
                 <AdminArrange statement={statement} />
-                <SetTimers />
+                <SetTimers parentStatement={statement}/>
             </div>
         </>
     );
