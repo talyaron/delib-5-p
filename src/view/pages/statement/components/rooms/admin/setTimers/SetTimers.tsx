@@ -2,7 +2,7 @@ import {FC, useState } from "react";
 import { t } from "i18next";
 import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
-import Timer from "./timer/Timer";
+import Timer from "./timer/AdminTimer";
 import { handleSetTimers } from "./SetTimersCont";
 
 interface Props {

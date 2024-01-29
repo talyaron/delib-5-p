@@ -12,7 +12,7 @@ interface TimerProps {
 }
 
 
-function Timer({name, time, index, setTimers, timers }: TimerProps) {
+function AdminTimer({name, time, index, setTimers, timers }: TimerProps) {
     const [timer, setTimer] = useState<number[]>([0, 0, 0, 0]);
     const [_name, setName] = useState<string>(name?name:"Discussion");
     return (
@@ -131,4 +131,4 @@ function Timer({name, time, index, setTimers, timers }: TimerProps) {
     }
 }
 
-export default Timer
+export default AdminTimer
