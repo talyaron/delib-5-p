@@ -8,14 +8,17 @@ export function converToMillisecons(timer: number[]) {
     return (seconds + minutes * 60) * 1000;
 }
 
-export function handleSetTimers({
+export async function handleSetTimers({
     parentStatement,
     timers,
+    setTimersChanged
 }: {
     parentStatement: Statement;
     timers: SetTimer[];
+    setTimersChanged: Function;
 }) {
-    setParentTimersToDB({ parentStatement,userCanChangeTimer:true, timers });
+    await setParentTimersToDB({ parentStatement,userCanChangeTimer:true, timers });
+    setTimersChanged(false);
 }
 
 export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][] {

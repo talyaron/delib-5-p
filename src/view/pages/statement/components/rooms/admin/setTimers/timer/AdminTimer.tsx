@@ -1,16 +1,26 @@
 import { SetTimer } from "delib-npm";
 import { useState } from "react";
 import styles from "../setTimers.module.scss";
-import { fromFourDigitsToMillisecons, fromMilliseconsToFourDigits } from "./AdminTimerCont";
+import {
+    fromFourDigitsToMillisecons,
+    fromMilliseconsToFourDigits,
+} from "./AdminTimerCont";
 
 interface TimerProps {
     timer: SetTimer;
     index: number;
     timers: SetTimer[];
     setTimers: Function;
+    setTimersChanged: Function;
 }
 
-function AdminTimer({ timer, index, timers, setTimers }: TimerProps) {
+function AdminTimer({
+    timer,
+    index,
+    timers,
+    setTimers,
+    setTimersChanged,
+}: TimerProps) {
     const [timeDigits, setTimeDigits] = useState<number[]>(
         fromMilliseconsToFourDigits(timer.time || 1000 * 90),
     );
@@ -24,7 +34,10 @@ function AdminTimer({ timer, index, timers, setTimers }: TimerProps) {
                 <input
                     type="text"
                     defaultValue={_name}
-                    onInput={(ev: any) => setName(ev.target.value)}
+                    onInput={(ev: any) => {
+                        setName(ev.target.value);
+                        setTimersChanged(true);
+                    }}
                 />
             </div>
             <div className={styles.time}>
@@ -84,20 +97,22 @@ function AdminTimer({ timer, index, timers, setTimers }: TimerProps) {
 
     function handleDeleteTimer(timerId: string) {
         try {
-            confirm(
+            const isDelete = confirm(
                 `Are you sure you want to delete this timer? ${timer.timerId}`,
             );
+            if (!isDelete) return;
             const newTimers = [...timers].filter((t) => t.timerId !== timerId);
 
             setTimers(newTimers);
+            setTimersChanged(true);
         } catch (error) {
             console.error(error);
         }
     }
 
     function handleInputDigit(ev: any) {
-        let digit =ev.key;
-        ev.type === "input"? digit = ev.target.value : digit = ev.key;
+        let digit = ev.key;
+        ev.type === "input" ? (digit = ev.target.value) : (digit = ev.key);
         if (!isNaN(parseInt(digit))) {
             ev.target.valueAsNumber = parseInt(digit);
             const max = parseInt(ev.target.max);
@@ -117,7 +132,9 @@ function AdminTimer({ timer, index, timers, setTimers }: TimerProps) {
             );
 
             const newTime = fromFourDigitsToMillisecons(timeDigits);
-            const timerIndex = timers.findIndex(t=>t.timerId === timer.timerId);
+            const timerIndex = timers.findIndex(
+                (t) => t.timerId === timer.timerId,
+            );
             const newTimers = [...timers];
             newTimers[timerIndex].time = newTime;
             setTimers(newTimers);
@@ -126,6 +143,7 @@ function AdminTimer({ timer, index, timers, setTimers }: TimerProps) {
                 //@ts-ignore
                 nextInput.focus();
             }
+            setTimersChanged(true);
         } else {
             ev.target.value = null;
         }

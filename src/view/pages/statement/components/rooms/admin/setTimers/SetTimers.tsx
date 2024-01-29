@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
-import { t } from "i18next";
+import { FC, useState, useEffect } from "react";
+import {  t, use } from "i18next";
 import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
 import {
@@ -8,17 +8,25 @@ import {
     orderByStagesAndOrderFromTimers,
 } from "./SetTimersCont";
 import AdminTimerStage from "./timer/AdminTimerStage";
-import { uuidv4 } from "@firebase/util";
+import { initialTimerArray } from "./SetTimersModal";
+import { getStatmentTimers } from "../../../../../../../functions/db/timer/getTimer";
 
 interface Props {
     parentStatement: Statement;
 }
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
-    const [timers, setTimers] = useState<SetTimer[]>([
-        { time: 0, name: "Discussion", order: 0, stageName: "questions", stageId:uuidv4(), timerId:uuidv4() },
-    ]);
+    const [timers, setTimers] = useState<SetTimer[]>(initialTimerArray);
+
+    const [timersChanged, setTimersChanged] = useState<boolean>(false);
     const orderdTimers = orderByStagesAndOrderFromTimers(timers);
+
+useEffect(() => {
+    getStatmentTimers(parentStatement.statementId).then((timers) => {
+        setTimers(timers);
+    });
+}, []);
+
     return (
         <section>
             <h2>{t("Setting Timers")}</h2>
@@ -27,21 +35,35 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                 {orderdTimers.map((ts, i) => (
                     <AdminTimerStage
                         key={`timer-stage-${i}`}
-                        stageName={ts[0].stageName}
                         stageId={ts[0].stageId}
                         timers={timers}
                         setTimers={setTimers}
+                        setTimersChanged={setTimersChanged}
                     />
                 ))}
-                <div className="btn btn--add" onClick={()=>handleAddStage(timers,setTimers)}>ADD Stage</div>
+                <div
+                    className="btn btn--add"
+                    onClick={() => handleAddStage(timers, setTimers)}
+                >
+                    ADD Stage
+                </div>
             </div>
             <div>
                 <div className="btns">
                     <div
-                        className="btn btn--add btn--large"
-                        onClick={() =>
-                            handleSetTimers({ parentStatement, timers })
+                        className={
+                            timersChanged
+                                ? "btn btn--add btn--large"
+                                : "btn btn--add btn--large btn--inactive"
                         }
+                        onClick={() => {
+                            if (timersChanged)
+                                handleSetTimers({
+                                    parentStatement,
+                                    timers,
+                                    setTimersChanged,
+                                });
+                        }}
                     >
                         Set for All Rooms
                     </div>
@@ -50,7 +72,5 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
         </section>
     );
 };
-
-
 
 export default SetTimers;
