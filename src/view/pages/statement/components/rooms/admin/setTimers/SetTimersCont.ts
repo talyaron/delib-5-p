@@ -1,5 +1,6 @@
 import { SetTimer, Statement } from "delib-npm";
 import { setParentTimersToDB } from "../../../../../../../functions/db/timer/setTimer";
+import { uuidv4 } from "@firebase/util";
 
 export function converToMillisecons(timer: number[]) {
     const minutes = timer[0] * 10 + timer[1];
@@ -14,7 +15,7 @@ export function handleSetTimers({
     parentStatement: Statement;
     timers: SetTimer[];
 }) {
-    setParentTimersToDB({ parentStatement, timers });
+    setParentTimersToDB({ parentStatement,userCanChangeTimer:true, timers });
 }
 
 export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][] {
@@ -24,12 +25,12 @@ export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][
         const stages: string[] = [];
 
         timers.forEach((timer) => {
-            if (!stages.includes(timer.stage)) stages.push(timer.stage);
+            if (!stages.includes(timer.stageId)) stages.push(timer.stageId);
         });
 
         stages.forEach((stage, i) => {
             const orderedTimers = timers
-                .filter((timer) => timer.stage === stage)
+                .filter((timer) => timer.stageId === stage)
                 .sort((a, b) => a.order - b.order);
             orderedTimersByStage[i] = orderedTimers;
         });
@@ -37,5 +38,18 @@ export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][
     } catch (error) {
         console.error(error);
         return [];
+    }
+}
+
+export function handleAddStage(timers:SetTimer[],setTimers:Function) {
+    try {
+       const stagesSet = new Set()
+         timers.forEach(timer => stagesSet.add(timer.stageId))
+         const numberOfStages = stagesSet.size;
+        const newTimer = {stageId: uuidv4(), stageName:`New Stage ${numberOfStages}`, order: 0, name:"", time: 90*1000, timerId: uuidv4()};
+        setTimers([...timers , newTimer])
+    } catch (error) {
+        console.error(error);
+        return timers;
     }
 }

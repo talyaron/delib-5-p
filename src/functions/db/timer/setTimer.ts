@@ -10,11 +10,13 @@ import { z } from "zod";
 
 interface setParentTimersProps {
     parentStatement: Statement;
+    userCanChangeTimer: boolean;
     timers: SetTimer[];
 }
 
 export async function setParentTimersToDB({
     parentStatement,
+    userCanChangeTimer,
     timers,
 }: setParentTimersProps): Promise<{ success: boolean; error?: string }> {
     try {
@@ -26,7 +28,7 @@ export async function setParentTimersToDB({
         z.array(SetTimerSchema).parse(timers);
         await setDoc(timersRef, {
             statement: parentStatement,
-            userCanChangeTimer: true,
+            userCanChangeTimer,
             timers,
         });
         return { success: true };

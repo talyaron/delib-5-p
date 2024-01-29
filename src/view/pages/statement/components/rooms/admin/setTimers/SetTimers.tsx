@@ -3,10 +3,12 @@ import { t } from "i18next";
 import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
 import {
+    handleAddStage,
     handleSetTimers,
     orderByStagesAndOrderFromTimers,
 } from "./SetTimersCont";
 import AdminTimerStage from "./timer/AdminTimerStage";
+import { uuidv4 } from "@firebase/util";
 
 interface Props {
     parentStatement: Statement;
@@ -14,7 +16,7 @@ interface Props {
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
     const [timers, setTimers] = useState<SetTimer[]>([
-        { time: 0, name: "Discussion", order: 0, stage: "questions" },
+        { time: 0, name: "Discussion", order: 0, stageName: "questions", stageId:uuidv4(), timerId:uuidv4() },
     ]);
     const orderdTimers = orderByStagesAndOrderFromTimers(timers);
     return (
@@ -25,11 +27,13 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                 {orderdTimers.map((ts, i) => (
                     <AdminTimerStage
                         key={`timer-stage-${i}`}
-                        stage={ts[0].stage}
+                        stageName={ts[0].stageName}
+                        stageId={ts[0].stageId}
                         timers={timers}
                         setTimers={setTimers}
                     />
                 ))}
+                <div className="btn btn--add" onClick={()=>handleAddStage(timers,setTimers)}>ADD Stage</div>
             </div>
             <div>
                 <div className="btns">
@@ -46,5 +50,7 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
         </section>
     );
 };
+
+
 
 export default SetTimers;

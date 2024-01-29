@@ -39,7 +39,7 @@ service cloud.firestore {
 
     }
 
-     match /timers/{evluationId=**}{
+     match /timers-settings/{timerIdx=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }

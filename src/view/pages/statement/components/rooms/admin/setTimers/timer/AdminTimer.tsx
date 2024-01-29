@@ -1,20 +1,22 @@
 import { SetTimer } from "delib-npm";
-import { converToMillisecons } from "../SetTimersCont";
 import { useState } from "react";
 import styles from "../setTimers.module.scss";
+import { fromFourDigitsToMillisecons, fromMilliseconsToFourDigits } from "./AdminTimerCont";
 
 interface TimerProps {
-    time?: number;
-    name?: string;
+    timer: SetTimer;
     index: number;
-    setTimers: Function;
     timers: SetTimer[];
-    stage: string;
+    setTimers: Function;
 }
 
-function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
-    const [timer, setTimer] = useState<number[]>([0, 0, 0, 0]);
-    const [_name, setName] = useState<string>(name ? name : "Discussion");
+function AdminTimer({ timer, index, timers, setTimers }: TimerProps) {
+    const [timeDigits, setTimeDigits] = useState<number[]>(
+        fromMilliseconsToFourDigits(timer.time || 1000 * 90),
+    );
+    const [_name, setName] = useState<string>(
+        timer.name ? timer.name : "Discussion",
+    );
     return (
         <div className={styles.timer}>
             <div>
@@ -34,6 +36,7 @@ function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
                     maxLength={1}
                     tabIndex={index * 4 + 0}
                     onKeyUp={handleInputDigit}
+                    defaultValue={timeDigits[0]}
                 />
 
                 <input
@@ -44,6 +47,7 @@ function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
                     maxLength={1}
                     tabIndex={index * 4 + 1}
                     onKeyUp={handleInputDigit}
+                    defaultValue={timeDigits[1]}
                 />
                 <span>:</span>
                 <input
@@ -54,6 +58,7 @@ function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
                     maxLength={1}
                     tabIndex={index * 4 + 2}
                     onKeyUp={handleInputDigit}
+                    defaultValue={timeDigits[2]}
                 />
 
                 <input
@@ -64,52 +69,37 @@ function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
                     maxLength={1}
                     tabIndex={index * 4 + 3}
                     onKeyUp={handleInputDigit}
+                    onInput={handleInputDigit}
+                    defaultValue={timeDigits[3]}
                 />
             </div>
-            <div className="btn btn--add" onClick={handleSetTimer}>
-                SET
-            </div>
-            <div className="btn btn--add" onClick={handleAddTimer}>
-                ADD
+            <div
+                className="btn btn--cancel"
+                onClick={() => handleDeleteTimer(timer.timerId)}
+            >
+                DELETE
             </div>
         </div>
     );
 
-    function handleSetTimer() {
+    function handleDeleteTimer(timerId: string) {
         try {
-            const _timers = [...timers];
-            _timers[index] = {
-                time: converToMillisecons(timer),
-                name: _name,
-                order: index,
-                stage,
-            };
+            confirm(
+                `Are you sure you want to delete this timer? ${timer.timerId}`,
+            );
+            const newTimers = [...timers].filter((t) => t.timerId !== timerId);
 
-            setTimers(_timers);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    function handleAddTimer() {
-        try {
-            const _timers = [...timers];
-            _timers.push({
-                time: converToMillisecons(timer),
-                name: _name,
-                order: index,
-                stage,
-            });
-
-            setTimers(_timers);
+            setTimers(newTimers);
         } catch (error) {
             console.error(error);
         }
     }
 
     function handleInputDigit(ev: any) {
-        if (!isNaN(parseInt(ev.key))) {
-            ev.target.valueAsNumber = parseInt(ev.key);
+        let digit =ev.key;
+        ev.type === "input"? digit = ev.target.value : digit = ev.key;
+        if (!isNaN(parseInt(digit))) {
+            ev.target.valueAsNumber = parseInt(digit);
             const max = parseInt(ev.target.max);
             const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
             const maxNumber =
@@ -120,11 +110,17 @@ function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
                 `[tabindex="${tabIndex + 1}"]`,
             );
 
-            setTimer((dig) =>
+            setTimeDigits((dig) =>
                 dig.map((d: number, i: number) =>
                     i === tabIndex ? maxNumber : d,
                 ),
             );
+
+            const newTime = fromFourDigitsToMillisecons(timeDigits);
+            const timerIndex = timers.findIndex(t=>t.timerId === timer.timerId);
+            const newTimers = [...timers];
+            newTimers[timerIndex].time = newTime;
+            setTimers(newTimers);
 
             if (nextInput) {
                 //@ts-ignore
