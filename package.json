@@ -22,7 +22,7 @@
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@reduxjs/toolkit": "^1.9.5",
-        "delib-npm": "^1.1.87",
+        "delib-npm": "^1.1.88",
         "eslint-plugin-import": "^2.29.1",
         "firebase": "^10.0.0",
         "i18next": "^23.7.6",

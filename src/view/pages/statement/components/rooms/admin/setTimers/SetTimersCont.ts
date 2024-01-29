@@ -16,3 +16,26 @@ export function handleSetTimers({
 }) {
     setParentTimersToDB({ parentStatement, timers });
 }
+
+export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][] {
+    try {
+        const orderedTimersByStage:SetTimer[][] = [];
+
+        const stages: string[] = [];
+
+        timers.forEach((timer) => {
+            if (!stages.includes(timer.stage)) stages.push(timer.stage);
+        });
+
+        stages.forEach((stage, i) => {
+            const orderedTimers = timers
+                .filter((timer) => timer.stage === stage)
+                .sort((a, b) => a.order - b.order);
+            orderedTimersByStage[i] = orderedTimers;
+        });
+        return orderedTimersByStage;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}

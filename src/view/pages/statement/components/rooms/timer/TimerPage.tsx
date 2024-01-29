@@ -18,7 +18,7 @@ interface Props {
     statement:Statement
 }
 
-export default function TimerPage({statement}:Props):JSX.Element {
+export default function TimerPage({}:Props):JSX.Element {
     // useState
     const [tab, setTab] = useState(0);
     const [initTime] = useState(1000 * 300); // 90 seconds

@@ -1,7 +1,7 @@
-import { SetTimer } from 'delib-npm';
-import { converToMillisecons } from '../SetTimersCont';
-import { useState } from 'react';
-import styles from '../setTimers.module.scss';
+import { SetTimer } from "delib-npm";
+import { converToMillisecons } from "../SetTimersCont";
+import { useState } from "react";
+import styles from "../setTimers.module.scss";
 
 interface TimerProps {
     time?: number;
@@ -9,64 +9,69 @@ interface TimerProps {
     index: number;
     setTimers: Function;
     timers: SetTimer[];
+    stage: string;
 }
 
-
-function AdminTimer({name, time, index, setTimers, timers }: TimerProps) {
+function AdminTimer({ stage, name, index, setTimers, timers }: TimerProps) {
     const [timer, setTimer] = useState<number[]>([0, 0, 0, 0]);
-    const [_name, setName] = useState<string>(name?name:"Discussion");
+    const [_name, setName] = useState<string>(name ? name : "Discussion");
     return (
         <div className={styles.timer}>
             <div>
                 <label>Name of Timer</label>
-                <input type="text" defaultValue={_name} onInput={(ev:any)=>setName(ev.target.value)} />
+                <input
+                    type="text"
+                    defaultValue={_name}
+                    onInput={(ev: any) => setName(ev.target.value)}
+                />
             </div>
-            <input
-                type="number"
-                min={0}
-                max={5}
-                step={1}
-                maxLength={1}
-                tabIndex={index*4+0}
-                onKeyUp={handleInputDigit}
-            />
+            <div className={styles.time}>
+                <input
+                    type="number"
+                    min={0}
+                    max={5}
+                    step={1}
+                    maxLength={1}
+                    tabIndex={index * 4 + 0}
+                    onKeyUp={handleInputDigit}
+                />
 
-            <input
-                type="number"
-                min={0}
-                max={9}
-                step={1}
-                maxLength={1}
-                tabIndex={index*4+1}
-                onKeyUp={handleInputDigit}
-            />
-            <span>:</span>
-            <input
-                type="number"
-                min={0}
-                max={5}
-                step={1}
-                maxLength={1}
-                tabIndex={index*4+2}
-                onKeyUp={handleInputDigit}
-            />
+                <input
+                    type="number"
+                    min={0}
+                    max={9}
+                    step={1}
+                    maxLength={1}
+                    tabIndex={index * 4 + 1}
+                    onKeyUp={handleInputDigit}
+                />
+                <span>:</span>
+                <input
+                    type="number"
+                    min={0}
+                    max={5}
+                    step={1}
+                    maxLength={1}
+                    tabIndex={index * 4 + 2}
+                    onKeyUp={handleInputDigit}
+                />
 
-            <input
-                type="number"
-                min={0}
-                max={9}
-                step={1}
-                maxLength={1}
-                tabIndex={index*4+3}
-                onKeyUp={handleInputDigit}
-            />
+                <input
+                    type="number"
+                    min={0}
+                    max={9}
+                    step={1}
+                    maxLength={1}
+                    tabIndex={index * 4 + 3}
+                    onKeyUp={handleInputDigit}
+                />
+            </div>
             <div className="btn btn--add" onClick={handleSetTimer}>
                 SET
             </div>
             <div className="btn btn--add" onClick={handleAddTimer}>
                 ADD
             </div>
-           
         </div>
     );
 
@@ -75,12 +80,12 @@ function AdminTimer({name, time, index, setTimers, timers }: TimerProps) {
             const _timers = [...timers];
             _timers[index] = {
                 time: converToMillisecons(timer),
-                name:_name,
+                name: _name,
                 order: index,
+                stage,
             };
-           
-            setTimers(_timers);
 
+            setTimers(_timers);
         } catch (error) {
             console.error(error);
         }
@@ -91,12 +96,12 @@ function AdminTimer({name, time, index, setTimers, timers }: TimerProps) {
             const _timers = [...timers];
             _timers.push({
                 time: converToMillisecons(timer),
-                name:_name,
+                name: _name,
                 order: index,
+                stage,
             });
-           
-            setTimers(_timers);
 
+            setTimers(_timers);
         } catch (error) {
             console.error(error);
         }
@@ -131,4 +136,4 @@ function AdminTimer({name, time, index, setTimers, timers }: TimerProps) {
     }
 }
 
-export default AdminTimer
+export default AdminTimer;
