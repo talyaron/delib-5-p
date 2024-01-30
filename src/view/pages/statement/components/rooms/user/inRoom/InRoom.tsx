@@ -13,6 +13,7 @@ import styles from "./inRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
+import Timers from "../../timer/Timers";
 
 
 
@@ -53,6 +54,7 @@ const InRoom: FC<Props> = ({ statement }) => {
                         <h2>{t("No Topic Chosen by You")}</h2>
                     )}
                 </div>
+                <Timers statement={statement} />
             </>
         );
     } catch (error: any) {

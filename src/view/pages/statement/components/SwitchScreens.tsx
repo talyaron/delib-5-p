@@ -4,15 +4,14 @@
 import { Screen, Statement, User } from "delib-npm";
 
 // Custom components
-// import StatmentRooms from "./rooms/Rooms";
+// import Rooms from "./rooms/Rooms";
 import Map from "./map/Map";
 import StatementChat from "./chat/StatementChat";
 import StatementEvaluation from "./evaluations/StatementEvaluation";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
-import TimerPage from "./rooms/timer/TimerPage";
 import StatementSettings from "./settings/StatementSettings";
-import StatmentRooms from "./rooms/Rooms";
+import Rooms from "./rooms/Rooms";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -73,11 +72,8 @@ export default function SwitchScreens({
             );
         case Screen.GROUPS:
             return (
-                // <TimerPage
-                //     statement={statement}
-                //     // subStatements={subStatements}
-                // />
-                <StatmentRooms statement={statement} subStatements={subStatements}/>
+    
+                <Rooms statement={statement} subStatements={subStatements}/>
             );
         case Screen.SETTINGS:
             return <StatementSettings />;
