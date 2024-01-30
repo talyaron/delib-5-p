@@ -151,33 +151,24 @@ export async function setTimersInitTimeDB({
     }
 }
 
-interface setTimersInitTimeDBProps {
+interface InitilizeTimersDBProps {
     statementId: string;
     roomNumber: number;
-    timerId1: number;
-    initTime1: number;
-    timerId2: number;
-    initTime2:number;
+
 }
 
 export async function initilizeTimersDB({
     statementId,
     roomNumber,
-    timerId1,
-    timerId2,
-    initTime1,
-    initTime2,
-}: setTimersInitTimeDBProps): Promise<void> {
+
+}: InitilizeTimersDBProps): Promise<void> {
     try {
         const userId = store.getState().user.user?.uid;
         if (!userId) throw new Error("Missing userId");
         if (!statementId) throw new Error("Missing statementId");
         if (typeof roomNumber !== "number")
             throw new Error("Missing roomNumber");
-        if (typeof timerId1 !== "number") throw new Error("Missing timerId 1");
-        if (typeof timerId2 !== "number") throw new Error("Missing timerId 2");
-        if (typeof initTime1 !== "number") throw new Error("Missing init time 1");
-        if (typeof initTime2 !== "number") throw new Error("Missing init time 2");
+   
 
         const timerRef = doc(
             DB,
@@ -191,8 +182,13 @@ export async function initilizeTimersDB({
                 statementId,
                 initiatorId: userId,
                 roomNumber,
-                timers: { [timerId1]: { initTime1 }, },
+                timers:{
+                    1: { initTime: 60 * 1000 },
+                    2: { initTime: 60 * 1000 }
+                },
+                activeTimer: 1,
                 updateTime: Timestamp.now(),
+                state: TimerStatus.finish
             },
             { merge: true },
         );

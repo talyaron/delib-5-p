@@ -27,6 +27,7 @@ import _styles from "./admin.module.css";
 import { divideIntoTopics } from "./AdminArrangeCont";
 import { RoomAdmin, participantsSelector } from "../../../../../../model/rooms/roomsSlice";
 import Room from "./room/Room";
+import { initilizeTimersDB } from "../../../../../../functions/db/timer/setTimer";
 
 
 
@@ -66,7 +67,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             // setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {
-                room.room.forEach((participant) => {
+                room.room.forEach((participant) =>{ // should be room.participants
                     const participantInRoom: ParticipantInRoom = {
                         uid: participant.participant.uid,
                         room: room.roomNumber,
@@ -76,6 +77,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     };
                     setParticipantInRoomToDB(participantInRoom);
                 });
+                initilizeTimersDB({statementId:statement.statementId, roomNumber: room.roomNumber})
             });
 
             const roomsState = setRooms

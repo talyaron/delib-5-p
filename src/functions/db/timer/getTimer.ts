@@ -3,7 +3,6 @@ import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
 import { DB } from "../config";
 import { initialTimerArray } from "../../../view/pages/statement/components/rooms/admin/setTimers/SetTimersModal";
 import { Unsubscribe } from "@firebase/util";
-import { setTimersInitTimeDB } from "./setTimer";
 
 export async function getStatementTimers(
     statementId: string,
@@ -39,11 +38,11 @@ export function listenToRoomTimers(
         return onSnapshot(timersRef, (timerDB) => {
             try {
                 const timers = timerDB.data() as RoomTimer;
-             
+
                 const result = RoomTimerSchema.safeParse(timers);
                 console.log(result.success);
                 //@ts-ignore
-                console.log(result.error);
+                if (result.error) console.error(result.error);
                 //    if(!success) {
                 // setTimersInitTimeDB({statementId, roomNumber, timerId:1, initTime:90*1000})
                 // setTimersInitTimeDB({statementId, roomNumber, timerId:1, initTime:90*1000})
