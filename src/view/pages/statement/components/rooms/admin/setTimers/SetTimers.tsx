@@ -9,7 +9,7 @@ import {
 } from "./SetTimersCont";
 import AdminTimerStage from "./timer/AdminTimerStage";
 import { initialTimerArray } from "./SetTimersModal";
-import { getStatmentTimers } from "../../../../../../../functions/db/timer/getTimer";
+import { getStatementTimers } from "../../../../../../../functions/db/timer/getTimer";
 
 interface Props {
     parentStatement: Statement;
@@ -22,7 +22,7 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
     const orderdTimers = orderByStagesAndOrderFromTimers(timers);
 
 useEffect(() => {
-    getStatmentTimers(parentStatement.statementId).then((timers) => {
+    getStatementTimers(parentStatement.statementId).then((timers) => {
         setTimers(timers);
     });
 }, []);

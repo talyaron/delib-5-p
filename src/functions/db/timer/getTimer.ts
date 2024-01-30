@@ -4,7 +4,7 @@ import { DB } from "../config";
 import { initialTimerArray } from "../../../view/pages/statement/components/rooms/admin/setTimers/SetTimersModal";
 
 
-export async function getStatmentTimers(statementId: string): Promise<SetTimer[]> {
+export async function getStatementTimers(statementId: string): Promise<SetTimer[]> {
     try {
         const timersRef = doc(DB, Collections.timers, statementId);
         const timersSnap = await getDoc(timersRef);
@@ -18,3 +18,4 @@ export async function getStatmentTimers(statementId: string): Promise<SetTimer[]
         return initialTimerArray;
     }
 }
+

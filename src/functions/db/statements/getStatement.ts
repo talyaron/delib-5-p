@@ -43,7 +43,7 @@ export function listenToTopStatements(
             where("userId", "==", user.uid),
             where("statement.parentId", "==", "top"),
             orderBy("lastUpdate", "desc"),
-            limit(40),
+            limit(60),
         );
 
         return onSnapshot(q, (statementsDB) => {
