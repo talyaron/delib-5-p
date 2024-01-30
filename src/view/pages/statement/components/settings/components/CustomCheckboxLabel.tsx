@@ -15,6 +15,7 @@ export default function CustomCheckboxLabel({
     defaultChecked,
 }: CustomLabelProps) {
     const [checked, setChecked] = useState(defaultChecked);
+    console.log("CustomCheckboxLabel", name, checked);
 
     return (
         <label
@@ -27,7 +28,7 @@ export default function CustomCheckboxLabel({
             <input
                 type="checkbox"
                 name={name}
-                defaultChecked={defaultChecked}
+                checked={defaultChecked}
                 value={checked ? "on" : "off"}
                 style={{ display: "none" }}
             />
