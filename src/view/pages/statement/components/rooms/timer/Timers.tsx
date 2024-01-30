@@ -5,10 +5,11 @@ import Timer from './Timer';
 
 interface Props {
     statement: Statement;
-    roomNumber: number;
+    roomNumber: number|undefined;
 }
 
 const Timers:FC<Props> = ({statement,roomNumber}) => {
+    if(!roomNumber) return null;
     const [activeTimer, setActiveTimer] = useState<1|2>(1);
 
 

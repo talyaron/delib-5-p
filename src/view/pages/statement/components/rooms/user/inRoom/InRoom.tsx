@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 // Third Party Libraries
 import { Participant, Statement } from "delib-npm";
@@ -14,9 +14,7 @@ import styles from "./inRoom.module.scss";
 // Custom Components
 import Text from "../../../../../../components/text/Text";
 import Timers from "../../timer/Timers";
-
-
-
+import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
 
 interface Props {
     statement: Statement;
@@ -26,6 +24,19 @@ const InRoom: FC<Props> = ({ statement }) => {
     const userTopic: Participant | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
+
+    useEffect(() => {
+        let unsub = () => {};
+        if (userTopic?.roomNumber) {
+            unsub = listenToRoomTimers(
+                statement.statementId,
+                userTopic?.roomNumber,
+            );
+        }
+        return () => {
+            unsub();
+        };
+    }, [userTopic?.roomNumber]);
 
     try {
         return (
@@ -54,7 +65,10 @@ const InRoom: FC<Props> = ({ statement }) => {
                         <h2>{t("No Topic Chosen by You")}</h2>
                     )}
                 </div>
-                <Timers statement={statement} roomNumber={userTopic.roomNumber} />
+                <Timers
+                    statement={statement}
+                    roomNumber={userTopic?.roomNumber}
+                />
             </>
         );
     } catch (error: any) {
