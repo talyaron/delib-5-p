@@ -104,8 +104,9 @@ export default function Timer({
         ) {
             console.log(`start timer ${timerId} - Active: ${timers?.activeTimer} - Master: ${isMasterTimer}`)
             startTimer();
-        }
-        else if(timers?.state === TimerStatus.finish){
+        } else if (timers?.state === TimerStatus.pause){
+            pauseTimer();
+        }else if(timers?.state === TimerStatus.finish){
             stopAndResetTimer();
         }
     }, [timers?.state]);
@@ -123,6 +124,11 @@ export default function Timer({
 
         //send a message to the server that the timer has started
         updateTimerState(TimerStatus.start);
+    };
+
+    const pauseTimer = ()=> {
+        setIsActive(false);
+        updateTimerState(TimerStatus.pause);
     };
 
     function initilizeTimer() {
@@ -175,7 +181,7 @@ export default function Timer({
                             <PauseIcon
                                 onClick={() => {
                                     if (activeTimer && isMasterTimer)
-                                        setIsActive(false);
+                                    pauseTimer();
                                 }}
                             />
                         </div>
