@@ -142,9 +142,6 @@ export default function Timer({
         <div className="roomsWrapper">
             <div className="roomsWrapper__timer">
                 <h2>{title}</h2>
-                <h3>
-                    {isMasterTimer ? "master" : "slave"} {timers?.state}
-                </h3>
                 <div
                     style={{
                         display: "flex",

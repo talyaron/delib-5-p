@@ -68,7 +68,6 @@ interface SetTimersStateProps {
     roomNumber: number;
     timerId: number;
     state: TimerStatus;
-    initTime?: number;
 }
 
 export async function setTimersStateDB({
@@ -76,7 +75,6 @@ export async function setTimersStateDB({
     roomNumber,
     timerId,
     state,
-    initTime,
 }: SetTimersStateProps): Promise<void> {
     try {
         const userId = store.getState().user.user?.uid;
@@ -93,32 +91,61 @@ export async function setTimersStateDB({
             `${statementId}--${roomNumber}`,
         );
 
-        if (initTime)
-            await setDoc(
-                timerRef,
-                {
-                    statementId,
-                    roomNumber,
-                    timers: { [timerId]: { initTime } } ,
-                    activeTimer: timerId,
-                    state,
-                    updateTime: Timestamp.now(),
-                },
-                { merge: true },
-            );
-        else
-            await setDoc(
-                timerRef,
-                {
-                    statementId,
-                    initiatorId: userId,
-                    roomNumber,
-                    activeTimer: timerId,
-                    state,
-                    updateTime: Timestamp.now(),
-                },
-                { merge: true },
-            );
+        await setDoc(
+            timerRef,
+            {
+                statementId,
+                initiatorId: userId,
+                roomNumber,
+                activeTimer: timerId,
+                state,
+                updateTime: Timestamp.now(),
+            },
+            { merge: true },
+        );
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+interface setTimersInitTimeDBProps {
+    statementId: string;
+    roomNumber: number;
+    timerId: number;
+    initTime: number;
+}
+
+export async function setTimersInitTimeDB({
+    statementId,
+    roomNumber,
+    timerId,
+    initTime,
+}: setTimersInitTimeDBProps): Promise<void> {
+    try {
+        const userId = store.getState().user.user?.uid;
+        if (!userId) throw new Error("Missing userId");
+        if (!statementId) throw new Error("Missing statementId");
+        if (typeof roomNumber !== "number")
+            throw new Error("Missing roomNumber");
+        if (typeof timerId !== "number") throw new Error("Missing timer");
+
+        const timerRef = doc(
+            DB,
+            Collections.roomTimers,
+            `${statementId}--${roomNumber}`,
+        );
+
+        await setDoc(
+            timerRef,
+            {
+                statementId,
+                initiatorId: userId,
+                roomNumber,
+                timers: { [timerId]: { initTime } },
+                updateTime: Timestamp.now(),
+            },
+            { merge: true },
+        );
     } catch (error) {
         console.error(error);
     }
