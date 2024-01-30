@@ -8,13 +8,15 @@ import PlayIcon from "../../../../../components/icons/PlayIcon";
 import PauseIcon from "../../../../../components/icons/PauseIcon";
 import StopIcon from "../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
-import { Statement, TimerStatus } from "delib-npm";
+import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
+import { store } from "../../../../../../model/store";
 
 interface Props {
     statement: Statement;
     roomNumber: number;
     timerId: number;
+    timers: RoomTimer | null;
     title: string;
     activeTimer: boolean;
     nextTimer: Function;
@@ -27,13 +29,15 @@ export default function Timer({
     statement,
     roomNumber,
     timerId,
+    timers,
     title,
     activeTimer,
     nextTimer,
     initTime,
     autoStart,
-    lastTimer
+    lastTimer,
 }: Props): JSX.Element {
+    const userId = store.getState().user.user?.uid;
     // useState
     const [timeLeft, setTimeLeft] = useState(initTime);
     const [minutes, setMinutes] = useState(
@@ -44,6 +48,9 @@ export default function Timer({
     );
     const [isActive, setIsActive] = useState(false);
     const [timer, setTimer] = useState<NodeJS.Timer>();
+    const isMasterTimer =
+        timers?.initiatorId === userId || timers?.state === TimerStatus.finish;
+ 
 
     const percent = (timeLeft / initTime) * 100;
 
@@ -56,12 +63,7 @@ export default function Timer({
                     initilizeTimer();
                     nextTimer();
                     clearInterval(timer);
-                    setTimersStateDB({
-                        statementId: statement.statementId,
-                        roomNumber,
-                        timerId,
-                        state: lastTimer?TimerStatus.finish:TimerStatus.stop,
-                    });
+                    if (lastTimer) updateTimerState(TimerStatus.finish);
 
                     return 0;
                 }
@@ -93,41 +95,50 @@ export default function Timer({
         }
     }, [activeTimer]);
 
+    useEffect(() => {
+        if (
+            timers?.state === TimerStatus.start &&
+            !isActive &&
+            timers?.activeTimer === timerId 
+            && !isMasterTimer
+        ) {
+            console.log(`start timer ${timerId} - Active: ${timers?.activeTimer} - Master: ${isMasterTimer}`)
+            startTimer();
+        }
+        else if(timers?.state === TimerStatus.finish){
+            stopAndResetTimer();
+        }
+    }, [timers?.state]);
+
     const stopAndResetTimer = () => {
         setIsActive(false);
         setTimeLeft(initTime);
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
 
-        setTimersStateDB({
-            statementId: statement.statementId,
-            roomNumber,
-            timerId,
-            state: TimerStatus.start,
-        });
+        updateTimerState(TimerStatus.finish);
     };
     const startTimer = (): void => {
         setIsActive(true);
 
         //send a message to the server that the timer has started
-        setTimersStateDB({
-            statementId: statement.statementId,
-            roomNumber,
-            timerId,
-            state: TimerStatus.start,
-        });
+        updateTimerState(TimerStatus.start);
     };
 
     function initilizeTimer() {
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
         setTimeLeft(initTime);
+        updateTimerState(TimerStatus.finish);
     }
 
     return (
         <div className="roomsWrapper">
             <div className="roomsWrapper__timer">
                 <h2>{title}</h2>
+                <h3>
+                    {isMasterTimer ? "master" : "slave"} {timers?.state}
+                </h3>
                 <div
                     style={{
                         display: "flex",
@@ -141,11 +152,15 @@ export default function Timer({
                     minutes < 10 ? "0" + minutes : minutes
                 }:${seconds < 10 ? "0" + seconds : seconds}`}</p>
 
-                <div style={{ opacity: activeTimer ? `1` : `.2` }}>
+                <div
+                    style={{
+                        opacity: activeTimer && isMasterTimer ? `1` : `.2`,
+                    }}
+                >
                     {!isActive && (
                         <PlayIcon
                             onClick={() => {
-                                if (activeTimer) startTimer();
+                                if (activeTimer && isMasterTimer) startTimer();
                             }}
                         />
                     )}
@@ -153,12 +168,14 @@ export default function Timer({
                         <div className="roomsWrapper__timer__time__actions">
                             <StopIcon
                                 onClick={() => {
-                                    if (activeTimer) stopAndResetTimer();
+                                    if (activeTimer && isMasterTimer)
+                                        stopAndResetTimer();
                                 }}
                             />
                             <PauseIcon
                                 onClick={() => {
-                                    if (activeTimer) setIsActive(false);
+                                    if (activeTimer && isMasterTimer)
+                                        setIsActive(false);
                                 }}
                             />
                         </div>
@@ -167,4 +184,19 @@ export default function Timer({
             </div>
         </div>
     );
+
+    function updateTimerState(newState: TimerStatus) {
+        try {
+            if (isMasterTimer) {
+                setTimersStateDB({
+                    statementId: statement.statementId,
+                    roomNumber,
+                    timerId,
+                    state: newState,
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }

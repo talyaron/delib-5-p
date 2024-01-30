@@ -1,7 +1,14 @@
 import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
-import { Collections, SetTimer, SetTimerSchema, Statement, TimerStatus } from "delib-npm";
+import {
+    Collections,
+    SetTimer,
+    SetTimerSchema,
+    Statement,
+    TimerStatus,
+} from "delib-npm";
 import { z } from "zod";
+import { store } from "../../../model/store";
 
 interface setParentTimersProps {
     parentStatement: Statement;
@@ -60,9 +67,8 @@ interface SetTimersStateProps {
     statementId: string;
     roomNumber: number;
     timerId: number;
-    state:TimerStatus;
+    state: TimerStatus;
     initTime?: number;
-
 }
 
 export async function setTimersStateDB({
@@ -73,6 +79,9 @@ export async function setTimersStateDB({
     initTime,
 }: SetTimersStateProps): Promise<void> {
     try {
+        const userId = store.getState().user.user?.uid;
+
+        if (!userId) throw new Error("Missing userId");
         if (!statementId) throw new Error("Missing statementId");
         if (typeof roomNumber !== "number")
             throw new Error("Missing roomNumber");
@@ -90,7 +99,7 @@ export async function setTimersStateDB({
                 {
                     statementId,
                     roomNumber,
-                    [timerId]: { initTime },
+                    timers: { [timerId]: { initTime } } ,
                     activeTimer: timerId,
                     state,
                     updateTime: Timestamp.now(),
@@ -102,6 +111,7 @@ export async function setTimersStateDB({
                 timerRef,
                 {
                     statementId,
+                    initiatorId: userId,
                     roomNumber,
                     activeTimer: timerId,
                     state,

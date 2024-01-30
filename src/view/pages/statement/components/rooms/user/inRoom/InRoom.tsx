@@ -1,7 +1,7 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third Party Libraries
-import { Participant, Statement } from "delib-npm";
+import { Participant, RoomTimer, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Redux
@@ -25,12 +25,15 @@ const InRoom: FC<Props> = ({ statement }) => {
         userSelectedTopicSelector(statement.statementId),
     );
 
+    const [timers, setTimers] = useState<RoomTimer|null>(null);
+
     useEffect(() => {
         let unsub = () => {};
         if (userTopic?.roomNumber) {
             unsub = listenToRoomTimers(
                 statement.statementId,
                 userTopic?.roomNumber,
+                setTimers,
             );
         }
         return () => {
@@ -68,6 +71,7 @@ const InRoom: FC<Props> = ({ statement }) => {
                 <Timers
                     statement={statement}
                     roomNumber={userTopic?.roomNumber}
+                    timers={timers}
                 />
             </>
         );
