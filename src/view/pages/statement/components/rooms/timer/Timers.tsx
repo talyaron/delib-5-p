@@ -30,7 +30,6 @@ const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
                 title="הצגה"
                 activeTimer={activeTimer === 1 ? true : false}
                 nextTimer={nextTimer}
-                initTime={7 * 1000}
                 roomNumber={roomNumber}
                 timers={timers}
             />
@@ -40,7 +39,6 @@ const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
                 title="שאלות ותשובות"
                 activeTimer={activeTimer === 2 ? true : false}
                 nextTimer={nextTimer}
-                initTime={7 * 1000}
                 roomNumber={roomNumber}
                 autoStart={true}
                 lastTimer={true}
