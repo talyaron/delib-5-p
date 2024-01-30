@@ -54,7 +54,7 @@ const InRoom: FC<Props> = ({ statement }) => {
                         <h2>{t("No Topic Chosen by You")}</h2>
                     )}
                 </div>
-                <Timers statement={statement} />
+                <Timers statement={statement} roomNumber={userTopic.roomNumber} />
             </>
         );
     } catch (error: any) {

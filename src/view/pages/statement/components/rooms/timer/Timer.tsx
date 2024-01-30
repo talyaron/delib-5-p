@@ -8,20 +8,32 @@ import PlayIcon from "../../../../../components/icons/PlayIcon";
 import PauseIcon from "../../../../../components/icons/PauseIcon";
 import StopIcon from "../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
-import { Statement } from "delib-npm";
-import { active } from "d3-transition";
+import { Statement, TimerStatus } from "delib-npm";
+import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
 
 interface Props {
     statement: Statement;
+    roomNumber: number;
+    timerId: number;
     title: string;
     activeTimer: boolean;
-    nextTimer:Function;
-    initTime:number;
-    autoStart?:boolean;
+    nextTimer: Function;
+    initTime: number;
+    autoStart?: boolean;
+    lastTimer?: boolean;
 }
 
-export default function Timer({ title, activeTimer,nextTimer, initTime, autoStart}: Props): JSX.Element {
-   
+export default function Timer({
+    statement,
+    roomNumber,
+    timerId,
+    title,
+    activeTimer,
+    nextTimer,
+    initTime,
+    autoStart,
+    lastTimer
+}: Props): JSX.Element {
     // useState
     const [timeLeft, setTimeLeft] = useState(initTime);
     const [minutes, setMinutes] = useState(
@@ -44,6 +56,12 @@ export default function Timer({ title, activeTimer,nextTimer, initTime, autoStar
                     initilizeTimer();
                     nextTimer();
                     clearInterval(timer);
+                    setTimersStateDB({
+                        statementId: statement.statementId,
+                        roomNumber,
+                        timerId,
+                        state: lastTimer?TimerStatus.finish:TimerStatus.stop,
+                    });
 
                     return 0;
                 }
@@ -68,9 +86,9 @@ export default function Timer({ title, activeTimer,nextTimer, initTime, autoStar
     }, [isActive]);
 
     useEffect(() => {
-        if(autoStart && activeTimer) {
+        if (autoStart && activeTimer) {
             setTimeout(() => {
-            startTimer();
+                startTimer();
             }, 1000);
         }
     }, [activeTimer]);
@@ -80,11 +98,24 @@ export default function Timer({ title, activeTimer,nextTimer, initTime, autoStar
         setTimeLeft(initTime);
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
+
+        setTimersStateDB({
+            statementId: statement.statementId,
+            roomNumber,
+            timerId,
+            state: TimerStatus.start,
+        });
     };
     const startTimer = (): void => {
         setIsActive(true);
 
         //send a message to the server that the timer has started
+        setTimersStateDB({
+            statementId: statement.statementId,
+            roomNumber,
+            timerId,
+            state: TimerStatus.start,
+        });
     };
 
     function initilizeTimer() {
@@ -109,17 +140,30 @@ export default function Timer({ title, activeTimer,nextTimer, initTime, autoStar
                 <p className="roomsWrapper__timer__time">{`${
                     minutes < 10 ? "0" + minutes : minutes
                 }:${seconds < 10 ? "0" + seconds : seconds}`}</p>
-                
-                    <div style={{opacity:activeTimer?`1`:`.2`}}>
-                        {!isActive && <PlayIcon onClick={()=>{if(activeTimer) startTimer()}} />}
-                        {isActive && (
-                            <div className="roomsWrapper__timer__time__actions">
-                                <StopIcon onClick={()=>{if(activeTimer)stopAndResetTimer()}} />
-                                <PauseIcon onClick={() =>{if(activeTimer)setIsActive(false)}}/>
-                            </div>
-                        )}
-                    </div>
-            
+
+                <div style={{ opacity: activeTimer ? `1` : `.2` }}>
+                    {!isActive && (
+                        <PlayIcon
+                            onClick={() => {
+                                if (activeTimer) startTimer();
+                            }}
+                        />
+                    )}
+                    {isActive && (
+                        <div className="roomsWrapper__timer__time__actions">
+                            <StopIcon
+                                onClick={() => {
+                                    if (activeTimer) stopAndResetTimer();
+                                }}
+                            />
+                            <PauseIcon
+                                onClick={() => {
+                                    if (activeTimer) setIsActive(false);
+                                }}
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

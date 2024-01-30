@@ -1,11 +1,6 @@
-import { doc, setDoc } from "firebase/firestore";
+import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
-import {
-    Collections,
-    SetTimer,
-    SetTimerSchema,
-    Statement,
-} from "delib-npm";
+import { Collections, SetTimer, SetTimerSchema, Statement, TimerStatus } from "delib-npm";
 import { z } from "zod";
 
 interface setParentTimersProps {
@@ -38,7 +33,6 @@ export async function setParentTimersToDB({
     }
 }
 
-
 interface GetTimerProps {
     statementId: string;
     roomNumber: number;
@@ -59,5 +53,63 @@ export function getTimerId({
     } catch (error) {
         console.error(error);
         return undefined;
+    }
+}
+
+interface SetTimersStateProps {
+    statementId: string;
+    roomNumber: number;
+    timerId: number;
+    state:TimerStatus;
+    initTime?: number;
+
+}
+
+export async function setTimersStateDB({
+    statementId,
+    roomNumber,
+    timerId,
+    state,
+    initTime,
+}: SetTimersStateProps): Promise<void> {
+    try {
+        if (!statementId) throw new Error("Missing statementId");
+        if (typeof roomNumber !== "number")
+            throw new Error("Missing roomNumber");
+        if (typeof timerId !== "number") throw new Error("Missing timer");
+
+        const timerRef = doc(
+            DB,
+            Collections.roomTimers,
+            `${statementId}--${roomNumber}`,
+        );
+
+        if (initTime)
+            await setDoc(
+                timerRef,
+                {
+                    statementId,
+                    roomNumber,
+                    [timerId]: { initTime },
+                    activeTimer: timerId,
+                    state,
+                    updateTime: Timestamp.now(),
+                },
+                { merge: true },
+            );
+        else
+            await setDoc(
+                timerRef,
+                {
+                    statementId,
+                    roomNumber,
+                    activeTimer: timerId,
+                    state,
+                    updateTime: Timestamp.now(),
+                },
+                { merge: true },
+            );
+    } catch (error) {
+        console.error(error);
     }
 }

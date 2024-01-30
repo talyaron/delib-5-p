@@ -19,3 +19,19 @@ export async function getStatementTimers(statementId: string): Promise<SetTimer[
     }
 }
 
+// simple users
+export async function listenToRoomTimers(statementId: string, roomNumber: number): Promise<SetTimer[]> {
+    try {
+        const timersRef = doc(DB, Collections.roomTimers, `${statementId}--${roomNumber}`);
+        const timersSnap = await getDoc(timersRef);
+        const timers = timersSnap.data()?.timers;
+
+        if (!timers) return initialTimerArray;
+
+        return timers.filter((timer: SetTimer) => timer.roomNumber === roomNumber);
+    } catch (error) {
+        console.error(error);
+        return initialTimerArray;
+    }
+}
+

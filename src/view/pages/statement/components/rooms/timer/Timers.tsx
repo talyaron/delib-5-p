@@ -5,9 +5,10 @@ import Timer from './Timer';
 
 interface Props {
     statement: Statement;
+    roomNumber: number;
 }
 
-const Timers:FC<Props> = ({statement}) => {
+const Timers:FC<Props> = ({statement,roomNumber}) => {
     const [activeTimer, setActiveTimer] = useState<1|2>(1);
 
 
@@ -20,8 +21,8 @@ const Timers:FC<Props> = ({statement}) => {
     }
   return (
     <div className={styles.timers}>
-        <Timer statement={statement} title="Timer 1" activeTimer={activeTimer=== 1?true:false} nextTimer={nextTimer} initTime={3*1000} />
-        <Timer statement={statement} title="Timer 2" activeTimer={activeTimer=== 2?true:false} nextTimer={nextTimer} initTime={5*1000} autoStart={true}/>
+        <Timer statement={statement} timerId={1} title="הצגה" activeTimer={activeTimer=== 1?true:false} nextTimer={nextTimer} initTime={2*1000} roomNumber={roomNumber} />
+        <Timer statement={statement} timerId={2} title="שאלות ותשובות" activeTimer={activeTimer=== 2?true:false} nextTimer={nextTimer} initTime={3*1000}  roomNumber={roomNumber} autoStart={true} lastTimer={true}/>
     </div>
   )
 }
