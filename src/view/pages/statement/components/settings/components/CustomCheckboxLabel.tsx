@@ -4,7 +4,7 @@ import CheckedIcon from "../../../../../components/icons/CheckedIcon";
 import UncheckedIcon from "../../../../../components/icons/UncheckedIcon";
 
 interface CustomLabelProps {
-    defaultChecked: boolean | undefined;
+    defaultChecked: boolean;
     name: string;
     title: string;
 }
@@ -15,21 +15,24 @@ export default function CustomCheckboxLabel({
     defaultChecked,
 }: CustomLabelProps) {
     const [checked, setChecked] = useState(defaultChecked);
-    console.log("CustomCheckboxLabel", name, checked);
+
+    const handleChange = () => {
+        setChecked((prev) => !prev);
+    };
 
     return (
         <label
             htmlFor={name}
             className="settings__checkboxSection__column__label"
         >
-            <div onClick={() => setChecked((prev) => !prev)}>
+            <div onClick={handleChange}>
                 {checked ? <CheckedIcon /> : <UncheckedIcon />}
             </div>
             <input
                 type="checkbox"
                 name={name}
-                checked={defaultChecked}
-                value={checked ? "on" : "off"}
+                checked={checked}
+                onChange={handleChange}
                 style={{ display: "none" }}
             />
             {t(`${title}`)}

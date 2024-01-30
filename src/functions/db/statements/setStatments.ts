@@ -328,7 +328,8 @@ function updateStatementSettings(
             statementSettings.enableAddEvaluationOption = true;
         } else if (
             enableAddEvaluationOption === "off" ||
-            enableAddEvaluationOption === false
+            enableAddEvaluationOption === false ||
+            enableAddEvaluationOption === undefined
         ) {
             statementSettings.enableAddEvaluationOption = false;
         }
@@ -337,7 +338,8 @@ function updateStatementSettings(
             statementSettings.enableAddVotingOption = true;
         } else if (
             enableAddVotingOption === "off" ||
-            enableAddVotingOption === false
+            enableAddVotingOption === false ||
+            enableAddEvaluationOption === undefined
         ) {
             statementSettings.enableAddVotingOption = false;
         }

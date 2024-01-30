@@ -89,10 +89,11 @@ export async function handleSetStatment(
 ) {
     try {
         ev.preventDefault();
-        console.log(ev.currentTarget[9].name, ev.currentTarget[9].checked);
+
         const data = new FormData(ev.currentTarget);
 
         let title: any = data.get("statement");
+
         if (!title || title.length < 2) return;
 
         // const resultsBy = data.get("resultsBy") as ResultsBy;
@@ -107,7 +108,7 @@ export async function handleSetStatment(
 
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
-        console.log(dataObj);
+
         const {
             resultsBy,
             numberOfResults,
@@ -115,8 +116,6 @@ export async function handleSetStatment(
             enableAddEvaluationOption,
             enableAddVotingOption,
         } = dataObj;
-
-      
 
         // If no statementId, user is on AddStatement page
         if (!statementId) {

@@ -17,6 +17,8 @@ export default function CheckBoxeArea({
             ? false
             : true;
 
+
+
     const enableAddVotingOption: boolean =
         statement?.statementSettings?.enableAddVotingOption === false
             ? false
