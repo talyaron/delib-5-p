@@ -1,4 +1,3 @@
-import React from "react";
 import { actionCircleStyle } from "./PlayIcon";
 
 interface Props {

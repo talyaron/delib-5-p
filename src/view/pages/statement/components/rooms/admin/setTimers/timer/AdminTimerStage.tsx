@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import styles from "../setTimers.module.scss";
 import AdminTimer from "./AdminTimer";
 import { SetTimer } from "delib-npm";
-import { t, use } from "i18next";
+import { t } from "i18next";
 import { uuidv4 } from "@firebase/util";
 
 interface Props {

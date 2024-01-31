@@ -12,7 +12,6 @@ import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
 import { store } from "../../../../../../model/store";
 import SetTimer from "./setTimer/SetTimerComp";
-import { timer } from "d3-timer";
 
 interface Props {
     statement: Statement;

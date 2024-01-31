@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import {  t, use } from "i18next";
+import {  t } from "i18next";
 import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
 import {
