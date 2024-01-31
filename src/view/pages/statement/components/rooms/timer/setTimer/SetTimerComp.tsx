@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./setTimer.module.scss";
 import {
     fromFourDigitsToMillisecons,
@@ -31,6 +31,10 @@ function SetTimerComp({
         fromMilliseconsToFourDigits(initTime || 1000 * 90),
     );
 
+    useEffect(() => {
+        console.log(timeDigits)
+    }, [timeDigits]);
+
     return (
         <div className={styles.timer}>
             <div className={styles.time}>
@@ -41,7 +45,9 @@ function SetTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={0}
+                    onInput={handleInputDigit}
                     onKeyUp={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[0]}
                 />
 
@@ -52,7 +58,9 @@ function SetTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={1}
+                    onInput={handleInputDigit}
                     onKeyUp={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[1]}
                 />
                 <span>:</span>
@@ -63,7 +71,9 @@ function SetTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={2}
+                    onInput={handleInputDigit}
                     onKeyUp={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[2]}
                 />
 
@@ -76,6 +86,7 @@ function SetTimerComp({
                     tabIndex={3}
                     onKeyUp={handleInputDigit}
                     onInput={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[3]}
                 />
             </div>
@@ -91,7 +102,9 @@ function SetTimerComp({
     );
 
     function handleUpdateTimer() {
+        console.log(timeDigits)
         const newTime = fromFourDigitsToMillisecons(timeDigits);
+        console.log(newTime)
         setTimersInitTimeDB({
             statementId,
             roomNumber,
@@ -104,7 +117,8 @@ function SetTimerComp({
 
     function handleInputDigit(ev: any) {
         let digit = ev.key;
-        ev.type === "input" ? (digit = ev.target.value) : (digit = ev.key);
+        ev.type === "input" || "change" ? (digit = ev.target.value) : (digit = ev.key);
+      
         if (!isNaN(parseInt(digit))) {
             ev.target.valueAsNumber = parseInt(digit);
             const max = parseInt(ev.target.max);

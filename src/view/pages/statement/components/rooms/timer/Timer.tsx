@@ -12,6 +12,7 @@ import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
 import { store } from "../../../../../../model/store";
 import SetTimer from "./setTimer/SetTimerComp";
+import { timer } from "d3-timer";
 
 interface Props {
     statement: Statement;
@@ -118,9 +119,10 @@ export default function Timer({
             //@ts-ignore
             const newTime = getInitTime(timers, timerId)
            
-            console.log(newTime);
+
           
             if (newTime !== undefined) {
+                setInitTime(newTime);
                 setTimeLeft(newTime);
                 setMinutes(getMinutesAndSeconds(newTime).minutes);
                 setSeconds(getMinutesAndSeconds(newTime).seconds);
@@ -154,6 +156,8 @@ export default function Timer({
         setTimeLeft(initTime);
         updateTimerState(TimerStatus.finish);
     }
+
+
 
     return (
         <div className="roomsWrapper">
@@ -235,10 +239,16 @@ export default function Timer({
 }
 
 function getInitTime(timers:RoomTimer | null, timerId:number):number {
-    if (timers?.timers  && timers?.timers.hasOwnProperty(timerId) ) {
-        const initTime: any = (timers.timers[timerId as keyof typeof timers.timers] as { initTime: number }).initTime;
-        if(typeof initTime === 'number') return initTime;
-    }
+   
+    try { 
+        if(!timers?.timers) return 1000 * 90;
+        //@ts-ignore
+        const initTime  = timers?.timers[timerId].initTime;
+        return initTime;
+    } catch (error) {
+        console.error(error);
         return 1000 * 90;
+    }
+         
     
 }

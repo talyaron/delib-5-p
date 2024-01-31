@@ -1,4 +1,4 @@
-import { Timestamp, doc, setDoc } from "firebase/firestore";
+import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 import {
     Collections,
@@ -163,6 +163,8 @@ export async function initilizeTimersDB({
 
 }: InitilizeTimersDBProps): Promise<void> {
     try {
+
+        //pre-checks
         const userId = store.getState().user.user?.uid;
         if (!userId) throw new Error("Missing userId");
         if (!statementId) throw new Error("Missing statementId");
@@ -176,6 +178,12 @@ export async function initilizeTimersDB({
             `${statementId}--${roomNumber}`,
         );
 
+
+        //prevent from creating new timers if they already exist
+        const timersDB = await getDoc(timerRef);
+        if (timersDB.exists()) return;
+
+        //initilize timers
         await setDoc(
             timerRef,
             {
