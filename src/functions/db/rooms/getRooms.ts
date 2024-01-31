@@ -43,6 +43,8 @@ export function listenToAllRoomsRquest(
         });
     } catch (error) {
         console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }
 }

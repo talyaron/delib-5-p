@@ -10,17 +10,14 @@ export default function CheckBoxeArea({
 }: {
     statement: Statement | undefined;
 }) {
-    const hasChildren: boolean = (() => {
-        if (!statement) return true;
-        if (statement.hasChildren === undefined) return true;
-
-        return statement.hasChildren;
-    })();
+    const hasChildren: boolean = statement?.hasChildren === false ? false : true;
 
     const enableAddEvaluationOption: boolean =
         statement?.statementSettings?.enableAddEvaluationOption === false
             ? false
             : true;
+
+
 
     const enableAddVotingOption: boolean =
         statement?.statementSettings?.enableAddVotingOption === false
