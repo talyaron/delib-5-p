@@ -91,9 +91,10 @@ const StatementSettings: FC<Props> = () => {
     return (
         <ScreenFadeIn className="page__main">
             {!isLoading ? (
-                <form onSubmit={handleSubmit} className="settings">
+                <form data-cy="statement-settings-form" onSubmit={handleSubmit} className="settings">
                     <label htmlFor="statement">
                         <input
+                            data-cy="statement-title"
                             autoFocus={true}
                             type="text"
                             name="statement"

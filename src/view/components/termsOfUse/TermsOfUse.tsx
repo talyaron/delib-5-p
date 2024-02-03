@@ -9,11 +9,12 @@ interface Props {
 export default function TermsOfUse({ handleAgreement, agreement }: Props) {
     return (
         <Modal>
-            <div className="termsOfUse">
+            <div className="termsOfUse" data-cy="termsOfUse">
                 <h1 className="termsOfUse__title">{t("terms of use")}</h1>
                 <p>{t(agreement)}</p>
                 <div className="btns">
                     <button
+                    data-cy="agree-btn"
                         className="btn btn--agree"
                         onClick={() => handleAgreement(true, t(agreement))}
                     >

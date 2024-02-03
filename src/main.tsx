@@ -13,6 +13,11 @@ import { router } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
+
+if (window.Cypress) {
+    window.store = store;
+}
+
 root.render(
     <React.StrictMode>
         <Provider store={store}>
@@ -20,6 +25,12 @@ root.render(
         </Provider>
     </React.StrictMode>,
 );
+
+declare global {
+    interface Window {
+        store: any;
+    }
+}
 
 setIntialLocationSessionStorage(window.location.pathname);
 
@@ -31,3 +42,4 @@ window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     install.deferredPrompt = e;
 });
+
