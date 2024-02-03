@@ -54,7 +54,7 @@ const Start = () => {
                 className={styles.logo}
                 src={Logo}
                 alt="Delib logo"
-                width="10%"
+                height="20%"
                 style={{}}
             />
 
@@ -81,6 +81,7 @@ const Start = () => {
             <div
                 className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
+
                 //@ts-ignore
                 style={{ direction }}
             >
