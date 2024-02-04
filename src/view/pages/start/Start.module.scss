@@ -1,0 +1,65 @@
+.number {
+    color: #FADF57;
+    position: relative;
+    top: .8rem;
+}
+
+.h1 {
+    font-size: 4.55rem;
+    color: #fff;
+
+}
+
+.h2 {
+    color: #fff;
+    font-size: 1rem;
+    opacity: .7;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+.language {
+    border-radius: 5rem;
+}
+
+.anonymous {
+    background-color: rgba(255, 255, 255, 0.20);
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+    border-radius: 3rem;
+    min-width: 30ch;
+    color: white;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    user-select: none;
+    
+}
+.googleLogin{
+    background-color: rgba(255, 255, 255, 0.20);
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+    border-radius: 3rem;
+    min-width: 30ch;
+    color: white;
+    gap: 1rem;
+    margin-top: 1.4rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    user-select: none;
+    img{
+        width: 1.4rem;
+    }
+}
+.ddi{
+    color:white;
+}

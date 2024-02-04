@@ -30,3 +30,5 @@ stats.html
 dev-dist/
 
 *.cache
+
+.firebase/

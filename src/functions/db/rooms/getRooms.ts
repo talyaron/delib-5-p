@@ -1,6 +1,6 @@
 import {
     Collections,
-    RoomAskToJoin,
+    Participant,
     Statement,
     StatementSchema,
     StatementType,
@@ -14,11 +14,14 @@ import {
     where,
 } from "firebase/firestore";
 import { DB } from "../config";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { setRoomRequests } from "../../../model/rooms/roomsSlice";
+import { Unsubscribe } from "firebase/auth";
 
 export function listenToAllRoomsRquest(
     statement: Statement,
-    cb: (requests: RoomAskToJoin[]) => void,
-) {
+    dispatch: ThunkDispatch<any, any, any>,
+):Unsubscribe {
     try {
         const requestRef = collection(DB, Collections.statementRoomsAsked);
         const q = query(
@@ -29,17 +32,20 @@ export function listenToAllRoomsRquest(
         return onSnapshot(q, (requestsDB: any) => {
             try {
                 const requests = requestsDB.docs.map(
-                    (requestDB: any) => requestDB.data() as RoomAskToJoin,
+                    (requestDB: any) => requestDB.data() as Participant,
                 );
-
-                cb(requests);
+            
+                dispatch(setRoomRequests(requests));
             } catch (error) {
                 console.error(error);
-                cb([]);
+                dispatch(setRoomRequests([]));
             }
         });
     } catch (error) {
         console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {};
     }
 }
 

@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
+
+// Helpers
 import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 
 // icons
-import elipsIcon from "../../../assets/elipsIcon.svg";
-import installIcon from "../../../assets/installIcon.svg";
+import elipsIcon from "../../../assets/icons/elipsIcon.svg";
+import installIcon from "../../../assets/icons/installIcon.svg";
+
+// Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
-import useDirection from "../../../functions/hooks/useDirection";
 
 export default function HomeHeader() {
-    //for deffered app install
-    //@ts-ignore TODO: fix this
+    // Use State
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [openMenu, setOpenMenu] = useState(false);
-
-    const _direction = useDirection();
-    const direction = _direction === "row" ? "ltr" : "rtl";
 
     useEffect(() => {
         //for defferd app install
@@ -45,14 +44,7 @@ export default function HomeHeader() {
                             onClick={handleInstallApp}
                         />
                     )}
-                    <div
-                        style={{
-                            position: "relative",
-                            right: direction === "ltr" ? "-4rem" : "-9rem",
-                        }}
-                    >
-                        {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
-                    </div>
+                    {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
                     <img
                         className="homePage__header__wrapper__icons__elipsIcon"
                         src={elipsIcon}

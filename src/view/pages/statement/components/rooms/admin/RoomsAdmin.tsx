@@ -1,7 +1,9 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
-import AdminChoose from "./AdminChoose";
+import AdminArrange from "./AdminArrange";
 import _styles from "./admin.module.css";
+import { t } from "i18next";
+import SetTimers from "./setTimers/SetTimers";
 
 const styles = _styles as any;
 
@@ -13,7 +15,9 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
     return (
         <>
             <div className={styles.admin}>
-                <AdminChoose statement={statement} />
+                <p className={styles.title}>{t("Management board")}</p>
+                <AdminArrange statement={statement} />
+                <SetTimers parentStatement={statement}/>
             </div>
         </>
     );

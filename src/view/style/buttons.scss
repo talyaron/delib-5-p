@@ -14,9 +14,10 @@ button {
 .btn {
     width: fit-content;
     height: fit-content;
-    padding: 0.5rem;
+    padding: 0.5rem .75rem;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
     &--add {
         width: fit-content;
         background-color: var(--question);
@@ -24,7 +25,7 @@ button {
     }
 
     &--cancel {
-        width: 30%;
+       
         background-color: var(--red);
         color: var(--white);
     }
@@ -35,6 +36,10 @@ button {
 
     &--disagree {
         background-color: var(--disagree);
+    }
+    &--inactive {
+        background-color: var(--inactive);
+        color: var( --inactive-text);
     }
 
     &--large {

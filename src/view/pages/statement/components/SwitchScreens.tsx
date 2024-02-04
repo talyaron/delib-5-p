@@ -1,13 +1,17 @@
+// This file contains the SwitchScreens component which is used to switch between the different tabs whithin statement
+
+// Third party imports
 import { Screen, Statement, User } from "delib-npm";
+
+// Custom components
+// import Rooms from "./rooms/Rooms";
 import Map from "./map/Map";
 import StatementChat from "./chat/StatementChat";
 import StatementEvaluation from "./evaluations/StatementEvaluation";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
-import StatmentRooms from "./rooms/Rooms";
 import StatementSettings from "./settings/StatementSettings";
-
-// Custom components
+import Rooms from "./rooms/Rooms";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -24,7 +28,7 @@ export default function SwitchScreens({
     subStatements,
     handleShowTalker,
     setShowAskPermission,
-    toggleAskNotifications
+    toggleAskNotifications,
 }: SwitchScreensProps) {
     if (!statement) return null;
 
@@ -68,10 +72,8 @@ export default function SwitchScreens({
             );
         case Screen.GROUPS:
             return (
-                <StatmentRooms
-                    statement={statement}
-                    subStatements={subStatements}
-                />
+    
+                <Rooms statement={statement} subStatements={subStatements}/>
             );
         case Screen.SETTINGS:
             return <StatementSettings />;

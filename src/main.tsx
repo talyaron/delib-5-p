@@ -7,9 +7,15 @@ import { RouterProvider } from "react-router-dom";
 import { store } from "./model/store";
 import { Provider } from "react-redux";
 import { setIntialLocationSessionStorage } from "./functions/general/helpers";
+
 import { router } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+
+if (window.Cypress) {
+    window.store = store;
+}
 
 root.render(
     <React.StrictMode>
@@ -18,6 +24,12 @@ root.render(
         </Provider>
     </React.StrictMode>,
 );
+
+declare global {
+    interface Window {
+        store: any;
+    }
+}
 
 setIntialLocationSessionStorage(window.location.pathname);
 
@@ -29,3 +41,4 @@ window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     install.deferredPrompt = e;
 });
+

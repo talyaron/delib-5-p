@@ -34,7 +34,7 @@ import useToken from "../../../../../functions/hooks/useToken";
 interface Props {
     title: string;
     screen: Screen;
-    statement: Statement |undefined;
+    statement: Statement | undefined;
     showAskPermission: boolean;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -45,22 +45,24 @@ const StatementHeader: FC<Props> = ({
     statement,
     setShowAskPermission,
 }) => {
-    const user = store.getState().user.user;
+    // Hooks
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const { page } = useParams();
     const location = useLocation();
     const direction = useDirection();
     const token = useToken();
-
     const headerColor = useStatementColor(statement?.statementType || "");
-
     const permission = useNotificationPermission(token);
 
+    // Redux Store
+    const user = store.getState().user.user;
+
+    // Use States
     const [editHeader, setEditHeader] = useState<boolean>(false);
 
+    // Variables
     const titleFontSize = calculateFontSize(title, 16, 25);
-
     const isAdmin = statement?.creatorId === user?.uid;
 
     function handleShare() {

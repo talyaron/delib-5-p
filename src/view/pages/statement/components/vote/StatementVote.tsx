@@ -22,7 +22,7 @@ import { sortOptionsIndex } from "./sortOptionsIndex";
 import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import HandsIcon from "../../../../../assets/icons/HandsIcon";
+import HandsIcon from "../../../../components/icons/HandsIcon";
 import StatementInfo from "./StatementInfo";
 
 interface Props {

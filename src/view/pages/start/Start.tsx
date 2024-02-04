@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from "./Start.module.scss";
 
 // firestore functions
 import { googleLogin } from "../../../functions/db/auth";
@@ -12,12 +13,15 @@ import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 //img
-import Logo from "../../../assets/logo/logo-128px.png";
-import googleLogo from "../../../assets/google-seeklogo.com.svg";
+import Logo from "../../../assets/logo/512 px SVG.svg";
+import googleLogo from "../../../assets/icons/googleSimpleLogo.svg";
+import moreRight from "../../../assets/icons/moreRight.svg";
+import moreLeft from "../../../assets/icons/moreLeft.svg";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
-import EnterName from "./EnterName";
+import EnterName from "../../components/enterName/EnterName";
+import useDirection from "../../../functions/hooks/useDirection";
 
 // import EnterName from './EnterName';
 
@@ -26,6 +30,7 @@ const Start = () => {
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
+    const direction = useDirection();
 
     useEffect(() => {
         if (user) {
@@ -39,16 +44,19 @@ const Start = () => {
 
     return (
         <div className="splashPage">
-            <h1 className="splashPage__title">{"Delib 5"}</h1>
+            <div className={styles.h1}>
+                {("Delib")} <span className={styles.number}>5</span>
+            </div>
+            <div className={styles.h2}>{("Creating Agreements")}</div>
             <img
+                className={styles.logo}
                 src={Logo}
                 alt="Delib logo"
-                width="10%"
-                style={{ maxWidth: "150px" }}
+                height="20%"
+                style={{}}
             />
-            <h2 className="splashPage__subTitle">{"Creating Agreements"}</h2>
             <select
-                style={{ backgroundColor: "lightblue" }}
+                className={styles.language}
                 defaultValue={savedLang || "he"}
             >
                 {LANGUAGES.map(({ code, label }) => (
@@ -57,16 +65,22 @@ const Start = () => {
                     </option>
                 ))}
             </select>
-            <button
-                className="btn btn--large"
+            <div
+                data-cy="anonymous-login"
+                className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
             >
-                {"Login with a temporary name"}
-            </button>
-            <button
-                className="btn splashPage__loginButton btn--img"
-                onClick={googleLogin}
-            >
+                {("Login with a temporary name")}{" "}
+                <img
+                    src={direction === "row" ? moreRight : moreLeft}
+                    alt="login anonymously"
+                />
+            </div>
+            <button className={styles.googleLogin} onClick={googleLogin}>
+                <img
+                    src={direction === "row-reverse" ? moreRight : moreLeft}
+                    alt="login anonymously"
+                />
                 <img src={googleLogo} alt="login with google" />
                 {"Connect with Google"}
             </button>
@@ -79,12 +93,12 @@ const Start = () => {
                     textDecoration: "none",
                 }}
             >
-                <h2>{"From the Institute for Deliberative Democracy"}</h2>
+                <footer className={styles.ddi}>
+                    {("From the Institute for Deliberative Democracy")}
+                </footer>
             </a>
 
-            {showNameModul ? (
-                <EnterName setShowNameModul={setShowNameModul} />
-            ) : null}
+            {showNameModul && <EnterName setShowNameModul={setShowNameModul} />}
         </div>
     );
 };

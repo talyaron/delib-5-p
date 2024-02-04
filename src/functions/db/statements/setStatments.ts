@@ -25,6 +25,24 @@ interface SetStatmentToDBProps {
     addSubscription: boolean;
 }
 
+function generateUUID(): string {
+    const uuidChars = 'HGUvvGEzGjFlspBGn30zDq8s0IRN';
+  
+    let uuid = '';
+    for (let i = 0; i < 32; i++) {
+      // Insert dashes at specific positions
+      if (i === 8 || i === 12 || i === 16 || i === 20) {
+        uuid += '-';
+      } else {
+        // Generate a random character from the uuidChars string
+        const randomChar = uuidChars[Math.floor(Math.random() * uuidChars.length)];
+        uuid += randomChar;
+      }
+    }
+  
+    return uuid;
+  }
+
 export const setStatmentToDB = async ({
     statement,
     parentStatement,
@@ -46,7 +64,7 @@ export const setStatmentToDB = async ({
 
         statement.creatorId = statement?.creator?.uid || user.uid;
         statement.creator = statement?.creator || user;
-        statement.statementId = statement?.statementId || crypto.randomUUID();
+        statement.statementId = statement?.statementId || generateUUID();
         statement.parentId =
             parentStatement === "top"
                 ? "top"
@@ -156,7 +174,7 @@ export function createStatement({
         const user = store.getState().user.user;
         if (!user) throw new Error("User is undefined");
 
-        const statementId = crypto.randomUUID();
+        const statementId = generateUUID();
 
         const parentId =
             parentStatement !== "top" ? parentStatement?.statementId : "top";
@@ -328,7 +346,8 @@ function updateStatementSettings(
             statementSettings.enableAddEvaluationOption = true;
         } else if (
             enableAddEvaluationOption === "off" ||
-            enableAddEvaluationOption === false
+            enableAddEvaluationOption === false ||
+            enableAddEvaluationOption === undefined
         ) {
             statementSettings.enableAddEvaluationOption = false;
         }
@@ -337,7 +356,8 @@ function updateStatementSettings(
             statementSettings.enableAddVotingOption = true;
         } else if (
             enableAddVotingOption === "off" ||
-            enableAddVotingOption === false
+            enableAddVotingOption === false ||
+            enableAddEvaluationOption === undefined
         ) {
             statementSettings.enableAddVotingOption = false;
         }

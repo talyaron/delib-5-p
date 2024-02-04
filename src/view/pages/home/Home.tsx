@@ -12,17 +12,23 @@ import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
 import { listenToStatementSubscriptions } from "../../../functions/db/statements/listenToStatements";
+
+// Custom Components
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
 export const listenedStatements = new Set<string>();
 
 export default function Home() {
-    const dispatch = useAppDispatch();
+    // Hooks
     const { statementId } = useParams();
     const location = useLocation();
+
+    // Redux Store
+    const dispatch = useAppDispatch();
     const user = useAppSelector(userSelector);
 
+    // Use States
     const [displayHeader, setDisplayHeader] = useState(true);
 
     useEffect(() => {
@@ -33,7 +39,6 @@ export default function Home() {
         }
     }, [location]);
 
-    //use effects
     useEffect(() => {
         let unsubscribe: Promise<void> | undefined;
         try {

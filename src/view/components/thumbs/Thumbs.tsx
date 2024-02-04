@@ -4,8 +4,8 @@ import React, { FC, SetStateAction } from "react";
 import { Statement } from "delib-npm";
 
 // Assets
-import SmileIcon from "../../../assets/icons/SmileIcon";
-import FrownIcon from "../../../assets/icons/FrownIcon";
+import SmileIcon from "../icons/SmileIcon";
+import FrownIcon from "../icons/FrownIcon";
 
 // Statement helpers
 import { setEvaluationToDB } from "../../../functions/db/evaluation/setEvaluation";
@@ -68,7 +68,7 @@ const Thumbs: FC<ThumbsProps> = ({
             return (
                 <div onClick={() => handleVote(true)}>
                     {" "}
-                    <SmileIcon color="lightgray" />
+                    <SmileIcon active={false} />
                 </div>
             );
         }
@@ -82,7 +82,7 @@ const Thumbs: FC<ThumbsProps> = ({
         } else {
             return (
                 <div onClick={() => handleVote(false)}>
-                    <FrownIcon color="lightgray" />
+                    <FrownIcon active={false} />
                 </div>
             );
         }

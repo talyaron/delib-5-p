@@ -1,6 +1,7 @@
 .admin {
   
     padding-bottom: 100px;
+    width: 100%;
 }
 
 .wrapper {
@@ -36,16 +37,16 @@
 }
 
 .title{
-    background-color: white;
+
     color: gray;
     font-weight: 500;
     text-align: center;
-    box-shadow: 0px 1rem 1rem rgba(0, 0, 0, 0.05);
-    padding: 1rem;
+  border-bottom: 1px solid gray;
+  width: 100%;
+    padding: .5rem;
     font-size: 1.5rem;
-    margin-top:4.5rem;
-    margin-right: 1rem;
-    margin-left: 1rem;
+    margin-top:2rem;
+    margin-bottom: 2rem;
 }
 
 .item__selected {
@@ -84,13 +85,7 @@
       }
 }
 
-.room {
-    border: 1px solid black;
-    padding: 1rem;
-    border-radius: .6rem;
-   
-   
-}
+
 
 .room__badges{
     display: flex;
