@@ -1,6 +1,8 @@
 describe("Create statement when login in for the first time", () => {
     it("Loads Start page and login anonymously", () => {
-        cy.visit("http://localhost:5173/");
+        cy.visit("https://delib-v3-dev.web.app/");
+        
+        // cy.visit("http://localhost:5173/");
 
         cy.get("[data-cy=anonymous-login]").click();
 
