@@ -63,6 +63,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
             style={{ flexDirection: direction }}
         >
             <button
+                data-cy="statement-chat-send-btn"
                 type="submit"
                 className="statement__form__sendBtnBox"
                 style={statementColor}
@@ -70,6 +71,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
                 <SendIcon color={statementColor.color} />
             </button>
             <textarea
+                data-cy="statement-chat-input"
                 style={{ height: "4rem" }}
                 className="statement__form__input"
                 name="newStatement"

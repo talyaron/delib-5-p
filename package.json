@@ -38,7 +38,7 @@
         "reactflow": "^11.10.1",
         "rollup-plugin-visualizer": "^5.10.0",
         "sass": "^1.63.6",
-        "sort-by": "^1.2.0",
+        "sort-by": "^0.0.2",
         "vite-plugin-commonjs": "^0.10.0",
         "zod": "^3.21.4"
     },

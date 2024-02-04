@@ -1,42 +1,51 @@
 describe("Create statement when login in for the first time", () => {
-    it("passes", () => {
+    it("Loads Start page and login anonymously", () => {
         cy.visit("http://localhost:5173/");
 
         cy.get("[data-cy=anonymous-login]").click();
 
-        const anonymousName =
-            Math.random().toString(36).substring(7) + "@test.com";
+        const randomText = () => Math.random().toString(36).substring(7);
 
         cy.get("[data-cy=anonymous-input]")
             .should("be.visible")
-            .type(anonymousName)
+            .type(randomText())
             .then(() => {
-                // cy.wait(500);
-                // cy.get("[data-cy=anonymous-start-btn]").click();
+                cy.get("[data-cy=anonymous-start-btn]").click();
             });
 
-        // Get user from redux
+        cy.url().should("include", "/home");
+
+        // cy.get("[data-cy=termsOfUse]")
+        //     .should("be.visible")
+        //     .then(() => {
+        //         cy.get("[data-cy=agree-btn]").click();
+        //     });
+
+        // Get user from redux and check if it is anonymous
         cy.window()
             .its("store")
             .invoke("getState")
-            .should("deep.include", {
-                user: {
-                    isAnonymous: true,
-                },
+            .its("user")
+            .its("user")
+            .then((user) => {
+                cy.log("user", user);
+                expect(user.isAnonymous).to.equal(true);
             });
-
-        // cy.get('[data-cy=termsOfUse]').should('be.visible')
-
-        // cy.get('[data-cy=agree-btn]').click()
-
-        cy.wait(500);
 
         cy.get("[data-cy=add-statement]").click();
 
         cy.get("[data-cy=statement-title]")
-            .type("Top state 01")
+            .type(randomText())
             .then(() => {
                 cy.get("[data-cy=statement-settings-form]").submit();
             });
+
+        cy.url().should("include", "/chat");
+
+        cy.get('[data-cy="statement-chat-input"]')
+            .should("be.visible")
+            .type("Option 01");
+
+        cy.get('[data-cy="statement-chat-send-btn"]').click();
     });
 });
