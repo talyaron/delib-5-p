@@ -93,6 +93,7 @@ export async function handleSetStatment(
         const data = new FormData(ev.currentTarget);
 
         let title: any = data.get("statement");
+
         if (!title || title.length < 2) return;
 
         // const resultsBy = data.get("resultsBy") as ResultsBy;
@@ -107,6 +108,7 @@ export async function handleSetStatment(
 
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
+
         const {
             resultsBy,
             numberOfResults,

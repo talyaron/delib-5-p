@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LobbyRooms, RoomAskToJoin, Statement } from "delib-npm";
+import { LobbyRooms, Participant, Statement } from "delib-npm";
 import { updateArray } from "../../functions/general/helpers";
 import { z } from "zod";
 import { RootState } from "../store";
 
 export interface RoomAdmin {
-    room: Array<RoomAskToJoin>;
+    room: Array<Participant>;
     roomNumber: number;
     statement: Statement;
 }
 interface RoomsState {
-    rooms: RoomAskToJoin[];
-    askToJoinRooms: RoomAskToJoin[];
+    rooms: Participant[];
+    askToJoinRooms: Participant[];
     lobbyRooms: LobbyRooms[];
 }
 
@@ -28,7 +28,7 @@ export const roomsSlice = createSlice({
         setAskToJoinRooms: (
             state,
             action: PayloadAction<{
-                request: RoomAskToJoin | undefined;
+                request: Participant | undefined;
                 parentId: string;
             }>,
         ) => {
@@ -55,7 +55,7 @@ export const roomsSlice = createSlice({
                 console.error(error);
             }
         },
-        setRoomRequests: (state, action: PayloadAction<RoomAskToJoin[]>) => {
+        setRoomRequests: (state, action: PayloadAction<Participant[]>) => {
             try {
                 const requests = action.payload;
                 z.array(z.any()).parse(requests);

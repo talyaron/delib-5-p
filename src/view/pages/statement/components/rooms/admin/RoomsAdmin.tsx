@@ -3,6 +3,7 @@ import { FC } from "react";
 import AdminArrange from "./AdminArrange";
 import _styles from "./admin.module.css";
 import { t } from "i18next";
+import SetTimers from "./setTimers/SetTimers";
 
 const styles = _styles as any;
 
@@ -16,6 +17,7 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
             <div className={styles.admin}>
                 <p className={styles.title}>{t("Management board")}</p>
                 <AdminArrange statement={statement} />
+                <SetTimers parentStatement={statement}/>
             </div>
         </>
     );

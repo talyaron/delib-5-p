@@ -1,8 +1,8 @@
-import { RoomAskToJoin, RoomDivied } from "delib-npm";
+import { Participant, RoomDivied } from "delib-npm";
 import { t } from "i18next";
 
 export function divideIntoTopics(
-    participants: RoomAskToJoin[],
+    participants: Participant[],
     maxPerRoom = 7,
 ): { rooms: Array<RoomDivied>; topicsParticipants: any } {
     try {
@@ -57,9 +57,9 @@ export function divideIntoTopics(
 }
 
 function divideParticipantsIntoRoomsRandomly(
-    participants: RoomAskToJoin[],
+    participants: Participant[],
     maxPerRoom: number,
-): Array<Array<RoomAskToJoin>> {
+): Array<Array<Participant>> {
     try {
         const numberOfRooms = Math.ceil(participants.length / maxPerRoom);
 
@@ -68,8 +68,8 @@ function divideParticipantsIntoRoomsRandomly(
 
         let roomNumber = 0;
 
-        const rooms: Array<Array<RoomAskToJoin>> = [[]];
-        participants.forEach((participant: RoomAskToJoin) => {
+        const rooms: Array<Array<Participant>> = [[]];
+        participants.forEach((participant: Participant) => {
             if (!rooms[roomNumber]) rooms[roomNumber] = [];
             rooms[roomNumber].push(participant);
             if (roomNumber < numberOfRooms - 1) roomNumber++;
@@ -90,7 +90,7 @@ function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
         const rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
             const topicRooms = topics[topic].rooms;
-            topicRooms.forEach((room: Array<RoomAskToJoin>) => {
+            topicRooms.forEach((room: Array<Participant>) => {
                 rooms.push({
                     room,
                     roomNumber,

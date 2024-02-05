@@ -88,12 +88,12 @@ export default function App() {
         });
 
         return () => {
-            window.removeEventListener("resize", () => {
-                console.log("Resize event listener removed.");
-            });
-            window.visualViewport?.addEventListener("resize", () => {
-                console.log("visualViewport?.addEventListener");
-            });
+            // window.removeEventListener("resize", () => {
+            //     console.log("Resize event listener removed.");
+            // });
+            // window.visualViewport?.addEventListener("resize", () => {
+            //     console.log("visualViewport?.addEventListener");
+            // });
         };
     }, []);
 

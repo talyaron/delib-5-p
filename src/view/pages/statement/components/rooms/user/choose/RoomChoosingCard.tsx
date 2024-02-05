@@ -1,4 +1,4 @@
-import { RoomAskToJoin, Statement } from "delib-npm";
+import { Participant, Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../../../../../components/text/Text";
 import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
@@ -23,7 +23,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 
     const topicJoiners = useAppSelector(
         topicParticipantsSelector(statement.statementId),
-    ) as RoomAskToJoin[];
+    ) as Participant[];
 
     function handleAskToJoinRoom() {
         setRoomJoinToDB(statement);
@@ -62,7 +62,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 
 export default RoomChoosingCard;
 
-function fillHieght(topicJoiners: RoomAskToJoin[], maxRoomJoiners = 5) {
+function fillHieght(topicJoiners: Participant[], maxRoomJoiners = 5) {
     try {
         if (!topicJoiners) return 0;
 
