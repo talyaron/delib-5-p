@@ -179,6 +179,7 @@ const StatementMain: FC = () => {
 
     return (
         <div className="page">
+            {/* Ask permission popup */}
             {showAskPermission && (
                 <AskPermisssion showFn={setShowAskPermission} />
             )}
@@ -191,6 +192,7 @@ const StatementMain: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
+            {/* Enable notifications popup*/}
             {askNotifications && (
                 <EnableNotifications
                     statement={statement}

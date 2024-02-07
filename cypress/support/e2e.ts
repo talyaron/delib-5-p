@@ -18,3 +18,14 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// cypress/support/index.js
+
+// Prevent Cypress from failing the test on unhandled exceptions
+Cypress.on('uncaught:exception', (err) => {
+    // Returning false here prevents Cypress from failing the test
+    if (err.message.includes('push service not available')) {
+        return false
+      }
+  });
+  
