@@ -32,10 +32,12 @@ button {
 
     &--agree {
         background-color: var(--agree);
+        color: var(--white);
     }
 
     &--disagree {
         background-color: var(--disagree);
+         color: var(--white);
     }
     &--inactive {
         background-color: var(--inactive);
