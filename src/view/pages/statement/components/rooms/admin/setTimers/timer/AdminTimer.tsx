@@ -10,8 +10,8 @@ interface TimerProps {
     timer: SetTimer;
     index: number;
     timers: SetTimer[];
-    setTimers: Function;
-    setTimersChanged: Function;
+    setTimers:React.Dispatch<React.SetStateAction<SetTimer[]>>;
+    setTimersChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AdminTimer({

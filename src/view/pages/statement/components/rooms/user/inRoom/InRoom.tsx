@@ -28,7 +28,7 @@ const InRoom: FC<Props> = ({ statement }) => {
     const [timers, setTimers] = useState<RoomTimer|null>(null);
 
     useEffect(() => {
-        let unsub = () => {};
+        let unsub:Function = () => {};
         if (userTopic?.roomNumber) {
             unsub = listenToRoomTimers(
                 statement.statementId,

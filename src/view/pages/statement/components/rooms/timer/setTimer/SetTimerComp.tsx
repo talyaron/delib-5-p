@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./setTimer.module.scss";
 import {
     fromFourDigitsToMillisecons,
@@ -13,8 +13,8 @@ interface TimerProps {
     roomNumber: number;
     timerId: number;
     initTime: number;
-    setTimerAdjustment: Function;
-    setInitTime: Function;
+    setTimerAdjustment: React.Dispatch<React.SetStateAction<boolean>>;
+    setInitTime: React.Dispatch<React.SetStateAction<number>>;
  
 }
 

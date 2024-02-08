@@ -20,7 +20,7 @@ interface Props {
     timers: RoomTimer | null;
     title: string;
     activeTimer: boolean;
-    nextTimer: Function;
+    nextTimer: () => void;
     autoStart?: boolean;
     lastTimer?: boolean;
 }
