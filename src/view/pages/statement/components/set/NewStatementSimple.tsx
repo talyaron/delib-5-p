@@ -76,14 +76,15 @@ const NewSetStatementSimple: FC<Props> = ({
                 if (!newStatement)
                     throw new Error("newStatement was not created");
 
+                setIsLoading(false);
+                setShowModal(false);
+
                 await setStatmentToDB({
                     statement: newStatement,
                     parentStatement:
                         parentStatement === "top" ? undefined : parentStatement,
                     addSubscription: true,
                 });
-                setIsLoading(false);
-                setShowModal(false);
 
                 if (getSubStatements) await getSubStatements();
             } catch (error) {

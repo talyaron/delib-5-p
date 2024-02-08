@@ -168,10 +168,10 @@ const StatementEvaluationCard: FC<Props> = ({
             )}
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
-                <AddSubQuestion
+                {parentStatement.hasChildren && <AddSubQuestion
                     statement={statement}
                     setShowModal={setShowModal}
-                />
+                />}
             </div>
             {showModal && (
                 <Modal>
