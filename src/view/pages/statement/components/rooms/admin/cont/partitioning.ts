@@ -10,6 +10,7 @@ export function partitionRooms(
 
     // Sort the elements in descending order.
     const participantsSorted = getSortedPartipants(participants, axisId)
+
     // Create X empty groups.
     const numberOfRooms = Math.ceil(
         participantsSorted.length / maxParticipants,
@@ -24,16 +25,18 @@ export function partitionRooms(
 }
 
 function getMinimalRoomIndex(rooms: Participant[][], axisId: string): number {
-    let minimalParticipantsRoom: Participant[] = [];
+    const minimalParticipantsRoom: Participant[] = [];
     let minimalParticipantsRoomIndex = 0;
+
     //find the room with the least amount of participants
     for (let i = 0; i < rooms.length; i++) {
         if (rooms[i].length < minimalParticipantsRoom.length) {
             minimalParticipantsRoomIndex = i;
         }
     }
+
     //find the room leat amount of participants paradigm value
-    let roomsValue: number[] = [];
+    const roomsValue: number[] = [];
     rooms.forEach((room, index) => {
         let sumValue = 0;
         room.forEach((participant) => {
@@ -48,7 +51,7 @@ function getMinimalRoomIndex(rooms: Participant[][], axisId: string): number {
     });
 
     //return the room with least value in roomsValue array
-    let minValue: number = Math.min(...roomsValue);
+    const minValue: number = Math.min(...roomsValue);
     const minimalValueRoomIndex = roomsValue.indexOf(minValue);
 
     return minimalParticipantsRoomIndex === minimalValueRoomIndex
@@ -69,10 +72,12 @@ function getSortedPartipants(participants:Participant[], axisId:string):Particip
                 throw new Error("Paradigm not found");
             if (paradigmA.value === undefined || paradigmB.value === undefined)
                 throw new Error("Paradigm value not found");
-            return paradigmA.value - paradigmB.value;
+            
+return paradigmA.value - paradigmB.value;
         } catch (error) {
             console.error(error);
-            return 0;
+            
+return 0;
         }
     });
 }

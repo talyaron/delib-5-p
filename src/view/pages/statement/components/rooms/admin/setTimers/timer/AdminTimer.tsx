@@ -27,7 +27,8 @@ function AdminTimer({
     const [_name, setName] = useState<string>(
         timer.name ? timer.name : "Discussion",
     );
-    return (
+    
+return (
         <div className={styles.timer}>
             <div>
                 <label>Name of Timer</label>

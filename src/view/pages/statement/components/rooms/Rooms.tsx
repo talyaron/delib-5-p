@@ -11,7 +11,6 @@ import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import { Unsubscribe } from "firebase/auth";
 
 interface Props {
     statement: Statement;

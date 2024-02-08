@@ -23,7 +23,8 @@ const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
             setActiveTimer(1);
         }
     }
-    return (
+    
+return (
         <div className={styles.timers}>
             <Timer
                 statement={statement}

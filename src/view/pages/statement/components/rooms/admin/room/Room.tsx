@@ -33,7 +33,8 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
 
             if (room.room.length >= maxParticipantsPerRoom) {
                 alert("room is full");
-                return;
+                
+return;
             }
             setRoomJoinToDB(
                 room.statement,

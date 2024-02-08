@@ -81,6 +81,7 @@ const Start = () => {
             <div
                 className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
+
                 //@ts-ignore
                 style={{ direction }}
             >

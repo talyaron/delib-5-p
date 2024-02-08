@@ -15,6 +15,7 @@ import styles from "./inRoom.module.scss";
 import Text from "../../../../../../components/text/Text";
 import Timers from "../../timer/Timers";
 import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
+import { Unsubscribe } from "firebase/firestore";
 
 interface Props {
     statement: Statement;
@@ -28,7 +29,8 @@ const InRoom: FC<Props> = ({ statement }) => {
     const [timers, setTimers] = useState<RoomTimer|null>(null);
 
     useEffect(() => {
-        let unsub:Function = () => {};
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        let unsub:Unsubscribe = () => {};
         if (userTopic?.roomNumber) {
             unsub = listenToRoomTimers(
                 statement.statementId,
@@ -36,7 +38,8 @@ const InRoom: FC<Props> = ({ statement }) => {
                 setTimers,
             );
         }
-        return () => {
+        
+return () => {
             unsub();
         };
     }, [userTopic?.roomNumber]);

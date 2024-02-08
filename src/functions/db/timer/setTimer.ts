@@ -33,10 +33,12 @@ export async function setParentTimersToDB({
             userCanChangeTimer,
             timers,
         });
-        return { success: true };
+        
+return { success: true };
     } catch (error: any) {
         console.error(error);
-        return { success: false, error: error.message };
+        
+return { success: false, error: error.message };
     }
 }
 
@@ -59,7 +61,8 @@ export function getTimerId({
         return `${statementId}--${roomNumber}--${stage}`;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }
 

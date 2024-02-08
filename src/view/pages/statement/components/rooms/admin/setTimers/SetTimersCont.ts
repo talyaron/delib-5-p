@@ -1,11 +1,13 @@
 import { SetTimer, Statement } from "delib-npm";
 import { setParentTimersToDB } from "../../../../../../../functions/db/timer/setTimer";
 import { uuidv4 } from "@firebase/util";
+import React from "react";
 
 export function converToMillisecons(timer: number[]) {
     const minutes = timer[0] * 10 + timer[1];
     const seconds = timer[2] * 10 + timer[3];
-    return (seconds + minutes * 60) * 1000;
+    
+return (seconds + minutes * 60) * 1000;
 }
 
 export async function handleSetTimers({
@@ -15,7 +17,7 @@ export async function handleSetTimers({
 }: {
     parentStatement: Statement;
     timers: SetTimer[];
-    setTimersChanged: Function;
+    setTimersChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     await setParentTimersToDB({ parentStatement,userCanChangeTimer:true, timers });
     setTimersChanged(false);
@@ -37,14 +39,16 @@ export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][
                 .sort((a, b) => a.order - b.order);
             orderedTimersByStage[i] = orderedTimers;
         });
-        return orderedTimersByStage;
+        
+return orderedTimersByStage;
     } catch (error) {
         console.error(error);
-        return [];
+        
+return [];
     }
 }
 
-export function handleAddStage(timers:SetTimer[],setTimers:Function) {
+export function handleAddStage(timers:SetTimer[],setTimers:React.Dispatch<React.SetStateAction<SetTimer[]>>) {
     try {
        const stagesSet = new Set()
          timers.forEach(timer => stagesSet.add(timer.stageId))
@@ -53,6 +57,7 @@ export function handleAddStage(timers:SetTimer[],setTimers:Function) {
         setTimers([...timers , newTimer])
     } catch (error) {
         console.error(error);
-        return timers;
+        
+return timers;
     }
 }

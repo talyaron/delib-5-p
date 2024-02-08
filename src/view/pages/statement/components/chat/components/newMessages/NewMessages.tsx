@@ -5,12 +5,13 @@ import { t } from 'i18next';
 interface Props{
     newMessages: number
     setNewMessages: React.Dispatch<React.SetStateAction<number>>
-    scrollToBottom: Function
+    scrollToBottom: ()=>void
 }
 
 const NewMessages:FC<Props> = ({newMessages,setNewMessages,scrollToBottom}) => {
     if(newMessages === 0) return null;
-  return (
+  
+return (
     <div className={styles.newMessages} onClick={()=>{
         setNewMessages(0)
         scrollToBottom()

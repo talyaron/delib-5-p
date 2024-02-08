@@ -17,6 +17,7 @@ export async function getStatementTimers(
         return timers;
     } catch (error) {
         console.error(error);
+
         return initialTimerArray;
     }
 }
@@ -35,14 +36,17 @@ export function listenToRoomTimers(
             Collections.roomTimers,
             `${statementId}--${roomNumber}`,
         );
+
         return onSnapshot(timersRef, (timerDB) => {
             try {
                 const timers = timerDB.data() as RoomTimer;
 
                 const result = RoomTimerSchema.safeParse(timers);
                 console.log(result.success);
+
                 //@ts-ignore
                 if (result.error) console.error(result.error);
+
                 //    if(!success) {
                 // setTimersInitTimeDB({statementId, roomNumber, timerId:1, initTime:90*1000})
                 // setTimersInitTimeDB({statementId, roomNumber, timerId:1, initTime:90*1000})
@@ -55,6 +59,10 @@ export function listenToRoomTimers(
         });
     } catch (error) {
         console.error(error);
-        return () => {};
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        const unsub: Unsubscribe = () => {};
+
+        return unsub;
     }
 }
