@@ -24,10 +24,10 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        let unsub: Unsubscribe = () => {};
+       
         enterRoomsDB(statement);
 
-        unsub = listenToAllRoomsRquest(statement, dispatch);
+        const unsub = listenToAllRoomsRquest(statement, dispatch);
 
         return () => {
             if (unsub) unsub();

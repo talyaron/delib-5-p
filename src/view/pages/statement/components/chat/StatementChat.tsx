@@ -7,11 +7,9 @@ import { Statement, User } from "delib-npm";
 import StatementChatCard from "./components/StatementChatCard";
 import StatementInput from "./components/input/StatementInput";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
-import { set } from "zod";
+
 import NewMessages from "./components/newMessages/NewMessages";
-import { store } from "../../../../../model/store";
 import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
-import { use } from "i18next";
 import { userSelector } from "../../../../../model/users/userSlice";
 
 interface Props {

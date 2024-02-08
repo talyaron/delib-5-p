@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "../setTimers.module.scss";
 import AdminTimer from "./AdminTimer";
 import { SetTimer } from "delib-npm";
@@ -9,8 +9,8 @@ interface Props {
     stageId: string;
    
     timers: SetTimer[];
-    setTimers: Function;
-    setTimersChanged: Function;
+    setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
+    setTimersChanged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AdminTimerStage: FC<Props> = ({

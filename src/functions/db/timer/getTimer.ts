@@ -25,7 +25,7 @@ export async function getStatementTimers(
 export function listenToRoomTimers(
     statementId: string,
     roomNumber: number | undefined,
-    setTimers: Function,
+    setTimers: React.Dispatch<React.SetStateAction<RoomTimer | null>>,
 ): Unsubscribe {
     try {
         if (!roomNumber) throw new Error("Missing roomNumber");
