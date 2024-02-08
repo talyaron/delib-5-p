@@ -1,0 +1,13 @@
+.newMessages{
+    width: fit-content;
+    padding: .5rem 1rem;
+    position: fixed;
+    bottom: 5rem;
+    left:50vw;
+    transform: translateX(-50%);
+    background-color: wheat;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 2rem;
+    user-select: none;
+    cursor: pointer;
+}

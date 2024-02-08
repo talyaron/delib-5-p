@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third Party Libraries
-import { RoomAskToJoin, Statement } from "delib-npm";
+import { Participant, RoomTimer, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Redux
@@ -13,18 +13,36 @@ import styles from "./inRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
-
-
-
+import Timers from "../../timer/Timers";
+import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
+import { Unsubscribe } from "firebase/firestore";
 
 interface Props {
     statement: Statement;
 }
 
 const InRoom: FC<Props> = ({ statement }) => {
-    const userTopic: RoomAskToJoin | undefined = useAppSelector(
+    const userTopic: Participant | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
+
+    const [timers, setTimers] = useState<RoomTimer|null>(null);
+
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        let unsub:Unsubscribe = () => {};
+        if (userTopic?.roomNumber) {
+            unsub = listenToRoomTimers(
+                statement.statementId,
+                userTopic?.roomNumber,
+                setTimers,
+            );
+        }
+        
+return () => {
+            unsub();
+        };
+    }, [userTopic?.roomNumber]);
 
     try {
         return (
@@ -53,6 +71,11 @@ const InRoom: FC<Props> = ({ statement }) => {
                         <h2>{t("No Topic Chosen by You")}</h2>
                     )}
                 </div>
+                <Timers
+                    statement={statement}
+                    roomNumber={userTopic?.roomNumber}
+                    timers={timers}
+                />
             </>
         );
     } catch (error: any) {

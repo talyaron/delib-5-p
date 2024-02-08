@@ -23,7 +23,7 @@ import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
 import { isOptionFn } from "../../../../../functions/general/helpers";
 import HandsIcon from "../../../../components/icons/HandsIcon";
-import StatementInfo from "./StatementInfo";
+import StatementInfo from "./info/StatementInfo";
 
 interface Props {
     statement: Statement;

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styles from "./Room.module.scss";
 import Text from "../../../../../../components/text/Text";
-import { RoomAskToJoin } from "delib-npm";
+import { Participant } from "delib-npm";
 import RoomParticpantBadge from "../../comp/general/RoomParticpantBadge";
 import { t } from "i18next";
 import { RoomAdmin } from "../../../../../../../model/rooms/roomsSlice";
@@ -23,7 +23,7 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
             const participant = store
                 .getState()
                 .rooms.askToJoinRooms.find(
-                    (participant: RoomAskToJoin) =>
+                    (participant: Participant) =>
                         participant.participant.uid === draggedParticipantId,
                 );
 
@@ -33,7 +33,8 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
 
             if (room.room.length >= maxParticipantsPerRoom) {
                 alert("room is full");
-                return;
+                
+return;
             }
             setRoomJoinToDB(
                 room.statement,
@@ -64,7 +65,7 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
                 <Text text={room.statement.statement} onlyTitle={true} />
             </h4>
             <div className={styles.room__badges}>
-                {room.room.map((participant: RoomAskToJoin) => (
+                {room.room.map((participant: Participant) => (
                     <RoomParticpantBadge
                         key={participant.participant.uid}
                         participant={participant.participant}

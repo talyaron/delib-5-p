@@ -1,4 +1,4 @@
-import { Collections, RoomAskToJoin } from "delib-npm";
+import { Collections, Participant } from "delib-npm";
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 import { FieldValue } from "firebase-admin/firestore";
@@ -8,8 +8,8 @@ export async function countRoomJoiners(ev: any) {
     try {
         //on change of room joiners, update the room with the new count
         //get the room id
-        const previouseRequest = ev.data.before.data() as RoomAskToJoin;
-        const newRequest = ev.data.after.data() as RoomAskToJoin;
+        const previouseRequest = ev.data.before.data() as Participant;
+        const newRequest = ev.data.after.data() as Participant;
         if (!newRequest.statementId || !previouseRequest.statementId)
             throw new Error("statementId not found");
 

@@ -39,13 +39,13 @@ export async function updateEvaluation(event: any) {
         // while letting small groups with heigher consesus an uper hand, over large groups with alot of negative evaluations.
 
         const sumEvaluation = newPro - newCon;
-        const n = newPro + Math.abs(newCon);
-        const consensusScore = n !== 0 ? sumEvaluation / n : 0;
+        const n = newPro + Math.abs(newCon); // n = total evealuators
+        const averageEvaluation = n !== 0 ? sumEvaluation / n : 0; // average evaluation
         const consensus =
             n !== 0
-                ? Math.abs(consensusScore) *
+                ? Math.abs(averageEvaluation) *
                   Math.sign(newPro - newCon) *
-                  Math.log2(n)
+                  Math.log(n)
                 : 0;
 
         //set consensus to statement in DB
