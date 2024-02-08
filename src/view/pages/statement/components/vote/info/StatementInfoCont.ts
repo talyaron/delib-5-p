@@ -1,5 +1,5 @@
 import { Statement } from "delib-npm";
-import { updateStatementText } from "../../../../../functions/db/statements/setStatments";
+import { updateStatementText } from "../../../../../../functions/db/statements/setStatments";
 
 export function handleSubmitInfo(e:any, statement:Statement, setEdit:React.Dispatch<React.SetStateAction<boolean>>, setShowInfo:React.Dispatch<React.SetStateAction<boolean>>) {
     e.preventDefault();

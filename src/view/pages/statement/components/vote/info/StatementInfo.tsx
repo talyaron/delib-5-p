@@ -1,18 +1,18 @@
 import { Statement } from "delib-npm";
 import { FC, useState } from "react";
-import styles from "./StatementInfo.module.scss";
-
-// import SetEdit from "../../../../components/edit/SetEdit";
 import {
     getDescription,
     getTitle,
-} from "../../../../../functions/general/helpers";
-import Text from "../../../../components/text/Text";
+} from "../../../../../../functions/general/helpers";
+import Text from "../../../../../components/text/Text";
+import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
-import info from "../../../../../assets/images/info.svg";
-import editIcon from "../../../../../assets/icons/edit2.svg";
-import { handleSubmitInfo } from "./StatementInfoCont";
+import info from "../../../../../../assets/images/info.svg";
+import editIcon from "../../../../../../assets/icons/edit2.svg";
+
+import styles from "./StatementInfo.module.scss";
+
 
 interface Props {
     statement: Statement | null;
