@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import {
     getDescription,
     getTitle,
+    isAuthorized,
 } from "../../../../../../functions/general/helpers";
 import Text from "../../../../../components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
@@ -12,7 +13,11 @@ import info from "../../../../../../assets/images/info.svg";
 import editIcon from "../../../../../../assets/icons/edit2.svg";
 
 import styles from "./StatementInfo.module.scss";
-
+import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import {
+    statementSelector,
+    statementSubscriptionSelector,
+} from "../../../../../../model/statements/statementsSlice";
 
 interface Props {
     statement: Statement | null;
@@ -22,10 +27,22 @@ interface Props {
 const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
     if (!statement) return null;
 
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statement.statementId),
+    );
+    const parentStatement = useAppSelector(
+        statementSelector(statement.parentId),
+    );
+
     const [edit, setEdit] = useState(false);
 
     const title = getTitle(statement);
     const description = getDescription(statement);
+    const _isAuthrized = isAuthorized(
+        statement,
+        statementSubscription,
+        parentStatement?.creatorId,
+    );
 
     return (
         <div className={styles.info}>
@@ -36,12 +53,14 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                 {!edit ? (
                     <>
                         <h3>
-                            {title}{" "}
-                            <img
-                                src={editIcon}
-                                alt="edit"
-                                onClick={() => setEdit(true)}
-                            />
+                            {title}
+                            {_isAuthrized && (
+                                <img
+                                    src={editIcon}
+                                    alt="edit"
+                                    onClick={() => setEdit(true)}
+                                />
+                            )}
                         </h3>
                         <div className={styles.text}>
                             <Text text={description} />
