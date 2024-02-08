@@ -290,3 +290,31 @@ export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
     }
 }
 
+
+export function getTitle(statement: Statement) {
+    try {
+        if (!statement) throw new Error("No statement");
+
+        const title = statement.statement.split("\n")[0].replace("*", "");
+
+        return title;
+    } catch (error) {
+        console.error(error);
+
+        return "";
+    }
+}
+
+export function getDescription(statement: Statement) {
+    try {
+        if (!statement) throw new Error("No statement");
+
+        const description = statement.statement.split("\n").slice(1).join("\n");
+
+        return description;
+    } catch (error) {
+        console.error(error);
+
+        return "";
+    }
+}
