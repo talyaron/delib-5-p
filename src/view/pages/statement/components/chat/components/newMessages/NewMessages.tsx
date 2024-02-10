@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import styles from './NewMessages.module.scss';
-import { t } from 'i18next';
+// import { t } from 'i18next';
 
 interface Props{
     newMessages: number
@@ -11,12 +11,20 @@ interface Props{
 const NewMessages:FC<Props> = ({newMessages,setNewMessages,scrollToBottom}) => {
     if(newMessages === 0) return null;
   
-return (
+// return (
+//     <div className={styles.newMessages} onClick={()=>{
+//         setNewMessages(0)
+//         scrollToBottom()
+        
+//     }}>{t("New Messages")}: {newMessages}</div>
+//   )
+
+  return (
     <div className={styles.newMessages} onClick={()=>{
         setNewMessages(0)
         scrollToBottom()
         
-    }}>{t("New Messages")}: {newMessages}</div>
+    }}> {newMessages}</div>
   )
 }
 
