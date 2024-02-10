@@ -117,7 +117,7 @@ const StatementSettings: FC<Props> = () => {
 
                     <ResultsRange statement={statement} />
 
-                    <button type="submit" className="settings__submitBtn">
+                    <button type="submit" className="settings__submitBtn" data-cy="settings-statement-submit-btn">
                         {!statementId ? "Add" : "Update"}
                     </button>
 

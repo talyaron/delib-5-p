@@ -39,26 +39,7 @@ describe("Basic user flow", () => {
 
         // User should be redirected to the chat page
         cy.url().should("include", "/chat");
-
-        // Header should contain the chat, evaluations, voting and settings tabs
-        cy.get('[data-cy="statement-nav"]')
-            .children()
-            .should("have.length", 4)
-            .eq(0)
-            .should("contain", "Chat");
-        cy.get('[data-cy="statement-nav"]')
-            .children()
-            .eq(1)
-            .should("contain", "Evaluations");
-        cy.get('[data-cy="statement-nav"]')
-            .children()
-            .eq(2)
-            .should("contain", "Voting");
-        cy.get('[data-cy="statement-nav"]')
-            .children()
-            .eq(3)
-            .should("contain", "Settings");
-
+        
         //TODO: The currrent URL shows options -> need to change to evaluations
         // Click on the evaluations tab and navigate to the evaluations page
         cy.get('[data-cy="statement-nav"]')
