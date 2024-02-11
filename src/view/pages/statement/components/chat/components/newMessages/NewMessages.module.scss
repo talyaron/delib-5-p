@@ -1,14 +1,20 @@
-.newMessages{
+.newMessages {
     width: fit-content;
-    padding: .5rem;
+    padding: .5rem .9rem;
     position: fixed;
     bottom: 5rem;
-    right:5vw;
+    right: 2vw;
     background-color: #787fff;
     color: #fff;
-    box-shadow: 0px 2.4960553646087646px 2.4960553646087646px -1.2480276823043823px hsba(285, 15%, 89%, 1);
+    font-weight: 500;
+    box-shadow: 0px 2px 6px -1px rgba(112, 115, 168, 0.8);
     border-radius: 5rem;
     user-select: none;
     cursor: pointer;
-    
+
+    @media (min-width: 1200px) {
+        right: 33vw;
+        bottom: 6rem;
+    }
+
 }
