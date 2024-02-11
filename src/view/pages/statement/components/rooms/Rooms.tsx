@@ -11,7 +11,6 @@ import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
 import { isOptionFn } from "../../../../../functions/general/helpers";
-import { Unsubscribe } from "firebase/auth";
 
 interface Props {
     statement: Statement;
@@ -24,10 +23,10 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        let unsub: Unsubscribe = () => {};
+       
         enterRoomsDB(statement);
 
-        unsub = listenToAllRoomsRquest(statement, dispatch);
+        const unsub = listenToAllRoomsRquest(statement, dispatch);
 
         return () => {
             if (unsub) unsub();

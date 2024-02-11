@@ -1,0 +1,20 @@
+.newMessages {
+    width: fit-content;
+    padding: .5rem .9rem;
+    position: fixed;
+    bottom: 5rem;
+    right: 2vw;
+    background-color: #787fff;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0px 2px 6px -1px rgba(112, 115, 168, 0.8);
+    border-radius: 5rem;
+    user-select: none;
+    cursor: pointer;
+
+    @media (min-width: 1200px) {
+        right: 33vw;
+        bottom: 6rem;
+    }
+
+}

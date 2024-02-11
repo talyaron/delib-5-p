@@ -82,6 +82,9 @@ const Start = () => {
                 data-cy="anonymous-login"
                 className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
+
+                //@ts-ignore
+                style={{ direction }}
             >
                 {t("Login with a temporary name")}{" "}
                 <img

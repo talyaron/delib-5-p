@@ -20,7 +20,7 @@ interface Props {
     timers: RoomTimer | null;
     title: string;
     activeTimer: boolean;
-    nextTimer: Function;
+    nextTimer: () => void;
     autoStart?: boolean;
     lastTimer?: boolean;
 }
@@ -37,6 +37,7 @@ export default function Timer({
     lastTimer,
 }: Props): JSX.Element {
     const userId = store.getState().user.user?.uid;
+
     // useState
     const [initTime, setInitTime] = useState<number>(getInitTime(timers, timerId)); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
     const [timeLeft, setTimeLeft] = useState(getInitTime(timers, timerId));
@@ -241,12 +242,15 @@ function getInitTime(timers:RoomTimer | null, timerId:number):number {
    
     try { 
         if(!timers?.timers) return 1000 * 90;
+
         //@ts-ignore
         const initTime  = timers?.timers[timerId].initTime;
-        return initTime;
+        
+return initTime;
     } catch (error) {
         console.error(error);
-        return 1000 * 90;
+        
+return 1000 * 90;
     }
          
     

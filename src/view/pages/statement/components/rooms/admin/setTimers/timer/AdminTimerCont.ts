@@ -14,6 +14,7 @@ export function fromMilliseconsToFourDigits(millis: number):number[] {
 export function fromFourDigitsToMillisecons(digits: number[]):number {
     const minutes = digits[0]*10 + digits[1];
     const seconds = digits[2]*10 + digits[3];
-    return (seconds + minutes * 60) * 1000;
+    
+return (seconds + minutes * 60) * 1000;
    
 }

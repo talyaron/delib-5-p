@@ -64,6 +64,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                 participants,
                 maxParticipantsPerRoom,
             );
+
             // setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {

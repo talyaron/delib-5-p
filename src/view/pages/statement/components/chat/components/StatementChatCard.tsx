@@ -80,7 +80,7 @@ const StatementChatCard: FC<Props> = ({
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
 
-    const displayChat = isQuestion || isOption;
+    const displayChat = (isQuestion || isOption) && parentStatement.hasChildren;
 
     const displayUserName = !previousStatement
         ? true
@@ -138,8 +138,7 @@ const StatementChatCard: FC<Props> = ({
                             text={t("Question")}
                         />
 
-                        {displayChat &&
-                            linkToChildren(statement, parentStatement) && (
+                        {linkToChildren(statement, parentStatement) && (
                                 <AddSubQuestion
                                     statement={statement}
                                     setShowModal={setShowModal}
