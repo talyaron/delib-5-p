@@ -4,7 +4,6 @@ import { createSelector } from "reselect";
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
-import { t } from "i18next";
 
 // firestore
 import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
@@ -75,7 +74,7 @@ const StatementMain: FC = () => {
 
     // Use states
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(t("Group"));
+    const [title, setTitle] = useState<string>(("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
     const [askNotifications, setAskNotifications] = useState(false);
 
@@ -180,6 +179,7 @@ const StatementMain: FC = () => {
 
     return (
         <div className="page">
+            {/* Ask permission popup */}
             {showAskPermission && (
                 <AskPermisssion showFn={setShowAskPermission} />
             )}
@@ -192,6 +192,7 @@ const StatementMain: FC = () => {
                     <ProfileImage user={talker} />
                 </div>
             )}
+            {/* Enable notifications popup*/}
             {askNotifications && (
                 <EnableNotifications
                     statement={statement}

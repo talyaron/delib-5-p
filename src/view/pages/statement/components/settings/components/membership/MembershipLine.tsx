@@ -1,7 +1,6 @@
 import { Role, StatementSubscription } from "delib-npm";
 import { FC } from "react";
 import styles from "./membership.module.scss";
-import { t } from "i18next";
 
 interface Props {
     member: StatementSubscription;
@@ -21,17 +20,17 @@ export default MembershipLine;
 function memebershipDictionarty(role: Role) {
     switch (role) {
         case Role.admin:
-            return t("Admin");
+            return ("Admin");
         case Role.member:
-            return t("Member");
+            return ("Member");
         case Role.banned:
-            return t("Blocked");
+            return ("Blocked");
         case Role.parentAdmin:
-            return t("Parent Admin");
+            return ("Parent Admin");
         case Role.guest:
-            return t("Guest");
+            return ("Guest");
 
         default:
-            return t("Member");
+            return ("Member");
     }
 }

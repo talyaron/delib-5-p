@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./view/style/style.scss";
-import "./i18n";
 
 import { RouterProvider } from "react-router-dom";
 

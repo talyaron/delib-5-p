@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import React, { MouseEventHandler } from "react";
 import MoreIcon from "../icons/MoreIcon";
 import "./popUpStyle.scss";
@@ -56,28 +55,28 @@ export default function PopUpMenu({
                             onClick={firstIconFunc}
                         >
                             {firstIcon}
-                            {t(firstIconText)}
+                            {firstIconText}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={secondIconFunc}
                         >
                             {secondIcon}
-                            {t(secondIconText || "")}
+                            {secondIconText || ""}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={thirdIconFunc}
                         >
                             {thirdIcon}
-                            {t(thirdIconText || "")}
+                            {thirdIconText || ""}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={fourthIconFunc}
                         >
                             {fourthIcon}
-                            {t(fourthIconText || "")}
+                            {fourthIconText || ""}
                         </span>
                     </div>
                 </>

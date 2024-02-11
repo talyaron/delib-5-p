@@ -9,7 +9,6 @@ import { statementSubscriptionSelector } from "../../../../../../model/statement
 // Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm";
 import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
@@ -40,7 +39,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     const messageToDisplay = statement.lastMessage
         ? statementTitleToDisplay(statement.lastMessage, 20).shortVersion
-        : t("Conversations");
+        : ("Conversations");
 
     return (
         <div

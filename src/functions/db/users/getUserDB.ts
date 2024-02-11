@@ -1,6 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
 import { Agreement, Collections, User } from "delib-npm";
-import { t } from "i18next";
 import { DB } from "../config";
 import { store } from "../../../model/store";
 
@@ -43,7 +42,7 @@ export interface SignitaureDB {
 export function getSigniture(version = "basic"): Agreement | undefined {
     try {
         const agreement: Agreement = {
-            text: t("Agreement Description"),
+            text: "Agreement Description",
             version,
             date: new Date().getTime(),
         };

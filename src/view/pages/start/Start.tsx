@@ -7,7 +7,6 @@ import { getIntialLocationSessionStorage } from "../../../functions/general/help
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // Redux
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
@@ -28,7 +27,6 @@ import useDirection from "../../../functions/hooks/useDirection";
 
 const Start = () => {
     const navigate = useNavigate();
-    const { i18n, t } = useTranslation();
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
@@ -47,9 +45,9 @@ const Start = () => {
     return (
         <div className="splashPage">
             <div className={styles.h1}>
-                {t("Delib")} <span className={styles.number}>5</span>
+                {("Delib")} <span className={styles.number}>5</span>
             </div>
-            <div className={styles.h2}>{t("Creating Agreements")}</div>
+            <div className={styles.h2}>{("Creating Agreements")}</div>
             <img
                 className={styles.logo}
                 src={Logo}
@@ -57,20 +55,9 @@ const Start = () => {
                 height="20%"
                 style={{}}
             />
-
             <select
                 className={styles.language}
                 defaultValue={savedLang || "he"}
-                onChange={(e) => {
-                    const lang = e.target.value;
-                    i18n.changeLanguage(lang);
-                    if (lang === "he" || lang === "ar") {
-                        document.body.style.direction = "rtl";
-                    } else {
-                        document.body.style.direction = "ltr";
-                    }
-                    localStorage.setItem("lang", lang);
-                }}
             >
                 {LANGUAGES.map(({ code, label }) => (
                     <option key={code} value={code}>
@@ -86,7 +73,7 @@ const Start = () => {
                 //@ts-ignore
                 style={{ direction }}
             >
-                {t("Login with a temporary name")}{" "}
+                {("Login with a temporary name")}{" "}
                 <img
                     src={direction === "row" ? moreRight : moreLeft}
                     alt="login anonymously"
@@ -98,7 +85,7 @@ const Start = () => {
                     alt="login anonymously"
                 />
                 <img src={googleLogo} alt="login with google" />
-                {t("Connect with Google")}
+                {"Connect with Google"}
             </button>
 
             <a
@@ -110,7 +97,7 @@ const Start = () => {
                 }}
             >
                 <footer className={styles.ddi}>
-                    {t("From the Institute for Deliberative Democracy")}
+                    {("From the Institute for Deliberative Democracy")}
                 </footer>
             </a>
 

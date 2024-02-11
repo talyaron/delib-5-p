@@ -1,6 +1,5 @@
 import React from "react";
 import { Statement } from "delib-npm";
-import { t } from "i18next";
 
 export default function ResultsRange({
     statement,
@@ -17,7 +16,7 @@ export default function ResultsRange({
                 className="settings__rangeSection__label"
                 style={{ fontSize: "1.3rem", marginBottom: "1rem" }}
             >
-                {t("Number of Results to Display")}
+                {("Number of Results to Display")}
                 {": "}
             </label>
             <div className="settings__rangeSection__rangeBox">

@@ -35,3 +35,14 @@
 //     }
 //   }
 // }
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace Cypress {
+    interface Chainable {
+        getDataCy(dataSelector: string): Cypress.Chainable<JQuery<HTMLElement>>;
+    }
+}
+
+Cypress.Commands.add("getDataCy", (dataSelector) =>
+    cy.get(`[data-cy=${dataSelector}]`),
+);

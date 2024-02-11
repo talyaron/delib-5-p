@@ -1,7 +1,6 @@
 // CustomSwitch.js
 import { useState, FC } from "react";
 import styles from "./CustomSwitch.module.scss";
-import { t } from "i18next";
 
 interface Props {
     label: string;
@@ -53,8 +52,9 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                     setChecked(!checked);
                 }}
                 style={labelPosition}
+                data-cy={`toggleSwitch-${link}`}
             >
-                {t(label)}
+                {(label)}
             </div>
             <input
                 style={{ display: "none" }}
@@ -65,6 +65,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 onChange={handleChange}
                 value={checked ? "on" : "off"}
                 checked={checked}
+                data-cy={`toggleSwitch-input-${link}`}
             />
         </div>
     );

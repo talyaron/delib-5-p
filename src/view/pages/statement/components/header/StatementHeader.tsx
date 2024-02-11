@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
-import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
@@ -70,8 +69,8 @@ const StatementHeader: FC<Props> = ({
         const baseUrl = window.location.origin;
 
         const shareData = {
-            title: t("Delib: We create agreements together"),
-            text: t("Invited:") + statement?.statement,
+            title: ("Delib: We create agreements together"),
+            text: ("Invited:") + statement?.statement,
             url: `${baseUrl}${pathname}`,
         };
         navigator.share(shareData);
@@ -109,12 +108,13 @@ const StatementHeader: FC<Props> = ({
                     className="page__header__wrapper__actions"
                     style={{ flexDirection: direction }}
                 >
-                    <div onClick={handleBack} style={{ cursor: "pointer" }}>
+                    <div onClick={handleBack} style={{ cursor: "pointer" }} data-cy="back-icon-header">
                         <BackArrowIcon color={headerColor.color} />
                     </div>
                     <Link
                         state={{ from: window.location.pathname }}
                         to={"/home"}
+                        data-cy="home-link-icon"
                     >
                         <HomeIcon color={headerColor.color} />
                     </Link>
@@ -124,6 +124,7 @@ const StatementHeader: FC<Props> = ({
                         className={isAdmin ? "clickable" : ""}
                         onClick={handleEditTitle}
                         style={{ fontSize: titleFontSize, padding: "0 2rem" }}
+                        data-cy="statement-header-title"
                     >
                         {title}
                     </h1>

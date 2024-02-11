@@ -1,5 +1,7 @@
 import { NavObject, Screen } from "delib-npm";
 
+
+// TODO: Change Screen.??? to current name: Screen.DOC doesn't make sense anymore. Change to Main or something
 export const navArray: NavObject[] = [
     { link: Screen.DOC, name: "Main", id: "doc", default: false },
     { link: Screen.CHAT, name: "Chat", id: "chat", default: true },

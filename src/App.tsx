@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 // Third party imports
-import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 // Firebase functions
@@ -29,7 +28,6 @@ export default function App() {
     // Hooks
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { i18n } = useTranslation();
     const { anonymous } = useParams();
 
     // Redux Store
@@ -41,19 +39,6 @@ export default function App() {
     const [visualViewportHeight, setVisualViewportHeight] = useState(
         window.visualViewport?.height || 0,
     );
-
-    useEffect(() => {
-        // Default direction is ltr
-        document.body.style.direction = "ltr";
-
-        // Get language from local storage and change accordingly
-        const lang = localStorage.getItem("lang");
-        if (lang) {
-            i18n.changeLanguage(lang);
-            document.body.style.direction =
-                lang === "he" || lang === "ar" ? "rtl" : "ltr";
-        }
-    }, []);
 
     useEffect(() => {
         const usub: Unsubscribe = listenToAuth(dispatch)(

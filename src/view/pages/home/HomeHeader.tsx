@@ -11,9 +11,6 @@ import installIcon from "../../../assets/icons/installIcon.svg";
 // Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
 
-// Third party imports
-import { t } from "i18next";
-
 export default function HomeHeader() {
     // Use State
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -36,7 +33,7 @@ export default function HomeHeader() {
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
                 <div className="homePage__header__wrapper__title">
-                    {t("Delib 5")}
+                    {("Delib 5")}
                 </div>
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (

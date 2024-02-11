@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Third party imports
 import { Statement, StatementType } from "delib-npm";
-import { t } from "i18next";
 
 // Statements Helpers
 import {
@@ -147,16 +146,17 @@ const NewSetStatementSimple: FC<Props> = ({
                             style={{ height: "auto" }}
                         >
                             <input
+                                data-cy="statement-title-simple"
                                 autoFocus={false}
                                 type="text"
                                 name="statement"
-                                placeholder={t("Title")}
+                                placeholder={("Title")}
                                 required
                                 minLength={3}
                             />
                             <textarea
                                 name="description"
-                                placeholder={t("Description")}
+                                placeholder={("Description")}
                                 rows={4}
                             ></textarea>
 
@@ -164,22 +164,23 @@ const NewSetStatementSimple: FC<Props> = ({
                                 <button
                                     className="overlay__form__buttons__add btn"
                                     type="submit"
+                                    data-cy="add-statement-simple"
                                 >
-                                    {t("Add")}
+                                    {("Add")}
                                 </button>
                                 <button
                                     onClick={() => setShowModal(false)}
                                     type="button"
                                     className="overlay__form__buttons__cancel btn"
                                 >
-                                    {t("Cancel")}
+                                    {("Cancel")}
                                 </button>
                             </div>
                         </form>
                     </div>
                 ) : (
                     <div className="center">
-                        <h2>{t("Updating")}</h2>
+                        <h2>{("Updating")}</h2>
                         <Loader />
                     </div>
                 )}

@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import { useState } from "react";
 import CheckedIcon from "../../../../../components/icons/CheckedIcon";
 import UncheckedIcon from "../../../../../components/icons/UncheckedIcon";
@@ -35,7 +34,7 @@ export default function CustomCheckboxLabel({
                 onChange={handleChange}
                 style={{ display: "none" }}
             />
-            {t(`${title}`)}
+            {(`${title}`)}
         </label>
     );
 }

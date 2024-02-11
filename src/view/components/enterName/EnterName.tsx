@@ -1,8 +1,5 @@
 import React, { FC, useState } from "react";
 
-// Third party libs
-import { t } from "i18next";
-
 // Styles
 import styles from "./enterName.module.scss";
 
@@ -47,7 +44,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     onKeyUp={handleSetName}
                     type="text"
                     name="displayName"
-                    placeholder={t("Nickname")}
+                    placeholder={("Nickname")}
                     autoFocus={true}
                     autoComplete="off"
                 />
@@ -61,14 +58,14 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                                 : "btn btn--inactive"
                         }
                     >
-                        {t("Start")}
+                        {("Start")}
                     </button>
                     <div
                         data-cy="anonymous-cancel-btn"
                         className="btn btn--cancel"
                         onClick={() => setShowNameModul(false)}
                     >
-                        {t("Cancel")}
+                        {("Cancel")}
                     </div>
                 </div>
             </div>

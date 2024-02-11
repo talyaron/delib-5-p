@@ -1,6 +1,5 @@
 // Third party imports
 import { Link } from "react-router-dom";
-import { t } from "i18next";
 
 // Custom components
 import StatementSettings from "../../statement/components/settings/StatementSettings";
@@ -29,7 +28,7 @@ export const AddStatement = () => {
                     {" "}
                     <BackArrowIcon color="black" />
                 </Link>
-                <h1>{t("Add New Group")}</h1>
+                <h1>{("Add New Group")}</h1>
                 <span></span>
             </div>
             <StatementSettings />

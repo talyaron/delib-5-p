@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 
 // Third Party Libraries
 import { Participant, RoomTimer, Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
@@ -47,28 +46,27 @@ return () => {
     try {
         return (
             <>
-                <h1>{t("Room Allocation")}</h1>
+                <h1>{("Room Allocation")}</h1>
                 {/* {userTopic && userTopic.approved ? */}
                 <div className={styles.message}>
                     {userTopic && userTopic.statement ? (
                         <>
                             <h2>
                                 <Text
-                                    text={`${
-                                        (t("Discussion Topic:"),
-                                        userTopic.statement.statement)
-                                    }`}
+                                    text={`
+                                        Discussion Topic: 
+                                        ${userTopic.statement.statement}`}
                                     onlyTitle={true}
                                 />
                             </h2>
                             <div className={styles.text}>
-                                {t("Welcome to Room Number")}
+                                {("Welcome to Room Number")}
                                 <span>{userTopic.roomNumber}</span>
-                                {t("In Zoom")}
+                                {"In Zoom"}
                             </div>
                         </>
                     ) : (
-                        <h2>{t("No Topic Chosen by You")}</h2>
+                        <h2>{("No Topic Chosen by You")}</h2>
                     )}
                 </div>
                 <Timers
