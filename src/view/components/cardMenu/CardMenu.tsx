@@ -13,7 +13,10 @@ const CardMenu: FC<Props> = ({ children, isMe }) => {
 
     return (
         <>
-            <div onClick={() => setOpenMenu(!openMenu)}>
+            <div
+                onClick={() => setOpenMenu(!openMenu)}
+                data-cy="chat-more-icon"
+            >
                 <MoreIcon />
             </div>
             {openMenu && (

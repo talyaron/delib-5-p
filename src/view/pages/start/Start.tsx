@@ -15,7 +15,7 @@ import { userSelector } from "../../../model/users/userSlice";
 
 //img
 import Logo from "../../../assets/logo/512 px SVG.svg";
-import googleLogo from "../../../assets/icons/googleSimpleLogo.svg"
+import googleLogo from "../../../assets/icons/googleSimpleLogo.svg";
 import moreRight from "../../../assets/icons/moreRight.svg";
 import moreLeft from "../../../assets/icons/moreLeft.svg";
 
@@ -32,7 +32,7 @@ const Start = () => {
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
-    const direction = (useDirection() === "row") ? "row" : "row-reverse";
+    const direction = useDirection() === "row" ? "row" : "row-reverse";
 
     useEffect(() => {
         if (user) {
@@ -79,11 +79,12 @@ const Start = () => {
                 ))}
             </select>
             <div
-                className={styles.anonymous}
-                onClick={() => setShowNameModul(true)}
-
+            
                 //@ts-ignore
                 style={{ direction }}
+                data-cy="anonymous-login"
+                className={styles.anonymous}
+                onClick={() => setShowNameModul(true)}
             >
                 {t("Login with a temporary name")}{" "}
                 <img
@@ -91,17 +92,13 @@ const Start = () => {
                     alt="login anonymously"
                 />
             </div>
-            <button
-                className={styles.googleLogin}
-                onClick={googleLogin}
-            >
+            <button className={styles.googleLogin} onClick={googleLogin}>
                 <img
                     src={direction === "row-reverse" ? moreRight : moreLeft}
                     alt="login anonymously"
                 />
                 <img src={googleLogo} alt="login with google" />
                 {t("Connect with Google")}
-                
             </button>
 
             <a
@@ -112,7 +109,9 @@ const Start = () => {
                     textDecoration: "none",
                 }}
             >
-                <footer className={styles.ddi}>{t("From the Institute for Deliberative Democracy")}</footer>
+                <footer className={styles.ddi}>
+                    {t("From the Institute for Deliberative Democracy")}
+                </footer>
             </a>
 
             {showNameModul ? (

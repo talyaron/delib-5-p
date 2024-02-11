@@ -147,6 +147,7 @@ const NewSetStatementSimple: FC<Props> = ({
                             style={{ height: "auto" }}
                         >
                             <input
+                                data-cy="statement-title-simple"
                                 autoFocus={false}
                                 type="text"
                                 name="statement"
@@ -164,6 +165,7 @@ const NewSetStatementSimple: FC<Props> = ({
                                 <button
                                     className="overlay__form__buttons__add btn"
                                     type="submit"
+                                    data-cy="add-statement-simple"
                                 >
                                     {t("Add")}
                                 </button>
