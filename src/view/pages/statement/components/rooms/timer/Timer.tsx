@@ -39,7 +39,9 @@ export default function Timer({
     const userId = store.getState().user.user?.uid;
 
     // useState
-    const [initTime, setInitTime] = useState<number>(getInitTime(timers, timerId)); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
+    const [initTime, setInitTime] = useState<number>(
+        getInitTime(timers, timerId),
+    ); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
     const [timeLeft, setTimeLeft] = useState(getInitTime(timers, timerId));
     const [timerAdjustment, setTimerAdjustment] = useState<boolean>(false);
     const [minutes, setMinutes] = useState(
@@ -49,7 +51,10 @@ export default function Timer({
         getMinutesAndSeconds(getInitTime(timers, timerId)).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    const [timer, setTimer] = useState<NodeJS.Timer>();
+
+    // const [timer, setTimer] = useState<NodeJS.Timer>();
+    const [timer, setTimer] = useState<number | undefined>();
+
     const isMasterTimer =
         timers?.initiatorId === userId || timers?.state === TimerStatus.finish;
 
@@ -78,13 +83,18 @@ export default function Timer({
 
     useEffect(() => {
         if (isActive) {
-            setTimer(interval());
+            // setTimer(interval());
+            const newTimer = interval() as unknown as number;
+            setTimer(newTimer);
         } else {
             clearInterval(timer);
         }
 
         return () => {
-            clearInterval(interval());
+            if (timer) {
+                clearInterval(timer as any); // Use 'as any' if necessary
+                setTimer(undefined);
+            }
         };
     }, [isActive]);
 
@@ -117,10 +127,8 @@ export default function Timer({
     useEffect(() => {
         if (timers?.timers) {
             //@ts-ignore
-            const newTime = getInitTime(timers, timerId)
-           
+            const newTime = getInitTime(timers, timerId);
 
-          
             if (newTime !== undefined) {
                 setInitTime(newTime);
                 setTimeLeft(newTime);
@@ -156,8 +164,6 @@ export default function Timer({
         setTimeLeft(initTime);
         updateTimerState(TimerStatus.finish);
     }
-
-
 
     return (
         <div className="roomsWrapper">
@@ -238,20 +244,17 @@ export default function Timer({
     }
 }
 
-function getInitTime(timers:RoomTimer | null, timerId:number):number {
-   
-    try { 
-        if(!timers?.timers) return 1000 * 90;
+function getInitTime(timers: RoomTimer | null, timerId: number): number {
+    try {
+        if (!timers?.timers) return 1000 * 90;
 
         //@ts-ignore
-        const initTime  = timers?.timers[timerId].initTime;
-        
-return initTime;
+        const initTime = timers?.timers[timerId].initTime;
+
+        return initTime;
     } catch (error) {
         console.error(error);
-        
-return 1000 * 90;
+
+        return 1000 * 90;
     }
-         
-    
 }
