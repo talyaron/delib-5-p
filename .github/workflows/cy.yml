@@ -17,5 +17,8 @@ jobs:
             - name: Install dependencies
               run: npm install
 
+            - name: Deploy to Firebase
+              run: npm run deploy:h
+
             - name: Cypress run
               uses: cypress-io/github-action@v6
