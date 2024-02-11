@@ -112,7 +112,7 @@ export const OptionBar: FC<OptionBarProps> = ({
                     setStatementInfo(option), setShowInfo(true);
                 }}
             >
-                <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
+                <InfoIcon color={barHeight > 10 ? "white" : "#6E8AA6"} />
             </div>
             <div className="vote__bar__title">{shortVersion}</div>
         </div>
