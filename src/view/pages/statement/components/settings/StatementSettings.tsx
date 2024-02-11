@@ -58,7 +58,7 @@ const StatementSettings: FC<Props> = () => {
         statementMembershipSelector(statementId),
     );
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
-    
+
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
@@ -91,9 +91,14 @@ const StatementSettings: FC<Props> = () => {
     return (
         <ScreenFadeIn className="page__main">
             {!isLoading ? (
-                <form onSubmit={handleSubmit} className="settings">
+                <form
+                    onSubmit={handleSubmit}
+                    className="settings"
+                    data-cy="statement-settings-form"
+                >
                     <label htmlFor="statement">
                         <input
+                            data-cy="statement-title"
                             autoFocus={true}
                             type="text"
                             name="statement"
@@ -117,7 +122,11 @@ const StatementSettings: FC<Props> = () => {
 
                     <ResultsRange statement={statement} />
 
-                    <button type="submit" className="settings__submitBtn">
+                    <button
+                        type="submit"
+                        className="settings__submitBtn"
+                        data-cy="settings-statement-submit-btn"
+                    >
                         {!statementId ? t("Add") : t("Update")}
                     </button>
 

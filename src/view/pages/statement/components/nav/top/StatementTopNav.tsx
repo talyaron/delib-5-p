@@ -14,7 +14,7 @@ const StatementTopNav: FC<Props> = ({ statement, screen }) => {
     const _navArray = showNavElements(statement, navArray);
 
     return (
-        <nav className="statement__nav">
+        <nav className="statement__nav" data-cy="statement-nav">
             {_navArray.map((navObject: NavObject) => (
                 <Link
                     key={navObject.id}

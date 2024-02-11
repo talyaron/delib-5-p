@@ -41,7 +41,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
 
     return (
         <Modal>
-            <div className={styles.box}>
+            <div className={styles.box} data-cy="anonymous-input">
                 <input
                     className={styles.input}
                     onKeyUp={handleSetName}
@@ -53,12 +53,18 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                 />
                 <div className="btns">
                     <button
+                        data-cy="anonymous-start-btn"
                         onClick={handleStart}
-                        className={showeStartBtn ? "btn btn--agree" : "btn btn--inactive"}
+                        className={
+                            showeStartBtn
+                                ? "btn btn--agree"
+                                : "btn btn--inactive"
+                        }
                     >
                         {t("Start")}
                     </button>
                     <div
+                        data-cy="anonymous-cancel-btn"
                         className="btn btn--cancel"
                         onClick={() => setShowNameModul(false)}
                     >

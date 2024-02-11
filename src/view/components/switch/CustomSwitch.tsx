@@ -53,6 +53,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                     setChecked(!checked);
                 }}
                 style={labelPosition}
+                data-cy={`toggleSwitch-${link}`}
             >
                 {t(label)}
             </div>
@@ -65,6 +66,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 onChange={handleChange}
                 value={checked ? "on" : "off"}
                 checked={checked}
+                data-cy={`toggleSwitch-input-${link}`}
             />
         </div>
     );
