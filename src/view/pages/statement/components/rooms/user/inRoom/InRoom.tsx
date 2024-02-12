@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks"
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // Styles
-import styles from "./inRoom.module.scss";
+import  "./inRoom.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -49,7 +49,7 @@ return () => {
             <>
                 <h1>{t("Room Allocation")}</h1>
                 {/* {userTopic && userTopic.approved ? */}
-                <div className={styles.message}>
+                <div className="message">
                     {userTopic && userTopic.statement ? (
                         <>
                             <h2>
@@ -61,7 +61,7 @@ return () => {
                                     onlyTitle={true}
                                 />
                             </h2>
-                            <div className={styles.text}>
+                            <div className="text">
                                 {t("Welcome to Room Number")}
                                 <span>{userTopic.roomNumber}</span>
                                 {t("In Zoom")}
