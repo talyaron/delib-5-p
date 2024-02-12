@@ -25,10 +25,13 @@ import {
     onDocumentDeleted,
 } from "firebase-functions/v2/firestore";
 
+import { onSchedule } from "firebase-functions/v2/scheduler";
+
 // The Firebase Admin SDK to access Firestore.
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { sendNotificationsCB } from "./fn_notifications";
+import { cleanOldTimers } from "./fn_timers";
 
 initializeApp();
 export const db = getFirestore();
@@ -80,3 +83,6 @@ exports.countRoomJoiners = onDocumentWritten(
     `${Collections.statementRoomsAsked}/{requestId}`,
     countRoomJoiners,
 );
+
+//timers
+exports.cleanTimers = onSchedule("every day 00:00", cleanOldTimers)
