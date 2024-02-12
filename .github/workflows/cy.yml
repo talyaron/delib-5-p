@@ -9,9 +9,6 @@ jobs:
     cypress-run:
         runs-on: ubuntu-latest
         steps:
-            - name: echo
-              run: echo "=> $NAME"
-
             - name: Checkout
               uses: actions/checkout@v4
 
@@ -27,8 +24,7 @@ jobs:
               run: npm install -g firebase-tools
 
             - name: Authenticate with Firebase
-              run: firebase login --no-interactive --token $NAME
-
+              run: firebase login --token $NAME
             - name: Deploy to Firebase
               run: npm run deploy:h
 
