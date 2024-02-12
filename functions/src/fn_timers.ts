@@ -25,7 +25,7 @@ export async function cleanOldTimers() {
                 }
             });
         }
-    } catch (error) {ס
+    } catch (error) {
         logger.error(error);
     }
 }

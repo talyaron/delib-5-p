@@ -199,7 +199,8 @@ export async function initilizeTimersDB({
                 },
                 activeTimer: 1,
                 updateTime: Timestamp.now(),
-                state: TimerStatus.finish
+                state: TimerStatus.finish,
+                lastUpdated:new Date().getTime()
             },
             { merge: true },
         );
