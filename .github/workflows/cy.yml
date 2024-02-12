@@ -2,30 +2,35 @@ name: End-to-end tests
 
 on: push
 
+env:
+  NAME: "1//09KdJVk8NYB1JCgYIARAAGAkSNwF-L9IrIYWKNPaN2mY_CiIe9bRxGaoUPd6VKoDaB7CTusiQoPZmro-xUVweQ5-sHRDOrxqFYjM"
+
 jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    cypress-run:
+        runs-on: ubuntu-latest
+        steps:
+            - name: echo
+              run: "Echo $NAME"
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 18
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
+            - name: Install dependencies
+              run: npm install
 
-      - name: Authenticate with Firebase
-        run: firebase use default
+            - name: Install Firebase CLI
+              run: npm install -g firebase-tools
 
-      - name: Deploy to Firebase
-        run: npm run deploy:h
+            - name: Authenticate with Firebase
+              run: firebase login --no-interactive --token $NAME
 
+            - name: Deploy to Firebase
+              run: npm run deploy:h
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+            - name: Cypress run
+              uses: cypress-io/github-action@v6
