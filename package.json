@@ -40,6 +40,7 @@
         "sass": "^1.63.6",
         "sort-by": "^1.2.0",
         "vite-plugin-commonjs": "^0.10.0",
+        "vite-plugin-sass": "^0.1.0",
         "zod": "^3.21.4"
     },
     "devDependencies": {
