@@ -20,7 +20,7 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["src"],
+    "include": ["src", "vite.config.ts", "cypress"],
     "exclude": [
         "src/functions/db/config.ts"
         // Add more patterns as necessary
