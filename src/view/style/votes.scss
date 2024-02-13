@@ -63,6 +63,9 @@
                 transform: translateY(21px);
             }
         }
+     .btnShadow{
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
+     }
 
         &__btn {
             border-radius: 5px;
@@ -83,7 +86,7 @@
             // border-bottom:1em solid transparent;
             text-overflow: ellipsis;
             box-shadow: 0px -2px 6px 0px #CAD7DD80;
-            box-shadow: 0px 2px 6px 0px #CAD7DD80;
+          
 
 
             box-sizing: border-box;

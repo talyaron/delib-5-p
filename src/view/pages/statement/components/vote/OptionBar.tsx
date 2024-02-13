@@ -20,6 +20,7 @@ import useWindowDimensions from "../../../../../functions/hooks/useWindowDimenti
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
 import InfoIcon from "../../../../components/icons/InfoIcon";
 import HandsIcon from "../../../../components/icons/HandsIcon";
+import VoteIcon from "../../../../components/icons/VoteIcon";
 
 export interface OptionBarProps {
     option: Statement;
@@ -85,26 +86,31 @@ export const OptionBar: FC<OptionBarProps> = ({
                     }}
                 ></div>
             </div>
-            <div
-                style={{
-                    width: `${barWidth - padding}px`,
-                    direction: direction,
-                    backgroundColor: option.color,
-                }}
-                className={
-                    vote?.statementId === option.statementId
-                        ? "vote__bar__btn vote__bar__btn--selected"
-                        : "vote__bar__btn"
-                }
-                onClick={handlePressButton}
-            >
-                <HandsIcon
-                    color={
+            <div className="btnShadow">
+                <div
+                    style={{
+                        width: `${barWidth - padding}px`,
+                        direction: direction,
+                        backgroundColor:
+                            vote?.statementId === option.statementId
+                                ? option.color
+                                : "white",
+                    }}
+                    className={
                         vote?.statementId === option.statementId
-                            ? "#434346"
-                            : "white"
+                            ? "vote__bar__btn vote__bar__btn--selected"
+                            : "vote__bar__btn"
                     }
-                />
+                    onClick={handlePressButton}
+                >
+                    <VoteIcon
+                        color={
+                            vote?.statementId !== option.statementId
+                                ? option.color
+                                : "white"
+                        }
+                    />
+                </div>
             </div>
             <div
                 className="infoIcon"
