@@ -17,14 +17,11 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            - name: Install Firebase CLI
-              run: npm install -g firebase-tools
+            - name: Run ESLint
+              run: npm run lint
 
-            - name: Use firebase project
-              run: firebase use default
-
-            - name: Deploy to Firebase
-              run: npm run deploy:h
+            - name: Run TypeScript type checking
+              run: npm run typecheck
 
             - name: Cypress run
               uses: cypress-io/github-action@v6
