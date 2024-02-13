@@ -1,4 +1,5 @@
 import {
+    doc,
     collection,
     getDocs,
     onSnapshot,
@@ -54,7 +55,7 @@ export function listenToRoomTimers(
 
         const timersRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
