@@ -45,7 +45,6 @@ export interface ParticipantInRoom {
     statementId?: string;
 }
 
-let timeStamp = 0;
 
 const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
     const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
