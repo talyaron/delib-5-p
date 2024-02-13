@@ -10,7 +10,7 @@ describe("Statement Header Testing", () => {
         const randomText = () => Math.random().toString(36).substring(7);
 
         // Type random text into the input and click the start button
-        cy.getDataCy("anonymous-input").should("be.visible").type(randomText());
+        cy.get("[data-cy=anonymous-input]").should("be.visible").type(randomText());
         cy.get("[data-cy=anonymous-start-btn]").click().wait(500);
 
         // User should be redirected to the home page

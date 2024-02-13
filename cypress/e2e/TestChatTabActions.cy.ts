@@ -8,7 +8,7 @@ describe("Basic user flow", () => {
         const randomText = () => Math.random().toString(36).substring(7);
 
         // Type random text into the input and click the start button
-        cy.getDataCy("anonymous-input")
+        cy.get("[data-cy=anonymous-input]")
             .should("be.visible")
             .type(randomText())
             .then(() => {
