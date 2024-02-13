@@ -17,7 +17,7 @@ interface TimerProps {
     index: number;
     timers: SetTimer[];
     setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
-    setTimersChanged: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
 
 function AdminTimer({
@@ -26,11 +26,10 @@ function AdminTimer({
     index,
     timers,
     setTimers,
-    setTimersChanged,
+ 
 }: TimerProps) {
     try {
         if (!statementId) throw new Error("statementId is required");
-        console.log(statementId);
         const [timeDigits, setTimeDigits] = useState<number[]>(
             fromMilliseconsToFourDigits(timer.time || 1000 * 90),
         );
@@ -45,10 +44,7 @@ function AdminTimer({
                     <input
                         type="text"
                         defaultValue={_name}
-                        onInput={(ev: any) => {
-                            setName(ev.target.value);
-                            setTimersChanged(true);
-                        }}
+                        onInput={handleUpdateName}
                     />
                 </div>
                 <div className={styles.time}>
@@ -119,7 +115,21 @@ function AdminTimer({
                 );
 
                 setTimers(newTimers);
-                setTimersChanged(true);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function handleUpdateName(ev: any) {
+            try {
+                const newName = ev.target.value;
+                setName(newName);
+                updateTimersDB({
+                    statementId,
+                    time: timer.time,
+                    name: newName,
+                    order: timer.order,
+                });
             } catch (error) {
                 console.error(error);
             }
@@ -158,7 +168,6 @@ function AdminTimer({
 
                 updateTimersDB({
                     statementId,
-                    timerId: timer.timerId,
                     time: newTime,
                     name: _name,
                     order: timer.order,
@@ -168,7 +177,7 @@ function AdminTimer({
                     //@ts-ignore
                     nextInput.focus();
                 }
-                setTimersChanged(true);
+             
             } else {
                 ev.target.value = null;
             }

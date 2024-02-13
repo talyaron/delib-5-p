@@ -4,7 +4,7 @@ import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
 import { handleSetTimers } from "./SetTimersCont";
 import { initialTimerArray } from "./SetTimersModal";
-import { getStatementTimers } from "../../../../../../../functions/db/timer/getTimer";
+import { getStatementTimersDB } from "../../../../../../../functions/db/timer/getTimer";
 import AdminTimer from "./timer/AdminTimer";
 
 interface Props {
@@ -13,23 +13,21 @@ interface Props {
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
     try {
+        if (!parentStatement) throw new Error("parentStatement is required");
 
-        if(!parentStatement) throw new Error("parentStatement is required");
-        
         const [timers, setTimers] = useState<SetTimer[]>(
             initialTimerArray.sort((a, b) => a.order - b.order),
         );
-    
-        const [timersChanged, setTimersChanged] = useState<boolean>(false);
-    
+
+      
+
         useEffect(() => {
-            getStatementTimers(parentStatement.statementId).then((timers) => {
-                console.log(timers);
-    
-                setTimers(timers.sort((a, b) => a.order - b.order));
+            getStatementTimersDB(parentStatement.statementId).then((timersDB) => {
+
+                setTimers(timersDB.sort((a, b) => a.order - b.order));
             });
         }, []);
-    
+
         return (
             <section>
                 <h2>{t("Setting Timers")}</h2>
@@ -43,31 +41,17 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                             index={i}
                             timers={timers}
                             setTimers={setTimers}
-                            setTimersChanged={setTimersChanged}
                         />
                     ))}
                 </div>
-                <div>
-                    <div className="btns">
-                        <div
-                            className={
-                                timersChanged
-                                    ? "btn btn--add btn--large"
-                                    : "btn btn--add btn--large btn--inactive"
-                            }
-                            onClick={() => {
-                                if (timersChanged)
-                                    handleSetTimers({
-                                        parentStatement,
-                                        timers,
-                                        setTimersChanged,
-                                    });
-                            }}
-                        >
-                            Set for All Rooms
-                        </div>
-                    </div>
-                </div>
+                <button
+                    className="btn btn--add"
+                    onClick={() =>
+                        handleSetTimers({ parentStatement, timers, setTimers })
+                    }
+                >
+                    Add Timer
+                </button>
             </section>
         );
     } catch (error) {

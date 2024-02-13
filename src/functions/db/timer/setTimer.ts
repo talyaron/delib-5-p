@@ -16,12 +16,12 @@ interface setParentTimersProps {
     timers: SetTimer[];
 }
 
-export async function updateTimersDB({statementId, timerId, time, name, order}: {statementId:string, timerId: string, time: number, name: string, order:number}): Promise<void> {
+export async function updateTimersDB({statementId, time, name, order}: {statementId:string, time: number, name: string, order:number}): Promise<void> {
     try {
-        const timerRef = doc(DB, Collections.timers, `${statementId}--${timerId}`);
+        const timerRef = doc(DB, Collections.timers, `${statementId}--${order}`);
        
         await setDoc(timerRef, {
-            timerId:`${statementId}--${timerId}`,
+            timerId:`${statementId}--${order}`,
             statementId,
             time,
             name,
