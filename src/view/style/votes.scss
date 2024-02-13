@@ -16,16 +16,20 @@
         gap: 10px;
         transition: all 500ms ease-in-out;
 
-        &__title{
-            position:absolute;
+        &__title {
+            position: absolute;
             transform: rotate(270deg) translate(9rem, -49px);
             width: 18rem;
             text-align: end;
-          
+
             @media (max-width: 768px) {
                 transform: rotate(270deg) translate(9rem, -41px);
-               
+
             }
+        }
+
+        .barShadow {
+            filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.45));
         }
 
         &__column {
@@ -35,6 +39,8 @@
             align-items: center;
             height: 100%;
             text-align: center;
+            
+
 
             &__stat {
                 display: flex;
@@ -44,28 +50,31 @@
                 font-family: "Patrick Hand", cursive;
             }
 
-            &__bar {
-                height: 0px;
-                width: 120px;
+            &__barShadow {
+                filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.45));
 
-                display: flex;
-                justify-content: center;
-                align-items: end;
-                transition: all 500ms ease-in-out;
-                border-radius: 2rem 0rem 0rem 0rem;
-                clip-path: polygon(
-                    0 0,
-                    100% 0,
-                    100% 100%,
-                    50% calc(100% - 21px),
-                    0 100%
-                );
-                transform: translateY(21px);
+                &__bar {
+                    height: 0px;
+                    width: 120px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                    transition: all 500ms ease-in-out;
+                    border-radius: 2rem 0rem 0rem 0rem;
+                    clip-path: polygon(0 0,
+                            100% 0,
+                            100% 100%,
+                            50% calc(100% - 21px),
+                            0 100%);
+                    transform: translateY(21px);
+                }
             }
+
         }
-     .btnShadow{
-        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
-     }
+
+        .btnShadow {
+            filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.45));
+        }
 
         &__btn {
             border-radius: 5px;
@@ -85,8 +94,7 @@
             // border-top:1em solid transparent;
             // border-bottom:1em solid transparent;
             text-overflow: ellipsis;
-            box-shadow: 0px -2px 6px 0px #CAD7DD80;
-          
+
 
 
             box-sizing: border-box;
@@ -100,9 +108,9 @@
                 overflow: visible;
             }
 
-            &--selected {
-                border-bottom: rgba(0, 0, 0, 0.471) 3px solid;
-            }
+            // &--selected {
+            //     border-bottom: rgba(0, 0, 0, 0.471) 3px solid;
+            // }
         }
 
         .infoIcon {

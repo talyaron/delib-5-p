@@ -59,14 +59,15 @@ export const OptionBar: FC<OptionBarProps> = ({
     const barHeight = Math.round((selections / totalVotes) * 100);
 
     return (
-        <div
-            className="vote__bar"
-            style={{
-                right: `${(_optionOrder - order) * barWidth}px`,
-                width: `${barWidth}px`,
-            }}
-        >
-            <div
+            
+            <div className="vote__bar"
+                style={{
+                   right: `${(_optionOrder - order) * barWidth}px`,
+                   width: `${barWidth}px`,
+                }}
+             >
+            
+            <div 
                 className="vote__bar__column"
                 style={{ width: `${barWidth}px` }}
             >
@@ -77,15 +78,29 @@ export const OptionBar: FC<OptionBarProps> = ({
                         <span>{selections}</span>
                     </div>
                 )}
-                <div
+                <div className="vote__bar__column__barShadow">
+                    
+                   <div
+                    className="vote__bar__column__barShadow__bar"
+                    style={{
+                        height: `${barHeight}%`,
+                        width: `${barWidth - padding}px`,
+                        backgroundColor: option.color,
+                    }}
+                    ></div>
+                 {/* <div
                     className="vote__bar__column__bar"
                     style={{
                         height: `${barHeight}%`,
                         width: `${barWidth - padding}px`,
                         backgroundColor: option.color,
                     }}
-                ></div>
+                ></div> */}
+                </div>
             </div>
+           
+            
+            
             <div className="btnShadow">
                 <div
                     style={{
@@ -121,6 +136,7 @@ export const OptionBar: FC<OptionBarProps> = ({
                 <InfoIcon color={barHeight > 10 ? "white" : "#6E8AA6"} />
             </div>
             <div className="vote__bar__title">{shortVersion}</div>
+          
         </div>
     );
 };
