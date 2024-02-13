@@ -16,7 +16,7 @@ interface setParentTimersProps {
     timers: SetTimer[];
 }
 
-export async function updateTimersDB({statementId, time, name, order}: {statementId:string, time: number, name: string, order:number}): Promise<void> {
+export async function updateTimerSettingDB({statementId, time, name, order}: {statementId:string, time: number, name: string, order:number}): Promise<void> {
     try {
         const timerRef = doc(DB, Collections.timers, `${statementId}--${order}`);
        

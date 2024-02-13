@@ -10,7 +10,7 @@ import {
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
 import {
     deleteTimerSettingDB,
-    updateTimersDB,
+    updateTimerSettingDB,
 } from "../../../../../../../../functions/db/timer/setTimer";
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
@@ -57,6 +57,7 @@ function AdminTimer({
                         maxLength={1}
                         tabIndex={index * 4 + 0}
                         onKeyUp={handleInputDigit}
+                        onInput={handleInputDigit}
                         defaultValue={timeDigits[0]}
                     />
 
@@ -68,6 +69,7 @@ function AdminTimer({
                         maxLength={1}
                         tabIndex={index * 4 + 1}
                         onKeyUp={handleInputDigit}
+                        onInput={handleInputDigit}
                         defaultValue={timeDigits[1]}
                     />
                     <span>:</span>
@@ -79,6 +81,7 @@ function AdminTimer({
                         maxLength={1}
                         tabIndex={index * 4 + 2}
                         onKeyUp={handleInputDigit}
+                        onInput={handleInputDigit}
                         defaultValue={timeDigits[2]}
                     />
 
@@ -127,7 +130,7 @@ function AdminTimer({
             try {
                 const newName = ev.target.value;
                 setName(newName);
-                updateTimersDB({
+                updateTimerSettingDB({
                     statementId,
                     time: timer.time,
                     name: newName,
@@ -141,6 +144,7 @@ function AdminTimer({
         function handleInputDigit(ev: any) {
             let digit = ev.key;
             ev.type === "input" ? (digit = ev.target.value) : (digit = ev.key);
+       
             if (!isNaN(parseInt(digit))) {
                 ev.target.valueAsNumber = parseInt(digit);
                 const max = parseInt(ev.target.max);
@@ -160,16 +164,17 @@ function AdminTimer({
                         i === tabIndex ? maxNumber : d,
                     ),
                 );
-
-                const newTime = fromFourDigitsToMillisecons(timeDigits);
+                const _timeDigits = timeDigits.map((d, i) => i === tabIndex ? maxNumber : d);
+console.log(tabIndex,maxNumber, _timeDigits)
+                const newTime = fromFourDigitsToMillisecons(_timeDigits);
                 const timerIndex = timers.findIndex(
                     (t) => t.timerId === timer.timerId,
                 );
                 const newTimers = [...timers];
                 newTimers[timerIndex].time = newTime;
                 setTimers(newTimers);
-
-                updateTimersDB({
+console.log("updateTimerSettingDB",newTime, _name, timer.order)
+                updateTimerSettingDB({
                     statementId,
                     time: newTime,
                     name: _name,

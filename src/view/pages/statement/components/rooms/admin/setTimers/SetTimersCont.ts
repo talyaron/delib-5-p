@@ -1,5 +1,5 @@
 import { SetTimer, Statement } from "delib-npm";
-import { updateTimersDB } from "../../../../../../../functions/db/timer/setTimer";
+import { updateTimerSettingDB } from "../../../../../../../functions/db/timer/setTimer";
 import React from "react";
 
 export function converToMillisecons(timer: number[]) {
@@ -25,7 +25,7 @@ export async function handleSetTimers({
         order: timers.length,
     };
     setTimers([...timers, newTimer]);
-    updateTimersDB({
+    updateTimerSettingDB({
         statementId: parentStatement.statementId,
         time: newTimer.time,
         name: newTimer.name,

@@ -10,7 +10,7 @@ import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
 import { DB } from "../config";
 import { initialTimerArray } from "../../../view/pages/statement/components/rooms/admin/setTimers/SetTimersModal";
 import { Unsubscribe } from "@firebase/util";
-import { updateTimersDB } from "./setTimer";
+import { updateTimerSettingDB } from "./setTimer";
 
 export async function getStatementTimersDB(
     statementId: string,
@@ -22,7 +22,7 @@ export async function getStatementTimersDB(
 
         if (timersDB.size === 0) {
             initialTimerArray.forEach(async (timer) => {
-                updateTimersDB({
+                updateTimerSettingDB({
                     statementId,
                     time: timer.time,
                     name: timer.name,
