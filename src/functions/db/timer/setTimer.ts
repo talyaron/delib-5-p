@@ -16,6 +16,22 @@ interface setParentTimersProps {
     timers: SetTimer[];
 }
 
+export async function updateTimersDB({statementId, timerId, time, name, order}: {statementId:string, timerId: string, time: number, name: string, order:number}): Promise<void> {
+    try {
+        const timerRef = doc(DB, Collections.timers, `${statementId}--${timerId}`);
+       
+        await setDoc(timerRef, {
+            timerId:`${statementId}--${timerId}`,
+            statementId,
+            time,
+            name,
+            order
+        }, {merge: true})
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export async function setParentTimersToDB({
     parentStatement,
     userCanChangeTimer,
@@ -90,7 +106,7 @@ export async function setTimersStateDB({
 
         const timerRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
@@ -134,7 +150,7 @@ export async function setTimersInitTimeDB({
 
         const timerRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
@@ -177,7 +193,7 @@ export async function initilizeTimersDB({
 
         const timerRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 

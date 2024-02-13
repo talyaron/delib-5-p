@@ -1,6 +1,5 @@
 import { SetTimer, Statement } from "delib-npm";
 import { setParentTimersToDB } from "../../../../../../../functions/db/timer/setTimer";
-import { uuidv4 } from "@firebase/util";
 import React from "react";
 
 export function converToMillisecons(timer: number[]) {
@@ -23,41 +22,4 @@ export async function handleSetTimers({
     setTimersChanged(false);
 }
 
-export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][] {
-    try {
-        const orderedTimersByStage:SetTimer[][] = [];
 
-        const stages: string[] = [];
-
-        timers.forEach((timer) => {
-            if (!stages.includes(timer.stageId)) stages.push(timer.stageId);
-        });
-
-        stages.forEach((stage, i) => {
-            const orderedTimers = timers
-                .filter((timer) => timer.stageId === stage)
-                .sort((a, b) => a.order - b.order);
-            orderedTimersByStage[i] = orderedTimers;
-        });
-        
-return orderedTimersByStage;
-    } catch (error) {
-        console.error(error);
-        
-return [];
-    }
-}
-
-export function handleAddStage(timers:SetTimer[],setTimers:React.Dispatch<React.SetStateAction<SetTimer[]>>) {
-    try {
-       const stagesSet = new Set()
-         timers.forEach(timer => stagesSet.add(timer.stageId))
-         const numberOfStages = stagesSet.size;
-        const newTimer = {stageId: uuidv4(), stageName:`New Stage ${numberOfStages}`, order: 0, name:"", time: 90*1000, timerId: uuidv4()};
-        setTimers([...timers , newTimer])
-    } catch (error) {
-        console.error(error);
-        
-return timers;
-    }
-}
