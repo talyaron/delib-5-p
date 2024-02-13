@@ -54,6 +54,7 @@ function AdminTimer({
                         min={0}
                         max={5}
                         step={1}
+                        data-innerindex={0}
                         maxLength={1}
                         tabIndex={index * 4 + 0}
                         onKeyUp={handleInputDigit}
@@ -66,6 +67,7 @@ function AdminTimer({
                         min={0}
                         max={9}
                         step={1}
+                        data-innerindex={1}
                         maxLength={1}
                         tabIndex={index * 4 + 1}
                         onKeyUp={handleInputDigit}
@@ -78,6 +80,7 @@ function AdminTimer({
                         min={0}
                         max={5}
                         step={1}
+                        data-innerindex={2}
                         maxLength={1}
                         tabIndex={index * 4 + 2}
                         onKeyUp={handleInputDigit}
@@ -90,6 +93,7 @@ function AdminTimer({
                         min={0}
                         max={9}
                         step={1}
+                        data-innerindex={3}
                         maxLength={1}
                         tabIndex={index * 4 + 3}
                         onKeyUp={handleInputDigit}
@@ -141,53 +145,72 @@ function AdminTimer({
             }
         }
 
-        function handleInputDigit(ev: any) {
-            let digit = ev.key;
-            ev.type === "input" ? (digit = ev.target.value) : (digit = ev.key);
-       
-            if (!isNaN(parseInt(digit))) {
-                ev.target.valueAsNumber = parseInt(digit);
-                const max = parseInt(ev.target.max);
-                const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
-                const maxNumber =
-                    ev.target.valueAsNumber > max
-                        ? max
-                        : ev.target.valueAsNumber;
-                ev.target.value = maxNumber;
+        function getKeyNumber(ev: any): number | false {
+            try {
+                let digit: number | false = false;
 
-                const nextInput = document.querySelector(
-                    `[tabindex="${tabIndex + 1}"]`,
-                );
-
-                setTimeDigits((dig) =>
-                    dig.map((d: number, i: number) =>
-                        i === tabIndex ? maxNumber : d,
-                    ),
-                );
-                const _timeDigits = timeDigits.map((d, i) => i === tabIndex ? maxNumber : d);
-console.log(tabIndex,maxNumber, _timeDigits)
-                const newTime = fromFourDigitsToMillisecons(_timeDigits);
-                const timerIndex = timers.findIndex(
-                    (t) => t.timerId === timer.timerId,
-                );
-                const newTimers = [...timers];
-                newTimers[timerIndex].time = newTime;
-                setTimers(newTimers);
-console.log("updateTimerSettingDB",newTime, _name, timer.order)
-                updateTimerSettingDB({
-                    statementId,
-                    time: newTime,
-                    name: _name,
-                    order: timer.order,
-                });
-
-                if (nextInput) {
-                    //@ts-ignore
-                    nextInput.focus();
+                if (
+                    ev.type === "keyup" &&
+                    (ev.key === "ArrowUp" || ev.key === "ArrowDown")
+                ) {
+                    digit = ev.target.valueAsNumber;
+                } else if (ev.type === "keyup" && !isNaN(parseInt(ev.key))) {
+                    digit = parseInt(ev.key);
                 }
-            } else {
-                ev.target.value = null;
+                if (digit === false) {
+                    return false;
+                }
+                return digit;
+            } catch (error) {
+                console.error(error);
+                return false;
             }
+        }
+
+        function handleInputDigit(ev: any) {
+            const isTab = ev.key === "Tab";
+            const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
+            if (isTab) {
+                ev.target.valueAsNumber = parseInt(ev.target.value);
+                return;
+            }
+
+            let digit = getKeyNumber(ev);
+            if (digit === false) {
+                return;
+            }
+            const max = parseInt(ev.target.max);
+            const min = parseInt(ev.target.min);
+
+            if (digit > max) digit = max;
+            if (digit < min) digit = min;
+
+            ev.target.valueAsNumber = digit;
+            const innerindex = ev.target.dataset.innerindex;
+            const _digit: number = digit;
+            const _digits: number[] = timeDigits.map((d, i) =>
+                i === parseInt(innerindex) ? _digit : d,
+            );
+
+
+            setTimeDigits(_digits);
+            const newTime = fromFourDigitsToMillisecons(_digits);
+            updateTimerSettingDB({
+                statementId,
+                time: newTime,
+                name: _name,
+                order: timer.order,
+            });
+            const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
+            const nextInput = document.querySelector(
+                `[tabindex="${tabIndex + 1}"]`,
+            );
+            if (nextInput && !dontGoNext) {
+                //@ts-ignore
+                nextInput.focus();
+            }
+
+            
         }
     } catch (error) {
         console.error(error);
