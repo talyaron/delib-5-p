@@ -1,4 +1,4 @@
-import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
+import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 import {
     Collections,
@@ -14,6 +14,33 @@ interface setParentTimersProps {
     parentStatement: Statement;
     userCanChangeTimer: boolean;
     timers: SetTimer[];
+}
+
+export async function updateTimerSettingDB({statementId, time, name, order}: {statementId:string, time: number, name: string, order:number}): Promise<void> {
+    try {
+        const timerRef = doc(DB, Collections.timers, `${statementId}--${order}`);
+       
+        await setDoc(timerRef, {
+            timerId:`${statementId}--${order}`,
+            statementId,
+            time,
+            name,
+            order
+        }, {merge: true})
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function deleteTimerSettingDB( timerId:string): Promise<boolean> {    
+    try {
+        const timerRef = doc(DB, Collections.timers, timerId);
+        await deleteDoc(timerRef)
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }
 
 export async function setParentTimersToDB({
@@ -90,7 +117,7 @@ export async function setTimersStateDB({
 
         const timerRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
@@ -134,7 +161,7 @@ export async function setTimersInitTimeDB({
 
         const timerRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
@@ -177,7 +204,7 @@ export async function initilizeTimersDB({
 
         const timerRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
@@ -199,7 +226,8 @@ export async function initilizeTimersDB({
                 },
                 activeTimer: 1,
                 updateTime: Timestamp.now(),
-                state: TimerStatus.finish
+                state: TimerStatus.finish,
+                lastUpdated:new Date().getTime()
             },
             { merge: true },
         );

@@ -15,7 +15,6 @@ interface Props {
 
 const AdminTimerStage: FC<Props> = ({
     stageId,
-   
     timers,
     setTimers,
     setTimersChanged,
@@ -65,7 +64,7 @@ const AdminTimerStage: FC<Props> = ({
                 order: maxOrder + 1,
                 stageName: stageName,
                 stageId: stageId,
-                timerId: uuidv4(),
+                timerId: uuidv4()
             };
 
             setTimers([...timers, newTimer]);

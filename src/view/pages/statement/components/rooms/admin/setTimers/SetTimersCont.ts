@@ -1,63 +1,34 @@
 import { SetTimer, Statement } from "delib-npm";
-import { setParentTimersToDB } from "../../../../../../../functions/db/timer/setTimer";
-import { uuidv4 } from "@firebase/util";
+import { updateTimerSettingDB } from "../../../../../../../functions/db/timer/setTimer";
 import React from "react";
 
 export function converToMillisecons(timer: number[]) {
     const minutes = timer[0] * 10 + timer[1];
     const seconds = timer[2] * 10 + timer[3];
-    
-return (seconds + minutes * 60) * 1000;
+
+    return (seconds + minutes * 60) * 1000;
 }
 
 export async function handleSetTimers({
     parentStatement,
     timers,
-    setTimersChanged
+    setTimers,
 }: {
     parentStatement: Statement;
     timers: SetTimer[];
-    setTimersChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
 }) {
-    await setParentTimersToDB({ parentStatement,userCanChangeTimer:true, timers });
-    setTimersChanged(false);
-}
-
-export function orderByStagesAndOrderFromTimers(timers: SetTimer[]): SetTimer[][] {
-    try {
-        const orderedTimersByStage:SetTimer[][] = [];
-
-        const stages: string[] = [];
-
-        timers.forEach((timer) => {
-            if (!stages.includes(timer.stageId)) stages.push(timer.stageId);
-        });
-
-        stages.forEach((stage, i) => {
-            const orderedTimers = timers
-                .filter((timer) => timer.stageId === stage)
-                .sort((a, b) => a.order - b.order);
-            orderedTimersByStage[i] = orderedTimers;
-        });
-        
-return orderedTimersByStage;
-    } catch (error) {
-        console.error(error);
-        
-return [];
-    }
-}
-
-export function handleAddStage(timers:SetTimer[],setTimers:React.Dispatch<React.SetStateAction<SetTimer[]>>) {
-    try {
-       const stagesSet = new Set()
-         timers.forEach(timer => stagesSet.add(timer.stageId))
-         const numberOfStages = stagesSet.size;
-        const newTimer = {stageId: uuidv4(), stageName:`New Stage ${numberOfStages}`, order: 0, name:"", time: 90*1000, timerId: uuidv4()};
-        setTimers([...timers , newTimer])
-    } catch (error) {
-        console.error(error);
-        
-return timers;
-    }
+    const newTimer: SetTimer = {
+        timerId: `${parentStatement.statementId}--${timers.length + 1}`,
+        time: 60 * 1000,
+        name: "Q&A",
+        order: timers.length,
+    };
+    setTimers([...timers, newTimer]);
+    updateTimerSettingDB({
+        statementId: parentStatement.statementId,
+        time: newTimer.time,
+        name: newTimer.name,
+        order: newTimer.order,
+    });
 }

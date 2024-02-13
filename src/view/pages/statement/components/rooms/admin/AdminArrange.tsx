@@ -6,12 +6,8 @@ import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
 // Redux
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 
-
 // Third party libraries
-import {
-    RoomsStateSelection,
-    Statement,
-} from "delib-npm";
+import { RoomsStateSelection, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Statments functions
@@ -19,22 +15,26 @@ import {
     setParticipantInRoomToDB,
     setRoomsStateToDB,
 } from "../../../../../../functions/db/rooms/setRooms";
-import { setRoomSizeInStatement } from "../../../../../../functions/db/statements/setStatments";
+import { setRoomSizeInStatementDB } from "../../../../../../functions/db/statements/setStatments";
 
 // Styles
 import _styles from "./admin.module.css";
 
 import { divideIntoTopics } from "./AdminArrangeCont";
-import { RoomAdmin, participantsSelector } from "../../../../../../model/rooms/roomsSlice";
+import {
+    RoomAdmin,
+    participantsSelector,
+} from "../../../../../../model/rooms/roomsSlice";
 import Room from "./room/Room";
 import { initilizeTimersDB } from "../../../../../../functions/db/timer/setTimer";
-
 
 
 const styles = _styles as any;
 
 interface Props {
     statement: Statement;
+    setRooms: boolean;
+    setSetRooms: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ParticipantInRoom {
@@ -45,18 +45,20 @@ export interface ParticipantInRoom {
     statementId?: string;
 }
 
-const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
-    const roomsState  = statement.roomsState || RoomsStateSelection.chooseRoom;
+
+const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
+    const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
     const participants = useAppSelector(
         participantsSelector(statement.statementId),
     );
 
-    const [setRooms, setSetRooms] = useState<boolean>(true);
     const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] =
         useState<number>(statement.roomSize || 5);
 
-    const { rooms:roomsAdmin } = divideIntoTopics(participants, maxParticipantsPerRoom);
-    
+    const { rooms: roomsAdmin } = divideIntoTopics(
+        participants,
+        maxParticipantsPerRoom,
+    );
 
     function handleDivideIntoRooms() {
         try {
@@ -68,7 +70,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             // setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {
-                room.room.forEach((participant) =>{ // should be room.participants
+                room.room.forEach((participant) => {
+                    // should be room.participants
                     const participantInRoom: ParticipantInRoom = {
                         uid: participant.participant.uid,
                         room: room.roomNumber,
@@ -78,7 +81,10 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                     };
                     setParticipantInRoomToDB(participantInRoom);
                 });
-                initilizeTimersDB({statementId:statement.statementId, roomNumber: room.roomNumber})
+                initilizeTimersDB({
+                    statementId: statement.statementId,
+                    roomNumber: room.roomNumber,
+                });
             });
 
             const roomsState = setRooms
@@ -92,15 +98,18 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
         }
     }
 
-    function handleRoomSize(ev: any) {
-        const value = ev.target.value;
-        const valueAsNumber = Number(value);
-        setMaxParticipantsPerRoom(valueAsNumber);
-        setRoomSizeInStatement(statement, valueAsNumber);
+
+    function handleRangeChange(ev: React.ChangeEvent<HTMLInputElement>) {
+        setMaxParticipantsPerRoom(Number(ev.target.value));
+    }
+
+    function handleRangeBlur() {
+        setMaxParticipantsPerRoom(maxParticipantsPerRoom);
+        setRoomSizeInStatementDB(statement, maxParticipantsPerRoom);
     }
 
     return (
-        <div>     
+        <div>
             <div>
                 <div className="btns">
                     {roomsState === RoomsStateSelection.chooseRoom ? (
@@ -142,10 +151,12 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                                 className="range"
                                 type="range"
                                 name="numberOfResults"
-                                value={statement.roomSize || 7}
+                                value={maxParticipantsPerRoom || 7}
                                 min="2"
                                 max="30"
-                                onChange={handleRoomSize}
+                                onChange={handleRangeChange}
+                                onMouseUp={handleRangeBlur}
+                                onTouchEnd={handleRangeBlur}
                             />
                         </div>
                         <br />
@@ -165,7 +176,13 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
                         <div className={styles.roomWrapper}>
                             {roomsAdmin.map((room: RoomAdmin) => {
                                 return (
-                                    <Room key={room.roomNumber} room={room} maxParticipantsPerRoom={maxParticipantsPerRoom} />
+                                    <Room
+                                        key={room.roomNumber}
+                                        room={room}
+                                        maxParticipantsPerRoom={
+                                            maxParticipantsPerRoom
+                                        }
+                                    />
                                 );
                             })}
                         </div>
@@ -177,5 +194,3 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 };
 
 export default AdminSeeAllGroups;
-
-

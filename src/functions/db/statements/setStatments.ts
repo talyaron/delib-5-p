@@ -458,7 +458,7 @@ export async function setStatmentGroupToDB(statement: Statement) {
     }
 }
 
-export function setRoomSizeInStatement(statement: Statement, roomSize: number) {
+export function setRoomSizeInStatementDB(statement: Statement, roomSize: number) {
     try {
         z.number().parse(roomSize);
         StatementSchema.parse(statement);

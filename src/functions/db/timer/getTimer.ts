@@ -1,18 +1,40 @@
-import { doc, getDoc, onSnapshot } from "@firebase/firestore";
+import {
+    doc,
+    collection,
+    getDocs,
+    onSnapshot,
+    where,
+    query,
+} from "@firebase/firestore";
 import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
 import { DB } from "../config";
 import { initialTimerArray } from "../../../view/pages/statement/components/rooms/admin/setTimers/SetTimersModal";
 import { Unsubscribe } from "@firebase/util";
+import { updateTimerSettingDB } from "./setTimer";
 
-export async function getStatementTimers(
+export async function getStatementTimersDB(
     statementId: string,
 ): Promise<SetTimer[]> {
     try {
-        const timersRef = doc(DB, Collections.timers, statementId);
-        const timersSnap = await getDoc(timersRef);
-        const timers = timersSnap.data()?.timers;
+        const timersRef = collection(DB, Collections.timers);
+        const q = query(timersRef, where("statementId", "==", statementId));
+        const timersDB = await getDocs(q);
 
-        if (!timers) return initialTimerArray;
+        if (timersDB.size === 0) {
+            initialTimerArray.forEach(async (timer) => {
+                updateTimerSettingDB({
+                    statementId,
+                    time: timer.time,
+                    name: timer.name,
+                    order: timer.order,
+                });
+            });
+            return initialTimerArray;
+        }
+
+        const timers: SetTimer[] = timersDB.docs.map(
+            (doc) => doc.data() as SetTimer,
+        );
 
         return timers;
     } catch (error) {
@@ -33,7 +55,7 @@ export function listenToRoomTimers(
 
         const timersRef = doc(
             DB,
-            Collections.roomTimers,
+            Collections.timersRooms,
             `${statementId}--${roomNumber}`,
         );
 
