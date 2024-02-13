@@ -23,7 +23,6 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         useEffect(() => {
             getStatementTimersDB(parentStatement.statementId).then((timersDB) => {
-
                 setTimers(timersDB.sort((a, b) => a.order - b.order));
             });
         }, []);

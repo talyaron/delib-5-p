@@ -8,7 +8,10 @@ import {
 
 //images
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
-import { updateTimersDB } from "../../../../../../../../functions/db/timer/setTimer";
+import {
+    deleteTimerSettingDB,
+    updateTimersDB,
+} from "../../../../../../../../functions/db/timer/setTimer";
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
 interface TimerProps {
@@ -17,7 +20,6 @@ interface TimerProps {
     index: number;
     timers: SetTimer[];
     setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
-
 }
 
 function AdminTimer({
@@ -26,7 +28,6 @@ function AdminTimer({
     index,
     timers,
     setTimers,
- 
 }: TimerProps) {
     try {
         if (!statementId) throw new Error("statementId is required");
@@ -107,9 +108,11 @@ function AdminTimer({
         function handleDeleteTimer(timerId: string) {
             try {
                 const isDelete = confirm(
-                    `Are you sure you want to delete this timer? ${timer.timerId}`,
+                    `Are you sure you want to delete this timer?`,
                 );
                 if (!isDelete) return;
+
+                deleteTimerSettingDB(timerId);
                 const newTimers = [...timers].filter(
                     (t) => t.timerId !== timerId,
                 );
@@ -177,7 +180,6 @@ function AdminTimer({
                     //@ts-ignore
                     nextInput.focus();
                 }
-             
             } else {
                 ev.target.value = null;
             }

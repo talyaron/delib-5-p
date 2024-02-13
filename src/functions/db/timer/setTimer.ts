@@ -1,4 +1,4 @@
-import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
+import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 import {
     Collections,
@@ -29,6 +29,17 @@ export async function updateTimersDB({statementId, time, name, order}: {statemen
         }, {merge: true})
     } catch (error) {
         console.error(error);
+    }
+}
+
+export async function deleteTimerSettingDB( timerId:string): Promise<boolean> {    
+    try {
+        const timerRef = doc(DB, Collections.timers, timerId);
+        await deleteDoc(timerRef)
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
     }
 }
 
