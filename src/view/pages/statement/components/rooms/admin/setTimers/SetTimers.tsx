@@ -1,14 +1,21 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { t } from "i18next";
 import styles from "./setTimers.module.scss";
-import { SetTimer, Statement } from "delib-npm";
-import { handleSetTimers } from "./SetTimersCont";
-import { initialTimerArray } from "./SetTimersModal";
+import { Statement } from "delib-npm";
+
 import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
 
-import { useAppDispatch, useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-import { selectStatementSettingTimers, selectTimersSetting, setSetTimer } from "../../../../../../../model/timers/timersSlice";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../../../functions/hooks/reduxHooks";
+import { selectStatementSettingTimers, setSetTimer } from "../../../../../../../model/timers/timersSlice";
 import SetTimerComp from "./setTimer/SetTimerComp";
+import {
+    updateTimerSettingDB,
+    updateTimersSettingDB,
+} from "../../../../../../../functions/db/timer/setTimer";
+import { getSetTimerId } from "../../../../../../../functions/general/helpers";
 
 interface Props {
     parentStatement: Statement;
@@ -20,7 +27,9 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         const dispatch = useAppDispatch();
 
-        const timers = useAppSelector(selectStatementSettingTimers(parentStatement.statementId)).sort((a, b) => a.order - b.order);
+        const timers = useAppSelector(
+            selectStatementSettingTimers(parentStatement.statementId),
+        ).sort((a, b) => a.order - b.order);
 
         //get timers from DB
         useEffect(() => {
@@ -32,15 +41,30 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                 <h2>{t("Setting Timers")}</h2>
                 <p>{t("You can set the timers for each stage here.")}</p>
                 <div className={styles.timers}>
-                    {timers.map((timer) => (<SetTimerComp key={timer.order} timer={timer} />
-                      
+                    {timers.map((timer, i) => (
+                        <SetTimerComp
+                            key={timer.order}
+                            timer={timer}
+                            index={i}
+                        />
                     ))}
                 </div>
                 <button
                     className="btn btn--add"
-                    onClick={() =>
-                        handleSetTimers({ parentStatement, timers, setTimers })
-                    }
+                    onClick={() => {
+                        const newTimer = {
+                            statementId: parentStatement.statementId,
+                            time: 1000 * 90,
+                            title: "Discussion",
+                            order: timers.length,
+                            timerId: getSetTimerId(
+                                parentStatement.statementId,
+                                timers.length,
+                            ),
+                        };
+                        dispatch(setSetTimer(newTimer));
+                        updateTimerSettingDB(newTimer);
+                    }}
                 >
                     Add Timer
                 </button>

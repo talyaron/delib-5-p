@@ -23,7 +23,11 @@ import _styles from "./admin.module.css";
 import { divideIntoTopics } from "./AdminArrangeCont";
 import { participantsSelector } from "../../../../../../model/rooms/roomsSlice";
 import Room from "./room/Room";
-import { initilizeTimersDB } from "../../../../../../functions/db/timer/setTimer";
+import {
+    initilizeTimersDB,
+    updateTimersSettingDB,
+} from "../../../../../../functions/db/timer/setTimer";
+import { selectStatementSettingTimers } from "../../../../../../model/timers/timersSlice";
 
 const styles = _styles as any;
 
@@ -45,6 +49,9 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
     const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
     const participants = useAppSelector(
         participantsSelector(statement.statementId),
+    );
+    const timers = useAppSelector(
+        selectStatementSettingTimers(statement.statementId),
     );
 
     const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] =
@@ -76,7 +83,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
             });
 
             //set timers settings to db
-
+            await updateTimersSettingDB(timers);
             //set rooms timers
             initilizeTimersDB({
                 statementId: statement.statementId,

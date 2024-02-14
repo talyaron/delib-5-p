@@ -12,7 +12,6 @@ import { DB } from "../config";
 import {
     Collections,
     RoomDivied,
-    RoomDiviedSchema,
     RoomTimer,
     SetTimer,
     SetTimerSchema,
@@ -21,6 +20,7 @@ import {
 } from "delib-npm";
 import { z } from "zod";
 import { store } from "../../../model/store";
+import { getRoomTimerId, getSetTimerId } from "../../general/helpers";
 
 interface setParentTimersProps {
     parentStatement: Statement;
@@ -28,34 +28,24 @@ interface setParentTimersProps {
     timers: SetTimer[];
 }
 
-export async function updateTimerSettingDB({
-    statementId,
-    time,
-    title,
-    order,
-    timerId,
-}: {
-    statementId: string;
-    time: number;
-    title: string;
-    order: number;
-    timerId: string;
-}): Promise<void> {
+export async function updateTimersSettingDB(timers: SetTimer[]): Promise<void> {
     try {
-        console.log(statementId, time, title, order, timerId)
-        const timerRef = doc(DB, Collections.timers, timerId);
+        z.array(SetTimerSchema).parse(timers);
 
-        const timerSetting: SetTimer = {
-            timerId,
-            statementId,
-            time,
-            title,
-            order,
-        };
+        timers.forEach(async (timer) => {
+            const timerRef = doc(DB, Collections.timers, timer.timerId);
+            await setDoc(timerRef, timer, { merge: true });
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-        SetTimerSchema.parse(timerSetting);
+export async function updateTimerSettingDB(timer: SetTimer): Promise<void> {
+    try {
+        const timerRef = doc(DB, Collections.timers, timer.timerId);
+        await setDoc(timerRef, timer, { merge: true });
 
-        await setDoc(timerRef, timerSetting, { merge: true });
     } catch (error) {
         console.error(error);
     }
@@ -253,6 +243,15 @@ export async function initilizeTimersDB({
                         state: TimerStatus.finish,
                         lastUpdated: new Date().getTime(),
                         title: timerSetting.title,
+                        roomTimerId: getRoomTimerId(
+                            statementId,
+                            roomNumber,
+                            timerSetting.order,
+                        ),
+                        timerSettingId: getSetTimerId(
+                            statementId,
+                            timerSetting.order,
+                        ),
                     };
                     return roomTimer;
                 },

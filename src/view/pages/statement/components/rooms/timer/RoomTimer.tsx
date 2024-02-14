@@ -11,7 +11,7 @@ import { getMinutesAndSeconds } from "./timerPagecont";
 import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
 import { store } from "../../../../../../model/store";
-import SetTimer from "./setTimer/SetTimerComp";
+import SetTimer from "./setTimer/SetRoomTimerComp";
 
 interface Props {
     statement: Statement;

@@ -9,27 +9,33 @@ import {
 //images
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
 import {
-    deleteTimerSettingDB,
-    updateTimerSettingDB,
+    deleteTimerSettingDB
 } from "../../../../../../../../functions/db/timer/setTimer";
+import { useAppDispatch } from "../../../../../../../../functions/hooks/reduxHooks";
+import {
+    setSetTimerTime,
+    setSetTimerTitle,
+} from "../../../../../../../../model/timers/timersSlice";
+
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
 interface TimerProps {
     timer: SetTimer;
+    index: number;
 }
 
-function SetTimerComp({
-   timer
-}: TimerProps) {
+function SetTimerComp({ timer, index }: TimerProps) {
     try {
         if (!timer.statementId) throw new Error("statementId is required");
+
+        const dispatch = useAppDispatch();
+
         const [timeDigits, setTimeDigits] = useState<number[]>(
             fromMilliseconsToFourDigits(timer.time || 1000 * 90),
         );
         const [title, setTitle] = useState<string>(
             timer.title ? timer.title : "Discussion",
         );
-
 
         return (
             <div className={styles.timer}>
@@ -90,7 +96,8 @@ function SetTimerComp({
                         maxLength={1}
                         tabIndex={index * 4 + 3}
                         onKeyUp={handleInputDigit}
-                        onInput={handleInputDigit}
+                        // onInput={handleInputDigit}
+                        onChange={handleInputDigit}
                         defaultValue={timeDigits[3]}
                     />
                 </div>
@@ -113,11 +120,9 @@ function SetTimerComp({
                 if (!isDelete) return;
 
                 deleteTimerSettingDB(timerId);
-                const newTimers = [...timers].filter(
-                    (t) => t.timerId !== timerId,
-                );
-
-                setTimers(newTimers);
+                // const newTimers = [...timers].filter(
+                //     (t) => t.timerId !== timerId,
+                // );
             } catch (error) {
                 console.error(error);
             }
@@ -127,12 +132,12 @@ function SetTimerComp({
             try {
                 const newTitle = ev.target.value;
                 setTitle(newTitle);
-                updateTimerSettingDB({
-                    statementId,
-                    time: timer.time,
-                    title: newTitle,
-                    order: timer.order,
-                });
+                dispatch(
+                    setSetTimerTitle({
+                        timerId: timer.timerId,
+                        title: newTitle,
+                    }),
+                );
             } catch (error) {
                 console.error(error);
             }
@@ -150,6 +155,7 @@ function SetTimerComp({
                 } else if (ev.type === "keyup" && !isNaN(parseInt(ev.key))) {
                     digit = parseInt(ev.key);
                 }
+
                 if (digit === false) {
                     return false;
                 }
@@ -161,6 +167,7 @@ function SetTimerComp({
         }
 
         function handleInputDigit(ev: any) {
+         
             const isTab = ev.key === "Tab";
             const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
             if (isTab) {
@@ -169,7 +176,15 @@ function SetTimerComp({
             }
 
             let digit = getKeyNumber(ev);
+
             if (digit === false) {
+
+                digit = ev.target.valueAsNumber;
+                const _digits = getNewForDigits();
+                const newTime = fromFourDigitsToMillisecons(_digits);
+                dispatch(
+                    setSetTimerTime({ timerId: timer.timerId, time: newTime }),
+                );
                 return;
             }
             const max = parseInt(ev.target.max);
@@ -179,20 +194,15 @@ function SetTimerComp({
             if (digit < min) digit = min;
 
             ev.target.valueAsNumber = digit;
-            const innerindex = ev.target.dataset.innerindex;
-            const _digit: number = digit;
-            const _digits: number[] = timeDigits.map((d, i) =>
-                i === parseInt(innerindex) ? _digit : d,
-            );
+            const _digits= getNewForDigits();
 
             setTimeDigits(_digits);
             const newTime = fromFourDigitsToMillisecons(_digits);
-            updateTimerSettingDB({
-                statementId,
-                time: newTime,
-                title,
-                order: timer.order,
-            });
+            console.log("time", newTime);
+            dispatch(
+                setSetTimerTime({ timerId: timer.timerId, time: newTime }),
+            );
+
             const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
             const nextInput = document.querySelector(
                 `[tabindex="${tabIndex + 1}"]`,
@@ -200,6 +210,14 @@ function SetTimerComp({
             if (nextInput && !dontGoNext) {
                 //@ts-ignore
                 nextInput.focus();
+            }
+
+            function getNewForDigits() {
+                const innerindex = ev.target.dataset.innerindex;
+                const _digit: number = digit || ev.target.valueAsNumber;
+                const _digits: number[] = timeDigits.map((d, i) => i === parseInt(innerindex) ? _digit : d
+                );
+                return _digits ;
             }
         }
     } catch (error) {

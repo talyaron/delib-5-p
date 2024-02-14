@@ -34,10 +34,24 @@ export const timersSlice = createSlice({
                 "timerId",
             );
         },
+        setSetTimerTitle: (state, action:PayloadAction<{timerId: string, title: string}>) => {
+            const {timerId, title} = action.payload;
+            const timer = state.settingTimers.find((timer) => timer.timerId === timerId);
+            if (timer) {
+                timer.title = title;
+            }
+        },
+        setSetTimerTime: (state, action:PayloadAction<{timerId: string, time: number}>) => {
+            const {timerId, time} = action.payload;
+            const timer = state.settingTimers.find((timer) => timer.timerId === timerId);
+            if (timer) {
+                timer.time = time;
+            }
+        }
     },
 });
 
-export const { setSetTimer } = timersSlice.actions;
+export const { setSetTimer,setSetTimerTitle,setSetTimerTime } = timersSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectTimersSetting = (state: RootState) =>
