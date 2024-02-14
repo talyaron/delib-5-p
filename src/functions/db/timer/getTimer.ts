@@ -24,7 +24,7 @@ export async function getStatementTimersDB(
                 updateTimerSettingDB({
                     statementId,
                     time: timer.time,
-                    name: timer.name,
+                    title: timer.title,
                     order: timer.order,
                 });
             });

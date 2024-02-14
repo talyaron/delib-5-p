@@ -10,7 +10,7 @@ interface Props {
     timers: RoomTimer[];
 }
 
-const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
+const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
     if (!roomNumber) return null;
 
  
@@ -26,15 +26,15 @@ const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
     
 return (
         <div className={styles.timers}>
-            {timers.map((timer, index) => (
+            {timers.map((timer) => (
             <Timer
                 statement={statement}
-                timerId={index}
-                title="הצגה"
+                roomTimer={timer}
+            
                 activeTimer={activeTimer === 1 ? true : false}
                 nextTimer={nextTimer}
-                roomNumber={roomNumber}
-                timer={timer}
+        
+    
             />
             ))}
            
@@ -42,4 +42,4 @@ return (
     );
 };
 
-export default Timers;
+export default RoomTimers;

@@ -15,10 +15,7 @@ import SetTimer from "./setTimer/SetTimerComp";
 
 interface Props {
     statement: Statement;
-    roomNumber: number;
-    timerId: number;
-    timer: RoomTimer;
-    title: string;
+    roomTimer: RoomTimer;
     activeTimer: boolean;
     nextTimer: () => void;
     autoStart?: boolean;
@@ -27,10 +24,7 @@ interface Props {
 
 export default function RoomTimerComp({
     statement,
-    roomNumber,
-    timerId,
-    timer,
-    title,
+    roomTimer,
     activeTimer,
     nextTimer,
     autoStart,
@@ -39,33 +33,31 @@ export default function RoomTimerComp({
     const userId = store.getState().user.user?.uid;
 
     // useState
-    const [initTime, setInitTime] = useState<number>(
-        getInitTime(timer, timerId),
-    ); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
-    const [timeLeft, setTimeLeft] = useState(getInitTime(timer, timerId));
+    const [initTime, setInitTime] = useState<number>(roomTimer.time);
+    const [timeLeft, setTimeLeft] = useState(roomTimer.time);
     const [timerAdjustment, setTimerAdjustment] = useState<boolean>(false);
     const [minutes, setMinutes] = useState(
-        getMinutesAndSeconds(getInitTime(timer, timerId)).minutes,
+        getMinutesAndSeconds(roomTimer.time).minutes,
     );
     const [seconds, setSeconds] = useState(
-        getMinutesAndSeconds(getInitTime(timer, timerId)).seconds,
+        getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    const [_timer, setTimer] = useState<RoomTimer>();
+    const [timer, setTimer] = useState<RoomTimer>(roomTimer);
     const isMasterTimer =
-        _timer?.initiatorId === userId || _timer?.state === TimerStatus.finish;
+        timer?.initiatorId === userId || timer?.state === TimerStatus.finish;
 
     const percent = (timeLeft / initTime) * 100;
 
-    const interval = () =>
-        setInterval(() => {
+    const interval = () => {
+        const int = setInterval(() => {
             setTimeLeft((prev) => {
                 const newTime = prev - 1000;
                 if (newTime < 0) {
                     setIsActive(false);
                     initilizeTimer();
                     nextTimer();
-                    clearInterval(_timer);
+                    clearInterval(int);
                     if (lastTimer) updateTimerState(TimerStatus.finish);
 
                     return 0;
@@ -77,18 +69,20 @@ export default function RoomTimerComp({
                 return newTime;
             });
         }, 1000);
+        return int;
+    };
 
-    useEffect(() => {
-        // if (isActive) {
-        //     setTimer(interval());
-        // } else {
-        //     clearInterval(timer);
-        // }
+    // useEffect(() => {
+    //     // if (isActive) {
+    //     //     setTimer(interval());
+    //     // } else {
+    //     //     clearInterval(timer);
+    //     // }
 
-        return () => {
-            clearInterval(interval());
-        };
-    }, [isActive]);
+    //     return () => {
+    //         clearInterval(interval());
+    //     };
+    // }, [isActive]);
 
     useEffect(() => {
         if (autoStart && activeTimer) {

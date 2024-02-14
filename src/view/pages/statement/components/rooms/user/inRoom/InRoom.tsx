@@ -13,7 +13,7 @@ import styles from "./inRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
-import Timers from "../../timer/Timers";
+import Timers from "../../timer/RoomTimers";
 import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
 
