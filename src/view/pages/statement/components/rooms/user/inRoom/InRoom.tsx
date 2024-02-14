@@ -26,7 +26,7 @@ const InRoom: FC<Props> = ({ statement }) => {
         userSelectedTopicSelector(statement.statementId),
     );
 
-    const [timers, setTimers] = useState<RoomTimer|null>(null);
+    const [timers, setTimers] = useState<RoomTimer[]>([]);
 
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function

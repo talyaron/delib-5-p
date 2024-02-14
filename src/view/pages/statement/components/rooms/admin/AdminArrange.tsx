@@ -57,7 +57,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 
     function handleDivideIntoRooms() {
         try {
-            debugger;
+          
             const { rooms } = divideIntoTopics(
                 participants,
                 maxParticipantsPerRoom,
@@ -89,7 +89,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                 : RoomsStateSelection.inRoom;
             setSetRooms((state) => !state);
 
-            setRoomsStateToDB(statement, roomsState, rooms);
+            setRoomsStateToDB(statement, roomsState);
         } catch (error) {
             console.error(error);
         }

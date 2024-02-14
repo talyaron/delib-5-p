@@ -17,7 +17,7 @@ interface Props {
     statement: Statement;
     roomNumber: number;
     timerId: number;
-    timers: RoomTimer | null;
+    timer: RoomTimer;
     title: string;
     activeTimer: boolean;
     nextTimer: () => void;
@@ -29,7 +29,7 @@ export default function Timer({
     statement,
     roomNumber,
     timerId,
-    timers,
+    timer,
     title,
     activeTimer,
     nextTimer,
@@ -39,19 +39,21 @@ export default function Timer({
     const userId = store.getState().user.user?.uid;
 
     // useState
-    const [initTime, setInitTime] = useState<number>(getInitTime(timers, timerId)); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
-    const [timeLeft, setTimeLeft] = useState(getInitTime(timers, timerId));
+    const [initTime, setInitTime] = useState<number>(
+        getInitTime(timer, timerId),
+    ); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
+    const [timeLeft, setTimeLeft] = useState(getInitTime(timer, timerId));
     const [timerAdjustment, setTimerAdjustment] = useState<boolean>(false);
     const [minutes, setMinutes] = useState(
-        getMinutesAndSeconds(getInitTime(timers, timerId)).minutes,
+        getMinutesAndSeconds(getInitTime(timer, timerId)).minutes,
     );
     const [seconds, setSeconds] = useState(
-        getMinutesAndSeconds(getInitTime(timers, timerId)).seconds,
+        getMinutesAndSeconds(getInitTime(timer, timerId)).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    const [timer, setTimer] = useState<NodeJS.Timer>();
+    const [_timer, setTimer] = useState<RoomTimer>();
     const isMasterTimer =
-        timers?.initiatorId === userId || timers?.state === TimerStatus.finish;
+        _timer?.initiatorId === userId || _timer?.state === TimerStatus.finish;
 
     const percent = (timeLeft / initTime) * 100;
 
@@ -63,7 +65,7 @@ export default function Timer({
                     setIsActive(false);
                     initilizeTimer();
                     nextTimer();
-                    clearInterval(timer);
+                    clearInterval(_timer);
                     if (lastTimer) updateTimerState(TimerStatus.finish);
 
                     return 0;
@@ -77,11 +79,11 @@ export default function Timer({
         }, 1000);
 
     useEffect(() => {
-        if (isActive) {
-            setTimer(interval());
-        } else {
-            clearInterval(timer);
-        }
+        // if (isActive) {
+        //     setTimer(interval());
+        // } else {
+        //     clearInterval(timer);
+        // }
 
         return () => {
             clearInterval(interval());
@@ -98,37 +100,35 @@ export default function Timer({
 
     useEffect(() => {
         if (
-            timers?.state === TimerStatus.start &&
+            _timer?.state === TimerStatus.start &&
             !isActive &&
-            timers?.activeTimer === timerId &&
+            _timer?.activeTimer === timerId &&
             !isMasterTimer
         ) {
             console.log(
-                `start timer ${timerId} - Active: ${timers?.activeTimer} - Master: ${isMasterTimer}`,
+                `start timer ${timerId} - Active: ${_timer?.activeTimer} - Master: ${isMasterTimer}`,
             );
             startTimer();
-        } else if (timers?.state === TimerStatus.pause) {
+        } else if (_timer?.state === TimerStatus.pause) {
             pauseTimer();
-        } else if (timers?.state === TimerStatus.finish) {
+        } else if (_timer?.state === TimerStatus.finish) {
             stopAndResetTimer();
         }
-    }, [timers?.state]);
+    }, [_timer?.state]);
 
-    useEffect(() => {
-        if (timers?.timers) {
-            //@ts-ignore
-            const newTime = getInitTime(timers, timerId)
-           
+    // useEffect(() => {
+    //     if (_timer?.timers) {
+    //         //@ts-ignore
+    //         const newTime = getInitTime(timers, timerId)
 
-          
-            if (newTime !== undefined) {
-                setInitTime(newTime);
-                setTimeLeft(newTime);
-                setMinutes(getMinutesAndSeconds(newTime).minutes);
-                setSeconds(getMinutesAndSeconds(newTime).seconds);
-            }
-        }
-    }, [timers?.timers]);
+    //         if (newTime !== undefined) {
+    //             setInitTime(newTime);
+    //             setTimeLeft(newTime);
+    //             setMinutes(getMinutesAndSeconds(newTime).minutes);
+    //             setSeconds(getMinutesAndSeconds(newTime).seconds);
+    //         }
+    //     }
+    // }, [_timer?.timers]);
 
     const stopAndResetTimer = () => {
         setIsActive(false);
@@ -156,8 +156,6 @@ export default function Timer({
         setTimeLeft(initTime);
         updateTimerState(TimerStatus.finish);
     }
-
-
 
     return (
         <div className="roomsWrapper">
@@ -238,20 +236,17 @@ export default function Timer({
     }
 }
 
-function getInitTime(timers:RoomTimer | null, timerId:number):number {
-   
-    try { 
-        if(!timers?.timers) return 1000 * 90;
+function getInitTime(timers: RoomTimer | null, timerId: number): number {
+    try {
+        if (!timers?.timers) return 1000 * 90;
 
         //@ts-ignore
-        const initTime  = timers?.timers[timerId].initTime;
-        
-return initTime;
+        const initTime = timers?.timers[timerId].initTime;
+
+        return initTime;
     } catch (error) {
         console.error(error);
-        
-return 1000 * 90;
+
+        return 1000 * 90;
     }
-         
-    
 }

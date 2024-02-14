@@ -1,7 +1,19 @@
-import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+    Timestamp,
+    collection,
+    deleteDoc,
+    doc,
+    getDocs,
+    query,
+    setDoc,
+    where,
+} from "firebase/firestore";
 import { DB } from "../config";
 import {
     Collections,
+    RoomDivied,
+    RoomDiviedSchema,
+    RoomTimer,
     SetTimer,
     SetTimerSchema,
     Statement,
@@ -16,26 +28,44 @@ interface setParentTimersProps {
     timers: SetTimer[];
 }
 
-export async function updateTimerSettingDB({statementId, time, name, order}: {statementId:string, time: number, name: string, order:number}): Promise<void> {
+export async function updateTimerSettingDB({
+    statementId,
+    time,
+    name,
+    order,
+}: {
+    statementId: string;
+    time: number;
+    name: string;
+    order: number;
+}): Promise<void> {
     try {
-        const timerRef = doc(DB, Collections.timers, `${statementId}--${order}`);
-       
-        await setDoc(timerRef, {
-            timerId:`${statementId}--${order}`,
-            statementId,
-            time,
-            name,
-            order
-        }, {merge: true})
+        const timerRef = doc(
+            DB,
+            Collections.timers,
+            `${statementId}--${order}`,
+        );
+
+        await setDoc(
+            timerRef,
+            {
+                timerId: `${statementId}--${order}`,
+                statementId,
+                time,
+                name,
+                order,
+            },
+            { merge: true },
+        );
     } catch (error) {
         console.error(error);
     }
 }
 
-export async function deleteTimerSettingDB( timerId:string): Promise<boolean> {    
+export async function deleteTimerSettingDB(timerId: string): Promise<boolean> {
     try {
         const timerRef = doc(DB, Collections.timers, timerId);
-        await deleteDoc(timerRef)
+        await deleteDoc(timerRef);
         return true;
     } catch (error) {
         console.error(error);
@@ -60,12 +90,12 @@ export async function setParentTimersToDB({
             userCanChangeTimer,
             timers,
         });
-        
-return { success: true };
+
+        return { success: true };
     } catch (error: any) {
         console.error(error);
-        
-return { success: false, error: error.message };
+
+        return { success: false, error: error.message };
     }
 }
 
@@ -88,8 +118,8 @@ export function getTimerId({
         return `${statementId}--${roomNumber}--${stage}`;
     } catch (error) {
         console.error(error);
-        
-return undefined;
+
+        return undefined;
     }
 }
 
@@ -183,54 +213,63 @@ export async function setTimersInitTimeDB({
 
 interface InitilizeTimersDBProps {
     statementId: string;
-    roomNumber: number;
-
+    rooms: RoomDivied[];
 }
 
 export async function initilizeTimersDB({
     statementId,
-    roomNumber,
-
+    rooms,
 }: InitilizeTimersDBProps): Promise<void> {
     try {
-
         //pre-checks
         const userId = store.getState().user.user?.uid;
         if (!userId) throw new Error("Missing userId");
         if (!statementId) throw new Error("Missing statementId");
-        if (typeof roomNumber !== "number")
-            throw new Error("Missing roomNumber");
-   
+        if (!rooms) throw new Error("Missing rooms");
+       
 
-        const timerRef = doc(
-            DB,
-            Collections.timersRooms,
-            `${statementId}--${roomNumber}`,
+        //get timers settings from DB
+        const timersRef = collection(DB, Collections.timers);
+        const q = query(timersRef, where("statementId", "==", statementId));
+        const timersSettingsDB = await getDocs(q);
+
+        if (timersSettingsDB.size === 0) {
+            throw new Error("Timers settings not found");
+        }
+
+        const timersSettings = timersSettingsDB.docs.map(
+            (doc) => doc.data() as SetTimer,
         );
-
-
-        //prevent from creating new timers if they already exist
-        const timersDB = await getDoc(timerRef);
-        if (timersDB.exists()) return;
 
         //initilize timers
-        await setDoc(
-            timerRef,
-            {
-                statementId,
-                initiatorId: userId,
-                roomNumber,
-                timers:{
-                    1: { initTime: 60 * 1000 },
-                    2: { initTime: 60 * 1000 }
+
+        rooms.forEach((room) => {
+            const roomNumber = room.roomNumber;
+            const roomTimers: RoomTimer[] = timersSettings.map(
+                (timerSetting) => {
+                    const roomTimer: RoomTimer = {
+                        statementId,
+                        roomNumber,
+                        time: timerSetting.time,
+                        order: timerSetting.order,
+                        state: TimerStatus.finish,
+                        lastUpdated: new Date().getTime(),
+                        active: false,
+                    };
+                    return roomTimer;
                 },
-                activeTimer: 1,
-                updateTime: Timestamp.now(),
-                state: TimerStatus.finish,
-                lastUpdated:new Date().getTime()
-            },
-            { merge: true },
-        );
+            );
+
+            roomTimers.forEach(async (roomTimer) => {
+                const timerRef = doc(
+                    DB,
+                    Collections.timersRooms,
+                    `${statementId}--${roomNumber}--${roomTimer.order}`,
+                );
+
+                await setDoc(timerRef, roomTimer, { merge: true });
+            });
+        });
     } catch (error) {
         console.error(error);
     }

@@ -7,7 +7,7 @@ import Timer from "./Timer";
 interface Props {
     statement: Statement;
     roomNumber: number | undefined;
-    timers: RoomTimer | null;
+    timers: RoomTimer[];
 }
 
 const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
@@ -26,26 +26,18 @@ const Timers: FC<Props> = ({ statement, roomNumber, timers }) => {
     
 return (
         <div className={styles.timers}>
+            {timers.map((timer, index) => (
             <Timer
                 statement={statement}
-                timerId={1}
+                timerId={index}
                 title="הצגה"
                 activeTimer={activeTimer === 1 ? true : false}
                 nextTimer={nextTimer}
                 roomNumber={roomNumber}
-                timers={timers}
+                timer={timer}
             />
-            <Timer
-                statement={statement}
-                timerId={2}
-                title="שאלות ותשובות"
-                activeTimer={activeTimer === 2 ? true : false}
-                nextTimer={nextTimer}
-                roomNumber={roomNumber}
-                autoStart={true}
-                lastTimer={true}
-                timers={timers}
-            />
+            ))}
+           
         </div>
     );
 };
