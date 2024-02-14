@@ -57,6 +57,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 
     function handleDivideIntoRooms() {
         try {
+            debugger;
             const { rooms } = divideIntoTopics(
                 participants,
                 maxParticipantsPerRoom,
@@ -65,7 +66,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 
             rooms.forEach((room) => {
                 room.participants.forEach((participant) => {
-                    // should be room.participants
+               
                     const participantInRoom: ParticipantInRoom = {
                         uid: participant.participant.uid,
                         room: room.roomNumber,
@@ -75,10 +76,12 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     };
                     setParticipantInRoomToDB(participantInRoom);
                 });
-                initilizeTimersDB({
-                    statementId: statement.statementId,
-                    roomNumber: room.roomNumber,
-                });
+                
+            });
+
+            initilizeTimersDB({
+                statementId: statement.statementId,
+                rooms,
             });
 
             const roomsState = setRooms
@@ -86,7 +89,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                 : RoomsStateSelection.inRoom;
             setSetRooms((state) => !state);
 
-            setRoomsStateToDB(statement, roomsState);
+            setRoomsStateToDB(statement, roomsState, rooms);
         } catch (error) {
             console.error(error);
         }
