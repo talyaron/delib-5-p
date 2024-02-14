@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import styles from "./Timers.module.scss";
 import { RoomTimer, Statement } from "delib-npm";
-import Timer from "./Timer";
+import Timer from "./RoomTimer";
 
 
 interface Props {

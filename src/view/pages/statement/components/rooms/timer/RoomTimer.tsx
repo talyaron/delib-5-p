@@ -25,7 +25,7 @@ interface Props {
     lastTimer?: boolean;
 }
 
-export default function Timer({
+export default function RoomTimerComp({
     statement,
     roomNumber,
     timerId,
