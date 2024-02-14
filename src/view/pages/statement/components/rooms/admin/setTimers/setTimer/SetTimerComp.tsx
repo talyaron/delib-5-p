@@ -4,7 +4,7 @@ import styles from "../setTimers.module.scss";
 import {
     fromFourDigitsToMillisecons,
     fromMilliseconsToFourDigits,
-} from "./AdminTimerCont";
+} from "./SetTimerCont";
 
 //images
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
@@ -22,7 +22,7 @@ interface TimerProps {
     setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
 }
 
-function AdminTimer({
+function SetTimerComp({
     statementId,
     timer,
     index,
@@ -37,6 +37,7 @@ function AdminTimer({
         const [title, setTitle] = useState<string>(
             timer.title ? timer.title : "Discussion",
         );
+
 
         return (
             <div className={styles.timer}>
@@ -215,4 +216,4 @@ function AdminTimer({
     }
 }
 
-export default AdminTimer;
+export default SetTimerComp;

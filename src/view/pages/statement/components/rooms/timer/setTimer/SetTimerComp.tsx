@@ -3,8 +3,11 @@ import styles from "./setTimer.module.scss";
 import {
     fromFourDigitsToMillisecons,
     fromMilliseconsToFourDigits,
-} from "../../admin/setTimers/timer/AdminTimerCont";
+} from "../../admin/setTimers/setTimer/SetTimerCont";
 import { setTimersInitTimeDB } from "../../../../../../../functions/db/timer/setTimer";
+
+import { useAppDispatch } from "../../../../../../../functions/hooks/reduxHooks";
+import { setSetTimer } from "../../../../../../../model/timers/timersSlice";
 
 //scss
 
@@ -27,6 +30,8 @@ function SetTimerComp({
     setTimerAdjustment,
     setInitTime
 }: TimerProps) {
+
+    const dispatch = useAppDispatch();
     
     const [timeDigits, setTimeDigits] = useState<number[]>(
         fromMilliseconsToFourDigits(initTime || 1000 * 90),
@@ -138,7 +143,7 @@ function SetTimerComp({
                 ),
             );
 
-       
+    //    dispatch(setSetTimer())
 
             if (nextInput) {
                 //@ts-ignore

@@ -1,8 +1,7 @@
 import { FC, useState } from "react";
 import styles from "./Timers.module.scss";
 import { RoomTimer, Statement } from "delib-npm";
-import Timer from "./RoomTimer";
-
+import RoomTimerComp from "./RoomTimer";
 
 interface Props {
     statement: Statement;
@@ -12,8 +11,8 @@ interface Props {
 
 const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
     if (!roomNumber) return null;
-console.log("room timers", timers)
- 
+    console.log("room timers", timers);
+
     const [activeTimer, setActiveTimer] = useState<number>(1);
 
     function nextTimer() {
@@ -23,21 +22,17 @@ console.log("room timers", timers)
             setActiveTimer(1);
         }
     }
-    
-return (
+
+    return (
         <div className={styles.timers}>
             {timers.map((timer) => (
-            <Timer
-                statement={statement}
-                roomTimer={timer}
-            
-                activeTimer={activeTimer === 1 ? true : false}
-                nextTimer={nextTimer}
-        
-    
-            />
+                <RoomTimerComp
+                    statement={statement}
+                    roomTimer={timer}
+                    activeTimer={activeTimer === 1 ? true : false}
+                    nextTimer={nextTimer}
+                />
             ))}
-           
         </div>
     );
 };

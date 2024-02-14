@@ -27,7 +27,7 @@ export const timersSlice = createSlice({
     name: "timers",
     initialState,
     reducers: {
-        setTimmerSetting: (state, action: PayloadAction<SetTimer[]>) => {
+        setSetTimer: (state, action: PayloadAction<SetTimer>) => {
             const timer = action.payload;
             state.settingTimers = updateArray(state.settingTimers, timer, "timerId");
         }
@@ -35,7 +35,7 @@ export const timersSlice = createSlice({
 });
 
 export const {
-    setTimmerSetting
+    setSetTimer
 } = timersSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
