@@ -19,16 +19,12 @@ export async function handleSetTimers({
     setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
 }) {
     const newTimer: SetTimer = {
-        timerId: `${parentStatement.statementId}--${timers.length + 1}`,
+        statementId: parentStatement.statementId,
+        timerId: `${parentStatement.statementId}--${timers.length}`,
         time: 60 * 1000,
-        name: "Q&A",
+        title: "Q&A",
         order: timers.length,
     };
     setTimers([...timers, newTimer]);
-    updateTimerSettingDB({
-        statementId: parentStatement.statementId,
-        time: newTimer.time,
-        name: newTimer.name,
-        order: newTimer.order,
-    });
+    updateTimerSettingDB(newTimer);
 }

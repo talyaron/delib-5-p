@@ -55,18 +55,15 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
         maxParticipantsPerRoom,
     );
 
-    function handleDivideIntoRooms() {
+    async function handleDivideIntoRooms() {
         try {
-          
             const { rooms } = divideIntoTopics(
                 participants,
                 maxParticipantsPerRoom,
             );
 
-
             rooms.forEach((room) => {
                 room.participants.forEach((participant) => {
-               
                     const participantInRoom: ParticipantInRoom = {
                         uid: participant.participant.uid,
                         room: room.roomNumber,
@@ -76,9 +73,11 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     };
                     setParticipantInRoomToDB(participantInRoom);
                 });
-                
             });
 
+            //set timers settings to db
+
+            //set rooms timers
             initilizeTimersDB({
                 statementId: statement.statementId,
                 rooms,

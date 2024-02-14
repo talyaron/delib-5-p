@@ -43,6 +43,7 @@ export default function RoomTimerComp({
         getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
+    console.log(roomTimer);
     const [timer, setTimer] = useState<RoomTimer>(roomTimer);
     const isMasterTimer =
         timer?.initiatorId === userId || timer?.state === TimerStatus.finish;

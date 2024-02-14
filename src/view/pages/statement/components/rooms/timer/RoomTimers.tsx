@@ -12,7 +12,7 @@ interface Props {
 
 const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
     if (!roomNumber) return null;
-
+console.log("room timers", timers)
  
     const [activeTimer, setActiveTimer] = useState<number>(1);
 

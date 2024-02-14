@@ -13,7 +13,7 @@ import styles from "./inRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
-import Timers from "../../timer/RoomTimers";
+import RoomTimers from "../../timer/RoomTimers";
 import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
 
@@ -71,7 +71,7 @@ return () => {
                         <h2>{t("No Topic Chosen by You")}</h2>
                     )}
                 </div>
-                <Timers
+                <RoomTimers
                     statement={statement}
                     roomNumber={userTopic?.roomNumber}
                     timers={timers}
