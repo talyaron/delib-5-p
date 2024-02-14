@@ -5,9 +5,10 @@ import { SetTimer, Statement } from "delib-npm";
 import { handleSetTimers } from "./SetTimersCont";
 import { initialTimerArray } from "./SetTimersModal";
 import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
+
+import { useAppDispatch, useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { selectStatementSettingTimers, selectTimersSetting, setSetTimer } from "../../../../../../../model/timers/timersSlice";
 import SetTimerComp from "./setTimer/SetTimerComp";
-import { useAppDispatch } from "../../../../../../../functions/hooks/reduxHooks";
-import { setSetTimer } from "../../../../../../../model/timers/timersSlice";
 
 interface Props {
     parentStatement: Statement;
@@ -19,21 +20,11 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         const dispatch = useAppDispatch();
 
-        const [timers, setTimers] = useState<SetTimer[]>(
-            initialTimerArray.sort((a, b) => a.order - b.order),
-        );
+        const timers = useAppSelector(selectStatementSettingTimers(parentStatement.statementId)).sort((a, b) => a.order - b.order);
 
         //get timers from DB
         useEffect(() => {
-            getSetTimersDB(parentStatement.statementId, dispatch).then(
-                (timersDB:SetTimer[]) => {
-                    setTimers(timersDB.sort((a, b) => a.order - b.order));
-
-                    timersDB.forEach((timer:SetTimer) => {
-                        dispatch(setSetTimer(timer));
-                    });
-                },
-            );
+            getSetTimersDB(parentStatement.statementId, dispatch);
         }, []);
 
         return (
@@ -41,15 +32,8 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                 <h2>{t("Setting Timers")}</h2>
                 <p>{t("You can set the timers for each stage here.")}</p>
                 <div className={styles.timers}>
-                    {timers.map((t, i) => (
-                        <SetTimerComp
-                            statementId={parentStatement.statementId}
-                            key={`timeer-key-${t.timerId}`}
-                            timer={t}
-                            index={i}
-                            timers={timers}
-                            setTimers={setTimers}
-                        />
+                    {timers.map((timer) => (<SetTimerComp key={timer.order} timer={timer} />
+                      
                     ))}
                 </div>
                 <button

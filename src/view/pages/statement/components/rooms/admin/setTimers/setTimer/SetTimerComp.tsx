@@ -15,22 +15,14 @@ import {
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
 interface TimerProps {
-    statementId: string;
     timer: SetTimer;
-    index: number;
-    timers: SetTimer[];
-    setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
 }
 
 function SetTimerComp({
-    statementId,
-    timer,
-    index,
-    timers,
-    setTimers,
+   timer
 }: TimerProps) {
     try {
-        if (!statementId) throw new Error("statementId is required");
+        if (!timer.statementId) throw new Error("statementId is required");
         const [timeDigits, setTimeDigits] = useState<number[]>(
             fromMilliseconsToFourDigits(timer.time || 1000 * 90),
         );
