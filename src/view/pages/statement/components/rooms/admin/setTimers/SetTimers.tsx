@@ -30,7 +30,6 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                     setTimers(timersDB.sort((a, b) => a.order - b.order));
 
                     timersDB.forEach((timer:SetTimer) => {
-                        console.log(timer)
                         dispatch(setSetTimer(timer));
                     });
                 },

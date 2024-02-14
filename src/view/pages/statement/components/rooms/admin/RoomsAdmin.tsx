@@ -12,7 +12,7 @@ interface Props {
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
-    console.log(statement.roomsState)
+ 
     const [setRooms, setSetRooms] = useState<boolean>((statement.roomsState === "chooseRoom" || statement.roomsState === undefined)?false:true);
     return (
         <>

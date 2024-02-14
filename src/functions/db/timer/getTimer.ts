@@ -61,7 +61,7 @@ export function listenToRoomTimers(
     setTimers: React.Dispatch<React.SetStateAction<RoomTimer[]>>,
 ): Unsubscribe {
     try {
-        console.log(roomNumber)
+     
         if (!roomNumber) throw new Error("Missing roomNumber");
 
         const timersRef = collection(DB, Collections.timersRooms);
@@ -70,7 +70,6 @@ export function listenToRoomTimers(
         return onSnapshot(q, (roomTimersDB) => {
             try {
                 const timers:RoomTimer[] = roomTimersDB.docs.map(roomTimer=>roomTimer.data() as RoomTimer);
- console.log('timers', timers)
 
               z.array(RoomTimerSchema).parse(timers);
                 
