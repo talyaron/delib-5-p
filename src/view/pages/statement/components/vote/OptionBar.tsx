@@ -68,7 +68,7 @@ export const OptionBar: FC<OptionBarProps> = ({
         >
             <div
                 className="vote__bar__column"
-                style={{ width: `${barWidth}px`,filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3))"}}
+                style={{ width: `${barWidth}px`,filter: "drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525))"}}
             >
                 {barHeight > 0 && (
                     <div className="vote__bar__column__stat">
