@@ -30,7 +30,7 @@ export default function useStatementColor(statementType: string): StyleProps {
             case "result":
                 setstyle({
                     backgroundColor: "var(--agree)",
-                    color: "var(--header)",
+                    color: "var(--white)",
                 });
                 break;
             default:
