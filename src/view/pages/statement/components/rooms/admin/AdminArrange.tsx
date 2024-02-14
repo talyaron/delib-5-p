@@ -7,7 +7,7 @@ import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 
 // Third party libraries
-import { RoomsStateSelection, Statement } from "delib-npm";
+import { RoomDivied, RoomsStateSelection, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Statments functions
@@ -21,13 +21,9 @@ import { setRoomSizeInStatementDB } from "../../../../../../functions/db/stateme
 import _styles from "./admin.module.css";
 
 import { divideIntoTopics } from "./AdminArrangeCont";
-import {
-    RoomAdmin,
-    participantsSelector,
-} from "../../../../../../model/rooms/roomsSlice";
+import { participantsSelector } from "../../../../../../model/rooms/roomsSlice";
 import Room from "./room/Room";
 import { initilizeTimersDB } from "../../../../../../functions/db/timer/setTimer";
-
 
 const styles = _styles as any;
 
@@ -44,7 +40,6 @@ export interface ParticipantInRoom {
     topic?: Statement;
     statementId?: string;
 }
-
 
 const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
     const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
@@ -70,7 +65,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
             // setRoomsAdmin(rooms);
 
             rooms.forEach((room) => {
-                room.room.forEach((participant) => {
+                room.participants.forEach((participant) => {
                     // should be room.participants
                     const participantInRoom: ParticipantInRoom = {
                         uid: participant.participant.uid,
@@ -97,7 +92,6 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
             console.error(error);
         }
     }
-
 
     function handleRangeChange(ev: React.ChangeEvent<HTMLInputElement>) {
         setMaxParticipantsPerRoom(Number(ev.target.value));
@@ -174,7 +168,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     <>
                         <h3>{t("Division into rooms")}</h3>
                         <div className={styles.roomWrapper}>
-                            {roomsAdmin.map((room: RoomAdmin) => {
+                            {roomsAdmin.map((room: RoomDivied) => {
                                 return (
                                     <Room
                                         key={room.roomNumber}
