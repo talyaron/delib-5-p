@@ -2,7 +2,7 @@
     width: fit-content;
     padding: .5rem .9rem;
     position: fixed;
-    bottom: 5rem;
+    bottom: 8rem;
     right: 2vw;
     background-color: #787fff;
     color: #fff;
@@ -12,9 +12,39 @@
     user-select: none;
     cursor: pointer;
 
-    @media (min-width: 1200px) {
-        right: 33vw;
-        bottom: 6rem;
+    @media only screen and (max-device-width: 400px) {
+        right: 2vw;
     }
 
+    @media only screen and (min-width: 700px) {
+        right: 9vw;
+    }
+
+    @media only screen and (min-width: 800px) {
+        right: 17vw;
+    }
+
+    @media only screen and (min-width: 960px) {
+        right: 19vw;
+    }
+
+    @media only screen and (min-width: 1100px) {
+        right: 24vw;
+    }
+
+    @media only screen and (min-width: 1200px) {
+        right: 25vw;
+    }
+
+    @media only screen and (min-width: 1300px) {
+        right: 28vw;
+    }
+
+    @media only screen and (min-width: 1440px) {
+        right: 33vw;
+    }
+
+    @media only screen and (min-width: 2000px) {
+        right: 34vw;
+    }
 }
