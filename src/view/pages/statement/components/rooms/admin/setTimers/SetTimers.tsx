@@ -4,7 +4,7 @@ import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
 import { handleSetTimers } from "./SetTimersCont";
 import { initialTimerArray } from "./SetTimersModal";
-import { getStatementTimersDB } from "../../../../../../../functions/db/timer/getTimer";
+import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
 import SetTimerComp from "./setTimer/SetTimerComp";
 import { useAppDispatch } from "../../../../../../../functions/hooks/reduxHooks";
 import { setSetTimer } from "../../../../../../../model/timers/timersSlice";
@@ -25,10 +25,10 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         //get timers from DB
         useEffect(() => {
-            getStatementTimersDB(parentStatement.statementId).then(
+            getSetTimersDB(parentStatement.statementId, dispatch).then(
                 (timersDB:SetTimer[]) => {
                     setTimers(timersDB.sort((a, b) => a.order - b.order));
-                    
+
                     timersDB.forEach((timer:SetTimer) => {
                         console.log(timer)
                         dispatch(setSetTimer(timer));

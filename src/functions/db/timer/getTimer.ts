@@ -11,9 +11,12 @@ import { initialTimerArray } from "../../../view/pages/statement/components/room
 import { Unsubscribe } from "@firebase/util";
 import { updateTimerSettingDB } from "./setTimer";
 import { z } from "zod";
+import { getSetTimerId } from "../../general/helpers";
+import { setSetTimer } from "../../../model/timers/timersSlice";
 
-export async function getStatementTimersDB(
+export async function getSetTimersDB(
     statementId: string,
+    dispatch: React.Dispatch<any>,
 ): Promise<SetTimer[]> {
     try {
         const timersRef = collection(DB, Collections.timers);
@@ -27,7 +30,11 @@ export async function getStatementTimersDB(
                     time: timer.time,
                     title: timer.title,
                     order: timer.order,
+                    timerId: getSetTimerId(statementId, timer.order),
                 });
+            });
+            initialTimerArray.forEach((timer) => {
+                dispatch(setSetTimer(timer));
             });
             return initialTimerArray;
         }
@@ -35,6 +42,9 @@ export async function getStatementTimersDB(
         const timers: SetTimer[] = timersDB.docs.map(
             (doc) => doc.data() as SetTimer,
         );
+        timers.forEach((timer) => {
+            dispatch(setSetTimer(timer));
+        });
 
         return timers;
     } catch (error) {

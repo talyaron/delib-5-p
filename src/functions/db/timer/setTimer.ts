@@ -33,34 +33,29 @@ export async function updateTimerSettingDB({
     time,
     title,
     order,
+    timerId,
 }: {
     statementId: string;
     time: number;
     title: string;
     order: number;
+    timerId: string;
 }): Promise<void> {
     try {
-        const timerRef = doc(
-            DB,
-            Collections.timers,
-            `${statementId}--${order}`,
-        );
+        console.log(statementId, time, title, order, timerId)
+        const timerRef = doc(DB, Collections.timers, timerId);
 
         const timerSetting: SetTimer = {
-            timerId: `${statementId}--${order}`,
+            timerId,
             statementId,
             time,
             title,
             order,
-        }
+        };
 
         SetTimerSchema.parse(timerSetting);
 
-        await setDoc(
-            timerRef,
-            timerSetting,
-            { merge: true },
-        );
+        await setDoc(timerRef, timerSetting, { merge: true });
     } catch (error) {
         console.error(error);
     }
@@ -230,7 +225,6 @@ export async function initilizeTimersDB({
         if (!userId) throw new Error("Missing userId");
         if (!statementId) throw new Error("Missing statementId");
         if (!rooms) throw new Error("Missing rooms");
-       
 
         //get timers settings from DB
         const timersRef = collection(DB, Collections.timers);

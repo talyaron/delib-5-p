@@ -318,3 +318,7 @@ export function getDescription(statement: Statement) {
         return "";
     }
 }
+
+export function getSetTimerId(statementId: string, order: number) {
+    return `${statementId}--${order}`;
+}
