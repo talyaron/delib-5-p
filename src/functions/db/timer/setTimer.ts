@@ -31,12 +31,12 @@ interface setParentTimersProps {
 export async function updateTimerSettingDB({
     statementId,
     time,
-    name,
+    title,
     order,
 }: {
     statementId: string;
     time: number;
-    name: string;
+    title: string;
     order: number;
 }): Promise<void> {
     try {
@@ -46,15 +46,19 @@ export async function updateTimerSettingDB({
             `${statementId}--${order}`,
         );
 
+        const timerSetting: SetTimer = {
+            timerId: `${statementId}--${order}`,
+            statementId,
+            time,
+            title,
+            order,
+        }
+
+        SetTimerSchema.parse(timerSetting);
+
         await setDoc(
             timerRef,
-            {
-                timerId: `${statementId}--${order}`,
-                statementId,
-                time,
-                name,
-                order,
-            },
+            timerSetting,
             { merge: true },
         );
     } catch (error) {
@@ -254,7 +258,7 @@ export async function initilizeTimersDB({
                         order: timerSetting.order,
                         state: TimerStatus.finish,
                         lastUpdated: new Date().getTime(),
-                        active: false,
+                        title: timerSetting.title,
                     };
                     return roomTimer;
                 },

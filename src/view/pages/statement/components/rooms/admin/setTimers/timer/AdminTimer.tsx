@@ -34,8 +34,8 @@ function AdminTimer({
         const [timeDigits, setTimeDigits] = useState<number[]>(
             fromMilliseconsToFourDigits(timer.time || 1000 * 90),
         );
-        const [_name, setName] = useState<string>(
-            timer.name ? timer.name : "Discussion",
+        const [title, setTitle] = useState<string>(
+            timer.title ? timer.title : "Discussion",
         );
 
         return (
@@ -44,7 +44,7 @@ function AdminTimer({
                     <label>Name of Timer</label>
                     <input
                         type="text"
-                        defaultValue={_name}
+                        defaultValue={title}
                         onInput={handleUpdateName}
                     />
                 </div>
@@ -132,12 +132,12 @@ function AdminTimer({
 
         function handleUpdateName(ev: any) {
             try {
-                const newName = ev.target.value;
-                setName(newName);
+                const newTitle = ev.target.value;
+                setTitle(newTitle);
                 updateTimerSettingDB({
                     statementId,
                     time: timer.time,
-                    name: newName,
+                    title: newTitle,
                     order: timer.order,
                 });
             } catch (error) {
@@ -192,13 +192,12 @@ function AdminTimer({
                 i === parseInt(innerindex) ? _digit : d,
             );
 
-
             setTimeDigits(_digits);
             const newTime = fromFourDigitsToMillisecons(_digits);
             updateTimerSettingDB({
                 statementId,
                 time: newTime,
-                name: _name,
+                title,
                 order: timer.order,
             });
             const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
@@ -209,8 +208,6 @@ function AdminTimer({
                 //@ts-ignore
                 nextInput.focus();
             }
-
-            
         }
     } catch (error) {
         console.error(error);
