@@ -1,4 +1,4 @@
-import { RoomTimer, SetTimer } from "delib-npm";
+import { SetTimer } from "delib-npm";
 import { useState } from "react";
 import styles from "../setTimers.module.scss";
 import {
@@ -104,7 +104,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                     <img
                         src={deleteIcon}
                         alt="delete"
-                        onClick={() => handleDeleteTimer(timer.timerId)}
+                        onClick={() => handleDeleteTimer(setTimer.timerId)}
                         className="clickable"
                     />
                 </div>
@@ -180,7 +180,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 const _digits = getNewForDigits();
                 const newTime = fromFourDigitsToMillisecons(_digits);
                 dispatch(
-                    setSetTimerTime({ timerId: timer.timerId, time: newTime }),
+                    setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
                 );
                 return;
             }
@@ -197,7 +197,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             const newTime = fromFourDigitsToMillisecons(_digits);
             console.log("time", newTime);
             dispatch(
-                setSetTimerTime({ timerId: timer.timerId, time: newTime }),
+                setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
             );
 
             const tabIndex = parseInt(ev.target.getAttribute("tabindex"));

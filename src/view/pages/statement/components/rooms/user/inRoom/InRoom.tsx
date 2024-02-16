@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 
 // Third Party Libraries
 import { Participant, RoomTimer, Statement } from "delib-npm";

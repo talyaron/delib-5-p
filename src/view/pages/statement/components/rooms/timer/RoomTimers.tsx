@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styles from "./Timers.module.scss";
-import { RoomTimer, Statement, TimerStatus } from "delib-npm";
+import { RoomTimer, TimerStatus } from "delib-npm";
 import RoomTimerComp from "./RoomTimer";
 
 

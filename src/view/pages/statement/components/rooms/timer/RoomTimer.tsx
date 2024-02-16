@@ -9,7 +9,6 @@ import PauseIcon from "../../../../../components/icons/PauseIcon";
 import StopIcon from "../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
 import { RoomTimer, TimerStatus } from "delib-npm";
-import { store } from "../../../../../../model/store";
 import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
 import { setTimersStatusDB } from "../../../../../../functions/db/timer/setTimer";
 
@@ -22,7 +21,7 @@ export default function Timer({
     roomTimer,
     isActiveTimer,
 }: Props): JSX.Element {
-    const userId = store.getState().user.user?.uid;
+   
 
     // useState
     const [initTime, setInitTime] = useState<number>(roomTimer.time); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
