@@ -14,9 +14,13 @@ import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
 
 interface Props {
     roomTimer: RoomTimer;
+    isActiveTimer: boolean;
 }
 
-export default function Timer({ roomTimer }: Props): JSX.Element {
+export default function Timer({
+    roomTimer,
+    isActiveTimer,
+}: Props): JSX.Element {
     const userId = store.getState().user.user?.uid;
 
     // useState
@@ -109,26 +113,21 @@ export default function Timer({ roomTimer }: Props): JSX.Element {
         setTimeLeft(initTime);
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
-
-        
     };
     const startTimer = (): void => {
         setIsActive(true);
 
         //send a message to the server that the timer has started
-     
     };
 
     const pauseTimer = () => {
         setIsActive(false);
-       
     };
 
     function initilizeTimer() {
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
         setTimeLeft(initTime);
-      
     }
 
     return (
@@ -158,19 +157,19 @@ export default function Timer({ roomTimer }: Props): JSX.Element {
                         seconds < 10 ? "0" + seconds : seconds
                     }`}</p>
                 )}
-                <div style={{ opacity: `1` }}>
+                <div style={{ opacity: isActiveTimer ? "1" : "0.2" }}>
                     {!isActive && <PlayIcon onClick={startTimer} />}
 
                     {isActive && (
                         <div className="roomsWrapper__timer__time__actions">
                             <StopIcon
                                 onClick={() => {
-                                    stopAndResetTimer();
+                                    if (isActiveTimer) stopAndResetTimer();
                                 }}
                             />
                             <PauseIcon
                                 onClick={() => {
-                                    pauseTimer();
+                                    if (isActiveTimer) pauseTimer();
                                 }}
                             />
                         </div>
@@ -179,7 +178,4 @@ export default function Timer({ roomTimer }: Props): JSX.Element {
             </div>
         </div>
     );
-
-    
 }
-
