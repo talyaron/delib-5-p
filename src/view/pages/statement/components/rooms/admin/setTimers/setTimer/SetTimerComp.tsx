@@ -1,4 +1,4 @@
-import { SetTimer } from "delib-npm";
+import { RoomTimer, SetTimer } from "delib-npm";
 import { useState } from "react";
 import styles from "../setTimers.module.scss";
 import {
@@ -20,21 +20,21 @@ import {
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
 interface TimerProps {
-    timer: SetTimer;
+    roomTimer: RoomTimer;
     index: number;
 }
 
-function SetTimerComp({ timer, index }: TimerProps) {
+function SetTimerComp({ roomTimer, index }: TimerProps) {
     try {
-        if (!timer.statementId) throw new Error("statementId is required");
+        if (!roomTimer.statementId) throw new Error("statementId is required");
 
         const dispatch = useAppDispatch();
 
         const [timeDigits, setTimeDigits] = useState<number[]>(
-            fromMilliseconsToFourDigits(timer.time || 1000 * 90),
+            fromMilliseconsToFourDigits(roomTimer.time || 1000 * 90),
         );
         const [title, setTitle] = useState<string>(
-            timer.title ? timer.title : "Discussion",
+            roomTimer.title ? roomTimer.title : "Discussion",
         );
 
         return (
@@ -134,7 +134,7 @@ function SetTimerComp({ timer, index }: TimerProps) {
                 setTitle(newTitle);
                 dispatch(
                     setSetTimerTitle({
-                        timerId: timer.timerId,
+                        timerId: roomTimer.timerId,
                         title: newTitle,
                     }),
                 );

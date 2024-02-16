@@ -13,6 +13,7 @@ import {
     Collections,
     RoomDivied,
     RoomTimer,
+    RoomTimerSchema,
     SetTimer,
     SetTimerSchema,
     Statement,
@@ -45,7 +46,6 @@ export async function updateTimerSettingDB(timer: SetTimer): Promise<void> {
     try {
         const timerRef = doc(DB, Collections.timers, timer.timerId);
         await setDoc(timerRef, timer, { merge: true });
-
     } catch (error) {
         console.error(error);
     }
@@ -112,46 +112,33 @@ export function getTimerId({
     }
 }
 
-interface SetTimersStateProps {
-    statementId: string;
-    roomNumber: number;
-    timerId: number;
-    state: TimerStatus;
-}
-
-export async function setTimersStateDB({
-    statementId,
-    roomNumber,
-    timerId,
-    state,
-}: SetTimersStateProps): Promise<void> {
+export async function setTimersStateDB(
+    roomTimer: RoomTimer,
+    state: TimerStatus,
+): Promise<void> {
     try {
         const userId = store.getState().user.user?.uid;
-
-        if (!userId) throw new Error("Missing userId");
-        if (!statementId) throw new Error("Missing statementId");
-        if (typeof roomNumber !== "number")
-            throw new Error("Missing roomNumber");
-        if (typeof timerId !== "number") throw new Error("Missing timer");
+        if(!userId) throw new Error("Missing userId");
+        RoomTimerSchema.parse(roomTimer);
 
         const timerRef = doc(
             DB,
             Collections.timersRooms,
-            `${statementId}--${roomNumber}`,
+            roomTimer.roomTimerId,
         );
 
-        await setDoc(
-            timerRef,
-            {
-                statementId,
-                initiatorId: userId,
-                roomNumber,
-                activeTimer: timerId,
-                state,
-                updateTime: Timestamp.now(),
-            },
-            { merge: true },
-        );
+        const _roomTimer = {
+            statementId: roomTimer.statementId,
+            initiatorId: userId,
+            roomNumber: roomTimer.roomNumber,
+            activeTimer: roomTimer.roomTimerId,
+            state,
+            updateTime: new Date().getTime(),
+        };
+
+        RoomTimerSchema.parse(_roomTimer);
+
+        await setDoc(timerRef, _roomTimer, { merge: true });
     } catch (error) {
         console.error(error);
     }
@@ -160,7 +147,7 @@ export async function setTimersStateDB({
 interface setTimersInitTimeDBProps {
     statementId: string;
     roomNumber: number;
-    timerId: number;
+    timerId: string;
     initTime: number;
 }
 

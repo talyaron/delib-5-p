@@ -5,31 +5,27 @@ import {
     fromMilliseconsToFourDigits,
 } from "../../admin/setTimers/setTimer/SetTimerCont";
 import { setTimersInitTimeDB } from "../../../../../../../functions/db/timer/setTimer";
+import { RoomTimer } from "delib-npm";
+import { getRoomTimerId } from "../../../../../../../functions/general/helpers";
 
 
 
 interface TimerProps {
-    statementId: string;
-    roomNumber: number;
-    timerId: number;
-    initTime: number;
+    roomTimer: RoomTimer;
     setTimerAdjustment: React.Dispatch<React.SetStateAction<boolean>>;
     setInitTime: React.Dispatch<React.SetStateAction<number>>;
  
 }
 
 function SetRoomTimerComp({
-    statementId,
-    roomNumber,
-    timerId,
-    initTime,
+    roomTimer,
     setTimerAdjustment,
     setInitTime
 }: TimerProps) {
 
     
     const [timeDigits, setTimeDigits] = useState<number[]>(
-        fromMilliseconsToFourDigits(initTime || 1000 * 90),
+        fromMilliseconsToFourDigits(roomTimer.time || 1000 * 90),
     );
 
     useEffect(() => {
@@ -107,9 +103,9 @@ function SetRoomTimerComp({
         const newTime = fromFourDigitsToMillisecons(timeDigits);
         console.log(newTime)
         setTimersInitTimeDB({
-            statementId,
-            roomNumber,
-            timerId,
+            statementId:roomTimer.statementId,
+            roomNumber:roomTimer.roomNumber,
+            timerId:getRoomTimerId(roomTimer.statementId, roomTimer.roomNumber, roomTimer.order),
             initTime: newTime,
         });
         setInitTime(newTime);

@@ -11,7 +11,6 @@ interface Props {
 
 const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
     if (!roomNumber) return null;
-   
 
     const [activeTimer, setActiveTimer] = useState<number>(1);
 
@@ -27,6 +26,7 @@ const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
         <div className={styles.timers}>
             {timers.map((timer) => (
                 <RoomTimerComp
+                    key={timer.roomTimerId}
                     statement={statement}
                     roomNumber={roomNumber}
                     roomTimer={timer}
