@@ -13,11 +13,8 @@ const RoomTimers: FC<Props> = ({ roomNumber, timers }) => {
     try {
         if (!roomNumber) return null;
 
-        const [activeTimer, setActiveTimer] = useState<RoomTimer>(
-            getActiveTimer(timers),
-        );
-
-        console.log(activeTimer, "activeTimer");
+        const activeTimer= getActiveTimer(timers);
+           if(!activeTimer) return null;
 
         return (
             <div className={styles.timers}>
@@ -45,6 +42,7 @@ function getActiveTimer(timers: RoomTimer[]): RoomTimer {
     const _timers = [...timers];
     try {
       
+      console.log(_timers, "timers")
       
         //find first timer by order that has not finished
         const activeTimer = _timers
@@ -52,7 +50,9 @@ function getActiveTimer(timers: RoomTimer[]): RoomTimer {
             .find((timer) => timer.state !== TimerStatus.finish) as RoomTimer;
 
         if (activeTimer === undefined) {
-            return _timers.sort((a, b) => a.order - b.order)[0];
+            const activeTimer =  _timers.sort((a, b) => a.order - b.order)[0];
+            if(activeTimer) return activeTimer;
+            throw new Error("No active timer found");
         }
         throw new Error("No active timer found");
     } catch (error) {
