@@ -18,6 +18,7 @@ import {
     SetTimerSchema,
     Statement,
     TimerStatus,
+    TimerStatusSchema,
 } from "delib-npm";
 import { z } from "zod";
 import { store } from "../../../model/store";
@@ -112,14 +113,15 @@ export function getTimerId({
     }
 }
 
-export async function setTimersStateDB(
+export async function setTimersStatusDB(
     roomTimer: RoomTimer,
-    state: TimerStatus,
+    newStatus: TimerStatus,
 ): Promise<void> {
     try {
         const userId = store.getState().user.user?.uid;
-        if(!userId) throw new Error("Missing userId");
+        if (!userId) throw new Error("Missing userId");
         RoomTimerSchema.parse(roomTimer);
+        TimerStatusSchema.parse(newStatus);
 
         const timerRef = doc(
             DB,
@@ -127,18 +129,7 @@ export async function setTimersStateDB(
             roomTimer.roomTimerId,
         );
 
-        const _roomTimer = {
-            statementId: roomTimer.statementId,
-            initiatorId: userId,
-            roomNumber: roomTimer.roomNumber,
-            activeTimer: roomTimer.roomTimerId,
-            state,
-            updateTime: new Date().getTime(),
-        };
-
-        RoomTimerSchema.parse(_roomTimer);
-
-        await setDoc(timerRef, _roomTimer, { merge: true });
+        await setDoc(timerRef, { state: newStatus }, { merge: true });
     } catch (error) {
         console.error(error);
     }

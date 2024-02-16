@@ -11,6 +11,7 @@ import { getMinutesAndSeconds } from "./timerPagecont";
 import { RoomTimer, TimerStatus } from "delib-npm";
 import { store } from "../../../../../../model/store";
 import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
+import { setTimersStatusDB } from "../../../../../../functions/db/timer/setTimer";
 
 interface Props {
     roomTimer: RoomTimer;
@@ -158,18 +159,42 @@ export default function Timer({
                     }`}</p>
                 )}
                 <div style={{ opacity: isActiveTimer ? "1" : "0.2" }}>
-                    {!isActive && <PlayIcon onClick={startTimer} />}
+                    {!isActive && (
+                        <PlayIcon
+                            onClick={() => {
+                                if (isActiveTimer) {
+                                    startTimer();
+                                    setTimersStatusDB(
+                                        roomTimer,
+                                        TimerStatus.start,
+                                    );
+                                }
+                            }}
+                        />
+                    )}
 
                     {isActive && (
                         <div className="roomsWrapper__timer__time__actions">
                             <StopIcon
                                 onClick={() => {
-                                    if (isActiveTimer) stopAndResetTimer();
+                                    if (isActiveTimer) {
+                                        stopAndResetTimer();
+                                        setTimersStatusDB(
+                                            roomTimer,
+                                            TimerStatus.finish,
+                                        );
+                                    }
                                 }}
                             />
                             <PauseIcon
                                 onClick={() => {
-                                    if (isActiveTimer) pauseTimer();
+                                    if (isActiveTimer) {
+                                        pauseTimer();
+                                        setTimersStatusDB(
+                                            roomTimer,
+                                            TimerStatus.pause,
+                                        );
+                                    }
                                 }}
                             />
                         </div>

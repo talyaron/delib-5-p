@@ -1,8 +1,8 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import styles from "./Timers.module.scss";
 import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import RoomTimerComp from "./RoomTimer";
-import { t } from "i18next";
+
 
 interface Props {
     roomNumber: number | undefined;
@@ -13,8 +13,8 @@ const RoomTimers: FC<Props> = ({ roomNumber, timers }) => {
     try {
         if (!roomNumber) return null;
 
-        const activeTimer= getActiveTimer(timers);
-           if(!activeTimer) return null;
+        const activeTimer: RoomTimer | undefined = getActiveTimer(timers);
+        if (!activeTimer) return null;
 
         return (
             <div className={styles.timers}>
@@ -38,23 +38,20 @@ const RoomTimers: FC<Props> = ({ roomNumber, timers }) => {
 
 export default RoomTimers;
 
-function getActiveTimer(timers: RoomTimer[]): RoomTimer {
+function getActiveTimer(timers: RoomTimer[]): RoomTimer | undefined {
     const _timers = [...timers];
     try {
-      
-      console.log(_timers, "timers")
-      
+        if (_timers.length === 0) return undefined;
+
         //find first timer by order that has not finished
         const activeTimer = _timers
             .sort((a, b) => a.order - b.order)
             .find((timer) => timer.state !== TimerStatus.finish) as RoomTimer;
 
         if (activeTimer === undefined) {
-            const activeTimer =  _timers.sort((a, b) => a.order - b.order)[0];
-            if(activeTimer) return activeTimer;
-            throw new Error("No active timer found");
+            return _timers.sort((a, b) => a.order - b.order)[0];
         }
-        throw new Error("No active timer found");
+        return activeTimer;
     } catch (error) {
         console.error(error);
         return _timers.sort((a, b) => a.order - b.order)[0];
