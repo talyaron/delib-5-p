@@ -1,24 +1,30 @@
 import { FC, useState } from "react";
 import styles from "./Timers.module.scss";
-import { RoomTimer, Statement } from "delib-npm";
+import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import RoomTimerComp from "./RoomTimer";
 
 interface Props {
-    statement: Statement;
     roomNumber: number | undefined;
     timers: RoomTimer[];
 }
 
-const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
+const RoomTimers: FC<Props> = ({ roomNumber, timers }) => {
     if (!roomNumber) return null;
 
-    const [activeTimer, setActiveTimer] = useState<number>(1);
+    const [activeTimer, setActiveTimer] = useState<RoomTimer|undefined>(getActiveTimer(timers, roomNumber));
+    const [isMaster, setIsMaster] = useState<boolean>(false);
+    const allTimersFinshed:boolean = timers.every(timer => timer.state === TimerStatus.finish);
 
-    function nextTimer() {
-        if (activeTimer === 1) {
-            setActiveTimer(2);
-        } else {
-            setActiveTimer(1);
+    function nextTimer(currentTimer:RoomTimer):RoomTimer|undefined {
+        try {
+            //find next timer
+            const correntOrder = currentTimer.order;
+            const nextTimer = timers.sort((a, b)=>a.order = b.order).find(timer => timer.order >correntOrder);
+            setActiveTimer(nextTimer);
+            return nextTimer;
+        } catch (error) {
+            console.error(error);
+            return undefined;
         }
     }
 
@@ -27,10 +33,8 @@ const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
             {timers.map((timer) => (
                 <RoomTimerComp
                     key={timer.roomTimerId}
-                    statement={statement}
-                    roomNumber={roomNumber}
                     roomTimer={timer}
-                    activeTimer={activeTimer === 1 ? true : false}
+                    allTimersFinshed={allTimersFinshed}
                     nextTimer={nextTimer}
                 />
             ))}
@@ -39,3 +43,7 @@ const RoomTimers: FC<Props> = ({ statement, roomNumber, timers }) => {
 };
 
 export default RoomTimers;
+
+function getActiveTimer(timers: RoomTimer[], roomNumber: number):RoomTimer | undefined {
+    return timers.find(timer => timer.roomNumber === roomNumber && timer.state === TimerStatus.start);
+}

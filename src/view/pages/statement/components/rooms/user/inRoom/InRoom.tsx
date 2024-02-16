@@ -77,7 +77,7 @@ const InRoom: FC<Props> = ({ statement }) => {
                     )}
                 </div>
                 <RoomTimers
-                    statement={statement}
+
                     roomNumber={userTopic?.roomNumber}
                     timers={timers}
                 />
