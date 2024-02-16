@@ -169,10 +169,7 @@ export default function Timer({
                         <TimerIcon percent={percent} />
                     </div>
                     {timerAdjustment ? (
-                        <SetTimerComp
-                            roomTimer={roomTimer}
-                          index=
-                        />
+                        <SetTimerComp roomTimer={roomTimer} index={1} />
                     ) : (
                         <p
                             className="roomsWrapper__timer__time"
