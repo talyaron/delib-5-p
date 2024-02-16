@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { t } from "i18next";
 import styles from "./setTimers.module.scss";
-import { Statement } from "delib-npm";
+import { SetTimer, Statement } from "delib-npm";
 
 import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
 
@@ -10,10 +10,9 @@ import {
     useAppSelector,
 } from "../../../../../../../functions/hooks/reduxHooks";
 import { selectStatementSettingTimers, setSetTimer } from "../../../../../../../model/timers/timersSlice";
-import SetTimerComp from "./setTimer/SetTimerComp";
+import SetSetTimerComp from "./setTimer/SetSetTimerComp";
 import {
-    updateTimerSettingDB,
-    updateTimersSettingDB,
+    updateTimerSettingDB
 } from "../../../../../../../functions/db/timer/setTimer";
 import { getSetTimerId } from "../../../../../../../functions/general/helpers";
 
@@ -27,7 +26,7 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         const dispatch = useAppDispatch();
 
-        const timers = useAppSelector(
+        const timers:SetTimer[] = useAppSelector(
             selectStatementSettingTimers(parentStatement.statementId),
         ).sort((a, b) => a.order - b.order);
 
@@ -42,9 +41,9 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                 <p>{t("You can set the timers for each stage here.")}</p>
                 <div className={styles.timers}>
                     {timers.map((timer, i) => (
-                        <SetTimerComp
+                        <SetSetTimerComp
                             key={timer.order}
-                            timer={timer}
+                            setTimer={timer}
                             index={i}
                         />
                     ))}

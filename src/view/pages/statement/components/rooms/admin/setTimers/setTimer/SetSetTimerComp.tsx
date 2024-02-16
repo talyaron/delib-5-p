@@ -8,9 +8,7 @@ import {
 
 //images
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
-import {
-    deleteTimerSettingDB
-} from "../../../../../../../../functions/db/timer/setTimer";
+import { deleteTimerSettingDB } from "../../../../../../../../functions/db/timer/setTimer";
 import { useAppDispatch } from "../../../../../../../../functions/hooks/reduxHooks";
 import {
     setSetTimerTime,
@@ -20,21 +18,22 @@ import {
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
 interface TimerProps {
-    roomTimer: RoomTimer;
+    setTimer: SetTimer;
     index: number;
 }
 
-function SetTimerComp({ roomTimer, index }: TimerProps) {
+function SetSetTimerComp({ setTimer, index }: TimerProps) {
     try {
-        if (!roomTimer.statementId) throw new Error("statementId is required");
+        if (!setTimer) return null;
+        if (!setTimer.statementId) throw new Error("statementId is required");
 
         const dispatch = useAppDispatch();
 
         const [timeDigits, setTimeDigits] = useState<number[]>(
-            fromMilliseconsToFourDigits(roomTimer.time || 1000 * 90),
+            fromMilliseconsToFourDigits(setTimer.time || 1000 * 90),
         );
         const [title, setTitle] = useState<string>(
-            roomTimer.title ? roomTimer.title : "Discussion",
+            setTimer.title ? setTimer.title : "Discussion",
         );
 
         return (
@@ -134,7 +133,7 @@ function SetTimerComp({ roomTimer, index }: TimerProps) {
                 setTitle(newTitle);
                 dispatch(
                     setSetTimerTitle({
-                        timerId: roomTimer.timerId,
+                        timerId: setTimer.timerId,
                         title: newTitle,
                     }),
                 );
@@ -167,7 +166,6 @@ function SetTimerComp({ roomTimer, index }: TimerProps) {
         }
 
         function handleInputDigit(ev: any) {
-         
             const isTab = ev.key === "Tab";
             const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
             if (isTab) {
@@ -178,7 +176,6 @@ function SetTimerComp({ roomTimer, index }: TimerProps) {
             let digit = getKeyNumber(ev);
 
             if (digit === false) {
-
                 digit = ev.target.valueAsNumber;
                 const _digits = getNewForDigits();
                 const newTime = fromFourDigitsToMillisecons(_digits);
@@ -194,7 +191,7 @@ function SetTimerComp({ roomTimer, index }: TimerProps) {
             if (digit < min) digit = min;
 
             ev.target.valueAsNumber = digit;
-            const _digits= getNewForDigits();
+            const _digits = getNewForDigits();
 
             setTimeDigits(_digits);
             const newTime = fromFourDigitsToMillisecons(_digits);
@@ -215,9 +212,10 @@ function SetTimerComp({ roomTimer, index }: TimerProps) {
             function getNewForDigits() {
                 const innerindex = ev.target.dataset.innerindex;
                 const _digit: number = digit || ev.target.valueAsNumber;
-                const _digits: number[] = timeDigits.map((d, i) => i === parseInt(innerindex) ? _digit : d
+                const _digits: number[] = timeDigits.map((d, i) =>
+                    i === parseInt(innerindex) ? _digit : d,
                 );
-                return _digits ;
+                return _digits;
             }
         }
     } catch (error) {
@@ -226,4 +224,4 @@ function SetTimerComp({ roomTimer, index }: TimerProps) {
     }
 }
 
-export default SetTimerComp;
+export default SetSetTimerComp;

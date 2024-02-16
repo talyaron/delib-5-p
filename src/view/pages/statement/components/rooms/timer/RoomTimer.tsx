@@ -47,6 +47,7 @@ export default function Timer({
                     setIsActive(false);
                     initilizeTimer();
                     clearInterval(timer);
+                    setTimersStatusDB(roomTimer, TimerStatus.finish);
                     return 0;
                 }
 
@@ -69,45 +70,7 @@ export default function Timer({
         };
     }, [isActive]);
 
-    // useEffect(() => {
-    //     if (autoStart && activeTimer) {
-    //         setTimeout(() => {
-    //             startTimer();
-    //         }, 1000);
-    //     }
-    // }, [activeTimer]);
-
-    // useEffect(() => {
-    //     if (
-    //         timers?.state === TimerStatus.start &&
-    //         !isActive &&
-    //         timers?.activeTimer === timerId &&
-    //         !isMasterTimer
-    //     ) {
-    //         console.log(
-    //             `start timer ${timerId} - Active: ${timers?.activeTimer} - Master: ${isMasterTimer}`,
-    //         );
-    //         startTimer();
-    //     } else if (timers?.state === TimerStatus.pause) {
-    //         pauseTimer();
-    //     } else if (timers?.state === TimerStatus.finish) {
-    //         stopAndResetTimer();
-    //     }
-    // }, [timers?.state]);
-
-    // useEffect(() => {
-    //     if (timers?.timers) {
-    //         //@ts-ignore
-    //         const newTime = roomTimer.time;
-
-    //         if (newTime !== undefined) {
-    //             setInitTime(newTime);
-    //             setTimeLeft(newTime);
-    //             setMinutes(getMinutesAndSeconds(newTime).minutes);
-    //             setSeconds(getMinutesAndSeconds(newTime).seconds);
-    //         }
-    //     }
-    // }, [timers?.timers]);
+   
 
     const stopAndResetTimer = () => {
         setIsActive(false);
