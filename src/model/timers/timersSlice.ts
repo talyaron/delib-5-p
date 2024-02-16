@@ -34,24 +34,38 @@ export const timersSlice = createSlice({
                 "timerId",
             );
         },
-        setSetTimerTitle: (state, action:PayloadAction<{timerId: string, title: string}>) => {
-            const {timerId, title} = action.payload;
-            const timer = state.settingTimers.find((timer) => timer.timerId === timerId);
+        setSetTimerTitle: (
+            state,
+            action: PayloadAction<{ timerId: string; title: string }>,
+        ) => {
+            const { timerId, title } = action.payload;
+            const timer = state.settingTimers.find(
+                (timer) => timer.timerId === timerId,
+            );
             if (timer) {
                 timer.title = title;
             }
         },
-        setSetTimerTime: (state, action:PayloadAction<{timerId: string, time: number}>) => {
-            const {timerId, time} = action.payload;
-            const timer = state.settingTimers.find((timer) => timer.timerId === timerId);
+        setSetTimerTime: (
+            state,
+            action: PayloadAction<{ timerId: string; time: number }>,
+        ) => {
+            const { timerId, time } = action.payload;
+            const timer = state.settingTimers.find(
+                (timer) => timer.timerId === timerId,
+            );
             if (timer) {
                 timer.time = time;
             }
-        }
+        },
+        setRoomTimers: (state, action: PayloadAction<RoomTimer[]>) => {
+            state.roomTimers = action.payload;
+        },
     },
 });
 
-export const { setSetTimer,setSetTimerTitle,setSetTimerTime } = timersSlice.actions;
+export const { setSetTimer, setSetTimerTitle, setSetTimerTime, setRoomTimers } =
+    timersSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectTimersSetting = (state: RootState) =>
@@ -61,5 +75,7 @@ export const selectStatementSettingTimers =
         state.timers.settingTimers.filter(
             (timer) => timer.statementId === statementId,
         );
+
+export const selectRoomTimers = (state: RootState) => state.timers.roomTimers;
 
 export default timersSlice.reducer;

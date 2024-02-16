@@ -11,10 +11,12 @@ import { getMinutesAndSeconds } from "./timerPagecont";
 import { RoomTimer, Statement, TimerStatus } from "delib-npm";
 import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
 import { store } from "../../../../../../model/store";
-import SetTimer from "./setTimer/SetRoomTimerComp";
+import SetTimerComp from "../admin/setTimers/setTimer/SetTimerComp";
+
 
 interface Props {
     statement: Statement;
+    roomNumber: number;
     roomTimer: RoomTimer;
     activeTimer: boolean;
     nextTimer: () => void;
@@ -22,8 +24,9 @@ interface Props {
     lastTimer?: boolean;
 }
 
-export default function RoomTimerComp({
+export default function Timer({
     statement,
+    roomNumber,
     roomTimer,
     activeTimer,
     nextTimer,
@@ -31,9 +34,10 @@ export default function RoomTimerComp({
     lastTimer,
 }: Props): JSX.Element {
     const userId = store.getState().user.user?.uid;
+    const title = roomTimer.title;
 
     // useState
-    const [initTime, setInitTime] = useState<number>(roomTimer.time);
+    const [initTime, setInitTime] = useState<number>(roomTimer.time); 
     const [timeLeft, setTimeLeft] = useState(roomTimer.time);
     const [timerAdjustment, setTimerAdjustment] = useState<boolean>(false);
     const [minutes, setMinutes] = useState(
@@ -43,22 +47,21 @@ export default function RoomTimerComp({
         getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    console.log(roomTimer);
-    const [timer, setTimer] = useState<RoomTimer>(roomTimer);
+    const [timer, setTimer] = useState<NodeJS.Timer>();
     const isMasterTimer =
-        timer?.initiatorId === userId || timer?.state === TimerStatus.finish;
+    roomTimer?.initiatorId === userId || roomTimer.state === TimerStatus.finish;
 
     const percent = (timeLeft / initTime) * 100;
 
-    const interval = () => {
-        const int = setInterval(() => {
+    const interval = () =>
+        setInterval(() => {
             setTimeLeft((prev) => {
                 const newTime = prev - 1000;
                 if (newTime < 0) {
                     setIsActive(false);
                     initilizeTimer();
                     nextTimer();
-                    clearInterval(int);
+                    clearInterval(timer);
                     if (lastTimer) updateTimerState(TimerStatus.finish);
 
                     return 0;
@@ -70,20 +73,18 @@ export default function RoomTimerComp({
                 return newTime;
             });
         }, 1000);
-        return int;
-    };
 
-    // useEffect(() => {
-    //     // if (isActive) {
-    //     //     setTimer(interval());
-    //     // } else {
-    //     //     clearInterval(timer);
-    //     // }
+    useEffect(() => {
+        if (isActive) {
+            setTimer(interval());
+        } else {
+            clearInterval(timer);
+        }
 
-    //     return () => {
-    //         clearInterval(interval());
-    //     };
-    // }, [isActive]);
+        return () => {
+            clearInterval(interval());
+        };
+    }, [isActive]);
 
     useEffect(() => {
         if (autoStart && activeTimer) {
@@ -95,27 +96,29 @@ export default function RoomTimerComp({
 
     useEffect(() => {
         if (
-            _timer?.state === TimerStatus.start &&
+            roomTimer?.state === TimerStatus.start &&
             !isActive &&
-            _timer?.activeTimer === timerId &&
+            roomTimer?.activeTimer === timerId &&
             !isMasterTimer
         ) {
             console.log(
-                `start timer ${timerId} - Active: ${_timer?.activeTimer} - Master: ${isMasterTimer}`,
+                `start timer ${timerId} - Active: ${roomTimer?.activeTimer} - Master: ${isMasterTimer}`,
             );
             startTimer();
-        } else if (_timer?.state === TimerStatus.pause) {
+        } else if (roomTimer?.state === TimerStatus.pause) {
             pauseTimer();
-        } else if (_timer?.state === TimerStatus.finish) {
+        } else if (roomTimer?.state === TimerStatus.finish) {
             stopAndResetTimer();
         }
-    }, [_timer?.state]);
+    }, [roomTimer?.state]);
 
     // useEffect(() => {
-    //     if (_timer?.timers) {
+    //     if (roomTimer?.timers) {
     //         //@ts-ignore
     //         const newTime = getInitTime(timers, timerId)
+           
 
+          
     //         if (newTime !== undefined) {
     //             setInitTime(newTime);
     //             setTimeLeft(newTime);
@@ -123,7 +126,7 @@ export default function RoomTimerComp({
     //             setSeconds(getMinutesAndSeconds(newTime).seconds);
     //         }
     //     }
-    // }, [_timer?.timers]);
+    // }, [timers?.timers]);
 
     const stopAndResetTimer = () => {
         setIsActive(false);
@@ -152,6 +155,8 @@ export default function RoomTimerComp({
         updateTimerState(TimerStatus.finish);
     }
 
+
+
     return (
         <div className="roomsWrapper">
             <div className="roomsWrapper__timer">
@@ -166,7 +171,7 @@ export default function RoomTimerComp({
                     <TimerIcon percent={percent} />
                 </div>
                 {timerAdjustment ? (
-                    <SetTimer
+                    <SetTimerComp
                         statementId={statement.statementId}
                         roomNumber={roomNumber}
                         timerId={timerId}
@@ -228,20 +233,5 @@ export default function RoomTimerComp({
         } catch (error) {
             console.error(error);
         }
-    }
-}
-
-function getInitTime(timers: RoomTimer | null, timerId: number): number {
-    try {
-        if (!timers?.timers) return 1000 * 90;
-
-        //@ts-ignore
-        const initTime = timers?.timers[timerId].initTime;
-
-        return initTime;
-    } catch (error) {
-        console.error(error);
-
-        return 1000 * 90;
     }
 }

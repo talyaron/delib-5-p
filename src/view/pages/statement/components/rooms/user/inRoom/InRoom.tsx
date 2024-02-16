@@ -5,7 +5,10 @@ import { Participant, RoomTimer, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Redux
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../../../functions/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // Styles
@@ -16,6 +19,7 @@ import Text from "../../../../../../components/text/Text";
 import RoomTimers from "../../timer/RoomTimers";
 import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
+import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
 
 interface Props {
     statement: Statement;
@@ -25,21 +29,22 @@ const InRoom: FC<Props> = ({ statement }) => {
     const userTopic: Participant | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
+    const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
 
-    const [timers, setTimers] = useState<RoomTimer[]>([]);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        let unsub:Unsubscribe = () => {};
+        let unsub: Unsubscribe = () => {};
         if (userTopic?.roomNumber) {
             unsub = listenToRoomTimers(
                 statement.statementId,
                 userTopic?.roomNumber,
-                setTimers,
+                dispatch,
             );
         }
-        
-return () => {
+
+        return () => {
             unsub();
         };
     }, [userTopic?.roomNumber]);

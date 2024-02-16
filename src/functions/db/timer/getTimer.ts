@@ -12,7 +12,7 @@ import { Unsubscribe } from "@firebase/util";
 import { updateTimerSettingDB } from "./setTimer";
 import { z } from "zod";
 import { getSetTimerId } from "../../general/helpers";
-import { setSetTimer } from "../../../model/timers/timersSlice";
+import { setRoomTimers, setSetTimer } from "../../../model/timers/timersSlice";
 
 export async function getSetTimersDB(
     statementId: string,
@@ -58,25 +58,31 @@ export async function getSetTimersDB(
 export function listenToRoomTimers(
     statementId: string,
     roomNumber: number | undefined,
-    setTimers: React.Dispatch<React.SetStateAction<RoomTimer[]>>,
+    dispatch: React.Dispatch<any>,
 ): Unsubscribe {
     try {
-     
+        if (!statementId) throw new Error("Missing statementId");
         if (!roomNumber) throw new Error("Missing roomNumber");
 
         const timersRef = collection(DB, Collections.timersRooms);
-        const q = query(timersRef, where("statementId", "==", statementId), where("roomNumber", "==", roomNumber));
+        const q = query(
+            timersRef,
+            where("statementId", "==", statementId),
+            where("roomNumber", "==", roomNumber),
+        );
 
         return onSnapshot(q, (roomTimersDB) => {
             try {
-                const timers:RoomTimer[] = roomTimersDB.docs.map(roomTimer=>roomTimer.data() as RoomTimer);
+                const timers: RoomTimer[] = roomTimersDB.docs.map(
+                    (roomTimer) => roomTimer.data() as RoomTimer,
+                );
 
-              z.array(RoomTimerSchema).parse(timers);
-                
-                setTimers(timers);
+                z.array(RoomTimerSchema).parse(timers);
+
+                dispatch(setRoomTimers(timers));
             } catch (error) {
                 console.error(error);
-                setTimers([]);
+                dispatch(setRoomTimers([]));
             }
         });
     } catch (error) {
