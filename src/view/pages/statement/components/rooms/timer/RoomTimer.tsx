@@ -10,7 +10,10 @@ import StopIcon from "../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
 import { RoomTimer, TimerStatus } from "delib-npm";
 import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
-import { setTimersStatusDB, startNextTimer } from "../../../../../../functions/db/timer/setTimer";
+import {
+    setTimersStatusDB,
+    startNextTimer,
+} from "../../../../../../functions/db/timer/setTimer";
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 import { selectTimerByTimerId } from "../../../../../../model/timers/timersSlice";
 
@@ -23,8 +26,7 @@ export default function Timer({
     roomTimer,
     isActiveTimer,
 }: Props): JSX.Element {
-    
-    const storeTimer: RoomTimer|undefined = useAppSelector(
+    const storeTimer: RoomTimer | undefined = useAppSelector(
         selectTimerByTimerId(roomTimer.roomTimerId),
     );
 
@@ -53,8 +55,8 @@ export default function Timer({
                     clearInterval(timer);
                     setTimersStatusDB(roomTimer, TimerStatus.finish);
                     startNextTimer(roomTimer);
-                    
-return 0;
+
+                    return 0;
                 }
 
                 setMinutes(getMinutesAndSeconds(newTime).minutes);
@@ -66,9 +68,7 @@ return 0;
 
     useEffect(() => {
         if (isActive) {
-            // setTimer(interval());
-            const newTimer = interval() as unknown as number;
-            setTimer(newTimer);
+            setTimer(interval());
         } else {
             clearInterval(timer);
         }
@@ -89,7 +89,7 @@ return 0;
         } else if (storeTimer?.state === TimerStatus.finish) {
             stopAndResetTimer();
         }
-    },[storeTimer?.state])
+    }, [storeTimer?.state]);
 
     const stopAndResetTimer = () => {
         setIsActive(false);

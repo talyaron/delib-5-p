@@ -12,7 +12,7 @@ import {
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // // Styles
-import  "./inRoom.scss";
+import styles from "./InRoom.module.css";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -77,7 +77,6 @@ const InRoom: FC<Props> = ({ statement }) => {
                     )}
                 </div>
                 <RoomTimers
-
                     roomNumber={userTopic?.roomNumber}
                     timers={timers}
                 />
