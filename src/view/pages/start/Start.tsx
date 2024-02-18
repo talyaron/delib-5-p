@@ -7,7 +7,6 @@ import { getIntialLocationSessionStorage } from "../../../functions/general/help
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // Redux
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
@@ -29,15 +28,12 @@ import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 const Start = () => {
     const navigate = useNavigate();
-    const { i18n, t } = useTranslation();
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
     const direction = useDirection();
 
-    const { languageData } = useLanguage();
-
-    console.log(languageData.Add);
+    const { languageData, changeLanguage } = useLanguage();
 
     useEffect(() => {
         if (user) {
@@ -52,9 +48,11 @@ const Start = () => {
     return (
         <div className="splashPage">
             <div className={styles.h1}>
-                {t("Delib")} <span className={styles.number}>5</span>
+                {languageData["Delib"]} <span className={styles.number}>5</span>
             </div>
-            <div className={styles.h2}>{t("Creating Agreements")}</div>
+            <div className={styles.h2}>
+                {languageData["Creating Agreements"]}
+            </div>
             <img
                 className={styles.logo}
                 src={Logo}
@@ -68,7 +66,7 @@ const Start = () => {
                 defaultValue={savedLang || "he"}
                 onChange={(e) => {
                     const lang = e.target.value;
-                    i18n.changeLanguage(lang);
+                    changeLanguage(lang);
                     if (lang === "he" || lang === "ar") {
                         document.body.style.direction = "rtl";
                     } else {
@@ -89,7 +87,7 @@ const Start = () => {
                 className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
             >
-                {t("Login with a temporary name")}{" "}
+                {languageData["Login with a temporary name"]}{" "}
                 <img
                     src={direction === "row" ? moreRight : moreLeft}
                     alt="login anonymously"
@@ -101,7 +99,7 @@ const Start = () => {
                     alt="login anonymously"
                 />
                 <img src={googleLogo} alt="login with google" />
-                {t("Connect with Google")}
+                {languageData["Connect with Google"]}
             </button>
 
             <a
@@ -113,13 +111,15 @@ const Start = () => {
                 }}
             >
                 <footer className={styles.ddi}>
-                    {t("From the Institute for Deliberative Democracy")}
+                    {
+                        languageData[
+                            "From the Institute for Deliberative Democracy"
+                        ]
+                    }
                 </footer>
             </a>
 
-            {showNameModul ? (
-                <EnterName setShowNameModul={setShowNameModul} />
-            ) : null}
+            {showNameModul ?? <EnterName setShowNameModul={setShowNameModul} />}
         </div>
     );
 };

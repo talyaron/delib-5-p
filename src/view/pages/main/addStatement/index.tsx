@@ -1,15 +1,16 @@
 // Third party imports
 import { Link } from "react-router-dom";
-import { t } from "i18next";
 
 // Custom components
 import StatementSettings from "../../statement/components/settings/StatementSettings";
 import useDirection from "../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import BackArrowIcon from "../../../components/icons/BackArrowIcon";
+import { useLanguage } from "../../../../functions/hooks/useLanguages";
 
 export const AddStatement = () => {
     const direction = useDirection();
+    const { languageData } = useLanguage();
 
     return (
         <ScreenSlide className="page slide-out">
@@ -29,7 +30,7 @@ export const AddStatement = () => {
                     {" "}
                     <BackArrowIcon color="black" />
                 </Link>
-                <h1>{t("Add New Group")}</h1>
+                <h1>{languageData["Add New Group"]}</h1>
                 <span></span>
             </div>
             <StatementSettings />

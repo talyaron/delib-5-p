@@ -20,7 +20,6 @@ import {
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
-import { t } from "i18next";
 
 // Hooks
 import useStatementColor, {
@@ -37,6 +36,7 @@ import StatementChatMore from "../../chat/components/StatementChatMore";
 import SetEdit from "../../../../../components/edit/SetEdit";
 import Modal from "../../../../../components/modal/Modal";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
@@ -53,6 +53,7 @@ const StatementEvaluationCard: FC<Props> = ({
     // Hooks
     const navigate = useNavigate();
     const direction = useDirection();
+    const { languageData } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -137,7 +138,7 @@ const StatementEvaluationCard: FC<Props> = ({
                     {_isAuthorized && (
                         <CardMenu isMe={isRtl}>
                             <span onClick={() => setEdit(true)}>
-                                {t("Edit Text")}
+                                {languageData["Edit Text"]}
                             </span>
                             <SetEdit
                                 isAuthrized={isAuthorized(
@@ -152,7 +153,7 @@ const StatementEvaluationCard: FC<Props> = ({
                             <StatementChatSetOption
                                 parentStatement={parentStatement}
                                 statement={statement}
-                                text={t("Remove Option")}
+                                text={languageData["Remove Option"]}
                             />
                         </CardMenu>
                     )}
@@ -168,10 +169,12 @@ const StatementEvaluationCard: FC<Props> = ({
             )}
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
-                {parentStatement.hasChildren && <AddSubQuestion
-                    statement={statement}
-                    setShowModal={setShowModal}
-                />}
+                {parentStatement.hasChildren && (
+                    <AddSubQuestion
+                        statement={statement}
+                        setShowModal={setShowModal}
+                    />
+                )}
             </div>
             {showModal && (
                 <Modal>

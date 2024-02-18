@@ -9,13 +9,13 @@ import { statementSubscriptionSelector } from "../../../../../../model/statement
 // Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm";
 import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
 
 // Redux
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 
 // Helpers
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
@@ -26,6 +26,7 @@ interface Props {
 const StatementChatMore: FC<Props> = ({ statement }) => {
     // Hooks
     const navigate = useNavigate();
+    const { languageData } = useLanguage();
 
     // Redux store
     const statementSubscription: StatementSubscription | undefined =
@@ -40,7 +41,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     const messageToDisplay = statement.lastMessage
         ? statementTitleToDisplay(statement.lastMessage, 20).shortVersion
-        : t("Conversations");
+        : languageData["Conversations"];
 
     return (
         <div

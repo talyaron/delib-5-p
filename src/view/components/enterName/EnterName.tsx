@@ -1,8 +1,5 @@
 import React, { FC, useState } from "react";
 
-// Third party libs
-import { t } from "i18next";
-
 // Styles
 import styles from "./enterName.module.scss";
 
@@ -11,6 +8,7 @@ import Modal from "../modal/Modal";
 
 // Functions
 import { signAnonymously } from "../../../functions/db/auth";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +17,7 @@ interface Props {
 const EnterName: FC<Props> = ({ setShowNameModul }) => {
     const [displayName, setDisplayName] = useState<string | null>(null);
     const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
+    const { languageData } = useLanguage();
 
     function handleSetName(ev: any) {
         setDisplayName(ev.target.value);
@@ -47,7 +46,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     onKeyUp={handleSetName}
                     type="text"
                     name="displayName"
-                    placeholder={t("Nickname")}
+                    placeholder={languageData["Nickname"]}
                     autoFocus={true}
                     autoComplete="off"
                 />
@@ -61,14 +60,14 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                                 : "btn btn--inactive"
                         }
                     >
-                        {t("Start")}
+                        {languageData["Start"]}
                     </button>
                     <div
                         data-cy="anonymous-cancel-btn"
                         className="btn btn--cancel"
                         onClick={() => setShowNameModul(false)}
                     >
-                        {t("Cancel")}
+                        {languageData["Cancel"]}
                     </div>
                 </div>
             </div>

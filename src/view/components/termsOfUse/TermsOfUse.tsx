@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 import Modal from "../modal/Modal";
 
 interface Props {
@@ -7,24 +7,32 @@ interface Props {
 }
 
 export default function TermsOfUse({ handleAgreement, agreement }: Props) {
+    const { languageData } = useLanguage();
+
     return (
         <Modal>
             <div className="termsOfUse" data-cy="termsOfUse">
-                <h1 className="termsOfUse__title">{t("terms of use")}</h1>
-                <p>{t(agreement)}</p>
+                <h1 className="termsOfUse__title">
+                    {languageData["terms of use"]}
+                </h1>
+                <p>{languageData[agreement]}</p>
                 <div className="btns">
                     <button
                         className="btn btn--agree"
-                        onClick={() => handleAgreement(true, t(agreement))}
+                        onClick={() =>
+                            handleAgreement(true, languageData[agreement])
+                        }
                     >
-                        {t("Agree")}
+                        {languageData["Agree"]}
                     </button>
                     <button
                         data-cy="agree-btn"
                         className="btn btn--disagree"
-                        onClick={() => handleAgreement(false, t(agreement))}
+                        onClick={() =>
+                            handleAgreement(false, languageData[agreement])
+                        }
                     >
-                        {t("Dont agree")}
+                        {languageData["Dont agree"]}
                     </button>
                 </div>
             </div>

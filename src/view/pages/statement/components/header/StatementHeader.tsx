@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 
 // Third party imports
 import { Screen, Statement } from "delib-npm";
-import { t } from "i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
@@ -31,6 +30,7 @@ import useStatementColor from "../../../../../functions/hooks/useStatementColor"
 import useDirection from "../../../../../functions/hooks/useDirection";
 import useNotificationPermission from "../../../../../functions/hooks/useNotificationPermission";
 import useToken from "../../../../../functions/hooks/useToken";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 interface Props {
     title: string;
@@ -55,6 +55,7 @@ const StatementHeader: FC<Props> = ({
     const token = useToken();
     const headerColor = useStatementColor(statement?.statementType || "");
     const permission = useNotificationPermission(token);
+    const { languageData } = useLanguage();
 
     // Redux Store
     const user = store.getState().user.user;
@@ -70,8 +71,8 @@ const StatementHeader: FC<Props> = ({
         const baseUrl = window.location.origin;
 
         const shareData = {
-            title: t("Delib: We create agreements together"),
-            text: t("Invited:") + statement?.statement,
+            title: languageData["Delib: We create agreements together"],
+            text: languageData["Invited:"] + statement?.statement,
             url: `${baseUrl}${pathname}`,
         };
         navigator.share(shareData);

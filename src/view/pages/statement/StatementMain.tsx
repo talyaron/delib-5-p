@@ -4,7 +4,6 @@ import { createSelector } from "reselect";
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
-import { t } from "i18next";
 
 // firestore
 import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
@@ -40,15 +39,18 @@ import { availableScreen } from "./StatementCont";
 import { useIsAuthorized } from "../../../functions/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 const StatementMain: FC = () => {
     // Hooks
     const { statementId } = useParams();
     const page = useParams().page as Screen;
     const navigate = useNavigate();
+    const { languageData } = useLanguage();
 
     const { error, isAuthorized, loading, statementSubscription, statement } =
         useIsAuthorized(statementId);
+
     // Redux store
     const dispatch = useAppDispatch();
     const user = useSelector(userSelector);
@@ -72,7 +74,7 @@ const StatementMain: FC = () => {
 
     // Use states
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(t("Group"));
+    const [title, setTitle] = useState<string>(languageData["Group"]);
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
     const [askNotifications, setAskNotifications] = useState(false);
 
