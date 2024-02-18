@@ -22,6 +22,7 @@
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@reduxjs/toolkit": "^1.9.5",
+        "d3-path": "^3.1.0",
         "delib-npm": "^1.2.9",
         "eslint-plugin-import": "^2.29.1",
         "firebase": "^10.0.0",
