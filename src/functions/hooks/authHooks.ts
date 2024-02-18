@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import { store } from "../../model/store";
 import { Role, Statement, StatementSubscription } from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
-import { select } from "d3-selection";
-import { statementSelector, statementSubscriptionSelector, statementsSubscriptionsSelector } from "../../model/statements/statementsSlice";
+import { statementSelector, statementSubscriptionSelector } from "../../model/statements/statementsSlice";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -19,17 +18,19 @@ const useAuth = () => {
 
 export default useAuth;
 
-export function useIsAuthorized(statementId: string): {
+export function useIsAuthorized(statementId: string|undefined): {
     isAuthorized: boolean;
     loading: boolean;
     statementSubscription:StatementSubscription|undefined,
     statement:Statement|undefined
+    error:boolean
 } {
 const allowedRoles = [Role.admin, Role.parentAdmin,Role.systemAdmin, Role.statementCreator, Role.member];
     const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
     const statement = useAppSelector(statementSelector(statementId));
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
  
     
     useEffect(() => {
@@ -38,10 +39,11 @@ const allowedRoles = [Role.admin, Role.parentAdmin,Role.systemAdmin, Role.statem
                 setIsAuthorized(true);
             } else {
                 setIsAuthorized(false);
+                setError(true);
             }
             setLoading(false);
         }
     }, [statementSubscription, statement]);
 
-    return { isAuthorized, loading,statementSubscription,statement };
+    return { isAuthorized, loading,statementSubscription,statement, error };
 }
