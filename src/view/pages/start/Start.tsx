@@ -23,6 +23,7 @@ import moreLeft from "../../../assets/icons/moreLeft.svg";
 import { LANGUAGES } from "../../../constants/Languages";
 import EnterName from "../../components/enterName/EnterName";
 import useDirection from "../../../functions/hooks/useDirection";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 // import EnterName from './EnterName';
 
@@ -32,7 +33,11 @@ const Start = () => {
     const user = useAppSelector(userSelector);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
-    const direction = useDirection() === "row" ? "row" : "row-reverse";
+    const direction = useDirection();
+
+    const { languageData } = useLanguage();
+
+    console.log(languageData.Add);
 
     useEffect(() => {
         if (user) {
@@ -79,9 +84,7 @@ const Start = () => {
                 ))}
             </select>
             <div
-            
-                //@ts-ignore
-                style={{ direction }}
+                style={{ flexDirection: direction }}
                 data-cy="anonymous-login"
                 className={styles.anonymous}
                 onClick={() => setShowNameModul(true)}
