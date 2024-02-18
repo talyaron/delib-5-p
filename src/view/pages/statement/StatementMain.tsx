@@ -21,11 +21,7 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import {
-    statementNotificationSelector,
-    statementSelector,
-    statementSubscriptionSelector,
-} from "../../../model/statements/statementsSlice";
+import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 import { RootState } from "../../../model/store";
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
