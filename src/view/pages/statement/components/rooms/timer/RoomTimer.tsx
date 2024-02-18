@@ -39,7 +39,7 @@ export default function Timer({
         getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    const [timer, setTimer] = useState<NodeJS.Timer>();
+    const [timer, setTimer] = useState<any>();
 
     const percent = (timeLeft / initTime) * 100;
 
