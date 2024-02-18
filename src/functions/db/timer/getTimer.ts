@@ -23,6 +23,7 @@ export async function getSetTimersDB(
         const q = query(timersRef, where("statementId", "==", statementId));
         const timersDB = await getDocs(q);
 
+        //if no timers exists, create them...
         if (timersDB.size === 0) {
             initialTimerArray.forEach(async (timer) => {
                 updateTimerSettingDB({

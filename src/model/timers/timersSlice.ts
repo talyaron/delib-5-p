@@ -77,5 +77,6 @@ export const selectStatementSettingTimers =
         );
 
 export const selectRoomTimers = (state: RootState) => state.timers.roomTimers;
+export const selectTimerByTimerId = (roomTimerId: string) => (state: RootState) => state.timers.roomTimers.find((timer: RoomTimer | undefined) => timer?.roomTimerId === roomTimerId);
 
 export default timersSlice.reducer;

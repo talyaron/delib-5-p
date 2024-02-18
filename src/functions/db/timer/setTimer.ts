@@ -3,6 +3,7 @@ import {
     collection,
     deleteDoc,
     doc,
+    getDoc,
     getDocs,
     query,
     setDoc,
@@ -245,6 +246,21 @@ export async function initilizeTimersDB({
                 await setDoc(timerRef, roomTimer, { merge: true });
             });
         });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+export async function startNextTimer(roomTimer:RoomTimer): Promise<void> {
+    try {
+        const currentTimerOrder = roomTimer.order;
+        const nextTimerOrder = currentTimerOrder + 1;
+        const nextTimerRef = doc(DB, Collections.timersRooms, getRoomTimerId(roomTimer.statementId, roomTimer.roomNumber, nextTimerOrder));
+        const nextTimer = await getDoc(nextTimerRef);
+        if(nextTimer.exists()){
+            await setTimersStatusDB(nextTimer.data() as RoomTimer, TimerStatus.start);
+        }
     } catch (error) {
         console.error(error);
     }
