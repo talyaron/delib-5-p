@@ -11,10 +11,12 @@
     align-items: center;
     flex-direction: column;
     padding: 0 2rem;
+
     &__box {
         background-color: var(--statementBackground);
-        border-radius: 10px;
-        box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.66);
+        border-radius: 6px;
+        box-shadow: 0px 20px 50px 0px #21253633;
+        box-shadow: 0px -4px 40px 0px #2125364D;
         height: fit-content;
         width: fit-content;
         display: flex;

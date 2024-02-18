@@ -4,38 +4,36 @@ import styles from "../setTimers.module.scss";
 import {
     fromFourDigitsToMillisecons,
     fromMilliseconsToFourDigits,
-} from "./AdminTimerCont";
+} from "./SetTimerCont";
 
 //images
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
+import { deleteTimerSettingDB } from "../../../../../../../../functions/db/timer/setTimer";
+import { useAppDispatch } from "../../../../../../../../functions/hooks/reduxHooks";
 import {
-    deleteTimerSettingDB,
-    updateTimerSettingDB,
-} from "../../../../../../../../functions/db/timer/setTimer";
+    setSetTimerTime,
+    setSetTimerTitle,
+} from "../../../../../../../../model/timers/timersSlice";
+
 // import editIcon from "../../../../../../../../assets/icons/edit2.svg";
 
 interface TimerProps {
-    statementId: string;
-    timer: SetTimer;
+    setTimer: SetTimer;
     index: number;
-    timers: SetTimer[];
-    setTimers: React.Dispatch<React.SetStateAction<SetTimer[]>>;
 }
 
-function AdminTimer({
-    statementId,
-    timer,
-    index,
-    timers,
-    setTimers,
-}: TimerProps) {
+function SetSetTimerComp({ setTimer, index }: TimerProps) {
     try {
-        if (!statementId) throw new Error("statementId is required");
+        if (!setTimer) return null;
+        if (!setTimer.statementId) throw new Error("statementId is required");
+
+        const dispatch = useAppDispatch();
+
         const [timeDigits, setTimeDigits] = useState<number[]>(
-            fromMilliseconsToFourDigits(timer.time || 1000 * 90),
+            fromMilliseconsToFourDigits(setTimer.time || 1000 * 90),
         );
-        const [_name, setName] = useState<string>(
-            timer.name ? timer.name : "Discussion",
+        const [title, setTitle] = useState<string>(
+            setTimer.title ? setTimer.title : "Discussion",
         );
 
         return (
@@ -44,7 +42,7 @@ function AdminTimer({
                     <label>Name of Timer</label>
                     <input
                         type="text"
-                        defaultValue={_name}
+                        defaultValue={title}
                         onInput={handleUpdateName}
                     />
                 </div>
@@ -97,7 +95,9 @@ function AdminTimer({
                         maxLength={1}
                         tabIndex={index * 4 + 3}
                         onKeyUp={handleInputDigit}
-                        onInput={handleInputDigit}
+
+                        // onInput={handleInputDigit}
+                        onChange={handleInputDigit}
                         defaultValue={timeDigits[3]}
                     />
                 </div>
@@ -105,7 +105,7 @@ function AdminTimer({
                     <img
                         src={deleteIcon}
                         alt="delete"
-                        onClick={() => handleDeleteTimer(timer.timerId)}
+                        onClick={() => handleDeleteTimer(setTimer.timerId)}
                         className="clickable"
                     />
                 </div>
@@ -120,11 +120,10 @@ function AdminTimer({
                 if (!isDelete) return;
 
                 deleteTimerSettingDB(timerId);
-                const newTimers = [...timers].filter(
-                    (t) => t.timerId !== timerId,
-                );
 
-                setTimers(newTimers);
+                // const newTimers = [...timers].filter(
+                //     (t) => t.timerId !== timerId,
+                // );
             } catch (error) {
                 console.error(error);
             }
@@ -132,14 +131,14 @@ function AdminTimer({
 
         function handleUpdateName(ev: any) {
             try {
-                const newName = ev.target.value;
-                setName(newName);
-                updateTimerSettingDB({
-                    statementId,
-                    time: timer.time,
-                    name: newName,
-                    order: timer.order,
-                });
+                const newTitle = ev.target.value;
+                setTitle(newTitle);
+                dispatch(
+                    setSetTimerTitle({
+                        timerId: setTimer.timerId,
+                        title: newTitle,
+                    }),
+                );
             } catch (error) {
                 console.error(error);
             }
@@ -157,13 +156,16 @@ function AdminTimer({
                 } else if (ev.type === "keyup" && !isNaN(parseInt(ev.key))) {
                     digit = parseInt(ev.key);
                 }
+
                 if (digit === false) {
                     return false;
                 }
-                return digit;
+                
+return digit;
             } catch (error) {
                 console.error(error);
-                return false;
+                
+return false;
             }
         }
 
@@ -172,12 +174,21 @@ function AdminTimer({
             const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
             if (isTab) {
                 ev.target.valueAsNumber = parseInt(ev.target.value);
-                return;
+                
+return;
             }
 
             let digit = getKeyNumber(ev);
+
             if (digit === false) {
-                return;
+                digit = ev.target.valueAsNumber;
+                const _digits = getNewForDigits();
+                const newTime = fromFourDigitsToMillisecons(_digits);
+                dispatch(
+                    setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
+                );
+                
+return;
             }
             const max = parseInt(ev.target.max);
             const min = parseInt(ev.target.min);
@@ -186,21 +197,15 @@ function AdminTimer({
             if (digit < min) digit = min;
 
             ev.target.valueAsNumber = digit;
-            const innerindex = ev.target.dataset.innerindex;
-            const _digit: number = digit;
-            const _digits: number[] = timeDigits.map((d, i) =>
-                i === parseInt(innerindex) ? _digit : d,
-            );
-
+            const _digits = getNewForDigits();
 
             setTimeDigits(_digits);
             const newTime = fromFourDigitsToMillisecons(_digits);
-            updateTimerSettingDB({
-                statementId,
-                time: newTime,
-                name: _name,
-                order: timer.order,
-            });
+            console.log("time", newTime);
+            dispatch(
+                setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
+            );
+
             const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
             const nextInput = document.querySelector(
                 `[tabindex="${tabIndex + 1}"]`,
@@ -210,12 +215,21 @@ function AdminTimer({
                 nextInput.focus();
             }
 
-            
+            function getNewForDigits() {
+                const innerindex = ev.target.dataset.innerindex;
+                const _digit: number = digit || ev.target.valueAsNumber;
+                const _digits: number[] = timeDigits.map((d, i) =>
+                    i === parseInt(innerindex) ? _digit : d,
+                );
+                
+return _digits;
+            }
         }
     } catch (error) {
         console.error(error);
-        return null;
+        
+return null;
     }
 }
 
-export default AdminTimer;
+export default SetSetTimerComp;

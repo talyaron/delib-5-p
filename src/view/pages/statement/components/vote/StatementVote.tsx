@@ -70,17 +70,16 @@ const StatementVote: FC<Props> = ({
                         <p
                             style={{
                                 maxWidth: "50vw",
-                                margin: "0 auto",
-                                display: "flex",
-                                alignItems: "center",
+                                margin: " 2rem auto",
+
+                                // display: "flex",
+                                // alignItems: "center",
+                                color: "#41A1DA",
+                                fontFamily: "Patrick Hand",
                             }}
                             className="hand"
                         >
-                            <HandsIcon
-                                color1="#6BBDED"
-                                color2="#ead55f"
-                                color3="#F76E9F"
-                            />{" "}
+                            <HandsIcon/>{" "}
                             {totalVotes}
                         </p>
                     </div>

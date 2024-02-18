@@ -8,55 +8,38 @@ import PlayIcon from "../../../../../components/icons/PlayIcon";
 import PauseIcon from "../../../../../components/icons/PauseIcon";
 import StopIcon from "../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
-import { RoomTimer, Statement, TimerStatus } from "delib-npm";
-import { setTimersStateDB } from "../../../../../../functions/db/timer/setTimer";
-import { store } from "../../../../../../model/store";
-import SetTimer from "./setTimer/SetTimerComp";
+import { RoomTimer, TimerStatus } from "delib-npm";
+import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
+import { setTimersStatusDB, startNextTimer } from "../../../../../../functions/db/timer/setTimer";
+import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { selectTimerByTimerId } from "../../../../../../model/timers/timersSlice";
 
 interface Props {
-    statement: Statement;
-    roomNumber: number;
-    timerId: number;
-    timers: RoomTimer | null;
-    title: string;
-    activeTimer: boolean;
-    nextTimer: () => void;
-    autoStart?: boolean;
-    lastTimer?: boolean;
+    roomTimer: RoomTimer;
+    isActiveTimer: boolean;
 }
 
 export default function Timer({
-    statement,
-    roomNumber,
-    timerId,
-    timers,
-    title,
-    activeTimer,
-    nextTimer,
-    autoStart,
-    lastTimer,
+    roomTimer,
+    isActiveTimer,
 }: Props): JSX.Element {
-    const userId = store.getState().user.user?.uid;
+    
+    const storeTimer: RoomTimer|undefined = useAppSelector(
+        selectTimerByTimerId(roomTimer.roomTimerId),
+    );
 
     // useState
-    const [initTime, setInitTime] = useState<number>(
-        getInitTime(timers, timerId),
-    ); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
-    const [timeLeft, setTimeLeft] = useState(getInitTime(timers, timerId));
+    const [initTime, setInitTime] = useState<number>(roomTimer.time); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
+    const [timeLeft, setTimeLeft] = useState(roomTimer.time);
     const [timerAdjustment, setTimerAdjustment] = useState<boolean>(false);
     const [minutes, setMinutes] = useState(
-        getMinutesAndSeconds(getInitTime(timers, timerId)).minutes,
+        getMinutesAndSeconds(roomTimer.time).minutes,
     );
     const [seconds, setSeconds] = useState(
-        getMinutesAndSeconds(getInitTime(timers, timerId)).seconds,
+        getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-
-    // const [timer, setTimer] = useState<NodeJS.Timer>();
-    const [timer, setTimer] = useState<number | undefined>();
-
-    const isMasterTimer =
-        timers?.initiatorId === userId || timers?.state === TimerStatus.finish;
+    const [timer, setTimer] = useState<NodeJS.Timer>();
 
     const percent = (timeLeft / initTime) * 100;
 
@@ -67,11 +50,11 @@ export default function Timer({
                 if (newTime < 0) {
                     setIsActive(false);
                     initilizeTimer();
-                    nextTimer();
                     clearInterval(timer);
-                    if (lastTimer) updateTimerState(TimerStatus.finish);
-
-                    return 0;
+                    setTimersStatusDB(roomTimer, TimerStatus.finish);
+                    startNextTimer(roomTimer);
+                    
+return 0;
                 }
 
                 setMinutes(getMinutesAndSeconds(newTime).minutes);
@@ -99,76 +82,41 @@ export default function Timer({
     }, [isActive]);
 
     useEffect(() => {
-        if (autoStart && activeTimer) {
-            setTimeout(() => {
-                startTimer();
-            }, 1000);
-        }
-    }, [activeTimer]);
-
-    useEffect(() => {
-        if (
-            timers?.state === TimerStatus.start &&
-            !isActive &&
-            timers?.activeTimer === timerId &&
-            !isMasterTimer
-        ) {
-            console.log(
-                `start timer ${timerId} - Active: ${timers?.activeTimer} - Master: ${isMasterTimer}`,
-            );
+        if (storeTimer?.state === TimerStatus.start) {
             startTimer();
-        } else if (timers?.state === TimerStatus.pause) {
+        } else if (storeTimer?.state === TimerStatus.pause) {
             pauseTimer();
-        } else if (timers?.state === TimerStatus.finish) {
+        } else if (storeTimer?.state === TimerStatus.finish) {
             stopAndResetTimer();
         }
-    }, [timers?.state]);
-
-    useEffect(() => {
-        if (timers?.timers) {
-            //@ts-ignore
-            const newTime = getInitTime(timers, timerId);
-
-            if (newTime !== undefined) {
-                setInitTime(newTime);
-                setTimeLeft(newTime);
-                setMinutes(getMinutesAndSeconds(newTime).minutes);
-                setSeconds(getMinutesAndSeconds(newTime).seconds);
-            }
-        }
-    }, [timers?.timers]);
+    },[storeTimer?.state])
 
     const stopAndResetTimer = () => {
         setIsActive(false);
         setTimeLeft(initTime);
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
-
-        updateTimerState(TimerStatus.finish);
     };
     const startTimer = (): void => {
         setIsActive(true);
 
         //send a message to the server that the timer has started
-        updateTimerState(TimerStatus.start);
     };
 
     const pauseTimer = () => {
         setIsActive(false);
-        updateTimerState(TimerStatus.pause);
     };
 
     function initilizeTimer() {
         setMinutes(getMinutesAndSeconds(initTime).minutes);
         setSeconds(getMinutesAndSeconds(initTime).seconds);
         setTimeLeft(initTime);
-        updateTimerState(TimerStatus.finish);
     }
 
     return (
         <div className="roomsWrapper">
             <div className="roomsWrapper__timer">
-                <h2>{title}</h2>
+                <h2>{roomTimer.title}</h2>
                 <div
                     style={{
                         display: "flex",
@@ -179,11 +127,8 @@ export default function Timer({
                     <TimerIcon percent={percent} />
                 </div>
                 {timerAdjustment ? (
-                    <SetTimer
-                        statementId={statement.statementId}
-                        roomNumber={roomNumber}
-                        timerId={timerId}
-                        initTime={initTime}
+                    <SetRoomTimerComp
+                        roomTimer={roomTimer}
                         setTimerAdjustment={setTimerAdjustment}
                         setInitTime={setInitTime}
                     />
@@ -195,30 +140,43 @@ export default function Timer({
                         seconds < 10 ? "0" + seconds : seconds
                     }`}</p>
                 )}
-                <div
-                    style={{
-                        opacity: activeTimer && isMasterTimer ? `1` : `.2`,
-                    }}
-                >
+                <div style={{ opacity: isActiveTimer ? "1" : "0.2" }}>
                     {!isActive && (
                         <PlayIcon
                             onClick={() => {
-                                if (activeTimer && isMasterTimer) startTimer();
+                                if (isActiveTimer) {
+                                    startTimer();
+                                    setTimersStatusDB(
+                                        roomTimer,
+                                        TimerStatus.start,
+                                    );
+                                }
                             }}
                         />
                     )}
+
                     {isActive && (
                         <div className="roomsWrapper__timer__time__actions">
                             <StopIcon
                                 onClick={() => {
-                                    if (activeTimer && isMasterTimer)
+                                    if (isActiveTimer) {
                                         stopAndResetTimer();
+                                        setTimersStatusDB(
+                                            roomTimer,
+                                            TimerStatus.finish,
+                                        );
+                                    }
                                 }}
                             />
                             <PauseIcon
                                 onClick={() => {
-                                    if (activeTimer && isMasterTimer)
+                                    if (isActiveTimer) {
                                         pauseTimer();
+                                        setTimersStatusDB(
+                                            roomTimer,
+                                            TimerStatus.pause,
+                                        );
+                                    }
                                 }}
                             />
                         </div>
@@ -227,34 +185,4 @@ export default function Timer({
             </div>
         </div>
     );
-
-    function updateTimerState(newState: TimerStatus) {
-        try {
-            if (isMasterTimer) {
-                setTimersStateDB({
-                    statementId: statement.statementId,
-                    roomNumber,
-                    timerId,
-                    state: newState,
-                });
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-}
-
-function getInitTime(timers: RoomTimer | null, timerId: number): number {
-    try {
-        if (!timers?.timers) return 1000 * 90;
-
-        //@ts-ignore
-        const initTime = timers?.timers[timerId].initTime;
-
-        return initTime;
-    } catch (error) {
-        console.error(error);
-
-        return 1000 * 90;
-    }
 }

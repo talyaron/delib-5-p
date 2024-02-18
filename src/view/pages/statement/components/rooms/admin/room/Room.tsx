@@ -1,15 +1,14 @@
 import { FC } from "react";
 import styles from "./Room.module.scss";
 import Text from "../../../../../../components/text/Text";
-import { Participant } from "delib-npm";
+import { Participant, RoomDivied } from "delib-npm";
 import RoomParticpantBadge from "../../comp/general/RoomParticpantBadge";
 import { t } from "i18next";
-import { RoomAdmin } from "../../../../../../../model/rooms/roomsSlice";
 import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
 import { store } from "../../../../../../../model/store";
 
 interface Props {
-    room: RoomAdmin;
+    room: RoomDivied;
     maxParticipantsPerRoom: number;
 }
 
@@ -31,7 +30,7 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
 
             if (participant.roomNumber === room.roomNumber) return;
 
-            if (room.room.length >= maxParticipantsPerRoom) {
+            if (room.participants.length >= maxParticipantsPerRoom) {
                 alert("room is full");
                 
 return;
@@ -65,7 +64,7 @@ return;
                 <Text text={room.statement.statement} onlyTitle={true} />
             </h4>
             <div className={styles.room__badges}>
-                {room.room.map((participant: Participant) => (
+                {room.participants.map((participant: Participant) => (
                     <RoomParticpantBadge
                         key={participant.participant.uid}
                         participant={participant.participant}

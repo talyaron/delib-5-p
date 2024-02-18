@@ -7,7 +7,7 @@ import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 
 // Third party libraries
-import { RoomsStateSelection, Statement } from "delib-npm";
+import { RoomDivied, RoomsStateSelection, Statement } from "delib-npm";
 import { t } from "i18next";
 
 // Statments functions
@@ -21,13 +21,13 @@ import { setRoomSizeInStatementDB } from "../../../../../../functions/db/stateme
 import _styles from "./admin.module.css";
 
 import { divideIntoTopics } from "./AdminArrangeCont";
-import {
-    RoomAdmin,
-    participantsSelector,
-} from "../../../../../../model/rooms/roomsSlice";
+import { participantsSelector } from "../../../../../../model/rooms/roomsSlice";
 import Room from "./room/Room";
-import { initilizeTimersDB } from "../../../../../../functions/db/timer/setTimer";
-
+import {
+    initilizeTimersDB,
+    updateTimersSettingDB,
+} from "../../../../../../functions/db/timer/setTimer";
+import { selectStatementSettingTimers } from "../../../../../../model/timers/timersSlice";
 
 const styles = _styles as any;
 
@@ -45,11 +45,13 @@ export interface ParticipantInRoom {
     statementId?: string;
 }
 
-
 const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
     const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
     const participants = useAppSelector(
         participantsSelector(statement.statementId),
+    );
+    const timers = useAppSelector(
+        selectStatementSettingTimers(statement.statementId),
     );
 
     const [maxParticipantsPerRoom, setMaxParticipantsPerRoom] =
@@ -60,18 +62,15 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
         maxParticipantsPerRoom,
     );
 
-    function handleDivideIntoRooms() {
+    async function handleDivideIntoRooms() {
         try {
             const { rooms } = divideIntoTopics(
                 participants,
                 maxParticipantsPerRoom,
             );
 
-            // setRoomsAdmin(rooms);
-
             rooms.forEach((room) => {
-                room.room.forEach((participant) => {
-                    // should be room.participants
+                room.participants.forEach((participant) => {
                     const participantInRoom: ParticipantInRoom = {
                         uid: participant.participant.uid,
                         room: room.roomNumber,
@@ -81,10 +80,15 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     };
                     setParticipantInRoomToDB(participantInRoom);
                 });
-                initilizeTimersDB({
-                    statementId: statement.statementId,
-                    roomNumber: room.roomNumber,
-                });
+            });
+
+            //set timers settings to db
+            await updateTimersSettingDB(timers);
+
+            //set rooms timers
+            initilizeTimersDB({
+                statementId: statement.statementId,
+                rooms,
             });
 
             const roomsState = setRooms
@@ -97,7 +101,6 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
             console.error(error);
         }
     }
-
 
     function handleRangeChange(ev: React.ChangeEvent<HTMLInputElement>) {
         setMaxParticipantsPerRoom(Number(ev.target.value));
@@ -174,7 +177,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     <>
                         <h3>{t("Division into rooms")}</h3>
                         <div className={styles.roomWrapper}>
-                            {roomsAdmin.map((room: RoomAdmin) => {
+                            {roomsAdmin.map((room: RoomDivied) => {
                                 return (
                                     <Room
                                         key={room.roomNumber}

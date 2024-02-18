@@ -1,5 +1,4 @@
 import {
-    doc,
     collection,
     getDocs,
     onSnapshot,
@@ -11,30 +10,43 @@ import { DB } from "../config";
 import { initialTimerArray } from "../../../view/pages/statement/components/rooms/admin/setTimers/SetTimersModal";
 import { Unsubscribe } from "@firebase/util";
 import { updateTimerSettingDB } from "./setTimer";
+import { z } from "zod";
+import { getSetTimerId } from "../../general/helpers";
+import { setRoomTimers, setSetTimer } from "../../../model/timers/timersSlice";
 
-export async function getStatementTimersDB(
+export async function getSetTimersDB(
     statementId: string,
+    dispatch: React.Dispatch<any>,
 ): Promise<SetTimer[]> {
     try {
         const timersRef = collection(DB, Collections.timers);
         const q = query(timersRef, where("statementId", "==", statementId));
         const timersDB = await getDocs(q);
 
+        //if no timers exists, create them...
         if (timersDB.size === 0) {
             initialTimerArray.forEach(async (timer) => {
                 updateTimerSettingDB({
                     statementId,
                     time: timer.time,
-                    name: timer.name,
+                    title: timer.title,
                     order: timer.order,
+                    timerId: getSetTimerId(statementId, timer.order),
                 });
             });
-            return initialTimerArray;
+            initialTimerArray.forEach((timer) => {
+                dispatch(setSetTimer(timer));
+            });
+            
+return initialTimerArray;
         }
 
         const timers: SetTimer[] = timersDB.docs.map(
             (doc) => doc.data() as SetTimer,
         );
+        timers.forEach((timer) => {
+            dispatch(setSetTimer(timer));
+        });
 
         return timers;
     } catch (error) {
@@ -48,35 +60,32 @@ export async function getStatementTimersDB(
 export function listenToRoomTimers(
     statementId: string,
     roomNumber: number | undefined,
-    setTimers: React.Dispatch<React.SetStateAction<RoomTimer | null>>,
+    dispatch: React.Dispatch<any>,
 ): Unsubscribe {
     try {
+        if (!statementId) throw new Error("Missing statementId");
         if (!roomNumber) throw new Error("Missing roomNumber");
 
-        const timersRef = doc(
-            DB,
-            Collections.timersRooms,
-            `${statementId}--${roomNumber}`,
+        const timersRef = collection(DB, Collections.timersRooms);
+        const q = query(
+            timersRef,
+            where("statementId", "==", statementId),
+            where("roomNumber", "==", roomNumber),
         );
 
-        return onSnapshot(timersRef, (timerDB) => {
+        return onSnapshot(q, (roomTimersDB) => {
             try {
-                const timers = timerDB.data() as RoomTimer;
+                const timers: RoomTimer[] = roomTimersDB.docs.map(
+                    (roomTimer) => roomTimer.data() as RoomTimer,
+                );
+                console.log(timers, "timers")
 
-                const result = RoomTimerSchema.safeParse(timers);
-                console.log(result.success);
+                z.array(RoomTimerSchema).parse(timers);
 
-                //@ts-ignore
-                if (result.error) console.error(result.error);
-
-                //    if(!success) {
-                // setTimersInitTimeDB({statementId, roomNumber, timerId:1, initTime:90*1000})
-                // setTimersInitTimeDB({statementId, roomNumber, timerId:1, initTime:90*1000})
-                //    }
-                setTimers(timers);
+                dispatch(setRoomTimers(timers));
             } catch (error) {
                 console.error(error);
-                setTimers(null);
+                dispatch(setRoomTimers([]));
             }
         });
     } catch (error) {

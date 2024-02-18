@@ -1,10 +1,11 @@
 .switch {
     background-color: #f5fcff;
     height: 1.85rem;
+    width: 15rem;
     position: relative;
     border-radius: 0.285rem;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     .tag {
         transform: scale(1.05);
         height: 1.85rem;
@@ -16,7 +17,9 @@
         cursor: pointer;
         user-select: none;
         z-index: 4;
-       
+       box-shadow: 0px -2px 6px -5px rgba(177, 170, 218, 0.5);
+       box-shadow: 0px 2px 6px 0px rgba(177, 170, 218, 0.5);
+
     }
     .label {
         border:1px solid #c6c6c6;

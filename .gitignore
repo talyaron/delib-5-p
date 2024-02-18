@@ -32,4 +32,7 @@ dev-dist/
 *.cache
 
 .firebase/
-.env
+firebase.json
+firebase-debug.log
+firebase-debug.log*
+configKey.ts

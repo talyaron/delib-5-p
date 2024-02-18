@@ -28,8 +28,8 @@
             opacity: .7;
 
             &--selected {
-               font-size: 1.1rem;
-                opacity:1;
+                font-size: 1.1rem;
+                opacity: 1;
             }
         }
     }
@@ -152,14 +152,19 @@
         gap: 1rem;
         padding: 0 1rem;
 
+        
+
         &__input {
-            padding: 0.5rem 1rem;
+            padding: 1.2rem 0 1rem 1.5rem;
             resize: none;
             outline: none;
             border: none;
+            color: #232F4A;          
             border-radius: 3rem;
             flex: auto;
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 2px 4px 0px rgba(181, 197, 232, 0.48);
+            box-shadow: 0px -2px 4px 0px rgba(195, 202, 217, 0.5);
+            margin-bottom: 2rem;
         }
 
         @media only screen and (min-width: 600px) {
@@ -169,16 +174,20 @@
 
         &__sendBtnBox {
             width: 4rem;
-            height: 4rem;
+            height: 3.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             position: relative;
             border-radius: 50%;
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 4px 13px -2px #696B8BCC;
             user-select: none;
             cursor: pointer;
+            background-color: #4E88C7;
+            margin-bottom: 2rem;
+
+
             .sendBtn {
                 display: flex;
                 justify-content: center;
@@ -187,7 +196,7 @@
         }
     }
 
-   
+
 }
 
 .bubble {

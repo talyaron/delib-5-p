@@ -12,8 +12,10 @@ interface Props {
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
-    const [setRooms, setSetRooms] = useState<boolean>(true);
-    return (
+ 
+    const [setRooms, setSetRooms] = useState<boolean>((statement.roomsState === "chooseRoom" || statement.roomsState === undefined)?false:true);
+    
+return (
         <>
             <div className={styles.admin}>
                 <p className={styles.title}>{t("Management board")}</p>

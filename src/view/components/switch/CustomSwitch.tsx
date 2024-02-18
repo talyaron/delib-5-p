@@ -19,11 +19,11 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
     const tagPosition =
         document.body.style.direction === "ltr"
             ? {
-                  backgroundColor: `${checked ? "#787FFF" : "#D4D6F8"}`,
+                  backgroundColor: `${checked ? "#4E88C7" : "#D4D6F8"}`,
                   left: checked ? "0%" : "50%",
               }
             : {
-                  backgroundColor: `${checked ? "#787FFF" : "#D4D6F8"}`,
+                  backgroundColor: `${checked ? "#4E88C7" : "#D4D6F8"}`,
                   right: checked ? "0%" : "50%",
               };
 

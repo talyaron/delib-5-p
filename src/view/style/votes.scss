@@ -21,6 +21,8 @@
             transform: rotate(270deg) translate(9rem, -49px);
             width: 18rem;
             text-align: end;
+            color: #6E8AA6;
+            margin-right: .3rem;
           
             @media (max-width: 768px) {
                 transform: rotate(270deg) translate(9rem, -41px);
@@ -47,7 +49,6 @@
             &__bar {
                 height: 0px;
                 width: 120px;
-
                 display: flex;
                 justify-content: center;
                 align-items: end;
@@ -63,6 +64,9 @@
                 transform: translateY(21px);
             }
         }
+     .btnShadow{
+        filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525));
+     }
 
         &__btn {
             border-radius: 5px;
@@ -82,6 +86,9 @@
             // border-top:1em solid transparent;
             // border-bottom:1em solid transparent;
             text-overflow: ellipsis;
+            box-shadow: 0px -2px 6px 0px #CAD7DD80;
+          
+
 
             box-sizing: border-box;
             display: flex;
@@ -94,9 +101,6 @@
                 overflow: visible;
             }
 
-            &--selected {
-                border-bottom: rgba(0, 0, 0, 0.471) 3px solid;
-            }
         }
 
         .infoIcon {

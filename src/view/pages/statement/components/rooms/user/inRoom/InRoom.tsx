@@ -1,86 +1,91 @@
-// import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 
 // // Third Party Libraries
-// import { Participant, RoomTimer, Statement } from "delib-npm";
-// import { t } from "i18next";
+import { Participant, RoomTimer, Statement } from "delib-npm";
+import { t } from "i18next";
 
-// // Redux
-// import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-// import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
+// Redux
+import {
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../../../functions/hooks/reduxHooks";
+import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // // Styles
-// import  "./inRoom.scss";
+import  "./inRoom.scss";
 
-// // Custom Components
-// import Text from "../../../../../../components/text/Text";
-// import Timers from "../../timer/Timers";
-// import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
-// import { Unsubscribe } from "firebase/firestore";
+// Custom Components
+import Text from "../../../../../../components/text/Text";
+import RoomTimers from "../../timer/RoomTimers";
+import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
+import { Unsubscribe } from "firebase/firestore";
+import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
 
-// interface Props {
-//     statement: Statement;
-// }
+interface Props {
+    statement: Statement;
+}
 
-// const InRoom: FC<Props> = ({ statement }) => {
-//     const userTopic: Participant | undefined = useAppSelector(
-//         userSelectedTopicSelector(statement.statementId),
-//     );
+const InRoom: FC<Props> = ({ statement }) => {
+    const userTopic: Participant | undefined = useAppSelector(
+        userSelectedTopicSelector(statement.statementId),
+    );
+    const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
 
-//     const [timers, setTimers] = useState<RoomTimer|null>(null);
+    const dispatch = useAppDispatch();
 
-//     useEffect(() => {
-//         // eslint-disable-next-line @typescript-eslint/no-empty-function
-//         let unsub:Unsubscribe = () => {};
-//         if (userTopic?.roomNumber) {
-//             unsub = listenToRoomTimers(
-//                 statement.statementId,
-//                 userTopic?.roomNumber,
-//                 setTimers,
-//             );
-//         }
-        
-// return () => {
-//             unsub();
-//         };
-//     }, [userTopic?.roomNumber]);
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        let unsub: Unsubscribe = () => {};
+        if (userTopic?.roomNumber) {
+            unsub = listenToRoomTimers(
+                statement.statementId,
+                userTopic?.roomNumber,
+                dispatch,
+            );
+        }
 
-//     try {
-//         return (
-//             <>
-//                 <h1>{t("Room Allocation")}</h1>
-//                 {/* {userTopic && userTopic.approved ? */}
-//                 <div className="message">
-//                     {userTopic && userTopic.statement ? (
-//                         <>
-//                             <h2>
-//                                 <Text
-//                                     text={`${
-//                                         (t("Discussion Topic:"),
-//                                         userTopic.statement.statement)
-//                                     }`}
-//                                     onlyTitle={true}
-//                                 />
-//                             </h2>
-//                             <div className="text">
-//                                 {t("Welcome to Room Number")}
-//                                 <span>{userTopic.roomNumber}</span>
-//                                 {t("In Zoom")}
-//                             </div>
-//                         </>
-//                     ) : (
-//                         <h2>{t("No Topic Chosen by You")}</h2>
-//                     )}
-//                 </div>
-//                 <Timers
-//                     statement={statement}
-//                     roomNumber={userTopic?.roomNumber}
-//                     timers={timers}
-//                 />
-//             </>
-//         );
-//     } catch (error: any) {
-//         return <div>error: {error.message}</div>;
-//     }
-// };
+        return () => {
+            unsub();
+        };
+    }, [userTopic?.roomNumber]);
 
-// export default InRoom;
+    try {
+        return (
+            <>
+                <h1>{t("Room Allocation")}</h1>
+                {/* {userTopic && userTopic.approved ? */}
+                <div className={styles.message}>
+                    {userTopic && userTopic.statement ? (
+                        <>
+                            <h2>
+                                <Text
+                                    text={`${
+                                        (t("Discussion Topic:"),
+                                        userTopic.statement.statement)
+                                    }`}
+                                    onlyTitle={true}
+                                />
+                            </h2>
+                            <div className={styles.text}>
+                                {t("Welcome to Room Number")}
+                                <span>{userTopic.roomNumber}</span>
+                                {t("In Zoom")}
+                            </div>
+                        </>
+                    ) : (
+                        <h2>{t("No Topic Chosen by You")}</h2>
+                    )}
+                </div>
+                <RoomTimers
+
+                    roomNumber={userTopic?.roomNumber}
+                    timers={timers}
+                />
+            </>
+        );
+    } catch (error: any) {
+        return <div>error: {error.message}</div>;
+    }
+};
+
+export default InRoom;

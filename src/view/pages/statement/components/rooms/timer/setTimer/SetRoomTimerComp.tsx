@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from "react";
-import styles from "./setTimer.module.scss";
+import styles from "./setRoomTimer.module.scss";
 import {
     fromFourDigitsToMillisecons,
     fromMilliseconsToFourDigits,
-} from "../../admin/setTimers/timer/AdminTimerCont";
+} from "../../admin/setTimers/setTimer/SetTimerCont";
 import { setTimersInitTimeDB } from "../../../../../../../functions/db/timer/setTimer";
+import { RoomTimer } from "delib-npm";
+import { getRoomTimerId } from "../../../../../../../functions/general/helpers";
 
-//scss
 
 
 interface TimerProps {
-    statementId: string;
-    roomNumber: number;
-    timerId: number;
-    initTime: number;
+    roomTimer: RoomTimer;
     setTimerAdjustment: React.Dispatch<React.SetStateAction<boolean>>;
     setInitTime: React.Dispatch<React.SetStateAction<number>>;
  
 }
 
-function SetTimerComp({
-    statementId,
-    roomNumber,
-    timerId,
-    initTime,
+function SetRoomTimerComp({
+    roomTimer,
     setTimerAdjustment,
     setInitTime
 }: TimerProps) {
+
     
     const [timeDigits, setTimeDigits] = useState<number[]>(
-        fromMilliseconsToFourDigits(initTime || 1000 * 90),
+        fromMilliseconsToFourDigits(roomTimer.time || 1000 * 90),
     );
 
     useEffect(() => {
@@ -107,9 +103,9 @@ function SetTimerComp({
         const newTime = fromFourDigitsToMillisecons(timeDigits);
         console.log(newTime)
         setTimersInitTimeDB({
-            statementId,
-            roomNumber,
-            timerId,
+            statementId:roomTimer.statementId,
+            roomNumber:roomTimer.roomNumber,
+            timerId:getRoomTimerId(roomTimer.statementId, roomTimer.roomNumber, roomTimer.order),
             initTime: newTime,
         });
         setInitTime(newTime);
@@ -138,7 +134,7 @@ function SetTimerComp({
                 ),
             );
 
-       
+    //    dispatch(setSetTimer())
 
             if (nextInput) {
                 //@ts-ignore
@@ -150,4 +146,4 @@ function SetTimerComp({
     }
 }
 
-export default SetTimerComp;
+export default SetRoomTimerComp;

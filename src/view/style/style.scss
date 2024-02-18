@@ -27,12 +27,13 @@
 
 :root {
     // --- MAIN COLORS ---
-    --mainBackground: #32527b;
+    --mainBackground: #1F5895;
     --statementBackground: #f2f6ff;
     --inputBackground: #f5fcff;
+    --mainBackgroundError: #ff0000;
 
     // Option
-    --option: #f5deb3;
+    --option: #E7D080;
     --option-text: #3b4f7d;
 
     //results
@@ -40,7 +41,7 @@
     --result-text: white;
 
     //question
-    --question: #787fff;
+    --question: #62BEEB;
     --question-text: white;
 
     //texts
@@ -50,7 +51,7 @@
     --placeHolder: #93b6da;
 
     //evaluation
-    --agree: #59beb6;
+    --agree: #57C6B2;
     --disagree: #fe6ba2;
 
     //shadow
@@ -705,3 +706,5 @@ b {
         color: inherit;
     }
 }
+
+

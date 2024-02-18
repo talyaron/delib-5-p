@@ -15,3 +15,4 @@ export function getTopSelectionKeys(
 
     return sortedSelections.map(([key]) => key);
 }
+

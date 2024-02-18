@@ -19,7 +19,7 @@ import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
 import InfoIcon from "../../../../components/icons/InfoIcon";
-import HandsIcon from "../../../../components/icons/HandsIcon";
+import VoteIcon from "../../../../components/icons/VoteIcon";
 
 export interface OptionBarProps {
     option: Statement;
@@ -67,7 +67,7 @@ export const OptionBar: FC<OptionBarProps> = ({
         >
             <div
                 className="vote__bar__column"
-                style={{ width: `${barWidth}px` }}
+                style={{ width: `${barWidth}px`,filter: "drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525))"}}
             >
                 {barHeight > 0 && (
                     <div className="vote__bar__column__stat">
@@ -85,26 +85,31 @@ export const OptionBar: FC<OptionBarProps> = ({
                     }}
                 ></div>
             </div>
-            <div
-                style={{
-                    width: `${barWidth - padding}px`,
-                    direction: direction,
-                    backgroundColor: option.color,
-                }}
-                className={
-                    vote?.statementId === option.statementId
-                        ? "vote__bar__btn vote__bar__btn--selected"
-                        : "vote__bar__btn"
-                }
-                onClick={handlePressButton}
-            >
-                <HandsIcon
-                    color={
+            <div className="btnShadow">
+                <div
+                    style={{
+                        width: `${barWidth - padding}px`,
+                        direction: direction,
+                        backgroundColor:
+                            vote?.statementId === option.statementId
+                                ? option.color
+                                : "white",
+                    }}
+                    className={
                         vote?.statementId === option.statementId
-                            ? "#434346"
-                            : "white"
+                            ? "vote__bar__btn vote__bar__btn--selected"
+                            : "vote__bar__btn"
                     }
-                />
+                    onClick={handlePressButton}
+                >
+                    <VoteIcon
+                        color={
+                            vote?.statementId !== option.statementId
+                                ? option.color
+                                : "white"
+                        }
+                    />
+                </div>
             </div>
             <div
                 className="infoIcon"
@@ -112,7 +117,7 @@ export const OptionBar: FC<OptionBarProps> = ({
                     setStatementInfo(option), setShowInfo(true);
                 }}
             >
-                <InfoIcon color={barHeight > 10 ? "white" : "gray"} />
+                <InfoIcon color={barHeight > 10 ? "white" : "#6E8AA6"} />
             </div>
             <div className="vote__bar__title">{shortVersion}</div>
         </div>
