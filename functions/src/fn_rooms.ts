@@ -10,8 +10,14 @@ export async function countRoomJoiners(ev: any) {
         //get the room id
         const previouseRequest = ev.data.before.data() as Participant;
         const newRequest = ev.data.after.data() as Participant;
+       
+        if (previouseRequest === undefined)
+            return;
+        if (newRequest === undefined)
+            throw new Error("New Request is undefined");
+
         if (!newRequest.statementId || !previouseRequest.statementId)
-            throw new Error("statementId not found");
+            return;
 
         //if new request
         if (previouseRequest === undefined) {

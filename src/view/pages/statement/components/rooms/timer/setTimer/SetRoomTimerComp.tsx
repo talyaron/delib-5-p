@@ -1,46 +1,39 @@
-import { SetTimer } from "delib-npm";
-import { useState } from "react";
-import styles from "../setTimers.module.scss";
+import React, { useEffect, useState } from "react";
+import styles from "./setRoomTimer.module.scss";
 import {
     fromFourDigitsToMillisecons,
     fromMilliseconsToFourDigits,
-} from "./AdminTimerCont";
+} from "../../admin/setTimers/setTimer/SetTimerCont";
+import { setTimersInitTimeDB } from "../../../../../../../functions/db/timer/setTimer";
+import { RoomTimer } from "delib-npm";
+import { getRoomTimerId } from "../../../../../../../functions/general/helpers";
+
+
 
 interface TimerProps {
-    timer: SetTimer;
-    index: number;
-    timers: SetTimer[];
-    setTimers:React.Dispatch<React.SetStateAction<SetTimer[]>>;
-    setTimersChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    roomTimer: RoomTimer;
+    setTimerAdjustment: React.Dispatch<React.SetStateAction<boolean>>;
+    setInitTime: React.Dispatch<React.SetStateAction<number>>;
+ 
 }
 
-function AdminTimer({
-    timer,
-    index,
-    timers,
-    setTimers,
-    setTimersChanged,
+function SetRoomTimerComp({
+    roomTimer,
+    setTimerAdjustment,
+    setInitTime
 }: TimerProps) {
-    const [timeDigits, setTimeDigits] = useState<number[]>(
-        fromMilliseconsToFourDigits(timer.time || 1000 * 90),
-    );
-    const [_name, setName] = useState<string>(
-        timer.name ? timer.name : "Discussion",
-    );
+
     
-return (
+    const [timeDigits, setTimeDigits] = useState<number[]>(
+        fromMilliseconsToFourDigits(roomTimer.time || 1000 * 90),
+    );
+
+    useEffect(() => {
+        console.log(timeDigits)
+    }, [timeDigits]);
+
+    return (
         <div className={styles.timer}>
-            <div>
-                <label>Name of Timer</label>
-                <input
-                    type="text"
-                    defaultValue={_name}
-                    onInput={(ev: any) => {
-                        setName(ev.target.value);
-                        setTimersChanged(true);
-                    }}
-                />
-            </div>
             <div className={styles.time}>
                 <input
                     type="number"
@@ -48,8 +41,10 @@ return (
                     max={5}
                     step={1}
                     maxLength={1}
-                    tabIndex={index * 4 + 0}
+                    tabIndex={0}
+                    onInput={handleInputDigit}
                     onKeyUp={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[0]}
                 />
 
@@ -59,8 +54,10 @@ return (
                     max={9}
                     step={1}
                     maxLength={1}
-                    tabIndex={index * 4 + 1}
+                    tabIndex={1}
+                    onInput={handleInputDigit}
                     onKeyUp={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[1]}
                 />
                 <span>:</span>
@@ -70,8 +67,10 @@ return (
                     max={5}
                     step={1}
                     maxLength={1}
-                    tabIndex={index * 4 + 2}
+                    tabIndex={2}
+                    onInput={handleInputDigit}
                     onKeyUp={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[2]}
                 />
 
@@ -81,39 +80,42 @@ return (
                     max={9}
                     step={1}
                     maxLength={1}
-                    tabIndex={index * 4 + 3}
+                    tabIndex={3}
                     onKeyUp={handleInputDigit}
                     onInput={handleInputDigit}
+                    onChange={handleInputDigit}
                     defaultValue={timeDigits[3]}
                 />
             </div>
-            <div
+            <button
                 className="btn btn--cancel"
-                onClick={() => handleDeleteTimer(timer.timerId)}
+                onClick={() => handleUpdateTimer()}
+
+                tabIndex={4}
             >
-                DELETE
-            </div>
+                SET
+            </button>
         </div>
     );
 
-    function handleDeleteTimer(timerId: string) {
-        try {
-            const isDelete = confirm(
-                `Are you sure you want to delete this timer? ${timer.timerId}`,
-            );
-            if (!isDelete) return;
-            const newTimers = [...timers].filter((t) => t.timerId !== timerId);
-
-            setTimers(newTimers);
-            setTimersChanged(true);
-        } catch (error) {
-            console.error(error);
-        }
+    function handleUpdateTimer() {
+        console.log(timeDigits)
+        const newTime = fromFourDigitsToMillisecons(timeDigits);
+        console.log(newTime)
+        setTimersInitTimeDB({
+            statementId:roomTimer.statementId,
+            roomNumber:roomTimer.roomNumber,
+            timerId:getRoomTimerId(roomTimer.statementId, roomTimer.roomNumber, roomTimer.order),
+            initTime: newTime,
+        });
+        setInitTime(newTime);
+        setTimerAdjustment(false);
     }
 
     function handleInputDigit(ev: any) {
         let digit = ev.key;
-        ev.type === "input" ? (digit = ev.target.value) : (digit = ev.key);
+        ev.type === "input" || "change" ? (digit = ev.target.value) : (digit = ev.key);
+      
         if (!isNaN(parseInt(digit))) {
             ev.target.valueAsNumber = parseInt(digit);
             const max = parseInt(ev.target.max);
@@ -132,23 +134,16 @@ return (
                 ),
             );
 
-            const newTime = fromFourDigitsToMillisecons(timeDigits);
-            const timerIndex = timers.findIndex(
-                (t) => t.timerId === timer.timerId,
-            );
-            const newTimers = [...timers];
-            newTimers[timerIndex].time = newTime;
-            setTimers(newTimers);
+    //    dispatch(setSetTimer())
 
             if (nextInput) {
                 //@ts-ignore
                 nextInput.focus();
             }
-            setTimersChanged(true);
         } else {
             ev.target.value = null;
         }
     }
 }
 
-export default AdminTimer;
+export default SetRoomTimerComp;

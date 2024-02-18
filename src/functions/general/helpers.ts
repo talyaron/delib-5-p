@@ -318,3 +318,11 @@ export function getDescription(statement: Statement) {
         return "";
     }
 }
+
+export function getSetTimerId(statementId: string, order: number) {
+    return `${statementId}--${order}`;
+}
+
+export function getRoomTimerId(statementId: string, roomNumber: number, order: number) {
+    return `${statementId}--${roomNumber}--${order}`;
+}

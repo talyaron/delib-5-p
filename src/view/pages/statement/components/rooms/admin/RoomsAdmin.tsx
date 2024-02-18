@@ -1,5 +1,5 @@
 import { Statement } from "delib-npm";
-import { FC } from "react";
+import { FC, useState} from "react";
 import AdminArrange from "./AdminArrange";
 import _styles from "./admin.module.css";
 import { t } from "i18next";
@@ -12,12 +12,14 @@ interface Props {
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
+ 
+    const [setRooms, setSetRooms] = useState<boolean>((statement.roomsState === "chooseRoom" || statement.roomsState === undefined)?false:true);
     return (
         <>
             <div className={styles.admin}>
                 <p className={styles.title}>{t("Management board")}</p>
-                <AdminArrange statement={statement} />
-                <SetTimers parentStatement={statement}/>
+                <AdminArrange statement={statement} setRooms={setRooms} setSetRooms={setSetRooms} />
+                {!setRooms && <SetTimers parentStatement={statement}/>}
             </div>
         </>
     );

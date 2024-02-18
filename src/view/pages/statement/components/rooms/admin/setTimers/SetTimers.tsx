@@ -1,76 +1,78 @@
-import { FC, useState, useEffect } from "react";
-import {  t } from "i18next";
+import { FC, useEffect } from "react";
+import { t } from "i18next";
 import styles from "./setTimers.module.scss";
 import { SetTimer, Statement } from "delib-npm";
+
+import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
+
 import {
-    handleAddStage,
-    handleSetTimers,
-    orderByStagesAndOrderFromTimers,
-} from "./SetTimersCont";
-import AdminTimerStage from "./timer/AdminTimerStage";
-import { initialTimerArray } from "./SetTimersModal";
-import { getStatementTimers } from "../../../../../../../functions/db/timer/getTimer";
+    useAppDispatch,
+    useAppSelector,
+} from "../../../../../../../functions/hooks/reduxHooks";
+import { selectStatementSettingTimers, setSetTimer } from "../../../../../../../model/timers/timersSlice";
+import SetSetTimerComp from "./setTimer/SetSetTimerComp";
+import {
+    updateTimerSettingDB
+} from "../../../../../../../functions/db/timer/setTimer";
+import { getSetTimerId } from "../../../../../../../functions/general/helpers";
 
 interface Props {
     parentStatement: Statement;
 }
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
-    const [timers, setTimers] = useState<SetTimer[]>(initialTimerArray);
+    try {
+        if (!parentStatement) throw new Error("parentStatement is required");
 
-    const [timersChanged, setTimersChanged] = useState<boolean>(false);
-    const orderdTimers = orderByStagesAndOrderFromTimers(timers);
+        const dispatch = useAppDispatch();
 
-useEffect(() => {
-    getStatementTimers(parentStatement.statementId).then((timers) => {
-        setTimers(timers);
-    });
-}, []);
+        const timers:SetTimer[] = useAppSelector(
+            selectStatementSettingTimers(parentStatement.statementId),
+        ).sort((a, b) => a.order - b.order);
 
-    return (
-        <section>
-            <h2>{t("Setting Timers")}</h2>
-            <p>{t("You can set the timers for each stage here.")}</p>
-            <div className={styles.timers}>
-                {orderdTimers.map((ts, i) => (
-                    <AdminTimerStage
-                        key={`timer-stage-${i}`}
-                        stageId={ts[0].stageId}
-                        timers={timers}
-                        setTimers={setTimers}
-                        setTimersChanged={setTimersChanged}
-                    />
-                ))}
-                <div
+        //get timers from DB
+        useEffect(() => {
+            getSetTimersDB(parentStatement.statementId, dispatch);
+        }, []);
+
+        return (
+            <section>
+                <h2>{t("Setting Timers")}</h2>
+                <p>{t("You can set the timers for each stage here.")}</p>
+                <div className={styles.timers}>
+                    {timers.map((timer, i) => (
+                        <SetSetTimerComp
+                            key={timer.order}
+                            setTimer={timer}
+                            index={i}
+                        />
+                    ))}
+                </div>
+                <button
                     className="btn btn--add"
-                    onClick={() => handleAddStage(timers, setTimers)}
+                    onClick={() => {
+                        const newTimer = {
+                            statementId: parentStatement.statementId,
+                            time: 1000 * 90,
+                            title: "Discussion",
+                            order: timers.length,
+                            timerId: getSetTimerId(
+                                parentStatement.statementId,
+                                timers.length,
+                            ),
+                        };
+                        dispatch(setSetTimer(newTimer));
+                        updateTimerSettingDB(newTimer);
+                    }}
                 >
-                    ADD Stage
-                </div>
-            </div>
-            <div>
-                <div className="btns">
-                    <div
-                        className={
-                            timersChanged
-                                ? "btn btn--add btn--large"
-                                : "btn btn--add btn--large btn--inactive"
-                        }
-                        onClick={() => {
-                            if (timersChanged)
-                                handleSetTimers({
-                                    parentStatement,
-                                    timers,
-                                    setTimersChanged,
-                                });
-                        }}
-                    >
-                        Set for All Rooms
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+                    Add Timer
+                </button>
+            </section>
+        );
+    } catch (error) {
+        console.error(error);
+        return <div>{t("Error")}</div>;
+    }
 };
 
 export default SetTimers;

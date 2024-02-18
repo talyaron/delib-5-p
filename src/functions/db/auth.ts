@@ -64,6 +64,7 @@ export const listenToAuth =
     (isAnonymous: boolean, navigate: NavigateFunction): Unsubscribe => {
         return onAuthStateChanged(auth, async (userFB) => {
             try {
+              
                 if (!userFB && isAnonymous !== true) {
                     navigate("/");
                 }

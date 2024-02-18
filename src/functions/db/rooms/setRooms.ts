@@ -54,13 +54,13 @@ export async function setRoomJoinToDB(
         if (!requestDB.exists()) {
             // If there is no request, create one
             await saveToDB({ requestId, requestRef, statement, user });
-            
-return true;
+
+            return true;
         } else {
             //if there is a request
             const request = requestDB.data() as Participant;
-            
-return await updateRequestToDB(request, requestRef);
+
+            return await updateRequestToDB(request, requestRef);
         }
     } catch (error) {
         console.error(error);
@@ -130,8 +130,8 @@ return await updateRequestToDB(request, requestRef);
                     user,
                     approved: request.approved,
                 });
-                
-return true;
+
+                return true;
             } else if (
                 request.statement.statementId !== statement.statementId
             ) {
@@ -144,8 +144,8 @@ return true;
                     approved: request.approved,
                     newRoomNumber: roomNumber,
                 });
-                
-return true;
+
+                return true;
             } else {
                 // If the user is already in the same room, remove the user from the room
                 const { parentId, participant, requestId } = request;
@@ -156,13 +156,13 @@ return true;
                     lastUpdate: new Date().getTime(),
                 };
                 await setDoc(requestRef, updatedRequest);
-                
-return false;
+
+                return false;
             }
         } catch (error) {
             console.error(error);
-            
-return false;
+
+            return false;
         }
     }
 }
@@ -172,6 +172,8 @@ export async function setRoomsStateToDB(
     roomsState: RoomsStateSelection,
 ) {
     try {
+        //get timers settings from DB
+
         const statementRef = doc(
             DB,
             Collections.statements,
