@@ -95,6 +95,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                         maxLength={1}
                         tabIndex={index * 4 + 3}
                         onKeyUp={handleInputDigit}
+
                         // onInput={handleInputDigit}
                         onChange={handleInputDigit}
                         defaultValue={timeDigits[3]}
@@ -119,6 +120,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 if (!isDelete) return;
 
                 deleteTimerSettingDB(timerId);
+
                 // const newTimers = [...timers].filter(
                 //     (t) => t.timerId !== timerId,
                 // );
@@ -158,10 +160,12 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 if (digit === false) {
                     return false;
                 }
-                return digit;
+                
+return digit;
             } catch (error) {
                 console.error(error);
-                return false;
+                
+return false;
             }
         }
 
@@ -170,7 +174,8 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
             if (isTab) {
                 ev.target.valueAsNumber = parseInt(ev.target.value);
-                return;
+                
+return;
             }
 
             let digit = getKeyNumber(ev);
@@ -182,7 +187,8 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 dispatch(
                     setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
                 );
-                return;
+                
+return;
             }
             const max = parseInt(ev.target.max);
             const min = parseInt(ev.target.min);
@@ -215,12 +221,14 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 const _digits: number[] = timeDigits.map((d, i) =>
                     i === parseInt(innerindex) ? _digit : d,
                 );
-                return _digits;
+                
+return _digits;
             }
         }
     } catch (error) {
         console.error(error);
-        return null;
+        
+return null;
     }
 }
 

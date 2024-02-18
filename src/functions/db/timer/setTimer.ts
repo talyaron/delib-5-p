@@ -57,10 +57,12 @@ export async function deleteTimerSettingDB(timerId: string): Promise<boolean> {
     try {
         const timerRef = doc(DB, Collections.timers, timerId);
         await deleteDoc(timerRef);
-        return true;
+        
+return true;
     } catch (error) {
         console.error(error);
-        return false;
+        
+return false;
     }
 }
 
@@ -232,7 +234,8 @@ export async function initilizeTimersDB({
                             timerSetting.order,
                         ),
                     };
-                    return roomTimer;
+                    
+return roomTimer;
                 },
             );
 

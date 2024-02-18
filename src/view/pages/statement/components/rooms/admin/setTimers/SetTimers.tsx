@@ -71,7 +71,8 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
         );
     } catch (error) {
         console.error(error);
-        return <div>{t("Error")}</div>;
+        
+return <div>{t("Error")}</div>;
     }
 };
 

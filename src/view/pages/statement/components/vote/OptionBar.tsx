@@ -19,7 +19,6 @@ import { getSelections } from "./getSelections";
 import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
 import InfoIcon from "../../../../components/icons/InfoIcon";
-import HandsIcon from "../../../../components/icons/HandsIcon";
 import VoteIcon from "../../../../components/icons/VoteIcon";
 
 export interface OptionBarProps {

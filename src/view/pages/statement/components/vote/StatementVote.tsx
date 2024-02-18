@@ -71,6 +71,7 @@ const StatementVote: FC<Props> = ({
                             style={{
                                 maxWidth: "50vw",
                                 margin: " 2rem auto",
+
                                 // display: "flex",
                                 // alignItems: "center",
                                 color: "#41A1DA",

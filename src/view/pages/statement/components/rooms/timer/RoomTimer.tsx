@@ -24,7 +24,7 @@ export default function Timer({
     isActiveTimer,
 }: Props): JSX.Element {
     
-    const storeTimer: RoomTimer = useAppSelector(
+    const storeTimer: RoomTimer|undefined = useAppSelector(
         selectTimerByTimerId(roomTimer.roomTimerId),
     );
 
@@ -53,7 +53,8 @@ export default function Timer({
                     clearInterval(timer);
                     setTimersStatusDB(roomTimer, TimerStatus.finish);
                     startNextTimer(roomTimer);
-                    return 0;
+                    
+return 0;
                 }
 
                 setMinutes(getMinutesAndSeconds(newTime).minutes);
@@ -76,14 +77,14 @@ export default function Timer({
     }, [isActive]);
 
     useEffect(() => {
-        if (storeTimer.state === TimerStatus.start) {
+        if (storeTimer?.state === TimerStatus.start) {
             startTimer();
-        } else if (storeTimer.state === TimerStatus.pause) {
+        } else if (storeTimer?.state === TimerStatus.pause) {
             pauseTimer();
-        } else if (storeTimer.state === TimerStatus.finish) {
+        } else if (storeTimer?.state === TimerStatus.finish) {
             stopAndResetTimer();
         }
-    },[storeTimer.state])
+    },[storeTimer?.state])
 
     const stopAndResetTimer = () => {
         setIsActive(false);

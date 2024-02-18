@@ -37,7 +37,8 @@ export async function getSetTimersDB(
             initialTimerArray.forEach((timer) => {
                 dispatch(setSetTimer(timer));
             });
-            return initialTimerArray;
+            
+return initialTimerArray;
         }
 
         const timers: SetTimer[] = timersDB.docs.map(

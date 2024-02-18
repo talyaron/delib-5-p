@@ -84,6 +84,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 
             //set timers settings to db
             await updateTimersSettingDB(timers);
+
             //set rooms timers
             initilizeTimersDB({
                 statementId: statement.statementId,
