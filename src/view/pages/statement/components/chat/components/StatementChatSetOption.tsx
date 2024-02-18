@@ -64,7 +64,11 @@ const StatementChatSetOption: FC<Props> = ({
                     {text}
                 </span>
             )}
-            <div className="clickable" onClick={handleSetOption}>
+            <div
+                className="clickable"
+                onClick={handleSetOption}
+                data-cy="chat-option-lightbulb"
+            >
                 {isOptionFn(statement) ? (
                     <LightBulbIcon color="gold" />
                 ) : (

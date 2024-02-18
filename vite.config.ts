@@ -1,5 +1,6 @@
 import { defineConfig, splitVendorChunkPlugin } from "vite";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
+
 // import commonjs from "vite-plugin-commonjs";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -15,11 +16,11 @@ const manifestPlugin: Partial<VitePWAOptions> = {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
     },
     manifest: {
-        name: "Delib 5",
-        short_name: "Delib 5",
+        name: "The Councils of Deliberation",
+        short_name: "The Councils",
         description: "Delib: Building Consensus",
-        theme_color: "#486FFA",
-        background_color: "#486FFA",
+        theme_color: "#4E88C7",
+        background_color: "#4E88C7",
         display: "standalone",
         orientation: "portrait",
         icons: [

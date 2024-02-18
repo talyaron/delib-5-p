@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 
-// Third Party Libraries
+// // Third Party Libraries
 import { Participant, RoomTimer, Statement } from "delib-npm";
 import { t } from "i18next";
 
@@ -11,8 +11,8 @@ import {
 } from "../../../../../../../functions/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
-// Styles
-import styles from "./inRoom.module.scss";
+// // Styles
+import styles from "./InRoom.module.css";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -77,7 +77,6 @@ const InRoom: FC<Props> = ({ statement }) => {
                     )}
                 </div>
                 <RoomTimers
-
                     roomNumber={userTopic?.roomNumber}
                     timers={timers}
                 />

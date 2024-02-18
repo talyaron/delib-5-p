@@ -87,6 +87,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                     className="bottomNav__iconbox bottomNav__iconbox--burger"
                     style={statementColor}
                     onClick={handleMidIconClick}
+                    data-cy="bottom-nav-mid-icon"
                 >
                     {openNav && isAddOption ? (
                         <PlusIcon color={statementColor.color} />

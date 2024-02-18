@@ -10,7 +10,10 @@ import StopIcon from "../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "./timerPagecont";
 import { RoomTimer, TimerStatus } from "delib-npm";
 import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
-import { setTimersStatusDB, startNextTimer } from "../../../../../../functions/db/timer/setTimer";
+import {
+    setTimersStatusDB,
+    startNextTimer,
+} from "../../../../../../functions/db/timer/setTimer";
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 import { selectTimerByTimerId } from "../../../../../../model/timers/timersSlice";
 
@@ -23,8 +26,7 @@ export default function Timer({
     roomTimer,
     isActiveTimer,
 }: Props): JSX.Element {
-    
-    const storeTimer: RoomTimer|undefined = useAppSelector(
+    const storeTimer: RoomTimer | undefined = useAppSelector(
         selectTimerByTimerId(roomTimer.roomTimerId),
     );
 
@@ -39,7 +41,7 @@ export default function Timer({
         getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    const [timer, setTimer] = useState<NodeJS.Timer>();
+    const [timer, setTimer] = useState<any>();
 
     const percent = (timeLeft / initTime) * 100;
 
@@ -53,8 +55,8 @@ export default function Timer({
                     clearInterval(timer);
                     setTimersStatusDB(roomTimer, TimerStatus.finish);
                     startNextTimer(roomTimer);
-                    
-return 0;
+
+                    return 0;
                 }
 
                 setMinutes(getMinutesAndSeconds(newTime).minutes);
@@ -72,7 +74,10 @@ return 0;
         }
 
         return () => {
-            clearInterval(interval());
+            if (timer) {
+                clearInterval(timer as any); // Use 'as any' if necessary
+                setTimer(undefined);
+            }
         };
     }, [isActive]);
 
@@ -84,7 +89,7 @@ return 0;
         } else if (storeTimer?.state === TimerStatus.finish) {
             stopAndResetTimer();
         }
-    },[storeTimer?.state])
+    }, [storeTimer?.state]);
 
     const stopAndResetTimer = () => {
         setIsActive(false);
