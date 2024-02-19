@@ -34,6 +34,11 @@ const allowedRoles = [Role.admin, Role.parentAdmin,Role.systemAdmin, Role.statem
  
     
     useEffect(() => {
+        //get parent statement
+        const parentStatement = store.getState().statements.statements.find((s) => s.statementId === statement?.parentId);
+        if(!parentStatement){
+        //get statement subscription
+
         if (statementSubscription && statement) {
             if (allowedRoles.includes(statementSubscription.role)) {
                 setIsAuthorized(true);
