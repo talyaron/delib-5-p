@@ -71,9 +71,15 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
     useEffect(() => {
         async function fetchLanguageData() {
             try {
-                const indexOfDefaultLanguage =
+                const languageIndex =
                     Object.values(LanguagesEnum).indexOf(currentLanguage);
-                setLanguageData(languages[indexOfDefaultLanguage]);
+                if (languageIndex !== -1) {
+                    setLanguageData(languages[languageIndex]);
+                } else {
+                    console.error(
+                        `Language data not found for ${currentLanguage}`,
+                    );
+                }
             } catch (error: any) {
                 console.error(`Error fetching language data: ${error.message}`);
             }

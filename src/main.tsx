@@ -9,7 +9,10 @@ import { Provider } from "react-redux";
 import { setIntialLocationSessionStorage } from "./functions/general/helpers";
 
 import { router } from "./router";
-import { LanguageProvider, LanguagesEnum } from "./functions/hooks/useLanguages";
+import {
+    LanguageProvider,
+    LanguagesEnum,
+} from "./functions/hooks/useLanguages";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 

@@ -15,22 +15,18 @@ export default function TermsOfUse({ handleAgreement, agreement }: Props) {
                 <h1 className="termsOfUse__title">
                     {languageData["terms of use"]}
                 </h1>
-                <p>{languageData[agreement]}</p>
+                <p>{agreement}</p>
                 <div className="btns">
                     <button
                         className="btn btn--agree"
-                        onClick={() =>
-                            handleAgreement(true, languageData[agreement])
-                        }
+                        onClick={() => handleAgreement(true, agreement)}
                     >
                         {languageData["Agree"]}
                     </button>
                     <button
                         data-cy="agree-btn"
                         className="btn btn--disagree"
-                        onClick={() =>
-                            handleAgreement(false, languageData[agreement])
-                        }
+                        onClick={() => handleAgreement(false, agreement)}
                     >
                         {languageData["Dont agree"]}
                     </button>

@@ -2,7 +2,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { Agreement, Collections, User } from "delib-npm";
 import { DB } from "../config";
 import { store } from "../../../model/store";
-import { useLanguage } from "../../hooks/useLanguages";
 
 // get user font size and update document and html with the size in the DB
 export async function getUserFromDB(): Promise<User | undefined> {
@@ -40,10 +39,11 @@ export interface SignitaureDB {
     version: string;
 }
 
-export function getSigniture(version = "basic"): Agreement | undefined {
+export function getSigniture(
+    version = "basic",
+    languageData: Record<string, string>,
+): Agreement | undefined {
     try {
-        const { languageData } = useLanguage();
-
         const agreement: Agreement = {
             text: languageData["Agreement Description"],
             version,

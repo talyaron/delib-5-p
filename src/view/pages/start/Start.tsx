@@ -51,8 +51,7 @@ const Start = () => {
     return (
         <div className="splashPage">
             <div className={styles.h1}>
-                {languageData["Delib"]}{" "}
-                <span className={styles.number}>5</span>
+                {languageData["Delib"]} <span className={styles.number}>5</span>
             </div>
             <div className={styles.h2}>
                 {languageData["Creating Agreements"]}
@@ -89,7 +88,7 @@ const Start = () => {
                 style={{ flexDirection: direction }}
                 data-cy="anonymous-login"
                 className={styles.anonymous}
-                onClick={() => setShowNameModul(true)}
+                onClick={() => setShowNameModul((prev) => !prev)}
             >
                 {languageData["Login with a temporary name"]}{" "}
                 <img
@@ -106,10 +105,7 @@ const Start = () => {
                 {languageData["Connect with Google"]}
             </button>
 
-            <a
-                href="http://delib.org"
-                target="_blank"
-            >
+            <a href="http://delib.org" target="_blank">
                 <footer className={styles.ddi}>
                     {
                         languageData[
@@ -119,7 +115,9 @@ const Start = () => {
                 </footer>
             </a>
 
-            {showNameModul ?? <EnterName setShowNameModul={setShowNameModul} />}
+            {showNameModul ? (
+                <EnterName setShowNameModul={setShowNameModul} />
+            ) : null}
         </div>
     );
 };
