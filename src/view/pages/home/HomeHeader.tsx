@@ -36,7 +36,7 @@ export default function HomeHeader() {
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
                 <div className="homePage__header__wrapper__title">
-                    {languageData["Delib 5"]}
+                    {languageData["Delib"]}
                 </div>
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (

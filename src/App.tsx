@@ -23,7 +23,7 @@ import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { onLocalMessage } from "./functions/db/notifications/notifications";
-import { LanguageProvider, useLanguage } from "./functions/hooks/useLanguages";
+import { LanguagesEnum, useLanguage } from "./functions/hooks/useLanguages";
 
 export default function App() {
     // Hooks
@@ -47,7 +47,7 @@ export default function App() {
         document.body.style.direction = "ltr";
 
         // Get language from local storage and change accordingly
-        const lang = localStorage.getItem("lang");
+        const lang = localStorage.getItem("lang") as LanguagesEnum;
         if (lang) {
             changeLanguage(lang);
             document.body.style.direction =
@@ -146,24 +146,22 @@ export default function App() {
     }
 
     return (
-        <LanguageProvider defaultLanguage="he">
-            <div
-                style={{
-                    height: `${visualViewportHeight}px`,
-                    overflowY: "hidden",
-                    position: "fixed",
-                }}
-            >
-                <Accessiblity />
+        <div
+            style={{
+                height: `${visualViewportHeight}px`,
+                overflowY: "hidden",
+                position: "fixed",
+            }}
+        >
+            <Accessiblity />
 
-                <Outlet />
-                {showSignAgreement && (
-                    <TermsOfUse
-                        handleAgreement={handleAgreement}
-                        agreement={agreement}
-                    />
-                )}
-            </div>
-        </LanguageProvider>
+            <Outlet />
+            {showSignAgreement && (
+                <TermsOfUse
+                    handleAgreement={handleAgreement}
+                    agreement={agreement}
+                />
+            )}
+        </div>
     );
 }

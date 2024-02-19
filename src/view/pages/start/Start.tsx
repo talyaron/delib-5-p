@@ -22,7 +22,10 @@ import moreLeft from "../../../assets/icons/moreLeft.svg";
 import { LANGUAGES } from "../../../constants/Languages";
 import EnterName from "../../components/enterName/EnterName";
 import useDirection from "../../../functions/hooks/useDirection";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import {
+    LanguagesEnum,
+    useLanguage,
+} from "../../../functions/hooks/useLanguages";
 
 // import EnterName from './EnterName';
 
@@ -48,7 +51,8 @@ const Start = () => {
     return (
         <div className="splashPage">
             <div className={styles.h1}>
-                {languageData["Delib"]} <span className={styles.number}>5</span>
+                {languageData["Delib"]}{" "}
+                <span className={styles.number}>5</span>
             </div>
             <div className={styles.h2}>
                 {languageData["Creating Agreements"]}
@@ -65,7 +69,7 @@ const Start = () => {
                 className={styles.language}
                 defaultValue={savedLang || "he"}
                 onChange={(e) => {
-                    const lang = e.target.value;
+                    const lang = e.target.value as LanguagesEnum;
                     changeLanguage(lang);
                     if (lang === "he" || lang === "ar") {
                         document.body.style.direction = "rtl";
@@ -105,10 +109,6 @@ const Start = () => {
             <a
                 href="http://delib.org"
                 target="_blank"
-                style={{
-                    marginTop: "30px",
-                    textDecoration: "none",
-                }}
             >
                 <footer className={styles.ddi}>
                     {

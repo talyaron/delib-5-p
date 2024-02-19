@@ -9,7 +9,7 @@ import React, {
 // Define types
 type LanguageContextType = {
     currentLanguage: string;
-    changeLanguage: (newLanguage: string) => void;
+    changeLanguage: (newLanguage: LanguagesEnum) => void;
     languageData: Record<string, string>;
 };
 
@@ -29,9 +29,27 @@ export function useLanguage() {
 }
 
 interface LanguageProviderProps {
-    defaultLanguage: string;
+    defaultLanguage: LanguagesEnum;
     children: React.ReactNode;
 }
+
+export enum LanguagesEnum {
+    en = "en",
+    ar = "ar",
+    de = "de",
+    es = "es",
+    he = "he",
+    nl = "nl",
+}
+
+import en from "../../assets/Languages/en.json";
+import ar from "../../assets/Languages/ar.json";
+import de from "../../assets/Languages/de.json";
+import es from "../../assets/Languages/es.json";
+import he from "../../assets/Languages/he.json";
+import nl from "../../assets/Languages/nl.json";
+
+const languages: Record<string, string>[] = [en, ar, de, es, he, nl];
 
 // LanguageProvider component to wrap your application and provide the language context
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({
@@ -39,12 +57,13 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
     children,
 }) => {
     const [currentLanguage, setCurrentLanguage] = useState(defaultLanguage);
+
     const [languageData, setLanguageData] = useState<Record<string, string>>(
         {},
     );
 
     // Function to change the language
-    const changeLanguage = useCallback((newLanguage: string) => {
+    const changeLanguage = useCallback((newLanguage: LanguagesEnum) => {
         setCurrentLanguage(newLanguage);
     }, []);
 
@@ -52,11 +71,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
     useEffect(() => {
         async function fetchLanguageData() {
             try {
-                const response = await import(
-                    `../../assets/Languages/${currentLanguage}.json`
-                );
-
-                setLanguageData(response);
+                const indexOfDefaultLanguage =
+                    Object.values(LanguagesEnum).indexOf(currentLanguage);
+                setLanguageData(languages[indexOfDefaultLanguage]);
             } catch (error: any) {
                 console.error(`Error fetching language data: ${error.message}`);
             }
