@@ -1,9 +1,13 @@
 import { FC } from "react";
+
+// Third party imports
 import { Link } from "react-router-dom";
-import { showNavElements } from "./statementTopNavCont";
-import { t } from "i18next";
 import { NavObject, Statement, Screen } from "delib-npm";
+
+// Helpers
+import { showNavElements } from "./statementTopNavCont";
 import { navArray } from "./StatementTopNavModel";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
@@ -11,6 +15,8 @@ interface Props {
 }
 
 const StatementTopNav: FC<Props> = ({ statement, screen }) => {
+    const { languageData } = useLanguage();
+
     const _navArray = showNavElements(statement, navArray);
 
     return (
@@ -27,7 +33,7 @@ const StatementTopNav: FC<Props> = ({ statement, screen }) => {
                             : ""
                     }`}
                 >
-                    {t(navObject.name)}
+                    {languageData[navObject.name]}
                 </Link>
             ))}
         </nav>

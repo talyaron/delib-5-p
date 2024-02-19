@@ -1,7 +1,9 @@
-import { t } from "i18next";
 import { useState } from "react";
+
+// Custom components
 import CheckedIcon from "../../../../../components/icons/CheckedIcon";
 import UncheckedIcon from "../../../../../components/icons/UncheckedIcon";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface CustomLabelProps {
     defaultChecked: boolean;
@@ -14,6 +16,8 @@ export default function CustomCheckboxLabel({
     title,
     defaultChecked,
 }: CustomLabelProps) {
+    const { languageData } = useLanguage();
+
     const [checked, setChecked] = useState(defaultChecked);
 
     const handleChange = () => {
@@ -35,7 +39,7 @@ export default function CustomCheckboxLabel({
                 onChange={handleChange}
                 style={{ display: "none" }}
             />
-            {t(`${title}`)}
+            {languageData[title]}
         </label>
     );
 }

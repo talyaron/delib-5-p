@@ -8,7 +8,6 @@ import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 
 // Third party libraries
 import { RoomDivied, RoomsStateSelection, Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Statments functions
 import {
@@ -28,6 +27,7 @@ import {
     updateTimersSettingDB,
 } from "../../../../../../functions/db/timer/setTimer";
 import { selectStatementSettingTimers } from "../../../../../../model/timers/timersSlice";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 const styles = _styles as any;
 
@@ -46,6 +46,8 @@ export interface ParticipantInRoom {
 }
 
 const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
+    const { languageData } = useLanguage();
+
     const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
     const participants = useAppSelector(
         participantsSelector(statement.statementId),
@@ -120,25 +122,25 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                             className="btn btn--agree btn--large"
                             onClick={handleDivideIntoRooms}
                         >
-                            {t("Divide into rooms")}
+                            {languageData["Divide into rooms"]}
                         </button>
                     ) : (
                         <button
                             className="btn btn--cancel btn--large"
                             onClick={handleDivideIntoRooms}
                         >
-                            {t("Cancellation of division")}
+                            {languageData["Cancellation of division"]}
                         </button>
                     )}
                 </div>
                 {roomsState === RoomsStateSelection.chooseRoom ? (
                     <div>
-                        <h3>{t("Participants")}</h3>
+                        <h3>{languageData["Participants"]}</h3>
                         <p>
                             {
-                                (t(
-                                    "Maximum number of participants in the room ",
-                                ),
+                                (languageData[
+                                    "Maximum number of participants in the room "
+                                ],
                                 maxParticipantsPerRoom)
                             }
                         </p>
@@ -175,7 +177,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     </div>
                 ) : (
                     <>
-                        <h3>{t("Division into rooms")}</h3>
+                        <h3>{languageData["Division into rooms"]}</h3>
                         <div className={styles.roomWrapper}>
                             {roomsAdmin.map((room: RoomDivied) => {
                                 return (

@@ -1,32 +1,39 @@
 import { FC, useEffect } from "react";
-import { t } from "i18next";
+
+// Styles
 import styles from "./setTimers.module.scss";
+
+// Third party libraries
 import { SetTimer, Statement } from "delib-npm";
 
 import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
 
+// Redux store
 import {
     useAppDispatch,
     useAppSelector,
 } from "../../../../../../../functions/hooks/reduxHooks";
-import { selectStatementSettingTimers, setSetTimer } from "../../../../../../../model/timers/timersSlice";
-import SetSetTimerComp from "./setTimer/SetSetTimerComp";
 import {
-    updateTimerSettingDB
-} from "../../../../../../../functions/db/timer/setTimer";
+    selectStatementSettingTimers,
+    setSetTimer,
+} from "../../../../../../../model/timers/timersSlice";
+import SetSetTimerComp from "./setTimer/SetSetTimerComp";
+import { updateTimerSettingDB } from "../../../../../../../functions/db/timer/setTimer";
 import { getSetTimerId } from "../../../../../../../functions/general/helpers";
+import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     parentStatement: Statement;
 }
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
+    const { languageData } = useLanguage();
     try {
         if (!parentStatement) throw new Error("parentStatement is required");
 
         const dispatch = useAppDispatch();
 
-        const timers:SetTimer[] = useAppSelector(
+        const timers: SetTimer[] = useAppSelector(
             selectStatementSettingTimers(parentStatement.statementId),
         ).sort((a, b) => a.order - b.order);
 
@@ -37,8 +44,14 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         return (
             <section>
-                <h2>{t("Setting Timers")}</h2>
-                <p>{t("You can set the timers for each stage here.")}</p>
+                <h2>{languageData["Setting Timers"]}</h2>
+                <p>
+                    {
+                        languageData[
+                            "You can set the timers for each stage here."
+                        ]
+                    }
+                </p>
                 <div className={styles.timers}>
                     {timers.map((timer, i) => (
                         <SetSetTimerComp
@@ -71,8 +84,8 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
         );
     } catch (error) {
         console.error(error);
-        
-return <div>{t("Error")}</div>;
+
+        return <div>{languageData["Error"]}</div>;
     }
 };
 

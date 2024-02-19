@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import styles from "./components/StatementSettings.module.scss";
 
 // Third party imports
-import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { StatementSubscription, Statement } from "delib-npm";
 
@@ -33,6 +32,7 @@ import GetEvaluators from "./components/GetEvaluators";
 import CheckBoxeArea from "./components/CheckBoxeArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
 import { handleSetStatment, handleShare } from "./statementSettingsCont";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 interface Props {
     simple?: boolean;
@@ -43,6 +43,7 @@ const StatementSettings: FC<Props> = () => {
     // * Hooks * //
     const navigate = useNavigate();
     const { statementId } = useParams();
+    const { languageData } = useLanguage();
 
     // * Redux * //
     const dispatch = useAppDispatch();
@@ -102,7 +103,7 @@ const StatementSettings: FC<Props> = () => {
                             autoFocus={true}
                             type="text"
                             name="statement"
-                            placeholder={t("Group Title")}
+                            placeholder={languageData["Group Title"]}
                             defaultValue={arrayOfStatementParagrphs[0]}
                             required={true}
                         />
@@ -110,7 +111,7 @@ const StatementSettings: FC<Props> = () => {
                     <label htmlFor="description">
                         <textarea
                             name="description"
-                            placeholder={t("Group Description")}
+                            placeholder={languageData["Group Description"]}
                             rows={3}
                             defaultValue={description}
                         />
@@ -127,20 +128,22 @@ const StatementSettings: FC<Props> = () => {
                         className="settings__submitBtn"
                         data-cy="settings-statement-submit-btn"
                     >
-                        {!statementId ? t("Add") : t("Update")}
+                        {!statementId
+                            ? languageData["Add"]
+                            : languageData["Update"]}
                     </button>
 
                     {statementId && <UploadImage statement={statement} />}
 
                     {membership && statementId && (
                         <>
-                            <h2>{t("Members in Group")}</h2>
+                            <h2>{languageData["Members in Group"]}</h2>
 
                             <div
                                 className={styles.linkAnonymous}
                                 onClick={() => handleShare(statement)}
                             >
-                                {t("Send a link to anonymous users")}
+                                {languageData["Send a link to anonymous users"]}
                                 <ShareIcon />
                             </div>
 
@@ -163,7 +166,7 @@ const StatementSettings: FC<Props> = () => {
                 </form>
             ) : (
                 <div className="center">
-                    <h2>{t("Updating")}</h2>
+                    <h2>{languageData["Updating"]}</h2>
                     <Loader />
                 </div>
             )}

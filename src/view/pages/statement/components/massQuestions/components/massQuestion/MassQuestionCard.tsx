@@ -1,14 +1,24 @@
-import { Statement, StatementSubscription } from "delib-npm";
 import React, { FC, useEffect, useState } from "react";
+
+// Third party imports
+import { Statement, StatementSubscription } from "delib-npm";
+
+// Styles
 import styles from "./MassQuestion.module.scss";
+
+// Custom Components
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
-import { listenToUserAnswer } from "../../../../../../../functions/db/statements/listenToStatements";
-import { t } from "i18next";
 import EditTitle from "../../../../../../components/edit/EditTitle";
 import SetEdit from "../../../../../../components/edit/SetEdit";
+
+// db Functions
+import { listenToUserAnswer } from "../../../../../../../functions/db/statements/listenToStatements";
 import { isAuthorized } from "../../../../../../../functions/general/helpers";
+
+// Redux store
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
+import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
@@ -17,11 +27,14 @@ interface Props {
 }
 
 const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
+    const { languageData } = useLanguage();
+
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
 
     const [answer, setAnswer] = useState<Statement | null>(null);
     const [isEdit, setEdit] = useState(false);
+
     useEffect(() => {
         setAnswerd((answerd: boolean[]) => {
             const _answerd = [...answerd];
@@ -60,7 +73,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
                     />
                 </h3>
             </div>
-            <label>{t("Answer")}:</label>
+            <label>{languageData["Answer"]}:</label>
             <textarea
                 onBlur={(ev: any) => {
                     handleSetQuestionFromMassCard({

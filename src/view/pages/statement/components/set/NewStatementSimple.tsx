@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Third party imports
 import { Statement, StatementType } from "delib-npm";
-import { t } from "i18next";
 
 // Statements Helpers
 import {
@@ -17,6 +16,7 @@ import Loader from "../../../../components/loaders/Loader";
 import questionModalImage from "../../../../../assets/images/questionModalImage.png";
 import optionModalImage from "../../../../../assets/images/optionModalImage.png";
 import ElipsIcon from "../../../../components/icons/ElipsIcon";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -37,6 +37,7 @@ const NewSetStatementSimple: FC<Props> = ({
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);
+        const { languageData } = useLanguage();
 
         const parentStatementId = parentIsStatement
             ? parentStatement.statementId
@@ -151,13 +152,13 @@ const NewSetStatementSimple: FC<Props> = ({
                                 autoFocus={false}
                                 type="text"
                                 name="statement"
-                                placeholder={t("Title")}
+                                placeholder={languageData["Title"]}
                                 required
                                 minLength={3}
                             />
                             <textarea
                                 name="description"
-                                placeholder={t("Description")}
+                                placeholder={languageData["Description"]}
                                 rows={4}
                             ></textarea>
 
@@ -167,21 +168,21 @@ const NewSetStatementSimple: FC<Props> = ({
                                     type="submit"
                                     data-cy="add-statement-simple"
                                 >
-                                    {t("Add")}
+                                    {languageData["Add"]}
                                 </button>
                                 <button
                                     onClick={() => setShowModal(false)}
                                     type="button"
                                     className="overlay__form__buttons__cancel btn"
                                 >
-                                    {t("Cancel")}
+                                    {languageData["Cancel"]}
                                 </button>
                             </div>
                         </form>
                     </div>
                 ) : (
                     <div className="center">
-                        <h2>{t("Updating")}</h2>
+                        <h2>{languageData["Updating"]}</h2>
                         <Loader />
                     </div>
                 )}
