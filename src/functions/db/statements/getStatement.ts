@@ -27,6 +27,7 @@ import { DB } from "../config";
 
 // Redux Store
 import { store } from "../../../model/store";
+import { setStatement } from "../../../model/statements/statementsSlice";
 
 // TODO: this function is not used. Delete it?
 export function listenToTopStatements(
@@ -329,4 +330,31 @@ export async function getChildStatements(
     }
 }
 
+export async function getTopStatementFromDB(
+    statement: Statement,
+    dispatch: Function,
+): Promise<Statement | undefined> {
+    try {
+        //try to get first form store
+        const topStatement = store
+            .getState()
+            .statements.statements.find(
+                (s) => s.topParentId === statement.statementId,
+            );
+        if (topStatement) return topStatement;
 
+        if (!statement.topParentId) throw new Error("Top parent id not found");
+
+        const topStatementRef = doc(DB, Collections.statements, statement.topParentId);
+        const topStatementDB = await getDoc(topStatementRef);
+        const _topStatement = topStatementDB.data() as Statement;
+        if (!_topStatement) throw new Error("Parent statement not found");
+
+        dispatch(setStatement(_topStatement));
+        return _topStatement;
+    } catch (error) {
+        console.error(error);
+
+        return undefined;
+    }
+}

@@ -1,9 +1,11 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
 import { store } from "../../model/store";
-import { InclusionPolicy, Role, Statement, StatementSubscription } from "delib-npm";
-import { useAppSelector } from "./reduxHooks";
-import { statementSelector, statementSubscriptionSelector } from "../../model/statements/statementsSlice";
+import { Role } from "delib-npm";
+import { useAppDispatch, useAppSelector } from "./reduxHooks";
+import { statementSelector } from "../../model/statements/statementsSlice";
+import { getTopStatementFromDB } from "../db/statements/getStatement";
+import { getTopParentSubscriptionFromDB } from "../db/subscriptions/getSubscriptions";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -18,47 +20,64 @@ const useAuth = () => {
 
 export default useAuth;
 
-export function useIsAuthorized(statementId: string|undefined): {
+interface IsAuthorizedProps {
     isAuthorized: boolean;
     loading: boolean;
-    statementSubscription:StatementSubscription|undefined,
-    statement:Statement|undefined
-    error:boolean
-} {
-const allowedRoles = [Role.admin, Role.parentAdmin,Role.systemAdmin, Role.statementCreator, Role.member];
-    const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
+    error: boolean;
+}
+
+export function useIsAuthorized(
+    statementId: string | undefined,
+): IsAuthorizedProps {
+    const allowedRoles = [
+        Role.admin,
+        Role.parentAdmin,
+        Role.systemAdmin,
+        Role.statementCreator,
+        Role.member,
+    ];
+
     const statement = useAppSelector(statementSelector(statementId));
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
- 
-    
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
         //get parent statement
-        const parentStatement = store.getState().statements.statements.find((s) => s.statementId === statement?.parentId);
-        if(!parentStatement){
-        //get statement subscription
 
-        if (statementSubscription && statement) {
-            if (allowedRoles.includes(statementSubscription.role)) {
-                setIsAuthorized(true);
-            } else {
-                //not a member
-
-                //what is the statement inclusion policy?
-                const inclusionPolicy:InclusionPolicy|undefined = statement.members?.inclusionPolicy;
-                if(inclusionPolicy === InclusionPolicy.open){
-                    console.log('open');
-                }else if(inclusionPolicy === InclusionPolicy.close){
-                    console.log('close');
-                }
-
-                setIsAuthorized(false);
-                setError(true);
-            }
-            setLoading(false);
+        if (statement && statementId) {
+            Promise.all([
+                getTopStatementFromDB(statement, dispatch),
+                getTopParentSubscriptionFromDB(statementId),
+            ])
+                .then(
+                    ([topParentStatement, topParentStatementSubscription]) => {
+                        if (
+                            topParentStatement &&
+                            topParentStatementSubscription
+                        ) {
+                            if (
+                                allowedRoles.includes(
+                                    topParentStatementSubscription.role,
+                                )
+                            ) {
+                                setIsAuthorized(true);
+                            } else {
+                                setIsAuthorized(false);
+                                setError(true);
+                            }
+                            setLoading(false);
+                        }
+                    },
+                )
+                .catch((error) => {
+                    console.error(error);
+                    setError(true);
+                    setLoading(false);
+                });
         }
-    }, [statementSubscription, statement]);
+    }, [statement, statementId]);
 
-    return { isAuthorized, loading,statementSubscription,statement, error };
+    return { isAuthorized, loading, error };
 }

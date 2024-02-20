@@ -34,19 +34,19 @@ export async function updateEvaluation(event: any) {
             previousEvaluation,
         );
 
-        // Fairness calculations (social choice theory)
-        // The aim of the consesus calulation is to give statement with more positive evaluation and less vegative evaluations,
-        // while letting small groups with heigher consesus an uper hand, over large groups with alot of negative evaluations.
+        //Fairness calculations aim to establish equilibrium by favoring statements with elevated levels
+        // of positive evaluation and minimal negative assessments. This method empowers smaller groups 
+        // with robust consensus to exert slightly more influence than larger groups marked by widespread 
+        // dissenting perspectives. Consequently, it promotes the flourishing of statements that pose less
+        // harm to minorities over those with adverse impacts. Such prioritization aligns with the overarching
+        // criterion of "long-term personal good," which we think is essential for the collective flourishing
+        // of the group.
 
         const sumEvaluation = newPro - newCon;
         const n = newPro + Math.abs(newCon); // n = total evealuators
         const averageEvaluation = n !== 0 ? sumEvaluation / n : 0; // average evaluation
         const consensus =
-            n !== 0
-                ? Math.abs(averageEvaluation) *
-                  Math.sign(newPro - newCon) *
-                  Math.log(n)
-                : 0;
+            n !== 0 ? Math.abs(averageEvaluation) * Math.log(n) : 0;
 
         //set consensus to statement in DB
         await statementRef.update({ consensus });
@@ -304,7 +304,7 @@ async function updateParentStatementWithChildResults(
             (st: Statement) => statementToSimpleStatement(st),
         );
 
-        if(!parentId) throw new Error("parentId is not defined");
+        if (!parentId) throw new Error("parentId is not defined");
 
         //update parent with results
         await db.collection(Collections.statements).doc(parentId).update({

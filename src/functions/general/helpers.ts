@@ -319,10 +319,16 @@ export function getDescription(statement: Statement) {
     }
 }
 
+//ids
+
 export function getSetTimerId(statementId: string, order: number) {
     return `${statementId}--${order}`;
 }
 
 export function getRoomTimerId(statementId: string, roomNumber: number, order: number) {
     return `${statementId}--${roomNumber}--${order}`;
+}
+
+export function getStatementSubscriptionId(statementId: string, userId: string) {
+    return `${userId}--${statementId}`;
 }
