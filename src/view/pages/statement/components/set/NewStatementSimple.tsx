@@ -127,7 +127,7 @@ const NewSetStatementSimple: FC<Props> = ({
                                         : "overlay__tabs__tab overlay__tabs__tab--active"
                                 }
                             >
-                                Question
+                                {languageData["Question"]}
                                 {!isOptionChosen && <div className="block" />}
                             </div>
                             <div
@@ -138,7 +138,8 @@ const NewSetStatementSimple: FC<Props> = ({
                                         : "overlay__tabs__tab"
                                 }
                             >
-                                Option
+                                {languageData["Option"]}
+
                                 {isOptionChosen && <div className="block" />}
                             </div>
                         </div>

@@ -2,12 +2,15 @@ import React from "react";
 import { Evaluation } from "delib-npm";
 import Chip from "../../../../../components/chip/Chip";
 import { handleGetEvaluators } from "../statementSettingsCont";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function GetEvaluators({
     statementId,
 }: {
     statementId: string | undefined;
 }) {
+    const { languageData } = useLanguage();
+
     const [evaluators, setEvaluators] = React.useState<Evaluation[]>([]);
     const [clicked, setClicked] = React.useState(false);
 
@@ -25,7 +28,7 @@ export default function GetEvaluators({
                         )
                     }
                 >
-                    Get Evaluators
+                    languageData["Get Evaluators"]
                 </button>
                 <div className="settings__getUsers__chipBox">
                     {evaluators.length > 0
@@ -39,11 +42,15 @@ export default function GetEvaluators({
                           })
                         : clicked && (
                               <p style={{ marginTop: 20 }}>
-                                  No evaluators found
+                                  {languageData["No evaluators found"]}
                               </p>
                           )}
                 </div>
-                {clicked && <b>{evaluators.length} Evaluated</b>}
+                {clicked && (
+                    <b>
+                        {evaluators.length} {languageData["Evaluated"]}
+                    </b>
+                )}
             </section>
         )
     );
