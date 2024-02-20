@@ -28,7 +28,7 @@ export default function GetEvaluators({
                         )
                     }
                 >
-                    languageData["Get Evaluators"]
+                    {languageData["Get Evaluators"]}
                 </button>
                 <div className="settings__getUsers__chipBox">
                     {evaluators.length > 0
