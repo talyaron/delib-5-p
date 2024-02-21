@@ -41,6 +41,7 @@ export async function updateEvaluation(event: any) {
         // harm to minorities over those with adverse impacts. Such prioritization aligns with the overarching
         // criterion of "long-term personal good," which we think is essential for the collective flourishing
         // of the group.
+        // see: https://www.delib.org/wiki/index.php/Long-term_personal_good
 
         const sumEvaluation = newPro - newCon;
         const n = newPro + Math.abs(newCon); // n = total evealuators

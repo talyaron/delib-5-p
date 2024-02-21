@@ -24,6 +24,7 @@ interface IsAuthorizedProps {
     isAuthorized: boolean;
     loading: boolean;
     error: boolean;
+    role: Role;
 }
 
 export function useIsAuthorized(
@@ -39,6 +40,7 @@ export function useIsAuthorized(
 
     const statement = useAppSelector(statementSelector(statementId));
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+    const [role, setRole] = useState<Role>(Role.guest);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const dispatch = useAppDispatch();
@@ -62,6 +64,7 @@ export function useIsAuthorized(
                                     topParentStatementSubscription.role,
                                 )
                             ) {
+                                setRole(topParentStatementSubscription.role);
                                 setIsAuthorized(true);
                             } else {
                                 setIsAuthorized(false);
@@ -79,5 +82,5 @@ export function useIsAuthorized(
         }
     }, [statement, statementId]);
 
-    return { isAuthorized, loading, error };
+    return { isAuthorized,role, loading, error };
 }

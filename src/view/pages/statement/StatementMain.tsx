@@ -47,8 +47,7 @@ const StatementMain: FC = () => {
     const page = useParams().page as Screen;
     const navigate = useNavigate();
 
-    const { error, isAuthorized, loading, statementSubscription, statement } =
-        useIsAuthorized(statementId);
+    const { error, isAuthorized, loading, role} = useIsAuthorized(statementId);
     // Redux store
     const dispatch = useAppDispatch();
     const user = useSelector(userSelector);
