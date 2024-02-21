@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 // Third party imports
-import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 // Firebase functions
@@ -24,13 +23,14 @@ import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { onLocalMessage } from "./functions/db/notifications/notifications";
+import { LanguagesEnum, useLanguage } from "./functions/hooks/useLanguages";
 
 export default function App() {
     // Hooks
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { i18n } = useTranslation();
     const { anonymous } = useParams();
+    const { changeLanguage, languageData } = useLanguage();
 
     // Redux Store
     const user = useAppSelector(userSelector);
@@ -47,9 +47,9 @@ export default function App() {
         document.body.style.direction = "ltr";
 
         // Get language from local storage and change accordingly
-        const lang = localStorage.getItem("lang");
+        const lang = localStorage.getItem("lang") as LanguagesEnum;
         if (lang) {
-            i18n.changeLanguage(lang);
+            changeLanguage(lang);
             document.body.style.direction =
                 lang === "he" || lang === "ar" ? "rtl" : "ltr";
         }
@@ -107,7 +107,7 @@ export default function App() {
         if (user.agreement?.date) {
             setShowSignAgreement(false);
         } else {
-            const agreement = getSigniture("basic");
+            const agreement = getSigniture("basic", languageData);
 
             if (!agreement) throw new Error("agreement not found");
 
@@ -127,7 +127,10 @@ export default function App() {
             if (!text) throw new Error("text is empty");
             if (agree) {
                 setShowSignAgreement(false);
-                const agreement: Agreement | undefined = getSigniture("basic");
+                const agreement: Agreement | undefined = getSigniture(
+                    "basic",
+                    languageData,
+                );
                 if (!agreement) throw new Error("agreement not found");
                 agreement.text = text;
 

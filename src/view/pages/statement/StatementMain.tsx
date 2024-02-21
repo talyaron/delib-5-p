@@ -4,7 +4,6 @@ import { createSelector } from "reselect";
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
-import { t } from "i18next";
 
 // firestore
 import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
@@ -21,11 +20,7 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import {
-    statementNotificationSelector,
-    statementSelector,
-    statementSubscriptionSelector,
-} from "../../../model/statements/statementsSlice";
+import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 import { RootState } from "../../../model/store";
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -41,22 +36,26 @@ import EnableNotifications from "../../components/enableNotifications/EnableNoti
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
+import { useIsAuthorized } from "../../../functions/hooks/authHooks";
+import LoadingPage from "../loadingPage/LoadingPage";
+import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 const StatementMain: FC = () => {
     // Hooks
     const { statementId } = useParams();
     const page = useParams().page as Screen;
     const navigate = useNavigate();
+    const { languageData } = useLanguage();
+
+    const { error, isAuthorized, loading, statementSubscription, statement } =
+        useIsAuthorized(statementId);
 
     // Redux store
     const dispatch = useAppDispatch();
     const user = useSelector(userSelector);
-    const statement = useAppSelector(statementSelector(statementId));
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId),
-    );
-    const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statementId),
     );
 
     // Create selectors
@@ -75,7 +74,7 @@ const StatementMain: FC = () => {
 
     // Use states
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(t("Group"));
+    const [title, setTitle] = useState<string>(languageData["Group"]);
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
     const [askNotifications, setAskNotifications] = useState(false);
 
@@ -178,50 +177,55 @@ const StatementMain: FC = () => {
         }
     }, [statement]);
 
-    return (
-        <div className="page">
-            {showAskPermission && (
-                <AskPermisssion showFn={setShowAskPermission} />
-            )}
-            {talker && (
-                <div
-                    onClick={() => {
-                        handleShowTalker(null);
-                    }}
-                >
-                    <ProfileImage user={talker} />
-                </div>
-            )}
-            {askNotifications && (
-                <EnableNotifications
-                    statement={statement}
-                    setAskNotifications={setAskNotifications}
-                    setShowAskPermission={setShowAskPermission}
-                />
-            )}
-
-            <>
-                <StatementHeader
-                    statement={statement}
-                    screen={screen || Screen.CHAT}
-                    title={title}
-                    showAskPermission={showAskPermission}
-                    setShowAskPermission={setShowAskPermission}
-                />
-
-                <MapProvider>
-                    <SwitchScreens
-                        screen={screen}
+    if (loading) return <LoadingPage />;
+    if (error) return <UnAuthorizedPage />;
+    if (isAuthorized)
+        return (
+            <div className="page">
+                {showAskPermission && (
+                    <AskPermisssion showFn={setShowAskPermission} />
+                )}
+                {talker && (
+                    <div
+                        onClick={() => {
+                            handleShowTalker(null);
+                        }}
+                    >
+                        <ProfileImage user={talker} />
+                    </div>
+                )}
+                {askNotifications && (
+                    <EnableNotifications
                         statement={statement}
-                        subStatements={subStatements}
-                        handleShowTalker={handleShowTalker}
+                        setAskNotifications={setAskNotifications}
                         setShowAskPermission={setShowAskPermission}
-                        toggleAskNotifications={toggleAskNotifications}
                     />
-                </MapProvider>
-            </>
-        </div>
-    );
+                )}
+
+                <>
+                    <StatementHeader
+                        statement={statement}
+                        screen={screen || Screen.CHAT}
+                        title={title}
+                        showAskPermission={showAskPermission}
+                        setShowAskPermission={setShowAskPermission}
+                    />
+
+                    <MapProvider>
+                        <SwitchScreens
+                            screen={screen}
+                            statement={statement}
+                            subStatements={subStatements}
+                            handleShowTalker={handleShowTalker}
+                            setShowAskPermission={setShowAskPermission}
+                            toggleAskNotifications={toggleAskNotifications}
+                        />
+                    </MapProvider>
+                </>
+            </div>
+        );
+
+    return <UnAuthorizedPage />;
 };
 
 export default StatementMain;

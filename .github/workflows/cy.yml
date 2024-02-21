@@ -1,24 +1,24 @@
-name: Frontend PR Tests
+name: End-to-end tests
 
 on:
     pull_request:
         branches:
             - dev
-        types:
-            - opened
+    push:
+        branches:
+            - dev
 
 jobs:
-    build:
+    cypress-run:
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
+            - name: Checkout
+              uses: actions/checkout@v4
 
             - name: Set up Node.js
               uses: actions/setup-node@v2
               with:
-                  node-version: 14
+                  node-version: 18
 
             - name: Install dependencies
               run: npm install
@@ -28,3 +28,6 @@ jobs:
 
             - name: Run TypeScript type checking
               run: npm run typecheck
+
+            # - name: Cypress run
+            #   uses: cypress-io/github-action@v6

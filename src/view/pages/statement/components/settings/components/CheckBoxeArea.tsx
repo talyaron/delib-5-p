@@ -1,23 +1,28 @@
+import { Screen, Statement } from "delib-npm";
+
+// custom components
 import CustomCheckboxLabel from "./CustomCheckboxLabel";
-import { t } from "i18next";
 import { isSubPageChecked } from "../statementSettingsCont";
 import CustomSwitch from "../../../../../components/switch/CustomSwitch";
-import { Screen, Statement } from "delib-npm";
+
+// HELPERS
 import { navArray } from "../../nav/top/StatementTopNavModel";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function CheckBoxeArea({
     statement,
 }: {
     statement: Statement | undefined;
 }) {
-    const hasChildren: boolean = statement?.hasChildren === false ? false : true;
+    const { languageData } = useLanguage();
+
+    const hasChildren: boolean =
+        statement?.hasChildren === false ? false : true;
 
     const enableAddEvaluationOption: boolean =
         statement?.statementSettings?.enableAddEvaluationOption === false
             ? false
             : true;
-
-
 
     const enableAddVotingOption: boolean =
         statement?.statementSettings?.enableAddVotingOption === false
@@ -28,7 +33,7 @@ export default function CheckBoxeArea({
         <section className="settings__checkboxSection">
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">
-                    {t("Tabs")}
+                    {languageData["Tabs"]}
                 </h3>
                 {navArray
                     .filter((navObj) => navObj.link !== Screen.SETTINGS)
@@ -43,7 +48,7 @@ export default function CheckBoxeArea({
             </div>
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">
-                    {t("Advanced")}
+                    {languageData["Advanced"]}
                 </h3>
                 <CustomCheckboxLabel
                     name={"hasChildren"}

@@ -6,7 +6,6 @@ import {
     Evaluation,
     StatementType,
 } from "delib-npm";
-import { t } from "i18next";
 
 // Helpers
 import { getVoters } from "../../../../../functions/db/vote/getVotes";
@@ -20,6 +19,7 @@ import {
     setStatmentToDB,
     updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -71,11 +71,12 @@ export function isSubPageChecked(
 }
 
 export function handleShare(statement: Statement | undefined) {
+    const { languageData } = useLanguage();
     const baseUrl = window.location.origin;
 
     const shareData = {
-        title: t("Delib: We create agreements together"),
-        text: t("Invited:") + statement?.statement,
+        title: languageData["Delib: We create agreements together"],
+        text: languageData["Invited:"] + statement?.statement,
         url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
     };
     navigator.share(shareData);

@@ -3,9 +3,9 @@ import styles from "./Room.module.scss";
 import Text from "../../../../../../components/text/Text";
 import { Participant, RoomDivied } from "delib-npm";
 import RoomParticpantBadge from "../../comp/general/RoomParticpantBadge";
-import { t } from "i18next";
 import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
 import { store } from "../../../../../../../model/store";
+import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     room: RoomDivied;
@@ -13,6 +13,8 @@ interface Props {
 }
 
 const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
+    const { languageData } = useLanguage();
+
     function handleMoveParticipantToRoom(ev: any) {
         try {
             ev.preventDefault();
@@ -32,8 +34,8 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
 
             if (room.participants.length >= maxParticipantsPerRoom) {
                 alert("room is full");
-                
-return;
+
+                return;
             }
             setRoomJoinToDB(
                 room.statement,
@@ -60,7 +62,7 @@ return;
             onDrop={handleMoveParticipantToRoom}
         >
             <h4>
-                {(t("Room"), room.roomNumber)} -{" "}
+                {(languageData["Room"], room.roomNumber)} -{" "}
                 <Text text={room.statement.statement} onlyTitle={true} />
             </h4>
             <div className={styles.room__badges}>

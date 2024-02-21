@@ -1,7 +1,7 @@
 // CustomSwitch.js
 import { useState, FC } from "react";
 import styles from "./CustomSwitch.module.scss";
-import { t } from "i18next";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     label: string;
@@ -11,6 +11,7 @@ interface Props {
 
 const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
     const [checked, setChecked] = useState(defaultChecked);
+    const { languageData } = useLanguage();
 
     const handleChange = () => {
         setChecked(!checked);
@@ -53,8 +54,9 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                     setChecked(!checked);
                 }}
                 style={labelPosition}
+                data-cy={`toggleSwitch-${link}`}
             >
-                {t(label)}
+                {languageData[label]}
             </div>
             <input
                 style={{ display: "none" }}
@@ -65,6 +67,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 onChange={handleChange}
                 value={checked ? "on" : "off"}
                 checked={checked}
+                data-cy={`toggleSwitch-input-${link}`}
             />
         </div>
     );

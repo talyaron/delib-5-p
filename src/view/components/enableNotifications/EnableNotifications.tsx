@@ -51,7 +51,10 @@ export default function EnableNotifications({
 
     return (
         <Modal>
-            <div className="enableNotifications">
+            <div
+                className="enableNotifications"
+                data-cy="enable-notifications-popup"
+            >
                 <BellWithDots />
                 <p className="enableNotifications__title">Don'T Miss Out!</p>
                 <p className="enableNotifications__text">
@@ -67,6 +70,7 @@ export default function EnableNotifications({
                     <button
                         onClick={handleEnableNotificationsClick}
                         className="enableNotifications__btnBox__enable"
+                        data-cy="enable-notifications-popup-enable"
                     >
                         Enable notifications
                     </button>

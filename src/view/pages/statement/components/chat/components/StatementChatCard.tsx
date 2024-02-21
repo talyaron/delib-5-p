@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType, User } from "delib-npm";
-import { t } from "i18next";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
@@ -32,6 +31,7 @@ import StatementChatSetOption from "./StatementChatSetOption";
 import StatementChatSetQuestion from "./StatementChatSetQuestion";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
 import Modal from "../../../../../components/modal/Modal";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export interface NewQuestion {
     statement: Statement;
@@ -57,6 +57,7 @@ const StatementChatCard: FC<Props> = ({
     const navigate = useNavigate();
     const { statementType } = statement;
     const statementColor = useStatementColor(statementType || "");
+    const { languageData } = useLanguage();
 
     // Redux store
     const userId = store.getState().user.user?.uid;
@@ -130,25 +131,25 @@ const StatementChatCard: FC<Props> = ({
                             isAuthrized={_isAuthrized}
                             setEdit={setIsEdit}
                             edit={isEdit}
-                            text={t("Edit Text")}
+                            text={languageData["Edit Text"]}
                         />
 
                         <StatementChatSetQuestion
                             statement={statement}
-                            text={t("Question")}
+                            text={languageData["Question"]}
                         />
 
                         {linkToChildren(statement, parentStatement) && (
-                                <AddSubQuestion
-                                    statement={statement}
-                                    setShowModal={setShowModal}
-                                    text={t("Add Question")}
-                                />
-                            )}
+                            <AddSubQuestion
+                                statement={statement}
+                                setShowModal={setShowModal}
+                                text={languageData["Add Question"]}
+                            />
+                        )}
                         <StatementChatSetOption
                             parentStatement={parentStatement}
                             statement={statement}
-                            text={t("Option")}
+                            text={languageData["Option"]}
                         />
                     </CardMenu>
                     <div

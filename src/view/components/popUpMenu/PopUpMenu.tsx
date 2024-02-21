@@ -1,8 +1,8 @@
-import { t } from "i18next";
 import React, { MouseEventHandler } from "react";
 import MoreIcon from "../icons/MoreIcon";
 import "./popUpStyle.scss";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     isAuthrized?: boolean;
@@ -40,6 +40,7 @@ export default function PopUpMenu({
     fourthIconText,
 }: Props) {
     const [openMore, setOpenMore] = React.useState(false);
+    const { languageData } = useLanguage();
 
     return isAuthrized ? (
         <div
@@ -56,28 +57,28 @@ export default function PopUpMenu({
                             onClick={firstIconFunc}
                         >
                             {firstIcon}
-                            {t(firstIconText)}
+                            {languageData[firstIconText]}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={secondIconFunc}
                         >
                             {secondIcon}
-                            {t(secondIconText || "")}
+                            {languageData[secondIconText || ""]}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={thirdIconFunc}
                         >
                             {thirdIcon}
-                            {t(thirdIconText || "")}
+                            {languageData[thirdIconText || ""]}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={fourthIconFunc}
                         >
                             {fourthIcon}
-                            {t(fourthIconText || "")}
+                            {languageData[fourthIconText || ""]}
                         </span>
                     </div>
                 </>

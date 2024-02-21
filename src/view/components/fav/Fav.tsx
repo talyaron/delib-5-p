@@ -19,6 +19,7 @@ const Fav: FC<Props> = ({ onclick }) => {
             style={position}
             className="homeFav homeFav--fixed"
             onClick={onclick}
+            data-cy="add-statement"
         >
             <img src={addIcon} alt="add_icon" />
         </div>

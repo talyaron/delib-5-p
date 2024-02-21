@@ -10,14 +10,14 @@ import installIcon from "../../../assets/icons/installIcon.svg";
 
 // Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
-
-// Third party imports
-import { t } from "i18next";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 export default function HomeHeader() {
     // Use State
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [openMenu, setOpenMenu] = useState(false);
+
+    const { languageData } = useLanguage();
 
     useEffect(() => {
         //for defferd app install
@@ -36,7 +36,7 @@ export default function HomeHeader() {
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
                 <div className="homePage__header__wrapper__title">
-                    {t("Delib 5")}
+                    {languageData["Delib"]}
                 </div>
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (

@@ -4,15 +4,17 @@ import { useState } from "react";
 
 // Third party imports
 import { Statement, ResultsBy } from "delib-npm";
-import { t } from "i18next";
 import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
 import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function DisplayResultsBy({
     statement,
 }: {
     statement: Statement | undefined;
 }) {
+    const { languageData } = useLanguage();
+
     const resultsBy = () => {
         if (!statement) return ResultsBy.topOptions;
 
@@ -25,7 +27,9 @@ export default function DisplayResultsBy({
 
     return (
         <section className="settings__resultsBy">
-            <h3 className="settings__resultsBy__title">{t("Results By")}</h3>
+            <h3 className="settings__resultsBy__title">
+                {languageData["Results By"]}
+            </h3>
             <div
                 className="settings__resultsBy__radioBox"
                 onClick={() => setResultsByVoting(false)}
@@ -43,7 +47,9 @@ export default function DisplayResultsBy({
                     value={ResultsBy.topOptions}
                     onChange={(e) => console.log(e)}
                 />
-                <label htmlFor="favoriteOption">{t("Favorite Option")}</label>
+                <label htmlFor="favoriteOption">
+                    {languageData["Favorite Option"]}
+                </label>
             </div>
             <div
                 className="settings__resultsBy__radioBox"
@@ -62,7 +68,9 @@ export default function DisplayResultsBy({
                     value={ResultsBy.topVote}
                     onChange={(e) => console.log(e)}
                 />
-                <label htmlFor="votingResults">{t("Voting Results")}</label>
+                <label htmlFor="votingResults">
+                    {languageData["Voting Results"]}
+                </label>
             </div>
         </section>
     );

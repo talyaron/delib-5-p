@@ -2,14 +2,15 @@ import { FC } from "react";
 import "./homeMenu.scss";
 import disconnectlIcon from "../../../assets/icons/disconnectIcon.svg";
 import { handleLogout } from "../../../functions/general/helpers";
-import { t } from "i18next";
 import useDirection from "../../../functions/hooks/useDirection";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
     const direction = useDirection();
+    const { languageData } = useLanguage();
 
     return (
         <>
@@ -23,7 +24,7 @@ const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
                     src={disconnectlIcon}
                     alt="disconnect_icon"
                 />
-                <p className="homeMenu__name">{t("Disconnect")}</p>
+                <p className="homeMenu__name">{languageData["Disconnect"]}</p>
             </div>
 
             <div

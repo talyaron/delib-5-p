@@ -1,11 +1,12 @@
 import { Participant, RoomDivied } from "delib-npm";
-import { t } from "i18next";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export function divideIntoTopics(
     participants: Participant[],
     maxPerRoom = 7,
 ): { rooms: RoomDivied[]; topicsParticipants: any } {
     try {
+        const { languageData } = useLanguage();
         const topicsParticipants: any = {};
 
         //build topicsParticipantsObject
@@ -14,7 +15,7 @@ export function divideIntoTopics(
                 if (!participant.statementId) {
                     topicsParticipants["general"] = {
                         statementId: "general",
-                        statement: t("General"),
+                        statement: languageData["General"],
                         participants: [participant],
                     };
                 } else if (!(participant.statementId in topicsParticipants)) {

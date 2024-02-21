@@ -1,8 +1,7 @@
 import { FC, useEffect } from "react";
 
-// Third Party Libraries
+// // Third Party Libraries
 import { Participant, RoomTimer, Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Redux
 import {
@@ -11,8 +10,8 @@ import {
 } from "../../../../../../../functions/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
-// Styles
-import styles from "./inRoom.module.scss";
+// // Styles
+import styles from "./InRoom.module.css";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -20,12 +19,15 @@ import RoomTimers from "../../timer/RoomTimers";
 import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
 import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
+import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
 }
 
 const InRoom: FC<Props> = ({ statement }) => {
+    const { languageData } = useLanguage();
+
     const userTopic: Participant | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
     );
@@ -52,7 +54,7 @@ const InRoom: FC<Props> = ({ statement }) => {
     try {
         return (
             <>
-                <h1>{t("Room Allocation")}</h1>
+                <h1>{languageData["Room Allocation"]}</h1>
                 {/* {userTopic && userTopic.approved ? */}
                 <div className={styles.message}>
                     {userTopic && userTopic.statement ? (
@@ -60,24 +62,23 @@ const InRoom: FC<Props> = ({ statement }) => {
                             <h2>
                                 <Text
                                     text={`${
-                                        (t("Discussion Topic:"),
+                                        (languageData["Discussion Topic:"],
                                         userTopic.statement.statement)
                                     }`}
                                     onlyTitle={true}
                                 />
                             </h2>
                             <div className={styles.text}>
-                                {t("Welcome to Room Number")}
+                                {languageData["Welcome to Room Number"]}
                                 <span>{userTopic.roomNumber}</span>
-                                {t("In Zoom")}
+                                {languageData["In Zoom"]}
                             </div>
                         </>
                     ) : (
-                        <h2>{t("No Topic Chosen by You")}</h2>
+                        <h2>{languageData["No Topic Chosen by You"]}</h2>
                     )}
                 </div>
                 <RoomTimers
-
                     roomNumber={userTopic?.roomNumber}
                     timers={timers}
                 />

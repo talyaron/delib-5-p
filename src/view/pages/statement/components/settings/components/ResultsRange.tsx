@@ -1,12 +1,14 @@
 import React from "react";
 import { Statement } from "delib-npm";
-import { t } from "i18next";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function ResultsRange({
     statement,
 }: {
     statement: Statement | undefined;
 }) {
+    const { languageData } = useLanguage();
+
     const [numOfResults, setNumOfResults] = React.useState(
         statement?.resultsSettings?.numberOfResults || 1,
     );
@@ -17,7 +19,7 @@ export default function ResultsRange({
                 className="settings__rangeSection__label"
                 style={{ fontSize: "1.3rem", marginBottom: "1rem" }}
             >
-                {t("Number of Results to Display")}
+                {languageData["Number of Results to Display"]}
                 {": "}
             </label>
             <div className="settings__rangeSection__rangeBox">
