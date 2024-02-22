@@ -3,11 +3,14 @@ import { store } from "../../../model/store";
 import { getStatementSubscriptionId } from "../../general/helpers";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { DB } from "../config";
+import { setStatementSubscription } from "../../../model/statements/statementsSlice";
 
 export async function getTopParentSubscriptionFromDB(
     statementId: string,
 ): Promise<StatementSubscription | undefined> {
     try {
+        const userId = store.getState().user.user?.uid;
+        if(!userId) return undefined;
         //try to get from store first
         const statementSubscription = store
             .getState()
@@ -54,17 +57,20 @@ export function listenToSubscriptionDB(statementId: string | undefined) {
             Collections.statementsSubscribe,
             statementsSubscribeId,
         );
-        return onSnapshot(statementSubscriptionRef, (statementSubscriptionDB) => {
-            if (statementSubscriptionDB.exists()) {
-                store.dispatch(
-                    statementSubscriptionAdded(
-                        statementSubscriptionDB.data() as StatementSubscription,
-                    ),
-                );
-            }
-        }
-        return () => {};
+        return onSnapshot(
+            statementSubscriptionRef,
+            (statementSubscriptionDB) => {
+                if (statementSubscriptionDB.exists()) {
+                    store.dispatch(
+                        setStatementSubscription(
+                            statementSubscriptionDB.data() as StatementSubscription,
+                        ),
+                    );
+                }
+            },
+        );
     } catch (error) {
+        console.error(error);
         return () => {};
     }
 }

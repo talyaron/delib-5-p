@@ -38,10 +38,12 @@ import { Unsubscribe } from "firebase/auth";
 
 export const listenToStatementSubscription = (
     statementId: string,
-    user: User,
     dispatch: AppDispatch,
 ): Unsubscribe => {
     try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,

@@ -31,7 +31,6 @@ import { setStatement } from "../../../model/statements/statementsSlice";
 
 export function listenToStatement(statementId: string, dispatch: Function) {
     try {
-        
         const statementRef = doc(DB, Collections.statements, statementId);
         return onSnapshot(statementRef, (statementDB) => {
             if (statementDB.exists()) {
@@ -40,7 +39,7 @@ export function listenToStatement(statementId: string, dispatch: Function) {
             }
         });
     } catch (error) {
-        return ()=>{};
+        return () => {};
     }
 }
 
@@ -213,7 +212,7 @@ export async function getIsSubscribed(
     try {
         if (!statementId) throw new Error("Statement id is undefined");
         const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
+        if (!user) return false;
 
         const subscriptionRef = doc(
             DB,
@@ -360,7 +359,11 @@ export async function getTopStatementFromDB(
 
         if (!statement.topParentId) throw new Error("Top parent id not found");
 
-        const topStatementRef = doc(DB, Collections.statements, statement.topParentId);
+        const topStatementRef = doc(
+            DB,
+            Collections.statements,
+            statement.topParentId,
+        );
         const topStatementDB = await getDoc(topStatementRef);
         const _topStatement = topStatementDB.data() as Statement;
         if (!_topStatement) throw new Error("Parent statement not found");

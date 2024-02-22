@@ -66,13 +66,13 @@ export function getIntialLocationSessionStorage(): string | undefined {
 }
 
 export function isAuthorized(
-    statement: Statement,
+    statement: Statement|undefined,
     statementSubscription: StatementSubscription | undefined,
     parentStatementCreatorId?: string | undefined,
     authrizedRoles?: Array<Role>,
 ) {
     try {
-        if (!statement) throw new Error("No statement");
+        if (!statement) return false;
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");

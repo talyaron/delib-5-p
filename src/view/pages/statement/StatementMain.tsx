@@ -42,6 +42,7 @@ import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useListenStatement } from "../../../functions/hooks/useStatement";
 import LoaderGlass from "../../components/loaders/LoaderGlass";
+import { useListenStatementSubscription } from "../../../functions/hooks/useStatementSubscription";
 
 const StatementMain: FC = () => {
     // Hooks
@@ -52,6 +53,8 @@ const StatementMain: FC = () => {
     const { error, isAuthorized, loading } = useIsAuthorized(statementId);
     const { statement, loading: statementLoading } =
         useListenStatement(statementId);
+    const { statementSubscription } =
+        useListenStatementSubscription(statementId);
     // Redux store
     const dispatch = useAppDispatch();
     const user = useSelector(userSelector);
@@ -141,7 +144,6 @@ const StatementMain: FC = () => {
             );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
-                user,
                 dispatch,
             );
         }
