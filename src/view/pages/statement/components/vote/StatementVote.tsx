@@ -13,17 +13,19 @@ import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 // Statements helpers
 import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
 import { setVoteToStore } from "../../../../../model/vote/votesSlice";
-import NewSetStatementSimple from "../set/NewStatementSimple";
 import { setSelectionsToOptions } from "./setSelectionsToOptions";
 import { getTotalVoters } from "./getTotalVoters";
 import { sortOptionsIndex } from "./sortOptionsIndex";
 
 // Custom components
+import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
 import { OptionBar } from "./OptionBar";
-import { isOptionFn } from "../../../../../functions/general/helpers";
 import HandsIcon from "../../../../components/icons/HandsIcon";
 import StatementInfo from "./info/StatementInfo";
+
+// Helpers
+import { isOptionFn } from "../../../../../functions/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -37,13 +39,16 @@ const StatementVote: FC<Props> = ({
     subStatements,
     toggleAskNotifications,
 }) => {
+    // * Hooks * //
     const dispatch = useAppDispatch();
     const { sort } = useParams();
 
+    // * Use State * //
     const [showModal, setShowModal] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
+    // * Variables * //
     const __options = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement),
     );
@@ -65,22 +70,18 @@ const StatementVote: FC<Props> = ({
     return (
         <>
             <div className="page__main">
-                <div className="statement">
+                <div className="votingWrapper">
                     <div>
                         <p
                             style={{
                                 maxWidth: "50vw",
                                 margin: " 2rem auto",
-
-                                // display: "flex",
-                                // alignItems: "center",
                                 color: "#41A1DA",
                                 fontFamily: "Patrick Hand",
                             }}
                             className="hand"
                         >
-                            <HandsIcon/>{" "}
-                            {totalVotes}
+                            <HandsIcon /> {totalVotes}
                         </p>
                     </div>
                     <div className="vote">
