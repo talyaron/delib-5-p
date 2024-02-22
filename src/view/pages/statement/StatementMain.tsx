@@ -40,6 +40,8 @@ import { availableScreen } from "./StatementCont";
 import { useIsAuthorized } from "../../../functions/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
+import { useListenStatement } from "../../../functions/hooks/useStatement";
+import LoaderGlass from "../../components/loaders/LoaderGlass";
 
 const StatementMain: FC = () => {
     // Hooks
@@ -47,7 +49,9 @@ const StatementMain: FC = () => {
     const page = useParams().page as Screen;
     const navigate = useNavigate();
 
-    const { error, isAuthorized, loading, role} = useIsAuthorized(statementId);
+    const { error, isAuthorized, loading } = useIsAuthorized(statementId);
+    const { statement, loading: statementLoading } =
+        useListenStatement(statementId);
     // Redux store
     const dispatch = useAppDispatch();
     const user = useSelector(userSelector);
@@ -208,16 +212,20 @@ const StatementMain: FC = () => {
                         setShowAskPermission={setShowAskPermission}
                     />
 
-                    <MapProvider>
-                        <SwitchScreens
-                            screen={screen}
-                            statement={statement}
-                            subStatements={subStatements}
-                            handleShowTalker={handleShowTalker}
-                            setShowAskPermission={setShowAskPermission}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </MapProvider>
+                    {!statementLoading ? (
+                        <MapProvider>
+                            <SwitchScreens
+                                screen={screen}
+                                statement={statement}
+                                subStatements={subStatements}
+                                handleShowTalker={handleShowTalker}
+                                setShowAskPermission={setShowAskPermission}
+                                toggleAskNotifications={toggleAskNotifications}
+                            />
+                        </MapProvider>
+                    ) : (
+                        <LoaderGlass />
+                    )}
                 </>
             </div>
         );

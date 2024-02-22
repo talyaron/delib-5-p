@@ -29,6 +29,21 @@ import { DB } from "../config";
 import { store } from "../../../model/store";
 import { setStatement } from "../../../model/statements/statementsSlice";
 
+export function listenToStatement(statementId: string, dispatch: Function) {
+    try {
+        
+        const statementRef = doc(DB, Collections.statements, statementId);
+        return onSnapshot(statementRef, (statementDB) => {
+            if (statementDB.exists()) {
+                const statement = statementDB.data() as Statement;
+                dispatch(setStatement(statement));
+            }
+        });
+    } catch (error) {
+        return ()=>{};
+    }
+}
+
 // TODO: this function is not used. Delete it?
 export function listenToTopStatements(
     setStatementsCB: (statement: Statement) => void,
