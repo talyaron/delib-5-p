@@ -47,7 +47,6 @@ const StatementMain: FC = () => {
     const page = useParams().page as Screen;
     const navigate = useNavigate();
     const { languageData } = useLanguage();
-
     const { error, isAuthorized, loading, statementSubscription, statement } =
         useIsAuthorized(statementId);
 
@@ -178,7 +177,9 @@ const StatementMain: FC = () => {
     }, [statement]);
 
     if (loading) return <LoadingPage />;
+
     if (error) return <UnAuthorizedPage />;
+
     if (isAuthorized)
         return (
             <div className="page">
