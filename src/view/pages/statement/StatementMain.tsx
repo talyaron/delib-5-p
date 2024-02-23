@@ -48,7 +48,7 @@ const StatementMain: FC = () => {
     const navigate = useNavigate();
     const { languageData } = useLanguage();
 
-    const { error, isAuthorized, loading, statementSubscription, statement } =
+    const { error, isAuthorized, loading } =
         useIsAuthorized(statementId);
 
     // Redux store

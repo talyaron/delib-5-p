@@ -83,7 +83,8 @@ export const listenToAuth =
                     // console.info("User is signed in")
                     if (!_user) throw new Error("user is undefined");
 
-                    const userDB = (await setUserToDB(_user)) as User;
+                    const userDB = await setUserToDB(_user) as User|null;
+                    if (!userDB) throw new Error("userDB is undefined");
 
                     const fontSize = userDB.fontSize ? userDB.fontSize : 14;
 

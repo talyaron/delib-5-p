@@ -18,9 +18,10 @@ export async function setUserToDB(user: User) {
         await setDoc(userRef, user, { merge: true });
         const userFromDB = await getDoc(userRef);
 
-        return userFromDB.data();
+        return userFromDB.data() as User;
     } catch (error) {
         console.error(error);
+        return null;
     }
 }
 

@@ -3,7 +3,10 @@ import { useState, useEffect } from "react";
 import { store } from "../../model/store";
 import { Role, Statement, StatementSubscription } from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
-import { statementSelector, statementSubscriptionSelector } from "../../model/statements/statementsSlice";
+import {
+    statementSelector,
+    statementSubscriptionSelector,
+} from "../../model/statements/statementsSlice";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -18,32 +21,43 @@ const useAuth = () => {
 
 export default useAuth;
 
-export function useIsAuthorized(statementId: string|undefined): {
+export function useIsAuthorized(statementId: string | undefined): {
     isAuthorized: boolean;
     loading: boolean;
-    statementSubscription:StatementSubscription|undefined,
-    statement:Statement|undefined
-    error:boolean
+    error: boolean;
+    errorMessage?: string;
 } {
-const allowedRoles = [Role.admin, Role.parentAdmin,Role.systemAdmin, Role.statementCreator, Role.member];
-    const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
+    const allowedRoles = [Role.admin, Role.member];
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statementId),
+    );
     const statement = useAppSelector(statementSelector(statementId));
+    const userId = store.getState().user.user?.uid;
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
- 
-    
-    useEffect(() => {
-        if (statementSubscription && statement) {
-            if (allowedRoles.includes(statementSubscription.role)) {
-                setIsAuthorized(true);
-            } else {
-                setIsAuthorized(false);
-                setError(true);
-            }
-            setLoading(false);
-        }
-    }, [statementSubscription, statement]);
 
-    return { isAuthorized, loading,statementSubscription,statement, error };
+    try {
+        useEffect(() => {
+            if (statementSubscription && statement && userId) {
+                if (allowedRoles.includes(statementSubscription.role)) {
+                    setIsAuthorized(true);
+                } else {
+                    setIsAuthorized(false);
+                    setError(true);
+                }
+                setLoading(false);
+            }
+        }, [userId, statementSubscription, statement]);
+
+        return { isAuthorized, loading, error };
+    } catch (error: any) {
+        console.error(error);
+        return {
+            isAuthorized: false,
+            loading: false,
+            error: true,
+            errorMessage: error.message,
+        };
+    }
 }
