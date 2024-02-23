@@ -311,7 +311,7 @@ export const listenToStatement = (
 
         return onSnapshot(statementRef, (statementDB) => {
             const statement = statementDB.data() as Statement;
-
+console.log("dispatching statement",statement.statement)
             dispatch(setStatement(statement));
         });
     } catch (error) {

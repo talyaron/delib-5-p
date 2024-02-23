@@ -2,6 +2,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    match /usersV2/{userId=**}{
+        allow read: if request.auth.uid != null;
+        allow write: if request.auth.uid == request.resource.data.uid;
+    }
+
   
      match /councils/{councilId=**}{
       allow read;
@@ -10,24 +15,33 @@ service cloud.firestore {
     
     match /statements/{statementId=**}{
 
-        allow read: if request.auth != null && request.auth.uid == resource.data.creatorId;
-        // allow read: if false;
-        allow write: if true;
-    }
+      function isTopAdmin(userId, topParentStatementId){
+        return get(/databases/$(database)/documents/statementsSubscribe/$(topParentStatementId)).data.role == 'admin';
+      }
 
-    match /usersV2/{userId=**}{
-        allow read: if request.auth.uid != null;
-        allow write: if request.auth.uid == request.resource.data.uid;
+
+      function isAuthorized(){
+        let userId = request.auth.uid;
+        let statementId = resource.data.statementId;
+        let isCreator = resource.data.creatorId == userId;
+        return isCreator;
+      }
+
+      allow read: (if request.auth != null && request.auth.uid == resource.data.creatorId) || isAuthorized();
+        // allow read: if false;
+      allow write: if true;
+    }
+     
+    match /statementsSubscribe/{statementSubId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
     }
 
     match /admins/{adminStatementId=**}{
      
       allow write: if request.auth.uid == request.resource.data.user.uid;
     }
-    match /statementsSubscribe/{statementSubId=**}{
-      allow read;
-      allow write: if request.auth.uid != null;
-    }
+   
     
     match /statementsSignatures/{signatureId=**}{
       allow read: if request.auth.uid != null;

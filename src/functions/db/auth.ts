@@ -80,7 +80,7 @@ export const listenToAuth =
                             `Anonymous ${Math.floor(Math.random() * 10000)}`;
                     const _user = parseUserFromFirebase(user);
 
-                    // console.info("User is signed in")
+                    console.info("User is signed in")
                     if (!_user) throw new Error("user is undefined");
 
                     const userDB = await setUserToDB(_user) as User|null;

@@ -128,6 +128,7 @@ const StatementMain: FC = () => {
         };
 
         if (user && statementId) {
+            console.log("listening to statement");
             unsubListenToStatement = listenToStatement(statementId, dispatch);
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
