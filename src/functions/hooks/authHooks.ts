@@ -40,7 +40,8 @@ export function useIsAuthorized(statementId: string | undefined): {
     try {
         useEffect(() => {
             if (statementSubscription && statement && userId) {
-                if (allowedRoles.includes(statementSubscription.role)) {
+           
+                if (allowedRoles.includes(statementSubscription.role) || statement.creatorId === userId) {
                     setIsAuthorized(true);
                 } else {
                     setIsAuthorized(false);

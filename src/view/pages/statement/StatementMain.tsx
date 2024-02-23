@@ -20,7 +20,7 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
+import { statementNotificationSelector, statementSelector, statementSubscriptionSelector } from "../../../model/statements/statementsSlice";
 import { RootState } from "../../../model/store";
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -57,6 +57,8 @@ const StatementMain: FC = () => {
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId),
     );
+    const statement = useAppSelector(statementSelector(statementId));
+    const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
 
     // Create selectors
     const subStatementsSelector = createSelector(
