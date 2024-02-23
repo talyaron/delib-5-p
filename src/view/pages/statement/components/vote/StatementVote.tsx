@@ -56,6 +56,8 @@ const StatementVote: FC<Props> = ({
     const options = sortOptionsIndex(_options, sort);
     const totalVotes = getTotalVoters(statement);
 
+    console.log(_options);
+
     useEffect(() => {
         if (!getVoteFromDB) {
             getToVoteOnParent(statement.statementId, updateStoreWitehVoteCB);
@@ -71,18 +73,8 @@ const StatementVote: FC<Props> = ({
         <>
             <div className="page__main">
                 <div className="votingWrapper">
-                    <div>
-                        <p
-                            style={{
-                                maxWidth: "50vw",
-                                margin: " 2rem auto",
-                                color: "#41A1DA",
-                                fontFamily: "Patrick Hand",
-                            }}
-                            className="hand"
-                        >
-                            <HandsIcon /> {totalVotes}
-                        </p>
+                    <div className="hand">
+                        <HandsIcon /> {totalVotes}
                     </div>
                     <div className="vote">
                         {options.map((option: Statement, i: number) => {

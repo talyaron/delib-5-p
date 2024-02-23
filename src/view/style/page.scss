@@ -19,11 +19,6 @@
         border-radius: 0 0 5rem 0/ 0 0 4rem 0;
         padding-bottom: 2rem;
 
-        &--question {
-            background-color: var(--question);
-            color: var(--question-text);
-        }
-
         &__wrapper {
             position: relative;
             display: flex;
