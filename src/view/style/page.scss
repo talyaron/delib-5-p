@@ -74,7 +74,11 @@
 
     &__footer {
         width: 100%;
+        max-width: 75ch;
+        margin: 0 auto;
         padding: 0.5rem 0;
+        display: flex;
+        justify-content: center;
         &__form {
             width: 100%;
             display: flex;
@@ -92,7 +96,6 @@
                 flex: auto;
                 box-shadow: 0px 2px 4px 0px rgba(181, 197, 232, 0.48);
                 box-shadow: 0px -2px 4px 0px rgba(195, 202, 217, 0.5);
-                margin-bottom: 2rem;
             }
 
             @media only screen and (min-width: 600px) {
@@ -113,7 +116,6 @@
                 user-select: none;
                 cursor: pointer;
                 background-color: #4e88c7;
-                margin-bottom: 2rem;
 
                 .sendBtn {
                     display: flex;

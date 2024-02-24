@@ -19,6 +19,7 @@ export default function VotingArea({ setStatementInfo, subStatements, statement,
     const getOptions = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement),
     );
+    
     const _options = setSelectionsToOptions(statement, getOptions);
     const options = sortOptionsIndex(_options, sort);
 

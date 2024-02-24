@@ -3,9 +3,6 @@ import { FC, useEffect, useState } from "react";
 // Third party imports
 import { Statement } from "delib-npm";
 
-// Statements components
-import StatementOptionsNav from "../evaluations/components/StatementEvaluationNav";
-
 // Redux
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 
@@ -19,6 +16,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
 import HandsIcon from "../../../../components/icons/HandsIcon";
 import StatementInfo from "./components/info/StatementInfo";
+import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
 // Helpers
 import VotingArea from "./components/VotingArea";
@@ -95,7 +93,7 @@ const StatementVote: FC<Props> = ({
                 )}
             </div>
             <div className="page__footer">
-                <StatementOptionsNav
+                <StatementBottomNav
                     setShowModal={setShowModal}
                     statement={statement}
                 />
