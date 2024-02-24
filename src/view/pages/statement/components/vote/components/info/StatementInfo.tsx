@@ -4,20 +4,20 @@ import {
     getDescription,
     getTitle,
     isAuthorized,
-} from "../../../../../../functions/general/helpers";
-import Text from "../../../../../components/text/Text";
+} from "../../../../../../../functions/general/helpers";
+import Text from "../../../../../../components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
-import info from "../../../../../../assets/images/info.svg";
-import editIcon from "../../../../../../assets/icons/edit2.svg";
+import info from "../../../../../../../assets/images/info.svg";
+import editIcon from "../../../../../../../assets/icons/edit2.svg";
 
 import styles from "./StatementInfo.module.scss";
-import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
 import {
     statementSelector,
     statementSubscriptionSelector,
-} from "../../../../../../model/statements/statementsSlice";
+} from "../../../../../../../model/statements/statementsSlice";
 
 interface Props {
     statement: Statement | null;

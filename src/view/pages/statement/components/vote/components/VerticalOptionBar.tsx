@@ -7,19 +7,19 @@ import { Statement } from "delib-npm";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../functions/hooks/reduxHooks";
 import {
     parentVoteSelector,
     setVoteToStore,
-} from "../../../../../model/vote/votesSlice";
+} from "../../../../../../model/vote/votesSlice";
 
 // Statements helpers
-import { setVote } from "../../../../../functions/db/vote/setVote";
-import { getSelections } from "./getSelections";
-import useWindowDimensions from "../../../../../functions/hooks/useWindowDimentions";
-import { statementTitleToDisplay } from "../../../../../functions/general/helpers";
-import InfoIcon from "../../../../components/icons/InfoIcon";
-import VoteIcon from "../../../../components/icons/VoteIcon";
+import { setVote } from "../../../../../../functions/db/vote/setVote";
+import { getSelections } from "../statementVoteCont";
+import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
+import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
+import InfoIcon from "../../../../../components/icons/InfoIcon";
+import VoteIcon from "../../../../../components/icons/VoteIcon";
 
 export interface OptionBarProps {
     option: Statement;
@@ -29,7 +29,7 @@ export interface OptionBarProps {
     setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
     setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const OptionBar: FC<OptionBarProps> = ({
+export const VerticalOptionBar: FC<OptionBarProps> = ({
     option,
     totalVotes,
     statement,
@@ -37,25 +37,27 @@ export const OptionBar: FC<OptionBarProps> = ({
     setStatementInfo,
     setShowInfo,
 }) => {
+    // * Hooks * //
+    const { width } = useWindowDimensions();
+
+    // * Redux * //
     const dispatch = useAppDispatch();
     const vote = useAppSelector(parentVoteSelector(option.parentId));
-    const direction = document.body.style.direction as "ltr" | "rtl";
 
+    // * Variables * //
     const _optionOrder = option.order || 0;
+    const selections: number = getSelections(statement, option);
 
+    const barWidth = width / 4 > 120 ? 120 : width / 4;
+    const padding = 40;
+    const { shortVersion } = statementTitleToDisplay(option.statement, 30);
+    const barHeight = Math.round((selections / totalVotes) * 100);
+
+    // * Functions * //
     const handlePressButton = () => {
         dispatch(setVoteToStore(option));
         setVote(option);
     };
-
-    const selections: number = getSelections(statement, option);
-    const { width } = useWindowDimensions();
-
-    const barWidth = width / 4 > 120 ? 120 : width / 4;
-    const padding = 40;
-
-    const { shortVersion } = statementTitleToDisplay(option.statement, 30);
-    const barHeight = Math.round((selections / totalVotes) * 100);
 
     return (
         <div
@@ -67,7 +69,10 @@ export const OptionBar: FC<OptionBarProps> = ({
         >
             <div
                 className="vote__bar__column"
-                style={{ width: `${barWidth}px`,filter: "drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525))"}}
+                style={{
+                    width: `${barWidth}px`,
+                    filter: "drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525))",
+                }}
             >
                 {barHeight > 0 && (
                     <div className="vote__bar__column__stat">
@@ -89,7 +94,6 @@ export const OptionBar: FC<OptionBarProps> = ({
                 <div
                     style={{
                         width: `${barWidth - padding}px`,
-                        direction: direction,
                         backgroundColor:
                             vote?.statementId === option.statementId
                                 ? option.color

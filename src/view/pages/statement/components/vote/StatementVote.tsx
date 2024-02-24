@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { Statement } from "delib-npm";
-import { useParams } from "react-router-dom";
 
 // Statements components
 import StatementOptionsNav from "../evaluations/components/StatementEvaluationNav";
@@ -13,19 +12,16 @@ import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 // Statements helpers
 import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
 import { setVoteToStore } from "../../../../../model/vote/votesSlice";
-import { setSelectionsToOptions } from "./setSelectionsToOptions";
-import { getTotalVoters } from "./getTotalVoters";
-import { sortOptionsIndex } from "./sortOptionsIndex";
+import { getTotalVoters } from "./statementVoteCont";
 
 // Custom components
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
-import { OptionBar } from "./OptionBar";
 import HandsIcon from "../../../../components/icons/HandsIcon";
-import StatementInfo from "./info/StatementInfo";
+import StatementInfo from "./components/info/StatementInfo";
 
 // Helpers
-import { isOptionFn } from "../../../../../functions/general/helpers";
+import VotingArea from "./components/VotingArea";
 
 interface Props {
     statement: Statement;
@@ -41,7 +37,6 @@ const StatementVote: FC<Props> = ({
 }) => {
     // * Hooks * //
     const dispatch = useAppDispatch();
-    const { sort } = useParams();
 
     // * Use State * //
     const [showModal, setShowModal] = useState(false);
@@ -49,14 +44,7 @@ const StatementVote: FC<Props> = ({
     const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
     // * Variables * //
-    const __options = subStatements.filter((subStatement: Statement) =>
-        isOptionFn(subStatement),
-    );
-    const _options = setSelectionsToOptions(statement, __options);
-    const options = sortOptionsIndex(_options, sort);
     const totalVotes = getTotalVoters(statement);
-
-    console.log(_options);
 
     useEffect(() => {
         if (!getVoteFromDB) {
@@ -72,25 +60,19 @@ const StatementVote: FC<Props> = ({
     return (
         <>
             <div className="page__main">
-                <div className="votingWrapper">
+                <div
+                    className="votingWrapper"
+                >
                     <div className="hand">
                         <HandsIcon /> {totalVotes}
                     </div>
-                    <div className="vote">
-                        {options.map((option: Statement, i: number) => {
-                            return (
-                                <OptionBar
-                                    key={option.statementId}
-                                    order={i}
-                                    option={option}
-                                    totalVotes={totalVotes}
-                                    statement={statement}
-                                    setShowInfo={setShowInfo}
-                                    setStatementInfo={setStatementInfo}
-                                />
-                            );
-                        })}
-                    </div>
+                    <VotingArea
+                        totalVotes={totalVotes}
+                        setShowInfo={setShowInfo}
+                        statement={statement}
+                        subStatements={subStatements}
+                        setStatementInfo={setStatementInfo}
+                    />
                 </div>
 
                 {showModal && (
