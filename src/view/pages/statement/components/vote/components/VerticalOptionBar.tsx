@@ -16,7 +16,6 @@ import {
 // Statements helpers
 import { setVote } from "../../../../../../functions/db/vote/setVote";
 import { getSelections } from "../statementVoteCont";
-import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 import InfoIcon from "../../../../../components/icons/InfoIcon";
 import VoteIcon from "../../../../../components/icons/VoteIcon";
@@ -28,6 +27,7 @@ export interface OptionBarProps {
     order: number;
     setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
     setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
+    optionsCount: number;
 }
 export const VerticalOptionBar: FC<OptionBarProps> = ({
     option,
@@ -37,8 +37,6 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
     setStatementInfo,
     setShowInfo,
 }) => {
-    // * Hooks * //
-    const { width } = useWindowDimensions();
 
     // * Redux * //
     const dispatch = useAppDispatch();
@@ -48,7 +46,8 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
     const _optionOrder = option.order || 0;
     const selections: number = getSelections(statement, option);
 
-    const barWidth = width / 4 > 120 ? 120 : width / 4;
+    const barWidth = 100;
+
     const padding = 40;
     const { shortVersion } = statementTitleToDisplay(option.statement, 30);
     const barHeight = Math.round((selections / totalVotes) * 100);
@@ -61,28 +60,27 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
 
     return (
         <div
-            className="vote__bar"
+            className="verticalVote__bar"
             style={{
                 right: `${(_optionOrder - order) * barWidth}px`,
                 width: `${barWidth}px`,
             }}
         >
             <div
-                className="vote__bar__column"
+                className="verticalVote__bar__column"
                 style={{
                     width: `${barWidth}px`,
-                    filter: "drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525))",
                 }}
             >
                 {barHeight > 0 && (
-                    <div className="vote__bar__column__stat">
+                    <div className="verticalVote__bar__column__stat">
                         <span>{barHeight}%</span>
 
                         <span>{selections}</span>
                     </div>
                 )}
                 <div
-                    className="vote__bar__column__bar"
+                    className="verticalVote__bar__column__bar"
                     style={{
                         height: `${barHeight}%`,
                         width: `${barWidth - padding}px`,
@@ -101,8 +99,8 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
                     }}
                     className={
                         vote?.statementId === option.statementId
-                            ? "vote__bar__btn vote__bar__btn--selected"
-                            : "vote__bar__btn"
+                            ? "verticalVote__bar__btn verticalVote__bar__btn--selected"
+                            : "verticalVote__bar__btn"
                     }
                     onClick={handlePressButton}
                 >
@@ -123,7 +121,7 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
             >
                 <InfoIcon color={barHeight > 10 ? "white" : "#6E8AA6"} />
             </div>
-            <div className="vote__bar__title">{shortVersion}</div>
+            <div className="verticalVote__bar__title">{shortVersion}</div>
         </div>
     );
 };

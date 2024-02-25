@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-x: auto;
 
     .hand {
         color: #41a1da;
@@ -12,41 +13,28 @@
         margin: 0 auto;
         display: flex;
         justify-content: end;
-        gap: .5rem;
-        padding: .5rem;
-
+        gap: 0.5rem;
+        padding: 0.5rem;
     }
 
-    .vote {
+    .verticalVote {
         display: flex;
         direction: rtl;
-        padding: .5rem;
         margin: 0 auto;
-        // width: 100vw;
-        // max-width: 75ch;
         height: 100%;
-        // overflow-x: auto;
+        padding: 0 2rem;
 
         &__bar {
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
             align-items: center;
             gap: 10px;
             transition: all 500ms ease-in-out;
 
             &__title {
-                position: absolute;
-                transform: rotate(270deg) translate(9rem, -49px);
-                width: 18rem;
-                text-align: end;
+                transform: rotate(270deg) translate(3rem, -3rem);
                 color: #6e8aa6;
-                margin-right: 0.3rem;
-
-                @media (max-width: 768px) {
-                    transform: rotate(270deg) translate(9rem, -41px);
-                }
             }
 
             &__column {
@@ -56,6 +44,115 @@
                 align-items: center;
                 height: 100%;
                 text-align: center;
+                filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525));
+
+                &__stat {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    padding-bottom: 0.5rem;
+                    font-family: "Patrick Hand", cursive;
+                }
+
+                &__bar {
+                    height: 0px;
+                    width: 120px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                    transition: all 500ms ease-in-out;
+                    border-radius: 2rem 0rem 0rem 0rem;
+                    clip-path: polygon(
+                        0 0,
+                        100% 0,
+                        100% 100%,
+                        50% calc(100% - 21px),
+                        0 100%
+                    );
+                    transform: translateY(21px);
+                }
+            }
+            .btnShadow {
+                filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525));
+            }
+
+            &__btn {
+                border-radius: 5px;
+                background-color: teal;
+                filter: contrast(2);
+                clip-path: polygon(50% 1%, 100% 21px, 100% 100%, 0 99%, 0 21px);
+                color: white;
+                user-select: none;
+                cursor: pointer;
+                width: 120px;
+                height: 80px;
+                padding: 10px;
+                white-space: wrap;
+                word-wrap: break-word;
+                overflow: hidden;
+                text-align: center;
+                // border-top:1em solid transparent;
+                // border-bottom:1em solid transparent;
+                text-overflow: ellipsis;
+                box-shadow: 0px -2px 6px 0px #cad7dd80;
+
+                box-sizing: border-box;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all 150ms ease-in-out;
+
+                :hover,
+                :active {
+                    overflow: visible;
+                }
+            }
+
+            .infoIcon {
+                transform: scale(1.4) translateY(-5rem);
+                user-select: none;
+                cursor: pointer;
+                position: absolute;
+                bottom: 0px;
+                left: 50%50dvh;
+            }
+        }
+    }
+
+    .horizontalVote {
+        right: 0;
+        display: flex;
+        direction: ltr;
+        padding: 0.5rem;
+        height: 100svw;
+        rotate: 90deg;
+
+        &__bar {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: all 500ms ease-in-out;
+
+            &__title {
+                transform: rotate(270deg);
+                color: #6e8aa6;
+                position: absolute;
+                width: 5rem;
+                height: fit-content;
+                bottom: 2rem;
+                right: 2rem;
+            }
+
+            &__column {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+                height: 100%;
+                text-align: center;
+                filter: drop-shadow(0px 2px 4px rgba(151, 173, 184, 0.525));
 
                 &__stat {
                     display: flex;
