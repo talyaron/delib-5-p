@@ -37,7 +37,6 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
     setStatementInfo,
     setShowInfo,
 }) => {
-
     // * Redux * //
     const dispatch = useAppDispatch();
     const vote = useAppSelector(parentVoteSelector(option.parentId));

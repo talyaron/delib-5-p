@@ -44,17 +44,9 @@ export const HorizontalOptionBar: FC<OptionBarProps> = ({
     // * Variables * //
     const _optionOrder = option.order || 0;
     const selections: number = getSelections(statement, option);
-
-    // const barWidth =
-    //     width / optionsCount - 20 > 120
-    //         ? 120
-    //         : width / optionsCount - 10 < 60
-    //           ? 70
-    //           : width / optionsCount - 20;
-
     const barWidth = 80;
-
     const padding = 40;
+    
     const { shortVersion } = statementTitleToDisplay(option.statement, 30);
     const barHeight = Math.round((selections / totalVotes) * 100);
 
