@@ -2,13 +2,17 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isLogged(){
+      return request.auth.uid != null;
+    }
+
     match /usersV2/{userId=**}{
         allow read: if request.auth.uid != null;
         allow write: if request.auth.uid == request.resource.data.uid;
     }
 
   
-     match /councils/{councilId=**}{
+    match /councils/{councilId=**}{
       allow read;
       allow write: if request.auth.uid != null;
     }
@@ -16,20 +20,34 @@ service cloud.firestore {
     match /statements/{statementId=**}{
 
       function isTopAdmin(userId, topParentStatementId){
-        return get(/databases/$(database)/documents/statementsSubscribe/$(topParentStatementId)).data.role == 'admin';
+        let subscriptionId = userId+"--"+topParentStatementId;
+        let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subscriptionId));
+         return subscription.data.role == 'admin';
       }
 
+      function isTopMember(userId, statementId){
+        let subscriptionId = userId+"--"+statementId;
+        let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subscriptionId));
+        return subscription.data.role == 'member';
+      }
+  
+      function isCreator(){
+        return request.auth.uid == resource.data.creatorId;
+      }
+
+      function isAdmin(){
+        return isCreator() || isTopAdmin(request.auth.uid, request.resource.data.topParentStatementId);
+      }
 
       function isAuthorized(){
-        let userId = request.auth.uid;
-        let statementId = resource.data.statementId;
-        let isCreator = resource.data.creatorId == userId;
-        return isCreator;
+        return isAdmin() || isTopMember(request.auth.uid, request.resource.data.topParentStatementId);
       }
 
-      allow read: (if request.auth != null && request.auth.uid == resource.data.creatorId) || isAuthorized();
+      allow read: if isAuthorized();
         // allow read: if false;
-      allow write: if true;
+      allow create: if isLogged();
+      allow update: if isAuthorized();
+      allow delete: if isAuthorized();
     }
      
     match /statementsSubscribe/{statementSubId=**}{

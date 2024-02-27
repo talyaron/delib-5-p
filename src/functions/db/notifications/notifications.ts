@@ -6,6 +6,7 @@ import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "../.././../assets/logo/logo-96px.png";
 import { useLanguage } from "../../hooks/useLanguages";
+import { getSubscriptionId } from "../../general/helpers";
 
 export async function getUserPermissionToNotifications(): Promise<boolean> {
     const { languageData } = useLanguage();
@@ -98,7 +99,7 @@ export async function setStatmentSubscriptionNotificationToDB(
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
-        const statementsSubscribeId = `${user.uid}--${statementId}`;
+        const statementsSubscribeId = getSubscriptionId(user.uid, statementId);
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,

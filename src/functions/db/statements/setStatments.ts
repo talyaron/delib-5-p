@@ -18,7 +18,7 @@ import { store } from "../../../model/store";
 import { setStatmentSubscriptionNotificationToDB } from "../notifications/notifications";
 import { setStatmentSubscriptionToDB } from "../subscriptions/setSubscriptions";
 
-const TextSchema = z.string().min(2);
+
 interface SetStatmentToDBProps {
     statement: Statement;
     parentStatement?: Statement | "top";
@@ -37,7 +37,7 @@ export const setStatmentToDB = async ({
         const user = store.getState().user.user;
         if (!user) throw new Error("User is undefined");
 
-        TextSchema.parse(statement.statement);
+        z.string().min(2).parse(statement.statement);
 
         statement.statementType =
             statement.statementId === undefined

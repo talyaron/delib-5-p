@@ -6,6 +6,7 @@ import { votesSlicer } from "./vote/votesSlice";
 import { resultsSlice } from "./results/resultsSlice";
 import {roomsSlice} from "./rooms/roomsSlice";
 import {timersSlice} from "./timers/timersSlice";
+import errorSlice from "./error/errorSlice";
 
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
         results: resultsSlice.reducer,
         rooms: roomsSlice.reducer,
         timers: timersSlice.reducer,
+        error: errorSlice.reducer,
     },
 });
 

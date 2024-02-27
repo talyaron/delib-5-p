@@ -35,23 +35,33 @@ import { DB } from "../config";
 // Helpers
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "firebase/auth";
+import { getSubscriptionId } from "../../general/helpers";
+import { setError } from "../../../model/error/errorSlice";
+
 
 export const listenToStatementSubscription = (
     statementId: string,
-    user: User,
     dispatch: AppDispatch,
 ): Unsubscribe => {
     try {
+        const userId = store.getState().user.user?.uid;
+        if(!userId) throw new Error("User not logged in");
+
+        const statementSubscriptionId = getSubscriptionId(statementId, userId);
+        
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
-            `${user.uid}--${statementId}`,
+            getSubscriptionId(statementId, userId),
         );
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
             try {
+                
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;
+
+                    console.log('statementSubscription', statementSubscription)
 
                 const { success } = StatementSubscriptionSchema.safeParse(
                     statementSubscription,
@@ -68,6 +78,9 @@ export const listenToStatementSubscription = (
             } catch (error) {
                 console.error(error);
             }
+        }, error => {
+            console.error(error);
+        
         });
     } catch (error) {
         console.error(error);
@@ -305,18 +318,25 @@ export const listenToStatementSubscriptions =
 export const listenToStatement = (
     statementId: string,
     dispatch: AppDispatch,
+    handleRedirectToHome: () => void,
 ): Unsubscribe => {
     try {
-        const statementRef = doc(DB, Collections.statements, statementId);
-
+        const statementRef = doc(DB, Collections.statements, statementId);     
         return onSnapshot(statementRef, (statementDB) => {
-            const statement = statementDB.data() as Statement;
-console.log("dispatching statement",statement.statement)
-            dispatch(setStatement(statement));
+         
+            try {
+                const statement = statementDB.data() as Statement;
+                dispatch(setStatement(statement));
+            } catch (error: any) {
+                console.error(error);
+            }
+        }, error => {
+            console.error(error);
+            handleRedirectToHome();
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
-
+        dispatch(setError(error.message));
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
     }

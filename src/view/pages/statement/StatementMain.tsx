@@ -102,6 +102,10 @@ const StatementMain: FC = () => {
         }
     };
 
+    function handleRedirectToErrorMessage() {
+        navigate("/error-statement");
+    }
+
     //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
         if (screen && screen !== page) {
@@ -128,8 +132,8 @@ const StatementMain: FC = () => {
         };
 
         if (user && statementId) {
-            console.log("listening to statement");
-            unsubListenToStatement = listenToStatement(statementId, dispatch);
+
+            unsubListenToStatement = listenToStatement(statementId, dispatch,handleRedirectToErrorMessage);
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
@@ -143,7 +147,6 @@ const StatementMain: FC = () => {
             );
             unsubStatementSubscription = listenToStatementSubscription(
                 statementId,
-                user,
                 dispatch,
             );
         }

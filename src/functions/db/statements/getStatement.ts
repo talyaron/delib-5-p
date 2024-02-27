@@ -27,6 +27,9 @@ import { DB } from "../config";
 
 // Redux Store
 import { store } from "../../../model/store";
+import { getSubscriptionId } from "../../general/helpers";
+import { dispatch } from "d3-dispatch";
+import { setError } from "../../../model/error/errorSlice";
 
 // TODO: this function is not used. Delete it?
 export function listenToTopStatements(
@@ -202,16 +205,19 @@ export async function getIsSubscribed(
         const subscriptionRef = doc(
             DB,
             Collections.statementsSubscribe,
-            `${user.uid}--${statementId}`,
+            getSubscriptionId(statementId, user.uid),
         );
         const subscriptionDB = await getDoc(subscriptionRef);
 
         if (!subscriptionDB.exists()) return false;
 
         return true;
-    } catch (error) {
+    } catch (error:any) {
         console.error(error);
+        const msg:string = error.message;
 
+        //@ts-ignore
+        dispatch(setError(msg)); // Update this line
         return false;
     }
 }
@@ -328,5 +334,3 @@ export async function getChildStatements(
         return [];
     }
 }
-
-

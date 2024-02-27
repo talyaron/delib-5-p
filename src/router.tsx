@@ -10,6 +10,7 @@ import Main from "./view/pages/main/Main";
 import AddStatement from "./view/pages/main/addStatement";
 import Statement from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
+import ErrorStatement from "./view/pages/error/ErrorStatement";
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
                 path: "",
                 element: <Start />,
                 errorElement: <ErrorPage />,
+            },
+            {
+                path:"error-statement",
+                element: <ErrorStatement />,
             },
             {
                 path: "home",

@@ -318,7 +318,11 @@ export function getDescription(statement: Statement) {
         return "";
     }
 }
+//ids
 
+export function getSubscriptionId(statementId: string, userId: string) {
+    return `${userId}--${statementId}`;
+}
 export function getSetTimerId(statementId: string, order: number) {
     return `${statementId}--${order}`;
 }

@@ -1,7 +1,7 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
 import { store } from "../../model/store";
-import { Role, Statement, StatementSubscription } from "delib-npm";
+import { Role} from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
 import {
     statementSelector,

@@ -22,7 +22,7 @@ import './commands'
 // cypress/support/index.js
 
 // Prevent Cypress from failing the test on unhandled exceptions
-Cypress.on('uncaught:exception', (err) => {
+Cypress.on('uncaught:exception', (err:any) => {
     // Returning false here prevents Cypress from failing the test
     if (err.message.includes('push service not available')) {
         return false

@@ -1,0 +1,12 @@
+.errorPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #e14444;
+    font-size: 1rem;
+    color:white;
+    gap:2rem
+}
