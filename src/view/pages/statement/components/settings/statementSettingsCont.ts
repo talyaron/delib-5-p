@@ -111,7 +111,7 @@ export async function handleSetStatment(
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
 
-       console.log(dataObj, "dataObj");
+ 
 
         const {
             resultsBy,
@@ -122,7 +122,7 @@ export async function handleSetStatment(
             accsess: _access,
         } = dataObj;
         const access = _access === "on" ? Access.open : Access.close;
-        console.log(access, "access", _access, "_access");
+  
         // If no statementId, user is on AddStatement page
         if (!statementId) {
             const newStatement = createStatement({
