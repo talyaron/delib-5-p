@@ -4,6 +4,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 // Third Party Imports
 import { z } from "zod";
 import {
+    Access,
     ResultsBy,
     Screen,
     Statement,
@@ -137,6 +138,7 @@ interface CreateStatementProps {
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
     toggleAskNotifications?: () => void;
+    access?: Access;
 }
 export function createStatement({
     text,
@@ -149,6 +151,7 @@ export function createStatement({
     numberOfResults = 1,
     hasChildren = true,
     toggleAskNotifications,
+    access = Access.open,
 }: CreateStatementProps): Statement | undefined {
     try {
         if (toggleAskNotifications) toggleAskNotifications();
@@ -190,6 +193,7 @@ export function createStatement({
             resultsBy: resultsBy || ResultsBy.topOptions,
             numberOfResults: Number(numberOfResults),
         };
+        newStatement.membership = { access };
 
         Object.assign(newStatement, {
             statementSettings: {

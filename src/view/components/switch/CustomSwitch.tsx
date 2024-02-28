@@ -1,7 +1,7 @@
 // CustomSwitch.js
 import { useState, FC } from "react";
 import styles from "./CustomSwitch.module.scss";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+// import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     label: string;
@@ -17,7 +17,7 @@ const CustomSwitch: FC<Props> = ({
     secondaryLabel,
 }) => {
     const [checked, setChecked] = useState(defaultChecked);
-    const { languageData } = useLanguage();
+    // const { languageData } = useLanguage();
 
     const handleChange = () => {
         setChecked(!checked);
@@ -82,6 +82,7 @@ const CustomSwitch: FC<Props> = ({
 export default CustomSwitch;
 
 function labelName(checked: boolean, label: string, secondaryLabel?: string) {
+    console.log(checked, label, secondaryLabel);
     if (secondaryLabel) {
         return checked ? secondaryLabel : label;
     }

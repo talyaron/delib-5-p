@@ -1,4 +1,4 @@
-import { Statement, StatementSubscription } from "delib-npm";
+import { Access, Statement, StatementSubscription } from "delib-npm";
 import { FC } from "react";
 import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
@@ -11,7 +11,7 @@ import GetEvaluators from "../GetEvaluators";
 //styles
 import styles from "./membership.module.scss";
 import { handleShare } from "../../statementSettingsCont";
-import CustomSwitch from "../../../../../../components/switch/CustomSwitch";
+import GroupAccess from "../../../../../../components/groupAccess/GroupAccess";
 
 interface Props {
     statement: Statement | undefined;
@@ -28,7 +28,7 @@ const Membership: FC<Props> = ({ statement }) => {
         <div>
             <h2>Membeship</h2>
             <h3>Type of membership</h3>
-            <CustomSwitch label="Open Group" secondaryLabel="Close group" defaultChecked={true} link="admin" />
+            <GroupAccess access={statement?.membership?.access || Access.open} />
             {membership && statement && (
                 <>
                     <h2>{languageData["Members in Group"]}</h2>

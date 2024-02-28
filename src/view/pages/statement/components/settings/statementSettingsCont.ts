@@ -5,6 +5,7 @@ import {
     Vote,
     Evaluation,
     StatementType,
+    Access,
 } from "delib-npm";
 
 // Helpers
@@ -110,14 +111,18 @@ export async function handleSetStatment(
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
 
+       console.log(dataObj, "dataObj");
+
         const {
             resultsBy,
             numberOfResults,
             hasChildren,
             enableAddEvaluationOption,
             enableAddVotingOption,
+            accsess: _access,
         } = dataObj;
-
+        const access = _access === "on" ? Access.open : Access.close;
+        console.log(access, "access", _access, "_access");
         // If no statementId, user is on AddStatement page
         if (!statementId) {
             const newStatement = createStatement({
@@ -130,9 +135,12 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
+                access,
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
+
+          
 
             await setStatmentToDB({
                 parentStatement: "top",

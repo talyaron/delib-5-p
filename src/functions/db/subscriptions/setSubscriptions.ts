@@ -33,8 +33,9 @@ export async function setStatmentSubscriptionToDB(
                 userAskedForNotification: true,
             });
         }
+        
 
-        await setDoc(
+        setDoc(
             statementsSubscribeRef,
             {
                 user,
@@ -52,7 +53,7 @@ export async function setStatmentSubscriptionToDB(
         if (!subscribeToTopParent) return;
 
         //subscribe to top parent
-        await subscribeToTopParentStatement(statement, role);
+       subscribeToTopParentStatement(statement, role);
     } catch (error) {
         console.error(error);
     }
