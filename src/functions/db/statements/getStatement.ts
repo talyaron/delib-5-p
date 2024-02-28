@@ -201,11 +201,13 @@ export async function getIsSubscribed(
         if (!statementId) throw new Error("Statement id is undefined");
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
+        const subscriptionId =   getSubscriptionId(statementId, user);
+        if (!subscriptionId) throw new Error("Subscription id is undefined");
 
         const subscriptionRef = doc(
             DB,
             Collections.statementsSubscribe,
-            getSubscriptionId(statementId, user.uid),
+            subscriptionId
         );
         const subscriptionDB = await getDoc(subscriptionRef);
 

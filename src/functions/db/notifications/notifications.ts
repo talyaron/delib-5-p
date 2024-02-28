@@ -99,7 +99,9 @@ export async function setStatmentSubscriptionNotificationToDB(
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
-        const statementsSubscribeId = getSubscriptionId(user.uid, statementId);
+        const statementsSubscribeId = getSubscriptionId(statementId, user);
+        if(!statementsSubscribeId) throw new Error("statementsSubscribeId is undefined");
+
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,

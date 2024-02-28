@@ -10,7 +10,7 @@ import StatementChat from "./chat/StatementChat";
 import StatementEvaluation from "./evaluations/StatementEvaluation";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
-import StatementSettings from "./settings/StatementSettings";
+import StatementSettings from "./settings/components/StatementSettings";
 import Rooms from "./rooms/Rooms";
 
 interface SwitchScreensProps {

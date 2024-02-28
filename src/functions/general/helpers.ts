@@ -5,6 +5,8 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementType,
+    User,
+    UserSchema,
 } from "delib-npm";
 import { store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -320,8 +322,15 @@ export function getDescription(statement: Statement) {
 }
 //ids
 
-export function getSubscriptionId(statementId: string, userId: string) {
-    return `${userId}--${statementId}`;
+export function getSubscriptionId(statementId: string, user:User): string|undefined{
+    try {
+        UserSchema.parse(user);
+        return `${statementId}--${user.uid}`;
+    } catch (error) {   
+        console.error(error);
+        return undefined;
+    }
+
 }
 export function getSetTimerId(statementId: string, order: number) {
     return `${statementId}--${order}`;

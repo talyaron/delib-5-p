@@ -44,15 +44,17 @@ export const listenToStatementSubscription = (
     dispatch: AppDispatch,
 ): Unsubscribe => {
     try {
-        const userId = store.getState().user.user?.uid;
-        if(!userId) throw new Error("User not logged in");
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
 
-        const statementSubscriptionId = getSubscriptionId(statementId, userId);
+        const statementSubscriptionId = getSubscriptionId(statementId, user);
+        if(!statementSubscriptionId) throw new Error("statementSubscriptionId is undefined");
         
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
-            getSubscriptionId(statementId, userId),
+            statementSubscriptionId,
         );
 
         return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {

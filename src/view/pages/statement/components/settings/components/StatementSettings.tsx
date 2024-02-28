@@ -1,38 +1,34 @@
 import { FC, useEffect, useState } from "react";
-import styles from "./components/StatementSettings.module.scss";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
-import { StatementSubscription, Statement } from "delib-npm";
+import { Statement } from "delib-npm";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../functions/hooks/reduxHooks";
 import {
     setStatement,
-    statementMembershipSelector,
     statementSelector,
-} from "../../../../../model/statements/statementsSlice";
+} from "../../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
-import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
+import { getStatementFromDB } from "../../../../../../functions/db/statements/getStatement";
+import { listenToMembers } from "../../../../../../functions/db/statements/listenToStatements";
 
 // Custom components
-import Loader from "../../../../components/loaders/Loader";
-import MembershipLine from "./components/membership/MembershipLine";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import UploadImage from "../../../../components/uploadImage/UploadImage";
-import DisplayResultsBy from "./components/DisplayResultsBy";
-import ResultsRange from "./components/ResultsRange";
-import GetVoters from "./components/GetVoters";
-import GetEvaluators from "./components/GetEvaluators";
-import CheckBoxeArea from "./components/CheckBoxeArea";
-import ShareIcon from "../../../../components/icons/ShareIcon";
-import { handleSetStatment, handleShare } from "./statementSettingsCont";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import Loader from "../../../../../components/loaders/Loader";
+import ScreenFadeIn from "../../../../../components/animation/ScreenFadeIn";
+import UploadImage from "../../../../../components/uploadImage/UploadImage";
+import DisplayResultsBy from "./DisplayResultsBy";
+import ResultsRange from "./ResultsRange";
+import CheckBoxeArea from "./CheckBoxeArea";
+
+import { handleSetStatment } from "../statementSettingsCont";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import Membership from "./membership/Membership";
 
 interface Props {
     simple?: boolean;
@@ -55,9 +51,7 @@ const StatementSettings: FC<Props> = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     // * Variables * //
-    const membership: StatementSubscription[] = useAppSelector(
-        statementMembershipSelector(statementId),
-    );
+
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
 
     //get all elements of the array except the first one
@@ -134,35 +128,9 @@ const StatementSettings: FC<Props> = () => {
                     </button>
 
                     {statementId && <UploadImage statement={statement} />}
+                    <Membership statement={statement} />
 
-                    {membership && statementId && (
-                        <>
-                            <h2>{languageData["Members in Group"]}</h2>
-
-                            <div
-                                className={styles.linkAnonymous}
-                                onClick={() => handleShare(statement)}
-                            >
-                                {languageData["Send a link to anonymous users"]}
-                                <ShareIcon />
-                            </div>
-
-                            <div className="settings__membersBox">
-                                {membership.map((member) => (
-                                    <MembershipLine
-                                        key={member.userId}
-                                        member={member}
-                                    />
-                                ))}
-                            </div>
-
-                            <b>{membership.length} Members</b>
-                        </>
-                    )}
-
-                    <GetVoters statementId={statementId} />
-
-                    <GetEvaluators statementId={statementId} />
+                    
                 </form>
             ) : (
                 <div className="center">

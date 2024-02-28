@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 
 // Custom components
-import StatementSettings from "../../statement/components/settings/StatementSettings";
+import StatementSettings from "../../statement/components/settings/components/StatementSettings";
 import useDirection from "../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import BackArrowIcon from "../../../components/icons/BackArrowIcon";

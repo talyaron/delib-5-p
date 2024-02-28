@@ -5,11 +5,17 @@ import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     label: string;
+    secondaryLabel?: string; // if you want to have a secondary label (the value of it will be checked===true)
     link: string;
     defaultChecked: boolean;
 }
 
-const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
+const CustomSwitch: FC<Props> = ({
+    label,
+    defaultChecked,
+    link,
+    secondaryLabel,
+}) => {
     const [checked, setChecked] = useState(defaultChecked);
     const { languageData } = useLanguage();
 
@@ -56,7 +62,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 style={labelPosition}
                 data-cy={`toggleSwitch-${link}`}
             >
-                {languageData[label]}
+                {labelName(checked, label, secondaryLabel)}
             </div>
             <input
                 style={{ display: "none" }}
@@ -74,3 +80,11 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
 };
 
 export default CustomSwitch;
+
+function labelName(checked: boolean, label: string, secondaryLabel?: string) {
+    if (secondaryLabel) {
+        return checked ? secondaryLabel : label;
+    }
+
+    return label;
+}
