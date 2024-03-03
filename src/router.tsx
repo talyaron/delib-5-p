@@ -10,6 +10,7 @@ import Main from "./view/pages/main/Main";
 import AddStatement from "./view/pages/main/addStatement";
 import Statement from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
+import ChoosePrice from "./view/pages/pricing/ChoosePrice";
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,11 @@ export const router = createBrowserRouter([
                         errorElement: <ErrorPage />,
                     },
                 ],
+            },
+            {
+                path: "price",
+                element: <ChoosePrice />,
+                errorElement: <ErrorPage />,
             },
             {
                 path: "statement/:statementId/:page",

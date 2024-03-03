@@ -26,7 +26,10 @@ const Main = () => {
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
     function handleAddStatment() {
-        navigate("/home/addStatment", {
+        // navigate("/home/addStatment", {
+        //     state: { from: window.location.pathname },
+        // });
+        navigate("/price", {
             state: { from: window.location.pathname },
         });
     }
