@@ -150,7 +150,7 @@ const NewSetStatementSimple: FC<Props> = ({
                         >
                             <input
                                 data-cy="statement-title-simple"
-                                autoFocus={false}
+                                autoFocus={true}
                                 type="text"
                                 name="statement"
                                 placeholder={languageData["Title"]}

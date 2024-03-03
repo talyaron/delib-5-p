@@ -4,7 +4,6 @@
 @import "./evaluation.scss";
 @import "./start.scss";
 @import "./statementCard.scss";
-@import "./statement.scss";
 @import "./profileImage.scss";
 @import "./popup.scss";
 @import "./mainCard.scss";
@@ -367,43 +366,6 @@ b {
 
 .negative {
     color: red;
-}
-
-.footer {
-    position: fixed;
-    bottom: 0px;
-    left: 0%;
-    width: 100%;
-    background: var(--subBackground);
-    color: white;
-    display: flex;
-
-    justify-content: stretch;
-    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.5);
-    z-index: 4;
-}
-
-.footerButton {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    cursor: pointer;
-    padding: 11px;
-    background-color: var(--white);
-}
-
-.footerButton > div {
-    font-size: var(--size11);
-    color: var(--gray1);
-}
-
-.footerButton--selected {
-    background: var(--gray2);
-    border: 1px solid #555555;
-    border-radius: 4px;
 }
 
 .checkBoxes [type="checkbox"] {
