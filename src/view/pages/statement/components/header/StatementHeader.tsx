@@ -162,6 +162,7 @@ const StatementHeader: FC<Props> = ({
                             statement,
                             permission,
                             setShowAskPermission,
+                            languageData
                         )
                     }
                     secondIconText={permission ? "Turn off" : "Turn on"}

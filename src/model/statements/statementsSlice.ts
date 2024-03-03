@@ -370,7 +370,7 @@ export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
 
 
 
-//membeship
+// Membeship
 export const statementMembershipSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statementMembership.filter(

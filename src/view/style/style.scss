@@ -27,13 +27,13 @@
 
 :root {
     // --- MAIN COLORS ---
-    --mainBackground: #1F5895;
+    --mainBackground: #1f5895;
     --statementBackground: #f2f6ff;
     --inputBackground: #f5fcff;
     --mainBackgroundError: #ff0000;
 
     // Option
-    --option: #E7D080;
+    --option: #e7d080;
     --option-text: #3b4f7d;
 
     //results
@@ -41,7 +41,7 @@
     --result-text: white;
 
     //question
-    --question: #62BEEB;
+    --question: #62beeb;
     --question-text: white;
 
     //texts
@@ -51,7 +51,7 @@
     --placeHolder: #93b6da;
 
     //evaluation
-    --agree: #57C6B2;
+    --agree: #57c6b2;
     --disagree: #fe6ba2;
 
     //shadow
@@ -63,20 +63,15 @@
     --light-blue: #3989cf;
 
     //buttons
-    --inactive:rgb(207, 207, 207);
+    --inactive: rgb(207, 207, 207);
     --inactive-text: #acacac;
 
     // --- SIZES ---
     --padding: 1rem;
 
- 
-
-  
     --white: white;
     --red: #e8749e;
 }
-
-   
 
 svg {
     cursor: pointer;
@@ -87,6 +82,11 @@ svg {
     padding: 0;
     box-sizing: border-box;
 
+    // -moz-user-select: none;
+    // -khtml-user-select: none;
+    // -webkit-user-select: none;
+    // -ms-user-select: none;
+    // user-select: none;
 }
 
 html {
@@ -696,7 +696,7 @@ b {
     cursor: pointer;
     user-select: none;
 }
-.dragable{
+.dragable {
     cursor: grab;
 }
 
@@ -706,5 +706,3 @@ b {
         color: inherit;
     }
 }
-
-

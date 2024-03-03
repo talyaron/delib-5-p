@@ -2,14 +2,18 @@ import { Vote } from "delib-npm";
 import React from "react";
 import Chip from "../../../../../components/chip/Chip";
 import { handleGetVoters } from "../statementSettingsCont";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function GetVoters({
     statementId,
 }: {
     statementId: string | undefined;
 }) {
+    const { languageData } = useLanguage();
+    
     const [voters, setVoters] = React.useState<Vote[]>([]);
     const [clicked, setClicked] = React.useState(false);
+
 
     return (
         statementId && (
@@ -21,7 +25,7 @@ export default function GetVoters({
                         handleGetVoters(statementId, setVoters, setClicked)
                     }
                 >
-                    Get Voters
+                    {languageData["Get Voters"]}
                 </button>
 
                 <div className="settings__getUsers__chipBox">
@@ -32,7 +36,9 @@ export default function GetVoters({
                               );
                           })
                         : clicked && (
-                              <p style={{ marginTop: 20 }}>No voters found</p>
+                              <p style={{ marginTop: 20 }}>
+                                  {languageData["No voters found"]}
+                              </p>
                           )}
                 </div>
                 {clicked && <b>{voters.length} Voted</b>}

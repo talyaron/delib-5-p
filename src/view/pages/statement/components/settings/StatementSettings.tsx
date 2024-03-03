@@ -12,7 +12,6 @@ import {
 } from "../../../../../functions/hooks/reduxHooks";
 import {
     setStatement,
-    statementMembershipSelector,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
 
@@ -31,8 +30,12 @@ import GetVoters from "./components/GetVoters";
 import GetEvaluators from "./components/GetEvaluators";
 import CheckBoxeArea from "./components/CheckBoxeArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
+
+// Hooks & Helpers
 import { handleSetStatment, handleShare } from "./statementSettingsCont";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../../../../../model/store";
 
 interface Props {
     simple?: boolean;
@@ -50,22 +53,34 @@ const StatementSettings: FC<Props> = () => {
     const statement: Statement | undefined = useAppSelector(
         statementSelector(statementId),
     );
+    
+    const statementMembershipSelector = (statementId: string | undefined) =>
+        createSelector(
+            (state: RootState) => state.statements.statementMembership, // Replace with your actual state selector
+            (memberships) =>
+                memberships.filter(
+                    (membership: StatementSubscription) =>
+                        membership.statementId === statementId,
+                ),
+        );
+
+    const membership: StatementSubscription[] = useAppSelector(
+        statementMembershipSelector(statementId),
+    );
 
     // * Use State * //
     const [isLoading, setIsLoading] = useState(false);
 
     // * Variables * //
-    const membership: StatementSubscription[] = useAppSelector(
-        statementMembershipSelector(statementId),
-    );
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
 
-    //get all elements of the array except the first one
+    // Get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
     // * Use Effect * //
     useEffect(() => {
         let unsubscribe: undefined | (() => void);
+
         if (statementId) {
             unsubscribe = listenToMembers(dispatch)(statementId);
 

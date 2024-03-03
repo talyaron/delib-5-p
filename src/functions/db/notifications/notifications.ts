@@ -5,11 +5,10 @@ import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "../.././../assets/logo/logo-96px.png";
-import { useLanguage } from "../../hooks/useLanguages";
 
-export async function getUserPermissionToNotifications(): Promise<boolean> {
-    const { languageData } = useLanguage();
-
+export async function getUserPermissionToNotifications(
+    languageData: Record<string, string>,
+): Promise<boolean> {
     try {
         if (!window.hasOwnProperty("Notification"))
             throw new Error("Notification not supported");

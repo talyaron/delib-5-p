@@ -11,7 +11,7 @@ export default function BellSlashIcon({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <g clip-path="url(#clip0_1066_229)">
+            <g clipPath="url(#clip0_1066_229)">
                 <path
                     d="M13.73 21C13.5542 21.3028 13.3019 21.5542 12.9982 21.7289C12.6946 21.9037 12.3504 21.9956 12 21.9956C11.6496 21.9956 11.3054 21.9037 11.0018 21.7289C10.6982 21.5542 10.4458 21.3028 10.27 21"
                     stroke={color}
