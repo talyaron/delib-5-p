@@ -27,7 +27,7 @@ interface Props {
 }
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
     try {
         if (!parentStatement) throw new Error("parentStatement is required");
 
@@ -44,14 +44,8 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
         return (
             <section>
-                <h2>{languageData["Setting Timers"]}</h2>
-                <p>
-                    {
-                        languageData[
-                            "You can set the timers for each stage here."
-                        ]
-                    }
-                </p>
+                <h2>{t("Setting Timers")}</h2>
+                <p>{t("You can set the timers for each stage here.")}</p>
                 <div className={styles.timers}>
                     {timers.map((timer, i) => (
                         <SetSetTimerComp
@@ -85,7 +79,7 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
     } catch (error) {
         console.error(error);
 
-        return <div>{languageData["Error"]}</div>;
+        return <div>{t("Error")}</div>;
     }
 };
 

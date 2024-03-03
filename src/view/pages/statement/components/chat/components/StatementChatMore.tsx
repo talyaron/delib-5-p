@@ -26,7 +26,7 @@ interface Props {
 const StatementChatMore: FC<Props> = ({ statement }) => {
     // Hooks
     const navigate = useNavigate();
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     // Redux store
     const statementSubscription: StatementSubscription | undefined =
@@ -41,7 +41,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     const messageToDisplay = statement.lastMessage
         ? statementTitleToDisplay(statement.lastMessage, 20).shortVersion
-        : languageData["Conversations"];
+        : t("Conversations");
 
     return (
         <div

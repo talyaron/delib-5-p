@@ -17,7 +17,7 @@ interface Props {
 const EnterName: FC<Props> = ({ setShowNameModul }) => {
     const [displayName, setDisplayName] = useState<string | null>(null);
     const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     function handleSetName(ev: any) {
         setDisplayName(ev.target.value);
@@ -46,7 +46,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     onKeyUp={handleSetName}
                     type="text"
                     name="displayName"
-                    placeholder={languageData["Nickname"]}
+                    placeholder={t("Nickname")}
                     autoFocus={true}
                     autoComplete="off"
                 />
@@ -60,14 +60,14 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                                 : "btn btn--inactive"
                         }
                     >
-                        {languageData["Start"]}
+                        {t("Start")}
                     </button>
                     <div
                         data-cy="anonymous-cancel-btn"
                         className="btn btn--cancel"
                         onClick={() => setShowNameModul(false)}
                     >
-                        {languageData["Cancel"]}
+                        {t("Cancel")}
                     </div>
                 </div>
             </div>

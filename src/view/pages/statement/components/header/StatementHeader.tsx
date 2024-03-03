@@ -55,7 +55,7 @@ const StatementHeader: FC<Props> = ({
     const token = useToken();
     const headerColor = useStatementColor(statement?.statementType || "");
     const permission = useNotificationPermission(token);
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     // Redux Store
     const user = store.getState().user.user;
@@ -71,8 +71,8 @@ const StatementHeader: FC<Props> = ({
         const baseUrl = window.location.origin;
 
         const shareData = {
-            title: languageData["Delib: We create agreements together"],
-            text: languageData["Invited:"] + statement?.statement,
+            title: t("Delib: We create agreements together"),
+            text: t("Invited:") + statement?.statement,
             url: `${baseUrl}${pathname}`,
         };
         navigator.share(shareData);
@@ -162,7 +162,7 @@ const StatementHeader: FC<Props> = ({
                             statement,
                             permission,
                             setShowAskPermission,
-                            languageData
+                            t,
                         )
                     }
                     secondIconText={permission ? "Turn off" : "Turn on"}

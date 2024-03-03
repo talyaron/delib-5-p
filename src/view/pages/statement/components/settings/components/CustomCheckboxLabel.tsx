@@ -16,7 +16,7 @@ export default function CustomCheckboxLabel({
     title,
     defaultChecked,
 }: CustomLabelProps) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const [checked, setChecked] = useState(defaultChecked);
 
@@ -39,7 +39,7 @@ export default function CustomCheckboxLabel({
                 onChange={handleChange}
                 style={{ display: "none" }}
             />
-            {languageData[title]}
+            {t(title)}
         </label>
     );
 }

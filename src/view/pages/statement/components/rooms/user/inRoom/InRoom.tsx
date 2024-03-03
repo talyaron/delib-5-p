@@ -26,7 +26,7 @@ interface Props {
 }
 
 const InRoom: FC<Props> = ({ statement }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const userTopic: Participant | undefined = useAppSelector(
         userSelectedTopicSelector(statement.statementId),
@@ -54,7 +54,7 @@ const InRoom: FC<Props> = ({ statement }) => {
     try {
         return (
             <>
-                <h1>{languageData["Room Allocation"]}</h1>
+                <h1>{t("Room Allocation")}</h1>
                 {/* {userTopic && userTopic.approved ? */}
                 <div className={styles.message}>
                     {userTopic && userTopic.statement ? (
@@ -62,20 +62,20 @@ const InRoom: FC<Props> = ({ statement }) => {
                             <h2>
                                 <Text
                                     text={`${
-                                        (languageData["Discussion Topic:"],
+                                        (t("Discussion Topic:"),
                                         userTopic.statement.statement)
                                     }`}
                                     onlyTitle={true}
                                 />
                             </h2>
                             <div className={styles.text}>
-                                {languageData["Welcome to Room Number"]}
+                                {t("Welcome to Room Number")}
                                 <span>{userTopic.roomNumber}</span>
-                                {languageData["In Zoom"]}
+                                {t("In Zoom")}
                             </div>
                         </>
                     ) : (
-                        <h2>{languageData["No Topic Chosen by You"]}</h2>
+                        <h2>{t("No Topic Chosen by You")}</h2>
                     )}
                 </div>
                 <RoomTimers

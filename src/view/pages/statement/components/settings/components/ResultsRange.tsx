@@ -7,7 +7,7 @@ export default function ResultsRange({
 }: {
     statement: Statement | undefined;
 }) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const [numOfResults, setNumOfResults] = React.useState(
         statement?.resultsSettings?.numberOfResults || 1,
@@ -19,7 +19,7 @@ export default function ResultsRange({
                 className="settings__rangeSection__label"
                 style={{ fontSize: "1.3rem", marginBottom: "1rem" }}
             >
-                {languageData["Number of Results to Display"]}
+                {t("Number of Results to Display")}
                 {": "}
             </label>
             <div className="settings__rangeSection__rangeBox">

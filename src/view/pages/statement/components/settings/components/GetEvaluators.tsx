@@ -9,7 +9,7 @@ export default function GetEvaluators({
 }: {
     statementId: string | undefined;
 }) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const [evaluators, setEvaluators] = React.useState<Evaluation[]>([]);
     const [clicked, setClicked] = React.useState(false);
@@ -28,7 +28,7 @@ export default function GetEvaluators({
                         )
                     }
                 >
-                    {languageData["Get Evaluators"]}
+                    {t("Get Evaluators")}
                 </button>
                 <div className="settings__getUsers__chipBox">
                     {evaluators.length > 0
@@ -42,13 +42,13 @@ export default function GetEvaluators({
                           })
                         : clicked && (
                               <p style={{ marginTop: 20 }}>
-                                  {languageData["No evaluators found"]}
+                                  {t("No evaluators found")}
                               </p>
                           )}
                 </div>
                 {clicked && (
                     <b>
-                        {evaluators.length} {languageData["Evaluated"]}
+                        {evaluators.length} {t("Evaluated")}
                     </b>
                 )}
             </section>

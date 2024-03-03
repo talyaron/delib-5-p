@@ -30,7 +30,7 @@ export default function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { anonymous } = useParams();
-    const { changeLanguage, languageData } = useLanguage();
+    const { changeLanguage, t } = useLanguage();
 
     // Redux Store
     const user = useAppSelector(userSelector);
@@ -107,7 +107,7 @@ export default function App() {
         if (user.agreement?.date) {
             setShowSignAgreement(false);
         } else {
-            const agreement = getSigniture("basic", languageData);
+            const agreement = getSigniture("basic", t);
 
             if (!agreement) throw new Error("agreement not found");
 
@@ -129,7 +129,7 @@ export default function App() {
                 setShowSignAgreement(false);
                 const agreement: Agreement | undefined = getSigniture(
                     "basic",
-                    languageData,
+                    t,
                 );
                 if (!agreement) throw new Error("agreement not found");
                 agreement.text = text;

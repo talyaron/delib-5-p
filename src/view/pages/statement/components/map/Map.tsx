@@ -26,8 +26,8 @@ interface Props {
 }
 
 const Map: FC<Props> = ({ statement }) => {
-    const { languageData } = useLanguage();
-    
+    const { t } = useLanguage();
+
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
@@ -96,10 +96,10 @@ const Map: FC<Props> = ({ statement }) => {
                 }}
             >
                 <option value={FilterType.questionsResults}>
-                    {languageData["Questions and Results"]}
+                    {t("Questions and Results")}
                 </option>
                 <option value={FilterType.questionsResultsOptions}>
-                    {languageData["Questions, options and Results"]}
+                    {t("Questions, options and Results")}
                 </option>
             </select>
             <div

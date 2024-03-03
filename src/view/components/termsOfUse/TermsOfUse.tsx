@@ -7,28 +7,26 @@ interface Props {
 }
 
 export default function TermsOfUse({ handleAgreement, agreement }: Props) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     return (
         <Modal>
             <div className="termsOfUse" data-cy="termsOfUse">
-                <h1 className="termsOfUse__title">
-                    {languageData["terms of use"]}
-                </h1>
+                <h1 className="termsOfUse__title">{t("terms of use")}</h1>
                 <p>{agreement}</p>
                 <div className="btns">
                     <button
                         className="btn btn--agree"
                         onClick={() => handleAgreement(true, agreement)}
                     >
-                        {languageData["Agree"]}
+                        {t("Agree")}
                     </button>
                     <button
                         data-cy="agree-btn"
                         className="btn btn--disagree"
                         onClick={() => handleAgreement(false, agreement)}
                     >
-                        {languageData["Dont agree"]}
+                        {t("Dont agree")}
                     </button>
                 </div>
             </div>

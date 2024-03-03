@@ -7,7 +7,7 @@ import { vapidKey } from "../configKey";
 import logo from "../.././../assets/logo/logo-96px.png";
 
 export async function getUserPermissionToNotifications(
-    languageData: Record<string, string>,
+    t: (text: string) => string,
 ): Promise<boolean> {
     try {
         if (!window.hasOwnProperty("Notification"))
@@ -18,9 +18,9 @@ export async function getUserPermissionToNotifications(
 
         //in case the user didn't set the notification permission yet
         alert(
-            languageData[
-                "Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time"
-            ],
+            t(
+                "Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time",
+            ),
         );
         const permission = await Notification.requestPermission();
 

@@ -71,12 +71,12 @@ export function isSubPageChecked(
 }
 
 export function handleShare(statement: Statement | undefined) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
     const baseUrl = window.location.origin;
 
     const shareData = {
-        title: languageData["Delib: We create agreements together"],
-        text: languageData["Invited:"] + statement?.statement,
+        title: t("Delib: We create agreements together"),
+        text: t("Invited:") + statement?.statement,
         url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
     };
     navigator.share(shareData);

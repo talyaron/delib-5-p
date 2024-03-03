@@ -57,7 +57,7 @@ const StatementChatCard: FC<Props> = ({
     const navigate = useNavigate();
     const { statementType } = statement;
     const statementColor = useStatementColor(statementType || "");
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     // Redux store
     const userId = store.getState().user.user?.uid;
@@ -131,25 +131,25 @@ const StatementChatCard: FC<Props> = ({
                             isAuthrized={_isAuthrized}
                             setEdit={setIsEdit}
                             edit={isEdit}
-                            text={languageData["Edit Text"]}
+                            text={t("Edit Text")}
                         />
 
                         <StatementChatSetQuestion
                             statement={statement}
-                            text={languageData["Question"]}
+                            text={t("Question")}
                         />
 
                         {linkToChildren(statement, parentStatement) && (
                             <AddSubQuestion
                                 statement={statement}
                                 setShowModal={setShowModal}
-                                text={languageData["Add Question"]}
+                                text={t("Add Question")}
                             />
                         )}
                         <StatementChatSetOption
                             parentStatement={parentStatement}
                             statement={statement}
-                            text={languageData["Option"]}
+                            text={t("Option")}
                         />
                     </CardMenu>
                     <div

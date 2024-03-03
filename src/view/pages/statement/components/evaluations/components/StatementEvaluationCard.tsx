@@ -53,7 +53,7 @@ const StatementEvaluationCard: FC<Props> = ({
     // Hooks
     const navigate = useNavigate();
     const direction = useDirection();
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -138,7 +138,7 @@ const StatementEvaluationCard: FC<Props> = ({
                     {_isAuthorized && (
                         <CardMenu isMe={isRtl}>
                             <span onClick={() => setEdit(true)}>
-                                {languageData["Edit Text"]}
+                                {t("Edit Text")}
                             </span>
                             <SetEdit
                                 isAuthrized={isAuthorized(
@@ -153,7 +153,7 @@ const StatementEvaluationCard: FC<Props> = ({
                             <StatementChatSetOption
                                 parentStatement={parentStatement}
                                 statement={statement}
-                                text={languageData["Remove Option"]}
+                                text={t("Remove Option")}
                             />
                         </CardMenu>
                     )}

@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     function handleMoveParticipantToRoom(ev: any) {
         try {
@@ -62,7 +62,7 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
             onDrop={handleMoveParticipantToRoom}
         >
             <h4>
-                {(languageData["Room"], room.roomNumber)} -{" "}
+                {(t("Room"), room.roomNumber)} -{" "}
                 <Text text={room.statement.statement} onlyTitle={true} />
             </h4>
             <div className={styles.room__badges}>

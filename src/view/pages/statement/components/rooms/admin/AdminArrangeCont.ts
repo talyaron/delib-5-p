@@ -6,7 +6,7 @@ export function divideIntoTopics(
     maxPerRoom = 7,
 ): { rooms: RoomDivied[]; topicsParticipants: any } {
     try {
-        const { languageData } = useLanguage();
+        const { t } = useLanguage();
         const topicsParticipants: any = {};
 
         //build topicsParticipantsObject
@@ -15,7 +15,7 @@ export function divideIntoTopics(
                 if (!participant.statementId) {
                     topicsParticipants["general"] = {
                         statementId: "general",
-                        statement: languageData["General"],
+                        statement: t("General"),
                         participants: [participant],
                     };
                 } else if (!(participant.statementId in topicsParticipants)) {

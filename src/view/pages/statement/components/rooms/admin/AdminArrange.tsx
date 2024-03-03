@@ -46,7 +46,7 @@ export interface ParticipantInRoom {
 }
 
 const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const roomsState = statement.roomsState || RoomsStateSelection.chooseRoom;
     const participants = useAppSelector(
@@ -122,25 +122,25 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                             className="btn btn--agree btn--large"
                             onClick={handleDivideIntoRooms}
                         >
-                            {languageData["Divide into rooms"]}
+                            {t("Divide into rooms")}
                         </button>
                     ) : (
                         <button
                             className="btn btn--cancel btn--large"
                             onClick={handleDivideIntoRooms}
                         >
-                            {languageData["Cancellation of division"]}
+                            {t("Cancellation of division")}
                         </button>
                     )}
                 </div>
                 {roomsState === RoomsStateSelection.chooseRoom ? (
                     <div>
-                        <h3>{languageData["Participants"]}</h3>
+                        <h3>{t("Participants")}</h3>
                         <p>
                             {
-                                (languageData[
-                                    "Maximum number of participants in the room "
-                                ],
+                                (t(
+                                    "Maximum number of participants in the room ",
+                                ),
                                 maxParticipantsPerRoom)
                             }
                         </p>
@@ -177,7 +177,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                     </div>
                 ) : (
                     <>
-                        <h3>{languageData["Division into rooms"]}</h3>
+                        <h3>{t("Division into rooms")}</h3>
                         <div className={styles.roomWrapper}>
                             {roomsAdmin.map((room: RoomDivied) => {
                                 return (

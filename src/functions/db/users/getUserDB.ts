@@ -41,11 +41,11 @@ export interface SignitaureDB {
 
 export function getSigniture(
     version = "basic",
-    languageData: Record<string, string>,
+    t: (text: string) => string,
 ): Agreement | undefined {
     try {
         const agreement: Agreement = {
-            text: languageData["Agreement Description"],
+            text: t("Agreement Description"),
             version,
             date: new Date().getTime(),
         };

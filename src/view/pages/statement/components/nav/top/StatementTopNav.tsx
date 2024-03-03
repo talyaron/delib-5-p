@@ -15,7 +15,7 @@ interface Props {
 }
 
 const StatementTopNav: FC<Props> = ({ statement, screen }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const _navArray = showNavElements(statement, navArray);
 
@@ -33,7 +33,7 @@ const StatementTopNav: FC<Props> = ({ statement, screen }) => {
                             : ""
                     }`}
                 >
-                    {languageData[navObject.name]}
+                    {t(navObject.name)}
                 </Link>
             ))}
         </nav>

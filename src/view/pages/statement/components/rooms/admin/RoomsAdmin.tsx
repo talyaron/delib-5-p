@@ -12,7 +12,7 @@ interface Props {
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const [setRooms, setSetRooms] = useState<boolean>(
         statement.roomsState === "chooseRoom" ||
@@ -24,9 +24,7 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
     return (
         <>
             <div className={styles.admin}>
-                <p className={styles.title}>
-                    {languageData["Management board"]}
-                </p>
+                <p className={styles.title}>{t("Management board")}</p>
                 <AdminArrange
                     statement={statement}
                     setRooms={setRooms}

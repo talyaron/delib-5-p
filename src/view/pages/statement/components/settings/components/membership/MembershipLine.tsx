@@ -19,21 +19,21 @@ const MembershipLine: FC<Props> = ({ member }) => {
 export default MembershipLine;
 
 function memebershipDictionarty(role: Role) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     switch (role) {
         case Role.admin:
-            return languageData["Admin"];
+            return t("Admin");
         case Role.member:
-            return languageData["Member"];
+            return t("Member");
         case Role.banned:
-            return languageData["Blocked"];
+            return t("Blocked");
         case Role.parentAdmin:
-            return languageData["Parent Admin"];
+            return t("Parent Admin");
         case Role.guest:
-            return languageData["Guest"];
+            return t("Guest");
 
         default:
-            return languageData["Member"];
+            return t("Member");
     }
 }

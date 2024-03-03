@@ -36,7 +36,7 @@ const Start = () => {
     const savedLang = localStorage.getItem("lang");
     const direction = useDirection();
 
-    const { languageData, changeLanguage } = useLanguage();
+    const { t, changeLanguage } = useLanguage();
 
     useEffect(() => {
         if (user) {
@@ -51,11 +51,9 @@ const Start = () => {
     return (
         <div className="splashPage">
             <div className={styles.h1}>
-                {languageData["Delib"]} <span className={styles.number}>5</span>
+                {t("Delib")} <span className={styles.number}>5</span>
             </div>
-            <div className={styles.h2}>
-                {languageData["Creating Agreements"]}
-            </div>
+            <div className={styles.h2}>{t("Creating Agreements")}</div>
             <img
                 className={styles.logo}
                 src={Logo}
@@ -90,7 +88,7 @@ const Start = () => {
                 className={styles.anonymous}
                 onClick={() => setShowNameModul((prev) => !prev)}
             >
-                {languageData["Login with a temporary name"]}{" "}
+                {t("Login with a temporary name")}{" "}
                 <img
                     src={direction === "row" ? moreRight : moreLeft}
                     alt="login anonymously"
@@ -102,16 +100,12 @@ const Start = () => {
                     alt="login anonymously"
                 />
                 <img src={googleLogo} alt="login with google" />
-                {languageData["Connect with Google"]}
+                {t("Connect with Google")}
             </button>
 
             <a href="http://delib.org" target="_blank">
                 <footer className={styles.ddi}>
-                    {
-                        languageData[
-                            "From the Institute for Deliberative Democracy"
-                        ]
-                    }
+                    {t("From the Institute for Deliberative Democracy")}
                 </footer>
             </a>
 

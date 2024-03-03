@@ -40,7 +40,7 @@ export default function PopUpMenu({
     fourthIconText,
 }: Props) {
     const [openMore, setOpenMore] = React.useState(false);
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     return isAuthrized ? (
         <div
@@ -57,28 +57,28 @@ export default function PopUpMenu({
                             onClick={firstIconFunc}
                         >
                             {firstIcon}
-                            {languageData[firstIconText]}
+                            {t(firstIconText)}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={secondIconFunc}
                         >
                             {secondIcon}
-                            {languageData[secondIconText || ""]}
+                            {t(secondIconText || "")}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={thirdIconFunc}
                         >
                             {thirdIcon}
-                            {languageData[thirdIconText || ""]}
+                            {t(thirdIconText || "")}
                         </span>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={fourthIconFunc}
                         >
                             {fourthIcon}
-                            {languageData[fourthIconText || ""]}
+                            {t(fourthIconText || "")}
                         </span>
                     </div>
                 </>

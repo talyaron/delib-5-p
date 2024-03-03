@@ -37,7 +37,7 @@ const NewSetStatementSimple: FC<Props> = ({
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);
-        const { languageData } = useLanguage();
+        const { t } = useLanguage();
 
         const parentStatementId = parentIsStatement
             ? parentStatement.statementId
@@ -127,7 +127,7 @@ const NewSetStatementSimple: FC<Props> = ({
                                         : "overlay__tabs__tab overlay__tabs__tab--active"
                                 }
                             >
-                                {languageData["Question"]}
+                                {t("Question")}
                                 {!isOptionChosen && <div className="block" />}
                             </div>
                             <div
@@ -138,7 +138,7 @@ const NewSetStatementSimple: FC<Props> = ({
                                         : "overlay__tabs__tab"
                                 }
                             >
-                                {languageData["Option"]}
+                                {t("Option")}
 
                                 {isOptionChosen && <div className="block" />}
                             </div>
@@ -153,13 +153,13 @@ const NewSetStatementSimple: FC<Props> = ({
                                 autoFocus={true}
                                 type="text"
                                 name="statement"
-                                placeholder={languageData["Title"]}
+                                placeholder={t("Title")}
                                 required
                                 minLength={3}
                             />
                             <textarea
                                 name="description"
-                                placeholder={languageData["Description"]}
+                                placeholder={t("Description")}
                                 rows={4}
                             ></textarea>
 
@@ -169,21 +169,21 @@ const NewSetStatementSimple: FC<Props> = ({
                                     type="submit"
                                     data-cy="add-statement-simple"
                                 >
-                                    {languageData["Add"]}
+                                    {t("Add")}
                                 </button>
                                 <button
                                     onClick={() => setShowModal(false)}
                                     type="button"
                                     className="overlay__form__buttons__cancel btn"
                                 >
-                                    {languageData["Cancel"]}
+                                    {t("Cancel")}
                                 </button>
                             </div>
                         </form>
                     </div>
                 ) : (
                     <div className="center">
-                        <h2>{languageData["Updating"]}</h2>
+                        <h2>{t("Updating")}</h2>
                         <Loader />
                     </div>
                 )}

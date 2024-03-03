@@ -10,7 +10,7 @@ import React, {
 type LanguageContextType = {
     currentLanguage: string;
     changeLanguage: (newLanguage: LanguagesEnum) => void;
-    languageData: Record<string, string>;
+    t: (text: string) => string;
 };
 
 // Create a context to hold the current language and the language change function
@@ -88,11 +88,15 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
         fetchLanguageData();
     }, [currentLanguage]);
 
+    const t = (text: string) => {
+        return languageData[text] || text;
+    };
+
     // Value passed to the context provider
     const contextValue: LanguageContextType = {
         currentLanguage,
         changeLanguage,
-        languageData,
+        t,
     };
 
     return (

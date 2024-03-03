@@ -9,26 +9,26 @@ interface Props {
 }
 
 const AskPermisssion: FC<Props> = ({ showFn }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     return (
         <Modal>
             <div className={styles.notifications}>
-                <h2>{languageData["So you can communicate"]}</h2>
+                <h2>{t("So you can communicate")}</h2>
                 <p>
-                    {languageData["It is necessary to receive notifications"]}
+                    {t("It is necessary to receive notifications")}
                 </p>
-                <p> {languageData["Please confirm alerts for Delib"]}</p>
+                <p> {t("Please confirm alerts for Delib")}</p>
                 <img
                     src={notifications}
-                    alt={languageData["Explain how to open the notifications"]}
+                    alt={t("Explain how to open the notifications")}
                 />
                 <div className="btns">
                     <button
                         className="btn btn--cancel"
                         onClick={() => showFn(false)}
                     >
-                        {languageData["Close"]}
+                        {t("Close")}
                     </button>
                 </div>
             </div>

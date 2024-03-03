@@ -9,11 +9,10 @@ export default function GetVoters({
 }: {
     statementId: string | undefined;
 }) {
-    const { languageData } = useLanguage();
-    
+    const { t } = useLanguage();
+
     const [voters, setVoters] = React.useState<Vote[]>([]);
     const [clicked, setClicked] = React.useState(false);
-
 
     return (
         statementId && (
@@ -25,7 +24,7 @@ export default function GetVoters({
                         handleGetVoters(statementId, setVoters, setClicked)
                     }
                 >
-                    {languageData["Get Voters"]}
+                    {t("Get Voters")}
                 </button>
 
                 <div className="settings__getUsers__chipBox">
@@ -37,7 +36,7 @@ export default function GetVoters({
                           })
                         : clicked && (
                               <p style={{ marginTop: 20 }}>
-                                  {languageData["No voters found"]}
+                                  {t("No voters found")}
                               </p>
                           )}
                 </div>

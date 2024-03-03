@@ -46,7 +46,7 @@ const StatementMain: FC = () => {
     const { statementId } = useParams();
     const page = useParams().page as Screen;
     const navigate = useNavigate();
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
     const { error, isAuthorized, loading, statementSubscription, statement } =
         useIsAuthorized(statementId);
 
@@ -73,7 +73,7 @@ const StatementMain: FC = () => {
 
     // Use states
     const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(languageData["Group"]);
+    const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
     const [askNotifications, setAskNotifications] = useState(false);
 

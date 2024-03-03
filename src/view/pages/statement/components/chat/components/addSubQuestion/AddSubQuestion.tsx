@@ -16,7 +16,7 @@ interface Props {
 }
 
 const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     function handleShwQuestionModal() {
         setShowModal(true);
@@ -30,7 +30,7 @@ const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
                 </span>
             )}
             <div className="clickable" onClick={handleShwQuestionModal}>
-                <img src={addQuestion} alt={languageData["Add question"]} />
+                <img src={addQuestion} alt={t("Add question")} />
             </div>
         </>
     );

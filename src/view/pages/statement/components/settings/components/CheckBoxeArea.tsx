@@ -14,7 +14,7 @@ export default function CheckBoxeArea({
 }: {
     statement: Statement | undefined;
 }) {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const hasChildren: boolean =
         statement?.hasChildren === false ? false : true;
@@ -33,7 +33,7 @@ export default function CheckBoxeArea({
         <section className="settings__checkboxSection">
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">
-                    {languageData["Tabs"]}
+                    {t("Tabs")}
                 </h3>
                 {navArray
                     .filter((navObj) => navObj.link !== Screen.SETTINGS)
@@ -48,7 +48,7 @@ export default function CheckBoxeArea({
             </div>
             <div className="settings__checkboxSection__column">
                 <h3 className="settings__checkboxSection__column__title">
-                    {languageData["Advanced"]}
+                    {t("Advanced")}
                 </h3>
                 <CustomCheckboxLabel
                     name={"hasChildren"}

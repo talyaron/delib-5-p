@@ -11,7 +11,7 @@ interface Props {
 
 const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
     const [checked, setChecked] = useState(defaultChecked);
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const handleChange = () => {
         setChecked(!checked);
@@ -56,7 +56,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
                 style={labelPosition}
                 data-cy={`toggleSwitch-${link}`}
             >
-                {languageData[label]}
+                {t(label)}
             </div>
             <input
                 style={{ display: "none" }}

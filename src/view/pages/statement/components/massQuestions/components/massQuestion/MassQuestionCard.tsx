@@ -27,7 +27,7 @@ interface Props {
 }
 
 const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     const statementSubscription: StatementSubscription | undefined =
         useAppSelector(statementSubscriptionSelector(statement.statementId));
@@ -73,7 +73,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
                     />
                 </h3>
             </div>
-            <label>{languageData["Answer"]}:</label>
+            <label>{t("Answer")}:</label>
             <textarea
                 onBlur={(ev: any) => {
                     handleSetQuestionFromMassCard({

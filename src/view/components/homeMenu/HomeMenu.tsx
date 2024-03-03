@@ -10,7 +10,7 @@ interface Props {
 }
 const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
     const direction = useDirection();
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     return (
         <>
@@ -24,7 +24,7 @@ const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
                     src={disconnectlIcon}
                     alt="disconnect_icon"
                 />
-                <p className="homeMenu__name">{languageData["Disconnect"]}</p>
+                <p className="homeMenu__name">{t("Disconnect")}</p>
             </div>
 
             <div

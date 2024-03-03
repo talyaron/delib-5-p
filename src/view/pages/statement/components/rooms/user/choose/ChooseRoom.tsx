@@ -13,11 +13,11 @@ interface Props {
 }
 
 const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     return (
         <>
-            <h2>"{languageData["Division into rooms"]}"</h2>
+            <h2>"{t("Division into rooms")}"</h2>
             <div className="roomsCards__wrapper">
                 {subStatements.map((subStatement: Statement) => {
                     return (

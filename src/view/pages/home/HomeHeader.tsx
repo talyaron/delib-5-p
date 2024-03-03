@@ -17,7 +17,7 @@ export default function HomeHeader() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [openMenu, setOpenMenu] = useState(false);
 
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     useEffect(() => {
         //for defferd app install
@@ -36,7 +36,7 @@ export default function HomeHeader() {
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
                 <div className="homePage__header__wrapper__title">
-                    {languageData["Delib"]}
+                    {t("Delib")}
                 </div>
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (

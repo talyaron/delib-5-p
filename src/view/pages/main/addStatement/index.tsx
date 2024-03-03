@@ -10,7 +10,7 @@ import { useLanguage } from "../../../../functions/hooks/useLanguages";
 
 export const AddStatement = () => {
     const direction = useDirection();
-    const { languageData } = useLanguage();
+    const { t } = useLanguage();
 
     return (
         <ScreenSlide className="page slide-out">
@@ -30,7 +30,7 @@ export const AddStatement = () => {
                     {" "}
                     <BackArrowIcon color="black" />
                 </Link>
-                <h1>{languageData["Add New Group"]}</h1>
+                <h1>{t("Add New Group")}</h1>
                 <span></span>
             </div>
             <StatementSettings />
