@@ -72,17 +72,11 @@ export default function VotingArea({
 }
 
 function isVerticalOptionBar(width: number, optionsCount: number) {
-    if (width > 600) return true;
-
-    if (width < 500 && optionsCount >= 5) {
-        return false;
-    }
-
     if (width < 350 && optionsCount >= 4) {
         return false;
     }
 
-    if (width < 100 * optionsCount) {
+    if (width < 90 * optionsCount) {
         return false;
     }
 
