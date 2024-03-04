@@ -82,7 +82,7 @@ const CustomSwitch: FC<Props> = ({
 export default CustomSwitch;
 
 function labelName(checked: boolean, label: string, secondaryLabel?: string) {
-    console.log(checked, label, secondaryLabel);
+   
     if (secondaryLabel) {
         return checked ? secondaryLabel : label;
     }

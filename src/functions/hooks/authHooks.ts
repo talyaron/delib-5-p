@@ -1,12 +1,13 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
 import { store } from "../../model/store";
-import { Role} from "delib-npm";
+import { Access, Role, Statement} from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
 import {
     statementSelector,
     statementSubscriptionSelector,
 } from "../../model/statements/statementsSlice";
+import { State } from "zustand";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -26,6 +27,7 @@ export function useIsAuthorized(statementId: string | undefined): {
     loading: boolean;
     error: boolean;
     errorMessage?: string;
+    statement?: Statement;
 } {
     const allowedRoles = [Role.admin, Role.member];
     const statementSubscription = useAppSelector(
@@ -40,6 +42,12 @@ export function useIsAuthorized(statementId: string | undefined): {
     try {
         useEffect(() => {
             if (statementSubscription && statement && userId) {
+
+                if(statement.membership?.access === Access.open) {
+                    setIsAuthorized(true);
+                    setLoading(false);
+                    return;
+                }
            
                 if (allowedRoles.includes(statementSubscription.role) || statement.creatorId === userId) {
                     setIsAuthorized(true);

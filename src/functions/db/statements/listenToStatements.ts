@@ -63,7 +63,6 @@ export const listenToStatementSubscription = (
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;
 
-                    console.log('statementSubscription', statementSubscription)
 
                 const { success } = StatementSubscriptionSchema.safeParse(
                     statementSubscription,
