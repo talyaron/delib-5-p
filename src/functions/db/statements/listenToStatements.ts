@@ -4,6 +4,7 @@ import {
     StatementSubscription,
     StatementType,
     Statement,
+    StatementSchema,
 } from "delib-npm";
 import {
     collection,
@@ -43,6 +44,12 @@ export const listenToStatement = (
          
             try {
                 const statement = statementDB.data() as Statement;
+                const {success} = StatementSchema.safeParse(statement);
+                if (!success) {
+                    handleRedirectToHome();
+                    return;
+                }
+
                 dispatch(setStatement(statement));
             } catch (error: any) {
                 console.error(error);
