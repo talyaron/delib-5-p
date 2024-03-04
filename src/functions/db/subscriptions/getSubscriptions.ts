@@ -1,6 +1,6 @@
 import { and, collection, doc, getDocs, limit, onSnapshot, or, orderBy, query, where } from "firebase/firestore";
 import { AppDispatch, store } from "../../../model/store";
-import { Collections, StatementSubscription, StatementSubscriptionSchema, StatementType, User } from "delib-npm";
+import { Collections, Role, StatementSubscription, StatementSubscriptionSchema, StatementType, User } from "delib-npm";
 import { DB } from "../config";
 import { deleteSubscribedStatement, setStatementSubscription, setStatementsSubscription } from "../../../model/statements/statementsSlice";
 import { listenedStatements } from "../../../view/pages/home/Home";
@@ -36,7 +36,7 @@ export const listenToStatementSubscription = (
                     statementSubscription,
                 );
                 if (!success) {
-                    console.info("No subscription found");
+                   dispatch(setStatementSubscription({statementId,role:Role.unsubscribed}))
 
                     return;
                 }

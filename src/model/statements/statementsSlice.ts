@@ -23,8 +23,8 @@ enum StatementScreen {
     options = "options",
 }
 
-interface Unsubscribed {statementId:string
-    statemenetId:string,
+interface Unsubscribed {
+    statementId:string,
     role:Role.unsubscribed
 }
 
