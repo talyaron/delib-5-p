@@ -9,8 +9,7 @@ import { User, Role, Screen } from "delib-npm";
 import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
 import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
-import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
-import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
+
 import { updateSubscriberForStatementSubStatements } from "../../../functions/db/subscriptions/setSubscriptions";
 import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
 import { listenToEvaluations } from "../../../functions/db/evaluation/getEvaluation";
@@ -40,6 +39,7 @@ import { useIsAuthorized } from "../../../functions/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { listenToStatementSubSubscriptions, listenToStatementSubscription } from "../../../functions/db/subscriptions/getSubscriptions";
 
 const StatementMain: FC = () => {
     // Hooks

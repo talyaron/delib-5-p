@@ -7,7 +7,6 @@ import {
     statementSelector,
     statementSubscriptionSelector,
 } from "../../model/statements/statementsSlice";
-import { State } from "zustand";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);

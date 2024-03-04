@@ -19,35 +19,35 @@ service cloud.firestore {
     
     match /statements/{statementId=**}{
 
-      function isTopAdmin(userId, topParentStatementId){
-        let subscriptionId = userId+"--"+topParentStatementId;
-        let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subscriptionId));
-         return subscription.data.role == 'admin';
-      }
+      // function isTopAdmin(userId, topParentStatementId){
+      //   let subscriptionId = userId+"--"+topParentStatementId;
+      //   let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subscriptionId));
+      //    return subscription.data.role == 'admin';
+      // }
 
-      function isTopMember(userId, statementId){
-        let subscriptionId = userId+"--"+statementId;
-        let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subscriptionId));
-        return subscription.data.role == 'member';
-      }
+      // function isTopMember(userId, statementId){
+      //   let subscriptionId = userId+"--"+statementId;
+      //   let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subscriptionId));
+      //   return subscription.data.role == 'member';
+      // }
   
-      function isCreator(){
-        return request.auth.uid == resource.data.creatorId;
-      }
+      // function isCreator(){
+      //   return request.auth.uid == resource.data.creatorId;
+      // }
 
-      function isAdmin(){
-        return isCreator() || isTopAdmin(request.auth.uid, request.resource.data.topParentStatementId);
-      }
+      // function isAdmin(){
+      //   return isCreator() || isTopAdmin(request.auth.uid, request.resource.data.topParentStatementId);
+      // }
 
-      function isAuthorized(){
-        return isAdmin() || isTopMember(request.auth.uid, request.resource.data.topParentStatementId);
-      }
+      // function isAuthorized(){
+      //   return isAdmin() || isTopMember(request.auth.uid, request.resource.data.topParentStatementId);
+      // }
 
-      allow read: if isAuthorized();
+      allow read: if request.auth.uid != null;
         // allow read: if false;
-      allow create: if isLogged();
-      allow update: if isAuthorized();
-      allow delete: if isAuthorized();
+      allow create: if request.auth.uid != null;
+      allow update: if request.auth.uid != null;
+      allow delete: if request.auth.uid != null;
     }
      
     match /statementsSubscribe/{statementSubId=**}{

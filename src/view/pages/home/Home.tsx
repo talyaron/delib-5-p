@@ -11,11 +11,13 @@ import {
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
-import { listenToStatementSubscriptions } from "../../../functions/db/statements/listenToStatements";
+
 
 // Custom Components
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
+import { listenToStatementSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
+
 
 export const listenedStatements = new Set<string>();
 

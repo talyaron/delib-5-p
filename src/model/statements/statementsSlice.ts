@@ -5,6 +5,7 @@ import { RootState } from "../store";
 
 import {
 
+    Role,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -20,6 +21,11 @@ import { updateArray } from "../../functions/general/helpers";
 enum StatementScreen {
     chat = "chat",
     options = "options",
+}
+
+interface Unsubscribed {statementId:string
+    statemenetId:string,
+    role:Role.unsubscribed
 }
 
 // Define a type for the slice state
@@ -126,10 +132,17 @@ export const statementsSlicer = createSlice({
         },
         setStatementSubscription: (
             state,
-            action: PayloadAction<StatementSubscription>,
+            action: PayloadAction<StatementSubscription|Unsubscribed>,
         ) => {
             try {
-                const newStatement = action.payload;
+              
+                if(action.payload.role === Role.unsubscribed){
+                    state.statementSubscription = updateArray(state.statementSubscription, action.payload, "statementId");
+                    return;
+                
+                };
+                const newStatement:StatementSubscription = action.payload;
+               
                 const oldStatement = state.statements.find(
                     (statement) =>
                         statement.statementId === newStatement.statementId,
