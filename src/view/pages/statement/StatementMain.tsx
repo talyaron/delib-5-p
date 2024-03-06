@@ -40,7 +40,6 @@ import EnableNotifications from "../../components/enableNotifications/EnableNoti
 import { MapProvider } from "../../../functions/hooks/useMap";
 import { isAuthorized, statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
-import { useIsAuthorized } from "../../../functions/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
