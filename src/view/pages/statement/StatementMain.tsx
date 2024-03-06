@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
-import { User, Role, Screen } from "delib-npm";
+import { User, Role, Screen, StatementSubscription } from "delib-npm";
 
 // firestore
 import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
@@ -19,7 +19,12 @@ import {
     useAppDispatch,
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
-import { statementNotificationSelector, statementSelector, statementSubscriptionSelector } from "../../../model/statements/statementsSlice";
+import {
+    setStatementSubscription,
+    statementNotificationSelector,
+    statementSelector,
+    statementSubscriptionSelector,
+} from "../../../model/statements/statementsSlice";
 import { RootState } from "../../../model/store";
 import { userSelector } from "../../../model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -33,13 +38,17 @@ import EnableNotifications from "../../components/enableNotifications/EnableNoti
 
 // Hooks & Helpers
 import { MapProvider } from "../../../functions/hooks/useMap";
-import { statementTitleToDisplay } from "../../../functions/general/helpers";
+import { isAuthorized, statementTitleToDisplay } from "../../../functions/general/helpers";
 import { availableScreen } from "./StatementCont";
 import { useIsAuthorized } from "../../../functions/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
-import { listenToStatementSubSubscriptions, listenToStatementSubscription } from "../../../functions/db/subscriptions/getSubscriptions";
+import {
+    listenToStatementSubSubscriptions,
+    listenToStatementSubscription,
+} from "../../../functions/db/subscriptions/getSubscriptions";
+
 
 const StatementMain: FC = () => {
     // Hooks
@@ -48,9 +57,6 @@ const StatementMain: FC = () => {
     const navigate = useNavigate();
     const { languageData } = useLanguage();
 
-    const { error, isAuthorized, loading } =
-        useIsAuthorized(statementId);
-
     // Redux store
     const dispatch = useAppDispatch();
     const user = useSelector(userSelector);
@@ -58,7 +64,20 @@ const StatementMain: FC = () => {
         statementNotificationSelector(statementId),
     );
     const statement = useAppSelector(statementSelector(statementId));
-    const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
+    const statementSubscription = useAppSelector(
+        statementSubscriptionSelector(statementId),
+    );
+    const topParentSubscription = useAppSelector(
+        statementSubscriptionSelector(statement?.topParentId),
+    );
+
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
+   
+   const _isAuthorized = isAuthorized(statement, topParentSubscription);
+    // const loading = false;
+    // const error = false;
+    // const isAuthorized = true;
 
     // Create selectors
     const subStatementsSelector = createSelector(
@@ -124,16 +143,21 @@ const StatementMain: FC = () => {
         let unsubStatementSubscription: () => void = () => {
             return;
         };
+
         let unsubEvaluations: () => void = () => {
             return;
         };
         let unsubSubSubscribedStatements: () => void = () => {
             return;
         };
+       
 
         if (user && statementId) {
-
-            unsubListenToStatement = listenToStatement(statementId, dispatch,handleRedirectToErrorMessage);
+            unsubListenToStatement = listenToStatement(
+                statementId,
+                dispatch,
+                handleRedirectToErrorMessage,
+            );
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
@@ -161,6 +185,25 @@ const StatementMain: FC = () => {
     }, [user, statementId]);
 
     useEffect(() => {
+        try {
+            let unsub = () => {};
+            if (statement) {
+                if (!statement.topParentId) throw new Error("No top parent id");
+
+                unsub = listenToStatementSubscription(
+                    statement.topParentId,
+                    dispatch,
+                );
+            }
+            return () => {
+                unsub();
+            };
+        } catch (error) {
+            console.error(error);
+        }
+    }, [statement]);
+
+    useEffect(() => {
         if (statement) {
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
@@ -183,9 +226,15 @@ const StatementMain: FC = () => {
         }
     }, [statement]);
 
+    useEffect(() => {
+        if(_isAuthorized){
+            setLoading(false);
+        }
+    },[_isAuthorized]);
+
     if (loading) return <LoadingPage />;
     if (error) return <UnAuthorizedPage />;
-    if (isAuthorized)
+    if (_isAuthorized)
         return (
             <div className="page">
                 {showAskPermission && (

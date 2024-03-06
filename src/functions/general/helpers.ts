@@ -1,4 +1,5 @@
 import {
+    Access,
     Role,
     Screen,
     Statement,
@@ -69,15 +70,15 @@ export function getIntialLocationSessionStorage(): string | undefined {
 }
 
 export function isAuthorized(
-    statement: Statement,
+    statement: Statement|undefined,
     topParentSubscroiption: StatementSubscription | undefined,
     authrizedRoles: Array<Role> = [Role.admin, Role.member],
-) {
+): boolean{
     try {
-
         //assertions
-        if(!statement) throw new Error("No statement");
-        if(!topParentSubscroiption) throw new Error("No topParentSubscroiption");
+
+        if (!topParentSubscroiption) return false;
+        if(!statement) return false;
         StatementSchema.parse(statement);
         StatementSubscriptionSchema.parse(topParentSubscroiption);
 
@@ -86,10 +87,11 @@ export function isAuthorized(
 
         //if user is creator of current statement or top parent statement
         if (statement.creatorId === user.uid) return true;
-        if (topParentSubscroiption.statement.creatorId === user.uid) return true;
+        if (topParentSubscroiption.statement.creatorId === user.uid)
+            return true;
+        if (statement.membership?.access === Access.open) return true;
 
-
-        const role = topParentSubscroiption?.role ;
+        const role = topParentSubscroiption?.role;
         if (role && authrizedRoles.includes(role)) return true;
 
         return false;
@@ -288,7 +290,6 @@ export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
     }
 }
 
-
 export function getTitle(statement: Statement) {
     try {
         if (!statement) throw new Error("No statement");
@@ -318,20 +319,26 @@ export function getDescription(statement: Statement) {
 }
 //ids
 
-export function getSubscriptionId(statementId: string, user:User): string|undefined{
+export function getSubscriptionId(
+    statementId: string,
+    user: User,
+): string | undefined {
     try {
         UserSchema.parse(user);
         return `${statementId}--${user.uid}`;
-    } catch (error) {   
+    } catch (error) {
         console.error(error);
         return undefined;
     }
-
 }
 export function getSetTimerId(statementId: string, order: number) {
     return `${statementId}--${order}`;
 }
 
-export function getRoomTimerId(statementId: string, roomNumber: number, order: number) {
+export function getRoomTimerId(
+    statementId: string,
+    roomNumber: number,
+    order: number,
+) {
     return `${statementId}--${roomNumber}--${order}`;
 }

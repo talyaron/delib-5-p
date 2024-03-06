@@ -16,6 +16,7 @@ import {
 import {
     Collections,
     Statement,
+    StatementSchema,
     StatementSubscription,
     StatementSubscriptionSchema,
     StatementType,
@@ -30,6 +31,23 @@ import { store } from "../../../model/store";
 import { getSubscriptionId } from "../../general/helpers";
 import { dispatch } from "d3-dispatch";
 import { setError } from "../../../model/error/errorSlice";
+
+export async function getStatementDB(
+    statementId: string,
+): Promise<Statement | undefined> {
+    try {
+        const statementRef = doc(DB, Collections.statements, statementId);
+        const statementDB = await getDoc(statementRef);
+
+        const statement = statementDB.data() as Statement | undefined;
+        StatementSchema.parse(statement);
+        return statement;
+    } catch (error) {
+        console.error(error);
+
+        return undefined;
+    }
+}
 
 // TODO: this function is not used. Delete it?
 export function listenToTopStatements(
@@ -201,22 +219,22 @@ export async function getIsSubscribed(
         if (!statementId) throw new Error("Statement id is undefined");
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
-        const subscriptionId =   getSubscriptionId(statementId, user);
+        const subscriptionId = getSubscriptionId(statementId, user);
         if (!subscriptionId) throw new Error("Subscription id is undefined");
 
         const subscriptionRef = doc(
             DB,
             Collections.statementsSubscribe,
-            subscriptionId
+            subscriptionId,
         );
         const subscriptionDB = await getDoc(subscriptionRef);
 
         if (!subscriptionDB.exists()) return false;
 
         return true;
-    } catch (error:any) {
+    } catch (error: any) {
         console.error(error);
-        const msg:string = error.message;
+        const msg: string = error.message;
 
         //@ts-ignore
         dispatch(setError(msg)); // Update this line
@@ -224,20 +242,7 @@ export async function getIsSubscribed(
     }
 }
 
-export async function getStatementFromDB(
-    statementId: string,
-): Promise<Statement | undefined> {
-    try {
-        const statementRef = doc(DB, Collections.statements, statementId);
-        const statementDB = await getDoc(statementRef);
 
-        return statementDB.data() as Statement | undefined;
-    } catch (error) {
-        console.error(error);
-
-        return undefined;
-    }
-}
 
 export async function getStatementDepth(
     statement: Statement,

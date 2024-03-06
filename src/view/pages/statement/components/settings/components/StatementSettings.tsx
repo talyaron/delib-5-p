@@ -15,7 +15,7 @@ import {
 } from "../../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import { getStatementFromDB } from "../../../../../../functions/db/statements/getStatement";
+import { getStatementDB } from "../../../../../../functions/db/statements/getStatement";
 import { listenToMembers } from "../../../../../../functions/db/statements/listenToStatements";
 
 // Custom components
@@ -65,7 +65,7 @@ const StatementSettings: FC<Props> = () => {
 
             if (!statement)
                 (async () => {
-                    const statementDB = await getStatementFromDB(statementId);
+                    const statementDB = await getStatementDB(statementId);
                     if (statementDB) dispatch(setStatement(statementDB));
                 })();
         }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { RootState, store } from "../store";
 
 // Third party imports
 
@@ -14,7 +14,9 @@ import {
 import { z } from "zod";
 
 // Helpers
-import { updateArray } from "../../functions/general/helpers";
+import { getSubscriptionId, updateArray } from "../../functions/general/helpers";
+
+
 
 enum StatementScreen {
     chat = "chat",
@@ -300,7 +302,11 @@ export const {
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
 
-export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find((statement) => statement.statementId === statementId) as Statement | undefined;
+export const statementSelector =
+    (statementId: string | undefined) => (state: RootState) =>
+        state.statements.statements.find(
+            (statement) => statement.statementId === statementId,
+        ) as Statement | undefined;
 
 export const statementsSelector = (state: RootState) =>
     state.statements.statements;
@@ -330,10 +336,17 @@ export const statementNotificationSelector =
             (statementSub) => statementSub.statementId === statementId,
         )?.notification || false;
 export const statementSubscriptionSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.statementSubscription.find(
-            (statementSub) => statementSub.statementId === statementId,
-        ) || undefined;
+    (statementId: string | undefined) => (state: RootState) => {
+        const user = state.user.user;
+        if (!user || !statementId) return undefined;
+        const statementSubscriptionId = getSubscriptionId(statementId, user);
+        return (
+            state.statements.statementSubscription.find(
+                (statementSub) =>
+                    statementSub.statementsSubscribeId === statementSubscriptionId,
+            ) || undefined
+        );
+    };
 export const statementOrderSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements.find(
