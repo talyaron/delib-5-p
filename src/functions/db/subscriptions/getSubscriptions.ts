@@ -1,11 +1,111 @@
-import { and, collection, doc, getDocs, limit, onSnapshot, or, orderBy, query, where } from "firebase/firestore";
+import {
+    and,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    onSnapshot,
+    or,
+    orderBy,
+    query,
+    where,
+} from "firebase/firestore";
 import { AppDispatch, store } from "../../../model/store";
-import { Collections, Role, StatementSubscription, StatementSubscriptionSchema, StatementType, User } from "delib-npm";
+import {
+    Collections,
+    Statement,
+    StatementSubscription,
+    StatementSubscriptionSchema,
+    StatementType,
+    User,
+} from "delib-npm";
 import { DB } from "../config";
-import { deleteSubscribedStatement, setStatementSubscription, setStatementsSubscription } from "../../../model/statements/statementsSlice";
+import {
+    deleteSubscribedStatement,
+    setStatementSubscription,
+    setStatementsSubscription,
+} from "../../../model/statements/statementsSlice";
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "firebase/auth";
 import { getSubscriptionId } from "../../general/helpers";
+
+export async function getStatementSubscription(
+    statementId: string,
+): Promise<StatementSubscription | undefined> {
+    try {
+        const user: User | null = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        const statementSubscriptionId = getSubscriptionId(statementId, user);
+        if (!statementSubscriptionId)
+            throw new Error("statementSubscriptionId is undefined");
+        const statementsSubscribeRef = doc(
+            DB,
+            Collections.statementsSubscribe,
+            statementSubscriptionId,
+        );
+        const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
+        if (!statementSubscriptionDB.exists())
+            throw new Error("StatementSubscription does not exist");
+        const statementSubscription =
+            statementSubscriptionDB.data() as StatementSubscription;
+        StatementSubscriptionSchema.parse(statementSubscription);
+        return statementSubscription;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
+
+interface GetTopParentSubscriptionProps {
+    statement?: Statement;
+    statementId?: string;
+}
+
+export async function getTopParentSubscription({
+    statement,
+    statementId,
+}: GetTopParentSubscriptionProps): Promise<StatementSubscription | undefined> {
+    try {
+
+        if (!statement && !statementId)
+            throw new Error("Statement or statementId is undefined");
+
+        //incase statement was not given and just statementId was given
+        if (!statement && statementId) {
+            const statementRef = doc(DB, Collections.statements, statementId);
+            const statementDB = await getDoc(statementRef);
+            if (!statementDB.exists())
+                throw new Error("Statement does not exist");
+            statement = statementDB.data() as Statement;
+        }
+        if (!statement) throw new Error("Statement does not exist");
+
+        const topParentId = statement.topParentId;
+        if (!topParentId) throw new Error("Statement has no top parent");
+
+        const user: User | null = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+        const statementSubscriptionId = getSubscriptionId(topParentId, user);
+        if (!statementSubscriptionId)
+            throw new Error("statementSubscriptionId is undefined");
+        const topParentSubscribeRef = doc(
+            DB,
+            Collections.statementsSubscribe,
+            statementSubscriptionId,
+        );
+        const topParentSubscriptionDB = await getDoc(topParentSubscribeRef);
+        if (!topParentSubscriptionDB.exists())
+            throw new Error("StatementSubscription does not exist");
+        const topParentSubscription =
+            topParentSubscriptionDB.data() as StatementSubscription;
+            StatementSubscriptionSchema.parse(topParentSubscription);
+        return topParentSubscription;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
 
 export const listenToStatementSubscription = (
     statementId: string,
@@ -17,40 +117,35 @@ export const listenToStatementSubscription = (
         if (!user.uid) throw new Error("User not logged in");
 
         const statementSubscriptionId = getSubscriptionId(statementId, user);
-        if(!statementSubscriptionId) throw new Error("statementSubscriptionId is undefined");
-        
+        if (!statementSubscriptionId)
+            throw new Error("statementSubscriptionId is undefined");
+
         const statementsSubscribeRef = doc(
             DB,
             Collections.statementsSubscribe,
             statementSubscriptionId,
         );
 
-        return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
-            try {
-                
-                const statementSubscription =
-                    statementSubscriptionDB.data() as StatementSubscription;
+        return onSnapshot(
+            statementsSubscribeRef,
+            (statementSubscriptionDB) => {
+                try {
+                    if (!statementSubscriptionDB.exists())
+                        throw new Error("StatementSubscription does not exist");
+                    const statementSubscription =
+                        statementSubscriptionDB.data() as StatementSubscription;
 
+                    StatementSubscriptionSchema.parse(statementSubscription);
 
-                const { success } = StatementSubscriptionSchema.safeParse(
-                    statementSubscription,
-                );
-                if (!success) {
-                   dispatch(setStatementSubscription({statementId,role:Role.unsubscribed}))
-
-                    return;
+                    dispatch(setStatementSubscription(statementSubscription));
+                } catch (error) {
+                    console.error(error);
                 }
-
-                StatementSubscriptionSchema.parse(statementSubscription);
-
-                dispatch(setStatementSubscription(statementSubscription));
-            } catch (error) {
+            },
+            (error) => {
                 console.error(error);
-            }
-        }, error => {
-            console.error(error);
-        
-        });
+            },
+        );
     } catch (error) {
         console.error(error);
 

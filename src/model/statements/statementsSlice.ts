@@ -1,11 +1,9 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 // Third party imports
 
 import {
-
-    Role,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -23,11 +21,6 @@ enum StatementScreen {
     options = "options",
 }
 
-interface Unsubscribed {
-    statementId:string,
-    role:Role.unsubscribed
-}
-
 // Define a type for the slice state
 interface StatementsState {
     statements: Statement[];
@@ -35,8 +28,6 @@ interface StatementsState {
     statementSubscriptionLastUpdate: number;
     statementMembership: StatementSubscription[];
     screen: StatementScreen;
-
-  
 }
 
 interface StatementOrder {
@@ -69,7 +60,6 @@ export const statementsSlicer = createSlice({
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
 
-               
                 newStatement.order = 0;
                 const oldStatement = state.statements.find(
                     (statement) =>
@@ -102,9 +92,6 @@ export const statementsSlicer = createSlice({
             try {
                 const statements = action.payload;
 
-              
-           
-
                 const { success } = z
                     .array(StatementSchema)
                     .safeParse(statements);
@@ -113,7 +100,11 @@ export const statementsSlicer = createSlice({
                 }
 
                 statements.forEach((statement) => {
-                    state.statements =  updateArray(state.statements, statement, "statementId");
+                    state.statements = updateArray(
+                        state.statements,
+                        statement,
+                        "statementId",
+                    );
                 });
             } catch (error) {
                 console.error(error);
@@ -132,17 +123,14 @@ export const statementsSlicer = createSlice({
         },
         setStatementSubscription: (
             state,
-            action: PayloadAction<StatementSubscription|Unsubscribed>,
+            action: PayloadAction<StatementSubscription>,
         ) => {
             try {
-              
-                if(action.payload.role === Role.unsubscribed){
-                    state.statementSubscription = updateArray(state.statementSubscription, action.payload, "statementId");
-                    return;
-                
-                };
-                const newStatement:StatementSubscription = action.payload;
-               
+                if (!action.payload.statement)
+                    throw new Error("statement is undefined");
+
+                const newStatement: StatementSubscription = action.payload;
+
                 const oldStatement = state.statements.find(
                     (statement) =>
                         statement.statementId === newStatement.statementId,
@@ -174,7 +162,10 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
-        setStatementsSubscription: (state, action: PayloadAction<StatementSubscription[]>) => {
+        setStatementsSubscription: (
+            state,
+            action: PayloadAction<StatementSubscription[]>,
+        ) => {
             try {
                 const newStatements = action.payload;
                 const { success } = z
@@ -244,7 +235,7 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
-        
+
         setMembership: (
             state,
             action: PayloadAction<StatementSubscription>,
@@ -308,13 +299,16 @@ export const {
 
 // statements
 export const screenSelector = (state: RootState) => state.statements.screen;
+
+export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find((statement) => statement.statementId === statementId) as Statement | undefined;
+
 export const statementsSelector = (state: RootState) =>
     state.statements.statements;
 
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter(
-            (statement) => statement.parents?.includes(statementId),
+        state.statements.statements.filter((statement) =>
+            statement.parents?.includes(statementId),
         );
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
@@ -325,37 +319,10 @@ export const statementsRoomSolutions =
                     statement.statementType === StatementType.result,
             )
             .sort((a, b) => a.createdAt - b.createdAt);
-export const statementsSubscriptionsSelector = (state: RootState):StatementSubscription[] =>
-    state.statements.statementSubscription;
-export const statementSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.statements.find(
-            (statement) => statement.statementId === statementId,
-        );
-export const statementSubsSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-        state.statements.statements
-            .filter((statementSub) => statementSub.parentId === statementId)
-            .sort((a, b) => a.createdAt - b.createdAt)
-            .map((statement) => ({ ...statement }));
-
-const selectedStatementId = (statementId: string | undefined) => statementId;
-
-const slctSts = (state: RootState) => state.statements.statements;
-
-export const statementSubsSelectorMemo = createSelector(
-    [selectedStatementId, slctSts],
-    (statementId, statements) => {
-        if (!statementId) return [];
-        const sts = statements
-            .filter((statementSub) => statementSub.parentId === statementId)
-            .sort((a, b) => a.createdAt - b.createdAt)
-            .map((statement) => ({ ...statement }));
-
-        return sts;
-    },
-);
-
+export const statementsSubscriptionsSelector = (
+    state: RootState,
+): StatementSubscription[] =>
+    state.statements.statementSubscription as StatementSubscription[];
 
 export const statementNotificationSelector =
     (statementId: string | undefined) => (state: RootState) =>
@@ -379,9 +346,6 @@ export const statementElementHightSelector =
         )?.elementHight || 0;
 export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
     state.statements.statementSubscriptionLastUpdate;
-
-
-
 
 //membeship
 export const statementMembershipSelector =

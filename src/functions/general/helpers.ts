@@ -4,6 +4,7 @@ import {
     Statement,
     StatementSchema,
     StatementSubscription,
+    StatementSubscriptionSchema,
     StatementType,
     User,
     UserSchema,
@@ -69,32 +70,27 @@ export function getIntialLocationSessionStorage(): string | undefined {
 
 export function isAuthorized(
     statement: Statement,
-    statementSubscription: StatementSubscription | undefined,
-    parentStatementCreatorId?: string | undefined,
-    authrizedRoles?: Array<Role>,
+    topParentSubscroiption: StatementSubscription | undefined,
+    authrizedRoles: Array<Role> = [Role.admin, Role.member],
 ) {
     try {
-        if (!statement) throw new Error("No statement");
+
+        //assertions
+        if(!statement) throw new Error("No statement");
+        if(!topParentSubscroiption) throw new Error("No topParentSubscroiption");
+        StatementSchema.parse(statement);
+        StatementSubscriptionSchema.parse(topParentSubscroiption);
 
         const user = store.getState().user.user;
         if (!user || !user.uid) throw new Error("No user");
+
+        //if user is creator of current statement or top parent statement
         if (statement.creatorId === user.uid) return true;
+        if (topParentSubscroiption.statement.creatorId === user.uid) return true;
 
-        if (parentStatementCreatorId === user.uid) return true;
 
-        if (!statementSubscription) return false;
-
-        const role = statementSubscription?.role || Role.guest;
-
-        if (
-            role === Role.admin ||
-            role === Role.statementCreator ||
-            role === Role.systemAdmin
-        ) {
-            return true;
-        }
-
-        if (authrizedRoles && authrizedRoles.includes(role)) return true;
+        const role = topParentSubscroiption?.role ;
+        if (role && authrizedRoles.includes(role)) return true;
 
         return false;
     } catch (error) {
