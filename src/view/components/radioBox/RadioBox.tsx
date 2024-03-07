@@ -1,5 +1,6 @@
 import RadioCheckedIcon from "../icons/RadioCheckedIcon";
 import RedioUncheckedIcon from "../icons/RedioUncheckedIcon";
+import "./radioBoxStyle.scss"
 
 interface Props {
     currentValue: string;
@@ -14,12 +15,8 @@ export default function RadioBox({
     radioValue,
     children,
 }: Props) {
-
     return (
-        <div
-            className="settings__resultsBy__radioBox"
-            onClick={() => setCurrentValue(radioValue)}
-        >
+        <div className="radioBox" onClick={() => setCurrentValue(radioValue)}>
             {currentValue === radioValue ? (
                 <RadioCheckedIcon />
             ) : (

@@ -19,9 +19,9 @@
         width: 100%;
         outline: none;
         resize: none;
-        background-color: #F5FCFF;
-       box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
-       box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
+        background-color: #f5fcff;
+        box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
+        box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
     }
 
     section {
@@ -32,7 +32,7 @@
     &__checkboxSection {
         display: grid;
         grid-template-columns: 1fr 2fr;
-        gap:5rem;
+        gap: 5rem;
         margin: 4rem 0 4rem 0;
 
         &__column {
@@ -73,7 +73,7 @@
             position: relative;
             input[type="radio"] {
                 display: none;
-                    background: #4E88C7;
+                background: #4e88c7;
             }
         }
     }
@@ -81,7 +81,7 @@
     &__rangeSection {
         display: flex;
         flex-direction: column;
-        
+
         &__label {
             font-size: 1.5rem;
             font-weight: 500;
@@ -91,17 +91,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1rem; 
+            gap: 1rem;
             margin-bottom: 3rem;
-            
+
             &__range {
                 width: 60%;
-                 height: 3px;
+                height: 3px;
                 outline: none;
                 margin: 0;
                 padding: 0;
                 cursor: pointer;
-                box-shadow: 0px 2px 4px 0px #C9D1E4 inset;
+                box-shadow: 0px 2px 4px 0px #c9d1e4 inset;
                 border-radius: 6px;
                 outline: none;
                 border: none;
@@ -112,15 +112,14 @@
                 -webkit-appearance: none;
                 width: 15px;
                 height: 30px;
-                background: #4E88C7;
-                box-shadow: 0px -2px 6px -5px #B1AACA66;
-                box-shadow: 0px 2px 6px 0px #ACA8C566;
+                background: #4e88c7;
+                box-shadow: 0px -2px 6px -5px #b1aaca66;
+                box-shadow: 0px 2px 6px 0px #aca8c566;
                 border-radius: 10px;
                 border: none;
                 cursor: pointer;
-            }          
+            }
         }
-        
     }
 
     &__getUsers {
@@ -154,7 +153,7 @@
         font-size: 1rem;
         border: none;
         outline: none;
-        background-color: #4E88C7;
+        background-color: #4e88c7;
         color: var(--question-text);
         border-radius: 3px;
         cursor: pointer;
@@ -174,7 +173,6 @@
         flex-wrap: wrap;
         gap: 0.5rem;
         width: 100%;
-
     }
 }
 
