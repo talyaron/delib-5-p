@@ -8,25 +8,23 @@
     width: 100svw;
     max-width: 75ch;
     margin: 0 auto;
+    padding: 0 .5rem;
     &__title {
         font-family: Inter;
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         font-weight: 500;
-        line-height: 3rem;
-        letter-spacing: 0em;
-        text-align: left;
     }
     &__text {
         font-family: Roboto;
-        font-size: 13px;
+        font-size: 0.9rem;
         font-weight: 400;
-        line-height: 18px;
-        letter-spacing: 0px;
+        line-height: 1.3rem;
         text-align: center;
+        width: 70%;
     }
     .btn {
         margin: 0 auto;
-        background-color: #4e88c7;
+        background-color: var(--light-blue);
         color: white;
     }
     &__radioBoxArea {
@@ -55,22 +53,18 @@
         gap: 1rem;
         &__text {
             font-family: Roboto;
-            font-size: 15px;
+            font-size: 1rem;
             font-weight: 400;
             line-height: 22px;
             letter-spacing: 0em;
             text-align: left;
-
-            font-family: Roboto;
-            font-size: 15px;
-            font-weight: 400;
-            line-height: 22px;
-            letter-spacing: 0px;
-            text-align: left;
+            b {
+                font-size: 0.8rem;
+            }
         }
 
         &__price {
-            color: #4e88c7;
+            color: var(--light-blue);
         }
     }
 }
