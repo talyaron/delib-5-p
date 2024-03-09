@@ -7,7 +7,7 @@ export default function GroupCommunicationOne() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <g clip-path="url(#clip0_1713_88165)">
+            <g clipPath="url(#clip0_1713_88165)">
                 <path
                     d="M9.0625 4.375C9.0625 5.58334 7.85411 8 5.4375 8C3.02089 8 1.8125 6.1541 1.8125 4.375C1.8125 1.95834 3.82002 0.75 5.4375 0.75C7.05498 0.75 9.0625 1.95834 9.0625 4.375Z"
                     fill="#FAC372"

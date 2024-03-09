@@ -7,7 +7,7 @@ export default function GroupCommunicationthree() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <g clip-path="url(#clip0_1713_88192)">
+            <g clipPath="url(#clip0_1713_88192)">
                 <path
                     d="M8.7499 3.3C8.7499 4.40001 7.64985 6.6 5.4499 6.6C3.24996 6.6 2.1499 4.91959 2.1499 3.3C2.1499 1.10001 3.97744 0 5.4499 0C6.92236 0 8.7499 1.10001 8.7499 3.3Z"
                     fill="#FAC372"
