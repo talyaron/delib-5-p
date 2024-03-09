@@ -12,6 +12,7 @@ import Statement from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
 import PricingPlan from "./view/pages/pricing/PricingPlan";
 import SignInToContinue from "./view/pages/pricing/SignInToContinue";
+import MemberRejection from "./view/pages/memberRejection/MemberRejection";
 
 export const router = createBrowserRouter([
     {
@@ -49,6 +50,11 @@ export const router = createBrowserRouter([
             {
                 path: "pricing-plan",
                 element: <PricingPlan />,
+                errorElement: <ErrorPage />,
+            },
+            {
+                path: "member-rejection",
+                element: <MemberRejection />,
                 errorElement: <ErrorPage />,
             },
             {
