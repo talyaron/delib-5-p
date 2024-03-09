@@ -37,24 +37,6 @@
     cursor: pointer;
     user-select: none;
 }
-.googleLogin {
-    background-color: rgba(255, 255, 255, 0.2);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.2rem;
-    border-radius: 3rem;
-    min-width: 30ch;
-    color: white;
-    gap: 1rem;
-    font-size: 1.3rem;
-    cursor: pointer;
-    user-select: none;
-    img {
-        width: 1.4rem;
-    }
-}
 
 .ddi {
     color: white;
