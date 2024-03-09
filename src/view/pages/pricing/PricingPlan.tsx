@@ -6,6 +6,9 @@ import GroupCommunicationtwo from "../../components/icons/GroupCommunicationtwo"
 import GroupCommunicationthree from "../../components/icons/GroupCommunicationthree";
 import GroupCommunicationfour from "../../components/icons/GroupCommunicationFour";
 import GroupCommunicationfive from "../../components/icons/GroupCommunicationFive";
+import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { userSelector } from "../../../model/users/userSlice";
+import { useNavigate } from "react-router-dom";
 
 interface PricePlan {
     price: string;
@@ -15,7 +18,7 @@ interface PricePlan {
     to?: number;
 }
 
-export default function ChoosePrice() {
+export default function PricingPlan() {
     const pricesPlanArr: PricePlan[] = [
         {
             price: "free",
@@ -51,7 +54,31 @@ export default function ChoosePrice() {
             from: 1001,
         },
     ];
+
+    const navigate = useNavigate();
+
     const [plan, setPlan] = useState("free");
+
+    const user = useAppSelector(userSelector);
+
+    const handleChoosePlan = () => {
+        if (plan === "free") {
+            navigate("/home/addStatment", {
+                state: { from: window.location.pathname },
+            });
+
+            return;
+        }
+
+        if (user?.isAnonymous) {
+            navigate("/login-first", {
+                state: { from: window.location.pathname },
+            });
+        }
+
+        // Else navigate to payment page....
+        
+    };
 
     return (
         <div className="page">
@@ -106,7 +133,9 @@ export default function ChoosePrice() {
                         </RadioBox>
                     ))}
                 </div>
-                <button className="btn">Choose your plan</button>
+                <button className="btn" onClick={handleChoosePlan}>
+                    Choose your plan
+                </button>
             </div>
         </div>
     );

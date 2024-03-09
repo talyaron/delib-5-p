@@ -29,7 +29,7 @@ const Main = () => {
         // navigate("/home/addStatment", {
         //     state: { from: window.location.pathname },
         // });
-        navigate("/price", {
+        navigate("/pricing-plan", {
             state: { from: window.location.pathname },
         });
     }

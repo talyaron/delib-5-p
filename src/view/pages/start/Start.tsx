@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
 
 // firestore functions
-import { googleLogin } from "../../../functions/db/auth";
 import { getIntialLocationSessionStorage } from "../../../functions/general/helpers";
 
 // Third Party Libraries
@@ -14,7 +13,6 @@ import { userSelector } from "../../../model/users/userSlice";
 
 //img
 import Logo from "../../../assets/logo/512 px SVG.svg";
-import googleLogo from "../../../assets/icons/googleSimpleLogo.svg";
 import moreRight from "../../../assets/icons/moreRight.svg";
 import moreLeft from "../../../assets/icons/moreLeft.svg";
 
@@ -26,8 +24,7 @@ import {
     LanguagesEnum,
     useLanguage,
 } from "../../../functions/hooks/useLanguages";
-
-// import EnterName from './EnterName';
+import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
 
 const Start = () => {
     const navigate = useNavigate();
@@ -43,8 +40,6 @@ const Start = () => {
             navigate(getIntialLocationSessionStorage() || "/home", {
                 state: { from: window.location.pathname },
             });
-        } else {
-            // console.info("not logged")
         }
     }, [user]);
 
@@ -94,14 +89,8 @@ const Start = () => {
                     alt="login anonymously"
                 />
             </div>
-            <button className={styles.googleLogin} onClick={googleLogin}>
-                <img
-                    src={direction === "row-reverse" ? moreRight : moreLeft}
-                    alt="login anonymously"
-                />
-                <img src={googleLogo} alt="login with google" />
-                {t("Connect with Google")}
-            </button>
+
+            <GoogleLoginButton />
 
             <a href="http://delib.org" target="_blank">
                 <footer className={styles.ddi}>
