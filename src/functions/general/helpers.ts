@@ -15,6 +15,7 @@ import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
 import { navArray } from "../../view/pages/statement/components/nav/top/StatementTopNavModel";
+import { defaultFontSize } from "../../model/fontSize";
 
 export function updateArray(
     currentArray: Array<any>,
@@ -244,7 +245,7 @@ export function getPastelColor() {
     return `hsl(${360 * Math.random()},100%,75%)` || "red";
 }
 
-export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
+export function calculateFontSize(text: string, maxSize = 6, minSize = defaultFontSize) {
     // Set the base font size and a multiplier for adjusting based on text length
     const baseFontSize = minSize;
     const fontSizeMultiplier = 0.2;

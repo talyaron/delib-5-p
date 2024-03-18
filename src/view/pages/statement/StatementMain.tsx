@@ -20,7 +20,6 @@ import {
     useAppSelector,
 } from "../../../functions/hooks/reduxHooks";
 import {
-    setStatementSubscription,
     statementNotificationSelector,
     statementSelector,
     statementSubscriptionSelector,

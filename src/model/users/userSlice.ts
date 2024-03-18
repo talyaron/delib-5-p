@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { Agreement, User, UserSchema } from "delib-npm";
+import { defaultFontSize } from "../fontSize";
+
 
 export enum Status {
     idle = "idle",
@@ -40,7 +42,7 @@ export const userSlicer = createSlice({
                         typeof user.fontSize !== "number" ||
                         isNaN(user.fontSize)
                     )
-                        user.fontSize = 14;
+                        user.fontSize = defaultFontSize;
 
                     UserSchema.parse(action.payload);
                     state.user = action.payload;
@@ -57,7 +59,7 @@ export const userSlicer = createSlice({
         increaseFontSize: (state, action: PayloadAction<number>) => {
             try {
                 if (!state.user) return;
-                if (!state.user?.fontSize) state.user.fontSize = 14;
+                if (!state.user?.fontSize) state.user.fontSize = defaultFontSize;
 
                 state.user.fontSize += action.payload;
                 if (state.user.fontSize < 10) state.user.fontSize = 10;
@@ -112,6 +114,6 @@ export const statusSelector = (state: RootState) => state.user.status;
 export const askToSubscribeToNotificationsSelector = (state: RootState) =>
     state.user.askToSubscribeToNotifications;
 export const fontSizeSelector = (state: RootState) =>
-    state.user.user?.fontSize || 14;
+    state.user.user?.fontSize || defaultFontSize;
 
 export default userSlicer.reducer;

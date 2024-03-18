@@ -25,6 +25,7 @@ import { resetStatements } from "../../model/statements/statementsSlice";
 import { resetEvaluations } from "../../model/evaluations/evaluationsSlice";
 import { resetVotes } from "../../model/vote/votesSlice";
 import { resetResults } from "../../model/results/resultsSlice";
+import { defaultFontSize } from "../../model/fontSize";
 
 const provider = new GoogleAuthProvider();
 
@@ -86,7 +87,7 @@ export const listenToAuth =
                     const userDB = await setUserToDB(_user) as User|null;
                     if (!userDB) throw new Error("userDB is undefined");
 
-                    const fontSize = userDB.fontSize ? userDB.fontSize : 14;
+                    const fontSize = userDB.fontSize ? userDB.fontSize : defaultFontSize;
 
                     dispatch(setFontSize(fontSize));
 

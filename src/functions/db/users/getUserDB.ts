@@ -2,6 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { Agreement, Collections, User } from "delib-npm";
 import { DB } from "../config";
 import { store } from "../../../model/store";
+import { defaultFontSize } from "../../../model/fontSize";
 
 // get user font size and update document and html with the size in the DB
 export async function getUserFromDB(): Promise<User | undefined> {
@@ -22,7 +23,7 @@ export async function getUserFromDB(): Promise<User | undefined> {
             typeof userDB.fontSize !== "number" ||
             isNaN(userDB.fontSize)
         )
-            userDB.fontSize = 14;
+            userDB.fontSize = defaultFontSize;
         if (typeof userDB.fontSize !== "number")
             throw new Error("fontSize is not a number");
 

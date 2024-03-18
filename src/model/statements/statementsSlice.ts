@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, store } from "../store";
+import { RootState } from "../store";
 
 // Third party imports
 
