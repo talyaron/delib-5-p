@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router";
 import img404 from "../../../assets/images/404.jpg";
 import styles from "./page404.module.scss";
-import { setIntialLocationSessionStorage } from "../../../functions/general/helpers";
+import { useDispatch } from "react-redux";
+import { setInitLocation } from "../../../model/location/locationSlice";
 
 const Page404 = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     function handleGoHome() {
-        setIntialLocationSessionStorage("home");
+        dispatch(setInitLocation("/home"));
         navigate("/", { state: { from: window.location.pathname } });
     }
 

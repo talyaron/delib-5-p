@@ -4,6 +4,7 @@ import disconnectlIcon from "../../../assets/icons/disconnectIcon.svg";
 import { handleLogout } from "../../../functions/general/helpers";
 import useDirection from "../../../functions/hooks/useDirection";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useDispatch } from "react-redux";
 
 interface Props {
     setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,13 +12,14 @@ interface Props {
 const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
     const direction = useDirection();
     const { t } = useLanguage();
+    const dispatch = useDispatch();
 
     return (
         <>
             <div
                 className="homeMenu"
                 style={{ flexDirection: direction }}
-                onClick={handleLogout}
+                onClick={() => handleLogout(dispatch)}
             >
                 <img
                     className="homeMenu__icon"

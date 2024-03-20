@@ -6,13 +6,13 @@ import { RouterProvider } from "react-router-dom";
 
 import { store } from "./model/store";
 import { Provider } from "react-redux";
-import { setIntialLocationSessionStorage } from "./functions/general/helpers";
 
 import { router } from "./router";
 import {
     LanguageProvider,
     LanguagesEnum,
 } from "./functions/hooks/useLanguages";
+import { setInitLocation } from "./model/location/locationSlice";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -26,7 +26,11 @@ root.render(
     </React.StrictMode>,
 );
 
-setIntialLocationSessionStorage(window.location.pathname);
+store.dispatch(
+    setInitLocation(
+        window.location.pathname === "/" ? "/home" : window.location.pathname,
+    ),
+);
 
 export const install: { deferredPrompt: any } = {
     deferredPrompt: null,
