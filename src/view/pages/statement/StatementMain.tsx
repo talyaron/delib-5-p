@@ -40,6 +40,7 @@ import { useIsAuthorized } from "../../../functions/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import Page404 from "../page404/Page404";
 
 const StatementMain: FC = () => {
     // Hooks
@@ -76,6 +77,7 @@ const StatementMain: FC = () => {
     const [title, setTitle] = useState<string>(t("Group"));
     const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
     const [askNotifications, setAskNotifications] = useState(false);
+    const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
     // Constants
     const screen = availableScreen(statement, page);
@@ -125,7 +127,7 @@ const StatementMain: FC = () => {
         };
 
         if (user && statementId) {
-            unsubListenToStatement = listenToStatement(statementId, dispatch);
+            unsubListenToStatement = listenToStatement(statementId, dispatch,setIsStatementNotFound);
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
@@ -176,9 +178,12 @@ const StatementMain: FC = () => {
         }
     }, [statement]);
 
+    if (isStatementNotFound) return <Page404 />;
     if (loading) return <LoadingPage />;
 
     if (error) return <UnAuthorizedPage />;
+
+
 
     if (isAuthorized)
         return (

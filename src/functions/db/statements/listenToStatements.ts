@@ -35,6 +35,7 @@ import { DB } from "../config";
 // Helpers
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "firebase/auth";
+import { error } from "console";
 
 export const listenToStatementSubscription = (
     statementId: string,
@@ -305,17 +306,33 @@ export const listenToStatementSubscriptions =
 export const listenToStatement = (
     statementId: string,
     dispatch: AppDispatch,
+    setIsStatementNotFound: React.Dispatch<React.SetStateAction<boolean>>,
 ): Unsubscribe => {
     try {
         const statementRef = doc(DB, Collections.statements, statementId);
 
-        return onSnapshot(statementRef, (statementDB) => {
-            const statement = statementDB.data() as Statement;
+        return onSnapshot(
+            statementRef,
+            (statementDB) => {
+                try {
+                    if (!statementDB.exists()) {
+                        console.log("statement not found......");
+                        setIsStatementNotFound(true);
+                        throw new Error("Statement does not exist");
+                    }
+                    const statement = statementDB.data() as Statement;
+                    console.log(statement);
 
-            dispatch(setStatement(statement));
-        });
+                    dispatch(setStatement(statement));
+                } catch (error) {
+                    console.error(error), setIsStatementNotFound(true);
+                }
+            },
+            (error) => console.error(error),
+        );
     } catch (error) {
         console.error(error);
+        setIsStatementNotFound(true);
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {};
