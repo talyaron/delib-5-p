@@ -6,7 +6,7 @@ import {
     StatementSubscription,
     StatementType,
 } from "delib-npm";
-import { store } from "../../model/store";
+import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
@@ -47,24 +47,6 @@ export function updateArray(
     }
 }
 
-export function setIntialLocationSessionStorage(pathname: string | null) {
-    try {
-        if (pathname === "/") pathname = "/home";
-        sessionStorage.setItem("initialLocation", pathname || "/home");
-    } catch (error) {
-        console.error(error);
-    }
-}
-export function getIntialLocationSessionStorage(): string | undefined {
-    try {
-        return sessionStorage.getItem("initialLocation") || undefined;
-    } catch (error) {
-        console.error(error);
-
-        return undefined;
-    }
-}
-
 export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
@@ -82,13 +64,9 @@ export function isAuthorized(
 
         if (!statementSubscription) return false;
 
-        const role = statementSubscription?.role || Role.guest;
+        const role = statementSubscription?.role;
 
-        if (
-            role === Role.admin ||
-            role === Role.statementCreator ||
-            role === Role.systemAdmin
-        ) {
+        if (role === Role.admin) {
             return true;
         }
 
@@ -258,8 +236,8 @@ export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
     return `${fontSize}px`;
 }
 
-export function handleLogout() {
-    logOut();
+export function handleLogout(dispatch: AppDispatch) {
+    logOut(dispatch);
     store.dispatch(setUser(null));
 }
 
@@ -289,7 +267,6 @@ export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
         return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
     }
 }
-
 
 export function getTitle(statement: Statement) {
     try {
@@ -323,6 +300,10 @@ export function getSetTimerId(statementId: string, order: number) {
     return `${statementId}--${order}`;
 }
 
-export function getRoomTimerId(statementId: string, roomNumber: number, order: number) {
+export function getRoomTimerId(
+    statementId: string,
+    roomNumber: number,
+    order: number,
+) {
     return `${statementId}--${roomNumber}--${order}`;
 }
