@@ -25,7 +25,7 @@ export function useIsAuthorized(statementId: string|undefined): {
     statement:Statement|undefined
     error:boolean
 } {
-const allowedRoles = [Role.admin, Role.member]; a
+const allowedRoles = [Role.admin, Role.member]; 
     const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
     const statement = useAppSelector(statementSelector(statementId));
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
