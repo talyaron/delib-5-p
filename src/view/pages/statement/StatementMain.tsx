@@ -6,10 +6,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
 
 // firestore
-import { getIsSubscribed } from "../../../functions/db/statements/getStatement";
+import { getIsSubscribed } from "../../../functions/db/subscriptions/getSubscriptions";
 import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
-import { listenToStatementSubSubscriptions } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatementSubSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
 import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
 import { updateSubscriberForStatementSubStatements } from "../../../functions/db/subscriptions/setSubscriptions";
 import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
@@ -178,10 +178,9 @@ const StatementMain: FC = () => {
         }
     }, [statement]);
 
-    if (isStatementNotFound) return <Page404 />;
-    if (loading) return <LoadingPage />;
-
+    if (isStatementNotFound) return <Page404 />;  
     if (error) return <UnAuthorizedPage />;
+    if (loading) return <LoadingPage />;
 
 
 

@@ -11,7 +11,7 @@ import {
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
-import { listenToStatementSubscriptions } from "../../../functions/db/statements/listenToStatements";
+import { listenToStatementSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
 
 // Custom Components
 import HomeHeader from "./HomeHeader";
