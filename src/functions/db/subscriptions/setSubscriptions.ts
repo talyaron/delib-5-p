@@ -5,7 +5,7 @@ import { getUserFromFirebase } from "../users/usersGeneral";
 
 export async function setStatmentSubscriptionToDB(
     statement: Statement,
-    role: Role,
+    role: Role = Role.member,
     userAskedForNotification = false,
 ) {
     try {

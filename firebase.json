@@ -17,7 +17,7 @@
         }
     ],
     "hosting": {
-        "site": "delib-v3-dev",
+        "site": "delib-5",
         "public": "dist",
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [

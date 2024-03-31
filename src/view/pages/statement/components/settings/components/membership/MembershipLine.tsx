@@ -27,11 +27,9 @@ function memebershipDictionarty(role: Role) {
         case Role.member:
             return t("Member");
         case Role.banned:
-            return t("Blocked");
-        case Role.parentAdmin:
-            return t("Parent Admin");
-        case Role.guest:
-            return t("Guest");
+            return t("Banned");
+        case Role.unsubscribed:
+            return t("Unsubscribed");
 
         default:
             return t("Member");

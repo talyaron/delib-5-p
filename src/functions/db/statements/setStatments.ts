@@ -105,7 +105,7 @@ export const setStatmentToDB = async ({
         if (addSubscription) {
             await Notification.requestPermission();
             statementPromises.push(
-                setStatmentSubscriptionToDB(statement, Role.statementCreator),
+                setStatmentSubscriptionToDB(statement, Role.admin),
             );
 
             if (Notification.permission === "granted")
