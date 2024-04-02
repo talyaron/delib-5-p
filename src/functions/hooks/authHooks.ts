@@ -1,7 +1,7 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
 import { store } from "../../model/store";
-import { Role, Statement, StatementSubscription } from "delib-npm";
+import { Access, Role, Statement, StatementSubscription } from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
 import {
     statementSelector,
@@ -34,7 +34,7 @@ export function useIsAuthorized(statementId: string | undefined): {
     //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
 
     const allowedRoles = [Role.admin, Role.member];
-    
+
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statementId),
     );
@@ -44,24 +44,53 @@ export function useIsAuthorized(statementId: string | undefined): {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     useEffect(() => {
-        if (statementId && user) {
-         
-            getTopParentSubscription (statementId).then((topParentSubscription) => {
-                if (topParentSubscription) {
-                    if (allowedRoles.includes(topParentSubscription.role)) {
-                        setIsAuthorized(true);
-                    } else {
-                        setIsAuthorized(false);
+        if (statement && statementId && user) {
+            getTopParentSubscription(statementId).then(
+                ({ topParentSubscription, topParentStatement, error }) => {
+                    try {
+                        debugger;
+                        if (error)
+                            throw new Error(
+                                "Error in getting top parent subscription",
+                            );
+                        if (topParentSubscription) {
+                            if (
+                                allowedRoles.includes(
+                                    topParentSubscription.role,
+                                )
+                            ) {
+                                setIsAuthorized(true);
+                            } else {
+                                setIsAuthorized(false);
+                                setError(true);
+                            }
+                            setLoading(false);
+                        } else {
+                          
+                            if (
+                                topParentStatement?.membership?.access ===
+                                Access.open
+                            ) {
+                                setIsAuthorized(true);
+                                setLoading(false);
+                                setError(false);
+                            } else {
+
+                                //deal with registration...
+                                setIsAuthorized(false);
+                                setError(true);
+                                setLoading(false);
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
                         setError(true);
+                        setLoading(false);
                     }
-                    setLoading(false);
-                }else {
-                    setIsAuthorized(false);
-                    setError(true); 
-                }
-            });
+                },
+            );
         }
-    }, [statementId, user]);
+    }, [statementId, user, statement]);
 
     // useEffect(() => {
     //     if (statementSubscription && statement) {

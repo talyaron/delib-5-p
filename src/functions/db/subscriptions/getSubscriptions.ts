@@ -378,17 +378,90 @@ export async function getStatementSubscriptionFromDB(
     }
 }
 
-
+interface GetTopParentSubscriptionProps {
+    topParentStatement: Statement | undefined;
+    topParentSubscription: StatementSubscription | undefined;
+    error?: boolean;
+}
 
 export async function getTopParentSubscription(
     statementId: string,
-): Promise<StatementSubscription|undefined> {
+): Promise<GetTopParentSubscriptionProps> {
     try {
         //try to get the user from the store
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
 
-        //try to get statement form store
+        const statement: Statement | undefined = await getStatement();
+
+        const topParentId = statement.topParentId;
+        if (!topParentId) throw new Error("Top parent id is undefined");
+
+        const topParentSubscriptionId = getStatementSubscriptionId(
+            topParentId,
+            user,
+        );
+
+        //get top subscription
+        const topParentSubscription = await getParentSubscription(
+            topParentSubscriptionId,
+            topParentId,
+        );
+
+        if (topParentSubscription) {
+            return {
+                topParentSubscription,
+                topParentStatement: topParentSubscription.statement,
+                error: false,
+            };
+        }
+
+        //get top statement
+        debugger;
+        let topParentStatement: Statement | undefined =
+            await getTopParentStatement(topParentId);
+
+        return { topParentStatement, topParentSubscription, error: false };
+    } catch (error) {
+        console.error(error);
+        return {
+            topParentStatement: undefined,
+            topParentSubscription: undefined,
+            error: true,
+        };
+    }
+
+    async function getTopParentStatement(topParentId: string) {
+        let topParentStatement: Statement | undefined = store
+            .getState()
+            .statements.statements.find((st) => st.statementId === topParentId);
+        if (!topParentStatement) {
+            topParentStatement = await getStatementFromDB(topParentId);
+        }
+        if (!topParentStatement)
+            throw new Error("Top parent statement not found");
+        return topParentStatement;
+    }
+
+    async function getParentSubscription(
+        topParentSubscriptionId: string | undefined,
+        topParentId: string,
+    ) {
+        let topParentSubscription: StatementSubscription | undefined = store
+            .getState()
+            .statements.statementSubscription.find(
+                (sub: StatementSubscription) =>
+                    sub.statementsSubscribeId === topParentSubscriptionId,
+            );
+
+        if (!topParentSubscription) {
+            topParentSubscription =
+                await getStatementSubscriptionFromDB(topParentId);
+        }
+        return topParentSubscription;
+    }
+
+    async function getStatement() {
         let statement: Statement | undefined = store
             .getState()
             .statements.statements.find(
@@ -396,39 +469,9 @@ export async function getTopParentSubscription(
             );
 
         if (!statement) {
-            console.log('getStatementFromDB')
             statement = await getStatementFromDB(statementId);
         }
         if (!statement) throw new Error("Statement not found");
-
-        const topParentId = statement.topParentId;
-        if (!topParentId) throw new Error("Top parent id is undefined");
-        console.log("topParentId", topParentId);
-        const topParentSubscriptionId = getStatementSubscriptionId(
-            topParentId,
-            user,
-        );
-
-        //look first at the store
-        let topSubscription: StatementSubscription | undefined = store
-            .getState()
-            .statements.statementSubscription.find(
-                (sub: StatementSubscription) =>
-                    sub.statementsSubscribeId === topParentSubscriptionId,
-            );
-
-        if (!topSubscription) {
-            console.log('getStatementSubscriptionFromDB')
-            topSubscription = await getStatementSubscriptionFromDB(topParentId);
-        }
-        console.log("topSubscription", topSubscription);
-        if (!topSubscription) throw new Error("Top parent subscription not found");
-
-        return topSubscription
-
-       
-    } catch (error) {
-        console.error(error);
-        return undefined;
+        return statement;
     }
 }
