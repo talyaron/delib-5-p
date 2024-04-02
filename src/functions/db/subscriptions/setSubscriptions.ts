@@ -13,10 +13,12 @@ export async function setStatmentSubscriptionToDB(
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
-        const { statementId } = statement;
+        
         StatementSchema.parse(statement);
+        const { statementId } = statement;
 
         const statementsSubscribeId = getStatementSubscriptionId(statementId, user);
+        if(!statementsSubscribeId) throw new Error("Error in getting statementsSubscribeId");
 
         const statementsSubscribeRef = doc(
             DB,

@@ -348,16 +348,14 @@ export async function getIsSubscribed(
 }
 
 export async function getStatementSubscriptionFromDB(
-    statementId: string,
+    statementSubscrionId: string,
 ): Promise<StatementSubscription | undefined> {
     try {
         const user = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
 
-        const statementSubscrionId = getStatementSubscriptionId(
-            statementId,
-            user,
-        );
+        
+        console.log('statementSubscrionId',statementSubscrionId)
         if (!statementSubscrionId)
             throw new Error("Statement subscription id is undefined");
 
@@ -402,13 +400,23 @@ export async function getTopParentSubscription(
             user,
         );
 
+        console.log('topParentSubscriptionId',topParentSubscriptionId)
+      
+
         //get top subscription
+    
         const topParentSubscription = await getParentSubscription(
             topParentSubscriptionId,
             topParentId,
         );
 
         if (topParentSubscription) {
+            console.log(
+                "topParentSubscriptionId",
+                topParentSubscription.statementsSubscribeId,
+                "topParentId",
+                topParentSubscription.statement.statementId,
+            );
             return {
                 topParentSubscription,
                 topParentStatement: topParentSubscription.statement,
@@ -417,10 +425,14 @@ export async function getTopParentSubscription(
         }
 
         //get top statement
-        debugger;
+
         let topParentStatement: Statement | undefined =
             await getTopParentStatement(topParentId);
-
+        
+            //@ts-ignore
+        console.log("topParentSubscriptionId", topParentSubscription?.statementsSubscribeId,  "topParentId",topParentStatement.statementId);
+          
+       
         return { topParentStatement, topParentSubscription, error: false };
     } catch (error) {
         console.error(error);
@@ -456,7 +468,7 @@ export async function getTopParentSubscription(
 
         if (!topParentSubscription) {
             topParentSubscription =
-                await getStatementSubscriptionFromDB(topParentId);
+                await getStatementSubscriptionFromDB(topParentSubscriptionId);
         }
         return topParentSubscription;
     }

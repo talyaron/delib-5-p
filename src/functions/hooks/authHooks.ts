@@ -10,6 +10,7 @@ import {
 import { use } from "chai";
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
 import { set } from "firebase/database";
+import { setStatmentSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -48,7 +49,6 @@ export function useIsAuthorized(statementId: string | undefined): {
             getTopParentSubscription(statementId).then(
                 ({ topParentSubscription, topParentStatement, error }) => {
                     try {
-                        debugger;
                         if (error)
                             throw new Error(
                                 "Error in getting top parent subscription",
@@ -66,16 +66,22 @@ export function useIsAuthorized(statementId: string | undefined): {
                             }
                             setLoading(false);
                         } else {
-                          
                             if (
+                                topParentStatement &&
                                 topParentStatement?.membership?.access ===
-                                Access.open
+                                    Access.open
                             ) {
+                                //subscribe to top parent statement
+                                setStatmentSubscriptionToDB({
+                                    statement: topParentStatement,
+                                    role: Role.member,
+                                    userAskedForNotification: false,
+                                });
+
                                 setIsAuthorized(true);
                                 setLoading(false);
                                 setError(false);
                             } else {
-
                                 //deal with registration...
                                 setIsAuthorized(false);
                                 setError(true);
