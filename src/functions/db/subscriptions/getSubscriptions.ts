@@ -1,10 +1,36 @@
-import { Collections, StatementSubscription, StatementSubscriptionSchema, StatementType, User } from "delib-npm";
+import {
+    Collections,
+    Statement,
+    StatementSubscription,
+    StatementSubscriptionSchema,
+    StatementType,
+    User,
+} from "delib-npm";
 import { AppDispatch, store } from "../../../model/store";
 import { DB } from "../config";
-import { and, collection, doc, getDoc, getDocs, limit, onSnapshot, or, orderBy, query, where } from "@firebase/firestore";
-import { deleteSubscribedStatement, setStatementSubscription, setStatementsSubscription } from "../../../model/statements/statementsSlice";
+import {
+    and,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    onSnapshot,
+    or,
+    orderBy,
+    query,
+    where,
+} from "@firebase/firestore";
+import {
+    deleteSubscribedStatement,
+    setStatementSubscription,
+    setStatementsSubscription,
+} from "../../../model/statements/statementsSlice";
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "@firebase/util";
+import { getStatementSubscriptionId } from "../../general/helpers";
+import { get } from "firebase/database";
+import { getStatementFromDB } from "../statements/getStatement";
 
 export const listenToStatementSubSubscriptions = (
     statementId: string,
@@ -318,5 +344,91 @@ export async function getIsSubscribed(
         console.error(error);
 
         return false;
+    }
+}
+
+export async function getStatementSubscriptionFromDB(
+    statementId: string,
+): Promise<StatementSubscription | undefined> {
+    try {
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+
+        const statementSubscrionId = getStatementSubscriptionId(
+            statementId,
+            user,
+        );
+        if (!statementSubscrionId)
+            throw new Error("Statement subscription id is undefined");
+
+        const subscriptionRef = doc(
+            DB,
+            Collections.statementsSubscribe,
+            statementSubscrionId,
+        );
+        const subscriptionDB = await getDoc(subscriptionRef);
+
+        if (!subscriptionDB.exists()) return;
+
+        const subscription = subscriptionDB.data() as StatementSubscription;
+
+        return subscription;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+export async function getTopParentSubscription(
+    statementId: string,
+): Promise<StatementSubscription|undefined> {
+    try {
+        //try to get the user from the store
+        const user = store.getState().user.user;
+        if (!user) throw new Error("User not logged in");
+
+        //try to get statement form store
+        let statement: Statement | undefined = store
+            .getState()
+            .statements.statements.find(
+                (st: Statement) => st.statementId === statementId,
+            );
+
+        if (!statement) {
+            console.log('getStatementFromDB')
+            statement = await getStatementFromDB(statementId);
+        }
+        if (!statement) throw new Error("Statement not found");
+
+        const topParentId = statement.topParentId;
+        if (!topParentId) throw new Error("Top parent id is undefined");
+        console.log("topParentId", topParentId);
+        const topParentSubscriptionId = getStatementSubscriptionId(
+            topParentId,
+            user,
+        );
+
+        //look first at the store
+        let topSubscription: StatementSubscription | undefined = store
+            .getState()
+            .statements.statementSubscription.find(
+                (sub: StatementSubscription) =>
+                    sub.statementsSubscribeId === topParentSubscriptionId,
+            );
+
+        if (!topSubscription) {
+            console.log('getStatementSubscriptionFromDB')
+            topSubscription = await getStatementSubscriptionFromDB(topParentId);
+        }
+        console.log("topSubscription", topSubscription);
+        if (!topSubscription) throw new Error("Top parent subscription not found");
+
+        return topSubscription
+
+       
+    } catch (error) {
+        console.error(error);
+        return undefined;
     }
 }

@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
 
 // firestore
-import { getIsSubscribed } from "../../../functions/db/subscriptions/getSubscriptions";
+import { getIsSubscribed, getTopParentSubscription } from "../../../functions/db/subscriptions/getSubscriptions";
 import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
@@ -48,6 +48,7 @@ const StatementMain: FC = () => {
     const page = useParams().page as Screen;
     const navigate = useNavigate();
     const { t } = useLanguage();
+    //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
     const { error, isAuthorized, loading, statementSubscription, statement } =
         useIsAuthorized(statementId);
 
@@ -79,6 +80,7 @@ const StatementMain: FC = () => {
     const [askNotifications, setAskNotifications] = useState(false);
     const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
+    
     // Constants
     const screen = availableScreen(statement, page);
 
@@ -110,6 +112,11 @@ const StatementMain: FC = () => {
 
     // Listen to statement changes.
     useEffect(() => {
+
+
+       
+      
+
         let unsubListenToStatement: () => void = () => {
             return;
         };
@@ -127,6 +134,11 @@ const StatementMain: FC = () => {
         };
 
         if (user && statementId) {
+
+            getTopParentSubscription(statementId).then(({isAuthorized})=>{
+                console.log("isAuthorized",isAuthorized);
+            });
+           
             unsubListenToStatement = listenToStatement(statementId, dispatch,setIsStatementNotFound);
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(

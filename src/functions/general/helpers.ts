@@ -5,6 +5,7 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementType,
+    User,
 } from "delib-npm";
 import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -306,4 +307,19 @@ export function getRoomTimerId(
     order: number,
 ) {
     return `${statementId}--${roomNumber}--${order}`;
+}
+
+export function getStatementSubscriptionId(
+    statementId: string,
+    user: User,
+): string | undefined {
+    try {
+        if (!user || !user.uid) throw new Error("No user");
+        if (!statementId) throw new Error("No statementId");
+        
+        return `${user.uid}--${statementId}`;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
 }

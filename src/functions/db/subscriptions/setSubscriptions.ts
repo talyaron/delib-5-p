@@ -2,6 +2,7 @@ import { Statement, Role, StatementSchema, Collections } from "delib-npm";
 import { doc, updateDoc, setDoc, Timestamp } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
+import { getStatementSubscriptionId } from "../../general/helpers";
 
 export async function setStatmentSubscriptionToDB(
     statement: Statement,
@@ -15,7 +16,7 @@ export async function setStatmentSubscriptionToDB(
         const { statementId } = statement;
         StatementSchema.parse(statement);
 
-        const statementsSubscribeId = `${user.uid}--${statementId}`;
+        const statementsSubscribeId = getStatementSubscriptionId(statementId, user);
 
         const statementsSubscribeRef = doc(
             DB,
