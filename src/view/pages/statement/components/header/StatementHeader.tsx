@@ -17,7 +17,7 @@ import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react
 import HomeIcon from "../../../../components/icons/HomeIcon";
 import BellSlashIcon from "../../../../components/icons/BellSlashIcon";
 import BellIcon from "../../../../components/icons/BellIcon";
-import ShareIcon from "../../../../components/icons/ShareIcon";
+import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
     handleLogout,
@@ -144,7 +144,12 @@ const StatementHeader: FC<Props> = ({
                 <PopUpMenu
                     openMoreIconColor={headerColor.color}
                     firstIcon={
-                        <ShareIcon color={headerColor.backgroundColor} />
+                        <ShareIcon
+                            style={{
+                                color: headerColor.backgroundColor,
+                                width: "24px",
+                            }}
+                        />
                     }
                     firstIconFunc={handleShare}
                     firstIconText={"Share"}
