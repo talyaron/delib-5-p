@@ -10,10 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
-//img
+// icons
 import Logo from "../../../assets/logo/512 px SVG.svg";
-import moreRight from "../../../assets/icons/moreRight.svg";
-import moreLeft from "../../../assets/icons/moreLeft.svg";
+import MoreRight from "../../../assets/icons/moreRight.svg?react";
+import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
@@ -91,11 +91,8 @@ const Start = () => {
                 className={styles.anonymous}
                 onClick={() => setShowNameModul((prev) => !prev)}
             >
+                {direction === "row" ? <MoreRight /> : <MoreLeft />}
                 {t("Login with a temporary name")}{" "}
-                <img
-                    src={direction === "row" ? moreRight : moreLeft}
-                    alt="login anonymously"
-                />
             </div>
 
             <GoogleLoginButton />
