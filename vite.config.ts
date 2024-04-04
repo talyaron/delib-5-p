@@ -2,6 +2,7 @@ import { defineConfig, splitVendorChunkPlugin } from "vite";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
+import svgr from "vite-plugin-svgr";
 
 const manifestPlugin: Partial<VitePWAOptions> = {
     registerType: "autoUpdate",
@@ -63,5 +64,6 @@ export default defineConfig({
         VitePWA(manifestPlugin),
         visualizer({ open: true, gzipSize: true, brotliSize: true }),
         splitVendorChunkPlugin(),
+        svgr({ include: "**/*.svg?react" }),
     ],
 });

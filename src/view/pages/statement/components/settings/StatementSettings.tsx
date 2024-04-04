@@ -28,7 +28,7 @@ import DisplayResultsBy from "./components/DisplayResultsBy";
 import ResultsRange from "./components/ResultsRange";
 import GetVoters from "./components/GetVoters";
 import GetEvaluators from "./components/GetEvaluators";
-import CheckBoxeArea from "./components/CheckBoxeArea";
+import CheckBoxesArea from "./components/CheckBoxesArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
 
 // Hooks & Helpers
@@ -132,7 +132,7 @@ const StatementSettings: FC<Props> = () => {
                         />
                     </label>
 
-                    <CheckBoxeArea statement={statement} />
+                    <CheckBoxesArea statement={statement} />
 
                     <DisplayResultsBy statement={statement} />
 
