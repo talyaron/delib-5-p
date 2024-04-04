@@ -13,7 +13,7 @@ import { store } from "../../../../../model/store";
 // Custom components
 import StatementTopNav from "../nav/top/StatementTopNav";
 import EditTitle from "../../../../components/edit/EditTitle";
-import BackArrowIcon from "../../../../components/icons/BackArrowIcon";
+import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
 import HomeIcon from "../../../../components/icons/HomeIcon";
 import BellSlashIcon from "../../../../components/icons/BellSlashIcon";
 import BellIcon from "../../../../components/icons/BellIcon";
@@ -115,7 +115,7 @@ const StatementHeader: FC<Props> = ({
                         style={{ cursor: "pointer" }}
                         data-cy="back-icon-header"
                     >
-                        <BackArrowIcon color={headerColor.color} />
+                        <BackArrowIcon style={{ color: headerColor.color }} />
                     </div>
                     <Link
                         state={{ from: window.location.pathname }}
