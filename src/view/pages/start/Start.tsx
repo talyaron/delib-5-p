@@ -17,7 +17,7 @@ import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
-import EnterName from "../../components/enterName/EnterName";
+import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
 import useDirection from "../../../functions/hooks/useDirection";
 import {
     LanguagesEnum,
@@ -30,7 +30,7 @@ const Start = () => {
     const navigate = useNavigate();
     const user = useAppSelector(userSelector);
     const initLocation = useAppSelector(selectInitLocation);
-    const [showNameModul, setShowNameModul] = useState(false);
+    const [shouldShowNameModal, setShouldShowNameModal] = useState(false);
     const savedLang = localStorage.getItem("lang");
     const direction = useDirection();
 
@@ -89,7 +89,7 @@ const Start = () => {
                 style={{ flexDirection: direction }}
                 data-cy="anonymous-login"
                 className={styles.anonymous}
-                onClick={() => setShowNameModul((prev) => !prev)}
+                onClick={() => setShouldShowNameModal((prev) => !prev)}
             >
                 {direction === "row" ? <MoreRight /> : <MoreLeft />}
                 {t("Login with a temporary name")}{" "}
@@ -103,9 +103,11 @@ const Start = () => {
                 </footer>
             </a>
 
-            {showNameModul ? (
-                <EnterName setShowNameModul={setShowNameModul} />
-            ) : null}
+            {shouldShowNameModal && (
+                <EnterNameModal
+                    closeModal={() => setShouldShowNameModal(false)}
+                />
+            )}
         </div>
     );
 };

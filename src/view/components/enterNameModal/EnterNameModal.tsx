@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 // Styles
-import styles from "./enterName.module.scss";
+import styles from "./enterNameModal.module.scss";
 
 // Custom components
 import Modal from "../modal/Modal";
@@ -11,10 +11,10 @@ import { signAnonymously } from "../../../functions/db/auth";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
-    setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
+    closeModal: VoidFunction;
 }
 
-const EnterName: FC<Props> = ({ setShowNameModul }) => {
+const EnterNameModal: FC<Props> = ({ closeModal }) => {
     const [displayName, setDisplayName] = useState<string | null>(null);
     const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
     const { t } = useLanguage();
@@ -31,7 +31,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                 signAnonymously();
                 const _displayName = displayName || "unonimous";
                 localStorage.setItem("displayName", _displayName);
-                setShowNameModul(false);
+                closeModal();
             }
         } catch (error) {
             console.error(error);
@@ -65,7 +65,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                     <div
                         data-cy="anonymous-cancel-btn"
                         className="btn btn--cancel"
-                        onClick={() => setShowNameModul(false)}
+                        onClick={closeModal}
                     >
                         {t("Cancel")}
                     </div>
@@ -75,7 +75,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
     );
 };
 
-export default EnterName;
+export default EnterNameModal;
 
 function isReadyToStart(displayName: string | null) {
     if (displayName === null) return false;
