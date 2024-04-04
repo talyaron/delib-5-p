@@ -1,8 +1,7 @@
 import { FC } from "react";
 
 // icons
-// import AddIcon from "@mui/icons-material/Add";
-import addIcon from "../../../assets/icons/addIcon.svg";
+import AddIcon from "../../../assets/icons/plusIcon.svg?react";
 
 interface Props {
     onclick: () => void;
@@ -21,7 +20,7 @@ const Fav: FC<Props> = ({ onclick }) => {
             onClick={onclick}
             data-cy="add-statement"
         >
-            <img src={addIcon} alt="add_icon" />
+            <AddIcon />
         </div>
     );
 };
