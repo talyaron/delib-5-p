@@ -5,6 +5,7 @@ import {
     StatementSubscriptionSchema,
     StatementType,
     Statement,
+    Role,
 } from "delib-npm";
 import {
     collection,
@@ -48,6 +49,24 @@ export const listenToStatementSubscription = (
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;
 
+                    console.log(statementSubscription)
+                    const {role} = statementSubscription;
+
+                    //TODO: remove this after 2024-06-06
+                    const deprecated = new Date("2024-06-06").getTime();
+                    console.log(new Date().getTime() - deprecated)
+                    //@ts-ignore
+                    if(role === "statement-creator"){
+                        statementSubscription.role = Role.admin;
+                    }
+                    if(role === undefined && new Date().getTime() < deprecated){
+                        statementSubscription.role = Role.member;
+                    } else if(role === undefined){
+                        statementSubscription.role = Role.unsubscribed;
+                        console.info("Role is undefined. Setting role to unsubscribed");
+                    }
+                    console.log(statementSubscription.role)
+
                 // const { success } = StatementSubscriptionSchema.safeParse(
                 //     statementSubscription,
                 // );
@@ -56,7 +75,6 @@ export const listenToStatementSubscription = (
 
                 //     return;
                 // }
-                
 
                 StatementSubscriptionSchema.parse(statementSubscription);
 
