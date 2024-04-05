@@ -18,12 +18,19 @@ const Page404 = () => {
             <div className={styles.box}>
                 <img src={img404} alt="404" />
                 <div className="btns">
-                    <button onClick={handleGoHome}>Home</button>
+                    <button
+                        className="btn btn--large btn--add"
+                        onClick={handleGoHome}
+                    >
+                        Go Home
+                    </button>
                 </div>
-                Image by{" "}
-                <a href="https://www.freepik.com/free-vector/404-error-web-template-with-funny-monster_2548710.htm#query=404%20page&position=6&from_view=keyword&track=ais&uuid=d49b3627-e951-464f-b780-aa6012b5ed9e">
-                    Freepik
-                </a>
+                <div className={styles.credit}>
+                    <span>Image by</span>
+                    <a href="https://www.freepik.com/free-vector/404-error-web-template-with-funny-monster_2548710.htm#query=404%20page&position=6&from_view=keyword&track=ais&uuid=d49b3627-e951-464f-b780-aa6012b5ed9e">
+                        Freepik
+                    </a>
+                </div>
             </div>
         </div>
     );

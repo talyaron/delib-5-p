@@ -20,3 +20,16 @@
         text-decoration: none;
     }
 }
+.credit{
+    margin-top: 3rem;
+    direction: ltr;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.2rem;
+    color: var(--text);
+    a{
+        color: var(--question);
+    }
+}

@@ -17,7 +17,6 @@ import {
     Collections,
     Statement,
     StatementSubscription,
-    StatementSubscriptionSchema,
     StatementType,
 } from "delib-npm";
 
@@ -126,95 +125,7 @@ function listenToSubStatements(
     }
 }
 
-export async function getStatmentsSubsciptions(): Promise<
-    StatementSubscription[]
-> {
-    try {
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-        const statementsSubscribeRef = collection(
-            DB,
-            Collections.statementsSubscribe,
-        );
-        const q = query(
-            statementsSubscribeRef,
-            where("userId", "==", user.uid),
-            limit(40),
-        );
-        const querySnapshot = await getDocs(q);
 
-        const statementsSubscriptions: StatementSubscription[] = [];
-
-        querySnapshot.forEach((doc) => {
-            statementsSubscriptions.push(doc.data() as StatementSubscription);
-        });
-
-        return statementsSubscriptions;
-    } catch (error) {
-        console.error(error);
-
-        return [];
-    }
-}
-
-export async function getSubscriptions() {
-    try {
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-        const statementsSubscribeRef = collection(
-            DB,
-            Collections.statementsSubscribe,
-        );
-        const q = query(
-            statementsSubscribeRef,
-            where("userId", "==", user.uid),
-            orderBy("lastUpdate", "desc"),
-            limit(20),
-        );
-
-        const subscriptionsDB = await getDocs(q);
-
-        const subscriptions: StatementSubscription[] = [];
-        subscriptionsDB.forEach((doc) => {
-            const statementSubscription = doc.data() as StatementSubscription;
-
-            StatementSubscriptionSchema.parse(statementSubscription);
-
-            subscriptions.push(statementSubscription);
-        });
-
-        return subscriptions;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-export async function getIsSubscribed(
-    statementId: string | undefined,
-): Promise<boolean> {
-    try {
-        if (!statementId) throw new Error("Statement id is undefined");
-        const user = store.getState().user.user;
-        if (!user) throw new Error("User not logged in");
-
-        const subscriptionRef = doc(
-            DB,
-            Collections.statementsSubscribe,
-            `${user.uid}--${statementId}`,
-        );
-        const subscriptionDB = await getDoc(subscriptionRef);
-
-        if (!subscriptionDB.exists()) return false;
-
-        return true;
-    } catch (error) {
-        console.error(error);
-
-        return false;
-    }
-}
 
 export async function getStatementFromDB(
     statementId: string,

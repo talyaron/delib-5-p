@@ -2,6 +2,7 @@ import { Statement, Role, StatementSchema, Collections } from "delib-npm";
 import { doc, updateDoc, setDoc, Timestamp } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
+import { getStatementSubscriptionId } from "../../general/helpers";
 
 export async function setStatmentSubscriptionToDB(
     statement: Statement,
@@ -12,10 +13,12 @@ export async function setStatmentSubscriptionToDB(
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
-        const { statementId } = statement;
+        
         StatementSchema.parse(statement);
+        const { statementId } = statement;
 
-        const statementsSubscribeId = `${user.uid}--${statementId}`;
+        const statementsSubscribeId = getStatementSubscriptionId(statementId, user);
+        if(!statementsSubscribeId) throw new Error("Error in getting statementsSubscribeId");
 
         const statementsSubscribeRef = doc(
             DB,

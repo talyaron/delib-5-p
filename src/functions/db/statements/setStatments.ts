@@ -4,6 +4,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 // Third Party Imports
 import { z } from "zod";
 import {
+    Access,
     ResultsBy,
     Screen,
     Statement,
@@ -74,6 +75,8 @@ export const setStatmentToDB = async ({
 
         statement.lastUpdate = new Date().getTime();
         statement.createdAt = statement?.createdAt || new Date().getTime();
+        
+        statement.membership = {access: Access.open};
 
         //statement settings
         if (!statement.statementSettings)

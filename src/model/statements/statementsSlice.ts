@@ -4,7 +4,6 @@ import { RootState } from "../store";
 // Third party imports
 
 import {
-
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -164,14 +163,9 @@ export const statementsSlicer = createSlice({
         setStatementsSubscription: (state, action: PayloadAction<StatementSubscription[]>) => {
             try {
                 const newStatements = action.payload;
-                const { success } = z
-                    .array(StatementSubscriptionSchema)
-                    .safeParse(newStatements);
-                if (!success) {
-                    console.error(
-                        "statement subscription not valid on setStatementsSubscription",
-                    );
-                }
+                //TODO: remove this after all statements are updated at about 4 April 2024
+                // z.array(StatementSubscriptionSchema).parse(newStatements);
+                
 
                 newStatements.forEach((statement) => {
                     state.statementSubscription = updateArray(
