@@ -36,6 +36,13 @@ const Start = () => {
     const direction = useDirection();
 
     const { t, changeLanguage } = useLanguage();
+    const defaultLang = "he";
+
+    useEffect(() => {
+        if (!savedLang) {
+            localStorage.setItem("lang", defaultLang);
+        }
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -61,7 +68,7 @@ const Start = () => {
 
             <select
                 className={styles.language}
-                defaultValue={savedLang || "he"}
+                defaultValue={savedLang || defaultLang}
                 onChange={(e) => {
                     const lang = e.target.value as LanguagesEnum;
                     changeLanguage(lang);
