@@ -165,13 +165,22 @@ const StatementMain: FC = () => {
     }, [user, statementId]);
 
     useEffect(() => {
+
         if (statement) {
+
+
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
                 100,
             );
 
             setTitle(shortVersion);
+            //set navigator tab title
+            console.log('shortVersion',shortVersion)
+          
+            document.title = `Consoul - ${shortVersion}`;
+
+
             (async () => {
                 const isSubscribed = await getIsSubscribed(statementId);
 
