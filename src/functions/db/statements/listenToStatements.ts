@@ -48,14 +48,15 @@ export const listenToStatementSubscription = (
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;
 
-                const { success } = StatementSubscriptionSchema.safeParse(
-                    statementSubscription,
-                );
-                if (!success) {
-                    console.info("No subscription found");
+                // const { success } = StatementSubscriptionSchema.safeParse(
+                //     statementSubscription,
+                // );
+                // if (!success) {
+                //     console.info("No subscription found");
 
-                    return;
-                }
+                //     return;
+                // }
+                
 
                 StatementSubscriptionSchema.parse(statementSubscription);
 
