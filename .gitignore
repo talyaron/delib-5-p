@@ -32,3 +32,7 @@ dev-dist/
 *.cache
 
 .firebase/
+firebase.json
+firebase-debug.log
+firebase-debug.log*
+configKey.ts

@@ -1,0 +1,21 @@
+.loader{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--mainBackground);
+    color:white;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   gap:3rem;
+    background-color: var(--mainBackground);
+    border-radius: 50%;
+    box-shadow: 0 0 10px 0 var(--mainBackground);
+    animation: spin 1s infinite linear;
+}

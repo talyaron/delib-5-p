@@ -13,10 +13,6 @@ import { NavigateFunction } from "react-router-dom";
 
 // Helper functions
 import { setUserToDB } from "./users/setUsersDB";
-import {
-    getIntialLocationSessionStorage,
-    setIntialLocationSessionStorage,
-} from "../general/helpers";
 
 // Redux store imports
 import { AppDispatch } from "../../model/store";
@@ -25,6 +21,7 @@ import { resetStatements } from "../../model/statements/statementsSlice";
 import { resetEvaluations } from "../../model/evaluations/evaluationsSlice";
 import { resetVotes } from "../../model/vote/votesSlice";
 import { resetResults } from "../../model/results/resultsSlice";
+import { setInitLocation } from "../../model/location/locationSlice";
 
 const provider = new GoogleAuthProvider();
 
@@ -61,7 +58,11 @@ export function googleLogin() {
 }
 export const listenToAuth =
     (dispatch: AppDispatch) =>
-    (isAnonymous: boolean, navigate: NavigateFunction): Unsubscribe => {
+    (
+        isAnonymous: boolean,
+        navigate: NavigateFunction,
+        initialUrl: string,
+    ): Unsubscribe => {
         return onAuthStateChanged(auth, async (userFB) => {
             try {
                 if (!userFB && isAnonymous !== true) {
@@ -93,10 +94,7 @@ export const listenToAuth =
                     if (!userDB) throw new Error("userDB is undefined");
                     dispatch(setUser(userDB));
 
-                    const initialLocation = getIntialLocationSessionStorage();
-
-                    //navigate to initial location
-                    if (initialLocation) navigate(initialLocation);
+                    if (initialUrl) navigate(initialUrl);
                 } else {
                     // User is not logged in.
                     dispatch(resetStatements());
@@ -111,12 +109,12 @@ export const listenToAuth =
         });
     };
 
-export function logOut() {
+export function logOut(dispatch: AppDispatch) {
     signOut(auth)
         .then(() => {
             // Sign-out successful.
             console.info("Sign-out successful.");
-            setIntialLocationSessionStorage("/");
+            dispatch(setInitLocation("/home"));
         })
         .catch((error) => {
             // An error happened.

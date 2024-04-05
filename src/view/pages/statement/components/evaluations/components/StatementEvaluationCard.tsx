@@ -20,7 +20,6 @@ import {
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
-import { t } from "i18next";
 
 // Hooks
 import useStatementColor, {
@@ -37,6 +36,7 @@ import StatementChatMore from "../../chat/components/StatementChatMore";
 import SetEdit from "../../../../../components/edit/SetEdit";
 import Modal from "../../../../../components/modal/Modal";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
@@ -53,6 +53,7 @@ const StatementEvaluationCard: FC<Props> = ({
     // Hooks
     const navigate = useNavigate();
     const direction = useDirection();
+    const { t } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -168,10 +169,12 @@ const StatementEvaluationCard: FC<Props> = ({
             )}
             <div className="optionCard__actions">
                 <Evaluation statement={statement} />
-                {parentStatement.hasChildren && <AddSubQuestion
-                    statement={statement}
-                    setShowModal={setShowModal}
-                />}
+                {parentStatement.hasChildren && (
+                    <AddSubQuestion
+                        statement={statement}
+                        setShowModal={setShowModal}
+                    />
+                )}
             </div>
             {showModal && (
                 <Modal>

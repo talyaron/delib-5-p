@@ -1,12 +1,14 @@
 import React from "react";
 import { Statement } from "delib-npm";
-import { t } from "i18next";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function ResultsRange({
     statement,
 }: {
     statement: Statement | undefined;
 }) {
+    const { t } = useLanguage();
+
     const [numOfResults, setNumOfResults] = React.useState(
         statement?.resultsSettings?.numberOfResults || 1,
     );

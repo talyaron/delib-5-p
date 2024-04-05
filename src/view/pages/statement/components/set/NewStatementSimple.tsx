@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Third party imports
 import { Statement, StatementType } from "delib-npm";
-import { t } from "i18next";
 
 // Statements Helpers
 import {
@@ -17,6 +16,7 @@ import Loader from "../../../../components/loaders/Loader";
 import questionModalImage from "../../../../../assets/images/questionModalImage.png";
 import optionModalImage from "../../../../../assets/images/optionModalImage.png";
 import ElipsIcon from "../../../../components/icons/ElipsIcon";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 interface Props {
     parentStatement: Statement | "top";
@@ -37,6 +37,7 @@ const NewSetStatementSimple: FC<Props> = ({
         const parentIsStatement = parentStatement !== "top";
 
         const [isOptionChosen, setIsOptionChosen] = useState(isOption);
+        const { t } = useLanguage();
 
         const parentStatementId = parentIsStatement
             ? parentStatement.statementId
@@ -126,7 +127,7 @@ const NewSetStatementSimple: FC<Props> = ({
                                         : "overlay__tabs__tab overlay__tabs__tab--active"
                                 }
                             >
-                                Question
+                                {t("Question")}
                                 {!isOptionChosen && <div className="block" />}
                             </div>
                             <div
@@ -137,7 +138,8 @@ const NewSetStatementSimple: FC<Props> = ({
                                         : "overlay__tabs__tab"
                                 }
                             >
-                                Option
+                                {t("Option")}
+
                                 {isOptionChosen && <div className="block" />}
                             </div>
                         </div>
@@ -147,7 +149,8 @@ const NewSetStatementSimple: FC<Props> = ({
                             style={{ height: "auto" }}
                         >
                             <input
-                                autoFocus={false}
+                                data-cy="statement-title-simple"
+                                autoFocus={true}
                                 type="text"
                                 name="statement"
                                 placeholder={t("Title")}
@@ -164,6 +167,7 @@ const NewSetStatementSimple: FC<Props> = ({
                                 <button
                                     className="overlay__form__buttons__add btn"
                                     type="submit"
+                                    data-cy="add-statement-simple"
                                 >
                                     {t("Add")}
                                 </button>

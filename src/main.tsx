@@ -1,27 +1,36 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./view/style/style.scss";
-import "./i18n";
 
 import { RouterProvider } from "react-router-dom";
 
 import { store } from "./model/store";
 import { Provider } from "react-redux";
-import { setIntialLocationSessionStorage } from "./functions/general/helpers";
 
 import { router } from "./router";
+import {
+    LanguageProvider,
+    LanguagesEnum,
+} from "./functions/hooks/useLanguages";
+import { setInitLocation } from "./model/location/locationSlice";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <RouterProvider router={router} />
+            <LanguageProvider defaultLanguage={LanguagesEnum.he}>
+                <RouterProvider router={router} />
+            </LanguageProvider>
         </Provider>
     </React.StrictMode>,
 );
 
-setIntialLocationSessionStorage(window.location.pathname);
+store.dispatch(
+    setInitLocation(
+        window.location.pathname === "/" ? "/home" : window.location.pathname,
+    ),
+);
 
 export const install: { deferredPrompt: any } = {
     deferredPrompt: null,

@@ -23,7 +23,8 @@ export const vapidKey ="BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVS
 
 // export const vapidKey = '';
 
-// development
+// * development * //
+
 // export const keys = {
 //     apiKey: "AIzaSyD-117AZU4nEdFo1Z2XRvVZO-_Dj8QQCf4",
 //     authDomain: "delib-v3-dev.firebaseapp.com",

@@ -71,7 +71,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
     const navStyle = {
         bottom: page === "vote" ? "unset" : "3rem",
-        height: page === "vote" ? "4.5rem" : "unset",
+        height: page === "vote" ? "4rem" : "unset",
     };
 
     return (
@@ -87,6 +87,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                     className="bottomNav__iconbox bottomNav__iconbox--burger"
                     style={statementColor}
                     onClick={handleMidIconClick}
+                    data-cy="bottom-nav-mid-icon"
                 >
                     {openNav && isAddOption ? (
                         <PlusIcon color={statementColor.color} />

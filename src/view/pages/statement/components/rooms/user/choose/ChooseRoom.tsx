@@ -2,10 +2,10 @@ import { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Custom components
 import RoomChoosingCard from "./RoomChoosingCard";
+import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     subStatements: Statement[];
@@ -13,6 +13,7 @@ interface Props {
 }
 
 const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+    const { t } = useLanguage();
 
     return (
         <>

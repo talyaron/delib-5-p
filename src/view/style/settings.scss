@@ -13,11 +13,15 @@
 
     textarea,
     input[type="text"] {
+        margin-top: 2rem;
         padding: 1rem;
         font-size: 1.2rem;
         width: 100%;
         outline: none;
         resize: none;
+        background-color: #f5fcff;
+        box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
+        box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
     }
 
     section {
@@ -28,16 +32,19 @@
     &__checkboxSection {
         display: grid;
         grid-template-columns: 1fr 2fr;
-        gap: 2rem;
+        gap: 5rem;
+        margin: 4rem 0 4rem 0;
+
         &__column {
             display: flex;
             flex-direction: column;
             height: 100%;
-            gap: 1.5rem;
+            gap: 3rem;
             &__title {
                 font-size: 1.5rem;
                 font-weight: 500;
                 line-height: 24px;
+                margin-bottom: 2rem;
             }
             &__label {
                 display: flex;
@@ -51,6 +58,8 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        margin-bottom: 4rem;
+
         &__title {
             font-size: 1.5rem;
             font-weight: 500;
@@ -64,6 +73,7 @@
             position: relative;
             input[type="radio"] {
                 display: none;
+                background: #4e88c7;
             }
         }
     }
@@ -71,6 +81,7 @@
     &__rangeSection {
         display: flex;
         flex-direction: column;
+
         &__label {
             font-size: 1.5rem;
             font-weight: 500;
@@ -81,11 +92,32 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
+            margin-bottom: 3rem;
+
             &__range {
                 width: 60%;
+                height: 3px;
                 outline: none;
                 margin: 0;
                 padding: 0;
+                cursor: pointer;
+                box-shadow: 0px 2px 4px 0px #c9d1e4 inset;
+                border-radius: 6px;
+                outline: none;
+                border: none;
+                -webkit-appearance: none;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 15px;
+                height: 30px;
+                background: #4e88c7;
+                box-shadow: 0px -2px 6px -5px #b1aaca66;
+                box-shadow: 0px 2px 6px 0px #aca8c566;
+                border-radius: 10px;
+                border: none;
+                cursor: pointer;
             }
         }
     }
@@ -97,6 +129,7 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+
         &__evaluatorsBtn {
             background-color: var(--light-green);
             color: var(--white);
@@ -120,15 +153,16 @@
         font-size: 1rem;
         border: none;
         outline: none;
-        background-color: var(--question);
+        background-color: #4e88c7;
         color: var(--question-text);
         border-radius: 3px;
         cursor: pointer;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
         box-shadow: 0 10px 10px var(--shadow);
         position: fixed;
         bottom: 2rem;
         left: 40%;
+        z-index: 1000;
         &:hover {
             transform: scale(0.9);
         }
@@ -146,9 +180,7 @@
     .settings__checkboxSection {
         display: flex;
         flex-direction: column;
-        &__column:first-child {
-            width: 40%;
-        }
+
         &__column:last-child {
             border-top: 1px solid var(--shadow);
             padding-top: 1rem;
@@ -158,7 +190,7 @@
 
 .formBtn {
     height: 2rem;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     font-size: 1rem;
     border: none;
     outline: none;

@@ -2,18 +2,22 @@ import { FC } from "react";
 import Modal from "../modal/Modal";
 import notifications from "../../../assets/images/notifications.png";
 import styles from "./AskPermisssion.module.scss";
-import { t } from "i18next";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     showFn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AskPermisssion: FC<Props> = ({ showFn }) => {
+    const { t } = useLanguage();
+
     return (
         <Modal>
             <div className={styles.notifications}>
                 <h2>{t("So you can communicate")}</h2>
-                <p>{t("It is necessary to receive notifications")}</p>
+                <p>
+                    {t("It is necessary to receive notifications")}
+                </p>
                 <p> {t("Please confirm alerts for Delib")}</p>
                 <img
                     src={notifications}

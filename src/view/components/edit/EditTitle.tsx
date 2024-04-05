@@ -95,6 +95,7 @@ const EditTitle: FC<Props> = ({
                     onBlur={handleSetTitle}
                     onKeyUp={handleSetTitle}
                     autoFocus={true}
+                    data-cy="edit-title-input"
                 />
             );
         }

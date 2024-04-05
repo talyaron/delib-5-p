@@ -1,8 +1,8 @@
-import { t } from "i18next";
 import React, { MouseEventHandler } from "react";
 import MoreIcon from "../icons/MoreIcon";
 import "./popUpStyle.scss";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     isAuthrized?: boolean;
@@ -15,7 +15,7 @@ interface Props {
     secondIconFunc?: MouseEventHandler<HTMLSpanElement>;
     secondIconText?: string;
     thirdIcon?: JSX.Element;
-    thirdIconFunc?: MouseEventHandler<HTMLSpanElement>;
+    thirdIconFunc?:any; // MouseEventHandler<HTMLSpanElement>;
     thirdIconText?: string;
     fourthIcon?: JSX.Element;
     fourthIconFunc?: MouseEventHandler<HTMLSpanElement>;
@@ -40,6 +40,7 @@ export default function PopUpMenu({
     fourthIconText,
 }: Props) {
     const [openMore, setOpenMore] = React.useState(false);
+    const { t } = useLanguage();
 
     return isAuthrized ? (
         <div

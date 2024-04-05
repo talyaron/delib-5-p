@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType, User } from "delib-npm";
-import { t } from "i18next";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
@@ -32,6 +31,7 @@ import StatementChatSetOption from "./StatementChatSetOption";
 import StatementChatSetQuestion from "./StatementChatSetQuestion";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
 import Modal from "../../../../../components/modal/Modal";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export interface NewQuestion {
     statement: Statement;
@@ -57,6 +57,7 @@ const StatementChatCard: FC<Props> = ({
     const navigate = useNavigate();
     const { statementType } = statement;
     const statementColor = useStatementColor(statementType || "");
+    const { t } = useLanguage();
 
     // Redux store
     const userId = store.getState().user.user?.uid;
@@ -139,12 +140,12 @@ const StatementChatCard: FC<Props> = ({
                         />
 
                         {linkToChildren(statement, parentStatement) && (
-                                <AddSubQuestion
-                                    statement={statement}
-                                    setShowModal={setShowModal}
-                                    text={t("Add Question")}
-                                />
-                            )}
+                            <AddSubQuestion
+                                statement={statement}
+                                setShowModal={setShowModal}
+                                text={t("Add Question")}
+                            />
+                        )}
                         <StatementChatSetOption
                             parentStatement={parentStatement}
                             statement={statement}

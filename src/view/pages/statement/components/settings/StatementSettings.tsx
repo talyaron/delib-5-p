@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import styles from "./components/StatementSettings.module.scss";
 
 // Third party imports
-import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { StatementSubscription, Statement } from "delib-npm";
 
@@ -13,7 +12,6 @@ import {
 } from "../../../../../functions/hooks/reduxHooks";
 import {
     setStatement,
-    statementMembershipSelector,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
 
@@ -30,9 +28,14 @@ import DisplayResultsBy from "./components/DisplayResultsBy";
 import ResultsRange from "./components/ResultsRange";
 import GetVoters from "./components/GetVoters";
 import GetEvaluators from "./components/GetEvaluators";
-import CheckBoxeArea from "./components/CheckBoxeArea";
+import CheckBoxesArea from "./components/CheckBoxesArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
+
+// Hooks & Helpers
 import { handleSetStatment, handleShare } from "./statementSettingsCont";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../../../../../model/store";
 
 interface Props {
     simple?: boolean;
@@ -43,6 +46,7 @@ const StatementSettings: FC<Props> = () => {
     // * Hooks * //
     const navigate = useNavigate();
     const { statementId } = useParams();
+    const { t } = useLanguage();
 
     // * Redux * //
     const dispatch = useAppDispatch();
@@ -50,21 +54,33 @@ const StatementSettings: FC<Props> = () => {
         statementSelector(statementId),
     );
 
+    const statementMembershipSelector = (statementId: string | undefined) =>
+        createSelector(
+            (state: RootState) => state.statements.statementMembership, // Replace with your actual state selector
+            (memberships) =>
+                memberships.filter(
+                    (membership: StatementSubscription) =>
+                        membership.statementId === statementId,
+                ),
+        );
+
+    const membership: StatementSubscription[] = useAppSelector(
+        statementMembershipSelector(statementId),
+    );
+
     // * Use State * //
     const [isLoading, setIsLoading] = useState(false);
 
     // * Variables * //
-    const membership: StatementSubscription[] = useAppSelector(
-        statementMembershipSelector(statementId),
-    );
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
-    
-    //get all elements of the array except the first one
+
+    // Get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
     // * Use Effect * //
     useEffect(() => {
         let unsubscribe: undefined | (() => void);
+
         if (statementId) {
             unsubscribe = listenToMembers(dispatch)(statementId);
 
@@ -91,9 +107,14 @@ const StatementSettings: FC<Props> = () => {
     return (
         <ScreenFadeIn className="page__main">
             {!isLoading ? (
-                <form onSubmit={handleSubmit} className="settings">
+                <form
+                    onSubmit={handleSubmit}
+                    className="settings"
+                    data-cy="statement-settings-form"
+                >
                     <label htmlFor="statement">
                         <input
+                            data-cy="statement-title"
                             autoFocus={true}
                             type="text"
                             name="statement"
@@ -111,13 +132,17 @@ const StatementSettings: FC<Props> = () => {
                         />
                     </label>
 
-                    <CheckBoxeArea statement={statement} />
+                    <CheckBoxesArea statement={statement} />
 
                     <DisplayResultsBy statement={statement} />
 
                     <ResultsRange statement={statement} />
 
-                    <button type="submit" className="settings__submitBtn">
+                    <button
+                        type="submit"
+                        className="settings__submitBtn"
+                        data-cy="settings-statement-submit-btn"
+                    >
                         {!statementId ? t("Add") : t("Update")}
                     </button>
 

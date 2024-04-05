@@ -1,6 +1,8 @@
-import { t } from "i18next";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 const AskForNotifications = () => {
+    const { t } = useLanguage();
+
     return (
         <div className="popup">
             <div className="popup__box">

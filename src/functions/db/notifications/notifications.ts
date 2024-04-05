@@ -1,13 +1,14 @@
 import { Statement, Collections, StatementSubscription } from "delib-npm";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
-import { t } from "i18next";
 import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "../.././../assets/logo/logo-96px.png";
 
-export async function getUserPermissionToNotifications(): Promise<boolean> {
+export async function getUserPermissionToNotifications(
+    t: (text: string) => string,
+): Promise<boolean> {
     try {
         if (!window.hasOwnProperty("Notification"))
             throw new Error("Notification not supported");

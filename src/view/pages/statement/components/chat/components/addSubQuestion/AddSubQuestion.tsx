@@ -2,10 +2,10 @@ import React, { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Icons
 import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
+import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 // Styles
 
@@ -16,6 +16,8 @@ interface Props {
 }
 
 const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
+    const { t } = useLanguage();
+
     function handleShwQuestionModal() {
         setShowModal(true);
     }

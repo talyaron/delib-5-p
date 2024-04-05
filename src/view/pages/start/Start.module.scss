@@ -1,35 +1,30 @@
 .number {
-    color: #FADF57;
+    color: #fadf57;
     position: relative;
-    top: .8rem;
+    top: 0.8rem;
 }
 
 .h1 {
     font-size: 4.55rem;
     color: #fff;
-    margin-bottom: 0px;
-
 }
 
 .h2 {
     color: #fff;
     font-size: 1rem;
-    opacity: .7;
+    opacity: 0.7;
 }
 
 .logo {
-    margin-top: 1.7rem;
     max-width: 150px;
 }
 
 .language {
     border-radius: 5rem;
-    margin-top: 10vh;
 }
 
 .anonymous {
-    background-color: rgba(255, 255, 255, 0.20);
-   
+    background-color: rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,15 +33,13 @@
     min-width: 30ch;
     color: white;
     gap: 1rem;
-    margin-top: 1rem;
     font-size: 1.3rem;
     cursor: pointer;
     user-select: none;
-    
 }
-.googleLogin{
-    background-color: rgba(255, 255, 255, 0.20);
-   
+.googleLogin {
+    background-color: rgba(255, 255, 255, 0.2);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,17 +48,14 @@
     min-width: 30ch;
     color: white;
     gap: 1rem;
-    margin-top: 1.4rem;
     font-size: 1.3rem;
     cursor: pointer;
     user-select: none;
-    img{
+    img {
         width: 1.4rem;
     }
 }
-.ddi{
-    position:fixed;
-    bottom: 3rem;
-    transform: translateX(50%);
-    color:white;
+
+.ddi {
+    color: white;
 }

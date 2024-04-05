@@ -2,10 +2,6 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { Statement } from "delib-npm";
-import { useParams } from "react-router-dom";
-
-// Statements components
-import StatementOptionsNav from "../evaluations/components/StatementEvaluationNav";
 
 // Redux
 import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
@@ -13,17 +9,17 @@ import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
 // Statements helpers
 import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
 import { setVoteToStore } from "../../../../../model/vote/votesSlice";
-import NewSetStatementSimple from "../set/NewStatementSimple";
-import { setSelectionsToOptions } from "./setSelectionsToOptions";
-import { getTotalVoters } from "./getTotalVoters";
-import { sortOptionsIndex } from "./sortOptionsIndex";
+import { getTotalVoters } from "./statementVoteCont";
 
 // Custom components
+import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
-import { OptionBar } from "./OptionBar";
-import { isOptionFn } from "../../../../../functions/general/helpers";
 import HandsIcon from "../../../../components/icons/HandsIcon";
-import StatementInfo from "./info/StatementInfo";
+import StatementInfo from "./components/info/StatementInfo";
+import StatementBottomNav from "../nav/bottom/StatementBottomNav";
+
+// Helpers
+import VotingArea from "./components/VotingArea";
 
 interface Props {
     statement: Statement;
@@ -37,18 +33,15 @@ const StatementVote: FC<Props> = ({
     subStatements,
     toggleAskNotifications,
 }) => {
+    // * Hooks * //
     const dispatch = useAppDispatch();
-    const { sort } = useParams();
 
+    // * Use State * //
     const [showModal, setShowModal] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
-    const __options = subStatements.filter((subStatement: Statement) =>
-        isOptionFn(subStatement),
-    );
-    const _options = setSelectionsToOptions(statement, __options);
-    const options = sortOptionsIndex(_options, sort);
+    // * Variables * //
     const totalVotes = getTotalVoters(statement);
 
     useEffect(() => {
@@ -65,40 +58,19 @@ const StatementVote: FC<Props> = ({
     return (
         <>
             <div className="page__main">
-                <div className="statement">
-                    <div>
-                        <p
-                            style={{
-                                maxWidth: "50vw",
-                                margin: "0 auto",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                            className="hand"
-                        >
-                            <HandsIcon
-                                color1="#6BBDED"
-                                color2="#ead55f"
-                                color3="#F76E9F"
-                            />{" "}
-                            {totalVotes}
-                        </p>
+                <div
+                    className="votingWrapper"
+                >
+                    <div className="hand">
+                        <HandsIcon /> {totalVotes}
                     </div>
-                    <div className="vote">
-                        {options.map((option: Statement, i: number) => {
-                            return (
-                                <OptionBar
-                                    key={option.statementId}
-                                    order={i}
-                                    option={option}
-                                    totalVotes={totalVotes}
-                                    statement={statement}
-                                    setShowInfo={setShowInfo}
-                                    setStatementInfo={setStatementInfo}
-                                />
-                            );
-                        })}
-                    </div>
+                    <VotingArea
+                        totalVotes={totalVotes}
+                        setShowInfo={setShowInfo}
+                        statement={statement}
+                        subStatements={subStatements}
+                        setStatementInfo={setStatementInfo}
+                    />
                 </div>
 
                 {showModal && (
@@ -121,7 +93,7 @@ const StatementVote: FC<Props> = ({
                 )}
             </div>
             <div className="page__footer">
-                <StatementOptionsNav
+                <StatementBottomNav
                     setShowModal={setShowModal}
                     statement={statement}
                 />

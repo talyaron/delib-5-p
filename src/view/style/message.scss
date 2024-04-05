@@ -40,7 +40,6 @@
         border-radius: 10px;
         box-shadow: 3px 3px 3px var(--shadow);
         position: relative;
-        user-select:all;
         &__triangle {
             clip-path: polygon(0 0, 0% 100%, 70% 0);
             background-color: inherit;
@@ -61,7 +60,7 @@
         }
         &__info {
             display: flex;
-            &__text{
+            &__text {
                 width: 100%;
                 display: flex;
                 justify-content: flex-end;

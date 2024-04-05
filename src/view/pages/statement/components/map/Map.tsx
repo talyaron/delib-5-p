@@ -2,7 +2,6 @@ import { useState, FC, useEffect } from "react";
 
 // Third party imports
 import { Results, Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
@@ -20,12 +19,15 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 
 // Hooks
 import { useMapContext } from "../../../../../functions/hooks/useMap";
+import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
 }
 
 const Map: FC<Props> = ({ statement }) => {
+    const { t } = useLanguage();
+
     // const subStatements = useAppSelector(
     //     statementsChildSelector(statement.statementId)
     // );
@@ -78,7 +80,7 @@ const Map: FC<Props> = ({ statement }) => {
             showModal: show,
         }));
     };
-    
+
     return (
         <ScreenFadeIn className="page__main">
             <select

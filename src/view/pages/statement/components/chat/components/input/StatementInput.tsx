@@ -59,19 +59,21 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
         <form
             onSubmit={handleSubmitInput}
             name="theForm"
-            className="statement__form"
+            className="page__footer__form"
             style={{ flexDirection: direction }}
         >
             <button
                 type="submit"
-                className="statement__form__sendBtnBox"
+                className="page__footer__form__sendBtnBox"
                 style={statementColor}
+                data-cy="statement-chat-send-btn"
             >
                 <SendIcon color={statementColor.color} />
             </button>
             <textarea
+                data-cy="statement-chat-input"
                 style={{ height: "4rem" }}
-                className="statement__form__input"
+                className="page__footer__form__input"
                 name="newStatement"
                 onKeyUp={handleKeyUp}
                 autoFocus={false}

@@ -1,8 +1,5 @@
 import React, { FC, useState } from "react";
 
-// Third party libs
-import { t } from "i18next";
-
 // Styles
 import styles from "./enterName.module.scss";
 
@@ -11,6 +8,7 @@ import Modal from "../modal/Modal";
 
 // Functions
 import { signAnonymously } from "../../../functions/db/auth";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface Props {
     setShowNameModul: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +17,7 @@ interface Props {
 const EnterName: FC<Props> = ({ setShowNameModul }) => {
     const [displayName, setDisplayName] = useState<string | null>(null);
     const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
+    const { t } = useLanguage();
 
     function handleSetName(ev: any) {
         setDisplayName(ev.target.value);
@@ -41,7 +40,7 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
 
     return (
         <Modal>
-            <div className={styles.box}>
+            <div className={styles.box} data-cy="anonymous-input">
                 <input
                     className={styles.input}
                     onKeyUp={handleSetName}
@@ -53,12 +52,18 @@ const EnterName: FC<Props> = ({ setShowNameModul }) => {
                 />
                 <div className="btns">
                     <button
+                        data-cy="anonymous-start-btn"
                         onClick={handleStart}
-                        className={showeStartBtn ? "btn btn--agree" : "btn btn--inactive"}
+                        className={
+                            showeStartBtn
+                                ? "btn btn--agree"
+                                : "btn btn--inactive"
+                        }
                     >
                         {t("Start")}
                     </button>
                     <div
+                        data-cy="anonymous-cancel-btn"
                         className="btn btn--cancel"
                         onClick={() => setShowNameModul(false)}
                     >

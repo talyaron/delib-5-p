@@ -5,8 +5,9 @@ import {
     StatementSchema,
     StatementSubscription,
     StatementType,
+    User,
 } from "delib-npm";
-import { store } from "../../model/store";
+import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
@@ -47,24 +48,6 @@ export function updateArray(
     }
 }
 
-export function setIntialLocationSessionStorage(pathname: string | null) {
-    try {
-        if (pathname === "/") pathname = "/home";
-        sessionStorage.setItem("initialLocation", pathname || "/home");
-    } catch (error) {
-        console.error(error);
-    }
-}
-export function getIntialLocationSessionStorage(): string | undefined {
-    try {
-        return sessionStorage.getItem("initialLocation") || undefined;
-    } catch (error) {
-        console.error(error);
-
-        return undefined;
-    }
-}
-
 export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
@@ -82,13 +65,9 @@ export function isAuthorized(
 
         if (!statementSubscription) return false;
 
-        const role = statementSubscription?.role || Role.guest;
+        const role = statementSubscription?.role;
 
-        if (
-            role === Role.admin ||
-            role === Role.statementCreator ||
-            role === Role.systemAdmin
-        ) {
+        if (role === Role.admin) {
             return true;
         }
 
@@ -258,8 +237,8 @@ export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
     return `${fontSize}px`;
 }
 
-export function handleLogout() {
-    logOut();
+export function handleLogout(dispatch: AppDispatch) {
+    logOut(dispatch);
     store.dispatch(setUser(null));
 }
 
@@ -290,7 +269,6 @@ export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
     }
 }
 
-
 export function getTitle(statement: Statement) {
     try {
         if (!statement) throw new Error("No statement");
@@ -316,5 +294,32 @@ export function getDescription(statement: Statement) {
         console.error(error);
 
         return "";
+    }
+}
+
+export function getSetTimerId(statementId: string, order: number) {
+    return `${statementId}--${order}`;
+}
+
+export function getRoomTimerId(
+    statementId: string,
+    roomNumber: number,
+    order: number,
+) {
+    return `${statementId}--${roomNumber}--${order}`;
+}
+
+export function getStatementSubscriptionId(
+    statementId: string,
+    user: User,
+): string | undefined {
+    try {
+        if (!user || !user.uid) throw new Error("No user");
+        if (!statementId) throw new Error("No statementId");
+        
+        return `${user.uid}--${statementId}`;
+    } catch (error) {
+        console.error(error);
+        return undefined;
     }
 }

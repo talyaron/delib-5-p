@@ -4,15 +4,17 @@ import { useState } from "react";
 
 // Third party imports
 import { Statement, ResultsBy } from "delib-npm";
-import { t } from "i18next";
 import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
 import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export default function DisplayResultsBy({
     statement,
 }: {
     statement: Statement | undefined;
 }) {
+    const { t } = useLanguage();
+
     const resultsBy = () => {
         if (!statement) return ResultsBy.topOptions;
 

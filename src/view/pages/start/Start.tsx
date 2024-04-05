@@ -3,11 +3,9 @@ import styles from "./Start.module.scss";
 
 // firestore functions
 import { googleLogin } from "../../../functions/db/auth";
-import { getIntialLocationSessionStorage } from "../../../functions/general/helpers";
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // Redux
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
@@ -15,7 +13,7 @@ import { userSelector } from "../../../model/users/userSlice";
 
 //img
 import Logo from "../../../assets/logo/512 px SVG.svg";
-import googleLogo from "../../../assets/icons/googleSimpleLogo.svg"
+import googleLogo from "../../../assets/icons/googleSimpleLogo.svg";
 import moreRight from "../../../assets/icons/moreRight.svg";
 import moreLeft from "../../../assets/icons/moreLeft.svg";
 
@@ -23,24 +21,34 @@ import moreLeft from "../../../assets/icons/moreLeft.svg";
 import { LANGUAGES } from "../../../constants/Languages";
 import EnterName from "../../components/enterName/EnterName";
 import useDirection from "../../../functions/hooks/useDirection";
-
-// import EnterName from './EnterName';
+import {
+    LanguagesEnum,
+    useLanguage,
+} from "../../../functions/hooks/useLanguages";
+import { selectInitLocation } from "../../../model/location/locationSlice";
 
 const Start = () => {
     const navigate = useNavigate();
-    const { i18n, t } = useTranslation();
     const user = useAppSelector(userSelector);
+    const initLocation = useAppSelector(selectInitLocation);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
-    const direction = (useDirection() === "row") ? "row" : "row-reverse";
+    const direction = useDirection();
+
+    const { t, changeLanguage } = useLanguage();
+    const defaultLang = "he";
+
+    useEffect(() => {
+        if (!savedLang) {
+            localStorage.setItem("lang", defaultLang);
+        }
+    }, []);
 
     useEffect(() => {
         if (user) {
-            navigate(getIntialLocationSessionStorage() || "/home", {
+            navigate(initLocation || "/home", {
                 state: { from: window.location.pathname },
             });
-        } else {
-            // console.info("not logged")
         }
     }, [user]);
 
@@ -60,10 +68,10 @@ const Start = () => {
 
             <select
                 className={styles.language}
-                defaultValue={savedLang || "he"}
+                defaultValue={savedLang || defaultLang}
                 onChange={(e) => {
-                    const lang = e.target.value;
-                    i18n.changeLanguage(lang);
+                    const lang = e.target.value as LanguagesEnum;
+                    changeLanguage(lang);
                     if (lang === "he" || lang === "ar") {
                         document.body.style.direction = "rtl";
                     } else {
@@ -79,11 +87,10 @@ const Start = () => {
                 ))}
             </select>
             <div
+                style={{ flexDirection: direction }}
+                data-cy="anonymous-login"
                 className={styles.anonymous}
-                onClick={() => setShowNameModul(true)}
-
-                //@ts-ignore
-                style={{ direction }}
+                onClick={() => setShowNameModul((prev) => !prev)}
             >
                 {t("Login with a temporary name")}{" "}
                 <img
@@ -91,28 +98,19 @@ const Start = () => {
                     alt="login anonymously"
                 />
             </div>
-            <button
-                className={styles.googleLogin}
-                onClick={googleLogin}
-            >
+            <button className={styles.googleLogin} onClick={googleLogin}>
                 <img
                     src={direction === "row-reverse" ? moreRight : moreLeft}
                     alt="login anonymously"
                 />
                 <img src={googleLogo} alt="login with google" />
                 {t("Connect with Google")}
-                
             </button>
 
-            <a
-                href="http://delib.org"
-                target="_blank"
-                style={{
-                    marginTop: "30px",
-                    textDecoration: "none",
-                }}
-            >
-                <footer className={styles.ddi}>{t("From the Institute for Deliberative Democracy")}</footer>
+            <a href="http://delib.org" target="_blank">
+                <footer className={styles.ddi}>
+                    {t("From the Institute for Deliberative Democracy")}
+                </footer>
             </a>
 
             {showNameModul ? (

@@ -1,11 +1,12 @@
 import { Participant, RoomDivied } from "delib-npm";
-import { t } from "i18next";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 export function divideIntoTopics(
     participants: Participant[],
     maxPerRoom = 7,
-): { rooms: Array<RoomDivied>; topicsParticipants: any } {
+): { rooms: RoomDivied[]; topicsParticipants: any } {
     try {
+        const { t } = useLanguage();
         const topicsParticipants: any = {};
 
         //build topicsParticipantsObject
@@ -90,9 +91,9 @@ function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
         const rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
             const topicRooms = topics[topic].rooms;
-            topicRooms.forEach((room: Array<Participant>) => {
+            topicRooms.forEach((participants: Array<Participant>) => {
                 rooms.push({
-                    room,
+                    participants,
                     roomNumber,
                     statement: topics[topic].statement,
                 });
