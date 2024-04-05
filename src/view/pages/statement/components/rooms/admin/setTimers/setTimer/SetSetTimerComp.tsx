@@ -201,7 +201,7 @@ return;
 
             setTimeDigits(_digits);
             const newTime = fromFourDigitsToMillisecons(_digits);
-            console.log("time", newTime);
+      
             dispatch(
                 setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
             );

@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
 
 // firestore
-import { getIsSubscribed, getTopParentSubscription } from "../../../functions/db/subscriptions/getSubscriptions";
+import { getIsSubscribed } from "../../../functions/db/subscriptions/getSubscriptions";
 import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
 import { listenToStatementSubSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
@@ -135,9 +135,6 @@ const StatementMain: FC = () => {
 
         if (user && statementId) {
 
-            getTopParentSubscription(statementId).then(({isAuthorized})=>{
-                console.log("isAuthorized",isAuthorized);
-            });
            
             unsubListenToStatement = listenToStatement(statementId, dispatch,setIsStatementNotFound);
             unsubSubStatements = listenToSubStatements(statementId, dispatch);

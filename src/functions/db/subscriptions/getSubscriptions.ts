@@ -29,7 +29,6 @@ import {
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "@firebase/util";
 import { getStatementSubscriptionId } from "../../general/helpers";
-import { get } from "firebase/database";
 import { getStatementFromDB } from "../statements/getStatement";
 
 export const listenToStatementSubSubscriptions = (
@@ -355,7 +354,7 @@ export async function getStatementSubscriptionFromDB(
         if (!user) throw new Error("User not logged in");
 
         
-        console.log('statementSubscrionId',statementSubscrionId)
+       
         if (!statementSubscrionId)
             throw new Error("Statement subscription id is undefined");
 
@@ -377,7 +376,7 @@ export async function getStatementSubscriptionFromDB(
 }
 
 interface GetTopParentSubscriptionProps {
-    topParentStatement: Statement | undefined;
+    topParentStatement: Statement|undefined;
     topParentSubscription: StatementSubscription | undefined;
     error?: boolean;
 }
@@ -399,24 +398,16 @@ export async function getTopParentSubscription(
             topParentId,
             user,
         );
-
-        console.log('topParentSubscriptionId',topParentSubscriptionId)
       
 
         //get top subscription
     
         const topParentSubscription = await getParentSubscription(
-            topParentSubscriptionId,
-            topParentId,
+            topParentSubscriptionId
         );
 
         if (topParentSubscription) {
-            console.log(
-                "topParentSubscriptionId",
-                topParentSubscription.statementsSubscribeId,
-                "topParentId",
-                topParentSubscription.statement.statementId,
-            );
+         
             return {
                 topParentSubscription,
                 topParentStatement: topParentSubscription.statement,
@@ -428,9 +419,6 @@ export async function getTopParentSubscription(
 
         let topParentStatement: Statement | undefined =
             await getTopParentStatement(topParentId);
-        
-            //@ts-ignore
-        console.log("topParentSubscriptionId", topParentSubscription?.statementsSubscribeId,  "topParentId",topParentStatement.statementId);
           
        
         return { topParentStatement, topParentSubscription, error: false };
@@ -456,8 +444,7 @@ export async function getTopParentSubscription(
     }
 
     async function getParentSubscription(
-        topParentSubscriptionId: string | undefined,
-        topParentId: string,
+        topParentSubscriptionId: string | undefined
     ) {
         let topParentSubscription: StatementSubscription | undefined = store
             .getState()
@@ -467,6 +454,7 @@ export async function getTopParentSubscription(
             );
 
         if (!topParentSubscription) {
+            if(!topParentSubscriptionId) throw new Error("Top parent subscription id is undefined");
             topParentSubscription =
                 await getStatementSubscriptionFromDB(topParentSubscriptionId);
         }

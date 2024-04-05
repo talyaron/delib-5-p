@@ -7,9 +7,7 @@ import {
     statementSelector,
     statementSubscriptionSelector,
 } from "../../model/statements/statementsSlice";
-import { use } from "chai";
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
-import { set } from "firebase/database";
 import { setStatmentSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
 
 const useAuth = () => {
@@ -66,13 +64,17 @@ export function useIsAuthorized(statementId: string | undefined): {
                             }
                             setLoading(false);
                         } else {
+                            //if group is open, subscribe to its top parent statement
                             if (
                                 topParentStatement &&
                                 topParentStatement?.membership?.access ===
                                     Access.open
                             ) {
                                 //subscribe to top parent statement
+                                if(!topParentStatement) throw new Error("Top parent statement is not defined, cannot subscribe to it.");
+
                                 setStatmentSubscriptionToDB({
+                                    //@ts-ignore
                                     statement: topParentStatement,
                                     role: Role.member,
                                     userAskedForNotification: false,
