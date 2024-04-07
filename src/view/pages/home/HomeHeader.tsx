@@ -11,6 +11,7 @@ import InstallIcon from "../../../assets/icons/installIcon.svg?react";
 // Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import IconButton from "../statement/components/common/IconButton/IconButton";
 
 export default function HomeHeader() {
     // Use State
@@ -41,19 +42,13 @@ export default function HomeHeader() {
                 />
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (
-                        <button
-                            onClick={handleInstallApp}
-                            className="homePage__header__wrapper__icons__iconButton"
-                        >
+                        <IconButton onClick={handleInstallApp}>
                             <InstallIcon />
-                        </button>
+                        </IconButton>
                     )}
-                    <button
-                        onClick={() => setOpenMenu(true)}
-                        className="homePage__header__wrapper__icons__iconButton"
-                    >
+                    <IconButton onClick={() => setOpenMenu(true)}>
                         <EllipsisIcon />
-                    </button>
+                    </IconButton>
                     {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
                 </div>
             </div>

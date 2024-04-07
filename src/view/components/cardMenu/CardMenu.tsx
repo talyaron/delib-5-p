@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import styles from "./CardMenu.module.scss";
-import MoreIcon from "../icons/MoreIcon";
+import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
+import IconButton from "../../pages/statement/components/common/IconButton/IconButton";
 
 interface Props {
     children: any;
@@ -13,12 +14,12 @@ const CardMenu: FC<Props> = ({ children, isMe }) => {
 
     return (
         <>
-            <div
+            <IconButton
                 onClick={() => setOpenMenu(!openMenu)}
                 data-cy="chat-more-icon"
             >
-                <MoreIcon />
-            </div>
+                <EllipsisIcon style={{ color: "#5899E0" }} />
+            </IconButton>
             {openMenu && (
                 <>
                     <div

@@ -37,6 +37,16 @@
                 display: flex;
                 align-items: center;
                 gap: 1rem;
+
+                &__iconButton {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: none;
+                    svg {
+                        height: 24px;
+                    }
+                }
             }
         }
 

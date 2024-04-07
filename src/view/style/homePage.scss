@@ -40,9 +40,9 @@
                 display: flex;
                 justify-content: space-between;
 
-                img {
-                    cursor: pointer;
-                    user-select: none;
+                svg {
+                    height: 27px;
+                    color: white;
                 }
 
                 .homeMenu {

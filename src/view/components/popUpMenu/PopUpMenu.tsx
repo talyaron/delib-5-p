@@ -1,8 +1,9 @@
 import React, { MouseEventHandler } from "react";
-import MoreIcon from "../icons/MoreIcon";
+import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
 import "./popUpStyle.scss";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import IconButton from "../../pages/statement/components/common/IconButton/IconButton";
 
 interface Props {
     isAuthrized?: boolean;
@@ -15,7 +16,7 @@ interface Props {
     secondIconFunc?: MouseEventHandler<HTMLSpanElement>;
     secondIconText?: string;
     thirdIcon?: JSX.Element;
-    thirdIconFunc?:any; // MouseEventHandler<HTMLSpanElement>;
+    thirdIconFunc?: any; // MouseEventHandler<HTMLSpanElement>;
     thirdIconText?: string;
     fourthIcon?: JSX.Element;
     fourthIconFunc?: MouseEventHandler<HTMLSpanElement>;
@@ -47,7 +48,9 @@ export default function PopUpMenu({
             className="moreIconBox"
             onClick={() => setOpenMore((prev) => !prev)}
         >
-            <MoreIcon color={openMoreIconColor} />
+            <IconButton>
+                <EllipsisIcon style={{ color: openMoreIconColor }} />
+            </IconButton>
             {openMore && (
                 <>
                     <div className="invisibleBackground"></div>

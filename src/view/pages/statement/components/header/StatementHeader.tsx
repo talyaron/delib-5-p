@@ -14,7 +14,7 @@ import { store } from "../../../../../model/store";
 import StatementTopNav from "../nav/top/StatementTopNav";
 import EditTitle from "../../../../components/edit/EditTitle";
 import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
-import HomeIcon from "../../../../components/icons/HomeIcon";
+import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
 import BellSlashIcon from "../../../../components/icons/BellSlashIcon";
 import BellIcon from "../../../../components/icons/BellIcon";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
@@ -110,19 +110,21 @@ const StatementHeader: FC<Props> = ({
                     className="page__header__wrapper__actions"
                     style={{ flexDirection: direction }}
                 >
-                    <div
+                    <button
+                        className="page__header__wrapper__actions__iconButton"
                         onClick={handleBack}
                         style={{ cursor: "pointer" }}
                         data-cy="back-icon-header"
                     >
                         <BackArrowIcon style={{ color: headerColor.color }} />
-                    </div>
+                    </button>
                     <Link
+                        className="page__header__wrapper__actions__iconButton"
                         state={{ from: window.location.pathname }}
                         to={"/home"}
                         data-cy="home-link-icon"
                     >
-                        <HomeIcon color={headerColor.color} />
+                        <HomeIcon style={{ color: headerColor.color }} />
                     </Link>
                 </div>
                 {!editHeader ? (
