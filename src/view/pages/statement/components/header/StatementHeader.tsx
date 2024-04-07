@@ -15,8 +15,8 @@ import StatementTopNav from "../nav/top/StatementTopNav";
 import EditTitle from "../../../../components/edit/EditTitle";
 import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
 import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
-import BellSlashIcon from "../../../../components/icons/BellSlashIcon";
-import BellIcon from "../../../../components/icons/BellIcon";
+import BellSlashIcon from "../../../../../assets/icons/bellSlashIcon.svg?react";
+import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
@@ -100,6 +100,11 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
+    const menuIconStyle = {
+        color: headerColor.backgroundColor,
+        width: "24px",
+    };
+
     return (
         <div className="page__header" style={headerColor}>
             <div
@@ -145,23 +150,14 @@ const StatementHeader: FC<Props> = ({
                 )}
                 <PopUpMenu
                     openMoreIconColor={headerColor.color}
-                    firstIcon={
-                        <ShareIcon
-                            style={{
-                                color: headerColor.backgroundColor,
-                                width: "24px",
-                            }}
-                        />
-                    }
+                    firstIcon={<ShareIcon style={menuIconStyle} />}
                     firstIconFunc={handleShare}
                     firstIconText={"Share"}
                     secondIcon={
                         permission ? (
-                            <BellIcon color={headerColor.backgroundColor} />
+                            <BellIcon style={menuIconStyle} />
                         ) : (
-                            <BellSlashIcon
-                                color={headerColor.backgroundColor}
-                            />
+                            <BellSlashIcon style={menuIconStyle} />
                         )
                     }
                     secondIconFunc={() =>
