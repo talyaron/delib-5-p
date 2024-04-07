@@ -3,7 +3,7 @@ import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
 import "./popUpStyle.scss";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
-import IconButton from "../../pages/statement/components/common/IconButton/IconButton";
+import IconButton from "../iconButton/IconButton";
 
 interface Props {
     isAuthrized?: boolean;

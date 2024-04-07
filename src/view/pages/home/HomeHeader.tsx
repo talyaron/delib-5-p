@@ -11,7 +11,7 @@ import InstallIcon from "../../../assets/icons/installIcon.svg?react";
 // Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
-import IconButton from "../statement/components/common/IconButton/IconButton";
+import IconButton from "../../components/iconButton/IconButton";
 
 export default function HomeHeader() {
     // Use State

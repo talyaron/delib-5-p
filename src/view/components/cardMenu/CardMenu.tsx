@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import styles from "./CardMenu.module.scss";
 import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
-import IconButton from "../../pages/statement/components/common/IconButton/IconButton";
+import IconButton from "../iconButton/IconButton";
 
 interface Props {
     children: any;
