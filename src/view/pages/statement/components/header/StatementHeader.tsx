@@ -22,7 +22,7 @@ import {
     calculateFontSize,
     handleLogout,
 } from "../../../../../functions/general/helpers";
-import DisconnectIcon from "../../../../components/icons/DisconnectIcon";
+import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
 import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
 
 // Hooks
@@ -169,9 +169,7 @@ const StatementHeader: FC<Props> = ({
                         )
                     }
                     secondIconText={permission ? "Turn off" : "Turn on"}
-                    thirdIcon={
-                        <DisconnectIcon color={headerColor.backgroundColor} />
-                    }
+                    thirdIcon={<DisconnectIcon style={menuIconStyle} />}
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
                 />
