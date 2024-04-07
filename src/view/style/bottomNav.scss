@@ -20,6 +20,13 @@
         &--burger {
             background-color: var(--question);
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                height: 24px;
+            }
         }
         &--active:nth-child(2) {
             z-index: 20;

@@ -5,8 +5,8 @@ import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import BurgerIcon from "../../../../../components/icons/BurgerIcon";
-import PlusIcon from "../../../../../components/icons/PlusIcon";
+import BurgerIcon from "../../../../../../assets/icons/burgerIcon.svg?react";
+import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 import AgreementIcon from "../../../../../components/icons/AgreementIcon";
 import RandomIcon from "../../../../../components/icons/RandomIcon";
 import UpdateIcon from "../../../../../components/icons/UpdateIcon";
@@ -90,9 +90,9 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                     data-cy="bottom-nav-mid-icon"
                 >
                     {openNav && isAddOption ? (
-                        <PlusIcon color={statementColor.color} />
+                        <PlusIcon style={{ color: statementColor.color }} />
                     ) : (
-                        <BurgerIcon color={statementColor.color} />
+                        <BurgerIcon style={{ color: statementColor.color }} />
                     )}
                 </div>
 
