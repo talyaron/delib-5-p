@@ -5,8 +5,8 @@ import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 
 // icons
-import elipsIcon from "../../../assets/icons/elipsIcon.svg";
-import installIcon from "../../../assets/icons/installIcon.svg";
+import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
+import InstallIcon from "../../../assets/icons/installIcon.svg?react";
 
 // Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
@@ -20,7 +20,7 @@ export default function HomeHeader() {
     const { t } = useLanguage();
 
     useEffect(() => {
-        //for defferd app install
+        // for deferred app install
         setDeferredPrompt(install.deferredPrompt);
     }, []);
 
@@ -35,25 +35,26 @@ export default function HomeHeader() {
     return (
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
-                <div className="homePage__header__wrapper__title">
-                    {t("Delib")}
-                </div>
+                <div
+                    className="homePage__header__wrapper__title"
+                    children={t("Delib")}
+                />
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (
-                        <img
-                            className="homePage__header__wrapper__icons__installIcon"
-                            src={installIcon}
-                            alt="install_icon"
+                        <button
                             onClick={handleInstallApp}
-                        />
+                            className="homePage__header__wrapper__icons__iconButton"
+                        >
+                            <InstallIcon />
+                        </button>
                     )}
-                    {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
-                    <img
-                        className="homePage__header__wrapper__icons__elipsIcon"
-                        src={elipsIcon}
-                        alt="elips_icon"
+                    <button
                         onClick={() => setOpenMenu(true)}
-                    />
+                        className="homePage__header__wrapper__icons__iconButton"
+                    >
+                        <EllipsisIcon />
+                    </button>
+                    {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
                 </div>
             </div>
         </div>
