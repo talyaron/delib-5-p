@@ -13,12 +13,13 @@ const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
     const direction = useDirection();
     const { t, dir } = useLanguage();
     const dispatch = useDispatch();
+    console.log(dir)
 
     return (
         <>
             <div
                 className="homeMenu"
-                style={{ flexDirection: direction }}
+                style={{ flexDirection: direction, left:dir==="ltr"?"-2rem":"2rem"}}
                 onClick={() => handleLogout(dispatch)}
             >
                 <img
@@ -26,7 +27,7 @@ const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
                     src={disconnectlIcon}
                     alt="disconnect_icon"
                 />
-                <p className="homeMenu__name" style={{right:dir === "rtl"?"2rem":'none'}}>{t("Disconnect")}</p>
+                <p className="homeMenu__name" >{t("Disconnect")}</p>
             </div>
 
             <div
