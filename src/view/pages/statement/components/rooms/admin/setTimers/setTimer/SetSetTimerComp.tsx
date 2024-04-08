@@ -15,8 +15,6 @@ import {
     setSetTimerTitle,
 } from "../../../../../../../../model/timers/timersSlice";
 
-// import editIcon from "../../../../../../../../assets/icons/edit2.svg";
-
 interface TimerProps {
     setTimer: SetTimer;
     index: number;
@@ -95,10 +93,10 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                         maxLength={1}
                         tabIndex={index * 4 + 3}
                         onKeyUp={handleInputDigit}
-
-                        // onInput={handleInputDigit}
                         onChange={handleInputDigit}
                         defaultValue={timeDigits[3]}
+
+                        // onInput={handleInputDigit}
                     />
                 </div>
                 <div className={styles.edit}>
@@ -160,12 +158,12 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 if (digit === false) {
                     return false;
                 }
-                
-return digit;
+
+                return digit;
             } catch (error) {
                 console.error(error);
-                
-return false;
+
+                return false;
             }
         }
 
@@ -174,8 +172,8 @@ return false;
             const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
             if (isTab) {
                 ev.target.valueAsNumber = parseInt(ev.target.value);
-                
-return;
+
+                return;
             }
 
             let digit = getKeyNumber(ev);
@@ -185,10 +183,13 @@ return;
                 const _digits = getNewForDigits();
                 const newTime = fromFourDigitsToMillisecons(_digits);
                 dispatch(
-                    setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
+                    setSetTimerTime({
+                        timerId: setTimer.timerId,
+                        time: newTime,
+                    }),
                 );
-                
-return;
+
+                return;
             }
             const max = parseInt(ev.target.max);
             const min = parseInt(ev.target.min);
@@ -201,7 +202,7 @@ return;
 
             setTimeDigits(_digits);
             const newTime = fromFourDigitsToMillisecons(_digits);
-      
+
             dispatch(
                 setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
             );
@@ -221,14 +222,14 @@ return;
                 const _digits: number[] = timeDigits.map((d, i) =>
                     i === parseInt(innerindex) ? _digit : d,
                 );
-                
-return _digits;
+
+                return _digits;
             }
         }
     } catch (error) {
         console.error(error);
-        
-return null;
+
+        return null;
     }
 }
 
