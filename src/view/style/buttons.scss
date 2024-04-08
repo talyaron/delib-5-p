@@ -14,7 +14,7 @@ button {
 .btn {
     width: fit-content;
     height: fit-content;
-    padding: 0.5rem .75rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -25,7 +25,6 @@ button {
     }
 
     &--cancel {
-       
         background-color: var(--red);
         color: var(--white);
     }
@@ -37,11 +36,11 @@ button {
 
     &--disagree {
         background-color: var(--disagree);
-         color: var(--white);
+        color: var(--white);
     }
     &--inactive {
         background-color: var(--inactive);
-        color: var( --inactive-text);
+        color: var(--inactive-text);
     }
 
     &--large {
@@ -51,7 +50,7 @@ button {
     }
 
     &--img {
-        padding: .5rem 1rem;
+        padding: 0.5rem 1rem;
         display: flex;
         height: auto;
         align-items: center;
@@ -61,9 +60,28 @@ button {
             width: 2rem;
             height: 2rem;
         }
+    }
+}
 
-       
-
+.stickyBtn {
+    width: 20%;
+    height: 2rem;
+    margin: auto;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    background-color: #4e88c7;
+    color: var(--question-text);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 10px 10px var(--shadow);
+    position: fixed;
+    bottom: 2rem;
+    left: 40%;
+    z-index: 1000;
+    &:hover {
+        transform: scale(0.9);
     }
 }
 
@@ -139,7 +157,7 @@ button {
         right: 5vw;
     }
 
-    &>div {
+    & > div {
         z-index: 100;
         background: var(--accent);
         width: 3.2rem;
@@ -162,7 +180,7 @@ button {
 }
 
 .homeFav {
-    background: #4E88C7;
+    background: #4e88c7;
     width: 3.125rem;
     height: 3.125rem;
     display: flex;
@@ -200,6 +218,4 @@ button {
         bottom: 24vh;
         right: 5vw;
     }
-
 }
-

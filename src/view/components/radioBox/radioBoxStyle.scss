@@ -1,0 +1,11 @@
+.radioBox {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    width: 100%;
+    input[type="radio"] {
+        display: none;
+        background: var(--light-blue);
+    }
+}

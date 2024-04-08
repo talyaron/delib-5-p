@@ -29,6 +29,11 @@ const Main = () => {
         navigate("/home/addStatment", {
             state: { from: window.location.pathname },
         });
+
+        //TODO: Add this when the business model is ready
+        // navigate("/pricing-plan", {
+        //     state: { from: window.location.pathname },
+        // });
     }
 
     useEffect(() => {

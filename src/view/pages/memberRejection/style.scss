@@ -1,0 +1,51 @@
+.memberRejectionPage {
+    width: 100svw;
+    height: 100svh;
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        max-width: 75ch;
+        height: 100%;
+        margin: 0 auto;
+        &__apologize {
+            font-family: Roboto;
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 2rem;
+            letter-spacing: 0em;
+            text-align: center;
+            color: #3b4f7d;
+        }
+
+        &__explanation {
+            font-family: Roboto;
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.7rem;
+            letter-spacing: 0em;
+            text-align: center;
+            color: #ed7370;
+            text-transform: uppercase;
+        }
+
+        &__action {
+            font-family: Roboto;
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.1rem;
+            letter-spacing: 0em;
+            text-align: center;
+            color: #6e8aa6;
+            width: 60%;
+        }
+
+        button {
+            background-color: var(--light-blue);
+            color: white;
+            box-shadow: 0 0 10px var(#00000026);
+        }
+    }
+}
