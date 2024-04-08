@@ -13,18 +13,18 @@ The technological stack consists of React-Redux-PWA (built with Vite) and Fireba
 
 To install Delib on you local machine, you will have to install the client ```/clint``` and the ```/functions``` node modules:
 
-Go to the root directory and run ```npm i```. 
+    Go to the root directory and run ```npm i```. 
 
-Go to the functions directory and run ```npm i```.
+    Go to the functions directory and run ```npm i```.
 
-Then you have to install the emulators. 
+Then you have to install the emulators. You must have Java JDK installed on your machine. If it is not installed, please install [JDK  heigher than version 17](https://www.oracle.com/il-en/java/technologies/downloads/#java21).
 
 To install emulators, first make sure you firebase CLI is installed.
 
 ```firebase --version```
 
 If the firebase cli is not install, run:
-```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you asre on a macOS.
+```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you use a macOS.
 
 
 if you still get an error try to give permission to your self as a manager with this command and then run all above commands
@@ -68,14 +68,13 @@ export const vapidKey = 'your key';
 Then initlise the emualtors by running:
 ```firebase init emulators``` and install all the maulators.
 
-make sure that the **devlopment** is uncommented in ```/src/functions/db/config.js```
-
 To run the emulators, run ```npm run deve``` in the root direcotry.
-To run client run ```npm run dev``` in the root directory
+To run client run ```npm run dev``` in the root directory.
+To run function, run in /functions ```npm run dev```.
 
 go to ```localhost:5173``` to see the app, and to ```localhost:5002``` to see the emulators.
 
-When login with google login, create a new user on the popup modal.
+
 
 
 
