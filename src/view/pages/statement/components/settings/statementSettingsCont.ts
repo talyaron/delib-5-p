@@ -70,17 +70,7 @@ export function isSubPageChecked(
     }
 }
 
-export function handleShare(statement: Statement | undefined) {
-    const { t } = useLanguage();
-    const baseUrl = window.location.origin;
 
-    const shareData = {
-        title: t("Delib: We create agreements together"),
-        text: t("Invited:") + statement?.statement,
-        url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
-    };
-    navigator.share(shareData);
-}
 
 export async function handleSetStatment(
     ev: any,
