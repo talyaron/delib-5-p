@@ -4,13 +4,15 @@ import React, { FC, SetStateAction } from "react";
 import { Statement } from "delib-npm";
 
 // Assets
-import SmileIcon from "../icons/SmileIcon";
-import FrownIcon from "../icons/FrownIcon";
+import SmileIcon from "../../../assets/icons/smileIcon.svg?react";
+import FrownIcon from "../../../assets/icons/frownIcon.svg?react";
 
 // Statement helpers
 import { setEvaluationToDB } from "../../../functions/db/evaluation/setEvaluation";
 
-interface ThumbsProps {
+import styles from "./Thumb.module.scss";
+
+interface ThumbProps {
     evaluation: number;
     upDown: "up" | "down";
     statement: Statement;
@@ -18,7 +20,7 @@ interface ThumbsProps {
     setProVote: React.Dispatch<SetStateAction<number>>;
 }
 
-const Thumbs: FC<ThumbsProps> = ({
+const Thumb: FC<ThumbProps> = ({
     evaluation,
     upDown,
     statement,
@@ -57,36 +59,19 @@ const Thumbs: FC<ThumbsProps> = ({
         }
     };
 
-    if (upDown === "up") {
-        if (evaluation > 0) {
-            return (
-                <div onClick={() => handleVote(true)}>
-                    <SmileIcon />
-                </div>
-            );
-        } else {
-            return (
-                <div onClick={() => handleVote(true)}>
-                    {" "}
-                    <SmileIcon active={false} />
-                </div>
-            );
-        }
-    } else {
-        if (evaluation < 0) {
-            return (
-                <div onClick={() => handleVote(false)}>
-                    <FrownIcon />
-                </div>
-            );
-        } else {
-            return (
-                <div onClick={() => handleVote(false)}>
-                    <FrownIcon active={false} />
-                </div>
-            );
-        }
-    }
+    const isSmileActive = evaluation > 0;
+    const isFrownActive = evaluation < 0;
+    const isUpVote = upDown === "up";
+    const isActive = isUpVote ? isSmileActive : isFrownActive;
+
+    return (
+        <div
+            className={`${styles.thumb} ${isActive ? "" : styles.inactive}`}
+            onClick={() => handleVote(isUpVote)}
+        >
+            {isUpVote ? <SmileIcon /> : <FrownIcon />}
+        </div>
+    );
 };
 
-export default Thumbs;
+export default Thumb;

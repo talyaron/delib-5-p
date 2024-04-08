@@ -4,12 +4,12 @@ import { FC, useEffect, useState } from "react";
 import { Statement } from "delib-npm";
 
 // Custom components
-import Thumbs from "../thumbs/Thumbs";
+import Thumb from "../thumb/Thumb";
 
 // Redux Store
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 
-// Stetement helpers
+// Statement helpers
 import { evaluationSelector } from "../../../model/evaluations/evaluationsSlice";
 
 // Custom Hooks
@@ -54,7 +54,7 @@ const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
             >
                 {displayScore && <span>{conVote}</span>}
                 <div className="evaluation__box__icon">
-                    <Thumbs
+                    <Thumb
                         evaluation={evaluation}
                         upDown="down"
                         statement={statement}
@@ -63,7 +63,7 @@ const Evaluation: FC<Props> = ({ statement, displayScore = true }) => {
                     />
                 </div>
                 <div className="evaluation__box__icon">
-                    <Thumbs
+                    <Thumb
                         evaluation={evaluation}
                         upDown="up"
                         statement={statement}
