@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./setRoomTimer.module.scss";
 import {
     fromFourDigitsToMillisecons,
@@ -28,9 +28,6 @@ function SetRoomTimerComp({
         fromMilliseconsToFourDigits(roomTimer.time || 1000 * 90),
     );
 
-    useEffect(() => {
-        console.log(timeDigits)
-    }, [timeDigits]);
 
     return (
         <div className={styles.timer}>
@@ -99,9 +96,9 @@ function SetRoomTimerComp({
     );
 
     function handleUpdateTimer() {
-        console.log(timeDigits)
+    
         const newTime = fromFourDigitsToMillisecons(timeDigits);
-        console.log(newTime)
+
         setTimersInitTimeDB({
             statementId:roomTimer.statementId,
             roomNumber:roomTimer.roomNumber,

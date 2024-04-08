@@ -24,6 +24,7 @@ import { updateUserAgreement } from "./functions/db/users/setUsersDB";
 import { getSigniture } from "./functions/db/users/getUserDB";
 import { onLocalMessage } from "./functions/db/notifications/notifications";
 import { LanguagesEnum, useLanguage } from "./functions/hooks/useLanguages";
+import { selectInitLocation } from "./model/location/locationSlice";
 
 export default function App() {
     // Hooks
@@ -34,14 +35,11 @@ export default function App() {
 
     // Redux Store
     const user = useAppSelector(userSelector);
+    const initLocation = useAppSelector(selectInitLocation);
 
     // Use State
     const [showSignAgreement, setShowSignAgreement] = useState(false);
     const [agreement, setAgreement] = useState<string>("");
-    const [visualViewportHeight, setVisualViewportHeight] = useState(
-        window.visualViewport?.height || 0,
-    );
-
     useEffect(() => {
         // Default direction is ltr
         document.body.style.direction = "ltr";
@@ -56,44 +54,15 @@ export default function App() {
     }, []);
 
     useEffect(() => {
+        // dispatch(setInitLocation(window.location.pathname));
         const usub: Unsubscribe = listenToAuth(dispatch)(
             anonymous === "true" ? true : false,
             navigate,
+            initLocation,
         );
 
         return () => {
             usub();
-        };
-    }, []);
-
-    // TODO: Check if this is needed. If not, remove it.
-    useEffect(() => {
-        window.visualViewport?.addEventListener("resize", (event: any) => {
-            setVisualViewportHeight(event.target?.height || 0);
-            document.body.style.height = `${event.target?.height}px`;
-
-            //change html height to visualViewportHeight state
-            const html = document.querySelector("html");
-            if (html) {
-                const html = document.querySelector("html") as HTMLElement;
-                html.style.height = `${event.target?.height}px`;
-            }
-
-            //chage height of .page class to visualViewportHeight state
-            const page = document.querySelector(".page");
-            if (page) {
-                const page = document.querySelector(".page") as HTMLElement;
-                page.style.height = `${event.target?.height}px`;
-            }
-        });
-
-        return () => {
-            // window.removeEventListener("resize", () => {
-            //     console.log("Resize event listener removed.");
-            // });
-            // window.visualViewport?.addEventListener("resize", () => {
-            //     console.log("visualViewport?.addEventListener");
-            // });
         };
     }, []);
 
@@ -141,7 +110,7 @@ export default function App() {
                 );
             } else {
                 setShowSignAgreement(false);
-                logOut();
+                logOut(dispatch);
             }
         } catch (error) {
             console.error(error);
@@ -149,13 +118,7 @@ export default function App() {
     }
 
     return (
-        <div
-            style={{
-                height: `${visualViewportHeight}px`,
-                overflowY: "hidden",
-                position: "fixed",
-            }}
-        >
+        <div>
             <Accessiblity />
 
             <Outlet />

@@ -9,7 +9,19 @@ import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 import { navArray } from "../../nav/top/StatementTopNavModel";
 import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
-export default function CheckBoxeArea({
+import { FC } from "react";
+
+// icons
+import NetworkIcon from "../../../../../../assets/icons/networkIcon.svg?react";
+import ChatIcon from "../../../../../../assets/icons/roundedChatDotIcon.svg?react";
+import EvaluationsIcon from "../../../../../../assets/icons/evaluationsIcon.svg?react";
+import VotingIcon from "../../../../../../assets/icons/votingIcon.svg?react";
+import QuestionIcon from "../../../../../../assets/icons/questionIcon.svg?react";
+import MassQuestionsIcon from "../../../../../../assets/icons/massQuestionsIcon.svg?react";
+import RoomsIcon from "../../../../../../assets/icons/roomsIcon.svg?react";
+import SettingsIcon from "../../../../../../assets/icons/settingsIcon.svg?react";
+
+export default function CheckBoxesArea({
     statement,
 }: {
     statement: Statement | undefined;
@@ -43,6 +55,7 @@ export default function CheckBoxeArea({
                             link={navObj.link}
                             label={navObj.name}
                             defaultChecked={isSubPageChecked(statement, navObj)}
+                            children={<NavIcon screenLink={navObj.link} />}
                         />
                     ))}
             </div>
@@ -73,3 +86,30 @@ export default function CheckBoxeArea({
         </section>
     );
 }
+
+interface NavIconProps {
+    screenLink: Screen;
+}
+
+const NavIcon: FC<NavIconProps> = ({ screenLink }) => {
+    switch (screenLink) {
+        case Screen.DOC:
+            return <NetworkIcon />;
+        case Screen.CHAT:
+            return <ChatIcon />;
+        case Screen.OPTIONS:
+            return <EvaluationsIcon />;
+        case Screen.VOTE:
+            return <VotingIcon />;
+        case Screen.QUESTIONS:
+            return <QuestionIcon />;
+        case Screen.MASS_QUESTIONS:
+            return <MassQuestionsIcon />;
+        case Screen.GROUPS:
+            return <RoomsIcon />;
+        case Screen.SETTINGS:
+            return <SettingsIcon />;
+        default:
+            return <QuestionIcon />;
+    }
+};

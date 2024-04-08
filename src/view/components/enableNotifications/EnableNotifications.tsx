@@ -24,7 +24,7 @@ export default function EnableNotifications({
     const handleCancelClick = async () => {
         await setStatmentSubscriptionToDB(
             statement,
-            Role.statementCreator,
+            Role.admin,
             userAskedForNotification,
         );
         setAskNotifications(false);
@@ -42,7 +42,7 @@ export default function EnableNotifications({
 
         await setStatmentSubscriptionToDB(
             statement,
-            Role.statementCreator,
+            Role.admin,
             userAskedForNotification,
         );
 

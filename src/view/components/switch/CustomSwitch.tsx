@@ -1,15 +1,15 @@
 // CustomSwitch.js
-import { useState, FC } from "react";
+import { useState, FC, ComponentProps } from "react";
 import styles from "./CustomSwitch.module.scss";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
 
-interface Props {
+interface Props extends ComponentProps<"div"> {
     label: string;
     link: string;
     defaultChecked: boolean;
 }
 
-const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
+const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children }) => {
     const [checked, setChecked] = useState(defaultChecked);
     const { t } = useLanguage();
 
@@ -17,43 +17,16 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link }) => {
         setChecked(!checked);
     };
 
-    const tagPosition =
-        document.body.style.direction === "ltr"
-            ? {
-                  backgroundColor: `${checked ? "#4E88C7" : "#D4D6F8"}`,
-                  left: checked ? "0%" : "50%",
-              }
-            : {
-                  backgroundColor: `${checked ? "#4E88C7" : "#D4D6F8"}`,
-                  right: checked ? "0%" : "50%",
-              };
-
-    const labelPosition =
-        document.body.style.direction === "ltr"
-            ? {
-                  color: checked ? "#3B4F7D" : "#6E8AA6",
-                  right: checked ? "0%" : "50%",
-              }
-            : {
-                  color: checked ? "#3B4F7D" : "#6E8AA6",
-                  left: checked ? "0%" : "50%",
-              };
-
     return (
-        <div className={styles.switch}>
+        <div className={`${styles.switch} ${checked ? styles.checked : ""}`}>
             <div
                 className={styles.tag}
-                onClick={() => {
-                    setChecked(!checked);
-                }}
-                style={tagPosition}
-            ></div>
+                onClick={handleChange}
+                children={children}
+            />
             <div
                 className={styles.label}
-                onClick={() => {
-                    setChecked(!checked);
-                }}
-                style={labelPosition}
+                onClick={handleChange}
                 data-cy={`toggleSwitch-${link}`}
             >
                 {t(label)}

@@ -8,7 +8,7 @@ export async function cleanOldTimers() {
         const twoDaysAgo = new Date().getTime() - 1000 * 60 * 60 * 24 * 2;
 
         //timers collection ref
-        const timersRef = db.collection(Collections.roomTimers);
+        const timersRef = db.collection(Collections.timersRooms);
         const oldTimersDB = await timersRef
             .where("lastUpdated", "<", twoDaysAgo)
             .get();

@@ -20,6 +20,6 @@ export default async function toggleNotifications(
 
         setStatmentSubscriptionNotificationToDB(statement, !permission);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }

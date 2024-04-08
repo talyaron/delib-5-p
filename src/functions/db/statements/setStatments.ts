@@ -4,6 +4,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 // Third Party Imports
 import { z } from "zod";
 import {
+    Access,
     ResultsBy,
     Screen,
     Statement,
@@ -74,6 +75,8 @@ export const setStatmentToDB = async ({
 
         statement.lastUpdate = new Date().getTime();
         statement.createdAt = statement?.createdAt || new Date().getTime();
+        
+        statement.membership = {access: Access.open};
 
         //statement settings
         if (!statement.statementSettings)
@@ -105,7 +108,7 @@ export const setStatmentToDB = async ({
         if (addSubscription) {
             await Notification.requestPermission();
             statementPromises.push(
-                setStatmentSubscriptionToDB(statement, Role.statementCreator),
+                setStatmentSubscriptionToDB(statement, Role.admin),
             );
 
             if (Notification.permission === "granted")

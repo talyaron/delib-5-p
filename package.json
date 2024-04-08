@@ -19,7 +19,7 @@
     "dependencies": {
         "@dagrejs/dagre": "^1.0.4",
         "@reduxjs/toolkit": "^1.9.5",
-        "delib-npm": "^1.2.5",
+        "delib-npm": "^1.2.14",
         "eslint-plugin-import": "^2.29.1",
         "firebase": "^10.0.0",
         "react": "^18.2.0",
@@ -48,6 +48,7 @@
         "typescript": "^5.3.3",
         "vite": "^5.1.3",
         "vite-plugin-pwa": "^0.19.0",
+        "vite-plugin-svgr": "^4.2.0",
         "workbox-window": "^7.0.0"
     }
 }

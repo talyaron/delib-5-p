@@ -15,7 +15,7 @@ interface Props {
     secondIconFunc?: MouseEventHandler<HTMLSpanElement>;
     secondIconText?: string;
     thirdIcon?: JSX.Element;
-    thirdIconFunc?: MouseEventHandler<HTMLSpanElement>;
+    thirdIconFunc?:any; // MouseEventHandler<HTMLSpanElement>;
     thirdIconText?: string;
     fourthIcon?: JSX.Element;
     fourthIconFunc?: MouseEventHandler<HTMLSpanElement>;

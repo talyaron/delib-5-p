@@ -3,7 +3,6 @@ import styles from "./Start.module.scss";
 
 // firestore functions
 import { googleLogin } from "../../../functions/db/auth";
-import { getIntialLocationSessionStorage } from "../../../functions/general/helpers";
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
@@ -26,25 +25,30 @@ import {
     LanguagesEnum,
     useLanguage,
 } from "../../../functions/hooks/useLanguages";
-
-// import EnterName from './EnterName';
+import { selectInitLocation } from "../../../model/location/locationSlice";
 
 const Start = () => {
     const navigate = useNavigate();
     const user = useAppSelector(userSelector);
+    const initLocation = useAppSelector(selectInitLocation);
     const [showNameModul, setShowNameModul] = useState(false);
     const savedLang = localStorage.getItem("lang");
     const direction = useDirection();
 
     const { t, changeLanguage } = useLanguage();
+    const defaultLang = "he";
+
+    useEffect(() => {
+        if (!savedLang) {
+            localStorage.setItem("lang", defaultLang);
+        }
+    }, []);
 
     useEffect(() => {
         if (user) {
-            navigate(getIntialLocationSessionStorage() || "/home", {
+            navigate(initLocation || "/home", {
                 state: { from: window.location.pathname },
             });
-        } else {
-            // console.info("not logged")
         }
     }, [user]);
 
@@ -64,7 +68,7 @@ const Start = () => {
 
             <select
                 className={styles.language}
-                defaultValue={savedLang || "he"}
+                defaultValue={savedLang || defaultLang}
                 onChange={(e) => {
                     const lang = e.target.value as LanguagesEnum;
                     changeLanguage(lang);
