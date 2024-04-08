@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
 
 // firestore functions
-import { getIntialLocationSessionStorage } from "../../../functions/general/helpers";
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
@@ -25,6 +24,7 @@ import {
     useLanguage,
 } from "../../../functions/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
+import { selectInitLocation } from "../../../model/location/locationSlice";
 
 const Start = () => {
     const navigate = useNavigate();
