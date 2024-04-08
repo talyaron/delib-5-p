@@ -62,6 +62,10 @@
                     z-index: 1003;
                     transform: translateX(-20%);
 
+                    svg {
+                        color: black;
+                    }
+
                     &__background {
                         position: fixed;
                         top: 0;
