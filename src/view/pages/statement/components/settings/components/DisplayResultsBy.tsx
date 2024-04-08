@@ -4,9 +4,8 @@ import { useState } from "react";
 
 // Third party imports
 import { Statement, ResultsBy } from "delib-npm";
-import RadioCheckedIcon from "../../../../../components/icons/RadioCheckedIcon";
-import RedioUncheckedIcon from "../../../../../components/icons/RedioUncheckedIcon";
 import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import RadioBox from "../../../../../components/radioBox/RadioBox";
 
 export default function DisplayResultsBy({
     statement,
@@ -15,57 +14,31 @@ export default function DisplayResultsBy({
 }) {
     const { t } = useLanguage();
 
-    const resultsBy = () => {
+    const resultsBy = (): string => {
         if (!statement) return ResultsBy.topOptions;
 
         return statement.resultsSettings?.resultsBy || ResultsBy.topOptions;
     };
 
-    const [resultsByVoting, setResultsByVoting] = useState(
-        resultsBy() === ResultsBy.topVote,
-    );
+    const [currentValue, setCurrentValue] = useState(resultsBy());
 
     return (
         <section className="settings__resultsBy">
             <h3 className="settings__resultsBy__title">{t("Results By")}</h3>
-            <div
-                className="settings__resultsBy__radioBox"
-                onClick={() => setResultsByVoting(false)}
+            <RadioBox
+                currentValue={currentValue}
+                setCurrentValue={setCurrentValue}
+                radioValue={ResultsBy.topOptions}
             >
-                {!resultsByVoting ? (
-                    <RadioCheckedIcon />
-                ) : (
-                    <RedioUncheckedIcon />
-                )}
-                <input
-                    type="radio"
-                    name="resultsBy"
-                    id="favoriteOption"
-                    checked={!resultsByVoting}
-                    value={ResultsBy.topOptions}
-                    onChange={(e) => console.log(e)}
-                />
                 <label htmlFor="favoriteOption">{t("Favorite Option")}</label>
-            </div>
-            <div
-                className="settings__resultsBy__radioBox"
-                onClick={() => setResultsByVoting(true)}
+            </RadioBox>
+            <RadioBox
+                currentValue={currentValue}
+                setCurrentValue={setCurrentValue}
+                radioValue={ResultsBy.topVote}
             >
-                {resultsByVoting ? (
-                    <RadioCheckedIcon />
-                ) : (
-                    <RedioUncheckedIcon />
-                )}
-                <input
-                    type="radio"
-                    name="resultsBy"
-                    id="votingResults"
-                    checked={resultsByVoting}
-                    value={ResultsBy.topVote}
-                    onChange={(e) => console.log(e)}
-                />
                 <label htmlFor="votingResults">{t("Voting Results")}</label>
-            </div>
+            </RadioBox>
         </section>
     );
 }
