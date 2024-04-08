@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // Icons
-import ChatIcon from "../../../../../components/icons/ChatIcon";
+import ChatIcon from "../../../../../../assets/icons/roundedChatDotIcon.svg?react";
 
 // Statements functions
 import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
@@ -16,6 +16,8 @@ import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 // Helpers
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+
+import styles from "./StatementChatMore.module.scss";
 
 interface Props {
     statement: Statement;
@@ -45,14 +47,14 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     return (
         <div
-            className="more clickable"
+            className={styles.statementChatMore}
             onClick={() =>
                 navigate(`/statement/${statement.statementId}/chat`, {
                     state: { from: window.location.pathname },
                 })
             }
         >
-            <div className="icon">
+            <div className={styles.icon}>
                 {messages - messagesRead > 0 && (
                     <div className="redCircle">
                         {messages - messagesRead < 10
@@ -60,12 +62,9 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                             : `9+`}
                     </div>
                 )}
-                <ChatIcon
-                    statementType={statementType}
-                    color={"var(--question)"}
-                />
+                <ChatIcon />
             </div>
-            <div className="text">{messageToDisplay}</div>
+            <div className={styles.text}>{messageToDisplay}</div>
         </div>
     );
 };

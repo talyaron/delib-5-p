@@ -633,20 +633,6 @@ b {
     }
 }
 
-.more {
-    display: flex;
-    gap: 5px;
-    overflow-x: auto;
-    align-items: center;
-
-    .text {
-        font-size: 0.75rem;
-        max-height: 2rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-
 .center {
     height: 100%;
     width: 100%;
