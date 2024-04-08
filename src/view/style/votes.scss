@@ -33,8 +33,10 @@
             transition: all 500ms ease-in-out;
 
             &__title {
-                transform: rotate(270deg) translate(3rem, -3rem);
+                transform: rotate(270deg) translate(11rem, -3rem);
                 color: #6e8aa6;
+                width: 19rem;
+                text-align: end;
             }
 
             &__column {
@@ -113,8 +115,8 @@
                 user-select: none;
                 cursor: pointer;
                 position: absolute;
-                bottom: 0px;
-                left: 50%50dvh;
+                bottom: 7px;
+              
             }
         }
     }
