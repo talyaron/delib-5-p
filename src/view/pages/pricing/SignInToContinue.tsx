@@ -6,9 +6,8 @@ export default function SignInToContinue() {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const location = useLocation();
 
-    const cameFrom = location.state.from ? location.state.from : "/";
+    // const cameFrom = location.state.from ? location.state.from : "/";
 
-    console.log(cameFrom);
 
     return (
         <div className="loginFirst">

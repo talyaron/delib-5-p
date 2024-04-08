@@ -32,7 +32,7 @@ import CheckBoxesArea from "./components/CheckBoxesArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
 
 // Hooks & Helpers
-import { handleSetStatment, handleShare } from "./statementSettingsCont";
+import { handleSetStatment } from "./statementSettingsCont";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../../../model/store";
@@ -103,6 +103,18 @@ const StatementSettings: FC<Props> = () => {
 
         setIsLoading(false);
     };
+    function handleShare(statement: Statement | undefined) {
+       
+      
+        const baseUrl = window.location.origin;
+    
+        const shareData = {
+            title: t("Delib: We create agreements together"),
+            text: t("Invited:") + statement?.statement,
+            url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
+        };
+        navigator.share(shareData);
+    }
 
     return (
         <ScreenFadeIn className="page__main">
