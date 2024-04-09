@@ -15,7 +15,8 @@ import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
 
 // Icons
-import LightBulbIcon from "../../../../../components/icons/LightBulbIcon";
+import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
+import IconButton from "../../../../../components/iconButton/IconButton";
 
 interface Props {
     parentStatement: Statement | null;
@@ -32,7 +33,7 @@ const StatementChatSetOption: FC<Props> = ({
         statementSubscriptionSelector(statement.statementId),
     );
 
-    const _isAuthrized = isAuthorized(
+    const _isAuthorized = isAuthorized(
         statement,
         statementSubscription,
         parentStatement?.creatorId,
@@ -54,7 +55,7 @@ const StatementChatSetOption: FC<Props> = ({
             console.error(error);
         }
     }
-    if (!_isAuthrized) return null;
+    if (!_isAuthorized) return null;
     if (statement.statementType === StatementType.question) return null;
 
     return (
@@ -64,17 +65,16 @@ const StatementChatSetOption: FC<Props> = ({
                     {text}
                 </span>
             )}
-            <div
-                className="clickable"
+            <IconButton
                 onClick={handleSetOption}
                 data-cy="chat-option-lightbulb"
             >
-                {isOptionFn(statement) ? (
-                    <LightBulbIcon color="gold" />
-                ) : (
-                    <LightBulbIcon color="lightgray" />
-                )}
-            </div>
+                <LightBulbIcon
+                    style={{
+                        color: isOptionFn(statement) ? "#226CBC" : "lightgray",
+                    }}
+                />
+            </IconButton>
         </>
     );
 };

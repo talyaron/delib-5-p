@@ -24,4 +24,9 @@
     grid-template-columns: 1fr auto;
     gap: 1rem;
     align-items: center;
+
+    svg {
+        height: 24px;
+        width: 24px;
+    }
 }
