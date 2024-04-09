@@ -152,14 +152,7 @@ const StatementChatCard: FC<Props> = ({
                             text={t("Option")}
                         />
                     </CardMenu>
-                    <div
-                        className={
-                            linkToChildren(statement, parentStatement)
-                                ? "message__box__info__text clickable"
-                                : "message__box__info__text"
-                        }
-                        onClick={handleGoToOption}
-                    >
+                    <div className="message__box__info__text">
                         <EditTitle
                             statement={statement}
                             isEdit={isEdit}
