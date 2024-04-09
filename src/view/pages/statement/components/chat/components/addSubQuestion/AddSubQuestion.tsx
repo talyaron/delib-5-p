@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Icons
-import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
+import AddQuestionIcon from "../../../../../../../assets/icons/addQuestion.svg?react";
 import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 // Styles
@@ -26,11 +26,13 @@ const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
         <>
             {text && (
                 <span className="clickable" onClick={handleShwQuestionModal}>
-                    {text}
+                    {t(text)}
                 </span>
             )}
             <div className="clickable" onClick={handleShwQuestionModal}>
-                <img src={addQuestion} alt={t("Add question")} />
+                <AddQuestionIcon
+                    style={{ height: "24px", width: "24px", color: "#4E88C7" }}
+                />
             </div>
         </>
     );

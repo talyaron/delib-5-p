@@ -1,7 +1,7 @@
 import { Screen, Statement } from "delib-npm";
 
 // custom components
-import CustomCheckboxLabel from "./CustomCheckboxLabel";
+import Checkbox from "../../../../../components/checkbox/Checkbox";
 import { isSubPageChecked } from "../statementSettingsCont";
 import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 
@@ -63,21 +63,21 @@ export default function CheckBoxesArea({
                 <h3 className="settings__checkboxSection__column__title">
                     {t("Advanced")}
                 </h3>
-                <CustomCheckboxLabel
+                <Checkbox
                     name={"hasChildren"}
-                    title={"Enable Sub-Conversations"}
+                    label={"Enable Sub-Conversations"}
                     defaultChecked={hasChildren}
                 />
-                <CustomCheckboxLabel
+                <Checkbox
                     name={"enableAddVotingOption"}
-                    title={
+                    label={
                         "Allow participants to contribute options to the voting page"
                     }
                     defaultChecked={enableAddVotingOption}
                 />
-                <CustomCheckboxLabel
+                <Checkbox
                     name={"enableAddEvaluationOption"}
-                    title={
+                    label={
                         "Allow participants to contribute options to the evaluation page"
                     }
                     defaultChecked={enableAddEvaluationOption}

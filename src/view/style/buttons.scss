@@ -63,28 +63,6 @@ button {
     }
 }
 
-.stickyBtn {
-    width: 20%;
-    height: 2rem;
-    margin: auto;
-    font-size: 1rem;
-    border: none;
-    outline: none;
-    background-color: #4e88c7;
-    color: var(--question-text);
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 10px 10px var(--shadow);
-    position: fixed;
-    bottom: 2rem;
-    left: 40%;
-    z-index: 1000;
-    &:hover {
-        transform: scale(0.9);
-    }
-}
-
 .buttonOutlineWhite {
     background: none;
     border: 1px solid white;
@@ -194,6 +172,12 @@ button {
     cursor: pointer;
     z-index: 200;
 
+    svg {
+        color: white;
+        width: 26px;
+        height: 25px;
+    }
+
     &:active {
         box-shadow: 0px 10px 50px 0px #4f5478b2;
     }
@@ -201,7 +185,7 @@ button {
     &--fixed {
         position: absolute;
 
-        img {
+        svg {
             width: 1.8rem;
         }
 

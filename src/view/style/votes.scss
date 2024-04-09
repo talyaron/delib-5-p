@@ -13,7 +13,7 @@
         margin: 0 auto;
         display: flex;
         justify-content: end;
-        gap: 0.5rem;
+        gap: 0.7rem;
         padding: 0.5rem;
     }
 
@@ -37,6 +37,11 @@
                 color: #6e8aa6;
                 width: 19rem;
                 text-align: end;
+            }
+
+            &__hand svg {
+                width: 32px;
+                height: 32px;
             }
 
             &__column {
@@ -116,7 +121,6 @@
                 cursor: pointer;
                 position: absolute;
                 bottom: 7px;
-              
             }
         }
     }

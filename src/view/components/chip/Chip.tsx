@@ -1,7 +1,7 @@
 import { User } from "delib-npm";
 import { FC } from "react";
 import styles from "./Chip.module.scss";
-import SmileIcon from "../icons/SmileIcon";
+import SmileIcon from "../../../assets/icons/smileIcon.svg?react";
 
 // import anonymous from "../../../assets/anonymous1.png";
 
@@ -17,7 +17,7 @@ const Chip: FC<Props> = ({ user }) => {
             {user.photoURL ? (
                 <img src={user.photoURL} alt={user.displayName} />
             ) : (
-                <SmileIcon active={false} />
+                <SmileIcon style={{ opacity: 0.4 }} />
             )}
             <span>{displayName}</span>
         </div>

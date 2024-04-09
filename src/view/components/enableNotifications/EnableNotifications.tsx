@@ -1,5 +1,5 @@
 import "./enableNotifications.scss";
-import BellWithDots from "../icons/BellWithDots";
+import NotificationsGraphic from "../../../assets/svg-graphics/notifications.svg?react";
 import Modal from "../modal/Modal";
 import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
 import { Role, Statement } from "delib-npm";
@@ -55,7 +55,7 @@ export default function EnableNotifications({
                 className="enableNotifications"
                 data-cy="enable-notifications-popup"
             >
-                <BellWithDots />
+                <NotificationsGraphic />
                 <p className="enableNotifications__title">Don'T Miss Out!</p>
                 <p className="enableNotifications__text">
                     Enable push notifications to stay updated on messages

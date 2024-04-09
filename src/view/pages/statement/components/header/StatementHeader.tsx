@@ -13,16 +13,16 @@ import { store } from "../../../../../model/store";
 // Custom components
 import StatementTopNav from "../nav/top/StatementTopNav";
 import EditTitle from "../../../../components/edit/EditTitle";
-import BackArrowIcon from "../../../../components/icons/BackArrowIcon";
-import HomeIcon from "../../../../components/icons/HomeIcon";
-import BellSlashIcon from "../../../../components/icons/BellSlashIcon";
-import BellIcon from "../../../../components/icons/BellIcon";
-import ShareIcon from "../../../../components/icons/ShareIcon";
+import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
+import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
+import BellSlashIcon from "../../../../../assets/icons/bellSlashIcon.svg?react";
+import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
+import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
     handleLogout,
 } from "../../../../../functions/general/helpers";
-import DisconnectIcon from "../../../../components/icons/DisconnectIcon";
+import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
 import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
 
 // Hooks
@@ -100,6 +100,11 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
+    const menuIconStyle = {
+        color: headerColor.backgroundColor,
+        width: "24px",
+    };
+
     return (
         <div className="page__header" style={headerColor}>
             <div
@@ -110,19 +115,21 @@ const StatementHeader: FC<Props> = ({
                     className="page__header__wrapper__actions"
                     style={{ flexDirection: direction }}
                 >
-                    <div
+                    <button
+                        className="page__header__wrapper__actions__iconButton"
                         onClick={handleBack}
                         style={{ cursor: "pointer" }}
                         data-cy="back-icon-header"
                     >
-                        <BackArrowIcon color={headerColor.color} />
-                    </div>
+                        <BackArrowIcon style={{ color: headerColor.color }} />
+                    </button>
                     <Link
+                        className="page__header__wrapper__actions__iconButton"
                         state={{ from: window.location.pathname }}
                         to={"/home"}
                         data-cy="home-link-icon"
                     >
-                        <HomeIcon color={headerColor.color} />
+                        <HomeIcon style={{ color: headerColor.color }} />
                     </Link>
                 </div>
                 {!editHeader ? (
@@ -143,18 +150,14 @@ const StatementHeader: FC<Props> = ({
                 )}
                 <PopUpMenu
                     openMoreIconColor={headerColor.color}
-                    firstIcon={
-                        <ShareIcon color={headerColor.backgroundColor} />
-                    }
+                    firstIcon={<ShareIcon style={menuIconStyle} />}
                     firstIconFunc={handleShare}
                     firstIconText={"Share"}
                     secondIcon={
                         permission ? (
-                            <BellIcon color={headerColor.backgroundColor} />
+                            <BellIcon style={menuIconStyle} />
                         ) : (
-                            <BellSlashIcon
-                                color={headerColor.backgroundColor}
-                            />
+                            <BellSlashIcon style={menuIconStyle} />
                         )
                     }
                     secondIconFunc={() =>
@@ -166,9 +169,7 @@ const StatementHeader: FC<Props> = ({
                         )
                     }
                     secondIconText={permission ? "Turn off" : "Turn on"}
-                    thirdIcon={
-                        <DisconnectIcon color={headerColor.backgroundColor} />
-                    }
+                    thirdIcon={<DisconnectIcon style={menuIconStyle} />}
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
                 />

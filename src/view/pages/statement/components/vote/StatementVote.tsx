@@ -14,7 +14,7 @@ import { getTotalVoters } from "./statementVoteCont";
 // Custom components
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import Modal from "../../../../components/modal/Modal";
-import HandsIcon from "../../../../components/icons/HandsIcon";
+import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
@@ -58,11 +58,10 @@ const StatementVote: FC<Props> = ({
     return (
         <>
             <div className="page__main">
-                <div
-                    className="votingWrapper"
-                >
+                <div className="votingWrapper">
                     <div className="hand">
-                        <HandsIcon /> {totalVotes}
+                        <HandIcon style={{ width: "16px", height: "19px" }} />{" "}
+                        {totalVotes}
                     </div>
                     <VotingArea
                         totalVotes={totalVotes}
