@@ -17,7 +17,7 @@ import {
 import { setVote } from "../../../../../../functions/db/vote/setVote";
 import { getSelections } from "../statementVoteCont";
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
-import InfoIcon from "../../../../../components/icons/InfoIcon";
+import InfoIcon from "../../../../../../assets/icons/infoCircleIcon.svg?react";
 import HandIcon from "../../../../../../assets/icons/handIcon.svg?react";
 
 export interface OptionBarProps {
@@ -113,14 +113,16 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
                     />
                 </div>
             </div>
-            <div
+            <button
                 className="infoIcon"
                 onClick={() => {
                     setStatementInfo(option), setShowInfo(true);
                 }}
             >
-                <InfoIcon color={barHeight > 10 ? "white" : "#6E8AA6"} />
-            </div>
+                <InfoIcon
+                    style={{ color: barHeight > 10 ? "white" : "#6E8AA6" }}
+                />
+            </button>
             <div className="verticalVote__bar__title">{shortVersion}</div>
         </div>
     );

@@ -117,10 +117,15 @@
 
             .infoIcon {
                 transform: scale(1.4) translateY(-5rem);
+                background: none;
                 user-select: none;
-                cursor: pointer;
                 position: absolute;
                 bottom: 7px;
+
+                svg {
+                    width: 23px;
+                    height: 23px;
+                }
             }
         }
     }
@@ -224,11 +229,15 @@
 
             .infoIcon {
                 transform: scale(1.4) translateY(-5rem);
-                user-select: none;
-                cursor: pointer;
+                background: none;
                 position: absolute;
                 bottom: 0px;
                 left: 50%50dvh;
+
+                svg {
+                    width: 23px;
+                    height: 23px;
+                }
             }
         }
     }
