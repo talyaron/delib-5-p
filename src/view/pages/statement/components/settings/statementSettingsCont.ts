@@ -19,7 +19,7 @@ import {
     setStatmentToDB,
     updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
