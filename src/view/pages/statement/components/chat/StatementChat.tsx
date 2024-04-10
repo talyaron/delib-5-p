@@ -33,7 +33,6 @@ const StatementChat: FC<Props> = ({
     const messagesEndRef = useRef(null);
 
     const [newMessages, setNewMessages] = useState<number>(0);
-    
 
     const { toSlide, slideInOrOut } = useSlideAndSubStatement(
         statement.parentId,

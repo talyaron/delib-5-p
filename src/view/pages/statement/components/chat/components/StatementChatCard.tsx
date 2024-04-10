@@ -89,11 +89,6 @@ const StatementChatCard: FC<Props> = ({
           ? true
           : false;
 
-    function handleGoToOption() {
-        if (!isEdit && linkToChildren(statement, parentStatement))
-            navigate(`/statement/${statement.statementId}/chat`);
-    }
-
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (
