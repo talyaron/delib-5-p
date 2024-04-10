@@ -85,7 +85,7 @@ export const listenToAuth =
 
                     const userDB = (await setUserToDB(_user)) as User;
 
-                    const fontSize = userDB.fontSize ? userDB.fontSize : 14;
+                    const fontSize = userDB.fontSize ? userDB.fontSize : defaultFontSize;
 
                     dispatch(setFontSize(fontSize));
 
