@@ -97,30 +97,36 @@ const StatementHeader: FC<Props> = ({
     }
 
     function handleBack() {
-        if (location.state && location.state.from.includes("doc")) {
-            //in case the user is at doc or main pagesub screen
-            return navigate(location.state.from, {
-                state: { from: window.location.pathname },
-            });
-        } else if (statement?.parentId === "top") {
+        try {
             //in case the back should diret to home
-            navigate("/home", {
-                state: { from: window.location.pathname },
-            });
-        } else {
+            if (statement?.parentId === "top") {
+                return navigate("/home", {
+                    state: { from: window.location.pathname },
+                });
+            }
+            //in case the user is at doc or main pagesub screen
+            if (location.state && location.state.from.includes("doc")) {
+                return navigate(location.state.from, {
+                    state: { from: window.location.pathname },
+                });
+            }
+
             //if in evaluation or in voting --> go back to question or chat
             if (page === Screen.OPTIONS || page === Screen.VOTE) {
-                navigate(
+                return navigate(
                     `/statement/${statement?.parentId}/${checkArrayAndReturnByOrder(parentStatementScreens, Screen.QUESTIONS, Screen.CHAT)}`,
                     {
                         state: { from: window.location.pathname },
                     },
                 );
-            } else {
-                navigate(`/statement/${statement?.parentId}/${page}`, {
-                    state: { from: window.location.pathname },
-                });
             }
+            
+            //default case
+            return navigate(`/statement/${statement?.parentId}/${page}`, {
+                state: { from: window.location.pathname },
+            });
+        } catch (error) {
+            console.error(error);
         }
     }
 
