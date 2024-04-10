@@ -89,11 +89,6 @@ const StatementChatCard: FC<Props> = ({
           ? true
           : false;
 
-    function handleGoToOption() {
-        if (!isEdit && linkToChildren(statement, parentStatement))
-            navigate(`/statement/${statement.statementId}/chat`);
-    }
-
     return (
         <div className={isMe ? "message message--me" : "message"}>
             {displayUserName && (
@@ -152,14 +147,7 @@ const StatementChatCard: FC<Props> = ({
                             text={t("Option")}
                         />
                     </CardMenu>
-                    <div
-                        className={
-                            linkToChildren(statement, parentStatement)
-                                ? "message__box__info__text clickable"
-                                : "message__box__info__text"
-                        }
-                        onClick={handleGoToOption}
-                    >
+                    <div className="message__box__info__text">
                         <EditTitle
                             statement={statement}
                             isEdit={isEdit}
