@@ -14,6 +14,7 @@ import { updateUserFontSize } from "../../../functions/db/users/setUsersDB";
 
 // Icons
 import AccessibilityIcon from "../../../assets/icons/accessibilityIcon.svg?react";
+import { defaultFontSize } from "../../../model/fonts/fontsModel";
 
 const Accessibility = () => {
     const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ const Accessibility = () => {
     const user = useAppSelector(userSelector);
 
     const [isOpen, setIsOpen] = useState(false);
-    const [_fontSize, setFontSize] = useState(fontSize || 14);
+const [_fontSize, setFontSize] = useState(fontSize || defaultFontSize);
 
     useEffect(() => {
         // document.documentElement.style.fontSize = fontSize + "px";

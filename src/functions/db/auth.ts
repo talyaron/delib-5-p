@@ -22,6 +22,7 @@ import { resetEvaluations } from "../../model/evaluations/evaluationsSlice";
 import { resetVotes } from "../../model/vote/votesSlice";
 import { resetResults } from "../../model/results/resultsSlice";
 import { setInitLocation } from "../../model/location/locationSlice";
+import { defaultFontSize } from "../../model/fonts/fontsModel";
 
 const provider = new GoogleAuthProvider();
 
@@ -85,7 +86,7 @@ export const listenToAuth =
 
                     const userDB = (await setUserToDB(_user)) as User;
 
-                    const fontSize = userDB.fontSize ? userDB.fontSize : 14;
+                    const fontSize = userDB.fontSize ? userDB.fontSize : defaultFontSize;
 
                     dispatch(setFontSize(fontSize));
 
