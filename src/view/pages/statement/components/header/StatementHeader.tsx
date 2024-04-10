@@ -20,6 +20,7 @@ import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
+    checkArrayAndReturnByOrder,
     handleLogout,
 } from "../../../../../functions/general/helpers";
 import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
@@ -56,6 +57,18 @@ const StatementHeader: FC<Props> = ({
     const headerColor = useStatementColor(statement?.statementType || "");
     const permission = useNotificationPermission(token);
     const { t } = useLanguage();
+    const parentStatement = store
+        .getState()
+        .statements.statements.find(
+            (st) => st.statementId === statement?.parentId,
+        );
+    const parentStatementScreens = parentStatement?.subScreens || [
+        Screen.QUESTIONS,
+        Screen.CHAT,
+        Screen.HOME,
+        Screen.VOTE,
+        Screen.OPTIONS,
+    ];
 
     // Redux Store
     const user = store.getState().user.user;
@@ -85,18 +98,29 @@ const StatementHeader: FC<Props> = ({
 
     function handleBack() {
         if (location.state && location.state.from.includes("doc")) {
+            //in case the user is at doc or main pagesub screen
             return navigate(location.state.from, {
                 state: { from: window.location.pathname },
             });
-        }
-        if (statement?.parentId === "top") {
+        } else if (statement?.parentId === "top") {
+            //in case the back should diret to home
             navigate("/home", {
                 state: { from: window.location.pathname },
             });
         } else {
-            navigate(`/statement/${statement?.parentId}/${page}`, {
-                state: { from: window.location.pathname },
-            });
+            //if in evaluation or in voting --> go back to question or chat
+            if (page === Screen.OPTIONS || page === Screen.VOTE) {
+                navigate(
+                    `/statement/${statement?.parentId}/${checkArrayAndReturnByOrder(parentStatementScreens, Screen.QUESTIONS, Screen.CHAT)}`,
+                    {
+                        state: { from: window.location.pathname },
+                    },
+                );
+            } else {
+                navigate(`/statement/${statement?.parentId}/${page}`, {
+                    state: { from: window.location.pathname },
+                });
+            }
         }
     }
 
