@@ -22,6 +22,7 @@ import { resetEvaluations } from "../../model/evaluations/evaluationsSlice";
 import { resetVotes } from "../../model/vote/votesSlice";
 import { resetResults } from "../../model/results/resultsSlice";
 import { setInitLocation } from "../../model/location/locationSlice";
+import { defaultFontSize } from "../../model/fonts/fontsModel";
 
 const provider = new GoogleAuthProvider();
 
