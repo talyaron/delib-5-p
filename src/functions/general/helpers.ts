@@ -108,8 +108,8 @@ export function navigateToStatementTab(
         const tab = statement.subScreens?.includes(Screen.CHAT)
             ? Screen.CHAT
             : statement.subScreens
-              ? statement.subScreens[0]
-              : Screen.SETTINGS;
+                ? statement.subScreens[0]
+                : Screen.SETTINGS;
 
         navigate(`/statement/${statement.statementId}/${tab}`, {
             state: { from: window.location.pathname },
@@ -316,10 +316,26 @@ export function getStatementSubscriptionId(
     try {
         if (!user || !user.uid) throw new Error("No user");
         if (!statementId) throw new Error("No statementId");
-        
+
         return `${user.uid}--${statementId}`;
     } catch (error) {
         console.error(error);
         return undefined;
+    }
+}
+
+export function checkArrayAndReturnByOrder(array: Array<Screen|string>, ...values: Array<Screen|string>):Screen|string{
+    try {
+        for (const value of values) {
+            if (array.includes(value)) {
+                return value;
+            }
+        }
+        return Screen.CHAT;
+
+    } catch (error) {
+        console.error(error);
+        return Screen.CHAT;
+
     }
 }
