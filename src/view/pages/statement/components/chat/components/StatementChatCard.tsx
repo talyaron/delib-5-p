@@ -25,7 +25,7 @@ import ProfileImage from "./ProfileImage";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import StatementChatSetEdit from "../../../../../components/edit/SetEdit";
 import AddSubQuestion from "./addSubQuestion/AddSubQuestion";
-import Evaluation from "../../../../../components/evaluation/Evaluation";
+import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import StatementChatSetOption from "./StatementChatSetOption";
 import StatementChatSetQuestion from "./StatementChatSetQuestion";
