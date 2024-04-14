@@ -55,7 +55,7 @@ const SimpleEvaluation: FC<Props> = ({ statement, displayScore = true }) => {
                 {displayScore && <span>{conVote}</span>}
                 <div className="evaluation__box__icon">
                     <Thumb
-                        evaluation={evaluation}
+                        evaluation={evaluation || 0}
                         upDown="down"
                         statement={statement}
                         setConVote={setConVote}
@@ -64,7 +64,7 @@ const SimpleEvaluation: FC<Props> = ({ statement, displayScore = true }) => {
                 </div>
                 <div className="evaluation__box__icon">
                     <Thumb
-                        evaluation={evaluation}
+                        evaluation={evaluation ||0}
                         upDown="up"
                         statement={statement}
                         setProVote={setProVote}

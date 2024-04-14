@@ -53,6 +53,6 @@ export const evaluationSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.evaluations.userEvaluations.find(
             (evaluation) => evaluation.statementId === statementId,
-        )?.evaluation || 0;
+        )?.evaluation;
 
 export default evaluationsSlicer.reducer;
