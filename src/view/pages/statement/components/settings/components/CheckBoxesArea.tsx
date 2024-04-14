@@ -31,6 +31,11 @@ export default function CheckBoxesArea({
     const hasChildren: boolean =
         statement?.hasChildren === false ? false : true;
 
+    const enhancedEvaluation: boolean =
+        statement?.statementSettings?.enhancedEvaluation === false
+            ? false
+            : true;
+
     const enableAddEvaluationOption: boolean =
         statement?.statementSettings?.enableAddEvaluationOption === false
             ? false
@@ -67,6 +72,11 @@ export default function CheckBoxesArea({
                     name={"hasChildren"}
                     label={"Enable Sub-Conversations"}
                     defaultChecked={hasChildren}
+                />
+                <Checkbox
+                    name={"enahncedEvaluation"}
+                    label={"enhanced Evaluation"}
+                    defaultChecked={enhancedEvaluation}
                 />
                 <Checkbox
                     name={"enableAddVotingOption"}

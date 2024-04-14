@@ -82,6 +82,7 @@ export async function handleSetStatment(
         ev.preventDefault();
 
         const data = new FormData(ev.currentTarget);
+     
 
         let title: any = data.get("statement");
 
@@ -99,13 +100,14 @@ export async function handleSetStatment(
 
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
-
+   
         const {
             resultsBy,
             numberOfResults,
             hasChildren,
             enableAddEvaluationOption,
             enableAddVotingOption,
+            enhancedEvaluation
         } = dataObj;
 
         // If no statementId, user is on AddStatement page
@@ -120,6 +122,7 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
+                enhancedEvaluation
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");

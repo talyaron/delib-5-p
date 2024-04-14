@@ -56,8 +56,8 @@ export const setStatmentToDB = async ({
             parentStatement === "top"
                 ? statement.statementId
                 : statement?.topParentId ||
-                  parentStatement?.topParentId ||
-                  "top";
+                parentStatement?.topParentId ||
+                "top";
         statement.subScreens = statement.subScreens || [
             Screen.CHAT,
             Screen.OPTIONS,
@@ -75,8 +75,8 @@ export const setStatmentToDB = async ({
 
         statement.lastUpdate = new Date().getTime();
         statement.createdAt = statement?.createdAt || new Date().getTime();
-        
-        statement.membership = {access: Access.open};
+
+        statement.membership = { access: Access.open };
 
         //statement settings
         if (!statement.statementSettings)
@@ -136,6 +136,7 @@ interface CreateStatementProps {
     statementType?: StatementType;
     enableAddEvaluationOption?: "on" | "off" | boolean;
     enableAddVotingOption?: "on" | "off" | boolean;
+    enhancedEvaluation?: "on" | "off" | boolean;
     resultsBy?: ResultsBy;
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
@@ -148,6 +149,7 @@ export function createStatement({
     statementType = StatementType.statement,
     enableAddEvaluationOption = true,
     enableAddVotingOption = true,
+    enhancedEvaluation = true,
     resultsBy = ResultsBy.topOptions,
     numberOfResults = 1,
     hasChildren = true,
@@ -196,14 +198,15 @@ export function createStatement({
 
         Object.assign(newStatement, {
             statementSettings: {
+                enhancedEvaluation: enhancedEvaluation === "on" || enhancedEvaluation === true ? true : false,
                 enableAddEvaluationOption:
                     enableAddEvaluationOption === "on" ||
-                    enableAddEvaluationOption === true
+                        enableAddEvaluationOption === true
                         ? true
                         : false,
                 enableAddVotingOption:
                     enableAddVotingOption === "on" ||
-                    enableAddVotingOption === true
+                        enableAddVotingOption === true
                         ? true
                         : false,
             },
@@ -292,10 +295,10 @@ export function updateStatement({
             screens !== undefined
                 ? screens
                 : statement.subScreens || [
-                      Screen.CHAT,
-                      Screen.OPTIONS,
-                      Screen.VOTE,
-                  ];
+                    Screen.CHAT,
+                    Screen.OPTIONS,
+                    Screen.VOTE,
+                ];
 
         StatementSchema.parse(newStatement);
 
@@ -381,7 +384,7 @@ export async function updateStatementText(
             lastUpdate: Timestamp.now().toMillis(),
         };
         await updateDoc(statementRef, newStatement);
-    } catch (error) {}
+    } catch (error) { }
 }
 
 export async function setStatementisOption(statement: Statement) {
