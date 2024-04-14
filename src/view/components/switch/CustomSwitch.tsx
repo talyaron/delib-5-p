@@ -7,16 +7,19 @@ interface Props extends ComponentProps<"div"> {
     label: string;
     link: string;
     defaultChecked: boolean;
+    checkOnTabs: (link:string,checked:boolean) => boolean;
 }
 
-const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children }) => {
+const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children ,checkOnTabs}) => {
     const [checked, setChecked] = useState(defaultChecked);
     const { t } = useLanguage();
-
+   
     const handleChange = () => {
-        setChecked(!checked);
-    };
-
+      const isLastTab=  checkOnTabs(link,  !checked);
+         if(!isLastTab)
+        setChecked( !checked)  
+        }
+    
     return (
         <div className={`${styles.switch} ${checked ? styles.checked : ""}`}>
             <div
