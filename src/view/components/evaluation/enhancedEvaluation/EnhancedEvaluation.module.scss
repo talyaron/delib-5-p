@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+width: fit-content;
+margin-top: .5rem;
+    
+}
+.item {
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    min-width: 2rem;
+  
+    cursor: pointer;
+    user-select: none;
+    &:first-child {
+        border-top-left-radius: 2rem;
+        border-bottom-left-radius: 2rem;
+        padding-left: .8rem;
+        padding-right: .8rem;
+    }
+    &:last-child {
+        border-top-right-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+        padding-left: .8rem;
+        padding-right: .8rem;
+    }
+}

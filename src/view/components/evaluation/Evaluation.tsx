@@ -1,6 +1,7 @@
 import { FC } from "react";
 import SimpleEvaluation from "./simpleEvaluation/SimplEvaluation";
 import { Statement } from "delib-npm";
+import EnhancedEvaluation from "./enhancedEvaluation/EnhancedEvaluation";
 
 interface EvaluationProps {
     parentStatement: Statement;
@@ -12,7 +13,7 @@ const Evaluation: FC<EvaluationProps> = ({parentStatement, statement, displaySco
     return (
         <>
             {parentStatement.statementSettings?.enhancedEvaluation ? (
-                <div>Advanced Evlaution...</div>
+                <EnhancedEvaluation statement={statement} />
             ) : (
                 <SimpleEvaluation
                     statement={statement}
