@@ -221,6 +221,7 @@ export function createStatement({
         newStatement.statementSettings.subScreens = screens;
 
         StatementSchema.parse(newStatement);
+        console.log("newStatement", newStatement)
 
         return newStatement;
     } catch (error) {
@@ -237,6 +238,7 @@ interface UpdateStatementProps {
     statementType?: StatementType;
     enableAddEvaluationOption?: "on" | "off" | boolean;
     enableAddVotingOption?: "on" | "off" | boolean;
+    enhancedEvaluation?: "on" | "off" | boolean;
     resultsBy?: ResultsBy;
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
@@ -248,6 +250,7 @@ export function updateStatement({
     statementType = StatementType.statement,
     enableAddEvaluationOption,
     enableAddVotingOption,
+    enhancedEvaluation,
     resultsBy,
     numberOfResults,
     hasChildren = true,
@@ -276,11 +279,12 @@ export function updateStatement({
                 numberOfResults: numberOfResults,
             };
         }
-
+console.log("enahncedEvaluation",enhancedEvaluation)
         newStatement.statementSettings = updateStatementSettings(
             statement,
             enableAddEvaluationOption,
             enableAddVotingOption,
+            enhancedEvaluation,
             screens,
         );
 
@@ -314,18 +318,25 @@ function updateStatementSettings(
     statement: Statement,
     enableAddEvaluationOption: string | boolean | undefined,
     enableAddVotingOption: string | boolean | undefined,
+    enahncedEvaluation: string | boolean | undefined,
     screens: Screen[] | undefined,
 ): {
     enableAddEvaluationOption?: boolean;
     enableAddVotingOption?: boolean;
+    enahncedEvaluation?: boolean;
     screens?: Screen[];
 } {
     try {
+        console.log("updateStatementSettings...enahncedEvaluation",enahncedEvaluation)
         if (!statement) throw new Error("Statement is undefined");
         if (!statement.statementSettings)
             throw new Error("Statement settings is undefined");
 
         const statementSettings = { ...statement.statementSettings };
+
+        if(enahncedEvaluation === "on" || enahncedEvaluation === true) statementSettings.enhancedEvaluation = true
+        else statementSettings.enhancedEvaluation = false
+
 
         if (
             enableAddEvaluationOption === "on" ||

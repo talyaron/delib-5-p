@@ -74,7 +74,7 @@ export default function CheckBoxesArea({
                     defaultChecked={hasChildren}
                 />
                 <Checkbox
-                    name={"enahncedEvaluation"}
+                    name={"enhancedEvaluation"}
                     label={"enhanced Evaluation"}
                     defaultChecked={enhancedEvaluation}
                 />

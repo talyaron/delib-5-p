@@ -79,6 +79,7 @@ export async function handleSetStatment(
     statement: Statement | undefined,
 ) {
     try {
+        console.log("handleSetStatment....");
         ev.preventDefault();
 
         const data = new FormData(ev.currentTarget);
@@ -110,6 +111,8 @@ export async function handleSetStatment(
             enhancedEvaluation
         } = dataObj;
 
+        console.log('enhancedEvaluation', enhancedEvaluation)
+
         // If no statementId, user is on AddStatement page
         if (!statementId) {
             const newStatement = createStatement({
@@ -126,6 +129,7 @@ export async function handleSetStatment(
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
+            console.log(statement, "statement")
 
             await setStatmentToDB({
                 parentStatement: "top",
@@ -152,6 +156,7 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
+                enhancedEvaluation
             });
             if (!newStatement)
                 throw new Error("newStatement had not been updated");
