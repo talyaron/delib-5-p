@@ -6,6 +6,7 @@ import evaluation2 from "../../../../assets/icons/evaluation/evaluation2.svg";
 import evaluation3 from "../../../../assets/icons/evaluation/evaluation3.svg";
 import evaluation4 from "../../../../assets/icons/evaluation/evaluation4.svg";
 import evaluation5 from "../../../../assets/icons/evaluation/evaluation5.svg";
+import { setEvaluationToDB } from "../../../../functions/db/evaluation/setEvaluation";
 
 interface EnhancedEvaluationProps {
     statement: Statement;
@@ -25,9 +26,14 @@ const evaluations:Evaluation[] = [
     { evaluation: -1, svg: evaluation5, color: "#FC8C9B" },
 ];
 
-const EnhancedEvaluation: FC<EnhancedEvaluationProps> = () => {
+const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({statement}) => {
+
+    function handleSetEvaluation(evaluation:number){
+        setEvaluationToDB(statement, evaluation);
+
+    }
     return <div className={styles.container}>
-        {evaluations.map((evaluation) => <div style={{backgroundColor:evaluation.color}} className={styles.item}>
+        {evaluations.map((evaluation) => <div onClick={()=>handleSetEvaluation(evaluation.evaluation)} style={{backgroundColor:evaluation.color}} className={styles.item}>
             <img src={evaluation.svg} alt="like" />
         </div>)}
     </div>;
