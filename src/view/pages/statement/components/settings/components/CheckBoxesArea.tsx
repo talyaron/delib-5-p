@@ -78,12 +78,12 @@ export default function CheckBoxesArea({
                 />
                 <Checkbox
                     name={"enhancedEvaluation"}
-                    label={"enhanced Evaluation"}
+                    label={"Enhanced Evaluation"}
                     defaultChecked={enhancedEvaluation}
                 />
                 <Checkbox
                     name={"showEvaluation"}
-                    label={"Show Evaluation results"}
+                    label={"Show Evaluations results"}
                     defaultChecked={showEvaluation}
                 />
                 <Checkbox
