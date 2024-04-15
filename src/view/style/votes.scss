@@ -145,10 +145,10 @@
                 transform: rotate(270deg);
                 color: #6e8aa6;
                 position: absolute;
-                width: 5rem;
+                width: 15.5rem;
                 height: fit-content;
-                bottom: 2rem;
-                right: 2rem;
+                bottom: 7rem;
+                right: -3rem;
             }
 
             &__column {
@@ -229,6 +229,9 @@
                 position: absolute;
                 bottom: 0px;
                 left: 50%50dvh;
+                @media (max-width: 450px) {
+                    transform: scale(1.4) translateY(-5rem) rotate(90deg);
+                }
             }
         }
     }
