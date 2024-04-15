@@ -13,9 +13,13 @@ import { evlaluationToIcon } from "./EnhancedEvaluationCont";
 
 interface EnhancedEvaluationProps {
     statement: Statement;
+    displayScore?: boolean;
 }
 
-const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({ statement }) => {
+const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
+    statement,
+    displayScore,
+}) => {
     const evaluation = useAppSelector(
         evaluationSelector(statement.statementId),
     );
@@ -30,9 +34,12 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({ statement }) => {
 
         return (
             <div className={styles.box}>
-                <div className={styles.container} onClick={()=>{
-                    setEvalPanelClose(false);
-                }}>
+                <div
+                    className={styles.container}
+                    onClick={() => {
+                        setEvalPanelClose(false);
+                    }}
+                >
                     {_enhancedEvaluationsThumbs.map((evl, i) => (
                         <EvaluationThumb
                             key={i}
@@ -54,11 +61,20 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({ statement }) => {
     }
 
     if (evalPanelClose) {
-        const evaluatedThumbId:string = evlaluationToIcon(evaluation, enhancedEvaluationsThumbs);
-        const evaluatedThumb:EnhancedEvaluationThumbs = enhancedEvaluationsThumbs.find(evl => evl.id === evaluatedThumbId) || enhancedEvaluationsThumbs[2];
-       
+        const evaluatedThumbId: string = evlaluationToIcon(
+            evaluation,
+            enhancedEvaluationsThumbs,
+        );
+        const evaluatedThumb: EnhancedEvaluationThumbs =
+            enhancedEvaluationsThumbs.find(
+                (evl) => evl.id === evaluatedThumbId,
+            ) || enhancedEvaluationsThumbs[2];
+
         return (
-            <div className={styles.box} onClick={()=>setEvalPanelClose(false)}>
+            <div
+                className={styles.box}
+                onClick={() => setEvalPanelClose(false)}
+            >
                 <div className={styles.container}>
                     {[evaluatedThumb].map((evl, i) => (
                         <EvaluationThumb
@@ -69,19 +85,26 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({ statement }) => {
                         />
                     ))}
                 </div>
-                <div
-                    className={styles.evaluation}
-                    style={{ color: statement.consensus < 0 ? "red" : "black" }}
-                >
-                    {Math.round(statement.consensus * 100) / 100}
-                </div>
+                {displayScore && (
+                    <div
+                        className={styles.evaluation}
+                        style={{
+                            color: statement.consensus < 0 ? "red" : "black",
+                        }}
+                    >
+                        {Math.round(statement.consensus * 100) / 100}
+                    </div>
+                )}
             </div>
         );
     }
 
     return (
         <div className={styles.box}>
-            <div className={styles.container} onClick={()=>setEvalPanelClose(true)}>
+            <div
+                className={styles.container}
+                onClick={() => setEvalPanelClose(true)}
+            >
                 {enhancedEvaluationsThumbs.map((evl, i) => (
                     <EvaluationThumb
                         key={i}
@@ -109,14 +132,22 @@ interface ThumbProps {
     evl: EnhancedEvaluationThumbs;
     press?: boolean;
 }
-function EvaluationThumb({ evl, evaluation = 0, statement, press }: ThumbProps) {
-
+function EvaluationThumb({
+    evl,
+    evaluation = 0,
+    statement,
+    press,
+}: ThumbProps) {
     function handleSetEvaluation(evaluation: number) {
         setEvaluationToDB(statement, evaluation);
     }
     return (
         <button
-            onClick={() => {if(press !== false) { handleSetEvaluation(evl.evaluation)}}}
+            onClick={() => {
+                if (press !== false) {
+                    handleSetEvaluation(evl.evaluation);
+                }
+            }}
             style={{
                 backgroundColor: evl.color,
                 opacity:

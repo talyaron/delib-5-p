@@ -255,7 +255,7 @@ export function updateStatement({
     enableAddEvaluationOption,
     enableAddVotingOption,
     enhancedEvaluation,
-    showEvaluation
+    showEvaluation,
     resultsBy,
     numberOfResults,
     hasChildren = true,
@@ -325,11 +325,13 @@ function updateStatementSettings(
     enableAddEvaluationOption: string | boolean | undefined,
     enableAddVotingOption: string | boolean | undefined,
     enahncedEvaluation: string | boolean | undefined,
+    showEvaluation: string | boolean | undefined,
     screens: Screen[] | undefined,
 ): {
     enableAddEvaluationOption?: boolean;
     enableAddVotingOption?: boolean;
     enahncedEvaluation?: boolean;
+    showEvaluation?: boolean;
     screens?: Screen[];
 } {
     try {
@@ -377,6 +379,7 @@ function updateStatementSettings(
         console.error(error);
 
         return {
+            showEvaluation: true,
             enableAddEvaluationOption: true,
             enableAddVotingOption: true,
             screens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
