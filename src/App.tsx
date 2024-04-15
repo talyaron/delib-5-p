@@ -16,7 +16,7 @@ import { updateAgreementToStore, userSelector } from "./model/users/userSlice";
 import { Agreement } from "delib-npm";
 
 // Custom components
-import Accessiblity from "./view/components/accessibility/Accessiblity";
+import Accessibility from "./view/components/accessibility/Accessibility";
 import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 // Helpers
@@ -119,7 +119,7 @@ export default function App() {
 
     return (
         <div>
-            <Accessiblity />
+            <Accessibility />
 
             <Outlet />
             {showSignAgreement && (

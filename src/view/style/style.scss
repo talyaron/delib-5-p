@@ -24,7 +24,7 @@
 @import "./pricingPage.scss";
 @import "./loginFirstPage.scss";
 
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap&family=Roboto");
 
 :root {
     // --- MAIN COLORS ---
@@ -101,7 +101,7 @@ body {
     height: 100svh;
     margin: 0px;
     font-family: "Open Sans", sans-serif;
-    font-size: 14px;
+    font-size: 17px;
     background: var(--pageBackground);
     overflow: hidden;
 }
@@ -127,6 +127,7 @@ a {
 
 b {
     font-family: "Open Sans", sans-serif;
+    user-select: text;
 }
 
 .wrapperAll {
@@ -630,20 +631,6 @@ b {
         font-size: 0.75rem;
         margin-left: 5px;
         z-index: 100;
-    }
-}
-
-.more {
-    display: flex;
-    gap: 5px;
-    overflow-x: auto;
-    align-items: center;
-
-    .text {
-        font-size: 0.75rem;
-        max-height: 2rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 }
 

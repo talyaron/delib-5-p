@@ -29,7 +29,7 @@ import ResultsRange from "./components/ResultsRange";
 import GetVoters from "./components/GetVoters";
 import GetEvaluators from "./components/GetEvaluators";
 import CheckBoxesArea from "./components/CheckBoxesArea";
-import ShareIcon from "../../../../components/icons/ShareIcon";
+import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
 import { handleSetStatment } from "./statementSettingsCont";

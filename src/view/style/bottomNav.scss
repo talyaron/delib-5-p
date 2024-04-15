@@ -17,9 +17,17 @@
         position: absolute;
         left: calc(50% - 1.5rem);
         top: 0.5rem;
+
+        svg {
+            width: 26px;
+        }
+
         &--burger {
             background-color: var(--question);
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         &--active:nth-child(2) {
             z-index: 20;

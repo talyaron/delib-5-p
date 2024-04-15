@@ -1,7 +1,7 @@
 import { Screen, Statement } from "delib-npm";
 
 // custom components
-import CustomCheckboxLabel from "./CustomCheckboxLabel";
+import Checkbox from "../../../../../components/checkbox/Checkbox";
 import { isSubPageChecked } from "../statementSettingsCont";
 import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 
@@ -69,6 +69,14 @@ export default function CheckBoxesArea({
     const hasChildren: boolean =
         statement?.hasChildren === false ? false : true;
 
+    const enhancedEvaluation: boolean =
+        statement?.statementSettings?.enhancedEvaluation === false
+            ? false
+            : true;
+
+    const showEvaluation: boolean =
+        statement?.statementSettings?.showEvaluation === false ? false : true;
+
     const enableAddEvaluationOption: boolean =
         statement?.statementSettings?.enableAddEvaluationOption === false
             ? false
@@ -103,21 +111,31 @@ export default function CheckBoxesArea({
                 <h3 className="settings__checkboxSection__column__title">
                     {t("Advanced")}
                 </h3>
-                <CustomCheckboxLabel
+                <Checkbox
                     name={"hasChildren"}
-                    title={"Enable Sub-Conversations"}
+                    label={"Enable Sub-Conversations"}
                     defaultChecked={hasChildren}
                 />
-                <CustomCheckboxLabel
+                <Checkbox
+                    name={"enhancedEvaluation"}
+                    label={"Enhanced Evaluation"}
+                    defaultChecked={enhancedEvaluation}
+                />
+                <Checkbox
+                    name={"showEvaluation"}
+                    label={"Show Evaluations results"}
+                    defaultChecked={showEvaluation}
+                />
+                <Checkbox
                     name={"enableAddVotingOption"}
-                    title={
+                    label={
                         "Allow participants to contribute options to the voting page"
                     }
                     defaultChecked={enableAddVotingOption}
                 />
-                <CustomCheckboxLabel
+                <Checkbox
                     name={"enableAddEvaluationOption"}
-                    title={
+                    label={
                         "Allow participants to contribute options to the evaluation page"
                     }
                     defaultChecked={enableAddEvaluationOption}

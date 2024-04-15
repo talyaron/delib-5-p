@@ -13,6 +13,12 @@
     }
     &__back {
         padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+            height: 26px;
+        }
     }
     &__form {
         flex: auto;

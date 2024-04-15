@@ -40,9 +40,9 @@
                 display: flex;
                 justify-content: space-between;
 
-                img {
-                    cursor: pointer;
-                    user-select: none;
+                svg {
+                    height: 27px;
+                    color: white;
                 }
 
                 .homeMenu {
@@ -61,6 +61,10 @@
                     border-radius: 0.36rem;
                     z-index: 1003;
                     transform: translateX(-20%);
+
+                    svg {
+                        color: black;
+                    }
 
                     &__background {
                         position: fixed;

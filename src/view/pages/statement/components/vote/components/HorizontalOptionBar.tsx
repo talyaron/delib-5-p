@@ -18,7 +18,7 @@ import { setVote } from "../../../../../../functions/db/vote/setVote";
 import { getSelections } from "../statementVoteCont";
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 import InfoIcon from "../../../../../components/icons/InfoIcon";
-import VoteIcon from "../../../../../components/icons/VoteIcon";
+import HandIcon from "../../../../../../assets/icons/handIcon.svg?react";
 
 export interface OptionBarProps {
     option: Statement;
@@ -46,7 +46,7 @@ export const HorizontalOptionBar: FC<OptionBarProps> = ({
     const selections: number = getSelections(statement, option);
     const barWidth = 80;
     const padding = 40;
-    
+
     const { shortVersion } = statementTitleToDisplay(option.statement, 30);
     const barHeight = Math.round((selections / totalVotes) * 100);
 
@@ -103,12 +103,13 @@ export const HorizontalOptionBar: FC<OptionBarProps> = ({
                     }
                     onClick={handlePressButton}
                 >
-                    <VoteIcon
-                        color={
-                            vote?.statementId !== option.statementId
-                                ? option.color
-                                : "white"
-                        }
+                    <HandIcon
+                        style={{
+                            color:
+                                vote?.statementId !== option.statementId
+                                    ? option.color
+                                    : "white",
+                        }}
                     />
                 </div>
             </div>

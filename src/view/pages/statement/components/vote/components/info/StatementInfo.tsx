@@ -10,7 +10,7 @@ import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
 import info from "../../../../../../../assets/images/info.svg";
-import editIcon from "../../../../../../../assets/icons/edit2.svg";
+import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 
 import styles from "./StatementInfo.module.scss";
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
@@ -55,9 +55,8 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                         <h3>
                             {title}
                             {_isAuthrized && (
-                                <img
-                                    src={editIcon}
-                                    alt="edit"
+                                <EditIcon
+                                    style={{ color: "#226CBC", width: "24px" }}
                                     onClick={() => setEdit(true)}
                                 />
                             )}

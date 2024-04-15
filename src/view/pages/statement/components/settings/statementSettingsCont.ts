@@ -19,7 +19,7 @@ import {
     setStatmentToDB,
     updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -79,9 +79,11 @@ export async function handleSetStatment(
     statement: Statement | undefined,
 ) {
     try {
+        console.log("handleSetStatment....");
         ev.preventDefault();
 
         const data = new FormData(ev.currentTarget);
+     
 
         let title: any = data.get("statement");
 
@@ -99,14 +101,18 @@ export async function handleSetStatment(
 
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
-
+   
         const {
             resultsBy,
             numberOfResults,
             hasChildren,
             enableAddEvaluationOption,
             enableAddVotingOption,
+            enhancedEvaluation,
+            showEvaluation,
         } = dataObj;
+
+       
 
         // If no statementId, user is on AddStatement page
         if (!statementId) {
@@ -120,9 +126,12 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
+                enhancedEvaluation,
+                showEvaluation
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
+            console.log(statement, "statement")
 
             await setStatmentToDB({
                 parentStatement: "top",
@@ -149,6 +158,8 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
+                enhancedEvaluation,
+                showEvaluation
             });
             if (!newStatement)
                 throw new Error("newStatement had not been updated");

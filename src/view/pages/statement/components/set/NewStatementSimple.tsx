@@ -15,7 +15,7 @@ import Loader from "../../../../components/loaders/Loader";
 // Images
 import questionModalImage from "../../../../../assets/images/questionModalImage.png";
 import optionModalImage from "../../../../../assets/images/optionModalImage.png";
-import ElipsIcon from "../../../../components/icons/ElipsIcon";
+import HalfPieChartGraphic from "../../../../../assets/svg-graphics/halfPieChart.svg?react";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 
 interface Props {
@@ -113,8 +113,8 @@ const NewSetStatementSimple: FC<Props> = ({
                                     alt="Option-Modal-Image"
                                     width="70%"
                                 />
-                                <div className="overlay__imgBox__elips">
-                                    <ElipsIcon />
+                                <div className="overlay__imgBox__halfPieChartGraphic">
+                                    <HalfPieChartGraphic />
                                 </div>
                             </div>
                         )}

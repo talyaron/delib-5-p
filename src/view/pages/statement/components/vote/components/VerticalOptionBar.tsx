@@ -18,7 +18,7 @@ import { setVote } from "../../../../../../functions/db/vote/setVote";
 import { getSelections } from "../statementVoteCont";
 import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
 import InfoIcon from "../../../../../components/icons/InfoIcon";
-import VoteIcon from "../../../../../components/icons/VoteIcon";
+import HandIcon from "../../../../../../assets/icons/handIcon.svg?react";
 
 export interface OptionBarProps {
     option: Statement;
@@ -87,7 +87,7 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
                     }}
                 ></div>
             </div>
-            <div className="btnShadow">
+            <div className="verticalVote__bar__hand btnShadow">
                 <div
                     style={{
                         width: `${barWidth - padding}px`,
@@ -103,12 +103,13 @@ export const VerticalOptionBar: FC<OptionBarProps> = ({
                     }
                     onClick={handlePressButton}
                 >
-                    <VoteIcon
-                        color={
-                            vote?.statementId !== option.statementId
-                                ? option.color
-                                : "white"
-                        }
+                    <HandIcon
+                        style={{
+                            color:
+                                vote?.statementId !== option.statementId
+                                    ? option.color
+                                    : "white",
+                        }}
                     />
                 </div>
             </div>
