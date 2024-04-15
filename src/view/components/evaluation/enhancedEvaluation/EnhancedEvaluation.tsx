@@ -50,12 +50,16 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
                         />
                     ))}
                 </div>
-                <div
-                    className={styles.evaluation}
-                    style={{ color: statement.consensus < 0 ? "red" : "black" }}
-                >
-                    {Math.round(statement.consensus * 100) / 100}
-                </div>
+                {displayScore && (
+                    <div
+                        className={styles.evaluation}
+                        style={{
+                            color: statement.consensus < 0 ? "red" : "black",
+                        }}
+                    >
+                        {Math.round(statement.consensus * 100) / 100}
+                    </div>
+                )}
             </div>
         );
     }
@@ -114,12 +118,16 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
                     />
                 ))}
             </div>
-            <div
-                className={styles.evaluation}
-                style={{ color: statement.consensus < 0 ? "red" : "black" }}
-            >
-                {Math.round(statement.consensus * 100) / 100}
-            </div>
+            {displayScore && (
+                <div
+                    className={styles.evaluation}
+                    style={{
+                        color: statement.consensus < 0 ? "red" : "black",
+                    }}
+                >
+                    {Math.round(statement.consensus * 100) / 100}
+                </div>
+            )}
         </div>
     );
 };

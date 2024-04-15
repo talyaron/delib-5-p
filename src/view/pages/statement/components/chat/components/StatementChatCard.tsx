@@ -17,7 +17,6 @@ import {
 
 // Hooks
 import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
-import { useNavigate } from "react-router";
 
 // Custom Components
 import StatementChatMore from "./StatementChatMore";
@@ -54,7 +53,6 @@ const StatementChatCard: FC<Props> = ({
     previousStatement,
 }) => {
     // Hooks
-    const navigate = useNavigate();
     const { statementType } = statement;
     const statementColor = useStatementColor(statementType || "");
     const { t } = useLanguage();
