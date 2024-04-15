@@ -45,7 +45,7 @@ export async function updateEvaluation(event: any) {
             n !== 0
                 ? Math.abs(averageEvaluation) *
                   Math.sign(newPro - newCon) *
-                  Math.log(n)
+                  Math.sqrt(n)
                 : 0;
 
         //set consensus to statement in DB

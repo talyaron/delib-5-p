@@ -1,14 +1,17 @@
 import { ReactNode, useState } from "react";
 import pricingImg from "../../../assets/images/pricing.png";
 import RadioBox from "../../components/radioBox/RadioBox";
-import GroupCommunicationOne from "../../components/icons/GroupCommunicationOne";
-import GroupCommunicationtwo from "../../components/icons/GroupCommunicationtwo";
-import GroupCommunicationthree from "../../components/icons/GroupCommunicationthree";
-import GroupCommunicationfour from "../../components/icons/GroupCommunicationFour";
-import GroupCommunicationfive from "../../components/icons/GroupCommunicationFive";
+
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 import { useNavigate } from "react-router-dom";
+
+// icons
+import GroupCommunicationOne from "../../../assets/icons/groupCommunicationOneIcon.svg?react";
+import GroupCommunicationTwo from "../../../assets/icons/groupCommunicationTwoIcon.svg?react";
+import GroupCommunicationThree from "../../../assets/icons/groupCommunicationThreeIcon.svg?react";
+import GroupCommunicationFour from "../../../assets/icons/groupCommunicationFourIcon.svg?react";
+import GroupCommunicationFive from "../../../assets/icons/groupCommunicationFiveIcon.svg?react";
 
 interface PricePlan {
     price: string;
@@ -29,28 +32,28 @@ export default function PricingPlan() {
         {
             price: "10",
             range: "Groups from",
-            icon: <GroupCommunicationtwo />,
+            icon: <GroupCommunicationTwo />,
             from: 11,
             to: 100,
         },
         {
             price: "30",
             range: "Groups from",
-            icon: <GroupCommunicationthree />,
+            icon: <GroupCommunicationThree />,
             from: 101,
             to: 300,
         },
         {
             price: "50",
             range: "Groups from",
-            icon: <GroupCommunicationfour />,
+            icon: <GroupCommunicationFour />,
             from: 301,
             to: 1000,
         },
         {
             price: "100",
             range: "Groups from",
-            icon: <GroupCommunicationfive />,
+            icon: <GroupCommunicationFive />,
             from: 1001,
         },
     ];
@@ -77,7 +80,6 @@ export default function PricingPlan() {
         }
 
         // Else navigate to payment page....
-        
     };
 
     return (

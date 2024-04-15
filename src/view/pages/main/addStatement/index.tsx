@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import StatementSettings from "../../statement/components/settings/StatementSettings";
 import useDirection from "../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
-import BackArrowIcon from "../../../components/icons/BackArrowIcon";
+import BackArrowIcon from "../../../../assets/icons/chevronLeftIcon.svg?react";
 import { useLanguage } from "../../../../functions/hooks/useLanguages";
 
 export const AddStatement = () => {
@@ -28,7 +28,7 @@ export const AddStatement = () => {
                     className="setStatement__back"
                 >
                     {" "}
-                    <BackArrowIcon color="black" />
+                    <BackArrowIcon />
                 </Link>
                 <h1>{t("Add New Group")}</h1>
                 <span></span>

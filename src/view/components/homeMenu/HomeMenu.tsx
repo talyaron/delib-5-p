@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./homeMenu.scss";
-import disconnectlIcon from "../../../assets/icons/disconnectIcon.svg";
+import DisconnectIcon from "../../../assets/icons/disconnectIcon.svg?react";
 import { handleLogout } from "../../../functions/general/helpers";
 import useDirection from "../../../functions/hooks/useDirection";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
@@ -11,21 +11,21 @@ interface Props {
 }
 const HomeMenu: FC<Props> = ({ setOpenMenu }) => {
     const direction = useDirection();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const dispatch = useDispatch();
+    console.log(dir);
 
     return (
         <>
             <div
                 className="homeMenu"
-                style={{ flexDirection: direction }}
+                style={{
+                    flexDirection: direction,
+                    left: dir === "ltr" ? "-2rem" : "2rem",
+                }}
                 onClick={() => handleLogout(dispatch)}
             >
-                <img
-                    className="homeMenu__icon"
-                    src={disconnectlIcon}
-                    alt="disconnect_icon"
-                />
+                <DisconnectIcon />
                 <p className="homeMenu__name">{t("Disconnect")}</p>
             </div>
 

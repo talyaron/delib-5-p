@@ -1,5 +1,6 @@
 .moreIconBox {
     position: relative;
+
     &__menu {
         position: absolute;
         top: 100%;
@@ -13,7 +14,7 @@
         z-index: 5;
         &__item {
             min-width: max-content;
-            padding: .5rem;
+            padding: 0.5rem;
             width: 100%;
             display: flex;
             align-items: center;

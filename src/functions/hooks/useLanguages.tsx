@@ -11,6 +11,7 @@ type LanguageContextType = {
     currentLanguage: string;
     changeLanguage: (newLanguage: LanguagesEnum) => void;
     t: (text: string) => string;
+    dir:"ltr"|"rtl"
 };
 
 // Create a context to hold the current language and the language change function
@@ -97,6 +98,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
         currentLanguage,
         changeLanguage,
         t,
+        dir: currentLanguage === "ar" || currentLanguage === "he" ? "rtl" : "ltr",
     };
 
     return (

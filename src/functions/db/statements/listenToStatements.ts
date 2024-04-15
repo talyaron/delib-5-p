@@ -49,12 +49,12 @@ export const listenToStatementSubscription = (
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;
 
-                    console.log(statementSubscription)
+                   
                     const {role} = statementSubscription;
 
                     //TODO: remove this after 2024-06-06
                     const deprecated = new Date("2024-06-06").getTime();
-                    console.log(new Date().getTime() - deprecated)
+                  
                     //@ts-ignore
                     if(role === "statement-creator"){
                         statementSubscription.role = Role.admin;
@@ -65,7 +65,7 @@ export const listenToStatementSubscription = (
                         statementSubscription.role = Role.unsubscribed;
                         console.info("Role is undefined. Setting role to unsubscribed");
                     }
-                    console.log(statementSubscription.role)
+                 
 
                 // const { success } = StatementSubscriptionSchema.safeParse(
                 //     statementSubscription,

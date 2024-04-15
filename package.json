@@ -19,13 +19,13 @@
     "dependencies": {
         "@dagrejs/dagre": "^1.0.4",
         "@reduxjs/toolkit": "^1.9.5",
-        "delib-npm": "^1.2.14",
+        "delib-npm": "^1.2.16",
         "eslint-plugin-import": "^2.29.1",
         "firebase": "^10.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-redux": "^8.1.1",
-        "react-router-dom": "^6.19.0",
+        "react-router-dom": "^6.22.3",
         "reactflow": "^11.10.1",
         "rollup-plugin-visualizer": "^5.10.0",
         "sass": "^1.63.6",
@@ -34,7 +34,6 @@
     "devDependencies": {
         "@types/react": "^18.2.14",
         "@types/react-dom": "^18.2.6",
-        "@types/react-router-dom": "^5.3.3",
         "@typescript-eslint/eslint-plugin": "^5.61.0",
         "@typescript-eslint/parser": "^5.61.0",
         "@vitejs/plugin-react-swc": "^3.3.2",

@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.374);
+    background-color: rgba(44, 46, 80, 0.7);
     z-index: 300;
     display: flex;
     justify-content: center;
@@ -16,7 +16,7 @@
         background-color: var(--statementBackground);
         border-radius: 6px;
         box-shadow: 0px 20px 50px 0px #21253633;
-        box-shadow: 0px -4px 40px 0px #2125364D;
+        box-shadow: 0px -4px 40px 0px #2125364d;
         height: fit-content;
         width: fit-content;
         display: flex;
