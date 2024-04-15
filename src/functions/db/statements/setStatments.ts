@@ -137,6 +137,7 @@ interface CreateStatementProps {
     enableAddEvaluationOption?: "on" | "off" | boolean;
     enableAddVotingOption?: "on" | "off" | boolean;
     enhancedEvaluation?: "on" | "off" | boolean;
+    showEvaluation?: "on" | "off" | boolean;
     resultsBy?: ResultsBy;
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
@@ -150,6 +151,7 @@ export function createStatement({
     enableAddEvaluationOption = true,
     enableAddVotingOption = true,
     enhancedEvaluation = true,
+    showEvaluation = true,
     resultsBy = ResultsBy.topOptions,
     numberOfResults = 1,
     hasChildren = true,
@@ -199,6 +201,7 @@ export function createStatement({
         Object.assign(newStatement, {
             statementSettings: {
                 enhancedEvaluation: enhancedEvaluation === "on" || enhancedEvaluation === true ? true : false,
+                showEvaluation: showEvaluation === "on" || showEvaluation === true ? true : false,
                 enableAddEvaluationOption:
                     enableAddEvaluationOption === "on" ||
                         enableAddEvaluationOption === true
@@ -221,7 +224,7 @@ export function createStatement({
         newStatement.statementSettings.subScreens = screens;
 
         StatementSchema.parse(newStatement);
-        console.log("newStatement", newStatement)
+       
 
         return newStatement;
     } catch (error) {
@@ -239,6 +242,7 @@ interface UpdateStatementProps {
     enableAddEvaluationOption?: "on" | "off" | boolean;
     enableAddVotingOption?: "on" | "off" | boolean;
     enhancedEvaluation?: "on" | "off" | boolean;
+    showEvaluation?: "on" | "off" | boolean;
     resultsBy?: ResultsBy;
     numberOfResults?: number;
     hasChildren?: "on" | "off" | boolean;
@@ -251,6 +255,7 @@ export function updateStatement({
     enableAddEvaluationOption,
     enableAddVotingOption,
     enhancedEvaluation,
+    showEvaluation
     resultsBy,
     numberOfResults,
     hasChildren = true,
@@ -279,12 +284,13 @@ export function updateStatement({
                 numberOfResults: numberOfResults,
             };
         }
-console.log("enahncedEvaluation",enhancedEvaluation)
+
         newStatement.statementSettings = updateStatementSettings(
             statement,
             enableAddEvaluationOption,
             enableAddVotingOption,
             enhancedEvaluation,
+            showEvaluation,
             screens,
         );
 
@@ -327,7 +333,7 @@ function updateStatementSettings(
     screens?: Screen[];
 } {
     try {
-        console.log("updateStatementSettings...enahncedEvaluation",enahncedEvaluation)
+       
         if (!statement) throw new Error("Statement is undefined");
         if (!statement.statementSettings)
             throw new Error("Statement settings is undefined");
@@ -336,6 +342,9 @@ function updateStatementSettings(
 
         if(enahncedEvaluation === "on" || enahncedEvaluation === true) statementSettings.enhancedEvaluation = true
         else statementSettings.enhancedEvaluation = false
+
+        if(showEvaluation === "on" || showEvaluation === true) statementSettings.showEvaluation = true
+        else statementSettings.showEvaluation = false
 
 
         if (

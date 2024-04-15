@@ -36,6 +36,9 @@ export default function CheckBoxesArea({
             ? false
             : true;
 
+    const showEvaluation: boolean =
+        statement?.statementSettings?.showEvaluation === false ? false : true;
+
     const enableAddEvaluationOption: boolean =
         statement?.statementSettings?.enableAddEvaluationOption === false
             ? false
@@ -77,6 +80,11 @@ export default function CheckBoxesArea({
                     name={"enhancedEvaluation"}
                     label={"enhanced Evaluation"}
                     defaultChecked={enhancedEvaluation}
+                />
+                <Checkbox
+                    name={"showEvaluation"}
+                    label={"Show Evaluation results"}
+                    defaultChecked={showEvaluation}
                 />
                 <Checkbox
                     name={"enableAddVotingOption"}

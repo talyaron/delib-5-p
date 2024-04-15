@@ -108,10 +108,11 @@ export async function handleSetStatment(
             hasChildren,
             enableAddEvaluationOption,
             enableAddVotingOption,
-            enhancedEvaluation
+            enhancedEvaluation,
+            showEvaluation,
         } = dataObj;
 
-        console.log('enhancedEvaluation', enhancedEvaluation)
+       
 
         // If no statementId, user is on AddStatement page
         if (!statementId) {
@@ -125,7 +126,8 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
-                enhancedEvaluation
+                enhancedEvaluation,
+                showEvaluation
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
@@ -156,7 +158,8 @@ export async function handleSetStatment(
                 hasChildren,
                 enableAddEvaluationOption,
                 enableAddVotingOption,
-                enhancedEvaluation
+                enhancedEvaluation,
+                showEvaluation
             });
             if (!newStatement)
                 throw new Error("newStatement had not been updated");
