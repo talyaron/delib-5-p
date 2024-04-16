@@ -2,12 +2,13 @@
 import { useState, FC, ComponentProps } from "react";
 import styles from "./CustomSwitch.module.scss";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { Screen } from "delib-npm";
 
 interface Props extends ComponentProps<"div"> {
     label: string;
-    link: string;
+    link: Screen;
     defaultChecked: boolean;
-    checkOnTabs: (link:string,checked:boolean) => boolean;
+    checkOnTabs: (link:Screen,checked:boolean) => boolean;
 }
 
 const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children ,checkOnTabs}) => {
@@ -37,7 +38,7 @@ const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children ,checkO
             <input
                 style={{ display: "none" }}
                 type="checkbox"
-                name={link}
+                name={link.toString()}
                 id={`toggleSwitch-${link}`}
                 className="switch-input"
                 onChange={handleChange}
