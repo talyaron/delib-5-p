@@ -1,4 +1,4 @@
-import { FC, useEffect} from "react";
+import { FC} from "react";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 import FollowMeIcon from "../../../../components/icons/FollowMeIcon";
 import styles from "./FollowMeToast.module.scss";
@@ -22,15 +22,9 @@ const FollowMeToast: FC<Props> = ({ role, statement }) => {
 
     const topParentStatement = useAppSelector(statementSelector(statement?.topParentId));
 
-    //useEffects
-    useEffect(() => {
-       if(topParentStatement){
-        console.log("topParentStatement",topParentStatement)
-       }
-    }, [topParentStatement]);
-
+   
     function handleRemoveToast() {
-        console.log('handleRemoveToast',topParentStatement?.statement, "isadmin", _isAdmin, 'followMe', topParentStatement?.followMe);
+     
         if(!_isAdmin) return;
         if(!topParentStatement) return;
         setFollowMeDB(topParentStatement, "");
@@ -38,9 +32,9 @@ const FollowMeToast: FC<Props> = ({ role, statement }) => {
     }
 
    
-    console.log("topParentStatement?.followMe",topParentStatement?.followMe)
+
     //in case the followers are in the page, turn off the follow me toast
-    // console.log('in case the followers are in the page, turn off the follow me toast',pathname === topParentStatement?.followMe )
+  
     if(pathname === topParentStatement?.followMe && !_isAdmin) return null;
 
     //if the follow me is empty, turn off the follow me toast
