@@ -81,6 +81,11 @@ export function isAuthorized(
     }
 }
 
+export function isAdmin(role:Role|undefined):boolean{
+    if(role === Role.admin || role=== Role.creator) return true;
+    return false;
+}
+
 export function isOptionFn(statement: Statement): boolean {
     try {
         return (

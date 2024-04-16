@@ -41,6 +41,7 @@ import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
 import Page404 from "../page404/Page404";
+import FollowMeToast from "./components/followMeToast/FollowMeToast";
 
 const StatementMain: FC = () => {
     // Hooks
@@ -49,8 +50,15 @@ const StatementMain: FC = () => {
     const navigate = useNavigate();
     const { t } = useLanguage();
     //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
-    const { error, isAuthorized, loading, statementSubscription, statement } =
-        useIsAuthorized(statementId);
+    const {
+        error,
+        isAuthorized,
+        loading,
+        statementSubscription,
+        statement,
+        topParentStatement,
+        role,
+    } = useIsAuthorized(statementId);
 
     // Redux store
     const dispatch = useAppDispatch();
@@ -80,7 +88,6 @@ const StatementMain: FC = () => {
     const [askNotifications, setAskNotifications] = useState(false);
     const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
-    
     // Constants
     const screen = availableScreen(statement, page);
 
@@ -112,14 +119,10 @@ const StatementMain: FC = () => {
 
     // Listen to statement changes.
     useEffect(() => {
-
-
-       
-      
-
         let unsubListenToStatement: () => void = () => {
             return;
         };
+
         let unsubSubStatements: () => void = () => {
             return;
         };
@@ -134,9 +137,12 @@ const StatementMain: FC = () => {
         };
 
         if (user && statementId) {
+            unsubListenToStatement = listenToStatement(
+                statementId,
+                dispatch,
+                setIsStatementNotFound,
+            );
 
-           
-            unsubListenToStatement = listenToStatement(statementId, dispatch,setIsStatementNotFound);
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
@@ -165,10 +171,24 @@ const StatementMain: FC = () => {
     }, [user, statementId]);
 
     useEffect(() => {
+        //listen to top parent statement
+        let unsub = () => {
+            return;
+        };
+        if (statement?.topParentId) {
+            unsub = listenToStatement(
+                statement?.topParentId,
+                dispatch,
+                setIsStatementNotFound,
+            );
+        }
+        return () => {
+            unsub();
+        };
+    }, [statement?.topParentId]);
 
+    useEffect(() => {
         if (statement) {
-
-
             const { shortVersion } = statementTitleToDisplay(
                 statement.statement,
                 100,
@@ -176,9 +196,8 @@ const StatementMain: FC = () => {
 
             setTitle(shortVersion);
             //set navigator tab title
-              
-            document.title = `Consoul - ${shortVersion}`;
 
+            document.title = `Consoul - ${shortVersion}`;
 
             (async () => {
                 const isSubscribed = await getIsSubscribed(statementId);
@@ -195,11 +214,9 @@ const StatementMain: FC = () => {
         }
     }, [statement]);
 
-    if (isStatementNotFound) return <Page404 />;  
+    if (isStatementNotFound) return <Page404 />;
     if (error) return <UnAuthorizedPage />;
     if (loading) return <LoadingPage />;
-
-
 
     if (isAuthorized)
         return (
@@ -227,21 +244,29 @@ const StatementMain: FC = () => {
                 <>
                     <StatementHeader
                         statement={statement}
+                        topParentStatement={topParentStatement}
                         screen={screen || Screen.CHAT}
                         title={title}
                         showAskPermission={showAskPermission}
                         setShowAskPermission={setShowAskPermission}
+                        role={role}
                     />
 
                     <MapProvider>
-                        <SwitchScreens
-                            screen={screen}
-                            statement={statement}
-                            subStatements={subStatements}
-                            handleShowTalker={handleShowTalker}
-                            setShowAskPermission={setShowAskPermission}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
+                        <div style={{ position: "relative" }}>
+                            <FollowMeToast
+                                role={role}
+                                statement={statement}
+                            />
+                            <SwitchScreens
+                                screen={screen}
+                                statement={statement}
+                                subStatements={subStatements}
+                                handleShowTalker={handleShowTalker}
+                                setShowAskPermission={setShowAskPermission}
+                                toggleAskNotifications={toggleAskNotifications}
+                            />
+                        </div>
                     </MapProvider>
                 </>
             </div>
