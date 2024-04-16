@@ -2,7 +2,7 @@ export const keys = {
     apiKey: "AIzaSyDxuL1NFmSUoJ7z89NrqxEzhEaf3k3ydzk",
     authDomain: "delib-5-avni.firebaseapp.com",
     projectId: "delib-5-avni",
-    storageBucket: "delib-5-avni.appspot.com",
+    storageBucket: "delib-5-.appspot.com",
     messagingSenderId: "491944905259",
     appId: "1:491944905259:web:98102c059e7c7e03a8f86e"
 };

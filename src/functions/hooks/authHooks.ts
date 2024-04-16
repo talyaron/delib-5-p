@@ -98,6 +98,7 @@ export function useIsAuthorized(statementId: string | undefined): {
                             }
                         }
                     } catch (e) {
+                        
                         console.error(e);
                         setError(true);
                         setLoading(false);
