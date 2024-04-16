@@ -553,3 +553,25 @@ export async function updateStatmentMainImage(
         console.error(error);
     }
 }
+
+export async function setFollowMeDB(statement: Statement, path:string | undefined):Promise<void> {
+    try {
+        z.string().parse(path);
+        StatementSchema.parse(statement);
+        
+        const statementRef = doc(
+            DB,
+            Collections.statements,
+            statement.statementId,
+        );
+      
+        if (path) {
+            await updateDoc(statementRef, { followMe: path });
+        } else{
+            await updateDoc(statementRef, { followMe: "" });
+        }
+      
+    } catch (error) {
+        console.error(error);
+    }
+}

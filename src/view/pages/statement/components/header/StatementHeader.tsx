@@ -33,6 +33,7 @@ import useDirection from "../../../../../functions/hooks/useDirection";
 import useNotificationPermission from "../../../../../functions/hooks/useNotificationPermission";
 import useToken from "../../../../../functions/hooks/useToken";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { setFollowMeDB } from "../../../../../functions/db/statements/setStatments";
 
 interface Props {
     title: string;
@@ -78,6 +79,7 @@ const StatementHeader: FC<Props> = ({
 
     // Use States
     const [editHeader, setEditHeader] = useState<boolean>(false);
+    const [followMe, setFollowMe] = useState<boolean>(false);
 
     // Variables
     const titleFontSize = calculateFontSize(title, 16, 25);
@@ -133,6 +135,16 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
+    async function handleFollowMe() {
+        try{
+        console.log("follow me", pathname);
+        if(!statement) throw new Error("No statement");
+
+       await setFollowMeDB(statement, pathname);
+        }catch(error){
+            console.error(error);
+        }
+    }
     const menuIconStyle = {
         color: headerColor.backgroundColor,
         width: "24px",
@@ -206,7 +218,7 @@ const StatementHeader: FC<Props> = ({
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
                     fourthIcon={<FollowMe />}
-                    fourthIconFunc={handleLogout}
+                    fourthIconFunc={handleFollowMe}
                     fourthIconText={"Follow Me"}
                     role={role}
                 />
