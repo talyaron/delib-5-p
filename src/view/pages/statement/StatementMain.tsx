@@ -253,7 +253,7 @@ const StatementMain: FC = () => {
                     />
 
                     <MapProvider>
-                        <div style={{ position: "relative" }}>
+                       
                             <FollowMeToast
                                 role={role}
                                 statement={statement}
@@ -266,7 +266,7 @@ const StatementMain: FC = () => {
                                 setShowAskPermission={setShowAskPermission}
                                 toggleAskNotifications={toggleAskNotifications}
                             />
-                        </div>
+                        
                     </MapProvider>
                 </>
             </div>
