@@ -17,6 +17,7 @@ import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react
 import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
 import BellSlashIcon from "../../../../../assets/icons/bellSlashIcon.svg?react";
 import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
+import FollowMe from "../../../../../assets/icons/follow.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
@@ -204,9 +205,9 @@ const StatementHeader: FC<Props> = ({
                     thirdIcon={<DisconnectIcon style={menuIconStyle} />}
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
-                    fourthIcon={<DisconnectIcon style={menuIconStyle} />}
+                    fourthIcon={<FollowMe />}
                     fourthIconFunc={handleLogout}
-                    fourthIconText={"Follow"}
+                    fourthIconText={"Follow Me"}
                     role={role}
                 />
             </div>
