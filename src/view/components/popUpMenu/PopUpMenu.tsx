@@ -4,6 +4,8 @@ import "./popUpStyle.scss";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
 import IconButton from "../iconButton/IconButton";
+import { Role } from "delib-npm";
+import { isAdmin } from "../../../functions/general/helpers";
 
 interface Props {
     isAuthrized?: boolean;
@@ -19,8 +21,9 @@ interface Props {
     thirdIconFunc?: any; // MouseEventHandler<HTMLSpanElement>;
     thirdIconText?: string;
     fourthIcon?: JSX.Element;
-    fourthIconFunc?: MouseEventHandler<HTMLSpanElement>;
+    fourthIconFunc?: Function; // MouseEventHandler<HTMLSpanElement>;
     fourthIconText?: string;
+    role?: Role | undefined;
 }
 
 export default function PopUpMenu({
@@ -39,6 +42,7 @@ export default function PopUpMenu({
     fourthIcon,
     fourthIconFunc,
     fourthIconText,
+    role,
 }: Props) {
     const [openMore, setOpenMore] = React.useState(false);
     const { t } = useLanguage();
@@ -76,13 +80,15 @@ export default function PopUpMenu({
                             {thirdIcon}
                             {t(thirdIconText || "")}
                         </span>
-                        <span
-                            className="moreIconBox__menu__item"
-                            onClick={fourthIconFunc}
-                        >
-                            {fourthIcon}
-                            {t(fourthIconText || "")}
-                        </span>
+                        {isAdmin(role) && (
+                            <span
+                                className="moreIconBox__menu__item"
+                                onClick={fourthIconFunc}
+                            >
+                                {fourthIcon}
+                                {t(fourthIconText || "")}
+                            </span>
+                        )}  
                     </div>
                 </>
             )}

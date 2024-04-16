@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 // Third party imports
-import { Screen, Statement } from "delib-npm";
+import { Role, Screen, Statement } from "delib-npm";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
@@ -37,6 +37,7 @@ interface Props {
     title: string;
     screen: Screen;
     statement: Statement | undefined;
+    role: Role|undefined;
     showAskPermission: boolean;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -45,6 +46,7 @@ const StatementHeader: FC<Props> = ({
     title,
     screen,
     statement,
+    role,
     setShowAskPermission,
 }) => {
     // Hooks
@@ -202,6 +204,10 @@ const StatementHeader: FC<Props> = ({
                     thirdIcon={<DisconnectIcon style={menuIconStyle} />}
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
+                    fourthIcon={<DisconnectIcon style={menuIconStyle} />}
+                    fourthIconFunc={handleLogout}
+                    fourthIconText={"Follow"}
+                    role={role}
                 />
             </div>
             {statement && (

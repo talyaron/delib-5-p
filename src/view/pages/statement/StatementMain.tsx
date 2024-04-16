@@ -49,7 +49,7 @@ const StatementMain: FC = () => {
     const navigate = useNavigate();
     const { t } = useLanguage();
     //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
-    const { error, isAuthorized, loading, statementSubscription, statement } =
+    const { error, isAuthorized, loading, statementSubscription, statement, role } =
         useIsAuthorized(statementId);
 
     // Redux store
@@ -231,6 +231,7 @@ const StatementMain: FC = () => {
                         title={title}
                         showAskPermission={showAskPermission}
                         setShowAskPermission={setShowAskPermission}
+                        role={role}
                     />
 
                     <MapProvider>
