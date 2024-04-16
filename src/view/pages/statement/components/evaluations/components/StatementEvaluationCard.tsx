@@ -2,7 +2,7 @@ import { FC, useEffect, useState, useRef } from "react";
 
 // Third Party
 import { Statement, StatementType, User } from "delib-npm";
-import { useNavigate } from "react-router";
+
 
 // Redux Store
 import {
@@ -51,7 +51,7 @@ const StatementEvaluationCard: FC<Props> = ({
     top,
 }) => {
     // Hooks
-    const navigate = useNavigate();
+   
     const direction = useDirection();
     const { t } = useLanguage();
 
@@ -94,10 +94,10 @@ const StatementEvaluationCard: FC<Props> = ({
         );
     }, []);
 
-    function handleGoToOption() {
-        if (!edit && linkToChildren(statement, parentStatement))
-            navigate(`/statement/${statement.statementId}/options`);
-    }
+    // function handleGoToOption() {
+    //     if (!edit && linkToChildren(statement, parentStatement))
+    //         navigate(`/statement/${statement.statementId}/options`);
+    // }
 
     return (
         <div
@@ -117,15 +117,7 @@ const StatementEvaluationCard: FC<Props> = ({
         >
             <div className="optionCard__info">
                 <div className="optionCard__info__text">
-                    <div
-                        style={{ width: "100%" }}
-                        className={
-                            linkToChildren(statement, parentStatement)
-                                ? "clickable"
-                                : ""
-                        }
-                        onClick={handleGoToOption}
-                    >
+                    <div>
                         <EditTitle
                             statement={statement}
                             isEdit={edit}
@@ -168,7 +160,7 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
             )}
             <div className="optionCard__actions">
-                <Evaluation statement={statement} />
+                <Evaluation parentStatement={parentStatement} statement={statement} />
                 {parentStatement.hasChildren && (
                     <AddSubQuestion
                         statement={statement}

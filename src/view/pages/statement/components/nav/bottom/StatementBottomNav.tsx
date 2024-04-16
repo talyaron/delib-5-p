@@ -5,12 +5,12 @@ import { Statement, Screen } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import BurgerIcon from "../../../../../components/icons/BurgerIcon";
-import PlusIcon from "../../../../../components/icons/PlusIcon";
-import AgreementIcon from "../../../../../components/icons/AgreementIcon";
-import RandomIcon from "../../../../../components/icons/RandomIcon";
-import UpdateIcon from "../../../../../components/icons/UpdateIcon";
-import NewestIcon from "../../../../../components/icons/NewestIcon";
+import BurgerIcon from "../../../../../../assets/icons/burgerIcon.svg?react";
+import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
+import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?react";
+import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
+import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
+import NewestIcon from "../../../../../../assets/icons/newIcon.svg?react";
 import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
 import {
     optionsArray,
@@ -54,21 +54,6 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
         setOpenNav(false);
     };
 
-    const icon = (name: string, color: string) => {
-        switch (name) {
-            case "New":
-                return <NewestIcon color={color} />;
-            case "Update":
-                return <UpdateIcon color={color} />;
-            case "Random":
-                return <RandomIcon color={color} />;
-            case "Agreement":
-                return <AgreementIcon color={color} />;
-            default:
-                return <></>;
-        }
-    };
-
     const navStyle = {
         bottom: page === "vote" ? "unset" : "3rem",
         height: page === "vote" ? "4rem" : "unset",
@@ -90,9 +75,9 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                     data-cy="bottom-nav-mid-icon"
                 >
                     {openNav && isAddOption ? (
-                        <PlusIcon color={statementColor.color} />
+                        <PlusIcon style={{ color: statementColor.color }} />
                     ) : (
-                        <BurgerIcon color={statementColor.color} />
+                        <BurgerIcon style={{ color: statementColor.color }} />
                     )}
                 </div>
 
@@ -105,7 +90,10 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                         key={navItem.id}
                         onClick={() => setOpenNav(false)}
                     >
-                        {icon(navItem.name, statementColor.backgroundColor)}
+                        <NavIcon
+                            name={navItem.name}
+                            color={statementColor.backgroundColor}
+                        />
                     </Link>
                 ))}
             </div>
@@ -129,3 +117,24 @@ function getPageArray(page: string | undefined) {
             return optionsArray;
     }
 }
+
+interface NavIconProps {
+    name: string;
+    color: string;
+}
+
+const NavIcon: FC<NavIconProps> = ({ name, color }) => {
+    const props = { style: { color } };
+    switch (name) {
+        case "New":
+            return <NewestIcon {...props} />;
+        case "Update":
+            return <UpdateIcon {...props} />;
+        case "Random":
+            return <RandomIcon {...props} />;
+        case "Agreement":
+            return <AgreementIcon {...props} />;
+        default:
+            return null;
+    }
+};

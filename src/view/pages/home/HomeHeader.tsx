@@ -5,12 +5,13 @@ import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 
 // icons
-import elipsIcon from "../../../assets/icons/elipsIcon.svg";
-import installIcon from "../../../assets/icons/installIcon.svg";
+import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
+import InstallIcon from "../../../assets/icons/installIcon.svg?react";
 
 // Components
 import HomeMenu from "../../components/homeMenu/HomeMenu";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
+import IconButton from "../../components/iconButton/IconButton";
 
 export default function HomeHeader() {
     // Use State
@@ -20,7 +21,7 @@ export default function HomeHeader() {
     const { t } = useLanguage();
 
     useEffect(() => {
-        //for defferd app install
+        // for deferred app install
         setDeferredPrompt(install.deferredPrompt);
     }, []);
 
@@ -35,25 +36,20 @@ export default function HomeHeader() {
     return (
         <div className="homePage__header">
             <div className="homePage__header__wrapper">
-                <div className="homePage__header__wrapper__title">
-                    {t("Delib")}
-                </div>
+                <div
+                    className="homePage__header__wrapper__title"
+                    children={t("Delib")}
+                />
                 <div className="homePage__header__wrapper__icons">
                     {deferredPrompt && (
-                        <img
-                            className="homePage__header__wrapper__icons__installIcon"
-                            src={installIcon}
-                            alt="install_icon"
-                            onClick={handleInstallApp}
-                        />
+                        <IconButton onClick={handleInstallApp}>
+                            <InstallIcon />
+                        </IconButton>
                     )}
+                    <IconButton onClick={() => setOpenMenu(true)}>
+                        <EllipsisIcon />
+                    </IconButton>
                     {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
-                    <img
-                        className="homePage__header__wrapper__icons__elipsIcon"
-                        src={elipsIcon}
-                        alt="elips_icon"
-                        onClick={() => setOpenMenu(true)}
-                    />
                 </div>
             </div>
         </div>

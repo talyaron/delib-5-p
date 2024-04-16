@@ -62,7 +62,7 @@ export async function sendNotificationsCB(e: any) {
 
                                 // url: `https://delib-5.web.app/statement/${parentId}/chat`,
 
-                                url: `https://delib-v3-dev.web.app/statement/${parentId}/chat`,
+                                url: `https://delib-5.web.app/statement/${parentId}/chat`,
                                 creatorId: statement.creatorId,
                             },
                             token,

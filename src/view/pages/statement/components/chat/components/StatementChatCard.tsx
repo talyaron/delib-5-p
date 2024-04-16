@@ -17,7 +17,6 @@ import {
 
 // Hooks
 import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
-import { useNavigate } from "react-router";
 
 // Custom Components
 import StatementChatMore from "./StatementChatMore";
@@ -25,7 +24,7 @@ import ProfileImage from "./ProfileImage";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import StatementChatSetEdit from "../../../../../components/edit/SetEdit";
 import AddSubQuestion from "./addSubQuestion/AddSubQuestion";
-import Evaluation from "../../../../../components/evaluation/Evaluation";
+// import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
 import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import StatementChatSetOption from "./StatementChatSetOption";
 import StatementChatSetQuestion from "./StatementChatSetQuestion";
@@ -54,7 +53,6 @@ const StatementChatCard: FC<Props> = ({
     previousStatement,
 }) => {
     // Hooks
-    const navigate = useNavigate();
     const { statementType } = statement;
     const statementColor = useStatementColor(statementType || "");
     const { t } = useLanguage();
@@ -88,11 +86,6 @@ const StatementChatCard: FC<Props> = ({
         : previousStatement.creatorId !== statement.creatorId
           ? true
           : false;
-
-    function handleGoToOption() {
-        if (!isEdit && linkToChildren(statement, parentStatement))
-            navigate(`/statement/${statement.statementId}/chat`);
-    }
 
     return (
         <div className={isMe ? "message message--me" : "message"}>
@@ -152,14 +145,7 @@ const StatementChatCard: FC<Props> = ({
                             text={t("Option")}
                         />
                     </CardMenu>
-                    <div
-                        className={
-                            linkToChildren(statement, parentStatement)
-                                ? "message__box__info__text clickable"
-                                : "message__box__info__text"
-                        }
-                        onClick={handleGoToOption}
-                    >
+                    <div className="message__box__info__text">
                         <EditTitle
                             statement={statement}
                             isEdit={isEdit}
@@ -172,12 +158,12 @@ const StatementChatCard: FC<Props> = ({
 
                 <div className="message__box__actions">
                     <div className="message__box__actions__type"></div>
-                    <div className="message__box__actions__evaluations">
+                    {/* <div className="message__box__actions__evaluations">
                         <Evaluation
                             statement={statement}
                             displayScore={false}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {showModal && (

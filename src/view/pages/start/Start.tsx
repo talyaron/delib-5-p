@@ -10,14 +10,14 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
-//img
+// icons
 import Logo from "../../../assets/logo/512 px SVG.svg";
-import moreRight from "../../../assets/icons/moreRight.svg";
-import moreLeft from "../../../assets/icons/moreLeft.svg";
+import MoreRight from "../../../assets/icons/moreRight.svg?react";
+import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
-import EnterName from "../../components/enterName/EnterName";
+import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
 import useDirection from "../../../functions/hooks/useDirection";
 import {
     LanguagesEnum,
@@ -30,7 +30,7 @@ const Start = () => {
     const navigate = useNavigate();
     const user = useAppSelector(userSelector);
     const initLocation = useAppSelector(selectInitLocation);
-    const [showNameModul, setShowNameModul] = useState(false);
+    const [shouldShowNameModal, setShouldShowNameModal] = useState(false);
     const savedLang = localStorage.getItem("lang");
     const direction = useDirection();
 
@@ -89,13 +89,10 @@ const Start = () => {
                 style={{ flexDirection: direction }}
                 data-cy="anonymous-login"
                 className={styles.anonymous}
-                onClick={() => setShowNameModul((prev) => !prev)}
+                onClick={() => setShouldShowNameModal((prev) => !prev)}
             >
+                {direction === "row" ? <MoreRight /> : <MoreLeft />}
                 {t("Login with a temporary name")}{" "}
-                <img
-                    src={direction === "row" ? moreRight : moreLeft}
-                    alt="login anonymously"
-                />
             </div>
 
             <GoogleLoginButton />
@@ -106,9 +103,11 @@ const Start = () => {
                 </footer>
             </a>
 
-            {showNameModul ? (
-                <EnterName setShowNameModul={setShowNameModul} />
-            ) : null}
+            {shouldShowNameModal && (
+                <EnterNameModal
+                    closeModal={() => setShouldShowNameModal(false)}
+                />
+            )}
         </div>
     );
 };

@@ -176,8 +176,7 @@ const StatementMain: FC = () => {
 
             setTitle(shortVersion);
             //set navigator tab title
-            console.log('shortVersion',shortVersion)
-          
+              
             document.title = `Consoul - ${shortVersion}`;
 
 

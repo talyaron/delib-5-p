@@ -1,0 +1,13 @@
+.thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 27px;
+        height: 27px;
+    }
+    &.inactive {
+        opacity: 0.4;
+    }
+}

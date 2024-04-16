@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import EditIcon from "../icons/EditIcon";
+import EditIcon from "../../../assets/icons/editIcon.svg?react";
 
 interface Props {
     isAuthrized: boolean;
@@ -21,7 +21,7 @@ const SetEdit: FC<Props> = ({ isAuthrized, setEdit, edit, text }) => {
             <div>
                 {isAuthrized && (
                     <div className="clickable" onClick={() => setEdit(!edit)}>
-                        <EditIcon />
+                        <EditIcon style={{ color: "#226CBC" }} />
                     </div>
                 )}
             </div>
