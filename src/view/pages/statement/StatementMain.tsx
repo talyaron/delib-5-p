@@ -56,6 +56,7 @@ const StatementMain: FC = () => {
         loading,
         statementSubscription,
         statement,
+        topParentStatement,
         role,
     } = useIsAuthorized(statementId);
 
@@ -121,6 +122,7 @@ const StatementMain: FC = () => {
         let unsubListenToStatement: () => void = () => {
             return;
         };
+
         let unsubSubStatements: () => void = () => {
             return;
         };
@@ -140,6 +142,7 @@ const StatementMain: FC = () => {
                 dispatch,
                 setIsStatementNotFound,
             );
+
             unsubSubStatements = listenToSubStatements(statementId, dispatch);
             unsubEvaluations = listenToEvaluations(
                 dispatch,
@@ -166,6 +169,23 @@ const StatementMain: FC = () => {
             unsubEvaluations();
         };
     }, [user, statementId]);
+
+    useEffect(() => {
+        //listen to top parent statement
+        let unsub = () => {
+            return;
+        };
+        if (statement?.topParentId) {
+            unsub = listenToStatement(
+                statement?.topParentId,
+                dispatch,
+                setIsStatementNotFound,
+            );
+        }
+        return () => {
+            unsub();
+        };
+    }, [statement?.topParentId]);
 
     useEffect(() => {
         if (statement) {
@@ -224,6 +244,7 @@ const StatementMain: FC = () => {
                 <>
                     <StatementHeader
                         statement={statement}
+                        topParentStatement={topParentStatement}
                         screen={screen || Screen.CHAT}
                         title={title}
                         showAskPermission={showAskPermission}
@@ -232,8 +253,11 @@ const StatementMain: FC = () => {
                     />
 
                     <MapProvider>
-                        <div style={{"position": 'relative'}}>
-                            <FollowMeToast role={role} statement={statement}/>
+                        <div style={{ position: "relative" }}>
+                            <FollowMeToast
+                                role={role}
+                                statement={statement}
+                            />
                             <SwitchScreens
                                 screen={screen}
                                 statement={statement}

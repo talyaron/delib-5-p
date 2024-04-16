@@ -39,6 +39,7 @@ interface Props {
     title: string;
     screen: Screen;
     statement: Statement | undefined;
+    topParentStatement: Statement | undefined;
     role: Role|undefined;
     showAskPermission: boolean;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,6 +49,7 @@ const StatementHeader: FC<Props> = ({
     title,
     screen,
     statement,
+    topParentStatement,
     role,
     setShowAskPermission,
 }) => {
@@ -79,7 +81,7 @@ const StatementHeader: FC<Props> = ({
 
     // Use States
     const [editHeader, setEditHeader] = useState<boolean>(false);
-    const [followMe, setFollowMe] = useState<boolean>(false);
+    
 
     // Variables
     const titleFontSize = calculateFontSize(title, 16, 25);
@@ -138,9 +140,9 @@ const StatementHeader: FC<Props> = ({
     async function handleFollowMe() {
         try{
         console.log("follow me", pathname);
-        if(!statement) throw new Error("No statement");
+        if(!topParentStatement) throw new Error("No top parent statement");
 
-       await setFollowMeDB(statement, pathname);
+       await setFollowMeDB(topParentStatement, pathname);
         }catch(error){
             console.error(error);
         }

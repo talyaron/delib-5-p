@@ -9,7 +9,7 @@ import {
 } from "../../model/statements/statementsSlice";
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
 import { setStatmentSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
-import { set } from "firebase/database";
+
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -29,6 +29,7 @@ export function useIsAuthorized(statementId: string | undefined): {
     loading: boolean;
     statementSubscription: StatementSubscription | undefined;
     statement: Statement | undefined;
+    topParentStatement: Statement | undefined;
     role: Role | undefined;
     error: boolean;
 } {
@@ -41,6 +42,7 @@ export function useIsAuthorized(statementId: string | undefined): {
     );
     const statement = useAppSelector(statementSelector(statementId));
     const user = store.getState().user.user;
+    const [topParentStatement, setTopParentStatement] = useState<Statement | undefined>(undefined)
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
@@ -50,6 +52,7 @@ export function useIsAuthorized(statementId: string | undefined): {
             getTopParentSubscription(statementId).then(
                 ({ topParentSubscription, topParentStatement, error }) => {
                     try {
+                        setTopParentStatement(topParentStatement);
                         setRole(topParentSubscription?.role);
                         if (error)
                             throw new Error(
@@ -116,5 +119,5 @@ export function useIsAuthorized(statementId: string | undefined): {
     //     }
     // }, [statementSubscription, statement]);
 
-    return { isAuthorized, loading, statementSubscription, statement, error, role };
+    return { isAuthorized, loading, statementSubscription, statement, topParentStatement, error, role };
 }
