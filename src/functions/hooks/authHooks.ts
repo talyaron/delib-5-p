@@ -10,6 +10,7 @@ import {
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
 import { setStatmentSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
 
+
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
     const user = store.getState().user.user;
@@ -28,6 +29,8 @@ export function useIsAuthorized(statementId: string | undefined): {
     loading: boolean;
     statementSubscription: StatementSubscription | undefined;
     statement: Statement | undefined;
+    topParentStatement: Statement | undefined;
+    role: Role | undefined;
     error: boolean;
 } {
     //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
@@ -39,14 +42,18 @@ export function useIsAuthorized(statementId: string | undefined): {
     );
     const statement = useAppSelector(statementSelector(statementId));
     const user = store.getState().user.user;
+    const [topParentStatement, setTopParentStatement] = useState<Statement | undefined>(undefined)
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
+    const [role, setRole] = useState<Role | undefined>(Role.unsubscribed);
     useEffect(() => {
         if (statement && statementId && user) {
             getTopParentSubscription(statementId).then(
                 ({ topParentSubscription, topParentStatement, error }) => {
                     try {
+                        setTopParentStatement(topParentStatement);
+                        setRole(topParentSubscription?.role);
                         if (error)
                             throw new Error(
                                 "Error in getting top parent subscription",
@@ -112,5 +119,5 @@ export function useIsAuthorized(statementId: string | undefined): {
     //     }
     // }, [statementSubscription, statement]);
 
-    return { isAuthorized, loading, statementSubscription, statement, error };
+    return { isAuthorized, loading, statementSubscription, statement, topParentStatement, error, role };
 }

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 // Third party imports
-import { Screen, Statement } from "delib-npm";
+import { Role, Screen, Statement } from "delib-npm";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Helpers
@@ -17,6 +17,7 @@ import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react
 import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
 import BellSlashIcon from "../../../../../assets/icons/bellSlashIcon.svg?react";
 import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
+import FollowMe from "../../../../../assets/icons/follow.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
@@ -32,11 +33,14 @@ import useDirection from "../../../../../functions/hooks/useDirection";
 import useNotificationPermission from "../../../../../functions/hooks/useNotificationPermission";
 import useToken from "../../../../../functions/hooks/useToken";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { setFollowMeDB } from "../../../../../functions/db/statements/setStatments";
 
 interface Props {
     title: string;
     screen: Screen;
     statement: Statement | undefined;
+    topParentStatement: Statement | undefined;
+    role: Role | undefined;
     showAskPermission: boolean;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -45,6 +49,8 @@ const StatementHeader: FC<Props> = ({
     title,
     screen,
     statement,
+    topParentStatement,
+    role,
     setShowAskPermission,
 }) => {
     // Hooks
@@ -120,7 +126,7 @@ const StatementHeader: FC<Props> = ({
                     },
                 );
             }
-            
+
             //default case
             return navigate(`/statement/${statement?.parentId}/${page}`, {
                 state: { from: window.location.pathname },
@@ -130,6 +136,15 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
+    async function handleFollowMe() {
+        try {
+            if (!topParentStatement) throw new Error("No top parent statement");
+
+            await setFollowMeDB(topParentStatement, pathname);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const menuIconStyle = {
         color: headerColor.backgroundColor,
         width: "24px",
@@ -202,6 +217,10 @@ const StatementHeader: FC<Props> = ({
                     thirdIcon={<DisconnectIcon style={menuIconStyle} />}
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
+                    fourthIcon={<FollowMe />}
+                    fourthIconFunc={handleFollowMe}
+                    fourthIconText={"Follow Me"}
+                    role={role}
                 />
             </div>
             {statement && (
