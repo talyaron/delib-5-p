@@ -155,16 +155,16 @@ const StatementChatCard: FC<Props> = ({
                     </div>
                 </div>
                 {displayChat && <StatementChatMore statement={statement} />}
-
+                {/* 
                 <div className="message__box__actions">
                     <div className="message__box__actions__type"></div>
-                    {/* <div className="message__box__actions__evaluations">
+                    <div className="message__box__actions__evaluations">
                         <Evaluation
                             statement={statement}
                             displayScore={false}
                         />
-                    </div> */}
-                </div>
+                    </div>
+                </div> */}
             </div>
             {showModal && (
                 <Modal>
