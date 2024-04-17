@@ -3,35 +3,25 @@ import { Link } from "react-router-dom";
 
 // Custom components
 import StatementSettings from "../../statement/components/settings/StatementSettings";
-import useDirection from "../../../../functions/hooks/useDirection";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import BackArrowIcon from "../../../../assets/icons/chevronLeftIcon.svg?react";
 import { useLanguage } from "../../../../functions/hooks/useLanguages";
+import "./AddStatement.scss";
 
 export const AddStatement = () => {
-    const direction = useDirection();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
 
     return (
-        <ScreenSlide className="page slide-out">
-            <div
-                className="page__header"
-                style={{
-                    flexDirection: direction,
-                    justifyContent: "space-between",
-                    paddingTop: ".5rem",
-                }}
-            >
+        <ScreenSlide className={`page slide-out add-statement`}>
+            <div className={`page__header ${dir}`}>
                 <Link
                     to={"/home"}
                     state={{ from: window.location.pathname }}
-                    className="setStatement__back"
+                    className="back-arrow-icon"
                 >
-                    {" "}
                     <BackArrowIcon />
                 </Link>
                 <h1>{t("Add New Group")}</h1>
-                <span></span>
             </div>
             <StatementSettings />
         </ScreenSlide>

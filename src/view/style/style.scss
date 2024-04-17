@@ -7,7 +7,6 @@
 @import "./profileImage.scss";
 @import "./popup.scss";
 @import "./mainCard.scss";
-@import "./setStatement.scss";
 @import "./settings.scss";
 @import "./options.scss";
 @import "./modal.scss";
@@ -34,7 +33,7 @@
     --mainBackgroundError: #ff0000;
 
     //alerts
-    --alert:#DD90B6;
+    --alert: #dd90b6;
 
     // Option
     --option: #e7d080;
@@ -151,6 +150,7 @@ b {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 100px;
 }
 
 .card {
