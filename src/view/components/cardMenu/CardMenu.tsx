@@ -14,12 +14,14 @@ const CardMenu: FC<Props> = ({ children, isMe }) => {
 
     return (
         <>
-            <IconButton
-                onClick={() => setOpenMenu(!openMenu)}
-                data-cy="chat-more-icon"
-            >
-                <EllipsisIcon style={{ color: "#5899E0" }} />
-            </IconButton>
+            {children && (
+                <IconButton
+                    onClick={() => setOpenMenu(!openMenu)}
+                    data-cy="chat-more-icon"
+                >
+                    <EllipsisIcon style={{ color: "#5899E0" }} />
+                </IconButton>
+            )}
             {openMenu && (
                 <>
                     <div
