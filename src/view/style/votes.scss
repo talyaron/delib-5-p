@@ -166,6 +166,9 @@
                     gap: 0.5rem;
                     padding-bottom: 0.5rem;
                     font-family: "Patrick Hand", cursive;
+                    @media (max-width: 450px) {
+                        transform: rotate(270deg);
+                    }
                 }
 
                 &__bar {
