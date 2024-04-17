@@ -12,9 +12,16 @@
         max-width: 75ch;
         margin: 0 auto;
         display: flex;
-        justify-content: end;
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
         gap: 0.7rem;
-        padding: 0.5rem;
+        padding: 1rem;
+
+        svg {
+            width: 17px;
+            height: 19px;
+        }
     }
 
     .verticalVote {
