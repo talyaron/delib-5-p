@@ -5,10 +5,10 @@ import IconButton from "../iconButton/IconButton";
 
 interface Props {
     children: any;
-    isMe: boolean;
+    isAlignedLeft: boolean;
 }
 
-const CardMenu: FC<Props> = ({ children, isMe }) => {
+const CardMenu: FC<Props> = ({ children, isAlignedLeft }) => {
     if (!children) return null;
     const [openMenu, setOpenMenu] = useState(false);
 
@@ -28,7 +28,7 @@ const CardMenu: FC<Props> = ({ children, isMe }) => {
                         className={styles.menu}
                         onClick={() => setOpenMenu(!openMenu)}
                         style={
-                            !isMe
+                            isAlignedLeft
                                 ? { right: `.9rem`, left: "unset" }
                                 : { left: ".9rem" }
                         }
