@@ -2,6 +2,7 @@ import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
 import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
 import "./Menu.scss";
+import { useLanguage } from "../../../functions/hooks/useLanguages";
 
 interface MenuProps extends ComponentProps<"div"> {
     iconColor: string;
@@ -15,6 +16,8 @@ const Menu: FC<MenuProps> = ({
     setIsOpen,
     children,
 }) => {
+    const { dir } = useLanguage();
+
     return (
         <div className="menu-container">
             <IconButton onClick={() => setIsOpen(!isMenuOpen)}>
@@ -22,8 +25,8 @@ const Menu: FC<MenuProps> = ({
             </IconButton>
 
             {isMenuOpen && (
-                <div className="menu-content">
-                    {children}{" "}
+                <div className={`menu-content ${dir}`}>
+                    {children}
                     <div
                         className="invisibleBackground"
                         onClick={() => setIsOpen(false)}
