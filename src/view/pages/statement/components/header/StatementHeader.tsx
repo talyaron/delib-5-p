@@ -27,7 +27,6 @@ import {
     handleLogout,
 } from "../../../../../functions/general/helpers";
 import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
-import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
 
 // Hooks
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
@@ -35,7 +34,9 @@ import useNotificationPermission from "../../../../../functions/hooks/useNotific
 import useToken from "../../../../../functions/hooks/useToken";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 import { setFollowMeDB } from "../../../../../functions/db/statements/setStatments";
-
+import Menu from "../../../../components/menu/Menu";
+import MenuOption from "../../../../components/menu/MenuOption";
+import { useDispatch } from "react-redux";
 
 interface Props {
     title: string;
@@ -52,7 +53,6 @@ const StatementHeader: FC<Props> = ({
     screen,
     statement,
     topParentStatement,
-    role,
     setShowAskPermission,
 }) => {
     // Hooks
@@ -63,6 +63,8 @@ const StatementHeader: FC<Props> = ({
     const token = useToken();
     const headerColor = useStatementColor(statement?.statementType || "");
     const permission = useNotificationPermission(token);
+    const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
+    const dispatch = useDispatch();
     const { t, dir } = useLanguage();
     const parentStatement = store
         .getState()
@@ -105,12 +107,12 @@ const StatementHeader: FC<Props> = ({
 
     function handleBack() {
         try {
-           
             //google analytics log
             logEvent(analytics, "statement_back_button", {
                 button_category: "buttons",
                 button_label: "back_button",
-            })
+            });
+
             //in case the back should diret to home
             if (statement?.parentId === "top") {
                 return navigate("/home", {
@@ -201,35 +203,48 @@ const StatementHeader: FC<Props> = ({
                     />
                 )}
 
-                <PopUpMenu
-                    openMoreIconColor={headerColor.color}
-                    firstIcon={<ShareIcon style={menuIconStyle} />}
-                    firstIconFunc={handleShare}
-                    firstIconText={"Share"}
-                    secondIcon={
-                        permission ? (
-                            <BellIcon style={menuIconStyle} />
-                        ) : (
-                            <BellSlashIcon style={menuIconStyle} />
-                        )
-                    }
-                    secondIconFunc={() =>
-                        toggleNotifications(
-                            statement,
-                            permission,
-                            setShowAskPermission,
-                            t,
-                        )
-                    }
-                    secondIconText={permission ? "Turn off" : "Turn on"}
-                    thirdIcon={<DisconnectIcon style={menuIconStyle} />}
-                    thirdIconFunc={handleLogout}
-                    thirdIconText={"Disconnect"}
-                    fourthIcon={<FollowMe style={menuIconStyle} />}
-                    fourthIconFunc={handleFollowMe}
-                    fourthIconText={"Follow Me"}
-                    role={role}
-                />
+                <Menu
+                    setIsOpen={setIsHeaderMenuOpen}
+                    isMenuOpen={isHeaderMenuOpen}
+                    iconColor={headerColor.color}
+                >
+                    <MenuOption
+                        label={t("Share")}
+                        icon={<ShareIcon style={menuIconStyle} />}
+                        onOptionClick={handleShare}
+                    />
+
+                    <MenuOption
+                        label={t(permission ? "Turn off" : "Turn on")}
+                        icon={
+                            permission ? (
+                                <BellIcon style={menuIconStyle} />
+                            ) : (
+                                <BellSlashIcon style={menuIconStyle} />
+                            )
+                        }
+                        onOptionClick={() =>
+                            toggleNotifications(
+                                statement,
+                                permission,
+                                setShowAskPermission,
+                                t,
+                            )
+                        }
+                    />
+                    <MenuOption
+                        label={t("Disconnect")}
+                        icon={<DisconnectIcon style={menuIconStyle} />}
+                        onOptionClick={() => handleLogout(dispatch)}
+                    />
+                    {isAdmin && (
+                        <MenuOption
+                            label={t("Follow Me")}
+                            icon={<FollowMe style={menuIconStyle} />}
+                            onOptionClick={handleFollowMe}
+                        />
+                    )}
+                </Menu>
             </div>
             {statement && (
                 <StatementTopNav statement={statement} screen={screen} />

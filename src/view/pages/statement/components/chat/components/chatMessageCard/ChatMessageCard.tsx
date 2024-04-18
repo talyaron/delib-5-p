@@ -5,8 +5,8 @@ import { Statement, StatementType, User } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-import { store } from "../../../../../../../model/store";
 import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
+import { store } from "../../../../../../../model/store";
 
 // Helper functions
 import {
@@ -19,19 +19,24 @@ import {
 import useStatementColor from "../../../../../../../functions/hooks/useStatementColor";
 
 // Custom Components
-import StatementChatMore from "../StatementChatMore";
-import ProfileImage from "../ProfileImage";
 import EditTitle from "../../../../../../components/edit/EditTitle";
-import StatementChatSetEdit from "../../../../../../components/edit/SetEdit";
-import AddSubQuestion from "../addSubQuestion/AddSubQuestion";
+import ProfileImage from "../ProfileImage";
+import StatementChatMore from "../StatementChatMore";
 
 // import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
-import CardMenu from "../../../../../../components/cardMenu/CardMenu";
-import StatementChatSetOption from "../StatementChatSetOption";
-import StatementChatSetQuestion from "../StatementChatSetQuestion";
-import NewSetStatementSimple from "../../../set/NewStatementSimple";
-import Modal from "../../../../../../components/modal/Modal";
+import AddQuestionIcon from "../../../../../../../assets/icons/addQuestion.svg?react";
+import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
+import LightBulbIcon from "../../../../../../../assets/icons/lightBulbIcon.svg?react";
+import QuestionMarkIcon from "../../../../../../../assets/icons/questionIcon.svg?react";
+import {
+    setStatementisOption,
+    updateIsQuestion,
+} from "../../../../../../../functions/db/statements/setStatments";
 import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import Menu from "../../../../../../components/menu/Menu";
+import MenuOption from "../../../../../../components/menu/MenuOption";
+import Modal from "../../../../../../components/modal/Modal";
+import NewSetStatementSimple from "../../../set/NewStatementSimple";
 import "./ChatMessageCard.scss";
 
 export interface NewQuestion {
@@ -69,6 +74,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
     const [isEdit, setIsEdit] = useState(false);
     const [isNewStatementModalOpen, setIsNewStatementModalOpen] =
         useState(false);
+    const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
 
     // Variables
     const creatorId = statement.creatorId;
@@ -87,8 +93,24 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
     const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
 
-    const isLTR = dir === "ltr";
     const isAlignedLeft = (isMe && dir === "ltr") || (!isMe && dir === "rtl");
+
+    function handleSetOption() {
+        try {
+            if (statement.statementType === "option") {
+                const cancelOption = window.confirm(
+                    "Are you sure you want to cancel this option?",
+                );
+                if (cancelOption) {
+                    setStatementisOption(statement);
+                }
+            } else {
+                setStatementisOption(statement);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div
@@ -116,33 +138,49 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                             isTextArea={true}
                         />
                     </div>
-                    <CardMenu isAlignedLeft={isLTR}>
-                        <StatementChatSetEdit
-                            isAuthorized={_isAuthorized}
-                            setEdit={setIsEdit}
-                            edit={isEdit}
-                            text={t("Edit Text")}
-                        />
 
-                        <StatementChatSetQuestion
-                            statement={statement}
-                            text={t("Question")}
-                        />
-
-                        {linkToChildren(statement, parentStatement) && (
-                            <AddSubQuestion
-                                statement={statement}
-                                setShowModal={setIsNewStatementModalOpen}
-                                text={t("Add Question")}
+                    <Menu
+                        setIsOpen={setIsCardMenuOpen}
+                        isMenuOpen={isCardMenuOpen}
+                        iconColor="#5899E0"
+                    >
+                        {_isAuthorized && (
+                            <MenuOption
+                                label={t("Edit Text")}
+                                icon={<EditIcon style={{ color: "#226CBC" }} />}
+                                onOptionClick={() => setIsEdit(!isEdit)}
                             />
                         )}
-                        <StatementChatSetOption
-                            parentStatement={parentStatement}
-                            statement={statement}
-                            text={t("Option")}
-                        />
-                    </CardMenu>
+                        {!isOptionFn(statement) && (
+                            <MenuOption
+                                isOptionSelected={isQuestion}
+                                label={t("Question")}
+                                icon={<QuestionMarkIcon />}
+                                onOptionClick={() =>
+                                    updateIsQuestion(statement)
+                                }
+                            />
+                        )}
+                        {linkToChildren(statement, parentStatement) && (
+                            <MenuOption
+                                label={t("Add Question")}
+                                icon={<AddQuestionIcon />}
+                                onOptionClick={() =>
+                                    setIsNewStatementModalOpen(true)
+                                }
+                            />
+                        )}
+                        {_isAuthorized && !isQuestion && (
+                            <MenuOption
+                                isOptionSelected={isOptionFn(statement)}
+                                icon={<LightBulbIcon />}
+                                label={t("Option")}
+                                onOptionClick={handleSetOption}
+                            />
+                        )}
+                    </Menu>
                 </div>
+
                 {shouldLinkToChildStatements && (
                     <StatementChatMore statement={statement} />
                 )}
