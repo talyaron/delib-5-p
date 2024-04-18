@@ -105,6 +105,8 @@ const StatementHeader: FC<Props> = ({
 
     function handleBack() {
         try {
+           
+            //google analytics log
             logEvent(analytics, "statement_back_button", {
                 button_category: "buttons",
                 button_label: "back_button",
