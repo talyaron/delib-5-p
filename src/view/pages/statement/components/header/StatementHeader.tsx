@@ -216,7 +216,7 @@ const StatementHeader: FC<Props> = ({
                     thirdIcon={<DisconnectIcon style={menuIconStyle} />}
                     thirdIconFunc={handleLogout}
                     thirdIconText={"Disconnect"}
-                    fourthIcon={<FollowMe />}
+                    fourthIcon={<FollowMe style={menuIconStyle} />}
                     fourthIconFunc={handleFollowMe}
                     fourthIconText={"Follow Me"}
                     role={role}
