@@ -157,10 +157,10 @@
                 transform: rotate(270deg);
                 color: #6e8aa6;
                 position: absolute;
-                width: 5rem;
+                width: 20rem;
                 height: fit-content;
-                bottom: 2rem;
-                right: 2rem;
+                bottom: 9.5rem;
+                right: -5rem;
             }
 
             &__column {
@@ -178,6 +178,9 @@
                     gap: 0.5rem;
                     padding-bottom: 0.5rem;
                     font-family: "Patrick Hand", cursive;
+                    @media (max-width: 450px) {
+                        transform: rotate(270deg);
+                    }
                 }
 
                 &__bar {
@@ -240,6 +243,9 @@
                 position: absolute;
                 bottom: 0px;
                 left: 50%50dvh;
+                @media (max-width: 450px) {
+                    transform: scale(1.4) translateY(-5rem) rotate(270deg);
+                }
 
                 svg {
                     width: 23px;
