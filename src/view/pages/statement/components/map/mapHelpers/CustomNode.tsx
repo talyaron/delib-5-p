@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useMapContext } from "../../../../../../functions/hooks/useMap";
 
 // Icons
-import PlusIcon from "../../../../../components/icons/PlusIcon";
+import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 
 // Statements functions
 import {
@@ -118,7 +118,7 @@ export default function CustomNode({ data }: NodeProps) {
                                 mapContext.direction === "TB" ? "-1.8rem" : 0,
                         }}
                     >
-                        <PlusIcon color="#9687F4" />
+                        <PlusIcon />
                     </div>
                     <div
                         className="addIcon"
@@ -130,7 +130,7 @@ export default function CustomNode({ data }: NodeProps) {
                             top: mapContext.direction === "TB" ? 0 : "-1.8rem",
                         }}
                     >
-                        <PlusIcon color="#9687F4" />
+                        <PlusIcon />
                     </div>
                 </>
             )}

@@ -33,7 +33,7 @@ const StatementChatSetQuestion: FC<Props> = ({ statement, text }) => {
                 <QuestionMarkIcon
                     color={
                         statement.statementType === "question"
-                            ? "blue"
+                            ? "#226CBC"
                             : "lightgray"
                     }
                 />

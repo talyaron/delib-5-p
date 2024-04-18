@@ -60,8 +60,7 @@ const StatementVote: FC<Props> = ({
             <div className="page__main">
                 <div className="votingWrapper">
                     <div className="hand">
-                        <HandIcon style={{ width: "16px", height: "19px" }} />{" "}
-                        {totalVotes}
+                        <HandIcon /> {totalVotes}
                     </div>
                     <VotingArea
                         totalVotes={totalVotes}
