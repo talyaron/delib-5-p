@@ -19,7 +19,7 @@ const Menu: FC<MenuProps> = ({
     const { dir } = useLanguage();
 
     return (
-        <div className="menu-container">
+        <div className="menu">
             <IconButton onClick={() => setIsOpen(!isMenuOpen)}>
                 <EllipsisIcon style={{ color: iconColor }} />
             </IconButton>
