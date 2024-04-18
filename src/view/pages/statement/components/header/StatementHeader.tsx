@@ -1,4 +1,6 @@
 import React, { FC, useState } from "react";
+import { logEvent } from "firebase/analytics";
+import { analytics } from "../../../../../functions/db/config";
 
 // Third party imports
 import { Role, Screen, Statement } from "delib-npm";
@@ -33,6 +35,7 @@ import useNotificationPermission from "../../../../../functions/hooks/useNotific
 import useToken from "../../../../../functions/hooks/useToken";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
 import { setFollowMeDB } from "../../../../../functions/db/statements/setStatments";
+
 
 interface Props {
     title: string;
@@ -102,6 +105,10 @@ const StatementHeader: FC<Props> = ({
 
     function handleBack() {
         try {
+            logEvent(analytics, "statement_back_button", {
+                button_category: "buttons",
+                button_label: "back_button",
+            })
             //in case the back should diret to home
             if (statement?.parentId === "top") {
                 return navigate("/home", {
