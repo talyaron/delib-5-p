@@ -18,7 +18,7 @@ export default function HomeHeader() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [openMenu, setOpenMenu] = useState(false);
 
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
 
     useEffect(() => {
         // for deferred app install
@@ -34,7 +34,7 @@ export default function HomeHeader() {
     }
 
     return (
-        <div className="homePage__header">
+        <div className={`homePage__header ${dir}`}>
             <div className="homePage__header__wrapper">
                 <div
                     className="homePage__header__wrapper__title"

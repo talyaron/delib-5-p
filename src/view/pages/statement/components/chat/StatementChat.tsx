@@ -4,7 +4,7 @@ import { FC, useEffect, useState, useRef } from "react";
 import { Statement, User } from "delib-npm";
 
 // Custom Components
-import StatementChatCard from "./components/StatementChatCard";
+import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import StatementInput from "./components/input/StatementInput";
 import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
 
@@ -81,7 +81,7 @@ const StatementChat: FC<Props> = ({
             >
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
-                        <StatementChatCard
+                        <ChatMessageCard
                             parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}

@@ -6,7 +6,6 @@
 @import "./profileImage.scss";
 @import "./popup.scss";
 @import "./mainCard.scss";
-@import "./setStatement.scss";
 @import "./settings.scss";
 @import "./options.scss";
 @import "./modal.scss";
@@ -15,7 +14,6 @@
 @import "./page.scss";
 @import "./badge.scss";
 @import "./buttons.scss";
-@import "./message.scss";
 @import "./addStatementModal.scss";
 @import "./termsOfUse.scss";
 @import "./votes.scss";
@@ -33,7 +31,7 @@
     --mainBackgroundError: #ff0000;
 
     //alerts
-    --alert:#DD90B6;
+    --alert: #dd90b6;
 
     // Option
     --option: #e7d080;
@@ -150,6 +148,7 @@ b {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 100px;
 }
 
 .card {

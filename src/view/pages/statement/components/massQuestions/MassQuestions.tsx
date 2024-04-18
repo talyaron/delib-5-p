@@ -54,7 +54,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                                     key={question.statementId}
                                     statement={question}
                                     index={index}
-                                    setAnswerd={setAnswerd}
+                                    setAnswered={setAnswerd}
                                 />
                             ))}
                             <div className="btns">

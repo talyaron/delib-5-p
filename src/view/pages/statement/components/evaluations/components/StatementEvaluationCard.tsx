@@ -3,7 +3,6 @@ import { FC, useEffect, useState, useRef } from "react";
 // Third Party
 import { Statement, StatementType, User } from "delib-npm";
 
-
 // Redux Store
 import {
     useAppDispatch,
@@ -25,7 +24,6 @@ import CardMenu from "../../../../../components/cardMenu/CardMenu";
 import useStatementColor, {
     StyleProps,
 } from "../../../../../../functions/hooks/useStatementColor";
-import useDirection from "../../../../../../functions/hooks/useDirection";
 
 // Custom Components
 import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
@@ -51,9 +49,8 @@ const StatementEvaluationCard: FC<Props> = ({
     top,
 }) => {
     // Hooks
-   
-    const direction = useDirection();
-    const { t } = useLanguage();
+
+    const { t, dir } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -72,8 +69,8 @@ const StatementEvaluationCard: FC<Props> = ({
     const [edit, setEdit] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    // Vriables
-    const isRtl = direction === "row-reverse";
+    // Variables
+    const isLTR = dir === "ltr";
 
     const _isAuthorized = isAuthorized(
         statement,
@@ -128,12 +125,12 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
                 <div className="optionCard__info__more">
                     {_isAuthorized && (
-                        <CardMenu isMe={isRtl}>
+                        <CardMenu isAlignedLeft={isLTR}>
                             <span onClick={() => setEdit(true)}>
                                 {t("Edit Text")}
                             </span>
                             <SetEdit
-                                isAuthrized={isAuthorized(
+                                isAuthorized={isAuthorized(
                                     statement,
                                     statementSubscription,
                                     parentStatement.creatorId,
@@ -160,7 +157,10 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
             )}
             <div className="optionCard__actions">
-                <Evaluation parentStatement={parentStatement} statement={statement} />
+                <Evaluation
+                    parentStatement={parentStatement}
+                    statement={statement}
+                />
                 {parentStatement.hasChildren && (
                     <AddSubQuestion
                         statement={statement}

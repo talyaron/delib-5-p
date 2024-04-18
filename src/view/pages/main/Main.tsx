@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components
-import Fav from "../../components/fav/Fav";
+import Footer from "../../components/footer/Footer";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
@@ -65,7 +65,7 @@ const Main = () => {
                     <PeopleLoader />
                 )}
             </div>
-            <Fav onclick={handleAddStatment} />
+            <Footer onclick={handleAddStatment} />
         </ScreenSlide>
     );
 };

@@ -29,7 +29,6 @@ import PopUpMenu from "../../../../components/popUpMenu/PopUpMenu";
 
 // Hooks
 import useStatementColor from "../../../../../functions/hooks/useStatementColor";
-import useDirection from "../../../../../functions/hooks/useDirection";
 import useNotificationPermission from "../../../../../functions/hooks/useNotificationPermission";
 import useToken from "../../../../../functions/hooks/useToken";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
@@ -58,11 +57,10 @@ const StatementHeader: FC<Props> = ({
     const { pathname } = useLocation();
     const { page } = useParams();
     const location = useLocation();
-    const direction = useDirection();
     const token = useToken();
     const headerColor = useStatementColor(statement?.statementType || "");
     const permission = useNotificationPermission(token);
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const parentStatement = store
         .getState()
         .statements.statements.find(
@@ -110,6 +108,7 @@ const StatementHeader: FC<Props> = ({
                     state: { from: window.location.pathname },
                 });
             }
+
             //in case the user is at doc or main pagesub screen
             if (location.state && location.state.from.includes("doc")) {
                 return navigate(location.state.from, {
@@ -151,22 +150,21 @@ const StatementHeader: FC<Props> = ({
     };
 
     return (
-        <div className="page__header" style={headerColor}>
-            <div
-                className="page__header__wrapper"
-                style={{ flexDirection: direction }}
-            >
-                <div
-                    className="page__header__wrapper__actions"
-                    style={{ flexDirection: direction }}
-                >
+        <div className={`page__header ${dir}`} style={headerColor}>
+            <div className="page__header__wrapper">
+                <div className="page__header__wrapper__actions">
                     <button
                         className="page__header__wrapper__actions__iconButton"
                         onClick={handleBack}
                         style={{ cursor: "pointer" }}
                         data-cy="back-icon-header"
                     >
-                        <BackArrowIcon style={{ color: headerColor.color }} />
+                        <BackArrowIcon
+                            className="back-arrow-icon"
+                            style={{
+                                color: headerColor.color,
+                            }}
+                        />
                     </button>
                     <Link
                         className="page__header__wrapper__actions__iconButton"
