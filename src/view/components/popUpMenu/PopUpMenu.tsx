@@ -45,7 +45,7 @@ export default function PopUpMenu({
     role,
 }: Props) {
     const [openMore, setOpenMore] = React.useState(false);
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
 
     return isAuthrized ? (
         <div
@@ -58,7 +58,7 @@ export default function PopUpMenu({
             {openMore && (
                 <>
                     <div className="invisibleBackground"></div>
-                    <div className="moreIconBox__menu">
+                    <div className="moreIconBox__menu" style={{right:dir==="rtl"?"-12rem":"0"}}>
                         <span
                             className="moreIconBox__menu__item"
                             onClick={firstIconFunc}

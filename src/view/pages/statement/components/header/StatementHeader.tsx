@@ -191,6 +191,7 @@ const StatementHeader: FC<Props> = ({
                         setEdit={setEditHeader}
                     />
                 )}
+
                 <PopUpMenu
                     openMoreIconColor={headerColor.color}
                     firstIcon={<ShareIcon style={menuIconStyle} />}
