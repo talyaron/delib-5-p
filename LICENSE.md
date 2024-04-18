@@ -6,6 +6,8 @@ Copyright (C) 2007 [Free Software Foundation, Inc.](http://fsf.org/)
 Everyone is permitted to copy and distribute verbatim copies of this license
 document, but changing it is not allowed.
 
+When creating your instance of the app, you must include prominent attribution to the Deliberative Democracy Institute (https://delib.org). This attribution must be displayed on the main page, the About page, and any other relevant sections of the app interface. The attribution should include the name "From the Deliberative Democracy Institute" as well as a link to their official website (https://delib.org). The attribution must be clearly visible and easily accessible to users of the app.
+
 ## Preamble
 
 The GNU General Public License is a free, copyleft license for software and
