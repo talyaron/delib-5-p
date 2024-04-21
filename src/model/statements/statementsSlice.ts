@@ -4,6 +4,8 @@ import { RootState } from "../store";
 // Third party imports
 
 import {
+    Screen,
+    ScreenSchema,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -221,6 +223,24 @@ export const statementsSlicer = createSlice({
         setScreen: (state, action: PayloadAction<StatementScreen>) => {
             try {
                 state.screen = action.payload;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        toggleSubscreen: (state, action: PayloadAction<{statement:Statement,screen:Screen}>) => {
+            try {
+                ScreenSchema.parse(action.payload.screen);
+                StatementSchema.parse(action.payload.statement);
+                const {statement,screen} = action.payload;
+                const _statement = state.statements.find(st=>st.statementId===statement.statementId);
+                if(!_statement) throw new Error("statement not found");
+                const subScreens = _statement?.subScreens;
+                if(subScreens?.length === 0 || subScreens === undefined) throw new Error("no subscreens");
+                if(subScreens.includes(screen)){
+                   _statement.subScreens = subScreens.filter(subScreen=>subScreen!==screen);
+                } else {
+                   _statement.subScreens = [...subScreens,screen];
+                }
             } catch (error) {
                 console.error(error);
             }

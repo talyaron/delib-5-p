@@ -26,45 +26,10 @@ export default function CheckBoxesArea({
     statement: Statement | undefined;
 }) {
     const { t } = useLanguage();
-    const [tabError, setTabError] = useState<string | null>(null);
-    const [updatedSubScreens, setUpdatedSubScreens] = useState<
-        Screen[] | undefined
-    >(statement?.subScreens?.map((screen) => screen)); // Initialize the updatedSubScreens state with the subScreens from the statement
+  
     
-    useEffect(() => {
-        if (tabError) {
-            // Check if there is an error
-
-            alert(tabError); // Show the error message
-            setTabError(null); // Reset the error message
-        }
-    }, [tabError]); // Run this effect when the tabError changes
-
-    const checkOnTabs = (link: Screen, checked: boolean): boolean => {
-        if (!checked) {
-            // if the tab is  tunred off check if it is the last tab
-            console.log(updatedSubScreens)
-            if (updatedSubScreens && updatedSubScreens.length === 0) {
-                // try to uncheck the last tab
-
-                setTabError(() => "אי אפשר לכבות את כל הלשוניות ");
-                return true;
-            }
-            // Remove the link from updatedSubScreens
-            setUpdatedSubScreens((prevSubScreens) =>
-                prevSubScreens?.filter((subScreen) => subScreen !== link),
-            );
-        } else {
-            if (!(updatedSubScreens || []).includes(link)) {
-                // Add the link to updatedSubScreens if it doesn't already exist
-                setUpdatedSubScreens((prevSubScreens) => [
-                    ...(prevSubScreens || []),
-                    link,
-                ]);
-            }
-        }
-        return false;
-    };
+  
+ 
 
     const hasChildren: boolean =
         statement?.hasChildren === false ? false : true;
@@ -100,7 +65,7 @@ export default function CheckBoxesArea({
                             key={`tabs-${index}`}
                             link={navObj.link}
                             label={navObj.name}
-                            checkOnTabs={checkOnTabs}
+                           statement={statement}
                             defaultChecked={isSubPageChecked(statement, navObj)}
                             children={<NavIcon screenLink={navObj.link} />}
                         />

@@ -2,20 +2,27 @@
 import { useState, FC, ComponentProps } from "react";
 import styles from "./CustomSwitch.module.scss";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
-import { Screen } from "delib-npm";
+import { Screen, Statement } from "delib-npm";
 
 interface Props extends ComponentProps<"div"> {
     label: string;
     link: Screen;
     defaultChecked: boolean;
-    checkOnTabs: (link:Screen,checked:boolean) => boolean;
+    statement:Statement |undefined;
 }
 
-const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children ,checkOnTabs}) => {
+const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children, statement}) => {
     const [checked, setChecked] = useState(defaultChecked);
     const { t } = useLanguage();
    
     const handleChange = () => {
+        if(!statement) return;
+        const {subScreens} = statement;
+        if(!subScreens) return;
+        //in case it exists in the subScreens remove it
+        if(subScreens.includes(link){
+
+        }
       const isLastTab=  checkOnTabs(link,  !checked);
          if(!isLastTab)
         setChecked( !checked)  
