@@ -30,6 +30,7 @@ export default function CheckBoxesArea({
     const [updatedSubScreens, setUpdatedSubScreens] = useState<
         Screen[] | undefined
     >(statement?.subScreens?.map((screen) => screen)); // Initialize the updatedSubScreens state with the subScreens from the statement
+    
     useEffect(() => {
         if (tabError) {
             // Check if there is an error
@@ -43,7 +44,7 @@ export default function CheckBoxesArea({
         if (!checked) {
             // if the tab is  tunred off check if it is the last tab
             console.log(updatedSubScreens)
-            if (updatedSubScreens && updatedSubScreens.length === 1) {
+            if (updatedSubScreens && updatedSubScreens.length === 0) {
                 // try to uncheck the last tab
 
                 setTabError(() => "אי אפשר לכבות את כל הלשוניות ");
