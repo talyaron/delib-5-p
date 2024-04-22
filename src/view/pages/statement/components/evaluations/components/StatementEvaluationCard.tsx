@@ -149,12 +149,19 @@ const StatementEvaluationCard: FC<Props> = ({
                         >
                             <MenuOption
                                 label={t("Edit Text")}
-                                icon={<EditIcon style={{ color: "#226CBC" }} />}
-                                onOptionClick={() => setEdit(!edit)}
+                                icon={<EditIcon style={{ color: "#226cbc" }} />}
+                                onOptionClick={() => {
+                                    setEdit(!edit);
+                                    setIsCardMenuOpen(false);
+                                }}
                             />
                             <MenuOption
                                 isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
+                                icon={
+                                    <LightBulbIcon
+                                        style={{ color: "#226cbc" }}
+                                    />
+                                }
                                 label={t("Remove Option")}
                                 onOptionClick={handleSetOption}
                             />
