@@ -165,6 +165,7 @@ export const statementsSlicer = createSlice({
         setStatementsSubscription: (state, action: PayloadAction<StatementSubscription[]>) => {
             try {
                 const newStatements = action.payload;
+
                 //TODO: remove this after all statements are updated at about 4 April 2024
                 // z.array(StatementSubscriptionSchema).parse(newStatements);
                 

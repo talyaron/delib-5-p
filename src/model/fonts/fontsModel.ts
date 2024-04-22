@@ -1,1 +1,1 @@
-export const defaultFontSize:number = 17;
+export const defaultFontSize = 17;

@@ -83,7 +83,8 @@ export function isAuthorized(
 
 export function isAdmin(role:Role|undefined):boolean{
     if(role === Role.admin || role=== Role.creator) return true;
-    return false;
+    
+return false;
 }
 
 export function isOptionFn(statement: Statement): boolean {
@@ -325,7 +326,8 @@ export function getStatementSubscriptionId(
         return `${user.uid}--${statementId}`;
     } catch (error) {
         console.error(error);
-        return undefined;
+        
+return undefined;
     }
 }
 
@@ -336,11 +338,13 @@ export function checkArrayAndReturnByOrder(array: Array<Screen|string>, ...value
                 return value;
             }
         }
-        return Screen.CHAT;
+        
+return Screen.CHAT;
 
     } catch (error) {
         console.error(error);
-        return Screen.CHAT;
+        
+return Screen.CHAT;
 
     }
 }

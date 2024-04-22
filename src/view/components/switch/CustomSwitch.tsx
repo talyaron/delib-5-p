@@ -8,7 +8,7 @@ interface Props {
     label: string;
     link: Screen;
     defaultChecked: boolean;
-    statement?: Statement;
+    statement?: Statement | undefined;
     _toggleSubScreen: (screen: Screen, statement: Statement) => void;
     children: JSX.Element;
 }
@@ -30,7 +30,6 @@ const CustomSwitch: FC<Props> = ({
         if (subScreens && subScreens.length > 0) {
             setChecked(!checked);
             if (statement) _toggleSubScreen(link, statement);
-           
         }
     };
 
