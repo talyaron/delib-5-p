@@ -4,7 +4,7 @@ import evaluation3 from "../../../../assets/icons/evaluation/evaluation3.svg";
 import evaluation4 from "../../../../assets/icons/evaluation/evaluation4.svg";
 import evaluation5 from "../../../../assets/icons/evaluation/evaluation5.svg";
 
-export interface EnhancedEvaluationThumbs {
+export interface EnhancedEvaluationThumb {
     id: string;
     evaluation: number;
     svg: string;
@@ -12,7 +12,7 @@ export interface EnhancedEvaluationThumbs {
     alt: string;
 }
 
-export const enhancedEvaluationsThumbs: EnhancedEvaluationThumbs[] = [
+export const enhancedEvaluationsThumbs: EnhancedEvaluationThumb[] = [
     { id: "a", evaluation: 1, svg: evaluation1, color: "#70CB9F", alt: "like" },
     {
         id: "b",

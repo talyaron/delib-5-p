@@ -6,23 +6,22 @@ import EnhancedEvaluation from "./enhancedEvaluation/EnhancedEvaluation";
 interface EvaluationProps {
     parentStatement: Statement;
     statement: Statement;
-    
 }
 
-const Evaluation: FC<EvaluationProps> = ({parentStatement, statement }) => {
-    const displayScore = parentStatement.statementSettings?.showEvaluation || false;
-    return (
-        <>
-            {parentStatement.statementSettings?.enhancedEvaluation ? (
-                <EnhancedEvaluation statement={statement} displayScore={displayScore} />
-            ) : (
-                <SimpleEvaluation
-                    statement={statement}
-                    displayScore={displayScore}
-                />
-            )}
-        </>
-    );
+const Evaluation: FC<EvaluationProps> = ({ parentStatement, statement }) => {
+    const shouldDisplayScore =
+        parentStatement.statementSettings?.showEvaluation || false;
+
+    const props = {
+        statement,
+        shouldDisplayScore,
+    } as const;
+
+    if (parentStatement.statementSettings?.enhancedEvaluation) {
+        return <EnhancedEvaluation {...props} />;
+    }
+
+    return <SimpleEvaluation {...props} />;
 };
 
 export default Evaluation;

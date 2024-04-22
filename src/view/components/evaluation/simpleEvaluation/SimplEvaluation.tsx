@@ -20,10 +20,13 @@ import styles from "./SimpleEvaluation.module.scss";
 
 interface Props {
     statement: Statement;
-    displayScore?: boolean;
+    shouldDisplayScore?: boolean;
 }
 
-const SimpleEvaluation: FC<Props> = ({ statement, displayScore = true }) => {
+const SimpleEvaluation: FC<Props> = ({
+    statement,
+    shouldDisplayScore = true,
+}) => {
     const direction = useDirection();
 
     const initContVote = statement.con ? statement.con : 0;
@@ -52,7 +55,7 @@ const SimpleEvaluation: FC<Props> = ({ statement, displayScore = true }) => {
                 className="evaluation__box"
                 style={{ flexDirection: direction }}
             >
-                {displayScore && <span>{conVote}</span>}
+                {shouldDisplayScore && <span>{conVote}</span>}
                 <div className="evaluation__box__icon">
                     <Thumb
                         evaluation={evaluation || 0}
@@ -64,16 +67,16 @@ const SimpleEvaluation: FC<Props> = ({ statement, displayScore = true }) => {
                 </div>
                 <div className="evaluation__box__icon">
                     <Thumb
-                        evaluation={evaluation ||0}
+                        evaluation={evaluation || 0}
                         upDown="up"
                         statement={statement}
                         setProVote={setProVote}
                         setConVote={setConVote}
                     />
                 </div>
-                {displayScore && <span>{proVote}</span>}
+                {shouldDisplayScore && <span>{proVote}</span>}
             </div>
-            {displayScore && (
+            {shouldDisplayScore && (
                 <div className={styles.totalEvaluations}>
                     {consensusToDisplay}
                 </div>

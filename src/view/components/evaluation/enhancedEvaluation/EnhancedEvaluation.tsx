@@ -1,131 +1,61 @@
 import { Statement } from "delib-npm";
 import { FC, useState } from "react";
-import styles from "./EnhancedEvaluation.module.scss";
 
 import { setEvaluationToDB } from "../../../../functions/db/evaluation/setEvaluation";
 import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
 import { evaluationSelector } from "../../../../model/evaluations/evaluationsSlice";
+import { EnhancedEvaluationThumb } from "./EnhancedEvaluationModel";
 import {
-    enhancedEvaluationsThumbs,
-    EnhancedEvaluationThumbs,
-} from "./EnhancedEvaluationModel";
-import { evlaluationToIcon } from "./EnhancedEvaluationCont";
+    getEvaluationThumbIdByScore,
+    getEvaluationThumbsToDisplay,
+} from "./evaluationHelpers";
+import "./EnhancedEvaluation.scss";
 
 interface EnhancedEvaluationProps {
     statement: Statement;
-    displayScore?: boolean;
+    shouldDisplayScore?: boolean;
 }
 
 const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
     statement,
-    displayScore,
+    shouldDisplayScore,
 }) => {
-    const evaluation = useAppSelector(
+    const evaluationScore = useAppSelector(
         evaluationSelector(statement.statementId),
     );
 
-    const [evalPanelClose, setEvalPanelClose] = useState(true);
+    const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
 
-    if (evaluation === undefined && evalPanelClose) {
-        const _enhancedEvaluationsThumbs = [
-            enhancedEvaluationsThumbs[0],
-            enhancedEvaluationsThumbs[enhancedEvaluationsThumbs.length - 1],
-        ];
+    const evaluationsThumbs = getEvaluationThumbsToDisplay({
+        evaluationScore,
+        isEvaluationPanelOpen,
+    });
 
-        return (
-            <div className={styles.box}>
-                <div
-                    className={styles.container}
-                    onClick={() => {
-                        setEvalPanelClose(false);
-                    }}
-                >
-                    {_enhancedEvaluationsThumbs.map((evl, i) => (
-                        <EvaluationThumb
-                            key={i}
-                            evl={evl}
-                            evaluation={evaluation || 0}
-                            statement={statement}
-                            press={false}
-                        />
-                    ))}
-                </div>
-                {displayScore && (
-                    <div
-                        className={styles.evaluation}
-                        style={{
-                            color: statement.consensus < 0 ? "red" : "black",
-                        }}
-                    >
-                        {Math.round(statement.consensus * 100) / 100}
-                    </div>
-                )}
-            </div>
-        );
-    }
-
-    if (evalPanelClose) {
-        const evaluatedThumbId: string = evlaluationToIcon(
-            evaluation,
-            enhancedEvaluationsThumbs,
-        );
-        const evaluatedThumb: EnhancedEvaluationThumbs =
-            enhancedEvaluationsThumbs.find(
-                (evl) => evl.id === evaluatedThumbId,
-            ) || enhancedEvaluationsThumbs[2];
-
-        return (
-            <div
-                className={styles.box}
-                onClick={() => setEvalPanelClose(false)}
-            >
-                <div className={styles.container}>
-                    {[evaluatedThumb].map((evl, i) => (
-                        <EvaluationThumb
-                            key={i}
-                            evl={evl}
-                            evaluation={evaluation || 0}
-                            statement={statement}
-                        />
-                    ))}
-                </div>
-                {displayScore && (
-                    <div
-                        className={styles.evaluation}
-                        style={{
-                            color: statement.consensus < 0 ? "red" : "black",
-                        }}
-                    >
-                        {Math.round(statement.consensus * 100) / 100}
-                    </div>
-                )}
-            </div>
-        );
-    }
+    const roundedEvaluationScore = Math.round(statement.consensus * 100) / 100;
 
     return (
-        <div className={styles.box}>
+        <div className="enhanced-evaluation">
             <div
-                className={styles.container}
-                onClick={() => setEvalPanelClose(true)}
+                className="evaluation-thumbs"
+                onClick={() => {
+                    setIsEvaluationPanelOpen(!isEvaluationPanelOpen);
+                }}
             >
-                {enhancedEvaluationsThumbs.map((evl, i) => (
+                {evaluationsThumbs.map((evaluationThumb) => (
                     <EvaluationThumb
-                        key={i}
-                        evl={evl}
-                        evaluation={evaluation}
+                        key={evaluationThumb.id}
+                        evaluationThumb={evaluationThumb}
+                        evaluationScore={evaluationScore || 0}
                         statement={statement}
+                        isEvaluationPanelOpen={isEvaluationPanelOpen}
                     />
                 ))}
             </div>
-            {displayScore && (
+            {shouldDisplayScore && (
                 <div
-                    className={styles.evaluation}
-                    style={{
-                        color: statement.consensus < 0 ? "red" : "black",
-                    }}
+                    className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
                 >
-                    {Math.round(statement.consensus * 100) / 100}
+                    {roundedEvaluationScore}
                 </div>
             )}
         </div>
@@ -134,39 +64,35 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 export default EnhancedEvaluation;
 
-interface ThumbProps {
+interface EvaluationThumbProps {
     statement: Statement;
-    evaluation: number | undefined;
-    evl: EnhancedEvaluationThumbs;
-    press?: boolean;
+    evaluationScore: number | undefined;
+    evaluationThumb: EnhancedEvaluationThumb;
+    isEvaluationPanelOpen: boolean;
 }
-function EvaluationThumb({
-    evl,
-    evaluation = 0,
+
+const EvaluationThumb: FC<EvaluationThumbProps> = ({
+    evaluationThumb,
+    evaluationScore = 0,
     statement,
-    press,
-}: ThumbProps) {
-    function handleSetEvaluation(evaluation: number) {
-        setEvaluationToDB(statement, evaluation);
-    }
+    isEvaluationPanelOpen,
+}) => {
+    const handleSetEvaluation = (): void => {
+        if (isEvaluationPanelOpen) {
+            setEvaluationToDB(statement, evaluationThumb.evaluation);
+        }
+    };
+
+    const isThumbActive =
+        evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
+
     return (
         <button
-            onClick={() => {
-                if (press !== false) {
-                    handleSetEvaluation(evl.evaluation);
-                }
-            }}
-            style={{
-                backgroundColor: evl.color,
-                opacity:
-                    evl.id ===
-                    evlaluationToIcon(evaluation, enhancedEvaluationsThumbs)
-                        ? 1
-                        : 0.8,
-            }}
-            className={`${styles.item} ${evl.id === evlaluationToIcon(evaluation, enhancedEvaluationsThumbs) ? styles.active : ""}`}
+            className={`evaluation-thumb ${isThumbActive ? "active" : ""}`}
+            style={{ backgroundColor: evaluationThumb.color }}
+            onClick={handleSetEvaluation}
         >
-            <img src={evl.svg} alt="like" />
+            <img src={evaluationThumb.svg} alt={evaluationThumb.alt} />
         </button>
     );
-}
+};

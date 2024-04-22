@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party
-import { Statement, StatementType, User } from "delib-npm";
+import { Statement, User } from "delib-npm";
 
 // Redux Store
 import {
@@ -36,8 +36,10 @@ import Menu from "../../../../../components/menu/Menu";
 import MenuOption from "../../../../../components/menu/MenuOption";
 import Modal from "../../../../../components/modal/Modal";
 import StatementChatMore from "../../chat/components/StatementChatMore";
-import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
+import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
+import "./StatementEvaluationCard.scss";
+import IconButton from "../../../../../components/iconButton/IconButton";
 
 interface Props {
     statement: Statement;
@@ -70,7 +72,8 @@ const StatementEvaluationCard: FC<Props> = ({
     // Use States
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
+        useState(false);
     const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
 
     const _isAuthorized = isAuthorized(
@@ -96,6 +99,7 @@ const StatementEvaluationCard: FC<Props> = ({
     //     if (!edit && linkToChildren(statement, parentStatement))
     //         navigate(`/statement/${statement.statementId}/options`);
     // }
+
     function handleSetOption() {
         try {
             if (statement.statementType === "option") {
@@ -113,13 +117,14 @@ const StatementEvaluationCard: FC<Props> = ({
         }
     }
 
+    const shouldLinkToChildStatements = linkToChildren(
+        statement,
+        parentStatement,
+    );
+
     return (
         <div
-            className={
-                statement.statementType === StatementType.result
-                    ? "optionCard optionCard--result"
-                    : "optionCard"
-            }
+            className="statement-evaluation-card"
             style={{
                 top: `${newTop}px`,
                 borderLeft: `8px solid ${
@@ -129,18 +134,16 @@ const StatementEvaluationCard: FC<Props> = ({
             }}
             ref={elementRef}
         >
-            <div className="optionCard__info">
-                <div className="optionCard__info__text">
-                    <div>
-                        <EditTitle
-                            statement={statement}
-                            isEdit={edit}
-                            setEdit={setEdit}
-                            isTextArea={true}
-                        />
-                    </div>
+            <div className="info">
+                <div className="text">
+                    <EditTitle
+                        statement={statement}
+                        isEdit={edit}
+                        setEdit={setEdit}
+                        isTextArea={true}
+                    />
                 </div>
-                <div className="optionCard__info__more">
+                <div className="more">
                     {_isAuthorized && (
                         <Menu
                             setIsOpen={setIsCardMenuOpen}
@@ -149,7 +152,7 @@ const StatementEvaluationCard: FC<Props> = ({
                         >
                             <MenuOption
                                 label={t("Edit Text")}
-                                icon={<EditIcon style={{ color: "#226cbc" }} />}
+                                icon={<EditIcon />}
                                 onOptionClick={() => {
                                     setEdit(!edit);
                                     setIsCardMenuOpen(false);
@@ -157,11 +160,7 @@ const StatementEvaluationCard: FC<Props> = ({
                             />
                             <MenuOption
                                 isOptionSelected={isOptionFn(statement)}
-                                icon={
-                                    <LightBulbIcon
-                                        style={{ color: "#226cbc" }}
-                                    />
-                                }
+                                icon={<LightBulbIcon />}
                                 label={t("Remove Option")}
                                 onOptionClick={handleSetOption}
                             />
@@ -169,32 +168,34 @@ const StatementEvaluationCard: FC<Props> = ({
                     )}
                 </div>
             </div>
-            {linkToChildren(statement, parentStatement) && (
-                <div className="optionCard__info__chat">
+            {shouldLinkToChildStatements && (
+                <div className="chat">
                     <StatementChatMore
                         statement={statement}
                         color={statementColor.color}
                     />
                 </div>
             )}
-            <div className="optionCard__actions">
+            <div className="actions">
                 <Evaluation
                     parentStatement={parentStatement}
                     statement={statement}
                 />
                 {parentStatement.hasChildren && (
-                    <AddSubQuestion
-                        statement={statement}
-                        setShowModal={setShowModal}
-                    />
+                    <IconButton
+                        className="add-sub-question-button"
+                        onClick={() => setShouldShowAddSubQuestionModal(true)}
+                    >
+                        <AddQuestionIcon />
+                    </IconButton>
                 )}
             </div>
-            {showModal && (
+            {shouldShowAddSubQuestionModal && (
                 <Modal>
                     <NewSetStatementSimple
                         parentStatement={statement}
                         isOption={false}
-                        setShowModal={setShowModal}
+                        setShowModal={setShouldShowAddSubQuestionModal}
                     />
                 </Modal>
             )}
