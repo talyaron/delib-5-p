@@ -9,7 +9,7 @@ import styles from "./MassQuestion.module.scss";
 // Custom Components
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
 import EditTitle from "../../../../../../components/edit/EditTitle";
-import SetEdit from "../../../../../../components/edit/SetEdit";
+import SetEdit from "../../../../../../components/edit/EditTitle";
 
 // db Functions
 import { listenToUserAnswer } from "../../../../../../../functions/db/statements/listenToStatements";

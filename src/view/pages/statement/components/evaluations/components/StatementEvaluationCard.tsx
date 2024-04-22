@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party
 import { Statement, StatementType, User } from "delib-npm";
@@ -16,9 +16,9 @@ import {
 // Helpers
 import {
     isAuthorized,
+    isOptionFn,
     linkToChildren,
 } from "../../../../../../functions/general/helpers";
-import CardMenu from "../../../../../components/cardMenu/CardMenu";
 
 // Hooks
 import useStatementColor, {
@@ -26,15 +26,18 @@ import useStatementColor, {
 } from "../../../../../../functions/hooks/useStatementColor";
 
 // Custom Components
-import StatementChatSetOption from "../../chat/components/StatementChatSetOption";
+import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
+import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
+import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
+import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
-import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
-import StatementChatMore from "../../chat/components/StatementChatMore";
-import SetEdit from "../../../../../components/edit/SetEdit";
+import Menu from "../../../../../components/menu/Menu";
+import MenuOption from "../../../../../components/menu/MenuOption";
 import Modal from "../../../../../components/modal/Modal";
+import StatementChatMore from "../../chat/components/StatementChatMore";
+import AddSubQuestion from "../../chat/components/addSubQuestion/AddSubQuestion";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
@@ -50,7 +53,7 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     // Hooks
 
-    const { t, dir } = useLanguage();
+    const { t } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -68,9 +71,7 @@ const StatementEvaluationCard: FC<Props> = ({
     const [newTop, setNewTop] = useState(top);
     const [edit, setEdit] = useState(false);
     const [showModal, setShowModal] = useState(false);
-
-    // Variables
-    const isLTR = dir === "ltr";
+    const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
 
     const _isAuthorized = isAuthorized(
         statement,
@@ -95,6 +96,22 @@ const StatementEvaluationCard: FC<Props> = ({
     //     if (!edit && linkToChildren(statement, parentStatement))
     //         navigate(`/statement/${statement.statementId}/options`);
     // }
+    function handleSetOption() {
+        try {
+            if (statement.statementType === "option") {
+                const cancelOption = window.confirm(
+                    "Are you sure you want to cancel this option?",
+                );
+                if (cancelOption) {
+                    setStatementisOption(statement);
+                }
+            } else {
+                setStatementisOption(statement);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div
@@ -125,26 +142,23 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
                 <div className="optionCard__info__more">
                     {_isAuthorized && (
-                        <CardMenu isAlignedLeft={isLTR}>
-                            <span onClick={() => setEdit(true)}>
-                                {t("Edit Text")}
-                            </span>
-                            <SetEdit
-                                isAuthorized={isAuthorized(
-                                    statement,
-                                    statementSubscription,
-                                    parentStatement.creatorId,
-                                )}
-                                edit={edit}
-                                setEdit={setEdit}
+                        <Menu
+                            setIsOpen={setIsCardMenuOpen}
+                            isMenuOpen={isCardMenuOpen}
+                            iconColor="#5899E0"
+                        >
+                            <MenuOption
+                                label={t("Edit Text")}
+                                icon={<EditIcon style={{ color: "#226CBC" }} />}
+                                onOptionClick={() => setEdit(!edit)}
                             />
-
-                            <StatementChatSetOption
-                                parentStatement={parentStatement}
-                                statement={statement}
-                                text={t("Remove Option")}
+                            <MenuOption
+                                isOptionSelected={isOptionFn(statement)}
+                                icon={<LightBulbIcon />}
+                                label={t("Remove Option")}
+                                onOptionClick={handleSetOption}
                             />
-                        </CardMenu>
+                        </Menu>
                     )}
                 </div>
             </div>
