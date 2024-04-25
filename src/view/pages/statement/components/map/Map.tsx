@@ -20,6 +20,7 @@ import NewSetStatementSimple from "../set/NewStatementSimple";
 // Hooks
 import { useMapContext } from "../../../../../functions/hooks/useMap";
 import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { ReactFlowProvider } from "reactflow";
 
 interface Props {
     statement: Statement;
@@ -27,10 +28,6 @@ interface Props {
 
 const Map: FC<Props> = ({ statement }) => {
     const { t } = useLanguage();
-
-    // const subStatements = useAppSelector(
-    //     statementsChildSelector(statement.statementId)
-    // );
     const { mapContext, setMapContext } = useMapContext();
 
     const [results, setResults] = useState<Results | undefined>();
@@ -83,46 +80,48 @@ const Map: FC<Props> = ({ statement }) => {
 
     return (
         <ScreenFadeIn className="page__main">
-            <select
-                onChange={(ev: any) => handleFilter(ev.target.value)}
-                defaultValue={FilterType.questionsResultsOptions}
-                style={{
-                    width: "100vw",
-                    maxWidth: "300px",
-                    margin: "1rem auto",
-                    position: "absolute",
-                    right: "1rem",
-                    zIndex: 100,
-                }}
-            >
-                <option value={FilterType.questionsResults}>
-                    {t("Questions and Results")}
-                </option>
-                <option value={FilterType.questionsResultsOptions}>
-                    {t("Questions, options and Results")}
-                </option>
-            </select>
-            <div
-                style={{
-                    flex: "auto",
-                    height: "20vh",
-                    width: "100%",
-                    direction: "ltr",
-                }}
-            >
-                {results && <StatementMap topResult={results} />}
-            </div>
+            <ReactFlowProvider>
+                <select
+                    onChange={(ev: any) => handleFilter(ev.target.value)}
+                    defaultValue={FilterType.questionsResultsOptions}
+                    style={{
+                        width: "100vw",
+                        maxWidth: "300px",
+                        margin: "1rem auto",
+                        position: "absolute",
+                        right: "1rem",
+                        zIndex: 100,
+                    }}
+                >
+                    <option value={FilterType.questionsResults}>
+                        {t("Questions and Results")}
+                    </option>
+                    <option value={FilterType.questionsResultsOptions}>
+                        {t("Questions, options and Results")}
+                    </option>
+                </select>
+                <div
+                    style={{
+                        flex: "auto",
+                        height: "20vh",
+                        width: "100%",
+                        direction: "ltr",
+                    }}
+                >
+                    {results && <StatementMap topResult={results} />}
+                </div>
 
-            {mapContext.showModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={mapContext.parentStatement}
-                        isOption={mapContext.isOption}
-                        setShowModal={toggleModal}
-                        getSubStatements={getSubStatements}
-                    />
-                </Modal>
-            )}
+                {mapContext.showModal && (
+                    <Modal>
+                        <NewSetStatementSimple
+                            parentStatement={mapContext.parentStatement}
+                            isOption={mapContext.isOption}
+                            setShowModal={toggleModal}
+                            getSubStatements={getSubStatements}
+                        />
+                    </Modal>
+                )}
+            </ReactFlowProvider>
         </ScreenFadeIn>
     );
 };

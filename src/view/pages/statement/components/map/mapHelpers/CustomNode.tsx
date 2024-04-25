@@ -93,7 +93,7 @@ export default function CustomNode({ data }: NodeProps) {
 
     return (
         <>
-            <div
+            <button
                 onClick={handleNodeClick}
                 data-id={statementId}
                 style={{
@@ -101,12 +101,13 @@ export default function CustomNode({ data }: NodeProps) {
                     textAlign: "center",
                     wordBreak: "break-word",
                 }}
+                className="node__content"
             >
                 {nodeTitle}
-            </div>
+            </button>
             {showBtns && (
                 <>
-                    <div
+                    <button
                         className="addIcon"
                         onClick={handleAddChildNode}
                         style={{
@@ -119,8 +120,8 @@ export default function CustomNode({ data }: NodeProps) {
                         }}
                     >
                         <PlusIcon color="#9687F4" />
-                    </div>
-                    <div
+                    </button>
+                    <button
                         className="addIcon"
                         onClick={handleAddSiblingNode}
                         style={{
@@ -131,7 +132,7 @@ export default function CustomNode({ data }: NodeProps) {
                         }}
                     >
                         <PlusIcon color="#9687F4" />
-                    </div>
+                    </button>
                 </>
             )}
 

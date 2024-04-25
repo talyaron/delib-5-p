@@ -320,6 +320,7 @@ export function getStatementSubscriptionId(
         return `${user.uid}--${statementId}`;
     } catch (error) {
         console.error(error);
+        
         return undefined;
     }
 }
@@ -331,10 +332,12 @@ export function checkArrayAndReturnByOrder(array: Array<Screen|string>, ...value
                 return value;
             }
         }
+
         return Screen.CHAT;
 
     } catch (error) {
         console.error(error);
+
         return Screen.CHAT;
 
     }

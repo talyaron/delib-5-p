@@ -10,9 +10,9 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 export const getLayoutedElements = (
     nodes: Node[],
     edges: Edge[],
-    direction = "TB",
     nodeHeight: number,
     nodeWidth: number,
+    direction = "TB",
 ) => {
     const isHorizontal = direction === "LR";
 
@@ -63,7 +63,7 @@ const edgeStyle = {
     strokeOpacity: 0.5,
 };
 
-const nodeOptions = (result: Results, parentStatement: "top" | Statement) => {
+export const nodeOptions = (result: Results, parentStatement: "top" | Statement) => {
     return {
         id: result.top.statementId,
         data: {
@@ -84,20 +84,16 @@ const edgeOptions = (result: Results, parentId: string): Edge => {
     };
 };
 
-export const createInitialNodesAndEdges = (result: Results|undefined) => {
+export const createInitialNodesAndEdges = (result: Results | undefined) => {
     try {
-        if(!result) return { nodes: [], edges: [] };
+        if (!result) return { nodes: [], edges: [] };
         const edges: Edge[] = [];
 
         const nodes: Node[] = [nodeOptions(result, "top")];
 
-        if (!result.sub) return { nodes, edges };
+        if (!result.sub || result?.sub?.length === 0) return { nodes, edges };
 
-        if (result?.sub?.length === 0) {
-            return { nodes, edges };
-        } else {
-            createNodes(result.sub, result.top);
-        }
+        createNodes(result.sub, result.top);
 
         function createNodes(results: Results[], parentStatement: Statement) {
             results.forEach((sub) => {
