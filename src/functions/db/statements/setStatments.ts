@@ -19,6 +19,33 @@ import { store } from "../../../model/store";
 import { setStatmentSubscriptionNotificationToDB } from "../notifications/notifications";
 import { setStatmentSubscriptionToDB } from "../subscriptions/setSubscriptions";
 
+
+export const updateStatementDragAndDrop = async (
+    statement: Statement,
+    parentStatement: Statement,
+) => {
+    try {
+        if (!statement) throw new Error("Statement is undefined");
+        if (!parentStatement) throw new Error("Parent statement is undefined");
+
+        const statementRef = doc(
+            DB,
+            Collections.statements,
+            statement.statementId,
+        );
+
+        const newStatement = {
+            parentId: parentStatement.statementId,
+            parents: [parentStatement.parents, parentStatement.statementId].flat(1),
+            topParentId: parentStatement.topParentId,
+        };
+
+        await updateDoc(statementRef, newStatement);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const TextSchema = z.string().min(2);
 interface SetStatmentToDBProps {
     statement: Statement;
@@ -295,11 +322,11 @@ export function updateStatement({
         );
 
         if (hasChildren !== undefined)
-            newStatement.hasChildren = hasChildren === "on" ? true : false;
+            newStatement.hasChildren = hasChildren === "on";
 
         if (statementType !== undefined)
             newStatement.statementType =
-                statement.statementType || StatementType.statement;
+                statement.statementType ?? StatementType.statement;
 
         newStatement.subScreens =
             screens !== undefined

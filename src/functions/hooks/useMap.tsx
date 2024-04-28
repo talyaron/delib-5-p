@@ -1,5 +1,5 @@
 import { Statement } from "delib-npm";
-import React, { createContext, useContext, useState, FC } from "react";
+import React, { createContext, useContext, useState, FC, useMemo } from "react";
 import { Position } from "reactflow";
 
 // Define the context
@@ -29,6 +29,7 @@ interface MapProviderProps {
 
 interface MapProviderState {
     showModal: boolean;
+    moveStatementModal: boolean;
     parentStatement: "top" | Statement;
     isOption: boolean;
     isQuestion: boolean;
@@ -42,6 +43,7 @@ interface MapProviderState {
 export const MapProvider: FC<MapProviderProps> = ({ children }) => {
     const [mapContext, setMapContext] = useState<MapProviderState>({
         showModal: false,
+        moveStatementModal: false,
         parentStatement: "top",
         isOption: false,
         isQuestion: false,
@@ -52,10 +54,13 @@ export const MapProvider: FC<MapProviderProps> = ({ children }) => {
         direction: "TB",
     });
 
-    const contextValue: MapProps = {
-        mapContext,
-        setMapContext,
-    };
+    const contextValue = useMemo(
+        () => ({
+            mapContext,
+            setMapContext,
+        }),
+        [mapContext, setMapContext],
+    );
 
     return (
         <MapModelContext.Provider value={contextValue}>

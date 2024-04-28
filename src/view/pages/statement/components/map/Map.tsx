@@ -78,6 +78,13 @@ const Map: FC<Props> = ({ statement }) => {
         }));
     };
 
+    const toggleMoveStatementModal = () => {
+        setMapContext((prev) => ({
+            ...prev,
+            moveStatementModal: !prev.moveStatementModal,
+        }));
+    };
+
     return (
         <ScreenFadeIn className="page__main">
             <ReactFlowProvider>
@@ -119,6 +126,30 @@ const Map: FC<Props> = ({ statement }) => {
                             setShowModal={toggleModal}
                             getSubStatements={getSubStatements}
                         />
+                    </Modal>
+                )}
+                {mapContext.moveStatementModal && (
+                    <Modal>
+                        <div style={{ padding: "1rem" }}>
+                            <h1>
+                                Are you sure you want to move statement here?
+                            </h1>
+                            <br />
+                            <div className="btnBox">
+                                <button
+                                    onClick={toggleMoveStatementModal}
+                                    className="btn btn--large btn--add"
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    onClick={toggleMoveStatementModal}
+                                    className="btn btn--large btn--disagree"
+                                >
+                                    No
+                                </button>
+                            </div>
+                        </div>
                     </Modal>
                 )}
             </ReactFlowProvider>

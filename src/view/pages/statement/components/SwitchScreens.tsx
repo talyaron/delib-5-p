@@ -29,7 +29,7 @@ export default function SwitchScreens({
     handleShowTalker,
     setShowAskPermission,
     toggleAskNotifications,
-}: SwitchScreensProps) {
+}: Readonly<SwitchScreensProps>) {
     if (!statement) return null;
 
     switch (screen) {
@@ -72,8 +72,7 @@ export default function SwitchScreens({
             );
         case Screen.GROUPS:
             return (
-    
-                <Rooms statement={statement} subStatements={subStatements}/>
+                <Rooms statement={statement} subStatements={subStatements} />
             );
         case Screen.SETTINGS:
             return <StatementSettings />;

@@ -25,6 +25,8 @@ import {
 // Custom components
 import CustomNode from "./CustomNode";
 import { useMapContext } from "../../../../../../functions/hooks/useMap";
+import { getStatementFromDB } from "../../../../../../functions/db/statements/getStatement";
+import { updateStatementDragAndDrop } from "../../../../../../functions/db/statements/setStatments";
 
 const nodeTypes = {
     custom: CustomNode,
@@ -50,8 +52,6 @@ export default function StatementMap({ topResult }: Readonly<Props>) {
             mapContext.targetPosition === Position.Top ? "TB" : "LR";
         const { nodes: createdNodes, edges: createdEdges } =
             createInitialNodesAndEdges(topResult);
-
-        console.log(topResult);
 
         const { nodes: layoutedNodes, edges: layoutedEdges } =
             getLayoutedElements(
@@ -86,33 +86,49 @@ export default function StatementMap({ topResult }: Readonly<Props>) {
             const { nodes: layoutedNodes, edges: layoutedEdges } =
                 getLayoutedElements(nodes, edges, height, width, direction);
 
-            console.log(layoutedNodes);
-
             setNodes([...layoutedNodes]);
             setEdges([...layoutedEdges]);
         },
         [nodes, edges],
     );
 
-    const onNodeDragStop = (
+    const onNodeDragStop = async (
         _: React.MouseEvent<Element, MouseEvent>,
         node: Node,
     ) => {
         setEdges(tempEdges);
 
-        // TODO: Add pop up modal to ask if you is sure he want to move statement here...
+        const intersections = getIntersectingNodes(node).map((n) => n.id);
 
-        // Code...
+        if (intersections.length === 0) return;
+
+        // Pop up to ask user if he is sure he wants to move the statement here
+        setMapContext((prev) => ({
+            ...prev,
+            moveStatementModal: true,
+        }));
 
         // TODO: Create a function that will move statement to new chosen location...
-        // 1 - the function should go through topResult variable 
+        // 1 - the function should go through topResult variable
         // 2 - find the node that need to be move
         // 3 - find where the intersecting node is located and move it in the hirarchy
-        // * don't forget to change it in DB! * // 
+        // * don't forget to change it in DB! * //
 
-        // Code...
+        // Get both statements from DB, and update the dragged statement parents
+        const draggedStatement = await getStatementFromDB(node.id);
 
-        console.log(node);
+        const draggedStatementParent = await getStatementFromDB(
+            intersections[0],
+        );
+
+        if (!draggedStatement || !draggedStatementParent) return;
+
+        await updateStatementDragAndDrop(
+            draggedStatement,
+            draggedStatementParent,
+        );
+
+        window.document.location.reload();
     };
 
     const onNodeDrag = useCallback(

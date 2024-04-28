@@ -1,5 +1,7 @@
 import { FC } from "react";
 
+import "../../style/modal.scss";
+
 type Props = {
     children: string | JSX.Element | JSX.Element[];
 };
