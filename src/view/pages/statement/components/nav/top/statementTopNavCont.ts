@@ -1,10 +1,10 @@
-import { Statement, NavObject, Screen } from "delib-npm";
+import { Statement, ScreenInfo, Screen } from "delib-npm";
 import { store } from "../../../../../../model/store";
 
 export function showNavElements(
     statement: Statement | undefined,
-    navArray: NavObject[],
-): NavObject[] {
+    navArray: ScreenInfo[],
+): ScreenInfo[] {
     try {
         if (!statement) return navArray;
         let _navArray = [...navArray];
@@ -14,7 +14,7 @@ export function showNavElements(
         //show setting page if admin of statement
         if (!isAdmin(statement.creatorId)) {
             _navArray = navArray.filter(
-                (navObj: NavObject) => navObj.link !== Screen.SETTINGS,
+                (navObj: ScreenInfo) => navObj.link !== Screen.SETTINGS,
             );
         }
 
@@ -25,7 +25,7 @@ export function showNavElements(
             _navArray = _navArray
 
                 //@ts-ignore
-                .filter((navObj: NavObject) =>
+                .filter((navObj: ScreenInfo) =>
                     subScreens.includes(navObj.link),
                 );
 

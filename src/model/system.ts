@@ -38,9 +38,3 @@ export const ScreenSchema = z.enum([
     Screen.VOTES_RANDOM,
     Screen.VOTES_UPDATED,
 ]);
-
-export interface NavObject {
-    link: Screen;
-    name: string;
-    id: string;
-}

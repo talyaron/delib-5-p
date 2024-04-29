@@ -211,7 +211,7 @@ export default NewSetStatementSimple;
 //     }
 // }
 
-// function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
+// function parseScreensCheckBoxes(dataObj: Object, navArray: ScreenInfo[]) {
 //     try {
 //         if (!dataObj) throw new Error("dataObj is undefined");
 //         if (!navArray) throw new Error("navArray is undefined");

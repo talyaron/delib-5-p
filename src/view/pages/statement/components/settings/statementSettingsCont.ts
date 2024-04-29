@@ -1,6 +1,6 @@
 import {
     Statement,
-    NavObject,
+    ScreenInfo,
     Screen,
     Vote,
     Evaluation,
@@ -19,7 +19,6 @@ import {
     setStatmentToDB,
     updateStatement,
 } from "../../../../../functions/db/statements/setStatments";
-
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -45,10 +44,10 @@ export async function handleGetEvaluators(
     setClicked(true);
 }
 
-// Check if subpage is checked in stored sttatement
+// Check if sub-page is checked in stored statement
 export function isSubPageChecked(
     statement: Statement | undefined,
-    navObj: NavObject,
+    navObj: ScreenInfo,
 ): boolean {
     try {
         //in case of a new statement
@@ -70,20 +69,17 @@ export function isSubPageChecked(
     }
 }
 
-
-
-export async function handleSetStatment(
+export async function handleSetStatement(
     ev: any,
     navigate: any,
     statementId: string | undefined,
     statement: Statement | undefined,
 ) {
     try {
-        console.log("handleSetStatment....");
+        console.log("handleSetStatement....");
         ev.preventDefault();
 
         const data = new FormData(ev.currentTarget);
-     
 
         let title: any = data.get("statement");
 
@@ -93,7 +89,7 @@ export async function handleSetStatment(
         // const numberOfResults: number = Number(data.get("numberOfResults"));
         const description = data.get("description");
 
-        //add to title * at the beggining
+        //add to title * at the begining
         if (title && !title.startsWith("*")) title = "*" + title;
 
         const _statement = `${title}\n${description}`;
@@ -101,7 +97,7 @@ export async function handleSetStatment(
 
         const dataObj: any = Object.fromEntries(data.entries());
         const screens = parseScreensCheckBoxes(dataObj);
-   
+
         const {
             resultsBy,
             numberOfResults,
@@ -111,8 +107,6 @@ export async function handleSetStatment(
             enhancedEvaluation,
             showEvaluation,
         } = dataObj;
-
-       
 
         // If no statementId, user is on AddStatement page
         if (!statementId) {
@@ -127,11 +121,11 @@ export async function handleSetStatment(
                 enableAddEvaluationOption,
                 enableAddVotingOption,
                 enhancedEvaluation,
-                showEvaluation
+                showEvaluation,
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
-            console.log(statement, "statement")
+            console.log(statement, "statement");
 
             await setStatmentToDB({
                 parentStatement: "top",
@@ -159,7 +153,7 @@ export async function handleSetStatment(
                 enableAddEvaluationOption,
                 enableAddVotingOption,
                 enhancedEvaluation,
-                showEvaluation
+                showEvaluation,
             });
             if (!newStatement)
                 throw new Error("newStatement had not been updated");

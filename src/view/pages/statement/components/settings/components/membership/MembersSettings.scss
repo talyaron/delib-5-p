@@ -1,0 +1,30 @@
+.members-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
+
+    .link-anonymous {
+        width: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        color: #3b4f7d;
+        background: none;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        font-family: "Roboto", "Open Sans", sans-serif;
+
+        svg {
+            color: #5899e0;
+        }
+    }
+
+    .members-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+}
