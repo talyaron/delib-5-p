@@ -30,8 +30,6 @@ export default function CheckBoxesArea({
     const { t } = useLanguage();
     const dispatch = useAppDispatch();
 
-    const subScreens = statement?.subScreens as Screen[] | undefined;
-
     const hasChildren: boolean =
         statement?.hasChildren === false ? false : true;
 

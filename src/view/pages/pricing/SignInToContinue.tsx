@@ -1,11 +1,10 @@
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
 import image from "../../../assets/images/loginFirstImage.png";
 
-
 export default function SignInToContinue() {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-       // const cameFrom = location.state.from ? location.state.from : "/";
 
+    // const cameFrom = location.state.from ? location.state.from : "/";
 
     return (
         <div className="loginFirst">

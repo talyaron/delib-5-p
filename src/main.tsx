@@ -13,6 +13,7 @@ import {
     LanguagesEnum,
 } from "./functions/hooks/useLanguages";
 import { setInitLocation } from "./model/location/locationSlice";
+import { install } from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -31,10 +32,6 @@ store.dispatch(
         window.location.pathname === "/" ? "/home" : window.location.pathname,
     ),
 );
-
-export const install: { deferredPrompt: any } = {
-    deferredPrompt: null,
-};
 
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();

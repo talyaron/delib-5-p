@@ -7,7 +7,7 @@ import { store } from "../../../model/store";
 
 export async function setVote(option: Statement) {
     try {
-        //vote refernce
+        //vote reference
         const user: User | null = store.getState().user.user;
         if (!user) throw new Error("User not logged in");
         const voteId = getVoteId(user.uid, option.parentId);

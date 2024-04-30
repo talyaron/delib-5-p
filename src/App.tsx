@@ -131,3 +131,7 @@ export default function App() {
         </div>
     );
 }
+
+export const install: { deferredPrompt: any } = {
+    deferredPrompt: null,
+};
