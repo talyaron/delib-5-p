@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import pricingImg from "../../../assets/images/pricing.png";
-import RadioButtonWithLabel from "../../components/radioButtonWithLabel/RadioButtonWithLabel";
 
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
