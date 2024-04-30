@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 // Helpers
-import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 
 // icons
@@ -15,6 +14,7 @@ import { useLanguage } from "../../../functions/hooks/useLanguages";
 import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
+import { install } from "../../../App";
 
 export default function HomeHeader() {
     // Use State
