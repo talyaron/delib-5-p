@@ -13,15 +13,17 @@ const Page401 = () => {
     }
 
     return (
-        <div>
-            <div className="btns">
-                <button
-                    className="btn btn--large btn--add"
-                    onClick={handleGoHome}
-                >
-                    Go to Homepage
-                </button>
-            </div>
+        <div className="page401">
+            <img
+                className="page401__img"
+                src="/src/assets/images/401-img.png"
+            />
+            <button className="page401__btn" onClick={handleGoHome}>
+                Go to Homepage
+            </button>
+            <h5 className="page401__stamp">
+                From the Institute for Deliberative Democracy
+            </h5>
         </div>
     );
 };

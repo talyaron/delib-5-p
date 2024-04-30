@@ -1,3 +1,33 @@
-.page401-main {
+.page401 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
     background-color: #4e7eb3;
+
+    &__btn {
+        position: absolute;
+        width: 394px;
+        height: 57.58px;
+        top: 600px;
+        border-radius: 56.45px;
+        background-color: #544d80;
+        color: white;
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    &__img {
+        max-width: 1700px;
+        max-height: 800px;
+        padding: 2.5rem 2rem 5rem 2rem;
+    }
+
+    &__stamp {
+        display: flex;
+        flex-direction: row;
+        color: white;
+        margin-top: 0;
+    }
 }
