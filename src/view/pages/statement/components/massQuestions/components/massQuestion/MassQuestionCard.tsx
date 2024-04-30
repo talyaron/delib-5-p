@@ -22,11 +22,11 @@ import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
-    setAnswerd: React.Dispatch<React.SetStateAction<boolean[]>>;
+    setAnswered: React.Dispatch<React.SetStateAction<boolean[]>>;
     index: number;
 }
 
-const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
+const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
     const { t } = useLanguage();
 
     const statementSubscription: StatementSubscription | undefined =
@@ -36,11 +36,11 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
     const [isEdit, setEdit] = useState(false);
 
     useEffect(() => {
-        setAnswerd((answerd: boolean[]) => {
-            const _answerd = [...answerd];
-            _answerd[index] = answer ? true : false;
+        setAnswered((answered: boolean[]) => {
+            const _answered = [...answered];
+            _answered[index] = answer ? true : false;
 
-            return _answerd;
+            return _answered;
         });
     }, [answer]);
 
@@ -55,11 +55,13 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswerd, index }) => {
         };
     }, []);
 
+    const _isAuthorized = isAuthorized(statement, statementSubscription);
+
     return (
         <div className={styles.card}>
             <div className={styles.title}>
                 <SetEdit
-                    isAuthrized={isAuthorized(statement, statementSubscription)}
+                    isAuthorized={_isAuthorized}
                     setEdit={setEdit}
                     edit={isEdit}
                 />

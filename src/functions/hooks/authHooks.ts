@@ -1,7 +1,7 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
 import { store } from "../../model/store";
-import { Access, Role, Statement, StatementSubscription } from "delib-npm";
+import { Access, Role, Statement, StatementSchema, StatementSubscription } from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
 import {
     statementSelector,
@@ -52,6 +52,8 @@ export function useIsAuthorized(statementId: string | undefined): {
             getTopParentSubscription(statementId).then(
                 ({ topParentSubscription, topParentStatement, error }) => {
                     try {
+                      
+                        StatementSchema.parse(topParentStatement);
                         setTopParentStatement(topParentStatement);
                         setRole(topParentSubscription?.role);
                         if (error)
@@ -98,6 +100,7 @@ export function useIsAuthorized(statementId: string | undefined): {
                             }
                         }
                     } catch (e) {
+                        
                         console.error(e);
                         setError(true);
                         setLoading(false);

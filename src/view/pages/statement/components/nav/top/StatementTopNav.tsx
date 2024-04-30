@@ -6,7 +6,7 @@ import { NavObject, Statement, Screen } from "delib-npm";
 
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
-import { navArray } from "./StatementTopNavModel";
+import { allScreens } from "./StatementTopNavModel";
 import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
 
 interface Props {
@@ -17,23 +17,23 @@ interface Props {
 const StatementTopNav: FC<Props> = ({ statement, screen }) => {
     const { t } = useLanguage();
 
-    const _navArray = showNavElements(statement, navArray);
+    const _navArray = showNavElements(statement, allScreens);
 
     return (
         <nav className="page__header__nav" data-cy="statement-nav">
-            {_navArray.map((navObject: NavObject) => (
+            {_navArray.map((screenInfo: NavObject) => (
                 <Link
-                    key={navObject.id}
-                    to={`/statement/${statement.statementId}/${navObject.link}${
-                        navObject.link === Screen.VOTE ? "/votes-voted" : ""
+                    key={screenInfo.id}
+                    to={`/statement/${statement.statementId}/${screenInfo.link}${
+                        screenInfo.link === Screen.VOTE ? "/votes-voted" : ""
                     }`}
                     className={`page__header__nav__button ${
-                        screen === navObject.link
+                        screen === screenInfo.link
                             ? "page__header__nav__button--selected"
                             : ""
                     }`}
                 >
-                    {t(navObject.name)}
+                    {t(screenInfo.name)}
                 </Link>
             ))}
         </nav>

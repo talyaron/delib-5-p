@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import pricingImg from "../../../assets/images/pricing.png";
-import RadioBox from "../../components/radioBox/RadioBox";
 
 import { useAppSelector } from "../../../functions/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
@@ -12,6 +11,7 @@ import GroupCommunicationTwo from "../../../assets/icons/groupCommunicationTwoIc
 import GroupCommunicationThree from "../../../assets/icons/groupCommunicationThreeIcon.svg?react";
 import GroupCommunicationFour from "../../../assets/icons/groupCommunicationFourIcon.svg?react";
 import GroupCommunicationFive from "../../../assets/icons/groupCommunicationFiveIcon.svg?react";
+import RadioBox from "../../components/radioBox/RadioBox";
 
 interface PricePlan {
     price: string;
@@ -123,7 +123,7 @@ export default function PricingPlan() {
                                                 <b>{item.from}</b>
                                             </>
                                         )}{" "}
-                                        patricipants
+                                        participants
                                     </p>
                                     <p className="pricingDescription__textArea__price">
                                         {item.price === "free"

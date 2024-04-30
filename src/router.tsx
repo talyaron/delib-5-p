@@ -7,8 +7,8 @@ import App from "./App";
 import Start from "./view/pages/start/Start";
 import Home from "./view/pages/home/Home";
 import Main from "./view/pages/main/Main";
-import AddStatement from "./view/pages/main/addStatement";
-import Statement from "./view/pages/statement/StatementMain";
+import AddStatement from "./view/pages/main/addStatement/AddStatement";
+import StatementMain from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
 import PricingPlan from "./view/pages/pricing/PricingPlan";
 import SignInToContinue from "./view/pages/pricing/SignInToContinue";
@@ -64,24 +64,24 @@ export const router = createBrowserRouter([
             },
             {
                 path: "statement/:statementId/:page",
-                element: <Statement />,
+                element: <StatementMain />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: ":sort",
-                        element: <Statement />,
+                        element: <StatementMain />,
                         errorElement: <ErrorPage />,
                     },
                 ],
             },
             {
                 path: "statement-an/:anonymous/:statementId/:page",
-                element: <Statement />,
+                element: <StatementMain />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: ":sort",
-                        element: <Statement />,
+                        element: <StatementMain />,
                         errorElement: <ErrorPage />,
                     },
                 ],

@@ -4,6 +4,8 @@ import { RootState } from "../store";
 // Third party imports
 
 import {
+    Screen,
+    ScreenSchema,
     Statement,
     StatementSchema,
     StatementSubscription,
@@ -163,6 +165,7 @@ export const statementsSlicer = createSlice({
         setStatementsSubscription: (state, action: PayloadAction<StatementSubscription[]>) => {
             try {
                 const newStatements = action.payload;
+
                 //TODO: remove this after all statements are updated at about 4 April 2024
                 // z.array(StatementSubscriptionSchema).parse(newStatements);
                 
@@ -225,6 +228,24 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
+        toggleSubscreen: (state, action: PayloadAction<{statement:Statement,screen:Screen}>) => {
+            try {
+                ScreenSchema.parse(action.payload.screen);
+                StatementSchema.parse(action.payload.statement);
+                const {statement,screen} = action.payload;
+                const _statement = state.statements.find(st=>st.statementId===statement.statementId);
+                if(!_statement) throw new Error("statement not found");
+                const subScreens = _statement?.subScreens;
+                if(subScreens?.length === 0 || subScreens === undefined) throw new Error("no subscreens");
+                if(subScreens.includes(screen)){
+                   _statement.subScreens = subScreens.filter(subScreen=>subScreen!==screen);
+                } else {
+                   _statement.subScreens = [...subScreens,screen];
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
         
         setMembership: (
             state,
@@ -281,6 +302,7 @@ export const {
     deleteSubscribedStatement,
     setStatementOrder,
     setScreen,
+    toggleSubscreen,
     setStatementElementHight,
     setMembership,
     removeMembership,

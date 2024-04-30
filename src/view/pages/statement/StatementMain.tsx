@@ -49,6 +49,7 @@ const StatementMain: FC = () => {
     const page = useParams().page as Screen;
     const navigate = useNavigate();
     const { t } = useLanguage();
+
     //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
     const {
         error,
@@ -182,7 +183,8 @@ const StatementMain: FC = () => {
                 setIsStatementNotFound,
             );
         }
-        return () => {
+        
+return () => {
             unsub();
         };
     }, [statement?.topParentId]);
@@ -195,6 +197,7 @@ const StatementMain: FC = () => {
             );
 
             setTitle(shortVersion);
+
             //set navigator tab title
 
             document.title = `Consoul - ${shortVersion}`;
@@ -253,7 +256,7 @@ const StatementMain: FC = () => {
                     />
 
                     <MapProvider>
-                        <div style={{ position: "relative" }}>
+                       
                             <FollowMeToast
                                 role={role}
                                 statement={statement}
@@ -266,7 +269,7 @@ const StatementMain: FC = () => {
                                 setShowAskPermission={setShowAskPermission}
                                 toggleAskNotifications={toggleAskNotifications}
                             />
-                        </div>
+                        
                     </MapProvider>
                 </>
             </div>

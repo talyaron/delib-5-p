@@ -1,6 +1,6 @@
 import { Statement, NavObject, Screen } from "delib-npm";
 import { showNavElements } from "./components/nav/top/statementTopNavCont";
-import { navArray } from "./components/nav/top/StatementTopNavModel";
+import { allScreens } from "./components/nav/top/StatementTopNavModel";
 
 export function availableScreen(
     statement: Statement | undefined,
@@ -14,7 +14,7 @@ export function availableScreen(
         if (statement.subScreens.length === 0)
             throw new Error("statement.subScreens is empty");
 
-        const subScreens: NavObject[] = showNavElements(statement, navArray);
+        const subScreens: NavObject[] = showNavElements(statement, allScreens);
 
         const subScreensLinks: Screen[] = subScreens.map(
             (navObj: NavObject) => navObj.link,

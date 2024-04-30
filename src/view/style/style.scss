@@ -3,12 +3,9 @@
 @import "./bottomNav.scss";
 @import "./evaluation.scss";
 @import "./start.scss";
-@import "./statementCard.scss";
 @import "./profileImage.scss";
 @import "./popup.scss";
 @import "./mainCard.scss";
-@import "./setStatement.scss";
-@import "./settings.scss";
 @import "./options.scss";
 @import "./modal.scss";
 @import "./room.scss";
@@ -16,7 +13,6 @@
 @import "./page.scss";
 @import "./badge.scss";
 @import "./buttons.scss";
-@import "./message.scss";
 @import "./addStatementModal.scss";
 @import "./termsOfUse.scss";
 @import "./votes.scss";
@@ -34,7 +30,7 @@
     --mainBackgroundError: #ff0000;
 
     //alerts
-    --alert:#DD90B6;
+    --alert: #dd90b6;
 
     // Option
     --option: #e7d080;
@@ -143,7 +139,7 @@ b {
 
 .wrapper {
     flex: auto;
-    width: 100vw;
+    width: 100%;
     max-width: 75ch;
     gap: 1rem;
     position: relative;
@@ -151,6 +147,7 @@ b {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 100px;
 }
 
 .card {
@@ -177,59 +174,6 @@ b {
 
 .hand {
     font-family: "Patrick Hand", cursive;
-}
-
-/*  --- title ---- */
-
-.title {
-    background-color: white;
-    color: var(--gray1);
-    font-size: var(--size17);
-
-    padding: 20px;
-    border-radius: 0px 0px var(--roundBorder) var(--roundBorder);
-    margin: 0px auto;
-    box-sizing: border-box;
-    width: 50vw;
-    max-width: 600px;
-    word-wrap: break-word;
-    height: fit-content;
-
-    p {
-        font-size: (var(--size15));
-    }
-
-    &__btnRegister {
-        height: 32px;
-        width: fit-content;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-        padding: 0px 16px;
-        color: var(--white);
-        border-radius: 20px;
-        transition: all 500ms;
-
-        &--select {
-            color: white;
-            border: 2px solid white;
-            font-size: 1rem;
-        }
-
-        &--unselect {
-            background-color: #2889d9;
-            color: #ffffff45;
-            border: 2px solid #ffffff45;
-            font-size: 1rem;
-        }
-    }
-}
-
-@media (max-width: 600px) {
-    .title {
-        width: 100vw;
-    }
 }
 
 .cardTitle {
@@ -619,22 +563,7 @@ b {
     position: relative;
     margin: 0.5rem 0.7rem 0px 0px;
 
-    .redCircle {
-        position: absolute;
-        top: -0.5rem;
-        right: -0.7rem;
-        width: 1.3rem;
-        height: 1.3rem;
-        border-radius: 1.3rem;
-        background: red;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 0.75rem;
-        margin-left: 5px;
-        z-index: 100;
-    }
+    
 }
 
 .center {

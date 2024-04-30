@@ -417,14 +417,15 @@ export async function getTopParentSubscription(
 
         //get top statement
 
-        let topParentStatement: Statement | undefined =
+        const topParentStatement: Statement | undefined =
             await getTopParentStatement(topParentId);
           
        
         return { topParentStatement, topParentSubscription, error: false };
     } catch (error) {
         console.error(error);
-        return {
+        
+return {
             topParentStatement: undefined,
             topParentSubscription: undefined,
             error: true,
@@ -440,7 +441,8 @@ export async function getTopParentSubscription(
         }
         if (!topParentStatement)
             throw new Error("Top parent statement not found");
-        return topParentStatement;
+        
+return topParentStatement;
     }
 
     async function getParentSubscription(
@@ -458,7 +460,8 @@ export async function getTopParentSubscription(
             topParentSubscription =
                 await getStatementSubscriptionFromDB(topParentSubscriptionId);
         }
-        return topParentSubscription;
+        
+return topParentSubscription;
     }
 
     async function getStatement() {
@@ -472,6 +475,7 @@ export async function getTopParentSubscription(
             statement = await getStatementFromDB(statementId);
         }
         if (!statement) throw new Error("Statement not found");
-        return statement;
+        
+return statement;
     }
 }

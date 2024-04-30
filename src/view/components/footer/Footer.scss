@@ -1,0 +1,36 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 95%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--statementBackground);
+
+    .add-statement-button {
+        background: #5899e0;
+        width: 3.125rem;
+        height: 3.125rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        border-radius: 50%;
+        box-shadow: 0px 10px 30px 0px rgba(52, 103, 157, 0.108);
+        user-select: none;
+        cursor: pointer;
+        z-index: 200;
+
+        svg {
+            color: white;
+            width: 26px;
+            height: 25px;
+        }
+
+        &:active {
+            box-shadow: 0px 10px 50px 0px #4f5478b2;
+        }
+    }
+}

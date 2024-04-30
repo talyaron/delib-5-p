@@ -150,6 +150,7 @@ const NewSetStatementSimple: FC<Props> = ({
                         >
                             <input
                                 data-cy="statement-title-simple"
+                                autoComplete="off"
                                 autoFocus={true}
                                 type="text"
                                 name="statement"

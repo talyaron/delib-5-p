@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
 import CheckboxCheckedIcon from "../../../assets/icons/checkboxCheckedIcon.svg?react";
 import CheckboxEmptyIcon from "../../../assets/icons/checkboxEmptyIcon.svg?react";
-import styles from "./Checkbox.module.scss";
+import "./Checkbox.scss";
 
 interface CheckboxProps {
     defaultChecked: boolean;
@@ -30,9 +30,9 @@ const Checkbox: FC<CheckboxProps> = ({
         <label
             htmlFor={name}
             onClick={handleChange}
-            className={`${styles.checkbox} ${checked ? styles.checked : ""}`}
+            className={`checkbox ${checked ? "checked" : ""}`}
         >
-            <div>
+            <div className="checkbox-icon">
                 {checked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
             </div>
 
@@ -42,7 +42,7 @@ const Checkbox: FC<CheckboxProps> = ({
                 checked={checked}
                 onChange={handleChange}
             />
-            {t(label)}
+            <div className="checkbox-label">{t(label)}</div>
         </label>
     );
 };

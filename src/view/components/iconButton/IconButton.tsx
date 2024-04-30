@@ -1,8 +1,8 @@
 import { ComponentProps, FC } from "react";
-import styles from "./IconButton.module.scss";
+import "./IconButton.scss";
 
-const IconButton: FC<ComponentProps<"button">> = (props) => {
-    return <button className={styles.iconButton} {...props} />;
+const IconButton: FC<ComponentProps<"button">> = ({ className, ...props }) => {
+    return <button className={`icon-button ${className}`} {...props} />;
 };
 
 export default IconButton;

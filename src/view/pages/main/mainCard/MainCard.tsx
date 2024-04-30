@@ -13,7 +13,7 @@ const MainCard: FC<Props> = ({ statement }) => {
     return (
         <div
             className="mainCard"
-            style={{ borderLeft: `.625rem solid ${statement.color}` }}
+            style={{ borderInlineStart: `.625rem solid ${statement.color}` }}
         >
             <Link to={`/statement/${statement.statementId}/chat`}>
                 <Text text={statement.statement} />
