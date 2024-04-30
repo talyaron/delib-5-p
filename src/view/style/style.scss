@@ -563,22 +563,7 @@ b {
     position: relative;
     margin: 0.5rem 0.7rem 0px 0px;
 
-    .redCircle {
-        position: absolute;
-        top: -0.5rem;
-        right: -0.7rem;
-        width: 1.3rem;
-        height: 1.3rem;
-        border-radius: 1.3rem;
-        background: red;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 0.75rem;
-        margin-left: 5px;
-        z-index: 100;
-    }
+    
 }
 
 .center {

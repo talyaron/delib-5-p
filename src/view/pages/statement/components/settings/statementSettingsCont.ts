@@ -76,7 +76,7 @@ export async function handleSetStatement(
     statement: Statement | undefined,
 ) {
     try {
-        console.log("handleSetStatement....");
+      
         ev.preventDefault();
 
         const data = new FormData(ev.currentTarget);
@@ -125,8 +125,7 @@ export async function handleSetStatement(
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
-            console.log(statement, "statement");
-
+    
             await setStatmentToDB({
                 parentStatement: "top",
                 statement: newStatement,
