@@ -35,7 +35,7 @@ const AdvancedSettings: FC<WithStatement> = ({ statement }) => {
         <div className="advanced-settings">
             <h3 className="title">{t("Advanced")}</h3>
             <Checkbox
-                name={"shouldEnableSubConversations"}
+                name={"hasChildren"}
                 label={"Enable Sub-Conversations"}
                 defaultChecked={shouldEnableSubConversations}
             />
