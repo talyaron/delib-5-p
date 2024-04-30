@@ -1,6 +1,6 @@
 import {
     Statement,
-    ScreenInfo,
+    NavObject,
     Screen,
     Vote,
     Evaluation,
@@ -47,7 +47,7 @@ export async function handleGetEvaluators(
 // Check if sub-page is checked in stored statement
 export function isSubPageChecked(
     statement: Statement | undefined,
-    navObj: ScreenInfo,
+    navObj: NavObject,
 ): boolean {
     try {
         //in case of a new statement

@@ -2,7 +2,7 @@ import { FC } from "react";
 
 // Third party imports
 import { Link } from "react-router-dom";
-import { ScreenInfo, Statement, Screen } from "delib-npm";
+import { NavObject, Statement, Screen } from "delib-npm";
 
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
@@ -21,7 +21,7 @@ const StatementTopNav: FC<Props> = ({ statement, screen }) => {
 
     return (
         <nav className="page__header__nav" data-cy="statement-nav">
-            {_navArray.map((screenInfo: ScreenInfo) => (
+            {_navArray.map((screenInfo: NavObject) => (
                 <Link
                     key={screenInfo.id}
                     to={`/statement/${statement.statementId}/${screenInfo.link}${

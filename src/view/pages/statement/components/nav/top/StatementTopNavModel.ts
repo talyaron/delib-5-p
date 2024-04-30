@@ -1,6 +1,6 @@
-import { ScreenInfo, Screen } from "delib-npm";
+import { NavObject, Screen } from "delib-npm";
 
-export const allScreensWithoutSettings: ScreenInfo[] = [
+export const allScreensWithoutSettings: NavObject[] = [
     { link: Screen.DOC, name: "Main", id: "doc", default: false },
     { link: Screen.CHAT, name: "Chat", id: "chat", default: true },
     { link: Screen.OPTIONS, name: "Evaluations", id: "options", default: true },
