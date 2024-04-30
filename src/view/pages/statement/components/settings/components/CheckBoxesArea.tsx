@@ -8,7 +8,7 @@ import CustomSwitch from "../../../../../components/switch/CustomSwitch";
 // HELPERS
 import { navArray } from "../../nav/top/StatementTopNavModel";
 import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 // icons
 import NetworkIcon from "../../../../../../assets/icons/networkIcon.svg?react";
@@ -19,6 +19,8 @@ import QuestionIcon from "../../../../../../assets/icons/questionIcon.svg?react"
 import MassQuestionsIcon from "../../../../../../assets/icons/massQuestionsIcon.svg?react";
 import RoomsIcon from "../../../../../../assets/icons/roomsIcon.svg?react";
 import SettingsIcon from "../../../../../../assets/icons/settingsIcon.svg?react";
+import { useAppDispatch } from "../../../../../../functions/hooks/reduxHooks";
+import { toggleSubscreen } from "../../../../../../model/statements/statementsSlice";
 
 export default function CheckBoxesArea({
     statement,
@@ -26,10 +28,9 @@ export default function CheckBoxesArea({
     statement: Statement | undefined;
 }) {
     const { t } = useLanguage();
-  
-    
-  
- 
+    const dispatch = useAppDispatch();
+
+    const subScreens = statement?.subScreens as Screen[] | undefined;
 
     const hasChildren: boolean =
         statement?.hasChildren === false ? false : true;
@@ -52,6 +53,10 @@ export default function CheckBoxesArea({
             ? false
             : true;
 
+    function _toggleSubScreen(screen: Screen, statement: Statement) {
+        dispatch(toggleSubscreen({ screen, statement }));
+    }
+
     return (
         <section className="settings__checkboxSection">
             <div className="settings__checkboxSection__column">
@@ -65,7 +70,8 @@ export default function CheckBoxesArea({
                             key={`tabs-${index}`}
                             link={navObj.link}
                             label={navObj.name}
-                           statement={statement}
+                            statement={statement}
+                            _toggleSubScreen={_toggleSubScreen}
                             defaultChecked={isSubPageChecked(statement, navObj)}
                             children={<NavIcon screenLink={navObj.link} />}
                         />

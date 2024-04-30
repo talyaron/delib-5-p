@@ -301,6 +301,7 @@ export const {
     deleteSubscribedStatement,
     setStatementOrder,
     setScreen,
+    toggleSubscreen,
     setStatementElementHight,
     setMembership,
     removeMembership,

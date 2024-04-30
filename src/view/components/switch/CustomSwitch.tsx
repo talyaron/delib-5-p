@@ -1,33 +1,39 @@
 // CustomSwitch.js
-import { useState, FC, ComponentProps } from "react";
+import { useState, FC } from "react";
 import styles from "./CustomSwitch.module.scss";
 import { useLanguage } from "../../../functions/hooks/useLanguages";
 import { Screen, Statement } from "delib-npm";
 
-interface Props extends ComponentProps<"div"> {
+interface Props {
     label: string;
     link: Screen;
     defaultChecked: boolean;
-    statement:Statement |undefined;
+    statement?: Statement;
+    _toggleSubScreen: (screen: Screen, statement: Statement) => void;
+    children: JSX.Element;
 }
 
-const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children, statement}) => {
+const CustomSwitch: FC<Props> = ({
+    label,
+    defaultChecked,
+    link,
+    statement,
+    _toggleSubScreen,
+    children,
+}) => {
     const [checked, setChecked] = useState(defaultChecked);
     const { t } = useLanguage();
-   
-    const handleChange = () => {
-        if(!statement) return;
-        const {subScreens} = statement;
-        if(!subScreens) return;
-        //in case it exists in the subScreens remove it
-        if(subScreens.includes(link){
 
+    const subScreens = statement?.subScreens as Screen[] | undefined;
+
+    const handleChange = () => {
+        if (subScreens && subScreens.length > 0) {
+            setChecked(!checked);
+            if (statement) _toggleSubScreen(link, statement);
+           
         }
-      const isLastTab=  checkOnTabs(link,  !checked);
-         if(!isLastTab)
-        setChecked( !checked)  
-        }
-    
+    };
+
     return (
         <div className={`${styles.switch} ${checked ? styles.checked : ""}`}>
             <div
