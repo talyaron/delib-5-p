@@ -24,13 +24,3 @@
         width: 34px;
     }
 }
-
-@media screen and (min-width: 75ch) {
-    .section-title {
-        margin-inline-start: 0;
-        &.ltr,
-        &.rtl {
-            border-radius: 18px;
-        }
-    }
-}
