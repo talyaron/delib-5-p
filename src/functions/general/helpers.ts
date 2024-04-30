@@ -11,7 +11,7 @@ import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
-import { navArray } from "../../view/pages/statement/components/nav/top/StatementTopNavModel";
+import { allScreens } from "../../view/pages/statement/components/nav/top/StatementTopNavModel";
 
 export function updateArray(
     currentArray: Array<any>,
@@ -81,10 +81,10 @@ export function isAuthorized(
     }
 }
 
-export function isAdmin(role:Role|undefined):boolean{
-    if(role === Role.admin || role=== Role.creator) return true;
-    
-return false;
+export function isAdmin(role: Role | undefined): boolean {
+    if (role === Role.admin || role === Role.creator) return true;
+
+    return false;
 }
 
 export function isOptionFn(statement: Statement): boolean {
@@ -114,8 +114,8 @@ export function navigateToStatementTab(
         const tab = statement.subScreens?.includes(Screen.CHAT)
             ? Screen.CHAT
             : statement.subScreens
-                ? statement.subScreens[0]
-                : Screen.SETTINGS;
+              ? statement.subScreens[0]
+              : Screen.SETTINGS;
 
         navigate(`/statement/${statement.statementId}/${tab}`, {
             state: { from: window.location.pathname },
@@ -255,9 +255,8 @@ interface dataObj {
 export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
     try {
         if (!dataObj) throw new Error("dataObj is undefined");
-        if (!navArray) throw new Error("navArray is undefined");
 
-        const _navArray = [...navArray];
+        const _navArray = [...allScreens];
 
         const screens = _navArray
 
@@ -326,25 +325,26 @@ export function getStatementSubscriptionId(
         return `${user.uid}--${statementId}`;
     } catch (error) {
         console.error(error);
-        
-return undefined;
+
+        return undefined;
     }
 }
 
-export function checkArrayAndReturnByOrder(array: Array<Screen|string>, ...values: Array<Screen|string>):Screen|string{
+export function checkArrayAndReturnByOrder(
+    array: Array<Screen | string>,
+    ...values: Array<Screen | string>
+): Screen | string {
     try {
         for (const value of values) {
             if (array.includes(value)) {
                 return value;
             }
         }
-        
-return Screen.CHAT;
 
+        return Screen.CHAT;
     } catch (error) {
         console.error(error);
-        
-return Screen.CHAT;
 
+        return Screen.CHAT;
     }
 }

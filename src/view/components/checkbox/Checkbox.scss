@@ -10,22 +10,32 @@
     align-items: center;
     gap: 1rem;
     cursor: pointer;
-    color: var(--text-color-empty);
 
     input {
         display: none;
     }
 
-    svg {
-        color: var(--icon-color-empty);
-        width: 24px;
-        height: 24px;
+    .checkbox-icon {
+        min-width: 24px;
+
+        svg {
+            color: var(--icon-color-empty);
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .checkbox-label {
+        flex: 1;
+        color: var(--text-color-empty);
     }
 
     &.checked {
-        color: var(--text-color-checked);
+        .checkbox-label {
+            color: var(--text-color-checked);
+        }
 
-        svg {
+        .checkbox-icon svg {
             color: var(--icon-color-checked);
         }
     }
