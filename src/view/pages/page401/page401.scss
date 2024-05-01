@@ -6,11 +6,20 @@
     width: 100vw;
     background-color: #4e7eb3;
 
+    &__titleImg {
+        position: absolute;
+        margin: auto;
+        padding: 1rem;
+        width: 370px;
+        height: 230px;
+    }
+
     &__btn {
         position: absolute;
+        margin: 1rem;
         width: 394px;
         height: 57.58px;
-        top: 600px;
+        top: 585px;
         border-radius: 56.45px;
         background-color: #544d80;
         color: white;
@@ -19,15 +28,17 @@
     }
 
     &__img {
-        max-width: 1700px;
-        max-height: 800px;
-        padding: 2.5rem 2rem 5rem 2rem;
+        background-color: #4e7eb3;
+        max-width: 1770px;
+        max-height: 670px;
+        margin: 2rem 1rem 5rem 3rem;
     }
 
     &__stamp {
-        display: flex;
-        flex-direction: row;
+        position: absolute;
+        width: 371px;
+        height: 20px;
+        bottom: 40px;
         color: white;
-        margin-top: 0;
     }
 }

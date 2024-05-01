@@ -15,15 +15,19 @@ const Page401 = () => {
     return (
         <div className="page401">
             <img
+                className="page401__titleImg"
+                src="/src/assets/images/401-error.png"
+            />
+            <img
                 className="page401__img"
                 src="/src/assets/images/401-img.png"
             />
+            <p className="page401__stamp">
+                From the Institute for Deliberative Democracy
+            </p>
             <button className="page401__btn" onClick={handleGoHome}>
                 Go to Homepage
             </button>
-            <h5 className="page401__stamp">
-                From the Institute for Deliberative Democracy
-            </h5>
         </div>
     );
 };
