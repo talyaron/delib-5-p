@@ -41,11 +41,12 @@
         display: flex;
         margin: auto;
         max-width: 1790px;
-        max-height: 550px;
+        max-height: 535px;
 
         @media (max-width: 600px) {
+            padding: 0.5rem;
             width: 360px;
-            height: 300px;
+            height: 280px;
         }
     }
 
