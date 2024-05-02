@@ -14,10 +14,6 @@ import {
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
 
-// Firestore functions
-import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
-import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
-
 // Custom components
 import Loader from "../../../../components/loaders/Loader";
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
@@ -25,25 +21,29 @@ import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 // Hooks & Helpers
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import StatementSettingsForm from "./components/statementSettingsForm/StatementSettingsForm";
+import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
+import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
+import { defaultEmptyStatement } from "./emptyStatementModel";
 
-interface Props {
+interface StatementSettingsProps {
     simple?: boolean;
     new?: boolean;
 }
 
-const StatementSettings: FC<Props> = () => {
+const StatementSettings: FC<StatementSettingsProps> = () => {
     // * Hooks * //
     const { statementId } = useParams();
     const { t } = useLanguage();
+    const [isLoading, setIsLoading] = useState(false);
+    const [statementToEdit, setStatementToEdit] = useState<
+        Statement | undefined
+    >();
 
-    // * Redux * //
     const dispatch = useAppDispatch();
+
     const statement: Statement | undefined = useAppSelector(
         statementSelector(statementId),
     );
-
-    // * Use State * //
-    const [isLoading, setIsLoading] = useState(false);
 
     // * Use Effect * //
     useEffect(() => {
@@ -52,11 +52,19 @@ const StatementSettings: FC<Props> = () => {
         if (statementId) {
             unsubscribe = listenToMembers(dispatch)(statementId);
 
-            if (!statement)
+            if (statement) {
+                setStatementToEdit(statement);
+            } else {
                 (async () => {
                     const statementDB = await getStatementFromDB(statementId);
-                    if (statementDB) dispatch(setStatement(statementDB));
+                    if (statementDB) {
+                        dispatch(setStatement(statementDB));
+                        setStatementToEdit(statementDB);
+                    }
                 })();
+            }
+        } else {
+            setStatementToEdit(defaultEmptyStatement);
         }
 
         return () => {
@@ -66,7 +74,7 @@ const StatementSettings: FC<Props> = () => {
 
     return (
         <ScreenFadeIn className="page__main">
-            {isLoading ? (
+            {isLoading || !statementToEdit ? (
                 <div className="center">
                     <h2>{t("Updating")}</h2>
                     <Loader />
@@ -74,7 +82,8 @@ const StatementSettings: FC<Props> = () => {
             ) : (
                 <StatementSettingsForm
                     setIsLoading={setIsLoading}
-                    statement={statement}
+                    statement={statementToEdit}
+                    setStatementToEdit={setStatementToEdit}
                 />
             )}
         </ScreenFadeIn>

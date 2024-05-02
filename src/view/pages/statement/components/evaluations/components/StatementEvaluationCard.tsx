@@ -28,7 +28,7 @@ import useStatementColor, {
 // Custom Components
 import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
-import { setStatementisOption } from "../../../../../../controllers/db/statements/setStatments";
+import { setStatementIsOption } from "../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Menu from "../../../../../components/menu/Menu";
@@ -107,10 +107,10 @@ const StatementEvaluationCard: FC<Props> = ({
                     "Are you sure you want to cancel this option?",
                 );
                 if (cancelOption) {
-                    setStatementisOption(statement);
+                    setStatementIsOption(statement);
                 }
             } else {
-                setStatementisOption(statement);
+                setStatementIsOption(statement);
             }
         } catch (error) {
             console.error(error);

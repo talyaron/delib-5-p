@@ -1,4 +1,4 @@
-.switch {
+.custom-switch {
     height: 1.85rem;
     width: 220px;
     position: relative;
@@ -55,5 +55,9 @@
         padding-block: 5px;
         padding-inline: 30px;
         margin-left: 20px;
+    }
+
+    .switch-input {
+        display: none;
     }
 }

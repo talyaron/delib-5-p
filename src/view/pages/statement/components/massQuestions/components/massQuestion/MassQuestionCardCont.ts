@@ -2,9 +2,9 @@ import { Statement, StatementType, User } from "delib-npm";
 import { store } from "../../../../../../../model/store";
 import {
     createStatement,
-    setStatmentToDB,
+    setStatementToDB,
     updateStatementText,
-} from "../../../../../../../controllers/db/statements/setStatments";
+} from "../../../../../../../controllers/db/statements/setStatements";
 
 interface handleSetQuestionFromMassCardProps {
     question: Statement;
@@ -36,7 +36,7 @@ export const handleSetQuestionFromMassCard = ({
             });
             if (!statement) throw new Error("statement not created");
 
-            setStatmentToDB({
+            setStatementToDB({
                 statement,
                 parentStatement: question,
                 addSubscription: false,

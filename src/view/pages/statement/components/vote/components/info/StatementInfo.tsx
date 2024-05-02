@@ -38,7 +38,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 
     const title = getTitle(statement);
     const description = getDescription(statement);
-    const _isAuthrized = isAuthorized(
+    const _isAuthorized = isAuthorized(
         statement,
         statementSubscription,
         parentStatement?.creatorId,
@@ -54,7 +54,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                     <>
                         <h3>
                             {title}
-                            {_isAuthrized && (
+                            {_isAuthorized && (
                                 <EditIcon
                                     style={{ color: "#226CBC", width: "24px" }}
                                     onClick={() => setEdit(true)}

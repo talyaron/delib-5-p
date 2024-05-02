@@ -4,7 +4,7 @@ import { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Statements Helpers
-import { updateStatementText } from "../../../controllers/db/statements/setStatments";
+import { updateStatementText } from "../../../controllers/db/statements/setStatements";
 
 // Styles
 import styles from "./EditTitle.module.scss";

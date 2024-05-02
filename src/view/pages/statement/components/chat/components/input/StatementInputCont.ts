@@ -1,8 +1,8 @@
 import { Statement, StatementType, User } from "delib-npm";
 import {
     createStatement,
-    setStatmentToDB,
-} from "../../../../../../../controllers/db/statements/setStatments";
+    setStatementToDB,
+} from "../../../../../../../controllers/db/statements/setStatements";
 
 export function handleAddStatement(
     message: string,
@@ -26,7 +26,7 @@ export function handleAddStatement(
         });
         if (!newStatement) throw new Error("No statement was created");
 
-        setStatmentToDB({
+        setStatementToDB({
             statement: newStatement,
             parentStatement: statement,
             addSubscription: false,

@@ -6,8 +6,8 @@ import { Statement, StatementType } from "delib-npm";
 // Statements Helpers
 import {
     createStatement,
-    setStatmentToDB,
-} from "../../../../../controllers/db/statements/setStatments";
+    setStatementToDB,
+} from "../../../../../controllers/db/statements/setStatements";
 
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
@@ -80,7 +80,7 @@ const NewSetStatementSimple: FC<Props> = ({
                 setIsLoading(false);
                 setShowModal(false);
 
-                await setStatmentToDB({
+                await setStatementToDB({
                     statement: newStatement,
                     parentStatement:
                         parentStatement === "top" ? undefined : parentStatement,

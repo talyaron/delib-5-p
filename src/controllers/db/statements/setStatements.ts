@@ -15,8 +15,8 @@ import {
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
 import { store } from "../../../model/store";
-import { setStatmentSubscriptionNotificationToDB } from "../notifications/notifications";
-import { setStatmentSubscriptionToDB } from "../subscriptions/setSubscriptions";
+import { setStatementSubscriptionNotificationToDB } from "../notifications/notifications";
+import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
 import { getRandomColor } from "../../../view/pages/statement/components/vote/votingColors";
 import {
     getExistingOptionColors,
@@ -24,17 +24,17 @@ import {
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
 
 const TextSchema = z.string().min(2);
-interface SetStatmentToDBProps {
+interface SetStatementToDBParams {
     statement: Statement;
     parentStatement?: Statement | "top";
     addSubscription: boolean;
 }
 
-export const setStatmentToDB = async ({
+export const setStatementToDB = async ({
     statement,
     parentStatement,
     addSubscription = true,
-}: SetStatmentToDBProps): Promise<string | undefined> => {
+}: SetStatementToDBParams): Promise<string | undefined> => {
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
@@ -121,12 +121,12 @@ export const setStatmentToDB = async ({
         if (addSubscription) {
             await Notification.requestPermission();
             statementPromises.push(
-                setStatmentSubscriptionToDB(statement, Role.admin),
+                setStatementSubscriptionToDB(statement, Role.admin),
             );
 
             if (Notification.permission === "granted")
                 statementPromises.push(
-                    setStatmentSubscriptionNotificationToDB(statement),
+                    setStatementSubscriptionNotificationToDB(statement),
                 );
 
             await Promise.all(statementPromises);
@@ -145,21 +145,21 @@ export const setStatmentToDB = async ({
 interface CreateStatementProps {
     text: string;
     parentStatement: Statement | "top";
-    screens?: Screen[];
+    subScreens?: Screen[];
     statementType?: StatementType;
-    enableAddEvaluationOption?: "on" | "off" | boolean;
-    enableAddVotingOption?: "on" | "off" | boolean;
-    enhancedEvaluation?: "on" | "off" | boolean;
-    showEvaluation?: "on" | "off" | boolean;
+    enableAddEvaluationOption: boolean;
+    enableAddVotingOption: boolean;
+    enhancedEvaluation: boolean;
+    showEvaluation: boolean;
     resultsBy?: ResultsBy;
     numberOfResults?: number;
-    hasChildren?: "on" | "off" | boolean;
+    hasChildren: boolean;
     toggleAskNotifications?: () => void;
 }
 export function createStatement({
     text,
     parentStatement,
-    screens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+    subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
     statementType = StatementType.statement,
     enableAddEvaluationOption = true,
     enableAddVotingOption = true,
@@ -220,34 +220,20 @@ export function createStatement({
 
         Object.assign(newStatement, {
             statementSettings: {
-                enhancedEvaluation:
-                    enhancedEvaluation === "on" || enhancedEvaluation === true
-                        ? true
-                        : false,
-                showEvaluation:
-                    showEvaluation === "on" || showEvaluation === true
-                        ? true
-                        : false,
-                enableAddEvaluationOption:
-                    enableAddEvaluationOption === "on" ||
-                    enableAddEvaluationOption === true
-                        ? true
-                        : false,
-                enableAddVotingOption:
-                    enableAddVotingOption === "on" ||
-                    enableAddVotingOption === true
-                        ? true
-                        : false,
+                enhancedEvaluation,
+                showEvaluation,
+                enableAddEvaluationOption,
+                enableAddVotingOption,
             },
         });
-        newStatement.hasChildren = hasChildren === "on" ? true : false;
+        newStatement.hasChildren = hasChildren;
 
         newStatement.statementType = statementType;
         newStatement.consensus = 0;
         newStatement.results = [];
 
-        newStatement.subScreens = screens;
-        newStatement.statementSettings.subScreens = screens;
+        newStatement.subScreens = subScreens;
+        newStatement.statementSettings.subScreens = subScreens;
 
         StatementSchema.parse(newStatement);
 
@@ -262,20 +248,20 @@ export function createStatement({
 interface UpdateStatementProps {
     text: string;
     statement: Statement;
-    screens?: Screen[];
+    subScreens?: Screen[];
     statementType?: StatementType;
-    enableAddEvaluationOption?: "on" | "off" | boolean;
-    enableAddVotingOption?: "on" | "off" | boolean;
-    enhancedEvaluation?: "on" | "off" | boolean;
-    showEvaluation?: "on" | "off" | boolean;
+    enableAddEvaluationOption: boolean;
+    enableAddVotingOption: boolean;
+    enhancedEvaluation: boolean;
+    showEvaluation: boolean;
     resultsBy?: ResultsBy;
     numberOfResults?: number;
-    hasChildren?: "on" | "off" | boolean;
+    hasChildren: boolean;
 }
 export function updateStatement({
     text,
     statement,
-    screens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+    subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
     statementType = StatementType.statement,
     enableAddEvaluationOption,
     enableAddVotingOption,
@@ -283,7 +269,7 @@ export function updateStatement({
     showEvaluation,
     resultsBy,
     numberOfResults,
-    hasChildren = true,
+    hasChildren,
 }: UpdateStatementProps): Statement | undefined {
     try {
         const newStatement: Statement = JSON.parse(JSON.stringify(statement));
@@ -310,25 +296,24 @@ export function updateStatement({
             };
         }
 
-        newStatement.statementSettings = updateStatementSettings(
+        newStatement.statementSettings = updateStatementSettings({
             statement,
             enableAddEvaluationOption,
             enableAddVotingOption,
             enhancedEvaluation,
             showEvaluation,
-            screens,
-        );
+            subScreens,
+        });
 
-        if (hasChildren !== undefined)
-            newStatement.hasChildren = hasChildren === "on" ? true : false;
+        newStatement.hasChildren = hasChildren;
 
         if (statementType !== undefined)
             newStatement.statementType =
                 statement.statementType || StatementType.statement;
 
         newStatement.subScreens =
-            screens !== undefined
-                ? screens
+            subScreens !== undefined
+                ? subScreens
                 : statement.subScreens || [
                       Screen.CHAT,
                       Screen.OPTIONS,
@@ -345,61 +330,44 @@ export function updateStatement({
     }
 }
 
-function updateStatementSettings(
-    statement: Statement,
-    enableAddEvaluationOption: string | boolean | undefined,
-    enableAddVotingOption: string | boolean | undefined,
-    enahncedEvaluation: string | boolean | undefined,
-    showEvaluation: string | boolean | undefined,
-    screens: Screen[] | undefined,
-): {
+interface UpdateStatementSettingsReturnType {
     enableAddEvaluationOption?: boolean;
     enableAddVotingOption?: boolean;
-    enahncedEvaluation?: boolean;
+    enhancedEvaluation?: boolean;
     showEvaluation?: boolean;
-    screens?: Screen[];
-} {
+    subScreens?: Screen[];
+}
+
+interface UpdateStatementSettingsParams {
+    statement: Statement;
+    enableAddEvaluationOption: boolean;
+    enableAddVotingOption: boolean;
+    enhancedEvaluation: boolean;
+    showEvaluation: boolean;
+    subScreens: Screen[] | undefined;
+}
+
+function updateStatementSettings({
+    statement,
+    enableAddEvaluationOption,
+    enableAddVotingOption,
+    enhancedEvaluation,
+    showEvaluation,
+    subScreens,
+}: UpdateStatementSettingsParams): UpdateStatementSettingsReturnType {
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!statement.statementSettings)
             throw new Error("Statement settings is undefined");
 
-        const statementSettings = { ...statement.statementSettings };
-
-        if (enahncedEvaluation === "on" || enahncedEvaluation === true)
-            statementSettings.enhancedEvaluation = true;
-        else statementSettings.enhancedEvaluation = false;
-
-        if (showEvaluation === "on" || showEvaluation === true)
-            statementSettings.showEvaluation = true;
-        else statementSettings.showEvaluation = false;
-
-        if (
-            enableAddEvaluationOption === "on" ||
-            enableAddEvaluationOption === true
-        ) {
-            statementSettings.enableAddEvaluationOption = true;
-        } else if (
-            enableAddEvaluationOption === "off" ||
-            enableAddEvaluationOption === false ||
-            enableAddEvaluationOption === undefined
-        ) {
-            statementSettings.enableAddEvaluationOption = false;
-        }
-
-        if (enableAddVotingOption === "on" || enableAddVotingOption === true) {
-            statementSettings.enableAddVotingOption = true;
-        } else if (
-            enableAddVotingOption === "off" ||
-            enableAddVotingOption === false ||
-            enableAddEvaluationOption === undefined
-        ) {
-            statementSettings.enableAddVotingOption = false;
-        }
-
-        if (screens) statementSettings.subScreens = screens;
-
-        return statementSettings;
+        return {
+            ...statement.statementSettings,
+            enhancedEvaluation,
+            showEvaluation,
+            enableAddEvaluationOption,
+            enableAddVotingOption,
+            subScreens,
+        };
     } catch (error) {
         console.error(error);
 
@@ -407,7 +375,7 @@ function updateStatementSettings(
             showEvaluation: true,
             enableAddEvaluationOption: true,
             enableAddVotingOption: true,
-            screens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+            subScreens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
         };
     }
 }
@@ -435,7 +403,7 @@ export async function updateStatementText(
     } catch (error) {}
 }
 
-export async function setStatementisOption(statement: Statement) {
+export async function setStatementIsOption(statement: Statement) {
     try {
         const statementRef = doc(
             DB,
@@ -498,7 +466,7 @@ export async function setStatementisOption(statement: Statement) {
     }
 }
 
-export async function setStatmentGroupToDB(statement: Statement) {
+export async function setStatementGroupToDB(statement: Statement) {
     try {
         const statementId = statement.statementId;
         const statementRef = doc(DB, Collections.statements, statementId);
@@ -562,7 +530,7 @@ export async function updateIsQuestion(statement: Statement) {
     }
 }
 
-export async function updateStatmentMainImage(
+export async function updateStatementMainImage(
     statement: Statement,
     imageURL: string | undefined,
 ) {

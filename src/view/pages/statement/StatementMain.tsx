@@ -12,7 +12,7 @@ import { listenToStatement } from "../../../controllers/db/statements/listenToSt
 import { listenToStatementSubSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
 import { listenToStatementSubscription } from "../../../controllers/db/statements/listenToStatements";
 import { updateSubscriberForStatementSubStatements } from "../../../controllers/db/subscriptions/setSubscriptions";
-import { setStatmentSubscriptionToDB } from "../../../controllers/db/subscriptions/setSubscriptions";
+import { setStatementSubscriptionToDB } from "../../../controllers/db/subscriptions/setSubscriptions";
 import { listenToEvaluations } from "../../../controllers/db/evaluation/getEvaluation";
 
 // Redux Store
@@ -209,7 +209,7 @@ const StatementMain: FC = () => {
                 // if isSubscribed is false, then subscribe
                 if (!isSubscribed) {
                     // subscribe
-                    setStatmentSubscriptionToDB(statement, Role.member);
+                    setStatementSubscriptionToDB(statement, Role.member);
                 } else {
                     //update subscribed field
                     updateSubscriberForStatementSubStatements(statement);

@@ -14,7 +14,7 @@ import {
     setParticipantInRoomToDB,
     setRoomsStateToDB,
 } from "../../../../../../controllers/db/rooms/setRooms";
-import { setRoomSizeInStatementDB } from "../../../../../../controllers/db/statements/setStatments";
+import { setRoomSizeInStatementDB } from "../../../../../../controllers/db/statements/setStatements";
 
 // Styles
 import _styles from "./admin.module.css";

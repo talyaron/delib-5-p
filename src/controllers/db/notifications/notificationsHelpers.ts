@@ -1,7 +1,7 @@
 import { Statement } from "delib-npm";
 import {
     getUserPermissionToNotifications,
-    setStatmentSubscriptionNotificationToDB,
+    setStatementSubscriptionNotificationToDB,
 } from "./notifications";
 
 export default async function toggleNotifications(
@@ -18,7 +18,7 @@ export default async function toggleNotifications(
 
         if (!isPermited) return setShowAskPermission(true);
 
-        setStatmentSubscriptionNotificationToDB(statement, !permission);
+        setStatementSubscriptionNotificationToDB(statement, !permission);
     } catch (error) {
         console.error(error);
     }

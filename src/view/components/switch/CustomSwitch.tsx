@@ -1,58 +1,50 @@
 // CustomSwitch.js
-import { useState, FC } from "react";
-import styles from "./CustomSwitch.module.scss";
+import { FC } from "react";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
-import { Screen, Statement } from "delib-npm";
+import "./CustomSwitch.scss";
 
 interface Props {
     label: string;
-    link: Screen;
-    defaultChecked: boolean;
-    statement?: Statement | undefined;
-    _toggleSubScreen: (screen: Screen, statement: Statement) => void;
+    name: string;
+    checked: boolean;
     children: JSX.Element;
+    setChecked: (checked: boolean) => void;
 }
 
 const CustomSwitch: FC<Props> = ({
     label,
-    defaultChecked,
-    link,
-    statement,
-    _toggleSubScreen,
+    checked,
+    name,
+    setChecked,
     children,
 }) => {
-    const [checked, setChecked] = useState(defaultChecked);
     const { t } = useLanguage();
 
     const handleChange = () => {
         setChecked(!checked);
-        if (statement) _toggleSubScreen(link, statement);
     };
 
     return (
-        <div className={`${styles.switch} ${checked ? styles.checked : ""}`}>
+        <div className={`custom-switch ${checked ? "checked" : ""}`}>
+            <div className="tag" onClick={handleChange}>
+                {children}
+            </div>
             <div
-                className={styles.tag}
+                className="label"
                 onClick={handleChange}
-                children={children}
-            />
-            <div
-                className={styles.label}
-                onClick={handleChange}
-                data-cy={`toggleSwitch-${link}`}
+                data-cy={`toggleSwitch-${name}`}
             >
                 {t(label)}
             </div>
             <input
-                style={{ display: "none" }}
                 type="checkbox"
-                name={link.toString()}
-                id={`toggleSwitch-${link}`}
+                name={name}
+                id={`toggleSwitch-${name}`}
                 className="switch-input"
                 onChange={handleChange}
                 value={checked ? "on" : "off"}
                 checked={checked}
-                data-cy={`toggleSwitch-input-${link}`}
+                data-cy={`toggleSwitch-input-${name}`}
             />
         </div>
     );

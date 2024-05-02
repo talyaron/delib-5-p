@@ -29,9 +29,9 @@ import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../../assets/icons/lightBulbIcon.svg?react";
 import QuestionMarkIcon from "../../../../../../../assets/icons/questionIcon.svg?react";
 import {
-    setStatementisOption,
+    setStatementIsOption,
     updateIsQuestion,
-} from "../../../../../../../controllers/db/statements/setStatments";
+} from "../../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import Menu from "../../../../../../components/menu/Menu";
 import MenuOption from "../../../../../../components/menu/MenuOption";
@@ -102,10 +102,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                     "Are you sure you want to cancel this option?",
                 );
                 if (cancelOption) {
-                    setStatementisOption(statement);
+                    setStatementIsOption(statement);
                 }
             } else {
-                setStatementisOption(statement);
+                setStatementIsOption(statement);
             }
         } catch (error) {
             console.error(error);

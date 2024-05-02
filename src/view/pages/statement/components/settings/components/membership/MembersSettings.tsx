@@ -15,10 +15,10 @@ import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../../../../../model/store";
-import { WithStatement } from "../../settingsTypeHelpers";
+import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
 
-const MembersSettings: FC<WithStatement> = ({ statement }) => {
+const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
     // * Hooks * //
     const { statementId } = useParams();
     const { t } = useLanguage();
