@@ -2,7 +2,7 @@ import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
 import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
 import "./Menu.scss";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 interface MenuProps extends ComponentProps<"div"> {
     iconColor: string;

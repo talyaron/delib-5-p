@@ -4,7 +4,7 @@ import {
     getDescription,
     getTitle,
     isAuthorized,
-} from "../../../../../../../functions/general/helpers";
+} from "../../../../../../../controllers/general/helpers";
 import Text from "../../../../../../components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
@@ -13,7 +13,7 @@ import info from "../../../../../../../assets/images/info.svg";
 import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 
 import styles from "./StatementInfo.module.scss";
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 import {
     statementSelector,
     statementSubscriptionSelector,

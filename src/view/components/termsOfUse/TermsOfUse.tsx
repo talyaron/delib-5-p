@@ -1,4 +1,4 @@
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Modal from "../modal/Modal";
 
 interface Props {

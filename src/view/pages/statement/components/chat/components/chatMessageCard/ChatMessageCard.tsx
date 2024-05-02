@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import { Statement, StatementType, User } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
 import { store } from "../../../../../../../model/store";
 
@@ -13,10 +13,10 @@ import {
     isAuthorized,
     isOptionFn,
     linkToChildren,
-} from "../../../../../../../functions/general/helpers";
+} from "../../../../../../../controllers/general/helpers";
 
 // Hooks
-import useStatementColor from "../../../../../../../functions/hooks/useStatementColor";
+import useStatementColor from "../../../../../../../controllers/hooks/useStatementColor";
 
 // Custom Components
 import EditTitle from "../../../../../../components/edit/EditTitle";
@@ -31,8 +31,8 @@ import QuestionMarkIcon from "../../../../../../../assets/icons/questionIcon.svg
 import {
     setStatementisOption,
     updateIsQuestion,
-} from "../../../../../../../functions/db/statements/setStatments";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+} from "../../../../../../../controllers/db/statements/setStatments";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import Menu from "../../../../../../components/menu/Menu";
 import MenuOption from "../../../../../../components/menu/MenuOption";
 import Modal from "../../../../../../components/modal/Modal";

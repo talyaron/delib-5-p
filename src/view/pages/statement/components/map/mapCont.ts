@@ -1,6 +1,6 @@
 import { Statement, ResultsBy, Results, maxKeyInObject } from "delib-npm";
-import { getResultsDB } from "../../../../../functions/db/results/getResults";
-import { isOptionFn } from "../../../../../functions/general/helpers";
+import { getResultsDB } from "../../../../../controllers/db/results/getResults";
+import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 export async function getResults(
     statement: Statement,

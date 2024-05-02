@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import AdminArrange from "./AdminArrange";
 import _styles from "./admin.module.css";
 import SetTimers from "./setTimers/SetTimers";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 const styles = _styles as any;
 

@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 
 // Icons
 import AddQuestionIcon from "../../../../../../../assets/icons/addQuestion.svg?react";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 // Styles
 

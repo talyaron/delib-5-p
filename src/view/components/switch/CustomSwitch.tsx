@@ -1,7 +1,7 @@
 // CustomSwitch.js
 import { useState, FC } from "react";
 import styles from "./CustomSwitch.module.scss";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import { Screen, Statement } from "delib-npm";
 
 interface Props {

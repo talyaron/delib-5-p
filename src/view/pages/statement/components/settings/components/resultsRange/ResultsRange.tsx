@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { WithStatement } from "../../settingsTypeHelpers";
 import "./ResultsRange.scss";
 

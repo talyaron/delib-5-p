@@ -4,10 +4,10 @@ import { FC, useEffect, useState } from "react";
 import { Statement } from "delib-npm";
 
 // Redux
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
+import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 
 // Statements helpers
-import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
+import { getToVoteOnParent } from "../../../../../controllers/db/vote/getVotes";
 import { setVoteToStore } from "../../../../../model/vote/votesSlice";
 import { getTotalVoters } from "./statementVoteCont";
 

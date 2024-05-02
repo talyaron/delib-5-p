@@ -6,20 +6,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { User, Role, Screen } from "delib-npm";
 
 // firestore
-import { getIsSubscribed } from "../../../functions/db/subscriptions/getSubscriptions";
-import { listenToSubStatements } from "../../../functions/db/statements/listenToStatements";
-import { listenToStatement } from "../../../functions/db/statements/listenToStatements";
-import { listenToStatementSubSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
-import { listenToStatementSubscription } from "../../../functions/db/statements/listenToStatements";
-import { updateSubscriberForStatementSubStatements } from "../../../functions/db/subscriptions/setSubscriptions";
-import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
-import { listenToEvaluations } from "../../../functions/db/evaluation/getEvaluation";
+import { getIsSubscribed } from "../../../controllers/db/subscriptions/getSubscriptions";
+import { listenToSubStatements } from "../../../controllers/db/statements/listenToStatements";
+import { listenToStatement } from "../../../controllers/db/statements/listenToStatements";
+import { listenToStatementSubSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
+import { listenToStatementSubscription } from "../../../controllers/db/statements/listenToStatements";
+import { updateSubscriberForStatementSubStatements } from "../../../controllers/db/subscriptions/setSubscriptions";
+import { setStatmentSubscriptionToDB } from "../../../controllers/db/subscriptions/setSubscriptions";
+import { listenToEvaluations } from "../../../controllers/db/evaluation/getEvaluation";
 
 // Redux Store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../functions/hooks/reduxHooks";
+} from "../../../controllers/hooks/reduxHooks";
 import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 import { RootState } from "../../../model/store";
 import { userSelector } from "../../../model/users/userSlice";
@@ -33,13 +33,13 @@ import SwitchScreens from "./components/SwitchScreens";
 import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
 
 // Hooks & Helpers
-import { MapProvider } from "../../../functions/hooks/useMap";
-import { statementTitleToDisplay } from "../../../functions/general/helpers";
+import { MapProvider } from "../../../controllers/hooks/useMap";
+import { statementTitleToDisplay } from "../../../controllers/general/helpers";
 import { availableScreen } from "./StatementCont";
-import { useIsAuthorized } from "../../../functions/hooks/authHooks";
+import { useIsAuthorized } from "../../../controllers/hooks/authHooks";
 import LoadingPage from "../loadingPage/LoadingPage";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Page404 from "../page404/Page404";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
 

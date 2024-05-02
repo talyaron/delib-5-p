@@ -2,7 +2,7 @@
 import Checkbox from "../../../../../../components/checkbox/Checkbox";
 
 // HELPERS
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { FC } from "react";
 import "./AdvancedSettings.scss";
 import { WithStatement } from "../../settingsTypeHelpers";

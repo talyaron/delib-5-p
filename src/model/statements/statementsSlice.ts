@@ -16,7 +16,7 @@ import {
 import { z } from "zod";
 
 // Helpers
-import { updateArray } from "../../functions/general/helpers";
+import { updateArray } from "../../controllers/general/helpers";
 
 enum StatementScreen {
     chat = "chat",

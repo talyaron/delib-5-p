@@ -7,7 +7,7 @@ import styles from "./Start.module.scss";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // icons
@@ -18,11 +18,11 @@ import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
 import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
-import useDirection from "../../../functions/hooks/useDirection";
+import useDirection from "../../../controllers/hooks/useDirection";
 import {
     LanguagesEnum,
     useLanguage,
-} from "../../../functions/hooks/useLanguages";
+} from "../../../controllers/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
 import { selectInitLocation } from "../../../model/location/locationSlice";
 

@@ -16,7 +16,7 @@ import TabsToDisplay from "./../../components/tabsToDisplaySwitches/TabsToDispla
 
 // Hooks & Helpers
 import { handleSetStatement } from "./../../statementSettingsCont";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import TitleAndDescription from "./../../components/titleAndDescription/TitleAndDescription";
 import AdvancedSettings from "./../../components/advancedSettings/AdvancedSettings";
 import MembersSettings from "./../../components/membership/MembersSettings";

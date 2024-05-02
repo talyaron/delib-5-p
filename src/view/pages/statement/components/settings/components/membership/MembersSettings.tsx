@@ -5,14 +5,14 @@ import { useParams } from "react-router-dom";
 import { StatementSubscription, Statement } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 
 // Custom components
 import MembershipLine from "./membershipLine/MembershipLine";
 import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../../../../../model/store";
 import { WithStatement } from "../../settingsTypeHelpers";

@@ -4,7 +4,7 @@ import {
     createStatement,
     setStatmentToDB,
     updateStatementText,
-} from "../../../../../../../functions/db/statements/setStatments";
+} from "../../../../../../../controllers/db/statements/setStatments";
 
 interface handleSetQuestionFromMassCardProps {
     question: Statement;

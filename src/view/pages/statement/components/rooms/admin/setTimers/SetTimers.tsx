@@ -6,21 +6,21 @@ import styles from "./setTimers.module.scss";
 // Third party libraries
 import { SetTimer, Statement } from "delib-npm";
 
-import { getSetTimersDB } from "../../../../../../../functions/db/timer/getTimer";
+import { getSetTimersDB } from "../../../../../../../controllers/db/timer/getTimer";
 
 // Redux store
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../../controllers/hooks/reduxHooks";
 import {
     selectStatementSettingTimers,
     setSetTimer,
 } from "../../../../../../../model/timers/timersSlice";
 import SetSetTimerComp from "./setTimer/SetSetTimerComp";
-import { updateTimerSettingDB } from "../../../../../../../functions/db/timer/setTimer";
-import { getSetTimerId } from "../../../../../../../functions/general/helpers";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { updateTimerSettingDB } from "../../../../../../../controllers/db/timer/setTimer";
+import { getSetTimerId } from "../../../../../../../controllers/general/helpers";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     parentStatement: Statement;

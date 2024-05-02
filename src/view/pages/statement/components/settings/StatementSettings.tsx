@@ -8,22 +8,22 @@ import { Statement } from "delib-npm";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
+} from "../../../../../controllers/hooks/reduxHooks";
 import {
     setStatement,
     statementSelector,
 } from "../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
-import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
+import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
+import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
 
 // Custom components
 import Loader from "../../../../components/loaders/Loader";
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 
 // Hooks & Helpers
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import StatementSettingsForm from "./components/statementSettingsForm/StatementSettingsForm";
 
 interface Props {

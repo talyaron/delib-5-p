@@ -11,7 +11,7 @@ import { router } from "./router";
 import {
     LanguageProvider,
     LanguagesEnum,
-} from "./functions/hooks/useLanguages";
+} from "./controllers/hooks/useLanguages";
 import { setInitLocation } from "./model/location/locationSlice";
 import { install } from "./App";
 

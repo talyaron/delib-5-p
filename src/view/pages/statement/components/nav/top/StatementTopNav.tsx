@@ -7,7 +7,7 @@ import { NavObject, Statement, Screen } from "delib-npm";
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
 import { allScreens } from "./StatementTopNavModel";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement;

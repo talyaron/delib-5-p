@@ -7,11 +7,11 @@ import { Statement } from "delib-npm";
 import SendIcon from "../../../../../../components/icons/SendIcon";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../../../../../model/users/userSlice";
-import useDirection from "../../../../../../../functions/hooks/useDirection";
+import useDirection from "../../../../../../../controllers/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
-import useStatementColor from "../../../../../../../functions/hooks/useStatementColor";
+import useStatementColor from "../../../../../../../controllers/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;

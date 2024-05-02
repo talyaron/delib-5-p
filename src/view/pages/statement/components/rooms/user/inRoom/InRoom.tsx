@@ -7,7 +7,7 @@ import { Participant, RoomTimer, Statement } from "delib-npm";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../../controllers/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // // Styles
@@ -16,10 +16,10 @@ import styles from "./InRoom.module.css";
 // Custom Components
 import Text from "../../../../../../components/text/Text";
 import RoomTimers from "../../timer/RoomTimers";
-import { listenToRoomTimers } from "../../../../../../../functions/db/timer/getTimer";
+import { listenToRoomTimers } from "../../../../../../../controllers/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
 import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement;

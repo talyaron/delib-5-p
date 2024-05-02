@@ -13,8 +13,8 @@ import SetRoomTimerComp from "./setTimer/SetRoomTimerComp";
 import {
     setTimersStatusDB,
     startNextTimer,
-} from "../../../../../../functions/db/timer/setTimer";
-import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../controllers/db/timer/setTimer";
+import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 import { selectTimerByTimerId } from "../../../../../../model/timers/timersSlice";
 
 interface Props {

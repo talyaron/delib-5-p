@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../functions/hooks/reduxHooks";
+} from "../../../controllers/hooks/reduxHooks";
 import {
     fontSizeSelector,
     increaseFontSize,
     userSelector,
 } from "../../../model/users/userSlice";
-import { updateUserFontSize } from "../../../functions/db/users/setUsersDB";
+import { updateUserFontSize } from "../../../controllers/db/users/setUsersDB";
 
 // Icons
 import AccessibilityIcon from "../../../assets/icons/accessibilityIcon.svg?react";

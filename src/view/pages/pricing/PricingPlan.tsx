@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import pricingImg from "../../../assets/images/pricing.png";
 
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 import { useNavigate } from "react-router-dom";
 

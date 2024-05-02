@@ -1,8 +1,8 @@
 import { Participant, Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "../../../../../../components/text/Text";
-import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
+import { setRoomJoinToDB } from "../../../../../../../controllers/db/rooms/setRooms";
+import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 import { statementSelector } from "../../../../../../../model/statements/statementsSlice";
 import {
     topicParticipantsSelector,

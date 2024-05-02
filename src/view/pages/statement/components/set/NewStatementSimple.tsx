@@ -7,7 +7,7 @@ import { Statement, StatementType } from "delib-npm";
 import {
     createStatement,
     setStatmentToDB,
-} from "../../../../../functions/db/statements/setStatments";
+} from "../../../../../controllers/db/statements/setStatments";
 
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
@@ -16,7 +16,7 @@ import Loader from "../../../../components/loaders/Loader";
 import questionModalImage from "../../../../../assets/images/questionModalImage.png";
 import optionModalImage from "../../../../../assets/images/optionModalImage.png";
 import HalfPieChartGraphic from "../../../../../assets/svg-graphics/halfPieChart.svg?react";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     parentStatement: Statement | "top";

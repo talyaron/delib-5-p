@@ -13,13 +13,13 @@ import {
     FilterType,
     filterByStatementType,
     sortStatementsByHirarrchy,
-} from "../../../../../functions/general/sorting";
-import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
+} from "../../../../../controllers/general/sorting";
+import { getChildStatements } from "../../../../../controllers/db/statements/getStatement";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 
 // Hooks
-import { useMapContext } from "../../../../../functions/hooks/useMap";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { useMapContext } from "../../../../../controllers/hooks/useMap";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement;

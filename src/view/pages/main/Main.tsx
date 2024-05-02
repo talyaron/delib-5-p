@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { StatementSubscription } from "delib-npm";
 
 // Redux store
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components

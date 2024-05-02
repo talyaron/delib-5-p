@@ -2,7 +2,7 @@ import { FC } from "react";
 import Modal from "../modal/Modal";
 import notifications from "../../../assets/images/notifications.png";
 import styles from "./AskPermisssion.module.scss";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 interface Props {
     showFn: React.Dispatch<React.SetStateAction<boolean>>;

@@ -2,10 +2,10 @@ import { Statement } from "delib-npm";
 import React from "react";
 import { setSelectionsToOptions, sortOptionsIndex } from "../statementVoteCont";
 import { useParams } from "react-router-dom";
-import { isOptionFn } from "../../../../../../functions/general/helpers";
+import { isOptionFn } from "../../../../../../controllers/general/helpers";
 import { VerticalOptionBar } from "./VerticalOptionBar";
 import HorizontalOptionBar from "./HorizontalOptionBar";
-import useWindowDimensions from "../../../../../../functions/hooks/useWindowDimentions";
+import useWindowDimensions from "../../../../../../controllers/hooks/useWindowDimentions";
 
 interface Props {
     setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
