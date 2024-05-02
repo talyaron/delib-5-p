@@ -35,8 +35,6 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
             //if not --> go back to the parent statement, in this order: home, questions, options, chat, vote
 
             //check if there is history
-            console.log(location)
-
             if (location.state?.from) {
                 return navigate(location.state.from);
             }
