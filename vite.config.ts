@@ -51,6 +51,7 @@ const manifestPlugin: Partial<VitePWAOptions> = {
             {
                 src: "./src/assets/logo/logo-512px.png",
                 sizes: "512x512",
+                type: "image/png",
             },
         ],
         start_url: "/",
