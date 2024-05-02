@@ -9,15 +9,16 @@ import Text from "../../../../../../components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
-import info from "../../../../../../../assets/images/info.svg";
+import InfoGraphic from "../../../../../../../assets/svg-graphics/infoGraphic.svg?react";
 import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 
-import styles from "./StatementInfo.module.scss";
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 import {
     statementSelector,
     statementSubscriptionSelector,
 } from "../../../../../../../model/statements/statementsSlice";
+import "./StatementInfo.scss";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement | null;
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
+    const { t } = useLanguage();
     if (!statement) return null;
 
     const statementSubscription = useAppSelector(
@@ -34,7 +36,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
         statementSelector(statement.parentId),
     );
 
-    const [edit, setEdit] = useState(false);
+    const [isInEditMode, setIsInEditMode] = useState(false);
 
     const title = getTitle(statement);
     const description = getDescription(statement);
@@ -45,41 +47,24 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
     );
 
     return (
-        <div className={styles.info}>
-            <div className={styles.image}>
-                <img src={info} alt="info" />
+        <div className="statement-info">
+            <div className="svg-graphic">
+                <InfoGraphic />
             </div>
-            <div className={styles.texts}>
-                {!edit ? (
-                    <>
-                        <h3>
-                            {title}
-                            {_isAuthorized && (
-                                <EditIcon
-                                    style={{ color: "#226CBC", width: "24px" }}
-                                    onClick={() => setEdit(true)}
-                                />
-                            )}
-                        </h3>
-                        <div className={styles.text}>
-                            <Text text={description} />
-                        </div>
-                        <div className="btns">
-                            <div
-                                className="btn btn--agree "
-                                onClick={() => setShowInfo(false)}
-                            >
-                                OK
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <form
-                        className={styles.form}
-                        onSubmit={(e: any) =>
-                            handleSubmitInfo(e, statement, setEdit, setShowInfo)
-                        }
-                    >
+
+            {isInEditMode ? (
+                <form
+                    className="form"
+                    onSubmit={(e: any) =>
+                        handleSubmitInfo(
+                            e,
+                            statement,
+                            setIsInEditMode,
+                            setShowInfo,
+                        )
+                    }
+                >
+                    <div className="inputs">
                         <input
                             type="text"
                             defaultValue={title}
@@ -89,19 +74,49 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                         <textarea
                             defaultValue={description}
                             name="description"
+                            placeholder={t("description")}
                         />
-                        <div className="btns">
-                            <button className="btn btn--agree ">Save</button>
-                            <div
-                                className="btn btn--disagree"
-                                onClick={() => setEdit(false)}
-                            >
-                                Cancel
-                            </div>
+                    </div>
+                    <div className="form-buttons">
+                        <button
+                            type="button"
+                            className="cancel-button"
+                            onClick={() => setIsInEditMode(false)}
+                        >
+                            {t("Cancel")}
+                        </button>
+                        <button type="submit" className="save-button">
+                            {t("Save")}
+                        </button>
+                    </div>
+                </form>
+            ) : (
+                <>
+                    <div className="texts">
+                        <h3>
+                            {title}
+                            {_isAuthorized && (
+                                <div className="edit-icon">
+                                    <EditIcon
+                                        onClick={() => setIsInEditMode(true)}
+                                    />
+                                </div>
+                            )}
+                        </h3>
+                        <div className="text">
+                            <Text text={description} />
                         </div>
-                    </form>
-                )}
-            </div>
+                    </div>
+                    <div className="form-buttons">
+                        <button
+                            className="close-button"
+                            onClick={() => setShowInfo(false)}
+                        >
+                            {t("Close")}
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
