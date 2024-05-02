@@ -9,6 +9,7 @@ import {
 } from "../../model/statements/statementsSlice";
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
 import { setStatmentSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
+import { current } from "@reduxjs/toolkit";
 
 
 const useAuth = () => {
@@ -55,6 +56,9 @@ export function useIsAuthorized(statementId: string | undefined): {
                       
                         StatementSchema.parse(topParentStatement);
                         setTopParentStatement(topParentStatement);
+                        const topRole:Role = (() => {
+                            const currentRole = statementSubscription?.role;
+                        })()
                         setRole(topParentSubscription?.role);
                         if (error)
                             throw new Error(
