@@ -7,7 +7,7 @@ import { Screen, Statement, User } from "delib-npm";
 // import Rooms from "./rooms/Rooms";
 import Map from "./map/Map";
 import StatementChat from "./chat/StatementChat";
-import StatementEvaluation from "./evaluations/StatementEvaluationPage";
+import StatementEvaluationPage from "./evaluations/StatementEvaluationPage";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
 import StatementSettings from "./settings/StatementSettings";
@@ -48,7 +48,7 @@ export default function SwitchScreens({
             );
         case Screen.OPTIONS:
             return (
-                <StatementEvaluation
+                <StatementEvaluationPage
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}
@@ -78,7 +78,7 @@ export default function SwitchScreens({
             return <StatementSettings />;
         case Screen.QUESTIONS:
             return (
-                <StatementEvaluation
+                <StatementEvaluationPage
                     statement={statement}
                     subStatements={subStatements}
                     handleShowTalker={handleShowTalker}

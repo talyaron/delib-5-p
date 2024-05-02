@@ -17,9 +17,10 @@ import Modal from "../../../../components/modal/Modal";
 import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
+import "./StatementVote.scss";
 
 // Helpers
-import VotingArea from "./components/VotingArea";
+import VotingArea from "./components/votingArea/VotingArea";
 
 interface Props {
     statement: Statement;
@@ -37,8 +38,10 @@ const StatementVote: FC<Props> = ({
     const dispatch = useAppDispatch();
 
     // * Use State * //
-    const [showModal, setShowModal] = useState(false);
-    const [showInfo, setShowInfo] = useState(false);
+    const [isNewStatementModalOpen, setIsNewStatementModalOpen] =
+        useState(false);
+    const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
+        useState(false);
     const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
     // * Variables * //
@@ -46,53 +49,53 @@ const StatementVote: FC<Props> = ({
 
     useEffect(() => {
         if (!getVoteFromDB) {
-            getToVoteOnParent(statement.statementId, updateStoreWitehVoteCB);
+            getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
             getVoteFromDB = true;
         }
     }, []);
 
-    function updateStoreWitehVoteCB(option: Statement) {
+    function updateStoreWithVoteCB(option: Statement) {
         dispatch(setVoteToStore(option));
     }
 
     return (
         <>
             <div className="page__main">
-                <div className="votingWrapper">
-                    <div className="hand">
+                <div className="statement-vote">
+                    <div className="number-of-votes-mark">
                         <HandIcon /> {totalVotes}
                     </div>
                     <VotingArea
                         totalVotes={totalVotes}
-                        setShowInfo={setShowInfo}
+                        setShowInfo={setIsStatementInfoModalOpen}
                         statement={statement}
                         subStatements={subStatements}
                         setStatementInfo={setStatementInfo}
                     />
                 </div>
 
-                {showModal && (
+                {isNewStatementModalOpen && (
                     <Modal>
                         <NewSetStatementSimple
                             parentStatement={statement}
                             isOption={true}
-                            setShowModal={setShowModal}
+                            setShowModal={setIsNewStatementModalOpen}
                             toggleAskNotifications={toggleAskNotifications}
                         />
                     </Modal>
                 )}
-                {showInfo && (
+                {isStatementInfoModalOpen && (
                     <Modal>
                         <StatementInfo
                             statement={statementInfo}
-                            setShowInfo={setShowInfo}
+                            setShowInfo={setIsStatementInfoModalOpen}
                         />
                     </Modal>
                 )}
             </div>
             <div className="page__footer">
                 <StatementBottomNav
-                    setShowModal={setShowModal}
+                    setShowModal={setIsNewStatementModalOpen}
                     statement={statement}
                 />
             </div>

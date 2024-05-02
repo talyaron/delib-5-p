@@ -112,6 +112,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
         }
     }
 
+    const shouldLinkToChildren = linkToChildren(statement, parentStatement);
+
     return (
         <div
             className={`chat-message-card ${isAlignedLeft && "aligned-left"} ${dir}`}
@@ -144,6 +146,14 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         isMenuOpen={isCardMenuOpen}
                         iconColor="#5899E0"
                     >
+                        {_isAuthorized && !isQuestion && (
+                            <MenuOption
+                                isOptionSelected={isOptionFn(statement)}
+                                icon={<LightBulbIcon />}
+                                label={t("Option")}
+                                onOptionClick={handleSetOption}
+                            />
+                        )}
                         {_isAuthorized && (
                             <MenuOption
                                 label={t("Edit Text")}
@@ -154,7 +164,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }}
                             />
                         )}
-                        {!isOptionFn(statement) && (
+                        {!isOption && (
                             <MenuOption
                                 isOptionSelected={isQuestion}
                                 label={t("Question")}
@@ -164,21 +174,13 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }
                             />
                         )}
-                        {linkToChildren(statement, parentStatement) && (
+                        {shouldLinkToChildren && (
                             <MenuOption
                                 label={t("Add Question")}
                                 icon={<AddQuestionIcon />}
                                 onOptionClick={() =>
                                     setIsNewStatementModalOpen(true)
                                 }
-                            />
-                        )}
-                        {_isAuthorized && !isQuestion && (
-                            <MenuOption
-                                isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
-                                label={t("Option")}
-                                onOptionClick={handleSetOption}
                             />
                         )}
                     </Menu>

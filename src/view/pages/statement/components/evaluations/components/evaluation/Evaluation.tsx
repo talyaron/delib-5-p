@@ -1,6 +1,6 @@
-import { FC } from "react";
-import SimpleEvaluation from "./simpleEvaluation/SimplEvaluation";
 import { Statement } from "delib-npm";
+import { FC } from "react";
+import SimpleEvaluation from "./simpleEvaluation/SimpleEvaluation";
 import EnhancedEvaluation from "./enhancedEvaluation/EnhancedEvaluation";
 
 interface EvaluationProps {

@@ -18,6 +18,10 @@ const Menu: FC<MenuProps> = ({
 }) => {
     const { dir } = useLanguage();
 
+    if (!children) {
+        return null;
+    }
+
     return (
         <div className="menu">
             <IconButton onClick={() => setIsOpen(!isMenuOpen)}>

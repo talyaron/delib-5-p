@@ -74,13 +74,14 @@
         &__buttons {
             display: flex;
             gap: 1rem;
+            font-size: 2rem;
             &__add {
-                width: 70%;
+                flex: 1;
                 background-color: var(--question);
                 color: var(--white);
             }
             &__cancel {
-                width: 30%;
+                flex: 1;
                 background-color: var(--red);
                 color: var(--white);
             }
