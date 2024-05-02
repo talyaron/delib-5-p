@@ -35,8 +35,7 @@ import {
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import Menu from "../../../../../../components/menu/Menu";
 import MenuOption from "../../../../../../components/menu/MenuOption";
-import Modal from "../../../../../../components/modal/Modal";
-import NewSetStatementSimple from "../../../set/NewStatementSimple";
+import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
 import "./ChatMessageCard.scss";
 
 export interface NewQuestion {
@@ -201,13 +200,11 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                 </div>*/}
             </div>
             {isNewStatementModalOpen && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={statement}
-                        isOption={false}
-                        setShowModal={setIsNewStatementModalOpen}
-                    />
-                </Modal>
+                <CreateStatementModal
+                    parentStatement={statement}
+                    isOption={false}
+                    setShowModal={setIsNewStatementModalOpen}
+                />
             )}
         </div>
     );

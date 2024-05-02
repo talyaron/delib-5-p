@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 // Third party imports
 import { Statement, StatementType, User } from "delib-npm";
 import { useParams } from "react-router";
-import Modal from "../../../../components/modal/Modal";
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
@@ -11,7 +10,7 @@ import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
 interface StatementEvaluationPageProps {
@@ -98,14 +97,12 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
                     />
                 </div>
                 {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={questions ? false : true}
-                            setShowModal={setShowModal}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </Modal>
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={questions ? false : true}
+                        setShowModal={setShowModal}
+                        toggleAskNotifications={toggleAskNotifications}
+                    />
                 )}
             </>
         );

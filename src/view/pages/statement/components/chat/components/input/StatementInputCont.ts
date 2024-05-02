@@ -1,3 +1,4 @@
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { Statement, StatementType, User } from "delib-npm";
 import {
     createStatement,
@@ -19,6 +20,8 @@ export function handleAddStatement(
         if (!value) throw new Error("No value");
 
         const newStatement: Statement | undefined = createStatement({
+            ...defaultStatementSettings,
+            hasChildren: true,
             text: value,
             parentStatement: statement,
             statementType: StatementType.statement,

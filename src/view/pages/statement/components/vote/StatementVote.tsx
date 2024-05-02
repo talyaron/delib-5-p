@@ -12,7 +12,7 @@ import { setVoteToStore } from "../../../../../model/vote/votesSlice";
 import { getTotalVoters } from "./statementVoteCont";
 
 // Custom components
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import Modal from "../../../../components/modal/Modal";
 import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
@@ -75,14 +75,12 @@ const StatementVote: FC<Props> = ({
                 </div>
 
                 {isNewStatementModalOpen && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setIsNewStatementModalOpen}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </Modal>
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setIsNewStatementModalOpen}
+                        toggleAskNotifications={toggleAskNotifications}
+                    />
                 )}
                 {isStatementInfoModalOpen && (
                     <Modal>

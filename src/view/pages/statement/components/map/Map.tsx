@@ -6,7 +6,6 @@ import { Results, Statement } from "delib-npm";
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
 import StatementMap from "./mapHelpers/StatementMap";
-import Modal from "../../../../components/modal/Modal";
 
 // Helpers
 import {
@@ -15,7 +14,7 @@ import {
     sortStatementsByHirarrchy,
 } from "../../../../../controllers/general/sorting";
 import { getChildStatements } from "../../../../../controllers/db/statements/getStatement";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 
 // Hooks
 import { useMapContext } from "../../../../../controllers/hooks/useMap";
@@ -114,14 +113,12 @@ const Map: FC<Props> = ({ statement }) => {
             </div>
 
             {mapContext.showModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={mapContext.parentStatement}
-                        isOption={mapContext.isOption}
-                        setShowModal={toggleModal}
-                        getSubStatements={getSubStatements}
-                    />
-                </Modal>
+                <CreateStatementModal
+                    parentStatement={mapContext.parentStatement}
+                    isOption={mapContext.isOption}
+                    setShowModal={toggleModal}
+                    getSubStatements={getSubStatements}
+                />
             )}
         </ScreenFadeIn>
     );

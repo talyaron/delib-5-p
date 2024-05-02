@@ -70,14 +70,18 @@ export function isSubPageChecked(
     }
 }
 
-export async function handleSetStatement(
-    ev: any,
-    navigate: any,
-    statementId: string | undefined,
-    statement: Statement,
-) {
+interface HandleSetStatementParams {
+    navigate: any;
+    statementId: string | undefined;
+    statement: Statement;
+}
+
+export async function handleSetStatement({
+    navigate,
+    statementId,
+    statement,
+}: HandleSetStatementParams) {
     try {
-        ev.preventDefault();
         const _statement = getStatementText(statement);
 
         // If statement title is empty, don't save
@@ -157,21 +161,25 @@ export async function handleSetStatement(
     }
 }
 
+const prefixTitle = (title: string): string => {
+    if (title && !title.startsWith("*")) {
+        return `*${title}`;
+    }
+
+    return title;
+};
+
 const getStatementText = (statement: Statement): string | null => {
     const titleAndDescription = statement.statement;
     const endOfTitle = titleAndDescription.indexOf("\n");
-    let title = titleAndDescription.substring(0, endOfTitle);
+    const _title = titleAndDescription.substring(0, endOfTitle);
 
     // TODO: add validation for title in UI
-    if (!title || title.length < 2) return null;
-
-    //add to title * at the beginning
-    if (title && !title.startsWith("*")) {
-        title = `*${title}`;
-    }
+    if (!_title || _title.length < 2) return null;
 
     const startOfDescription = endOfTitle + 1;
     const description = titleAndDescription.substring(startOfDescription);
+    const title = prefixTitle(_title);
 
     return `${title}\n${description}`;
 };
@@ -242,3 +250,48 @@ export const toggleSubScreen = ({
         subScreens: newSubScreens,
     };
 };
+
+interface CreateStatementFromModalParams {
+    title: string;
+    description: string;
+    isOptionSelected: boolean;
+    parentStatement: Statement | "top";
+    toggleAskNotifications?: VoidFunction;
+}
+
+export async function createStatementFromModal({
+    title,
+    description,
+    isOptionSelected,
+    toggleAskNotifications,
+    parentStatement,
+}: CreateStatementFromModalParams) {
+    try {
+        if (!title) throw new Error("title is undefined");
+
+        const _title = prefixTitle(title);
+        const text = `${_title}\n${description}`;
+
+        const newStatement = createStatement({
+            ...defaultStatementSettings,
+            hasChildren: true,
+            toggleAskNotifications,
+            text,
+            parentStatement,
+            statementType: isOptionSelected
+                ? StatementType.option
+                : StatementType.question,
+        });
+
+        if (!newStatement) throw new Error("newStatement was not created");
+
+        await setStatementToDB({
+            statement: newStatement,
+            parentStatement:
+                parentStatement === "top" ? undefined : parentStatement,
+            addSubscription: true,
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}

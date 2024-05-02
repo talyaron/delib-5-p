@@ -1,3 +1,4 @@
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { Statement, StatementType, User } from "delib-npm";
 import { store } from "../../../../../../../model/store";
 import {
@@ -30,6 +31,8 @@ export const handleSetQuestionFromMassCard = ({
         } else {
             //create new statement
             const statement: Statement | undefined = createStatement({
+                ...defaultStatementSettings,
+                hasChildren: true,
                 text,
                 parentStatement: question,
                 statementType: StatementType.option,

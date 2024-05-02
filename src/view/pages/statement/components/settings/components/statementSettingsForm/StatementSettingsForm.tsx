@@ -41,8 +41,9 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
     // * Functions * //
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setIsLoading(true);
-        await handleSetStatement(e, navigate, statementId, statement);
+        await handleSetStatement({ navigate, statementId, statement });
 
         setIsLoading(false);
     };
