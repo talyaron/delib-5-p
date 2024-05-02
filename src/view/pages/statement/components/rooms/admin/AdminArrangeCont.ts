@@ -1,5 +1,5 @@
 import { Participant, RoomDivied } from "delib-npm";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 export function divideIntoTopics(
     participants: Participant[],

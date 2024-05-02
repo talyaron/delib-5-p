@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import RoomParticpantBadge from "../comp/general/RoomParticpantBadge";
 
 // Redux
-import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 
 // Third party libraries
 import { RoomDivied, RoomsStateSelection, Statement } from "delib-npm";
@@ -13,8 +13,8 @@ import { RoomDivied, RoomsStateSelection, Statement } from "delib-npm";
 import {
     setParticipantInRoomToDB,
     setRoomsStateToDB,
-} from "../../../../../../functions/db/rooms/setRooms";
-import { setRoomSizeInStatementDB } from "../../../../../../functions/db/statements/setStatments";
+} from "../../../../../../controllers/db/rooms/setRooms";
+import { setRoomSizeInStatementDB } from "../../../../../../controllers/db/statements/setStatments";
 
 // Styles
 import _styles from "./admin.module.css";
@@ -25,9 +25,9 @@ import Room from "./room/Room";
 import {
     initilizeTimersDB,
     updateTimersSettingDB,
-} from "../../../../../../functions/db/timer/setTimer";
+} from "../../../../../../controllers/db/timer/setTimer";
 import { selectStatementSettingTimers } from "../../../../../../model/timers/timersSlice";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 const styles = _styles as any;
 

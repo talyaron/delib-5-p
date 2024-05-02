@@ -7,7 +7,7 @@ import { User, Statement } from "delib-npm";
 import {
     generateRandomLightColor,
     getInitials,
-} from "../../../../../../functions/general/helpers";
+} from "../../../../../../controllers/general/helpers";
 
 interface Props {
     statement: Statement;

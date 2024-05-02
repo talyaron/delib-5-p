@@ -1,4 +1,4 @@
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 const AskForNotifications = () => {
     const { t } = useLanguage();

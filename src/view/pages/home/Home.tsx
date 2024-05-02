@@ -7,11 +7,11 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../functions/hooks/reduxHooks";
+} from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
-import { listenToStatementSubscriptions } from "../../../functions/db/subscriptions/getSubscriptions";
+import { listenToStatementSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
 
 // Custom Components
 import HomeHeader from "./HomeHeader";

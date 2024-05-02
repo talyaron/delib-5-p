@@ -6,7 +6,7 @@ import { Role, Screen, Statement } from "delib-npm";
 import { useLocation } from "react-router-dom";
 
 // Helpers
-import toggleNotifications from "../../../../../functions/db/notifications/notificationsHelpers";
+import toggleNotifications from "../../../../../controllers/db/notifications/notificationsHelpers";
 
 // Redux Store
 import { store } from "../../../../../model/store";
@@ -21,15 +21,15 @@ import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
     handleLogout,
-} from "../../../../../functions/general/helpers";
+} from "../../../../../controllers/general/helpers";
 import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
 
 // Hooks
-import useStatementColor from "../../../../../functions/hooks/useStatementColor";
-import useNotificationPermission from "../../../../../functions/hooks/useNotificationPermission";
-import useToken from "../../../../../functions/hooks/useToken";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
-import { setFollowMeDB } from "../../../../../functions/db/statements/setStatments";
+import useStatementColor from "../../../../../controllers/hooks/useStatementColor";
+import useNotificationPermission from "../../../../../controllers/hooks/useNotificationPermission";
+import useToken from "../../../../../controllers/hooks/useToken";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatments";
 import Menu from "../../../../components/menu/Menu";
 import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";

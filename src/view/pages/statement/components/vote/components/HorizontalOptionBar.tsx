@@ -7,16 +7,16 @@ import { Statement } from "delib-npm";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../controllers/hooks/reduxHooks";
 import {
     parentVoteSelector,
     setVoteToStore,
 } from "../../../../../../model/vote/votesSlice";
 
 // Statements helpers
-import { setVote } from "../../../../../../functions/db/vote/setVote";
+import { setVote } from "../../../../../../controllers/db/vote/setVote";
 import { getSelections } from "../statementVoteCont";
-import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
+import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
 import InfoIcon from "../../../../../../assets/icons/infoCircleIcon.svg?react";
 import HandIcon from "../../../../../../assets/icons/handIcon.svg?react";
 

@@ -7,7 +7,7 @@ import { Statement, User } from "delib-npm";
 import {
     useAppDispatch,
     useAppSelector,
-} from "../../../../../../functions/hooks/reduxHooks";
+} from "../../../../../../controllers/hooks/reduxHooks";
 import {
     setStatementElementHight,
     statementSubscriptionSelector,
@@ -18,18 +18,18 @@ import {
     isAuthorized,
     isOptionFn,
     linkToChildren,
-} from "../../../../../../functions/general/helpers";
+} from "../../../../../../controllers/general/helpers";
 
 // Hooks
 import useStatementColor, {
     StyleProps,
-} from "../../../../../../functions/hooks/useStatementColor";
+} from "../../../../../../controllers/hooks/useStatementColor";
 
 // Custom Components
 import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
-import { setStatementisOption } from "../../../../../../functions/db/statements/setStatments";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { setStatementisOption } from "../../../../../../controllers/db/statements/setStatments";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Evaluation from "../../../../../components/evaluation/Evaluation";
 import Menu from "../../../../../components/menu/Menu";

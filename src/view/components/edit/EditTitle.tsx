@@ -4,7 +4,7 @@ import { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Statements Helpers
-import { updateStatementText } from "../../../functions/db/statements/setStatments";
+import { updateStatementText } from "../../../controllers/db/statements/setStatments";
 
 // Styles
 import styles from "./EditTitle.module.scss";
@@ -12,7 +12,7 @@ import styles from "./EditTitle.module.scss";
 // Custom components
 import Text from "../text/Text";
 
-// import { statementTitleToDisplay } from "../../../functions/general/helpers";
+// import { statementTitleToDisplay } from "../../../controllers/general/helpers";
 
 interface Props {
     statement: Statement | undefined;

@@ -7,13 +7,13 @@ import { Statement } from "delib-npm";
 import Thumb from "../../thumb/Thumb";
 
 // Redux Store
-import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
 
 // Statement helpers
 import { evaluationSelector } from "../../../../model/evaluations/evaluationsSlice";
 
 // Custom Hooks
-import useDirection from "../../../../functions/hooks/useDirection";
+import useDirection from "../../../../controllers/hooks/useDirection";
 
 //css
 import styles from "./SimpleEvaluation.module.scss";

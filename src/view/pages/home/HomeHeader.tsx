@@ -9,8 +9,8 @@ import InstallIcon from "../../../assets/icons/installIcon.svg?react";
 // Components
 import { useDispatch } from "react-redux";
 import DisconnectIcon from "../../../assets/icons/disconnectIcon.svg?react";
-import { handleLogout } from "../../../functions/general/helpers";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { handleLogout } from "../../../controllers/general/helpers";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";

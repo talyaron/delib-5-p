@@ -12,11 +12,11 @@ import { Statement, StatementSubscription, StatementType } from "delib-npm";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 
 // Helpers
-import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 
 

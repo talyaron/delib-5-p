@@ -1,6 +1,6 @@
 import { Statement, StatementSchema } from "delib-npm";
 import { z } from "zod";
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import { setStatmentToDB } from "../../../../../controllers/db/statements/setStatments";
 
 export async function handleSetAnswersToDB(answers: Statement[]) {
     try {

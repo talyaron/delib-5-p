@@ -8,17 +8,17 @@ import {
 } from "delib-npm";
 
 // Helpers
-import { getVoters } from "../../../../../functions/db/vote/getVotes";
-import { getEvaluations } from "../../../../../functions/db/evaluation/getEvaluation";
+import { getVoters } from "../../../../../controllers/db/vote/getVotes";
+import { getEvaluations } from "../../../../../controllers/db/evaluation/getEvaluation";
 import {
     navigateToStatementTab,
     parseScreensCheckBoxes,
-} from "../../../../../functions/general/helpers";
+} from "../../../../../controllers/general/helpers";
 import {
     createStatement,
     setStatmentToDB,
     updateStatement,
-} from "../../../../../functions/db/statements/setStatments";
+} from "../../../../../controllers/db/statements/setStatments";
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(

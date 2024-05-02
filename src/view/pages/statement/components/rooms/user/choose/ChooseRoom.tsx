@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 
 // Custom components
 import RoomChoosingCard from "./RoomChoosingCard";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     subStatements: Statement[];

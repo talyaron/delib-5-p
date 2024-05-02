@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import styles from "./UploadImage.module.scss";
 import { Statement } from "delib-npm";
-import { uploadImageToStorage } from "../../../functions/db/images/setImages";
-import { updateStatmentMainImage } from "../../../functions/db/statements/setStatments";
+import { uploadImageToStorage } from "../../../controllers/db/images/setImages";
+import { updateStatmentMainImage } from "../../../controllers/db/statements/setStatments";
 
 interface Props {
     statement: Statement | undefined;

@@ -8,8 +8,8 @@ import {
 
 //images
 import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
-import { deleteTimerSettingDB } from "../../../../../../../../functions/db/timer/setTimer";
-import { useAppDispatch } from "../../../../../../../../functions/hooks/reduxHooks";
+import { deleteTimerSettingDB } from "../../../../../../../../controllers/db/timer/setTimer";
+import { useAppDispatch } from "../../../../../../../../controllers/hooks/reduxHooks";
 import {
     setSetTimerTime,
     setSetTimerTitle,

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
-import { StyleProps } from "../../../../../functions/hooks/useStatementColor";
+import { StyleProps } from "../../../../../controllers/hooks/useStatementColor";
 
 interface Props {
     headerColor: StyleProps;

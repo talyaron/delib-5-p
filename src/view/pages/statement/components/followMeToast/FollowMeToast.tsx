@@ -1,12 +1,12 @@
 import { FC} from "react";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import FollowMeIcon from "../../../../components/icons/FollowMeIcon";
 import styles from "./FollowMeToast.module.scss";
 import { Role, Statement } from "delib-npm";
-import { isAdmin } from "../../../../../functions/general/helpers";
+import { isAdmin } from "../../../../../controllers/general/helpers";
 import { Link, useLocation } from "react-router-dom";
-import { setFollowMeDB } from "../../../../../functions/db/statements/setStatments";
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatments";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
 import { statementSelector } from "../../../../../model/statements/statementsSlice";
 
 

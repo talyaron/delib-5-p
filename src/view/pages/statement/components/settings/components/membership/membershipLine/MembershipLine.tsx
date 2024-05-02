@@ -1,6 +1,6 @@
 import { Role, StatementSubscription } from "delib-npm";
 import { FC } from "react";
-import { useLanguage } from "../../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 import "./MembershipLine.scss";
 
 interface Props {

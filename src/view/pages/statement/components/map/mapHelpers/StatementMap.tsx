@@ -22,7 +22,7 @@ import {
 
 // Custom components
 import CustomNode from "./CustomNode";
-import { useMapContext } from "../../../../../../functions/hooks/useMap";
+import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 const nodeTypes = {
     custom: CustomNode,

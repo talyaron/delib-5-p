@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import StatementSettings from "../../statement/components/settings/StatementSettings";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import BackArrowIcon from "../../../../assets/icons/chevronLeftIcon.svg?react";
-import { useLanguage } from "../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../controllers/hooks/useLanguages";
 import "./AddStatement.scss";
 
 export const AddStatement = () => {

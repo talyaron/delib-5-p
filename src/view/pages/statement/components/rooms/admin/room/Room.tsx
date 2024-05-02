@@ -3,9 +3,9 @@ import styles from "./Room.module.scss";
 import Text from "../../../../../../components/text/Text";
 import { Participant, RoomDivied } from "delib-npm";
 import RoomParticpantBadge from "../../comp/general/RoomParticpantBadge";
-import { setRoomJoinToDB } from "../../../../../../../functions/db/rooms/setRooms";
+import { setRoomJoinToDB } from "../../../../../../../controllers/db/rooms/setRooms";
 import { store } from "../../../../../../../model/store";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     room: RoomDivied;

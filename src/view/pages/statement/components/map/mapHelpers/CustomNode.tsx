@@ -5,7 +5,7 @@ import { Handle, NodeProps } from "reactflow";
 import { useNavigate } from "react-router-dom";
 
 // Hooks
-import { useMapContext } from "../../../../../../functions/hooks/useMap";
+import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 // Icons
 import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
@@ -14,8 +14,8 @@ import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 import {
     calculateFontSize,
     statementTitleToDisplay,
-} from "../../../../../../functions/general/helpers";
-import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
+} from "../../../../../../controllers/general/helpers";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 
 const nodeStyle = (
     parentStatement: any,

@@ -2,16 +2,16 @@ import { RoomsStateSelection, Statement } from "delib-npm";
 import React, { FC, useState, useEffect } from "react";
 import Modal from "../../../../components/modal/Modal";
 import NewSetStatementSimple from "../set/NewStatementSimple";
-import { listenToAllRoomsRquest } from "../../../../../functions/db/rooms/getRooms";
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
+import { listenToAllRoomsRquest } from "../../../../../controllers/db/rooms/getRooms";
+import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 
 import RoomsAdmin from "./admin/RoomsAdmin";
 import ChooseRoom from "./user/choose/ChooseRoom";
 
 // import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
-import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
-import { isOptionFn } from "../../../../../functions/general/helpers";
+import { enterRoomsDB } from "../../../../../controllers/db/rooms/setRooms";
+import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 interface Props {
     statement: Statement;

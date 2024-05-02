@@ -6,12 +6,12 @@ import CustomSwitch from "../../../../../../components/switch/CustomSwitch";
 // HELPERS
 import { isSubPageChecked } from "../../statementSettingsCont";
 import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel";
-import { useLanguage } from "../../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { FC } from "react";
 import TabIcon from "./TabIcon";
 import "./TabsToDisplay.scss";
 import { WithStatement } from "../../settingsTypeHelpers";
-import { useAppDispatch } from "../../../../../../../functions/hooks/reduxHooks";
+import { useAppDispatch } from "../../../../../../../controllers/hooks/reduxHooks";
 import { toggleSubscreen } from "../../../../../../../model/statements/statementsSlice";
 
 const TabsToDisplay: FC<WithStatement> = ({ statement }) => {

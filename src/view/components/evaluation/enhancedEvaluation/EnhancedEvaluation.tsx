@@ -1,8 +1,8 @@
 import { Statement } from "delib-npm";
 import { FC, useState } from "react";
 
-import { setEvaluationToDB } from "../../../../functions/db/evaluation/setEvaluation";
-import { useAppSelector } from "../../../../functions/hooks/reduxHooks";
+import { setEvaluationToDB } from "../../../../controllers/db/evaluation/setEvaluation";
+import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
 import { evaluationSelector } from "../../../../model/evaluations/evaluationsSlice";
 import { EnhancedEvaluationThumb } from "./EnhancedEvaluationModel";
 import {

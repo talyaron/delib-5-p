@@ -7,7 +7,7 @@ import Modal from "../../../../components/modal/Modal";
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
-import { isOptionFn } from "../../../../../functions/general/helpers";
+import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";

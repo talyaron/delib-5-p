@@ -6,10 +6,10 @@ import { Statement, User } from "delib-npm";
 // Custom Components
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import StatementInput from "./components/input/StatementInput";
-import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
+import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
 
 import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../../../model/users/userSlice";
 
 interface Props {

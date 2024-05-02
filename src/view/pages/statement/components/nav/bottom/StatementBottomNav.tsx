@@ -11,7 +11,7 @@ import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?reac
 import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
 import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
 import NewestIcon from "../../../../../../assets/icons/newIcon.svg?react";
-import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 import {
     optionsArray,
     questionsArray,

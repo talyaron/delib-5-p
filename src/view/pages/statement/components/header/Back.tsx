@@ -1,11 +1,11 @@
 import { Screen, Statement } from "delib-npm";
 import { logEvent } from "firebase/analytics";
-import { analytics } from "../../../../../functions/db/config";
+import { analytics } from "../../../../../controllers/db/config";
 import { FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
-import { getFirstScreen } from "../../../../../functions/general/helpers";
-import { StyleProps } from "../../../../../functions/hooks/useStatementColor";
+import { getFirstScreen } from "../../../../../controllers/general/helpers";
+import { StyleProps } from "../../../../../controllers/hooks/useStatementColor";
 
 interface Props {
     parentStatement: Statement | undefined;
