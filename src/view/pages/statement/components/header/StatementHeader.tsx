@@ -1,10 +1,9 @@
 import React, { FC, useState } from "react";
-import { logEvent } from "firebase/analytics";
-import { analytics } from "../../../../../functions/db/config";
+
 
 // Third party imports
 import { Role, Screen, Statement } from "delib-npm";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Helpers
 import toggleNotifications from "../../../../../functions/db/notifications/notificationsHelpers";
@@ -15,7 +14,6 @@ import { store } from "../../../../../model/store";
 // Custom components
 import StatementTopNav from "../nav/top/StatementTopNav";
 import EditTitle from "../../../../components/edit/EditTitle";
-import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
 import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
 import BellSlashIcon from "../../../../../assets/icons/bellSlashIcon.svg?react";
 import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
@@ -23,7 +21,6 @@ import FollowMe from "../../../../../assets/icons/follow.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
     calculateFontSize,
-    checkArrayAndReturnByOrder,
     handleLogout,
 } from "../../../../../functions/general/helpers";
 import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
@@ -37,6 +34,7 @@ import { setFollowMeDB } from "../../../../../functions/db/statements/setStatmen
 import Menu from "../../../../components/menu/Menu";
 import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";
+import Back from "./Back";
 
 interface Props {
     title: string;
@@ -56,10 +54,8 @@ const StatementHeader: FC<Props> = ({
     setShowAskPermission,
 }) => {
     // Hooks
-    const navigate = useNavigate();
     const { pathname } = useLocation();
-    const { page } = useParams();
-    const location = useLocation();
+
     const token = useToken();
     const headerColor = useStatementColor(statement?.statementType || "");
     const permission = useNotificationPermission(token);
@@ -71,13 +67,7 @@ const StatementHeader: FC<Props> = ({
         .statements.statements.find(
             (st) => st.statementId === statement?.parentId,
         );
-    const parentStatementScreens = parentStatement?.subScreens || [
-        Screen.QUESTIONS,
-        Screen.CHAT,
-        Screen.HOME,
-        Screen.VOTE,
-        Screen.OPTIONS,
-    ];
+  
 
     // Redux Store
     const user = store.getState().user.user;
@@ -105,46 +95,7 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
-    function handleBack() {
-        try {
-            //google analytics log
-            logEvent(analytics, "statement_back_button", {
-                button_category: "buttons",
-                button_label: "back_button",
-            });
-
-            //in case the back should diret to home
-            if (statement?.parentId === "top") {
-                return navigate("/home", {
-                    state: { from: window.location.pathname },
-                });
-            }
-
-            //in case the user is at doc or main pagesub screen
-            if (location.state && location.state.from.includes("doc")) {
-                return navigate(location.state.from, {
-                    state: { from: window.location.pathname },
-                });
-            }
-
-            //if in evaluation or in voting --> go back to question or chat
-            if (page === Screen.OPTIONS || page === Screen.VOTE) {
-                return navigate(
-                    `/statement/${statement?.parentId}/${checkArrayAndReturnByOrder(parentStatementScreens, Screen.QUESTIONS, Screen.CHAT)}`,
-                    {
-                        state: { from: window.location.pathname },
-                    },
-                );
-            }
-
-            //default case
-            return navigate(`/statement/${statement?.parentId}/${page}`, {
-                state: { from: window.location.pathname },
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    
 
     async function handleFollowMe() {
         try {
@@ -164,19 +115,7 @@ const StatementHeader: FC<Props> = ({
         <div className={`page__header ${dir}`} style={headerColor}>
             <div className="page__header__wrapper">
                 <div className="page__header__wrapper__actions">
-                    <button
-                        className="page__header__wrapper__actions__iconButton"
-                        onClick={handleBack}
-                        style={{ cursor: "pointer" }}
-                        data-cy="back-icon-header"
-                    >
-                        <BackArrowIcon
-                            className="back-arrow-icon"
-                            style={{
-                                color: headerColor.color,
-                            }}
-                        />
-                    </button>
+                    <Back parentStatement={parentStatement} statement={statement} headerColor={headerColor} />
                     <Link
                         className="page__header__wrapper__actions__iconButton"
                         state={{ from: window.location.pathname }}
