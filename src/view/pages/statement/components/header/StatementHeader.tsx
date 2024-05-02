@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 
 // Third party imports
 import { Role, Screen, Statement } from "delib-npm";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // Helpers
 import toggleNotifications from "../../../../../functions/db/notifications/notificationsHelpers";
