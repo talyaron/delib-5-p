@@ -2,20 +2,19 @@ import { Screen, Statement } from "delib-npm";
 import { logEvent } from "firebase/analytics";
 import { analytics } from "../../../../../functions/db/config";
 import { FC } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
-import { checkArrayAndReturnByOrder } from "../../../../../functions/general/helpers";
+import { getFirstScreen } from "../../../../../functions/general/helpers";
 import { StyleProps } from "../../../../../functions/hooks/useStatementColor";
 
 interface Props {
     parentStatement: Statement | undefined;
     statement: Statement | undefined;
-    headerColor:StyleProps;
+    headerColor: StyleProps;
 }
 
-const Back: FC<Props> = ({ parentStatement, statement,headerColor }) => {
+const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
     const navigate = useNavigate();
-    const { page } = useParams();
     const location = useLocation();
     const parentStatementScreens = parentStatement?.subScreens || [
         Screen.QUESTIONS,
@@ -32,34 +31,31 @@ const Back: FC<Props> = ({ parentStatement, statement,headerColor }) => {
                 button_label: "back_button",
             });
 
-            //in case the back should diret to home
+            //rules: if history exits --> go back in history
+            //if not --> go back to the parent statement, in this order: home, questions, options, chat, vote
+
+            //check if there is history
+            console.log(location)
+
+            if (location.state?.from) {
+                return navigate(location.state.from);
+            }
+
+            //in case the back should direct to home
             if (statement?.parentId === "top") {
                 return navigate("/home", {
                     state: { from: window.location.pathname },
                 });
             }
 
-            //in case the user is at doc or main pagesub screen
-            if (location.state && location.state.from.includes("doc")) {
-                return navigate(location.state.from, {
+            //in case the back should direct to the parent statement, go to the parent statement in the order of the parentStatementScreens: home, questions, options, chat, vote
+            const firstScreen: Screen = getFirstScreen(parentStatementScreens);
+            return navigate(
+                `/statement/${statement?.parentId}/${firstScreen}`,
+                {
                     state: { from: window.location.pathname },
-                });
-            }
-
-            //if in evaluation or in voting --> go back to question or chat
-            if (page === Screen.OPTIONS || page === Screen.VOTE) {
-                return navigate(
-                    `/statement/${statement?.parentId}/${checkArrayAndReturnByOrder(parentStatementScreens, Screen.QUESTIONS, Screen.CHAT)}`,
-                    {
-                        state: { from: window.location.pathname },
-                    },
-                );
-            }
-
-            //default case
-            return navigate(`/statement/${statement?.parentId}/${page}`, {
-                state: { from: window.location.pathname },
-            });
+                },
+            );
         } catch (error) {
             console.error(error);
         }

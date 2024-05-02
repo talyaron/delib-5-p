@@ -330,16 +330,19 @@ export function getStatementSubscriptionId(
     }
 }
 
-export function checkArrayAndReturnByOrder(
-    array: Array<Screen | string>,
-    ...values: Array<Screen | string>
-): Screen | string {
+export function getFirstScreen(
+    array: Array<Screen>
+): Screen  {
     try {
-        for (const value of values) {
-            if (array.includes(value)) {
-                return value;
-            }
-        }
+        //get the first screen from the array by this order: home, questions, options, chat, vote
+        if (!array) throw new Error("No array");
+
+        if (array.includes(Screen.HOME)) return Screen.HOME;
+        if (array.includes(Screen.QUESTIONS)) return Screen.QUESTIONS;
+        if (array.includes(Screen.OPTIONS)) return Screen.OPTIONS;
+        if (array.includes(Screen.CHAT)) return Screen.CHAT;
+        if (array.includes(Screen.VOTE)) return Screen.VOTE;
+        
 
         return Screen.CHAT;
     } catch (error) {
