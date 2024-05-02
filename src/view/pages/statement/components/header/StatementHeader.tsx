@@ -14,7 +14,6 @@ import { store } from "../../../../../model/store";
 // Custom components
 import StatementTopNav from "../nav/top/StatementTopNav";
 import EditTitle from "../../../../components/edit/EditTitle";
-import HomeIcon from "../../../../../assets/icons/homeIcon.svg?react";
 import BellSlashIcon from "../../../../../assets/icons/bellSlashIcon.svg?react";
 import BellIcon from "../../../../../assets/icons/bellIcon.svg?react";
 import FollowMe from "../../../../../assets/icons/follow.svg?react";
@@ -35,6 +34,7 @@ import Menu from "../../../../components/menu/Menu";
 import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";
 import Back from "./Back";
+import HomeButton from "./HomeButton";
 
 interface Props {
     title: string;
@@ -116,14 +116,7 @@ const StatementHeader: FC<Props> = ({
             <div className="page__header__wrapper">
                 <div className="page__header__wrapper__actions">
                     <Back parentStatement={parentStatement} statement={statement} headerColor={headerColor} />
-                    <Link
-                        className="page__header__wrapper__actions__iconButton"
-                        state={{ from: window.location.pathname }}
-                        to={"/home"}
-                        data-cy="home-link-icon"
-                    >
-                        <HomeIcon style={{ color: headerColor.color }} />
-                    </Link>
+                    <HomeButton headerColor={headerColor} />
                 </div>
                 {!editHeader ? (
                     <h1
