@@ -13,6 +13,7 @@ import Page404 from "./view/pages/page404/Page404";
 import PricingPlan from "./view/pages/pricing/PricingPlan";
 import SignInToContinue from "./view/pages/pricing/SignInToContinue";
 import MemberRejection from "./view/pages/memberRejection/MemberRejection";
+import Page401 from "./view/pages/page401/Page401";
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
                         errorElement: <ErrorPage />,
                     },
                 ],
+            },
+            {
+                path: "401",
+                element: <Page401 />,
             },
         ],
     },
