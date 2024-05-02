@@ -14,10 +14,14 @@ import {
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
-import { getPastelColor } from "../../general/helpers";
 import { store } from "../../../model/store";
 import { setStatmentSubscriptionNotificationToDB } from "../notifications/notifications";
 import { setStatmentSubscriptionToDB } from "../subscriptions/setSubscriptions";
+import { getRandomColor } from "../../../view/pages/statement/components/vote/votingColors";
+import {
+    getExistingOptionColors,
+    getSiblingOptionsByParentId,
+} from "../../../view/pages/statement/components/vote/statementVoteCont";
 
 const TextSchema = z.string().min(2);
 interface SetStatmentToDBProps {
@@ -35,10 +39,16 @@ export const setStatmentToDB = async ({
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
 
-        const user = store.getState().user.user;
+        const storeState = store.getState();
+        const user = storeState.user.user;
         if (!user) throw new Error("User is undefined");
 
         TextSchema.parse(statement.statement);
+
+        const parentId =
+            parentStatement === "top"
+                ? "top"
+                : statement.parentId || parentStatement?.statementId || "top";
 
         statement.statementType =
             statement.statementId === undefined
@@ -48,23 +58,26 @@ export const setStatmentToDB = async ({
         statement.creatorId = statement?.creator?.uid || user.uid;
         statement.creator = statement?.creator || user;
         statement.statementId = statement?.statementId || crypto.randomUUID();
-        statement.parentId =
-            parentStatement === "top"
-                ? "top"
-                : statement.parentId || parentStatement?.statementId || "top";
+        statement.parentId = parentId;
         statement.topParentId =
             parentStatement === "top"
                 ? statement.statementId
                 : statement?.topParentId ||
-                parentStatement?.topParentId ||
-                "top";
+                  parentStatement?.topParentId ||
+                  "top";
         statement.subScreens = statement.subScreens || [
             Screen.CHAT,
             Screen.OPTIONS,
         ];
 
+        const siblingOptions = getSiblingOptionsByParentId(
+            parentId,
+            storeState.statements.statements,
+        );
+        const existingColors = getExistingOptionColors(siblingOptions);
+
         statement.consensus = 0;
-        statement.color = statement.color || getPastelColor();
+        statement.color = statement.color || getRandomColor(existingColors);
 
         statement.statementType =
             statement.statementType || StatementType.statement;
@@ -159,8 +172,8 @@ export function createStatement({
 }: CreateStatementProps): Statement | undefined {
     try {
         if (toggleAskNotifications) toggleAskNotifications();
-
-        const user = store.getState().user.user;
+        const storeState = store.getState();
+        const user = storeState.user.user;
         if (!user) throw new Error("User is undefined");
 
         const statementId = crypto.randomUUID();
@@ -192,7 +205,14 @@ export function createStatement({
         newStatement.defaultLanguage = user.defaultLanguage || "en";
         newStatement.createdAt = Timestamp.now().toMillis();
         newStatement.lastUpdate = Timestamp.now().toMillis();
-        newStatement.color = getPastelColor();
+
+        const siblingOptions = getSiblingOptionsByParentId(
+            parentId,
+            storeState.statements.statements,
+        );
+        const existingColors = getExistingOptionColors(siblingOptions);
+        newStatement.color = getRandomColor(existingColors);
+
         newStatement.resultsSettings = {
             resultsBy: resultsBy || ResultsBy.topOptions,
             numberOfResults: Number(numberOfResults),
@@ -200,16 +220,22 @@ export function createStatement({
 
         Object.assign(newStatement, {
             statementSettings: {
-                enhancedEvaluation: enhancedEvaluation === "on" || enhancedEvaluation === true ? true : false,
-                showEvaluation: showEvaluation === "on" || showEvaluation === true ? true : false,
+                enhancedEvaluation:
+                    enhancedEvaluation === "on" || enhancedEvaluation === true
+                        ? true
+                        : false,
+                showEvaluation:
+                    showEvaluation === "on" || showEvaluation === true
+                        ? true
+                        : false,
                 enableAddEvaluationOption:
                     enableAddEvaluationOption === "on" ||
-                        enableAddEvaluationOption === true
+                    enableAddEvaluationOption === true
                         ? true
                         : false,
                 enableAddVotingOption:
                     enableAddVotingOption === "on" ||
-                        enableAddVotingOption === true
+                    enableAddVotingOption === true
                         ? true
                         : false,
             },
@@ -224,7 +250,6 @@ export function createStatement({
         newStatement.statementSettings.subScreens = screens;
 
         StatementSchema.parse(newStatement);
-       
 
         return newStatement;
     } catch (error) {
@@ -305,10 +330,10 @@ export function updateStatement({
             screens !== undefined
                 ? screens
                 : statement.subScreens || [
-                    Screen.CHAT,
-                    Screen.OPTIONS,
-                    Screen.VOTE,
-                ];
+                      Screen.CHAT,
+                      Screen.OPTIONS,
+                      Screen.VOTE,
+                  ];
 
         StatementSchema.parse(newStatement);
 
@@ -335,19 +360,19 @@ function updateStatementSettings(
     screens?: Screen[];
 } {
     try {
-       
         if (!statement) throw new Error("Statement is undefined");
         if (!statement.statementSettings)
             throw new Error("Statement settings is undefined");
 
         const statementSettings = { ...statement.statementSettings };
 
-        if(enahncedEvaluation === "on" || enahncedEvaluation === true) statementSettings.enhancedEvaluation = true
-        else statementSettings.enhancedEvaluation = false
+        if (enahncedEvaluation === "on" || enahncedEvaluation === true)
+            statementSettings.enhancedEvaluation = true;
+        else statementSettings.enhancedEvaluation = false;
 
-        if(showEvaluation === "on" || showEvaluation === true) statementSettings.showEvaluation = true
-        else statementSettings.showEvaluation = false
-
+        if (showEvaluation === "on" || showEvaluation === true)
+            statementSettings.showEvaluation = true;
+        else statementSettings.showEvaluation = false;
 
         if (
             enableAddEvaluationOption === "on" ||
@@ -407,7 +432,7 @@ export async function updateStatementText(
             lastUpdate: Timestamp.now().toMillis(),
         };
         await updateDoc(statementRef, newStatement);
-    } catch (error) { }
+    } catch (error) {}
 }
 
 export async function setStatementisOption(statement: Statement) {
@@ -487,7 +512,10 @@ export async function setStatmentGroupToDB(statement: Statement) {
     }
 }
 
-export function setRoomSizeInStatementDB(statement: Statement, roomSize: number) {
+export function setRoomSizeInStatementDB(
+    statement: Statement,
+    roomSize: number,
+) {
     try {
         z.number().parse(roomSize);
         StatementSchema.parse(statement);
@@ -554,23 +582,25 @@ export async function updateStatmentMainImage(
     }
 }
 
-export async function setFollowMeDB(statement: Statement, path:string | undefined):Promise<void> {
+export async function setFollowMeDB(
+    statement: Statement,
+    path: string | undefined,
+): Promise<void> {
     try {
         z.string().parse(path);
         StatementSchema.parse(statement);
-        
+
         const statementRef = doc(
             DB,
             Collections.statements,
             statement.statementId,
         );
-      
+
         if (path) {
             await updateDoc(statementRef, { followMe: path });
-        } else{
+        } else {
             await updateDoc(statementRef, { followMe: "" });
         }
-      
     } catch (error) {
         console.error(error);
     }

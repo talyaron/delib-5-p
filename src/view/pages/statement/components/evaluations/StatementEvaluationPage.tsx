@@ -14,7 +14,7 @@ import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import NewSetStatementSimple from "../set/NewStatementSimple";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
-interface Props {
+interface StatementEvaluationPageProps {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (talker: User | null) => void;
@@ -23,7 +23,7 @@ interface Props {
     toggleAskNotifications: () => void;
 }
 
-const StatementEvaluation: FC<Props> = ({
+const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     statement,
     subStatements,
     handleShowTalker,
@@ -42,13 +42,18 @@ const StatementEvaluation: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort).filter((s) => {
-                    if (questions) {
-                        return s.statementType === StatementType.question;
-                    }
+                sortSubStatements(subStatements, sort).filter(
+                    (subStatement) => {
+                        if (questions) {
+                            return (
+                                subStatement.statementType ===
+                                StatementType.question
+                            );
+                        }
 
-                    return isOptionFn(s);
-                }),
+                        return isOptionFn(subStatement);
+                    },
+                ),
             );
         }, [sort, subStatements]);
 
@@ -111,4 +116,4 @@ const StatementEvaluation: FC<Props> = ({
     }
 };
 
-export default StatementEvaluation;
+export default StatementEvaluationPage;

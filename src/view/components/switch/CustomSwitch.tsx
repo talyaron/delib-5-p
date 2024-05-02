@@ -24,13 +24,9 @@ const CustomSwitch: FC<Props> = ({
     const [checked, setChecked] = useState(defaultChecked);
     const { t } = useLanguage();
 
-    const subScreens = statement?.subScreens as Screen[] | undefined;
-
     const handleChange = () => {
-        if (subScreens && subScreens.length > 0) {
-            setChecked(!checked);
-            if (statement) _toggleSubScreen(link, statement);
-        }
+        setChecked(!checked);
+        if (statement) _toggleSubScreen(link, statement);
     };
 
     return (

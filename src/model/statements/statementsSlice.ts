@@ -16,7 +16,7 @@ import {
 import { z } from "zod";
 
 // Helpers
-import { updateArray } from "../../controllers/general/helpers";
+import { isOptionFn, updateArray } from "../../controllers/general/helpers";
 
 enum StatementScreen {
     chat = "chat",
@@ -30,8 +30,6 @@ interface StatementsState {
     statementSubscriptionLastUpdate: number;
     statementMembership: StatementSubscription[];
     screen: StatementScreen;
-
-  
 }
 
 interface StatementOrder {
@@ -64,7 +62,6 @@ export const statementsSlicer = createSlice({
                 if (!Array.isArray(newStatement.results))
                     newStatement.results = [];
 
-               
                 newStatement.order = 0;
                 const oldStatement = state.statements.find(
                     (statement) =>
@@ -97,9 +94,6 @@ export const statementsSlicer = createSlice({
             try {
                 const statements = action.payload;
 
-              
-           
-
                 const { success } = z
                     .array(StatementSchema)
                     .safeParse(statements);
@@ -108,7 +102,11 @@ export const statementsSlicer = createSlice({
                 }
 
                 statements.forEach((statement) => {
-                    state.statements =  updateArray(state.statements, statement, "statementId");
+                    state.statements = updateArray(
+                        state.statements,
+                        statement,
+                        "statementId",
+                    );
                 });
             } catch (error) {
                 console.error(error);
@@ -162,13 +160,15 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
-        setStatementsSubscription: (state, action: PayloadAction<StatementSubscription[]>) => {
+        setStatementsSubscription: (
+            state,
+            action: PayloadAction<StatementSubscription[]>,
+        ) => {
             try {
                 const newStatements = action.payload;
 
                 //TODO: remove this after all statements are updated at about 4 April 2024
                 // z.array(StatementSubscriptionSchema).parse(newStatements);
-                
 
                 newStatements.forEach((statement) => {
                     state.statementSubscription = updateArray(
@@ -228,25 +228,33 @@ export const statementsSlicer = createSlice({
                 console.error(error);
             }
         },
-        toggleSubscreen: (state, action: PayloadAction<{statement:Statement,screen:Screen}>) => {
+        toggleSubscreen: (
+            state,
+            action: PayloadAction<{ statement: Statement; screen: Screen }>,
+        ) => {
             try {
                 ScreenSchema.parse(action.payload.screen);
                 StatementSchema.parse(action.payload.statement);
-                const {statement,screen} = action.payload;
-                const _statement = state.statements.find(st=>st.statementId===statement.statementId);
-                if(!_statement) throw new Error("statement not found");
+                const { statement, screen } = action.payload;
+                const _statement = state.statements.find(
+                    (st) => st.statementId === statement.statementId,
+                );
+                if (!_statement) throw new Error("statement not found");
                 const subScreens = _statement?.subScreens;
-                if(subScreens?.length === 0 || subScreens === undefined) throw new Error("no subscreens");
-                if(subScreens.includes(screen)){
-                   _statement.subScreens = subScreens.filter(subScreen=>subScreen!==screen);
+                if (subScreens?.length === 0 || subScreens === undefined)
+                    throw new Error("no subscreens");
+                if (subScreens.includes(screen)) {
+                    _statement.subScreens = subScreens.filter(
+                        (subScreen) => subScreen !== screen,
+                    );
                 } else {
-                   _statement.subScreens = [...subScreens,screen];
+                    _statement.subScreens = [...subScreens, screen];
                 }
             } catch (error) {
                 console.error(error);
             }
         },
-        
+
         setMembership: (
             state,
             action: PayloadAction<StatementSubscription>,
@@ -316,8 +324,8 @@ export const statementsSelector = (state: RootState) =>
 
 export const statementsChildSelector =
     (statementId: string) => (state: RootState) =>
-        state.statements.statements.filter(
-            (statement) => statement.parents?.includes(statementId),
+        state.statements.statements.filter((statement) =>
+            statement.parents?.includes(statementId),
         );
 export const statementsRoomSolutions =
     (statementId: string | undefined) => (state: RootState) =>
@@ -328,8 +336,9 @@ export const statementsRoomSolutions =
                     statement.statementType === StatementType.result,
             )
             .sort((a, b) => a.createdAt - b.createdAt);
-export const statementsSubscriptionsSelector = (state: RootState):StatementSubscription[] =>
-    state.statements.statementSubscription;
+export const statementsSubscriptionsSelector = (
+    state: RootState,
+): StatementSubscription[] => state.statements.statementSubscription;
 export const statementSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements.find(
@@ -339,6 +348,17 @@ export const statementSubsSelector =
     (statementId: string | undefined) => (state: RootState) =>
         state.statements.statements
             .filter((statementSub) => statementSub.parentId === statementId)
+            .sort((a, b) => a.createdAt - b.createdAt)
+            .map((statement) => ({ ...statement }));
+
+export const statementOptionsSelector =
+    (statementId: string | undefined) => (state: RootState) =>
+        state.statements.statements
+            .filter(
+                (statementSub) =>
+                    statementSub.parentId === statementId &&
+                    isOptionFn(statementSub),
+            )
             .sort((a, b) => a.createdAt - b.createdAt)
             .map((statement) => ({ ...statement }));
 
@@ -358,7 +378,6 @@ export const statementSubsSelectorMemo = createSelector(
         return sts;
     },
 );
-
 
 export const statementNotificationSelector =
     (statementId: string | undefined) => (state: RootState) =>
@@ -382,9 +401,6 @@ export const statementElementHightSelector =
         )?.elementHight || 0;
 export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
     state.statements.statementSubscriptionLastUpdate;
-
-
-
 
 // Membeship
 export const statementMembershipSelector =
