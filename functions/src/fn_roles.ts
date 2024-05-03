@@ -6,7 +6,7 @@ export async function setAdminsToNewStatement(ev: any) {
     try {
         //get parent statement ID
         const statement = ev.data.data();
-        logger.info(`New statement: ${statement.statement}, statementId: ${statement.statementId}`);
+       
 
         //subscribe the creator to the new statement
         const newStatementSubscriptionId = getStatementSubscriptionId(statement.statementId, statement.creator);
@@ -26,11 +26,9 @@ export async function setAdminsToNewStatement(ev: any) {
         await db.collection(Collections.statementsSubscribe).doc(newStatementSubscriptionId).set(newSubscription);
        
         const { parentId } = statement;
-        logger.info(`Parent statement ID: ${parentId}`);
       
         //get all admins of the parent statement
         const adminsDB = await db.collection(Collections.statementsSubscribe).where("statementId", "==", parentId).where("role", "==", Role.admin).get();
-        if(adminsDB.size === 0) return logger.info("No admins to subscribe to the new statement");
         const adminsSubscriptions = adminsDB.docs.map((doc: any) => doc.data());
 
        
@@ -62,7 +60,6 @@ export async function setAdminsToNewStatement(ev: any) {
          
     
                 await db.collection(Collections.statementsSubscribe).doc(statementsSubscribeId).set(newSubscription);
-                logger.info(`Admin ${adminSub.user.displayName} subscribed to the new statement ${statement.statement}, with subId: ${statementsSubscribeId}`);
             } catch (error) {
                 logger.error("In setAdminsToNewStatement, on subscribe the admins to the new statement");
                 logger.error(error);
