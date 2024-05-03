@@ -56,10 +56,9 @@ export function useIsAuthorized(statementId: string | undefined): {
                       
                         StatementSchema.parse(topParentStatement);
                         setTopParentStatement(topParentStatement);
-                        const topRole:Role = (() => {
-                            const currentRole = statementSubscription?.role;
-                        })()
-                        setRole(topParentSubscription?.role);
+                        const topRole:Role = getRole()
+                        setRole(topRole);
+                        
                         if (error)
                             throw new Error(
                                 "Error in getting top parent subscription",
@@ -108,6 +107,16 @@ export function useIsAuthorized(statementId: string | undefined): {
                         console.error(e);
                         setError(true);
                         setLoading(false);
+                    }
+
+                    function getRole(): Role {
+                        
+                            const currentRole = statementSubscription?.role;
+                            const topParentStatementRole = topParentSubscription?.role;
+                            const _role = currentRole === Role.admin || topParentStatementRole === Role.admin ? Role.admin : currentRole;
+                            const role = _role?_role:Role.unsubscribed
+                            return role;
+                      
                     }
                 },
             );
