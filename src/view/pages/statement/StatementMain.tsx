@@ -91,7 +91,7 @@ const StatementMain: FC = () => {
     const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
     // Constants
-    const screen = availableScreen(statement, page);
+    const screen = availableScreen(statement,statementSubscription, page);
 
     // Functions
     const toggleAskNotifications = () => {
@@ -248,6 +248,7 @@ return () => {
                 <>
                     <StatementHeader
                         statement={statement}
+                        statementSubscription={statementSubscription}
                         topParentStatement={topParentStatement}
                         screen={screen || Screen.CHAT}
                         title={title}

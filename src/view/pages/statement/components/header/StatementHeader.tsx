@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 
 
 // Third party imports
-import { Role, Screen, Statement } from "delib-npm";
+import { Role, Screen, Statement, StatementSubscription } from "delib-npm";
 import { useLocation } from "react-router-dom";
 
 // Helpers
@@ -40,6 +40,7 @@ interface Props {
     title: string;
     screen: Screen;
     statement: Statement | undefined;
+    statementSubscription:StatementSubscription|undefined
     topParentStatement: Statement | undefined;
     role: Role | undefined;
     showAskPermission: boolean;
@@ -50,6 +51,7 @@ const StatementHeader: FC<Props> = ({
     title,
     screen,
     statement,
+    statementSubscription,
     topParentStatement,
     setShowAskPermission,
 }) => {
@@ -90,7 +92,7 @@ const StatementHeader: FC<Props> = ({
         navigator.share(shareData);
     }
     function handleEditTitle() {
-        if (isAdmin) {
+        if (statementSubscription?.role === Role.admin) {
             setEditHeader(true);
         }
     }
@@ -179,7 +181,7 @@ const StatementHeader: FC<Props> = ({
                 </Menu>
             </div>
             {statement && (
-                <StatementTopNav statement={statement} screen={screen} />
+                <StatementTopNav statement={statement} screen={screen} statementSubscription={statementSubscription}/>
             )}
         </div>
     );
