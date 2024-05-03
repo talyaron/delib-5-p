@@ -1,4 +1,4 @@
-import { Statement, NavObject, Screen } from "delib-npm";
+import { Statement, NavObject, Screen, StatementSubscription } from "delib-npm";
 import { showNavElements } from "./components/nav/top/statementTopNavCont";
 import { allScreens } from "./components/nav/top/StatementTopNavModel";
 
