@@ -60,6 +60,7 @@ const StatementMain: FC = () => {
         topParentStatement,
         role,
     } = useIsAuthorized(statementId);
+   
 
     // Redux store
     const dispatch = useAppDispatch();
