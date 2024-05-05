@@ -20,7 +20,7 @@ import useStatementColor from "../../../../../../../controllers/hooks/useStateme
 
 // Custom Components
 import EditTitle from "../../../../../../components/edit/EditTitle";
-import ProfileImage from "../ProfileImage";
+import UserAvatar from "../userAvatar/UserAvatar";
 import StatementChatMore from "../StatementChatMore";
 
 // import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
@@ -29,14 +29,13 @@ import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../../assets/icons/lightBulbIcon.svg?react";
 import QuestionMarkIcon from "../../../../../../../assets/icons/questionIcon.svg?react";
 import {
-    setStatementisOption,
+    setStatementIsOption,
     updateIsQuestion,
-} from "../../../../../../../controllers/db/statements/setStatments";
+} from "../../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import Menu from "../../../../../../components/menu/Menu";
 import MenuOption from "../../../../../../components/menu/MenuOption";
-import Modal from "../../../../../../components/modal/Modal";
-import NewSetStatementSimple from "../../../set/NewStatementSimple";
+import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
 import "./ChatMessageCard.scss";
 
 export interface NewQuestion {
@@ -102,10 +101,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                     "Are you sure you want to cancel this option?",
                 );
                 if (cancelOption) {
-                    setStatementisOption(statement);
+                    setStatementIsOption(statement);
                 }
             } else {
-                setStatementisOption(statement);
+                setStatementIsOption(statement);
             }
         } catch (error) {
             console.error(error);
@@ -120,7 +119,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
         >
             {!isPreviousFromSameAuthor && (
                 <div className="user">
-                    <ProfileImage statement={statement} showImage={showImage} />
+                    <UserAvatar
+                        user={statement.creator}
+                        showImage={showImage}
+                    />
                     <span>{statement.creator.displayName}</span>
                 </div>
             )}
@@ -201,13 +203,11 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                 </div>*/}
             </div>
             {isNewStatementModalOpen && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={statement}
-                        isOption={false}
-                        setShowModal={setIsNewStatementModalOpen}
-                    />
-                </Modal>
+                <CreateStatementModal
+                    parentStatement={statement}
+                    isOption={false}
+                    setShowModal={setIsNewStatementModalOpen}
+                />
             )}
         </div>
     );

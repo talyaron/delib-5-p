@@ -28,16 +28,15 @@ import useStatementColor, {
 // Custom Components
 import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
-import { setStatementisOption } from "../../../../../../controllers/db/statements/setStatments";
+import { setStatementIsOption } from "../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
 import Menu from "../../../../../components/menu/Menu";
 import MenuOption from "../../../../../components/menu/MenuOption";
 import IconButton from "../../../../../components/iconButton/IconButton";
-import Modal from "../../../../../components/modal/Modal";
 import StatementChatMore from "../../chat/components/StatementChatMore";
 import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
-import NewSetStatementSimple from "../../set/NewStatementSimple";
+import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
 import Evaluation from "./evaluation/Evaluation";
 import "./StatementEvaluationCard.scss";
 
@@ -107,10 +106,10 @@ const StatementEvaluationCard: FC<Props> = ({
                     "Are you sure you want to cancel this option?",
                 );
                 if (cancelOption) {
-                    setStatementisOption(statement);
+                    setStatementIsOption(statement);
                 }
             } else {
-                setStatementisOption(statement);
+                setStatementIsOption(statement);
             }
         } catch (error) {
             console.error(error);
@@ -191,13 +190,11 @@ const StatementEvaluationCard: FC<Props> = ({
                 )}
             </div>
             {shouldShowAddSubQuestionModal && (
-                <Modal>
-                    <NewSetStatementSimple
-                        parentStatement={statement}
-                        isOption={false}
-                        setShowModal={setShouldShowAddSubQuestionModal}
-                    />
-                </Modal>
+                <CreateStatementModal
+                    parentStatement={statement}
+                    isOption={false}
+                    setShowModal={setShouldShowAddSubQuestionModal}
+                />
             )}
         </div>
     );

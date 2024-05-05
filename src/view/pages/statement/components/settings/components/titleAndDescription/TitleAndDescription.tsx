@@ -2,10 +2,13 @@ import { FC } from "react";
 
 // Hooks & Helpers
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import { WithStatement } from "../../settingsTypeHelpers";
+import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./TitleAndDescription.scss";
 
-const TitleAndDescription: FC<WithStatement> = ({ statement }) => {
+const TitleAndDescription: FC<StatementSettingsProps> = ({
+    statement,
+    setStatementToEdit,
+}) => {
     const { t } = useLanguage();
 
     // * Variables * //
@@ -24,7 +27,14 @@ const TitleAndDescription: FC<WithStatement> = ({ statement }) => {
                     type="text"
                     name="statement"
                     placeholder={t("Group Title")}
-                    defaultValue={title}
+                    value={title}
+                    onChange={(e) => {
+                        const newTitle = e.target.value;
+                        setStatementToEdit({
+                            ...statement,
+                            statement: `${newTitle}\n${description}`,
+                        });
+                    }}
                     required={true}
                 />
             </label>
@@ -33,7 +43,14 @@ const TitleAndDescription: FC<WithStatement> = ({ statement }) => {
                     name="description"
                     placeholder={t("Group Description")}
                     rows={3}
-                    defaultValue={description}
+                    value={description}
+                    onChange={(e) => {
+                        const newDescription = e.target.value;
+                        setStatementToEdit({
+                            ...statement,
+                            statement: `${title}\n${newDescription}`,
+                        });
+                    }}
                 />
             </label>
         </div>

@@ -11,7 +11,6 @@ import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
-import { allScreens } from "../../view/pages/statement/components/nav/top/StatementTopNavModel";
 
 export function updateArray(
     currentArray: Array<any>,
@@ -22,7 +21,7 @@ export function updateArray(
         const arrayTemp = [...currentArray];
 
         if (!newItem[updateByProperty]) {
-            throw new Error(`Item dont have property ${updateByProperty}`);
+            throw new Error(`Item doesn't have property ${updateByProperty}`);
         }
 
         //find in array;
@@ -52,7 +51,7 @@ export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
     parentStatementCreatorId?: string | undefined,
-    authrizedRoles?: Array<Role>,
+    authorizedRoles?: Array<Role>,
 ) {
     try {
         if (!statement) throw new Error("No statement");
@@ -71,7 +70,7 @@ export function isAuthorized(
             return true;
         }
 
-        if (authrizedRoles && authrizedRoles.includes(role)) return true;
+        if (authorizedRoles && authorizedRoles.includes(role)) return true;
 
         return false;
     } catch (error) {
@@ -161,8 +160,8 @@ export function isStatementTypeAllowed(
     statement: Statement,
 ): boolean {
     // check if statement type is allowed
-    // if parent is option, dont allow options
-    // if parent is question, dont allow questions
+    // if parent is option, don't allow options
+    // if parent is question, don't allow questions
 
     try {
         if (!parentStatement)
@@ -248,32 +247,6 @@ export function handleLogout(dispatch: AppDispatch) {
     store.dispatch(setUser(null));
 }
 
-interface dataObj {
-    [key: string]: string;
-}
-
-export function parseScreensCheckBoxes(dataObj: dataObj): Screen[] {
-    try {
-        if (!dataObj) throw new Error("dataObj is undefined");
-
-        const _navArray = [...allScreens];
-
-        const screens = _navArray
-
-            //@ts-ignore
-            .filter((navObj) => dataObj[navObj.link] === "on")
-            .map((navObj) => navObj.link) as Screen[];
-
-        if (screens.length === 0) return [Screen.CHAT, Screen.OPTIONS];
-
-        return screens;
-    } catch (error) {
-        console.error(error);
-
-        return [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
-    }
-}
-
 export function getTitle(statement: Statement) {
     try {
         if (!statement) throw new Error("No statement");
@@ -330,9 +303,7 @@ export function getStatementSubscriptionId(
     }
 }
 
-export function getFirstScreen(
-    array: Array<Screen>
-): Screen  {
+export function getFirstScreen(array: Array<Screen>): Screen {
     try {
         //get the first screen from the array by this order: home, questions, options, chat, vote
         if (!array) throw new Error("No array");
@@ -342,7 +313,6 @@ export function getFirstScreen(
         if (array.includes(Screen.OPTIONS)) return Screen.OPTIONS;
         if (array.includes(Screen.CHAT)) return Screen.CHAT;
         if (array.includes(Screen.VOTE)) return Screen.VOTE;
-        
 
         return Screen.CHAT;
     } catch (error) {

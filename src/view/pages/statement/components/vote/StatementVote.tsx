@@ -12,7 +12,7 @@ import { setVoteToStore } from "../../../../../model/vote/votesSlice";
 import { getTotalVoters } from "./statementVoteCont";
 
 // Custom components
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import Modal from "../../../../components/modal/Modal";
 import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
@@ -38,7 +38,7 @@ const StatementVote: FC<Props> = ({
     const dispatch = useAppDispatch();
 
     // * Use State * //
-    const [isNewStatementModalOpen, setIsNewStatementModalOpen] =
+    const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
         useState(false);
     const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
         useState(false);
@@ -74,15 +74,13 @@ const StatementVote: FC<Props> = ({
                     />
                 </div>
 
-                {isNewStatementModalOpen && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setIsNewStatementModalOpen}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </Modal>
+                {isCreateStatementModalOpen && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setIsCreateStatementModalOpen}
+                        toggleAskNotifications={toggleAskNotifications}
+                    />
                 )}
                 {isStatementInfoModalOpen && (
                     <Modal>
@@ -95,7 +93,7 @@ const StatementVote: FC<Props> = ({
             </div>
             <div className="page__footer">
                 <StatementBottomNav
-                    setShowModal={setIsNewStatementModalOpen}
+                    setShowModal={setIsCreateStatementModalOpen}
                     statement={statement}
                 />
             </div>

@@ -11,7 +11,7 @@ import AddStatement from "./view/pages/main/addStatement/AddStatement";
 import StatementMain from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
 import PricingPlan from "./view/pages/pricing/PricingPlan";
-import SignInToContinue from "./view/pages/pricing/SignInToContinue";
+import LoginPage from "./view/pages/login/LoginFirst";
 import MemberRejection from "./view/pages/memberRejection/MemberRejection";
 import Page401 from "./view/pages/page401/Page401";
 
@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
                         errorElement: <ErrorPage />,
                     },
                     {
-                        path: "addStatment",
+                        path: "addStatement",
                         element: <AddStatement />,
                         errorElement: <ErrorPage />,
                     },
@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "login-first",
-                element: <SignInToContinue />,
+                element: <LoginPage />,
                 errorElement: <ErrorPage />,
             },
             {

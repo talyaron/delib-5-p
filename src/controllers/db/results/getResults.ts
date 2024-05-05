@@ -3,8 +3,6 @@
 // import { Collections } from "delib-npm";
 import {
     collection,
-    doc,
-    getDoc,
     getDocs,
     limit,
     query,
@@ -12,13 +10,7 @@ import {
     orderBy,
 } from "@firebase/firestore";
 import { DB } from "../config";
-import {
-    Collections,
-    ResultsBy,
-    Statement,
-    StatementSchema,
-    maxKeyInObject,
-} from "delib-npm";
+import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
 
 export async function getResultsDB(statement: Statement): Promise<Statement[]> {
     try {
@@ -28,10 +20,8 @@ export async function getResultsDB(statement: Statement): Promise<Statement[]> {
         const resultsBy = resultsSettings?.resultsBy || ResultsBy.topOptions;
 
         switch (resultsBy) {
-            case ResultsBy.topVote:
-                return await getResultsByTopVoteDB(statement);
             case ResultsBy.topOptions:
-                return await getTopOtionsDB(statement);
+                return await getTopOptionsDB(statement);
             default:
                 return [];
         }
@@ -42,29 +32,29 @@ export async function getResultsDB(statement: Statement): Promise<Statement[]> {
     }
 }
 
-export async function getResultsByTopVoteDB(
-    statement: Statement,
-): Promise<Statement[]> {
-    try {
-        //get top voted statement
-        const { selections } = statement;
-        if (!selections) throw new Error("statement has no selections");
+// async function getResultsByTopVoteDB(
+//     statement: Statement,
+// ): Promise<Statement[]> {
+//     try {
+//         //get top voted statement
+//         const { selections } = statement;
+//         if (!selections) throw new Error("statement has no selections");
 
-        const topStatementId = maxKeyInObject(selections);
+//         const topStatementId = maxKeyInObject(selections);
 
-        const statementRef = doc(DB, Collections.statements, topStatementId);
-        const statementSnap = await getDoc(statementRef);
-        const statementData = statementSnap.data() as Statement;
+//         const statementRef = doc(DB, Collections.statements, topStatementId);
+//         const statementSnap = await getDoc(statementRef);
+//         const statementData = statementSnap.data() as Statement;
 
-        return [statementData];
-    } catch (error) {
-        console.error(error);
+//         return [statementData];
+//     } catch (error) {
+//         console.error(error);
 
-        return [];
-    }
-}
+//         return [];
+//     }
+// }
 
-async function getTopOtionsDB(statement: Statement): Promise<Statement[]> {
+async function getTopOptionsDB(statement: Statement): Promise<Statement[]> {
     try {
         const { resultsSettings } = statement;
         const numberOfOptions = resultsSettings?.numberOfResults || 1;

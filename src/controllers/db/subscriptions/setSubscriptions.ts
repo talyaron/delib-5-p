@@ -4,7 +4,7 @@ import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { getStatementSubscriptionId } from "../../general/helpers";
 
-export async function setStatmentSubscriptionToDB(
+export async function setStatementSubscriptionToDB(
     statement: Statement,
     role: Role = Role.member,
     userAskedForNotification = false,
@@ -19,8 +19,12 @@ export async function setStatmentSubscriptionToDB(
 
         const { statementId } = statement;
 
-        const statementsSubscribeId = getStatementSubscriptionId(statementId, user);
-        if (!statementsSubscribeId) throw new Error("Error in getting statementsSubscribeId");
+        const statementsSubscribeId = getStatementSubscriptionId(
+            statementId,
+            user,
+        );
+        if (!statementsSubscribeId)
+            throw new Error("Error in getting statementsSubscribeId");
 
         const statementsSubscribeRef = doc(
             DB,

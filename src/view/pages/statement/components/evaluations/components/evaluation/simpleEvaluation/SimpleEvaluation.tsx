@@ -16,7 +16,7 @@ import { evaluationSelector } from "../../../../../../../../model/evaluations/ev
 import useDirection from "../../../../../../../../controllers/hooks/useDirection";
 
 //css
-import styles from "./SimpleEvaluation.module.scss";
+import "./SimpleEvaluation.scss";
 
 interface Props {
     statement: Statement;
@@ -29,11 +29,14 @@ const SimpleEvaluation: FC<Props> = ({
 }) => {
     const direction = useDirection();
 
-    const initContVote = statement.con ? statement.con : 0;
-    const initProVote = statement.pro ? statement.pro : 0;
+    const initialContVotesCount = statement.con ?? 0;
+    const initialProVotesCount = statement.pro ?? 0;
 
-    const [conVote, setConVote] = useState(initContVote);
-    const [proVote, setProVote] = useState(initProVote);
+    // number of people who gave a bad evaluation
+    const [conVotesCount, setConVotesCount] = useState(initialContVotesCount);
+
+    // number of people who gave a good evaluation
+    const [proVotesCount, setProVotesCount] = useState(initialProVotesCount);
 
     const evaluation = useAppSelector(
         evaluationSelector(statement.statementId),
@@ -45,41 +48,39 @@ const SimpleEvaluation: FC<Props> = ({
         : 0;
 
     useEffect(() => {
-        setConVote(initContVote);
-        setProVote(initProVote);
+        setConVotesCount(initialContVotesCount);
+        setProVotesCount(initialProVotesCount);
     }, [statement.con, statement.pro]);
 
     return (
-        <div className="evaluation">
+        <div className="simple-evaluation">
             <div
-                className="evaluation__box"
+                className="evaluation-box"
                 style={{ flexDirection: direction }}
             >
-                {shouldDisplayScore && <span>{conVote}</span>}
-                <div className="evaluation__box__icon">
+                {shouldDisplayScore && <span>{conVotesCount}</span>}
+                <div className="thumb-icon">
                     <Thumb
                         evaluation={evaluation || 0}
                         upDown="down"
                         statement={statement}
-                        setConVote={setConVote}
-                        setProVote={setProVote}
+                        setConVote={setConVotesCount}
+                        setProVote={setProVotesCount}
                     />
                 </div>
-                <div className="evaluation__box__icon">
+                <div className="thumb-icon">
                     <Thumb
                         evaluation={evaluation || 0}
                         upDown="up"
                         statement={statement}
-                        setProVote={setProVote}
-                        setConVote={setConVote}
+                        setProVote={setProVotesCount}
+                        setConVote={setConVotesCount}
                     />
                 </div>
-                {shouldDisplayScore && <span>{proVote}</span>}
+                {shouldDisplayScore && <span>{proVotesCount}</span>}
             </div>
             {shouldDisplayScore && (
-                <div className={styles.totalEvaluations}>
-                    {consensusToDisplay}
-                </div>
+                <div className="total-evaluations">{consensusToDisplay}</div>
             )}
         </div>
     );

@@ -12,20 +12,6 @@
         align-items: center;
         gap: 1rem;
         padding-top: 0.5rem;
-
-        .avatar {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: black;
-            text-align: center;
-        }
     }
 
     .message-box {

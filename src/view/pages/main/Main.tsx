@@ -25,8 +25,8 @@ const Main = () => {
         .filter((s) => s.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
-    function handleAddStatment() {
-        navigate("/home/addStatment", {
+    function handleAddStatement() {
+        navigate("/home/addStatement", {
             state: { from: window.location.pathname },
         });
 
@@ -65,7 +65,7 @@ const Main = () => {
                     <PeopleLoader />
                 )}
             </div>
-            <Footer onclick={handleAddStatment} />
+            <Footer onclick={handleAddStatement} />
         </ScreenSlide>
     );
 };
