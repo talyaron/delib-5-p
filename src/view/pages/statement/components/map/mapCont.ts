@@ -1,4 +1,4 @@
-import { Statement, ResultsBy, Results, maxKeyInObject } from "delib-npm";
+import { Statement, ResultsBy, Results } from "delib-npm";
 import { getResultsDB } from "../../../../../controllers/db/results/getResults";
 import { isOptionFn } from "../../../../../controllers/general/helpers";
 
@@ -14,10 +14,6 @@ export async function getResults(
         const result: Results = { top: statement, sub: [] };
 
         switch (resultsBy) {
-            case ResultsBy.topOne:
-            case ResultsBy.topVote:
-                result.sub = [...getResultsByVotes(statement, subStatements)];
-                break;
             case ResultsBy.topOptions:
                 result.sub = [
                     ...getResultsByOptions(subStatements, numberOfResults),
@@ -78,37 +74,39 @@ function getResultsByOptions(
         return [];
     }
 }
-function getResultsByVotes(
-    statement: Statement,
-    subStatements: Statement[],
-): Results[] {
-    try {
-        const maxVoteKey = getTopVoteStatementId(statement);
-        if (!maxVoteKey) return [];
-        const maxVoteStatement: Statement | undefined = subStatements.find(
-            (subStatement) => subStatement.statementId === maxVoteKey,
-        );
-        if (!maxVoteStatement) return [];
-        const result: Results = { top: maxVoteStatement, sub: [] };
 
-        return [result];
-    } catch (error) {
-        console.error(error);
+// function getResultsByVotes(
+//     statement: Statement,
+//     subStatements: Statement[],
+// ): Results[] {
+//     try {
+//         const maxVoteKey = getTopVoteStatementId(statement);
+//         if (!maxVoteKey) return [];
+//         const maxVoteStatement: Statement | undefined = subStatements.find(
+//             (subStatement) => subStatement.statementId === maxVoteKey,
+//         );
+//         if (!maxVoteStatement) return [];
+//         const result: Results = { top: maxVoteStatement, sub: [] };
 
-        return [];
-    }
-}
-function getTopVoteStatementId(statement: Statement): string | undefined {
-    try {
-        const { selections } = statement;
-        if (!selections) return undefined;
+//         return [result];
+//     } catch (error) {
+//         console.error(error);
 
-        const maxVoteKey = maxKeyInObject(selections);
+//         return [];
+//     }
+// }
 
-        return maxVoteKey;
-    } catch (error) {
-        console.error(error);
+// function getTopVoteStatementId(statement: Statement): string | undefined {
+//     try {
+//         const { selections } = statement;
+//         if (!selections) return undefined;
 
-        return undefined;
-    }
-}
+//         const maxVoteKey = maxKeyInObject(selections);
+
+//         return maxVoteKey;
+//     } catch (error) {
+//         console.error(error);
+
+//         return undefined;
+//     }
+// }

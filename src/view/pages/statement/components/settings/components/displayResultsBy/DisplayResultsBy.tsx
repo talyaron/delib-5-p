@@ -41,12 +41,12 @@ const DisplayResultsBy: FC<StatementSettingsProps> = ({
                 checked={selectedOption === ResultsBy.topOptions}
                 onChange={() => toggleSelection(ResultsBy.topOptions)}
             />
-            <RadioButtonWithLabel
+            {/* <RadioButtonWithLabel
                 id="favoriteOption"
                 labelText={t("Voting Results")}
                 checked={selectedOption === ResultsBy.topVote}
                 onChange={() => toggleSelection(ResultsBy.topVote)}
-            />
+            /> */}
         </section>
     );
 };
