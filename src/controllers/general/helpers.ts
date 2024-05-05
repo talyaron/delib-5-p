@@ -21,7 +21,7 @@ export function updateArray(
         const arrayTemp = [...currentArray];
 
         if (!newItem[updateByProperty]) {
-            throw new Error(`Item dont have property ${updateByProperty}`);
+            throw new Error(`Item doesn't have property ${updateByProperty}`);
         }
 
         //find in array;
@@ -51,7 +51,7 @@ export function isAuthorized(
     statement: Statement,
     statementSubscription: StatementSubscription | undefined,
     parentStatementCreatorId?: string | undefined,
-    authrizedRoles?: Array<Role>,
+    authorizedRoles?: Array<Role>,
 ) {
     try {
         if (!statement) throw new Error("No statement");
@@ -70,7 +70,7 @@ export function isAuthorized(
             return true;
         }
 
-        if (authrizedRoles && authrizedRoles.includes(role)) return true;
+        if (authorizedRoles && authorizedRoles.includes(role)) return true;
 
         return false;
     } catch (error) {
@@ -160,8 +160,8 @@ export function isStatementTypeAllowed(
     statement: Statement,
 ): boolean {
     // check if statement type is allowed
-    // if parent is option, dont allow options
-    // if parent is question, dont allow questions
+    // if parent is option, don't allow options
+    // if parent is question, don't allow questions
 
     try {
         if (!parentStatement)

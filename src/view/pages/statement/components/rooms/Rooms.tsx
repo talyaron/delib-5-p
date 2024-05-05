@@ -4,8 +4,8 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { listenToAllRoomsRequest } from "../../../../../controllers/db/rooms/getRooms";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 
-import RoomsAdmin from "./admin/RoomsAdmin";
-import ChooseRoom from "./user/choose/ChooseRoom";
+import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
+import ChooseRoom from "./components/choose/ChooseRoom";
 
 // import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";

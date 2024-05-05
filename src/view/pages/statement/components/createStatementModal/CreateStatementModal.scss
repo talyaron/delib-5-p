@@ -15,15 +15,16 @@
         flex-direction: column;
         z-index: 2000;
 
-        .svg-graphic {
+        .modal-image {
             width: 100%;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
 
-            svg {
+            img {
                 height: 260px;
+                width: auto;
                 margin-top: -86px;
                 cursor: unset;
             }

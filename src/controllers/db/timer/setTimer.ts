@@ -57,12 +57,12 @@ export async function deleteTimerSettingDB(timerId: string): Promise<boolean> {
     try {
         const timerRef = doc(DB, Collections.timers, timerId);
         await deleteDoc(timerRef);
-        
-return true;
+
+        return true;
     } catch (error) {
         console.error(error);
-        
-return false;
+
+        return false;
     }
 }
 
@@ -181,15 +181,15 @@ export async function setTimersInitTimeDB({
     }
 }
 
-interface InitilizeTimersDBProps {
+interface InitializeTimersDBParams {
     statementId: string;
     rooms: RoomDivied[];
 }
 
-export async function initilizeTimersDB({
+export async function initializeTimersDB({
     statementId,
     rooms,
-}: InitilizeTimersDBProps): Promise<void> {
+}: InitializeTimersDBParams): Promise<void> {
     try {
         //pre-checks
         const userId = store.getState().user.user?.uid;
@@ -210,7 +210,7 @@ export async function initilizeTimersDB({
             (doc) => doc.data() as SetTimer,
         );
 
-        //initilize timers
+        //initialize timers
 
         rooms.forEach((room) => {
             const roomNumber = room.roomNumber;
@@ -234,8 +234,8 @@ export async function initilizeTimersDB({
                             timerSetting.order,
                         ),
                     };
-                    
-return roomTimer;
+
+                    return roomTimer;
                 },
             );
 
@@ -254,15 +254,25 @@ return roomTimer;
     }
 }
 
-
-export async function startNextTimer(roomTimer:RoomTimer): Promise<void> {
+export async function startNextTimer(roomTimer: RoomTimer): Promise<void> {
     try {
         const currentTimerOrder = roomTimer.order;
         const nextTimerOrder = currentTimerOrder + 1;
-        const nextTimerRef = doc(DB, Collections.timersRooms, getRoomTimerId(roomTimer.statementId, roomTimer.roomNumber, nextTimerOrder));
+        const nextTimerRef = doc(
+            DB,
+            Collections.timersRooms,
+            getRoomTimerId(
+                roomTimer.statementId,
+                roomTimer.roomNumber,
+                nextTimerOrder,
+            ),
+        );
         const nextTimer = await getDoc(nextTimerRef);
-        if(nextTimer.exists()){
-            await setTimersStatusDB(nextTimer.data() as RoomTimer, TimerStatus.start);
+        if (nextTimer.exists()) {
+            await setTimersStatusDB(
+                nextTimer.data() as RoomTimer,
+                TimerStatus.start,
+            );
         }
     } catch (error) {
         console.error(error);

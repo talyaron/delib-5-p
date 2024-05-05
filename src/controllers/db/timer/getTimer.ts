@@ -7,7 +7,7 @@ import {
 } from "@firebase/firestore";
 import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
 import { DB } from "../config";
-import { initialTimerArray } from "../../../view/pages/statement/components/rooms/admin/setTimers/SetTimersModal";
+import { initialTimerArray } from "../../../view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
 import { Unsubscribe } from "@firebase/util";
 import { updateTimerSettingDB } from "./setTimer";
 import { z } from "zod";
@@ -37,8 +37,8 @@ export async function getSetTimersDB(
             initialTimerArray.forEach((timer) => {
                 dispatch(setSetTimer(timer));
             });
-            
-return initialTimerArray;
+
+            return initialTimerArray;
         }
 
         const timers: SetTimer[] = timersDB.docs.map(
@@ -78,7 +78,7 @@ export function listenToRoomTimers(
                 const timers: RoomTimer[] = roomTimersDB.docs.map(
                     (roomTimer) => roomTimer.data() as RoomTimer,
                 );
-               
+
                 z.array(RoomTimerSchema).parse(timers);
 
                 dispatch(setRoomTimers(timers));

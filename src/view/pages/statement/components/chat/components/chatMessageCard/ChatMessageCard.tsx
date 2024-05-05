@@ -20,7 +20,7 @@ import useStatementColor from "../../../../../../../controllers/hooks/useStateme
 
 // Custom Components
 import EditTitle from "../../../../../../components/edit/EditTitle";
-import ProfileImage from "../ProfileImage";
+import UserAvatar from "../userAvatar/UserAvatar";
 import StatementChatMore from "../StatementChatMore";
 
 // import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
@@ -119,7 +119,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
         >
             {!isPreviousFromSameAuthor && (
                 <div className="user">
-                    <ProfileImage statement={statement} showImage={showImage} />
+                    <UserAvatar
+                        user={statement.creator}
+                        showImage={showImage}
+                    />
                     <span>{statement.creator.displayName}</span>
                 </div>
             )}

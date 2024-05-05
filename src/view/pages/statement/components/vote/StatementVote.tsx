@@ -38,7 +38,7 @@ const StatementVote: FC<Props> = ({
     const dispatch = useAppDispatch();
 
     // * Use State * //
-    const [isNewStatementModalOpen, setIsNewStatementModalOpen] =
+    const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
         useState(false);
     const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
         useState(false);
@@ -74,11 +74,11 @@ const StatementVote: FC<Props> = ({
                     />
                 </div>
 
-                {isNewStatementModalOpen && (
+                {isCreateStatementModalOpen && (
                     <CreateStatementModal
                         parentStatement={statement}
                         isOption={true}
-                        setShowModal={setIsNewStatementModalOpen}
+                        setShowModal={setIsCreateStatementModalOpen}
                         toggleAskNotifications={toggleAskNotifications}
                     />
                 )}
@@ -93,7 +93,7 @@ const StatementVote: FC<Props> = ({
             </div>
             <div className="page__footer">
                 <StatementBottomNav
-                    setShowModal={setIsNewStatementModalOpen}
+                    setShowModal={setIsCreateStatementModalOpen}
                     statement={statement}
                 />
             </div>

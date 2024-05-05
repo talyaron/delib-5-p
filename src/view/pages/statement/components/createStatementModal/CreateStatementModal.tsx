@@ -9,8 +9,8 @@ import { Statement } from "delib-npm";
 import Loader from "../../../../components/loaders/Loader";
 
 // Images
-import NewQuestionGraphic from "../../../../../assets/svg-graphics/newQuestionGraphic.svg?react";
-import NewOptionGraphic from "../../../../../assets/svg-graphics/newOptionGraphic.svg?react";
+import newQuestionGraphic from "../../../../../assets/images/newQuestionGraphic.png";
+import newOptionGraphic from "../../../../../assets/images/newOptionGraphic.png";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import { createStatementFromModal } from "../settings/statementSettingsCont";
 import Modal from "../../../../components/modal/Modal";
@@ -61,12 +61,15 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
                 </div>
             ) : (
                 <form className="overlay" onSubmit={onFormSubmit}>
-                    <div className="svg-graphic">
-                        {isOptionSelected ? (
-                            <NewOptionGraphic />
-                        ) : (
-                            <NewQuestionGraphic />
-                        )}
+                    <div className="modal-image">
+                        <img
+                            src={
+                                isOptionSelected
+                                    ? newOptionGraphic
+                                    : newQuestionGraphic
+                            }
+                            alt="New Statement"
+                        />
                     </div>
 
                     <Tabs

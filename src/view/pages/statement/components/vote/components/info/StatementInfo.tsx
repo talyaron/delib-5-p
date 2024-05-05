@@ -9,7 +9,7 @@ import Text from "../../../../../../components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
-import InfoGraphic from "../../../../../../../assets/svg-graphics/infoGraphic.svg?react";
+import infoGraphic from "../../../../../../../assets/images/infoGraphic.png";
 import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
@@ -48,8 +48,8 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 
     return (
         <div className="statement-info">
-            <div className="svg-graphic">
-                <InfoGraphic />
+            <div className="info-graphic">
+                <img src={infoGraphic} alt="info" />
             </div>
 
             {isInEditMode ? (
