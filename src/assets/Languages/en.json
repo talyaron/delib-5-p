@@ -119,5 +119,9 @@
     "Welcome to Room Number": "Welcome to Room Number",
     "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?",
     "Save": "Save",
-    "description": "description"
+    "description": "description",
+    "Setting Timers": "Setting Timers",
+    "You can set the timers for each stage here.": "You can set the timers for each stage here.",
+    "Name of Timer": "Name of Timer",
+    "Add Timer": "Add Timer"
 }

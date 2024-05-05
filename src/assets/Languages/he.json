@@ -118,5 +118,9 @@
     "Yes": "כן",
     "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?",
     "Save": "שמירה",
-    "description": "תיאור"
+    "description": "תיאור",
+    "Setting Timers": "הגדרת טיימרים",
+    "You can set the timers for each stage here.": "כאן ניתן להגדיר את הטיימרים לכל שלב.",
+    "Name of Timer": "שם הטיימר",
+    "Add Timer": "הוספת טיימר"
 }

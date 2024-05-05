@@ -43,11 +43,10 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     const addVotingOption: boolean | undefined =
         statement.statementSettings?.enableAddVotingOption;
 
-    const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
-    const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
-    const showAddQuestion = page === Screen.QUESTIONS;
-    const isAddOption =
-        showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
+    const isOptionsScreen = page === Screen.OPTIONS && addOption;
+    const isVotesScreen = page === Screen.VOTE && addVotingOption;
+    const isQuestionsScreen = page === Screen.QUESTIONS;
+    const isAddOption = isOptionsScreen || isVotesScreen || isQuestionsScreen;
 
     const handleMidIconClick = () => {
         if (!isNavigationOpen) return setIsNavigationOpen(true);

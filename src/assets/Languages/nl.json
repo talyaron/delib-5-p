@@ -106,5 +106,9 @@
     "Yes": "Ja",
     "Would you like to receive notifications in this group?": "Wil je meldingen ontvangen in deze groep?",
     "Save": "Opslaan",
-    "description": "beschrijving"
+    "description": "beschrijving",
+    "Setting Timers": "Timers Instellen",
+    "You can set the timers for each stage here.": "Je kunt de timers voor elke fase hier instellen.",
+    "Name of Timer": "Naam van Timer",
+    "Add Timer": "Timer Toevoegen"
 }

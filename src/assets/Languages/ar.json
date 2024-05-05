@@ -110,5 +110,9 @@
     "Yes": "نعم",
     "Would you like to receive notifications in this group?": "هل ترغب في تلقي الإشعارات في هذه المجموعة؟",
     "Save": "حفظ",
-    "description": "الوصف"
+    "description": "الوصف",
+    "Setting Timers": "ضبط المؤقتات",
+    "You can set the timers for each stage here.": "يمكنك ضبط المؤقتات لكل مرحلة هنا.",
+    "Name of Timer": "اسم المؤقت",
+    "Add Timer": "إضافة مؤقت"
 }

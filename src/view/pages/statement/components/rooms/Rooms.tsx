@@ -1,5 +1,5 @@
 import { RoomsStateSelection, Statement } from "delib-npm";
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { listenToAllRoomsRequest } from "../../../../../controllers/db/rooms/getRooms";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
@@ -40,56 +40,58 @@ const StatementRooms: FC<StatementRoomsProps> = ({
     const isAdmin = store.getState().user.user?.uid === statement.creatorId;
 
     return (
-        <div className="page__main">
-            <div className="wrapper">
-                {switchRoomScreens(
-                    statement.roomsState,
-                    __subStatements,
-                    statement,
-                    setShowModal,
-                )}
-
-                {isAdmin ? <RoomsAdmin statement={statement} /> : null}
-
-                {showModal ? (
-                    <CreateStatementModal
-                        parentStatement={statement}
-                        isOption={true}
-                        setShowModal={setShowModal}
+        <>
+            <div className="page__main">
+                <div className="wrapper">
+                    <RoomScreen
+                        roomState={statement.roomsState}
+                        subStatements={__subStatements}
+                        statement={statement}
                     />
-                ) : null}
+
+                    {isAdmin ? <RoomsAdmin statement={statement} /> : null}
+
+                    {showModal ? (
+                        <CreateStatementModal
+                            parentStatement={statement}
+                            isOption={true}
+                            setShowModal={setShowModal}
+                        />
+                    ) : null}
+                </div>
             </div>
-        </div>
+            {/* <div className="page__footer">
+                <StatementBottomNav
+                    statement={statement}
+                    setShowModal={setShowModal}
+                />
+            </div> */}
+        </>
     );
 };
 
 export default StatementRooms;
 
-function switchRoomScreens(
-    roomState: RoomsStateSelection | undefined,
-    subStatements: Statement[],
-    statement: Statement,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-) {
+interface RoomScreenProps {
+    roomState: RoomsStateSelection | undefined;
+    subStatements: Statement[];
+    statement: Statement;
+}
+
+const RoomScreen: FC<RoomScreenProps> = ({
+    roomState,
+    subStatements,
+    statement,
+}) => {
     switch (roomState) {
         case RoomsStateSelection.chooseRoom:
-            return (
-                <ChooseRoom
-                    subStatements={subStatements}
-                    setShowModal={setShowModal}
-                />
-            );
+            return <ChooseRoom subStatements={subStatements} />;
         case RoomsStateSelection.inRoom:
             return <div>{statement.creatorId}</div>;
 
         // return <InRoom statement={statement} />;
 
         default:
-            return (
-                <ChooseRoom
-                    subStatements={subStatements}
-                    setShowModal={setShowModal}
-                />
-            );
+            return <ChooseRoom subStatements={subStatements} />;
     }
-}
+};

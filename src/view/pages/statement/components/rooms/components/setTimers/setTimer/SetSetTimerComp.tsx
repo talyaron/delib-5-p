@@ -14,6 +14,7 @@ import {
     setSetTimerTime,
     setSetTimerTitle,
 } from "../../../../../../../../model/timers/timersSlice";
+import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 
 interface TimerProps {
     setTimer: SetTimer;
@@ -21,6 +22,7 @@ interface TimerProps {
 }
 
 function SetSetTimerComp({ setTimer, index }: TimerProps) {
+    const { t } = useLanguage();
     try {
         if (!setTimer) return null;
         if (!setTimer.statementId) throw new Error("statementId is required");
@@ -37,7 +39,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
         return (
             <div className={styles.timer}>
                 <div>
-                    <label>Name of Timer</label>
+                    <label>{t("Name of Timer")}</label>
                     <input
                         type="text"
                         defaultValue={title}

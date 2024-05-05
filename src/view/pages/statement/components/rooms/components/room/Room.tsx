@@ -1,11 +1,11 @@
 import { FC } from "react";
 import Text from "../../../../../../components/text/Text";
 import { Participant, RoomDivied } from "delib-npm";
-import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
 import { setRoomJoinToDB } from "../../../../../../../controllers/db/rooms/setRooms";
 import { store } from "../../../../../../../model/store";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import "./Room.scss";
+import UserChip from "../../../../../../components/chip/Chip";
 
 interface Props {
     room: RoomDivied;
@@ -67,9 +67,9 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
             </h4>
             <div className="room-badges">
                 {room.participants.map((participant: Participant) => (
-                    <RoomParticipantBadge
+                    <UserChip
                         key={participant.participant.uid}
-                        participant={participant.participant}
+                        user={participant.participant}
                     />
                 ))}
             </div>

@@ -72,7 +72,7 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
                         updateTimerSettingDB(newTimer);
                     }}
                 >
-                    Add Timer
+                    {t("Add Timer")}
                 </button>
             </section>
         );

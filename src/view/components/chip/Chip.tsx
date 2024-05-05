@@ -1,27 +1,28 @@
 import { User } from "delib-npm";
 import { FC } from "react";
-import styles from "./Chip.module.scss";
 import SmileIcon from "../../../assets/icons/smileIcon.svg?react";
+import "./Chip.scss";
 
 // import anonymous from "../../../assets/anonymous1.png";
 
-interface Props {
-    user: User | undefined;
+interface UserChipProps {
+    user: User;
 }
-const Chip: FC<Props> = ({ user }) => {
-    if (!user) return null;
+const UserChip: FC<UserChipProps> = ({ user }) => {
     const displayName = user.displayName.slice(0, 15);
 
     return (
-        <div className={styles.chip}>
-            {user.photoURL ? (
-                <img src={user.photoURL} alt={user.displayName} />
-            ) : (
-                <SmileIcon style={{ opacity: 0.4 }} />
-            )}
+        <div className="chip">
+            <div className="chip-image">
+                {user.photoURL ? (
+                    <img src={user.photoURL} alt={user.displayName} />
+                ) : (
+                    <SmileIcon style={{ opacity: 0.4 }} />
+                )}
+            </div>
             <span>{displayName}</span>
         </div>
     );
 };
 
-export default Chip;
+export default UserChip;

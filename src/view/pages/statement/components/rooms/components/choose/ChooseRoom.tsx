@@ -9,11 +9,12 @@ import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages
 
 interface Props {
     subStatements: Statement[];
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+const ChooseRoom: FC<Props> = ({ subStatements }) => {
     const { t } = useLanguage();
+
+    if (subStatements.length === 0) return null;
 
     return (
         <>
@@ -28,9 +29,10 @@ const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
                     );
                 })}
             </div>
-            <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
+
+            {/* <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
                 <div>+</div>
-            </div>
+            </div> */}
         </>
     );
 };

@@ -1,8 +1,5 @@
 import { FC, useState } from "react";
 
-// Custom components
-import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
-
 // Redux
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 
@@ -26,6 +23,7 @@ import {
 import { selectStatementSettingTimers } from "../../../../../../../model/timers/timersSlice";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import "./AdminArrange.scss";
+import UserChip from "../../../../../../components/chip/Chip";
 
 interface Props {
     statement: Statement;
@@ -163,10 +161,10 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
                         <br />
                         <br />
                         <div className="badge__wrapper">
-                            {participants.map((request) => (
-                                <RoomParticipantBadge
-                                    key={request.participant.uid}
-                                    participant={request.participant}
+                            {participants.map(({ participant }) => (
+                                <UserChip
+                                    key={participant.uid}
+                                    user={participant}
                                 />
                             ))}
                         </div>

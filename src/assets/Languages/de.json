@@ -106,5 +106,9 @@
     "Yes": "Ja",
     "Would you like to receive notifications in this group?": "Möchten Sie Benachrichtigungen in dieser Gruppe erhalten?",
     "Save": "Speichern",
-    "description": "Beschreibung"
+    "description": "Beschreibung",
+    "Setting Timers": "Timer einstellen",
+    "You can set the timers for each stage here.": "Sie können die Timer für jede Stufe hier einstellen.",
+    "Name of Timer": "Name des Timers",
+    "Add Timer": "Timer hinzufügen"
 }
