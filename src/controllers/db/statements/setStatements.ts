@@ -23,6 +23,33 @@ import {
     getSiblingOptionsByParentId,
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
 
+
+export const updateStatementParents = async (
+    statement: Statement,
+    parentStatement: Statement,
+) => {
+    try {
+        if (!statement) throw new Error("Statement is undefined");
+        if (!parentStatement) throw new Error("Parent statement is undefined");
+
+        const statementRef = doc(
+            DB,
+            Collections.statements,
+            statement.statementId,
+        );
+
+        const newStatement = {
+            parentId: parentStatement.statementId,
+            parents: [parentStatement.parents, parentStatement.statementId].flat(1),
+            topParentId: parentStatement.topParentId,
+        };
+
+        await updateDoc(statementRef, newStatement);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const TextSchema = z.string().min(2);
 interface SetStatementToDBParams {
     statement: Statement;
@@ -309,7 +336,7 @@ export function updateStatement({
 
         if (statementType !== undefined)
             newStatement.statementType =
-                statement.statementType || StatementType.statement;
+                statement.statementType ?? StatementType.statement;
 
         newStatement.subScreens =
             subScreens !== undefined

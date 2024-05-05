@@ -5,7 +5,7 @@ import { Screen, Statement, User } from "delib-npm";
 
 // Custom components
 // import Rooms from "./rooms/Rooms";
-import Map from "./map/Map";
+import Map from "./map/StatementMap";
 import StatementChat from "./chat/StatementChat";
 import StatementEvaluationPage from "./evaluations/StatementEvaluationPage";
 import StatementVote from "./vote/StatementVote";
@@ -29,7 +29,7 @@ export default function SwitchScreens({
     handleShowTalker,
     setShowAskPermission,
     toggleAskNotifications,
-}: SwitchScreensProps) {
+}: Readonly<SwitchScreensProps>) {
     if (!statement) return null;
 
     switch (screen) {

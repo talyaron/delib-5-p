@@ -298,7 +298,7 @@ export function getStatementSubscriptionId(
         return `${user.uid}--${statementId}`;
     } catch (error) {
         console.error(error);
-
+        
         return undefined;
     }
 }

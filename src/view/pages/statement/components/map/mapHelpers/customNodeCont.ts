@@ -4,32 +4,24 @@ import { Edge, Node, Position } from "reactflow";
 
 const position = { x: 0, y: 0 };
 
-const dagreGraph = new dagre.graphlib.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
-
 export const getLayoutedElements = (
     nodes: Node[],
     edges: Edge[],
-    direction = "TB",
     nodeHeight: number,
     nodeWidth: number,
+    direction = "TB",
 ) => {
+    const dagreGraph = new dagre.graphlib.Graph();
+    dagreGraph.setDefaultEdgeLabel(() => ({}));
     const isHorizontal = direction === "LR";
 
     dagreGraph.setGraph({ rankdir: direction });
 
-    nodes.forEach((node, index) => {
-        if (index === 0) {
-            dagreGraph.setNode(node.id, {
-                width: nodeWidth * 1.5,
-                height: nodeHeight * 1.5,
-            });
-        } else {
-            dagreGraph.setNode(node.id, {
-                width: nodeWidth,
-                height: nodeHeight,
-            });
-        }
+    nodes.forEach((node) => {
+        dagreGraph.setNode(node.id, {
+            width: nodeWidth,
+            height: nodeHeight,
+        });
     });
 
     edges.forEach((edge) => {
@@ -43,9 +35,7 @@ export const getLayoutedElements = (
 
         node.targetPosition = isHorizontal ? Position.Left : Position.Top;
         node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
-
-        // We are shifting the dagre node position (anchor=center center) to the top left
-        // so it matches the React Flow node anchor point (top left).
+        
         node.position = {
             x: nodeWithPosition.x - nodeWidth / 2,
             y: nodeWithPosition.y - nodeHeight / 2,
@@ -63,7 +53,10 @@ const edgeStyle = {
     strokeOpacity: 0.5,
 };
 
-const nodeOptions = (result: Results, parentStatement: "top" | Statement) => {
+export const nodeOptions = (
+    result: Results,
+    parentStatement: "top" | Statement,
+) => {
     return {
         id: result.top.statementId,
         data: {
@@ -84,20 +77,16 @@ const edgeOptions = (result: Results, parentId: string): Edge => {
     };
 };
 
-export const createInitialNodesAndEdges = (result: Results|undefined) => {
+export const createInitialNodesAndEdges = (result: Results | undefined) => {
     try {
-        if(!result) return { nodes: [], edges: [] };
+        if (!result) return { nodes: [], edges: [] };
         const edges: Edge[] = [];
 
         const nodes: Node[] = [nodeOptions(result, "top")];
 
-        if (!result.sub) return { nodes, edges };
+        if (!result.sub || result?.sub?.length === 0) return { nodes, edges };
 
-        if (result?.sub?.length === 0) {
-            return { nodes, edges };
-        } else {
-            createNodes(result.sub, result.top);
-        }
+        createNodes(result.sub, result.top);
 
         function createNodes(results: Results[], parentStatement: Statement) {
             results.forEach((sub) => {
