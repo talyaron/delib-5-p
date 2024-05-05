@@ -18,18 +18,22 @@ export const getLayoutedElements = (
 
     dagreGraph.setGraph({ rankdir: direction });
 
-    nodes.forEach((node, index) => {
-        if (index === 0) {
-            dagreGraph.setNode(node.id, {
-                width: nodeWidth * 1.5,
-                height: nodeHeight * 1.5,
-            });
-        } else {
-            dagreGraph.setNode(node.id, {
-                width: nodeWidth,
-                height: nodeHeight,
-            });
-        }
+    nodes.forEach((node) => {
+        // if (index === 0) {
+        //     dagreGraph.setNode(node.id, {
+        //         width: nodeWidth * 1.5,
+        //         height: nodeHeight * 1.5,
+        //     });
+        // } else {
+        //     dagreGraph.setNode(node.id, {
+        //         width: nodeWidth,
+        //         height: nodeHeight,
+        //     });
+        // }
+        dagreGraph.setNode(node.id, {
+            width: nodeWidth,
+            height: nodeHeight,
+        });
     });
 
     edges.forEach((edge) => {

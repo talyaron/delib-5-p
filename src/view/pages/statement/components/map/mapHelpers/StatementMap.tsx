@@ -12,6 +12,7 @@ import ReactFlow, {
     Position,
     Node,
     useReactFlow,
+    ReactFlowInstance,
 } from "reactflow";
 import "./reactFlow.scss";
 import "reactflow/dist/style.css";
@@ -26,7 +27,7 @@ import {
 import CustomNode from "./CustomNode";
 import { useMapContext } from "../../../../../../functions/hooks/useMap";
 import { getStatementFromDB } from "../../../../../../functions/db/statements/getStatement";
-import { updateStatementDragAndDrop } from "../../../../../../functions/db/statements/setStatments";
+import { updateStatementParents } from "../../../../../../functions/db/statements/setStatments";
 
 const nodeTypes = {
     custom: CustomNode,
@@ -34,9 +35,15 @@ const nodeTypes = {
 
 interface Props {
     topResult: Results | undefined;
+    getSubStatements: () => Promise<void>;
 }
 
-export default function StatementMap({ topResult }: Readonly<Props>) {
+let counter = 1;
+
+export default function StatementMap({
+    topResult,
+    getSubStatements,
+}: Readonly<Props>) {
     // if (!topResult) return null;
 
     const { getIntersectingNodes } = useReactFlow();
@@ -44,14 +51,22 @@ export default function StatementMap({ topResult }: Readonly<Props>) {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [tempEdges, setTempEdges] = useState(edges);
+    const [rfInstance, setRfInstance] = useState<null | ReactFlowInstance<
+        any,
+        any
+    >>(null);
 
     const { mapContext, setMapContext } = useMapContext();
 
     useEffect(() => {
-        const direction =
-            mapContext.targetPosition === Position.Top ? "TB" : "LR";
+        console.log("test", counter);
+
+        counter++;
+
         const { nodes: createdNodes, edges: createdEdges } =
             createInitialNodesAndEdges(topResult);
+
+        console.log(createdNodes, createdEdges);
 
         const { nodes: layoutedNodes, edges: layoutedEdges } =
             getLayoutedElements(
@@ -59,13 +74,29 @@ export default function StatementMap({ topResult }: Readonly<Props>) {
                 createdEdges,
                 mapContext.nodeHeight,
                 mapContext.nodeWidth,
-                direction,
+                mapContext.direction,
             );
 
         setNodes(layoutedNodes);
         setEdges(layoutedEdges);
         setTempEdges(layoutedEdges);
     }, [topResult]);
+
+    const onRestore = useCallback(() => {
+        const restoreFlow = async () => {
+            const getFlow = localStorage.getItem("flowKey");
+            if (!getFlow) return;
+
+            const flow = JSON.parse(getFlow);
+
+            if (flow) {
+                setNodes(flow.nodes || []);
+                setEdges(flow.edges || []);
+            }
+        };
+
+        restoreFlow();
+    }, [setNodes]);
 
     const onLayout = useCallback(
         (direction: "TB" | "LR") => {
@@ -96,56 +127,59 @@ export default function StatementMap({ topResult }: Readonly<Props>) {
         _: React.MouseEvent<Element, MouseEvent>,
         node: Node,
     ) => {
-        setEdges(tempEdges);
+        console.log(node.id);
 
         const intersections = getIntersectingNodes(node).map((n) => n.id);
 
-        if (intersections.length === 0) return;
+        if (intersections.length === 0) return setEdges(tempEdges);
 
         // Pop up to ask user if he is sure he wants to move the statement here
-        setMapContext((prev) => ({
-            ...prev,
-            moveStatementModal: true,
-        }));
-
-        // TODO: Create a function that will move statement to new chosen location...
-        // 1 - the function should go through topResult variable
-        // 2 - find the node that need to be move
-        // 3 - find where the intersecting node is located and move it in the hirarchy
-        // * don't forget to change it in DB! * //
+        // setMapContext((prev) => ({
+        //     ...prev,
+        //     moveStatementModal: true,
+        // }));
 
         // Get both statements from DB, and update the dragged statement parents
-        const draggedStatement = await getStatementFromDB(node.id);
-
-        const draggedStatementParent = await getStatementFromDB(
-            intersections[0],
+        const [draggedStatement, newDraggedStatementParent] = await Promise.all(
+            [getStatementFromDB(node.id), getStatementFromDB(intersections[0])],
         );
 
-        if (!draggedStatement || !draggedStatementParent) return;
+        if (!draggedStatement || !newDraggedStatementParent) return;
 
-        await updateStatementDragAndDrop(
+        await updateStatementParents(
             draggedStatement,
-            draggedStatementParent,
+            newDraggedStatementParent,
         );
 
-        window.document.location.reload();
+        // window.document.location.reload();
+
+        await getSubStatements();
+
+        onLayout(mapContext.direction);
     };
 
     const onNodeDrag = useCallback(
         (_: React.MouseEvent<Element, MouseEvent>, node: Node) => {
             setEdges([]);
 
-            const intersections = getIntersectingNodes(node).map((n) => n.id);
+            const intersections = getIntersectingNodes(node).find((n) => n.id);
 
             setNodes((ns) =>
                 ns.map((n) => ({
                     ...n,
-                    className: intersections.includes(n.id) ? "highlight" : "",
+                    className: intersections?.id === n.id ? "highlight" : "",
                 })),
             );
         },
         [],
     );
+
+    const onSave = useCallback(() => {
+        if (rfInstance) {
+            const flow = rfInstance.toObject();
+            localStorage.setItem("flowKey", JSON.stringify(flow));
+        }
+    }, [rfInstance]);
 
     // TODO: Create an option to save the current state of the map and return to it if changes were made...
 
@@ -160,15 +194,32 @@ export default function StatementMap({ topResult }: Readonly<Props>) {
             onEdgesChange={onEdgesChange}
             onNodeDrag={onNodeDrag}
             onNodeDragStop={onNodeDragStop}
+            onInit={(reactFlowInstance) => {
+                setRfInstance(reactFlowInstance);
+                const flow = reactFlowInstance.toObject();
+                localStorage.setItem("flowKey", JSON.stringify(flow));
+            }}
         >
             <Controls />
-            <Panel position="bottom-right">
+            <Panel position="bottom-right" style={{ marginBottom: "2rem" }}>
                 <div className="btns">
-                    <button onClick={() => onLayout("TB")}>
+                    <button
+                        className="btn btn--agree"
+                        onClick={() => onLayout("TB")}
+                    >
                         vertical layout
                     </button>
-                    <button onClick={() => onLayout("LR")}>
+                    <button
+                        className="btn btn--agree"
+                        onClick={() => onLayout("LR")}
+                    >
                         horizontal layout
+                    </button>
+                    <button onClick={onRestore} className="btn btn--agree">
+                        Restore
+                    </button>
+                    <button onClick={onSave} className="btn btn--agree">
+                        Save
                     </button>
                 </div>
             </Panel>

@@ -20,7 +20,7 @@ import { setStatmentSubscriptionNotificationToDB } from "../notifications/notifi
 import { setStatmentSubscriptionToDB } from "../subscriptions/setSubscriptions";
 
 
-export const updateStatementDragAndDrop = async (
+export const updateStatementParents = async (
     statement: Statement,
     parentStatement: Statement,
 ) => {
