@@ -120,7 +120,9 @@ export default function CustomNode({ data }: NodeProps) {
                         }}
                     >
                         <PlusIcon />
-                    <div
+                    </button>
+
+                    <button
                         className="addIcon"
                         onClick={handleAddSiblingNode}
                         style={{
@@ -131,7 +133,7 @@ export default function CustomNode({ data }: NodeProps) {
                         }}
                     >
                         <PlusIcon />
-                    </div>
+                    </button>
                 </>
             )}
 

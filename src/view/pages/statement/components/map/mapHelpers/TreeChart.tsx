@@ -25,9 +25,9 @@ import {
 
 // Custom components
 import CustomNode from "./CustomNode";
-import { useMapContext } from "../../../../../../functions/hooks/useMap";
-import { getStatementFromDB } from "../../../../../../functions/db/statements/getStatement";
-import { updateStatementParents } from "../../../../../../functions/db/statements/setStatments";
+import { useMapContext } from "../../../../../../controllers/hooks/useMap";
+import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
+import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
 import Modal from "../../../../../components/modal/Modal";
 
 const nodeTypes = {
