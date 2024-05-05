@@ -9,7 +9,6 @@ lerna-debug.log*
 
 firebase.json
 package-lock.json
-configKey.ts
 
 node_modules
 dist

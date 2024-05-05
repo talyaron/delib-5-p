@@ -114,7 +114,10 @@ const StatementHeader: FC<Props> = ({
     };
 
     return (
-        <div className={`page__header ${dir}`} style={headerColor}>
+        <div
+            className={`page__header ${dir}`}
+            style={{ ...headerColor, direction: dir }}
+        >
             <div className="page__header__wrapper">
                 <div className="page__header__wrapper__actions">
                     <Back parentStatement={parentStatement} statement={statement} headerColor={headerColor} />

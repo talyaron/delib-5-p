@@ -43,6 +43,16 @@ import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Page404 from "../page404/Page404";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
 
+// Create selectors
+export const subStatementsSelector = createSelector(
+    (state: RootState) => state.statements.statements,
+    (_state: RootState, statementId: string | undefined) => statementId,
+    (statements, statementId) =>
+        statements
+            .filter((st) => st.parentId === statementId)
+            .sort((a, b) => a.createdAt - b.createdAt),
+);
+
 const StatementMain: FC = () => {
     // Hooks
     const { statementId } = useParams();
@@ -67,16 +77,6 @@ const StatementMain: FC = () => {
     const user = useSelector(userSelector);
     const hasNotifications = useAppSelector(
         statementNotificationSelector(statementId),
-    );
-
-    // Create selectors
-    const subStatementsSelector = createSelector(
-        (state: RootState) => state.statements.statements,
-        (_state: RootState, statementId: string | undefined) => statementId,
-        (statements, statementId) =>
-            statements
-                .filter((st) => st.parentId === statementId)
-                .sort((a, b) => a.createdAt - b.createdAt),
     );
 
     const subStatements = useAppSelector((state: RootState) =>
@@ -184,8 +184,8 @@ const StatementMain: FC = () => {
                 setIsStatementNotFound,
             );
         }
-        
-return () => {
+
+        return () => {
             unsub();
         };
     }, [statement?.topParentId]);
@@ -258,20 +258,15 @@ return () => {
                     />
 
                     <MapProvider>
-                       
-                            <FollowMeToast
-                                role={role}
-                                statement={statement}
-                            />
-                            <SwitchScreens
-                                screen={screen}
-                                statement={statement}
-                                subStatements={subStatements}
-                                handleShowTalker={handleShowTalker}
-                                setShowAskPermission={setShowAskPermission}
-                                toggleAskNotifications={toggleAskNotifications}
-                            />
-                        
+                        <FollowMeToast role={role} statement={statement} />
+                        <SwitchScreens
+                            screen={screen}
+                            statement={statement}
+                            subStatements={subStatements}
+                            handleShowTalker={handleShowTalker}
+                            setShowAskPermission={setShowAskPermission}
+                            toggleAskNotifications={toggleAskNotifications}
+                        />
                     </MapProvider>
                 </>
             </div>

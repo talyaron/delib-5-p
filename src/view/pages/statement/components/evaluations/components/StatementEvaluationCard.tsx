@@ -31,15 +31,15 @@ import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?reac
 import { setStatementisOption } from "../../../../../../controllers/db/statements/setStatments";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
-import Evaluation from "../../../../../components/evaluation/Evaluation";
 import Menu from "../../../../../components/menu/Menu";
 import MenuOption from "../../../../../components/menu/MenuOption";
+import IconButton from "../../../../../components/iconButton/IconButton";
 import Modal from "../../../../../components/modal/Modal";
 import StatementChatMore from "../../chat/components/StatementChatMore";
 import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
 import NewSetStatementSimple from "../../set/NewStatementSimple";
+import Evaluation from "./evaluation/Evaluation";
 import "./StatementEvaluationCard.scss";
-import IconButton from "../../../../../components/iconButton/IconButton";
 
 interface Props {
     statement: Statement;

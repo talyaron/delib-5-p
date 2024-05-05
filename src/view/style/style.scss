@@ -5,8 +5,6 @@
 @import "./start.scss";
 @import "./profileImage.scss";
 @import "./popup.scss";
-@import "./mainCard.scss";
-@import "./options.scss";
 @import "./modal.scss";
 @import "./room.scss";
 @import "./accessibility.scss";
@@ -15,7 +13,6 @@
 @import "./buttons.scss";
 @import "./addStatementModal.scss";
 @import "./termsOfUse.scss";
-@import "./votes.scss";
 @import "./pageAnimation.scss";
 @import "./pricingPage.scss";
 @import "./loginFirstPage.scss";
@@ -562,8 +559,6 @@ b {
     user-select: none;
     position: relative;
     margin: 0.5rem 0.7rem 0px 0px;
-
-    
 }
 
 .center {
