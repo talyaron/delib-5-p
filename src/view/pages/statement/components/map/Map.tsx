@@ -51,7 +51,7 @@ const Map: FC<Props> = ({ statement }) => {
     };
 
     // Get all child statements and set top result to display map
-    // TODO: In the future refactor to listen to changes in sub statements
+    // In the future refactor to listen to changes in sub statements
     const getSubStatements = async () => {
         const childStatements = await getChildStatements(statement.statementId);
 
@@ -115,7 +115,12 @@ const Map: FC<Props> = ({ statement }) => {
                         direction: "ltr",
                     }}
                 >
-                    {results && <StatementMap topResult={results} getSubStatements={getSubStatements}/>}
+                    {results && (
+                        <StatementMap
+                            topResult={results}
+                            getSubStatements={getSubStatements}
+                        />
+                    )}
                 </div>
 
                 {mapContext.showModal && (

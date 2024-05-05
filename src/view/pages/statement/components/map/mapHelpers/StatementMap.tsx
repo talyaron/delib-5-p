@@ -34,18 +34,14 @@ const nodeTypes = {
 };
 
 interface Props {
-    topResult: Results | undefined;
+    topResult: Results;
     getSubStatements: () => Promise<void>;
 }
-
-let counter = 1;
 
 export default function StatementMap({
     topResult,
     getSubStatements,
 }: Readonly<Props>) {
-    // if (!topResult) return null;
-
     const { getIntersectingNodes } = useReactFlow();
 
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -59,14 +55,8 @@ export default function StatementMap({
     const { mapContext, setMapContext } = useMapContext();
 
     useEffect(() => {
-        console.log("test", counter);
-
-        counter++;
-
         const { nodes: createdNodes, edges: createdEdges } =
             createInitialNodesAndEdges(topResult);
-
-        console.log(createdNodes, createdEdges);
 
         const { nodes: layoutedNodes, edges: layoutedEdges } =
             getLayoutedElements(
@@ -127,8 +117,6 @@ export default function StatementMap({
         _: React.MouseEvent<Element, MouseEvent>,
         node: Node,
     ) => {
-        console.log(node.id);
-
         const intersections = getIntersectingNodes(node).map((n) => n.id);
 
         if (intersections.length === 0) return setEdges(tempEdges);
@@ -150,12 +138,7 @@ export default function StatementMap({
             draggedStatement,
             newDraggedStatementParent,
         );
-
-        // window.document.location.reload();
-
         await getSubStatements();
-
-        onLayout(mapContext.direction);
     };
 
     const onNodeDrag = useCallback(
@@ -180,8 +163,6 @@ export default function StatementMap({
             localStorage.setItem("flowKey", JSON.stringify(flow));
         }
     }, [rfInstance]);
-
-    // TODO: Create an option to save the current state of the map and return to it if changes were made...
 
     return (
         <ReactFlow

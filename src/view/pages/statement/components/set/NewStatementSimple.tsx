@@ -101,7 +101,7 @@ const NewSetStatementSimple: FC<Props> = ({
                             <div className="overlay__imgBox">
                                 <img
                                     src={questionModalImage}
-                                    alt="Qustion-Modal-Image"
+                                    alt="Qustion-Modal"
                                     width="70%"
                                 />
                                 <div className="overlay__imgBox__polygon" />
@@ -110,7 +110,7 @@ const NewSetStatementSimple: FC<Props> = ({
                             <div className="overlay__imgBox">
                                 <img
                                     src={optionModalImage}
-                                    alt="Option-Modal-Image"
+                                    alt="Option-Modal"
                                     width="70%"
                                 />
                                 <div className="overlay__imgBox__halfPieChartGraphic">
