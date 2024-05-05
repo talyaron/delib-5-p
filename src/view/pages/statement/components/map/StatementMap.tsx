@@ -5,7 +5,7 @@ import { Results, Statement } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import StatementMap from "./mapHelpers/StatementMap";
+import TreeChart from "./mapHelpers/TreeChart";
 import Modal from "../../../../components/modal/Modal";
 
 // Helpers
@@ -26,7 +26,7 @@ interface Props {
     statement: Statement;
 }
 
-const Map: FC<Props> = ({ statement }) => {
+const StatementMap: FC<Props> = ({ statement }) => {
     const { t } = useLanguage();
     const { mapContext, setMapContext } = useMapContext();
 
@@ -78,12 +78,6 @@ const Map: FC<Props> = ({ statement }) => {
         }));
     };
 
-    const toggleMoveStatementModal = () => {
-        setMapContext((prev) => ({
-            ...prev,
-            moveStatementModal: !prev.moveStatementModal,
-        }));
-    };
 
     return (
         <ScreenFadeIn className="page__main">
@@ -115,12 +109,7 @@ const Map: FC<Props> = ({ statement }) => {
                         direction: "ltr",
                     }}
                 >
-                    {results && (
-                        <StatementMap
-                            topResult={results}
-                            getSubStatements={getSubStatements}
-                        />
-                    )}
+                    {results && <TreeChart topResult={results} getSubStatements={getSubStatements}/>}
                 </div>
 
                 {mapContext.showModal && (
@@ -133,33 +122,9 @@ const Map: FC<Props> = ({ statement }) => {
                         />
                     </Modal>
                 )}
-                {mapContext.moveStatementModal && (
-                    <Modal>
-                        <div style={{ padding: "1rem" }}>
-                            <h1>
-                                Are you sure you want to move statement here?
-                            </h1>
-                            <br />
-                            <div className="btnBox">
-                                <button
-                                    onClick={toggleMoveStatementModal}
-                                    className="btn btn--large btn--add"
-                                >
-                                    Yes
-                                </button>
-                                <button
-                                    onClick={toggleMoveStatementModal}
-                                    className="btn btn--large btn--disagree"
-                                >
-                                    No
-                                </button>
-                            </div>
-                        </div>
-                    </Modal>
-                )}
             </ReactFlowProvider>
         </ScreenFadeIn>
     );
 };
 
-export default Map;
+export default StatementMap;

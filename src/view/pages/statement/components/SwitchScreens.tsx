@@ -5,7 +5,7 @@ import { Screen, Statement, User } from "delib-npm";
 
 // Custom components
 // import Rooms from "./rooms/Rooms";
-import Map from "./map/Map";
+import Map from "./map/StatementMap";
 import StatementChat from "./chat/StatementChat";
 import StatementEvaluation from "./evaluations/StatementEvaluation";
 import StatementVote from "./vote/StatementVote";
