@@ -31,7 +31,7 @@ const DisplayResultsBy: FC<WithStatement> = ({ statement }) => {
                 }}
                 value={ResultsBy.topOptions}
             />
-            <RadioButtonWithLabel
+            {/* <RadioButtonWithLabel
                 id="favoriteOption"
                 value={ResultsBy.topVote}
                 labelText={t("Voting Results")}
@@ -39,7 +39,7 @@ const DisplayResultsBy: FC<WithStatement> = ({ statement }) => {
                 onChange={() => {
                     setSelectedOption(ResultsBy.topVote);
                 }}
-            />
+            /> */}
         </section>
     );
 };
