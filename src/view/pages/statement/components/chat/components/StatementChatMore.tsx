@@ -1,4 +1,5 @@
 import { FC } from "react";
+import "./StatementChatMore.scss"
 
 // Icons
 import ChatIcon from "../../../../../../assets/icons/roundedChatDotIcon.svg?react";
@@ -11,13 +12,13 @@ import { Statement, StatementSubscription, StatementType } from "delib-npm";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 
 // Helpers
-import { statementTitleToDisplay } from "../../../../../../functions/general/helpers";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
-import styles from "./StatementChatMore.module.scss";
+
 
 interface Props {
     statement: Statement;
@@ -47,14 +48,14 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
     return (
         <div
-            className={styles.statementChatMore}
+            className="statementChatMore"
             onClick={() =>
                 navigate(`/statement/${statement.statementId}/chat`, {
                     state: { from: window.location.pathname },
                 })
             }
         >
-            <div className={styles.icon}>
+            <div className="icon">
                 {messages - messagesRead > 0 && (
                     <div className="redCircle">
                         {messages - messagesRead < 10
@@ -64,7 +65,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                 )}
                 <ChatIcon />
             </div>
-            <div className={styles.text}>{messageToDisplay}</div>
+            <div className="text">{messageToDisplay}</div>
         </div>
     );
 };

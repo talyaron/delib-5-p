@@ -5,17 +5,17 @@ import { Handle, NodeProps } from "reactflow";
 import { useNavigate } from "react-router-dom";
 
 // Hooks
-import { useMapContext } from "../../../../../../functions/hooks/useMap";
+import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 // Icons
-import PlusIcon from "../../../../../components/icons/PlusIcon";
+import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 
 // Statements functions
 import {
     calculateFontSize,
     statementTitleToDisplay,
-} from "../../../../../../functions/general/helpers";
-import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
+} from "../../../../../../controllers/general/helpers";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 
 const nodeStyle = (
     parentStatement: any,
@@ -119,9 +119,8 @@ export default function CustomNode({ data }: NodeProps) {
                                 mapContext.direction === "TB" ? "-1.8rem" : 0,
                         }}
                     >
-                        <PlusIcon color="#9687F4" />
-                    </button>
-                    <button
+                        <PlusIcon />
+                    <div
                         className="addIcon"
                         onClick={handleAddSiblingNode}
                         style={{
@@ -131,8 +130,8 @@ export default function CustomNode({ data }: NodeProps) {
                             top: mapContext.direction === "TB" ? 0 : "-1.8rem",
                         }}
                     >
-                        <PlusIcon color="#9687F4" />
-                    </button>
+                        <PlusIcon />
+                    </div>
                 </>
             )}
 

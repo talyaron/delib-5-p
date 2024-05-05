@@ -1,0 +1,17 @@
+.voting-area {
+    &.horizontal {
+        right: 0;
+        display: flex;
+        direction: ltr;
+        padding: 1.5rem 0;
+        height: 100svw;
+        rotate: 90deg;
+    }
+
+    &.vertical {
+        display: flex;
+        direction: rtl;
+        margin: 0 auto;
+        height: 100%;
+    }
+}

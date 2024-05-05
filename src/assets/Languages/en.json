@@ -40,6 +40,9 @@
     "Explain how to open the notifications": "Explain how to open the notifications",
     "Favorite Option": "Favorite Option",
     "From the Institute for Deliberative Democracy": "From the Institute for Deliberative Democracy",
+    "Follow Me": "Follow Me",
+    "Follow Mode Active": "Follow Mode Active:",
+    "Follow Instructor": "Follow Instructor",
     "General": "General",
     "Get Voters": "Get Voters",
     "Get Evaluators": "Get Evaluators",
@@ -98,7 +101,10 @@
     "So you can communicate": "So you can communicate",
     "Solutions": "Solutions",
     "Start": "Start",
-    "Tabs": "Tabs",
+    "Tabs to display": "Tabs to display",
+    "General Settings": "General Settings",
+    "Members": "Members",
+    "Joined members": "Joined members",
     "terms of use": "Terms Of Use",
     "Title": "Title",
     "Turn off": "Turn off",
@@ -111,5 +117,7 @@
     "Voting Results": "Voting Results",
     "Vote": "Vote",
     "Welcome to Room Number": "Welcome to Room Number",
-    "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?"
+    "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?",
+    "Save": "Save",
+    "description": "description"
 }

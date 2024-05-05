@@ -32,6 +32,7 @@ import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { sendNotificationsCB } from "./fn_notifications";
 import { cleanOldTimers } from "./fn_timers";
+import { setAdminsToNewStatement } from "./fn_roles";
 
 initializeApp();
 export const db = getFirestore();
@@ -86,3 +87,6 @@ exports.countRoomJoiners = onDocumentWritten(
 
 //timers
 exports.cleanTimers = onSchedule("every day 00:00", cleanOldTimers)
+
+//roles
+exports.setAdminsToNewStatement = onDocumentCreated(`/${Collections.statements}/{statementId}`, setAdminsToNewStatement);

@@ -1,10 +1,11 @@
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { Statement, StatementType, User } from "delib-npm";
 import { store } from "../../../../../../../model/store";
 import {
     createStatement,
-    setStatmentToDB,
+    setStatementToDB,
     updateStatementText,
-} from "../../../../../../../functions/db/statements/setStatments";
+} from "../../../../../../../controllers/db/statements/setStatements";
 
 interface handleSetQuestionFromMassCardProps {
     question: Statement;
@@ -30,13 +31,15 @@ export const handleSetQuestionFromMassCard = ({
         } else {
             //create new statement
             const statement: Statement | undefined = createStatement({
+                ...defaultStatementSettings,
+                hasChildren: true,
                 text,
                 parentStatement: question,
                 statementType: StatementType.option,
             });
             if (!statement) throw new Error("statement not created");
 
-            setStatmentToDB({
+            setStatementToDB({
                 statement,
                 parentStatement: question,
                 addSubscription: false,

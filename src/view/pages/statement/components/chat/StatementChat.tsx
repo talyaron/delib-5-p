@@ -4,13 +4,14 @@ import { FC, useEffect, useState, useRef } from "react";
 import { Statement, User } from "delib-npm";
 
 // Custom Components
-import StatementChatCard from "./components/StatementChatCard";
+import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import StatementInput from "./components/input/StatementInput";
-import useSlideAndSubStatement from "../../../../../functions/hooks/useSlideAndSubStatement";
+import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
 
 import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../../../model/users/userSlice";
+import "./StatementChat.scss";
 
 interface Props {
     statement: Statement;
@@ -76,12 +77,11 @@ const StatementChat: FC<Props> = ({
     return (
         <>
             <div
-                className={`page__main ${toSlide && slideInOrOut}`}
-                style={{ paddingBottom: "5rem" }}
+                className={`page__main statement-chat ${toSlide && slideInOrOut}`}
             >
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>
-                        <StatementChatCard
+                        <ChatMessageCard
                             parentStatement={statement}
                             statement={statementSub}
                             showImage={handleShowTalker}

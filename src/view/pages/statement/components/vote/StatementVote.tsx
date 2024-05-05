@@ -4,22 +4,23 @@ import { FC, useEffect, useState } from "react";
 import { Statement } from "delib-npm";
 
 // Redux
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
+import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 
 // Statements helpers
-import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
+import { getToVoteOnParent } from "../../../../../controllers/db/vote/getVotes";
 import { setVoteToStore } from "../../../../../model/vote/votesSlice";
 import { getTotalVoters } from "./statementVoteCont";
 
 // Custom components
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import Modal from "../../../../components/modal/Modal";
 import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
+import "./StatementVote.scss";
 
 // Helpers
-import VotingArea from "./components/VotingArea";
+import VotingArea from "./components/votingArea/VotingArea";
 
 interface Props {
     statement: Statement;
@@ -37,8 +38,10 @@ const StatementVote: FC<Props> = ({
     const dispatch = useAppDispatch();
 
     // * Use State * //
-    const [showModal, setShowModal] = useState(false);
-    const [showInfo, setShowInfo] = useState(false);
+    const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
+        useState(false);
+    const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
+        useState(false);
     const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
     // * Variables * //
@@ -46,54 +49,51 @@ const StatementVote: FC<Props> = ({
 
     useEffect(() => {
         if (!getVoteFromDB) {
-            getToVoteOnParent(statement.statementId, updateStoreWitehVoteCB);
+            getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
             getVoteFromDB = true;
         }
     }, []);
 
-    function updateStoreWitehVoteCB(option: Statement) {
+    function updateStoreWithVoteCB(option: Statement) {
         dispatch(setVoteToStore(option));
     }
 
     return (
         <>
             <div className="page__main">
-                <div className="votingWrapper">
-                    <div className="hand">
-                        <HandIcon style={{ width: "16px", height: "19px" }} />{" "}
-                        {totalVotes}
+                <div className="statement-vote">
+                    <div className="number-of-votes-mark">
+                        <HandIcon /> {totalVotes}
                     </div>
                     <VotingArea
                         totalVotes={totalVotes}
-                        setShowInfo={setShowInfo}
+                        setShowInfo={setIsStatementInfoModalOpen}
                         statement={statement}
                         subStatements={subStatements}
                         setStatementInfo={setStatementInfo}
                     />
                 </div>
 
-                {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </Modal>
+                {isCreateStatementModalOpen && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setIsCreateStatementModalOpen}
+                        toggleAskNotifications={toggleAskNotifications}
+                    />
                 )}
-                {showInfo && (
+                {isStatementInfoModalOpen && (
                     <Modal>
                         <StatementInfo
                             statement={statementInfo}
-                            setShowInfo={setShowInfo}
+                            setShowInfo={setIsStatementInfoModalOpen}
                         />
                     </Modal>
                 )}
             </div>
             <div className="page__footer">
                 <StatementBottomNav
-                    setShowModal={setShowModal}
+                    setShowModal={setIsCreateStatementModalOpen}
                     statement={statement}
                 />
             </div>

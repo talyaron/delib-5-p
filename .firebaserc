@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "delib-v3-dev",
+    "default": "delib-5-avni",
     "dev": "delib-v3-dev",
     "prod": "synthesistalyaron"
   },

@@ -1,7 +1,7 @@
 import "./style.scss";
 import image from "../../../assets/images/MemberRsejectionImage.png";
-import { logOut } from "../../../functions/db/auth";
-import { useAppDispatch } from "../../../functions/hooks/reduxHooks";
+import { logOut } from "../../../controllers/db/auth";
+import { useAppDispatch } from "../../../controllers/hooks/reduxHooks";
 
 export default function MemberRejection() {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

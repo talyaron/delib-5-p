@@ -1,4 +1,4 @@
-import { install } from "../../../main";
+import { install } from "../../../App";
 
 export function prompStore(setDeferredPrompt: React.Dispatch<any>) {
     const deferredPrompt = install.deferredPrompt;

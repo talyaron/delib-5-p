@@ -6,7 +6,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: transparent;
+
+    svg {
+        color: #9687f4;
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .addIcon:hover {

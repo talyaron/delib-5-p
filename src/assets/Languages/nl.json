@@ -38,6 +38,9 @@
     "Enhanced Evaluation": "Verbeterde Evaluatie",
     "Explain how to open the notifications": "Leg uit hoe de meldingen te openen",
     "Favorite Option": "Favoriete Optie",
+    "Follow Me": "Volg Mij",
+    "Follow Mode Active": "Volgmodus Actief",
+    "Follow Instructor": "Volg Instructeur",
     "From the Institute for Deliberative Democracy": "Van het Instituut voor Deliberatieve Democratie",
     "General": "Algemeen",
     "Guest": "Gast",
@@ -87,7 +90,10 @@
     "So you can communicate": "Zodat je kunt communiceren",
     "Evaluations": "Oplossingen",
     "Start": "Starten",
-    "Tabs": "Tabbladen",
+    "Tabs to display": "Tabbladen",
+    "General Settings": "Algemene Instellingen",
+    "Members": "Leden",
+    "Joined members": "Leden die zijn toegetreden",
     "Title": "Titel",
     "Update": "Bijwerken",
     "Updating": "Bijwerken",
@@ -98,5 +104,7 @@
     "Votes": "Stemmen",
     "Welcome to Room Number": "Welkom in Kamer Nummer",
     "Yes": "Ja",
-    "Would you like to receive notifications in this group?": "Wil je meldingen ontvangen in deze groep?"
+    "Would you like to receive notifications in this group?": "Wil je meldingen ontvangen in deze groep?",
+    "Save": "Opslaan",
+    "description": "beschrijving"
 }

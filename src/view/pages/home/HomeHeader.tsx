@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
 
 // Helpers
-import { install } from "../../../main";
 import { prompStore } from "../main/mainCont";
 
 // icons
-import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
 import InstallIcon from "../../../assets/icons/installIcon.svg?react";
 
 // Components
-import HomeMenu from "../../components/homeMenu/HomeMenu";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { useDispatch } from "react-redux";
+import DisconnectIcon from "../../../assets/icons/disconnectIcon.svg?react";
+import { handleLogout } from "../../../controllers/general/helpers";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import IconButton from "../../components/iconButton/IconButton";
+import Menu from "../../components/menu/Menu";
+import MenuOption from "../../components/menu/MenuOption";
+import { install } from "../../../App";
 
 export default function HomeHeader() {
     // Use State
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-    const [openMenu, setOpenMenu] = useState(false);
+    const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
+    const dispatch = useDispatch();
 
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
 
     useEffect(() => {
         // for deferred app install
@@ -34,7 +38,7 @@ export default function HomeHeader() {
     }
 
     return (
-        <div className="homePage__header">
+        <div className={`homePage__header ${dir}`}>
             <div className="homePage__header__wrapper">
                 <div
                     className="homePage__header__wrapper__title"
@@ -46,10 +50,20 @@ export default function HomeHeader() {
                             <InstallIcon />
                         </IconButton>
                     )}
-                    <IconButton onClick={() => setOpenMenu(true)}>
-                        <EllipsisIcon />
-                    </IconButton>
-                    {openMenu && <HomeMenu setOpenMenu={setOpenMenu} />}
+
+                    <Menu
+                        isMenuOpen={isHomeMenuOpen}
+                        setIsOpen={setIsHomeMenuOpen}
+                        iconColor="white"
+                    >
+                        <MenuOption
+                            icon={
+                                <DisconnectIcon style={{ color: "#4E88C7" }} />
+                            }
+                            label={t("Disconnect")}
+                            onOptionClick={() => handleLogout(dispatch)}
+                        />
+                    </Menu>
                 </div>
             </div>
         </div>

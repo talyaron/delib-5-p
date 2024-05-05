@@ -1,47 +1,54 @@
-import { Vote } from "delib-npm";
-import React from "react";
-import Chip from "../../../../../components/chip/Chip";
+import { User, Vote } from "delib-npm";
+import React, { FC } from "react";
 import { handleGetVoters } from "../statementSettingsCont";
-import { useLanguage } from "../../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
+import MembersChipsList from "./membership/membersChipsList/MembersChipList";
 
-export default function GetVoters({
-    statementId,
-}: {
-    statementId: string | undefined;
-}) {
+interface GetVotersProps {
+    statementId: string;
+}
+
+const GetVoters: FC<GetVotersProps> = ({ statementId }) => {
     const { t } = useLanguage();
 
     const [voters, setVoters] = React.useState<Vote[]>([]);
     const [clicked, setClicked] = React.useState(false);
 
-    return (
-        statementId && (
-            <section className="settings__getUsers">
-                <button
-                    type="button"
-                    className="settings__getUsers__votersBtn formBtn"
-                    onClick={() =>
-                        handleGetVoters(statementId, setVoters, setClicked)
-                    }
-                >
-                    {t("Get Voters")}
-                </button>
+    const getVoters = () => {
+        if (!clicked) {
+            handleGetVoters(statementId, setVoters, setClicked);
+        } else {
+            setClicked(false);
+        }
+    };
 
-                <div className="settings__getUsers__chipBox">
-                    {voters.length > 0
-                        ? voters.map((voter) => {
-                              return (
-                                  <Chip key={voter.voteId} user={voter.voter} />
-                              );
-                          })
-                        : clicked && (
-                              <p style={{ marginTop: 20 }}>
-                                  {t("No voters found")}
-                              </p>
-                          )}
-                </div>
-                {clicked && <b>{voters.length} Voted</b>}
-            </section>
-        )
+    const members = voters.flatMap((voter) => voter.voter as User);
+
+    return (
+        <>
+            <button
+                type="button"
+                className="voters-button form-button"
+                onClick={getVoters}
+            >
+                {t("Get Voters")}
+            </button>
+
+            {clicked && (
+                <>
+                    {members.length > 0 && (
+                        <>
+                            <span>
+                                {voters.length} {t("Voted")}
+                            </span>
+                            <MembersChipsList members={members} />
+                        </>
+                    )}
+                    {members.length === 0 && <div>{t("No voters found")}</div>}
+                </>
+            )}
+        </>
     );
-}
+};
+
+export default GetVoters;

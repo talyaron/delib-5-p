@@ -39,6 +39,9 @@
     "Evaluations": "פתרונות",
     "Explain how to open the notifications": "הסבר כיצד לפתוח את ההתראות",
     "Favorite Option": "אופציה מועדפת",
+    "Follow Me": "עקוב אחרי",
+    "Follow Mode Active": "מצב עקיבה פעיל",
+    "Follow Instructor": "עקוב אחרי המדריך/ה",
     "From the Institute for Deliberative Democracy": "מבית המכון לדמוקרטיה דיונית",
     "General": "כללי",
     "Get Voters": "הבא מצביעים/ות",
@@ -96,7 +99,10 @@
     "So you can communicate": "כדי שתוכלו לתקשר",
     "Solutions": "פתרונות",
     "Start": "התחלה",
-    "Tabs": "לשוניות",
+    "Tabs to display": "לשוניות",
+    "General Settings": "הגדרות כלליות",
+    "Members": "חברים",
+    "Joined members": "חברים שהצטרפו",
     "terms of use": "תנאי שימוש",
     "Title": "כותרת",
     "Turn off": "כיבוי התראות",
@@ -110,5 +116,7 @@
     "Vote": "הצבעה",
     "Welcome to Room Number": "מוזמן/ת לחדר מספר",
     "Yes": "כן",
-    "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?"
+    "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?",
+    "Save": "שמירה",
+    "description": "תיאור"
 }

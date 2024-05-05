@@ -7,8 +7,8 @@ import styles from "./enterNameModal.module.scss";
 import Modal from "../modal/Modal";
 
 // Functions
-import { signAnonymously } from "../../../functions/db/auth";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { signAnonymously } from "../../../controllers/db/auth";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 interface Props {
     closeModal: VoidFunction;

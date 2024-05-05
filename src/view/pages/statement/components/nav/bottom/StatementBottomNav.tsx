@@ -11,12 +11,15 @@ import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?reac
 import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
 import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
 import NewestIcon from "../../../../../../assets/icons/newIcon.svg?react";
-import useStatementColor from "../../../../../../functions/hooks/useStatementColor";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 import {
+    NavItem,
     optionsArray,
     questionsArray,
     votesArray,
 } from "./StatementBottomNavModal";
+import IconButton from "../../../../../components/iconButton/IconButton";
+import "./StatementBottomNav.scss";
 
 interface Props {
     statement: Statement;
@@ -27,9 +30,9 @@ interface Props {
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     const { page } = useParams();
 
-    const navArray = getPageArray(page);
+    const navItems = getNavigationScreens(page);
 
-    const [openNav, setOpenNav] = useState(false);
+    const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
     const statementColor = useStatementColor(statement.statementType || "");
 
@@ -47,11 +50,11 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
         showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
     const handleMidIconClick = () => {
-        if (!openNav) return setOpenNav(true);
+        if (!isNavigationOpen) return setIsNavigationOpen(true);
         if (isAddOption) {
             setShowModal(true);
         }
-        setOpenNav(false);
+        setIsNavigationOpen(false);
     };
 
     const navStyle = {
@@ -61,34 +64,32 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
     return (
         <>
-            {openNav && (
+            {isNavigationOpen && (
                 <div
                     className="invisibleBackground"
-                    onClick={() => setOpenNav(false)}
+                    onClick={() => setIsNavigationOpen(false)}
                 />
             )}
-            <div className="bottomNav" style={navStyle}>
-                <div
-                    className="bottomNav__iconbox bottomNav__iconbox--burger"
+            <div className="statement-bottom-nav" style={navStyle}>
+                <IconButton
+                    className="open-nav-icon burger"
                     style={statementColor}
                     onClick={handleMidIconClick}
                     data-cy="bottom-nav-mid-icon"
                 >
-                    {openNav && isAddOption ? (
+                    {isNavigationOpen && isAddOption ? (
                         <PlusIcon style={{ color: statementColor.color }} />
                     ) : (
                         <BurgerIcon style={{ color: statementColor.color }} />
                     )}
-                </div>
+                </IconButton>
 
-                {navArray.map((navItem) => (
+                {navItems.map((navItem) => (
                     <Link
-                        className={`bottomNav__iconbox ${
-                            openNav && "bottomNav__iconbox--active"
-                        }`}
+                        className={`open-nav-icon ${isNavigationOpen ? "active" : ""}`}
                         to={navItem.link}
                         key={navItem.id}
-                        onClick={() => setOpenNav(false)}
+                        onClick={() => setIsNavigationOpen(false)}
                     >
                         <NavIcon
                             name={navItem.name}
@@ -103,7 +104,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
 export default StatementBottomNav;
 
-function getPageArray(page: string | undefined) {
+function getNavigationScreens(page: string | undefined): NavItem[] {
     if (!page) return optionsArray;
 
     switch (page) {

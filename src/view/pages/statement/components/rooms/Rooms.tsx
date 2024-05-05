@@ -1,40 +1,39 @@
 import { RoomsStateSelection, Statement } from "delib-npm";
 import React, { FC, useState, useEffect } from "react";
-import Modal from "../../../../components/modal/Modal";
-import NewSetStatementSimple from "../set/NewStatementSimple";
-import { listenToAllRoomsRquest } from "../../../../../functions/db/rooms/getRooms";
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
+import { listenToAllRoomsRequest } from "../../../../../controllers/db/rooms/getRooms";
+import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 
-import RoomsAdmin from "./admin/RoomsAdmin";
-import ChooseRoom from "./user/choose/ChooseRoom";
+import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
+import ChooseRoom from "./components/choose/ChooseRoom";
 
 // import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
-import { enterRoomsDB } from "../../../../../functions/db/rooms/setRooms";
-import { isOptionFn } from "../../../../../functions/general/helpers";
+import { enterRoomsDB } from "../../../../../controllers/db/rooms/setRooms";
+import { isOptionFn } from "../../../../../controllers/general/helpers";
 
-interface Props {
+interface StatementRoomsProps {
     statement: Statement;
     subStatements: Statement[];
 }
 
-const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
+const StatementRooms: FC<StatementRoomsProps> = ({
+    statement,
+    subStatements,
+}) => {
     const dispatch = useAppDispatch();
 
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-       
         enterRoomsDB(statement);
 
-        const unsub = listenToAllRoomsRquest(statement, dispatch);
+        const unsubscribe = listenToAllRoomsRequest(statement, dispatch);
 
-        return () => {
-            if (unsub) unsub();
-        };
+        return unsubscribe;
     }, []);
 
-    const __substatements = subStatements.filter((subStatement: Statement) =>
+    const __subStatements = subStatements.filter((subStatement: Statement) =>
         isOptionFn(subStatement),
     );
 
@@ -45,7 +44,7 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
             <div className="wrapper">
                 {switchRoomScreens(
                     statement.roomsState,
-                    __substatements,
+                    __subStatements,
                     statement,
                     setShowModal,
                 )}
@@ -53,20 +52,18 @@ const StatmentRooms: FC<Props> = ({ statement, subStatements }) => {
                 {isAdmin ? <RoomsAdmin statement={statement} /> : null}
 
                 {showModal ? (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                        />
-                    </Modal>
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={true}
+                        setShowModal={setShowModal}
+                    />
                 ) : null}
             </div>
         </div>
     );
 };
 
-export default StatmentRooms;
+export default StatementRooms;
 
 function switchRoomScreens(
     roomState: RoomsStateSelection | undefined,
@@ -85,7 +82,7 @@ function switchRoomScreens(
         case RoomsStateSelection.inRoom:
             return <div>{statement.creatorId}</div>;
 
-            // return <InRoom statement={statement} />;
+        // return <InRoom statement={statement} />;
 
         default:
             return (

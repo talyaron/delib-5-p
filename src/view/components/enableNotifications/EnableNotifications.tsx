@@ -1,9 +1,9 @@
 import "./enableNotifications.scss";
 import NotificationsGraphic from "../../../assets/svg-graphics/notifications.svg?react";
 import Modal from "../modal/Modal";
-import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
+import { setStatementSubscriptionToDB } from "../../../controllers/db/subscriptions/setSubscriptions";
 import { Role, Statement } from "delib-npm";
-import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/notifications/notifications";
+import { setStatementSubscriptionNotificationToDB } from "../../../controllers/db/notifications/notifications";
 
 interface Props {
     setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,7 +22,7 @@ export default function EnableNotifications({
     const getNotifications = true;
 
     const handleCancelClick = async () => {
-        await setStatmentSubscriptionToDB(
+        await setStatementSubscriptionToDB(
             statement,
             Role.admin,
             userAskedForNotification,
@@ -34,13 +34,13 @@ export default function EnableNotifications({
         const permission = await Notification.requestPermission();
 
         if (permission === "granted")
-            await setStatmentSubscriptionNotificationToDB(
+            await setStatementSubscriptionNotificationToDB(
                 statement,
                 getNotifications,
             );
         else setShowAskPermission(true);
 
-        await setStatmentSubscriptionToDB(
+        await setStatementSubscriptionToDB(
             statement,
             Role.admin,
             userAskedForNotification,

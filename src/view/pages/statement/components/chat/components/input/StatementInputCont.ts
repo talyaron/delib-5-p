@@ -1,8 +1,9 @@
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { Statement, StatementType, User } from "delib-npm";
 import {
     createStatement,
-    setStatmentToDB,
-} from "../../../../../../../functions/db/statements/setStatments";
+    setStatementToDB,
+} from "../../../../../../../controllers/db/statements/setStatements";
 
 export function handleAddStatement(
     message: string,
@@ -19,6 +20,8 @@ export function handleAddStatement(
         if (!value) throw new Error("No value");
 
         const newStatement: Statement | undefined = createStatement({
+            ...defaultStatementSettings,
+            hasChildren: true,
             text: value,
             parentStatement: statement,
             statementType: StatementType.statement,
@@ -26,7 +29,7 @@ export function handleAddStatement(
         });
         if (!newStatement) throw new Error("No statement was created");
 
-        setStatmentToDB({
+        setStatementToDB({
             statement: newStatement,
             parentStatement: statement,
             addSubscription: false,

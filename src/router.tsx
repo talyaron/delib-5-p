@@ -7,12 +7,13 @@ import App from "./App";
 import Start from "./view/pages/start/Start";
 import Home from "./view/pages/home/Home";
 import Main from "./view/pages/main/Main";
-import AddStatement from "./view/pages/main/addStatement";
-import Statement from "./view/pages/statement/StatementMain";
+import AddStatement from "./view/pages/main/addStatement/AddStatement";
+import StatementMain from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
 import PricingPlan from "./view/pages/pricing/PricingPlan";
-import SignInToContinue from "./view/pages/pricing/SignInToContinue";
+import LoginPage from "./view/pages/login/LoginFirst";
 import MemberRejection from "./view/pages/memberRejection/MemberRejection";
+import Page401 from "./view/pages/page401/Page401";
 
 export const router = createBrowserRouter([
     {
@@ -36,7 +37,7 @@ export const router = createBrowserRouter([
                         errorElement: <ErrorPage />,
                     },
                     {
-                        path: "addStatment",
+                        path: "addStatement",
                         element: <AddStatement />,
                         errorElement: <ErrorPage />,
                     },
@@ -59,32 +60,36 @@ export const router = createBrowserRouter([
             },
             {
                 path: "login-first",
-                element: <SignInToContinue />,
+                element: <LoginPage />,
                 errorElement: <ErrorPage />,
             },
             {
                 path: "statement/:statementId/:page",
-                element: <Statement />,
+                element: <StatementMain />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: ":sort",
-                        element: <Statement />,
+                        element: <StatementMain />,
                         errorElement: <ErrorPage />,
                     },
                 ],
             },
             {
                 path: "statement-an/:anonymous/:statementId/:page",
-                element: <Statement />,
+                element: <StatementMain />,
                 errorElement: <ErrorPage />,
                 children: [
                     {
                         path: ":sort",
-                        element: <Statement />,
+                        element: <StatementMain />,
                         errorElement: <ErrorPage />,
                     },
                 ],
+            },
+            {
+                path: "401",
+                element: <Page401 />,
             },
         ],
     },

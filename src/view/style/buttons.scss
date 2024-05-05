@@ -12,13 +12,11 @@ button {
 }
 
 .btn {
-    width: fit-content;
-    min-width: 100px;
-    height: fit-content;
     padding: 0.5rem 0.75rem;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+    font-size: 1rem;
     &--add {
         width: fit-content;
         background-color: var(--question);
@@ -155,52 +153,5 @@ button {
 
     to {
         transform: scale(0.9);
-    }
-}
-
-.homeFav {
-    background: #4e88c7;
-    width: 3.125rem;
-    height: 3.125rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-    border-radius: 50%;
-    box-shadow: 0px 10px 30px 0px rgba(52, 103, 157, 0.108);
-    user-select: none;
-    cursor: pointer;
-    z-index: 200;
-
-    svg {
-        color: white;
-        width: 26px;
-        height: 25px;
-    }
-
-    &:active {
-        box-shadow: 0px 10px 50px 0px #4f5478b2;
-    }
-
-    &--fixed {
-        position: absolute;
-
-        svg {
-            width: 1.8rem;
-        }
-
-        @media (max-width: 650px) {
-            right: 1rem;
-        }
-
-        @media (max-width: 300px) {
-            right: calc(50vw - 15ch);
-        }
-    }
-
-    &--up {
-        bottom: 24vh;
-        right: 5vw;
     }
 }

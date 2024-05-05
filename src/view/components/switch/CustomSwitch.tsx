@@ -1,49 +1,50 @@
 // CustomSwitch.js
-import { useState, FC, ComponentProps } from "react";
-import styles from "./CustomSwitch.module.scss";
-import { useLanguage } from "../../../functions/hooks/useLanguages";
+import { FC } from "react";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import "./CustomSwitch.scss";
 
-interface Props extends ComponentProps<"div"> {
+interface Props {
     label: string;
-    link: string;
-    defaultChecked: boolean;
-    checkOnTabs: (link:string,checked:boolean) => boolean;
+    name: string;
+    checked: boolean;
+    children: JSX.Element;
+    setChecked: (checked: boolean) => void;
 }
 
-const CustomSwitch: FC<Props> = ({ label, defaultChecked, link, children ,checkOnTabs}) => {
-    const [checked, setChecked] = useState(defaultChecked);
+const CustomSwitch: FC<Props> = ({
+    label,
+    checked,
+    name,
+    setChecked,
+    children,
+}) => {
     const { t } = useLanguage();
-   
+
     const handleChange = () => {
-      const isLastTab=  checkOnTabs(link,  !checked);
-         if(!isLastTab)
-        setChecked( !checked)  
-        }
-    
+        setChecked(!checked);
+    };
+
     return (
-        <div className={`${styles.switch} ${checked ? styles.checked : ""}`}>
+        <div className={`custom-switch ${checked ? "checked" : ""}`}>
+            <div className="tag" onClick={handleChange}>
+                {children}
+            </div>
             <div
-                className={styles.tag}
+                className="label"
                 onClick={handleChange}
-                children={children}
-            />
-            <div
-                className={styles.label}
-                onClick={handleChange}
-                data-cy={`toggleSwitch-${link}`}
+                data-cy={`toggleSwitch-${name}`}
             >
                 {t(label)}
             </div>
             <input
-                style={{ display: "none" }}
                 type="checkbox"
-                name={link}
-                id={`toggleSwitch-${link}`}
+                name={name}
+                id={`toggleSwitch-${name}`}
                 className="switch-input"
                 onChange={handleChange}
                 value={checked ? "on" : "off"}
                 checked={checked}
-                data-cy={`toggleSwitch-input-${link}`}
+                data-cy={`toggleSwitch-input-${name}`}
             />
         </div>
     );

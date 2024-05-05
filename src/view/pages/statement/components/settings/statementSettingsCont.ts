@@ -1,25 +1,25 @@
 import {
     Statement,
     NavObject,
-    Screen,
     Vote,
     Evaluation,
     StatementType,
+    Screen,
 } from "delib-npm";
 
 // Helpers
-import { getVoters } from "../../../../../functions/db/vote/getVotes";
-import { getEvaluations } from "../../../../../functions/db/evaluation/getEvaluation";
-import {
-    navigateToStatementTab,
-    parseScreensCheckBoxes,
-} from "../../../../../functions/general/helpers";
+import { getVoters } from "../../../../../controllers/db/vote/getVotes";
+import { getEvaluations } from "../../../../../controllers/db/evaluation/getEvaluation";
+import { navigateToStatementTab } from "../../../../../controllers/general/helpers";
 import {
     createStatement,
-    setStatmentToDB,
+    setStatementToDB,
     updateStatement,
-} from "../../../../../functions/db/statements/setStatments";
-
+} from "../../../../../controllers/db/statements/setStatements";
+import {
+    defaultResultsSettings,
+    defaultStatementSettings,
+} from "./emptyStatementModel";
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -45,7 +45,7 @@ export async function handleGetEvaluators(
     setClicked(true);
 }
 
-// Check if subpage is checked in stored sttatement
+// Check if sub-page is checked in stored statement
 export function isSubPageChecked(
     statement: Statement | undefined,
     navObj: NavObject,
@@ -58,9 +58,9 @@ export function isSubPageChecked(
         }
 
         //in case of an existing statement
-        const subScreens = statement.subScreens as Screen[];
-        if (subScreens === undefined) return true;
-        if (subScreens?.includes(navObj.link)) return true;
+        const { subScreens } = statement;
+        if (!subScreens) return true;
+        if (subScreens.includes(navObj.link)) return true;
 
         return false;
     } catch (error) {
@@ -70,55 +70,39 @@ export function isSubPageChecked(
     }
 }
 
+interface HandleSetStatementParams {
+    navigate: any;
+    statementId: string | undefined;
+    statement: Statement;
+}
 
-
-export async function handleSetStatment(
-    ev: any,
-    navigate: any,
-    statementId: string | undefined,
-    statement: Statement | undefined,
-) {
+export async function handleSetStatement({
+    navigate,
+    statementId,
+    statement,
+}: HandleSetStatementParams) {
     try {
-        console.log("handleSetStatment....");
-        ev.preventDefault();
+        const _statement = getStatementText(statement);
 
-        const data = new FormData(ev.currentTarget);
-     
-
-        let title: any = data.get("statement");
-
-        if (!title || title.length < 2) return;
-
-        // const resultsBy = data.get("resultsBy") as ResultsBy;
-        // const numberOfResults: number = Number(data.get("numberOfResults"));
-        const description = data.get("description");
-
-        //add to title * at the beggining
-        if (title && !title.startsWith("*")) title = "*" + title;
-
-        const _statement = `${title}\n${description}`;
+        // If statement title is empty, don't save
         if (!_statement) return;
 
-        const dataObj: any = Object.fromEntries(data.entries());
-        const screens = parseScreensCheckBoxes(dataObj);
-   
         const {
+            hasChildren,
             resultsBy,
             numberOfResults,
-            hasChildren,
             enableAddEvaluationOption,
             enableAddVotingOption,
             enhancedEvaluation,
             showEvaluation,
-        } = dataObj;
-
-       
+            subScreens,
+        } = getSetStatementData(statement);
 
         // If no statementId, user is on AddStatement page
         if (!statementId) {
             const newStatement = createStatement({
                 text: _statement,
-                screens,
+                subScreens,
                 statementType: StatementType.question,
                 parentStatement: "top",
                 resultsBy,
@@ -127,13 +111,12 @@ export async function handleSetStatment(
                 enableAddEvaluationOption,
                 enableAddVotingOption,
                 enhancedEvaluation,
-                showEvaluation
+                showEvaluation,
             });
             if (!newStatement)
                 throw new Error("newStatement had error in creating");
-            console.log(statement, "statement")
 
-            await setStatmentToDB({
+            await setStatementToDB({
                 parentStatement: "top",
                 statement: newStatement,
                 addSubscription: true,
@@ -145,13 +128,13 @@ export async function handleSetStatment(
 
         // If statementId, user is on Settings tab in statement page
         else {
-            //update statement
+            // update statement
             if (!statement) throw new Error("statement is undefined");
 
             const newStatement = updateStatement({
                 statement,
                 text: _statement,
-                screens,
+                subScreens: subScreens,
                 statementType: StatementType.question,
                 resultsBy,
                 numberOfResults,
@@ -159,12 +142,12 @@ export async function handleSetStatment(
                 enableAddEvaluationOption,
                 enableAddVotingOption,
                 enhancedEvaluation,
-                showEvaluation
+                showEvaluation,
             });
             if (!newStatement)
                 throw new Error("newStatement had not been updated");
 
-            await setStatmentToDB({
+            await setStatementToDB({
                 parentStatement: statement,
                 statement: newStatement,
                 addSubscription: true,
@@ -173,6 +156,141 @@ export async function handleSetStatment(
 
             return;
         }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const prefixTitle = (title: string): string => {
+    if (title && !title.startsWith("*")) {
+        return `*${title}`;
+    }
+
+    return title;
+};
+
+const getStatementText = (statement: Statement): string | null => {
+    const titleAndDescription = statement.statement;
+    const endOfTitle = titleAndDescription.indexOf("\n");
+    const _title = titleAndDescription.substring(0, endOfTitle);
+
+    // TODO: add validation for title in UI
+    if (!_title || _title.length < 2) return null;
+
+    const startOfDescription = endOfTitle + 1;
+    const description = titleAndDescription.substring(startOfDescription);
+    const title = prefixTitle(_title);
+
+    return `${title}\n${description}`;
+};
+
+export const getStatementSettings = (statement: Statement) => {
+    const statementSettings =
+        statement.statementSettings ?? defaultStatementSettings;
+
+    return {
+        enableAddEvaluationOption: Boolean(
+            statementSettings.enableAddEvaluationOption,
+        ),
+        enableAddVotingOption: Boolean(statementSettings.enableAddVotingOption),
+        enhancedEvaluation: Boolean(statementSettings.enhancedEvaluation),
+        showEvaluation: Boolean(statementSettings.showEvaluation),
+        subScreens: statementSettings.subScreens ?? [],
+    };
+};
+
+const getStatementSubScreens = (statement: Statement) => {
+    const defaultSubScreens = [Screen.CHAT, Screen.OPTIONS];
+    const subScreens = statement.subScreens ?? defaultSubScreens;
+
+    // don't allow setting sub-screens as an empty array
+    return subScreens.length === 0 ? defaultSubScreens : subScreens;
+};
+
+const getSetStatementData = (statement: Statement) => {
+    const { resultsBy, numberOfResults } =
+        statement.resultsSettings ?? defaultResultsSettings;
+    const {
+        enableAddEvaluationOption,
+        enableAddVotingOption,
+        enhancedEvaluation,
+        showEvaluation,
+    } = getStatementSettings(statement);
+
+    return {
+        hasChildren: Boolean(statement.hasChildren),
+        subScreens: getStatementSubScreens(statement),
+        resultsBy,
+        numberOfResults,
+        enableAddEvaluationOption,
+        enableAddVotingOption,
+        enhancedEvaluation,
+        showEvaluation,
+    };
+};
+
+interface ToggleSubScreenParams {
+    subScreens: Screen[];
+    screenLink: Screen;
+    statement: Statement;
+}
+
+export const toggleSubScreen = ({
+    subScreens,
+    screenLink,
+    statement,
+}: ToggleSubScreenParams): Statement => {
+    const checked = subScreens.includes(screenLink) ?? false;
+    const newSubScreens = checked
+        ? subScreens.filter((subScreen) => subScreen !== screenLink)
+        : [...subScreens, screenLink];
+
+    return {
+        ...statement,
+        subScreens: newSubScreens,
+    };
+};
+
+interface CreateStatementFromModalParams {
+    title: string;
+    description: string;
+    isOptionSelected: boolean;
+    parentStatement: Statement | "top";
+    toggleAskNotifications?: VoidFunction;
+}
+
+export async function createStatementFromModal({
+    title,
+    description,
+    isOptionSelected,
+    toggleAskNotifications,
+    parentStatement,
+}: CreateStatementFromModalParams) {
+    try {
+        if (!title) throw new Error("title is undefined");
+
+        const _title = prefixTitle(title);
+        const text = `${_title}\n${description}`;
+
+        const newStatement = createStatement({
+            ...defaultStatementSettings,
+            hasChildren: true,
+            toggleAskNotifications,
+            text,
+            parentStatement,
+            statementType: isOptionSelected
+                ? StatementType.option
+                : StatementType.question,
+        });
+
+        if (!newStatement) throw new Error("newStatement was not created");
+
+        await setStatementToDB({
+            statement: newStatement,
+            parentStatement:
+                parentStatement === "top" ? undefined : parentStatement,
+            addSubscription: true,
+        });
     } catch (error) {
         console.error(error);
     }

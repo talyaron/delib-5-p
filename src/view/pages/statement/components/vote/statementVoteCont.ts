@@ -1,4 +1,5 @@
 import { Screen, Statement } from "delib-npm";
+import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 // Updates the displayed options with how many votes each option has from the parent statement
 export function setSelectionsToOptions(
@@ -6,9 +7,9 @@ export function setSelectionsToOptions(
     options: Statement[],
 ) {
     try {
-        const _options = JSON.parse(JSON.stringify(options));
+        const parsedOptions = JSON.parse(JSON.stringify(options));
         if (statement.selections) {
-            _options.forEach((option: Statement) => {
+            parsedOptions.forEach((option: Statement) => {
                 if (
                     statement.selections.hasOwnProperty(`${option.statementId}`)
                 ) {
@@ -19,7 +20,7 @@ export function setSelectionsToOptions(
             });
         }
 
-        return _options;
+        return parsedOptions;
     } catch (error) {
         console.error(error);
 
@@ -30,7 +31,7 @@ export function setSelectionsToOptions(
 export function sortOptionsIndex(
     options: Statement[],
     sort: string | undefined,
-) {
+): Statement[] {
     let _options = JSON.parse(JSON.stringify(options));
 
     // sort only the order of the options acording to the sort
@@ -77,7 +78,6 @@ export function sortOptionsIndex(
     return _options;
 }
 
-
 export function getTotalVoters(statement: Statement) {
     try {
         const { selections } = statement;
@@ -101,13 +101,12 @@ export function getTotalVoters(statement: Statement) {
     }
 }
 
-
 // TODO: Not used. Delete later
 export function getSelections(statement: Statement, option: Statement) {
     try {
         if (
             statement.selections &&
-            statement.selections.hasOwnProperty(`${option.statementId}`)
+            statement.selections.hasOwnProperty(option.statementId)
         ) {
             const optionSelections = statement.selections[option.statementId];
             if (!optionSelections) return 0;
@@ -122,3 +121,18 @@ export function getSelections(statement: Statement, option: Statement) {
         return 0;
     }
 }
+
+export const getSiblingOptionsByParentId = (
+    parentId: string,
+    statements: Statement[],
+): Statement[] => {
+    return statements.filter((statement) => {
+        return statement.parentId === parentId && isOptionFn(statement);
+    });
+};
+
+export const getExistingOptionColors = (options: Statement[]): string[] => {
+    const colors = options.flatMap((option: Statement) => option.color ?? []);
+
+    return colors;
+};

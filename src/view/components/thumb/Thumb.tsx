@@ -8,7 +8,7 @@ import SmileIcon from "../../../assets/icons/smileIcon.svg?react";
 import FrownIcon from "../../../assets/icons/frownIcon.svg?react";
 
 // Statement helpers
-import { setEvaluationToDB } from "../../../functions/db/evaluation/setEvaluation";
+import { setEvaluationToDB } from "../../../controllers/db/evaluation/setEvaluation";
 
 import styles from "./Thumb.module.scss";
 

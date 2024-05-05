@@ -13,13 +13,13 @@ import {
     FilterType,
     filterByStatementType,
     sortStatementsByHirarrchy,
-} from "../../../../../functions/general/sorting";
-import { getChildStatements } from "../../../../../functions/db/statements/getStatement";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+} from "../../../../../controllers/general/sorting";
+import { getChildStatements } from "../../../../../controllers/db/statements/getStatement";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 
 // Hooks
-import { useMapContext } from "../../../../../functions/hooks/useMap";
-import { useLanguage } from "../../../../../functions/hooks/useLanguages";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import { useMapContext } from "../../../../../controllers/hooks/useMap";
 import { ReactFlowProvider } from "reactflow";
 
 interface Props {
@@ -78,7 +78,6 @@ const StatementMap: FC<Props> = ({ statement }) => {
         }));
     };
 
-
     return (
         <ScreenFadeIn className="page__main">
             <ReactFlowProvider>
@@ -109,12 +108,17 @@ const StatementMap: FC<Props> = ({ statement }) => {
                         direction: "ltr",
                     }}
                 >
-                    {results && <TreeChart topResult={results} getSubStatements={getSubStatements}/>}
+                    {results && (
+                        <TreeChart
+                            topResult={results}
+                            getSubStatements={getSubStatements}
+                        />
+                    )}
                 </div>
 
                 {mapContext.showModal && (
                     <Modal>
-                        <NewSetStatementSimple
+                        <CreateStatementModal
                             parentStatement={mapContext.parentStatement}
                             isOption={mapContext.isOption}
                             setShowModal={toggleModal}

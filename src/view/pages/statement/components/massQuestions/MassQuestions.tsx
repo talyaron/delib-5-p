@@ -2,12 +2,11 @@ import { Statement, StatementType } from "delib-npm";
 import { FC, useState } from "react";
 import MassQuestionCard from "./components/massQuestion/MassQuestionCard";
 import styles from "./MassQuestions.module.scss";
-import Modal from "../../../../components/modal/Modal";
-import { isAuthorized } from "../../../../../functions/general/helpers";
-import { useAppSelector } from "../../../../../functions/hooks/reduxHooks";
+import { isAuthorized } from "../../../../../controllers/general/helpers";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
 import Text from "../../../../components/text/Text";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 
 interface Props {
     statement: Statement;
@@ -54,7 +53,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
                                     key={question.statementId}
                                     statement={question}
                                     index={index}
-                                    setAnswerd={setAnswerd}
+                                    setAnswered={setAnswerd}
                                 />
                             ))}
                             <div className="btns">
@@ -85,13 +84,11 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
             {!showThankYou && _isAutorized ? (
                 <div className="page__main__bottom">
                     {showModal && (
-                        <Modal>
-                            <NewSetStatementSimple
-                                parentStatement={statement}
-                                isOption={false}
-                                setShowModal={setShowModal}
-                            />
-                        </Modal>
+                        <CreateStatementModal
+                            parentStatement={statement}
+                            isOption={false}
+                            setShowModal={setShowModal}
+                        />
                     )}
                 </div>
             ) : null}

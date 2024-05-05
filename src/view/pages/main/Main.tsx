@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { StatementSubscription } from "delib-npm";
 
 // Redux store
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
+import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
 
 // Custom components
-import Fav from "../../components/fav/Fav";
+import Footer from "../../components/footer/Footer";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 import PeopleLoader from "../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
@@ -25,8 +25,8 @@ const Main = () => {
         .filter((s) => s.statement.parentId === "top")
         .sort((a, b) => b.lastUpdate - a.lastUpdate);
 
-    function handleAddStatment() {
-        navigate("/home/addStatment", {
+    function handleAddStatement() {
+        navigate("/home/addStatement", {
             state: { from: window.location.pathname },
         });
 
@@ -65,7 +65,7 @@ const Main = () => {
                     <PeopleLoader />
                 )}
             </div>
-            <Fav onclick={handleAddStatment} />
+            <Footer onclick={handleAddStatement} />
         </ScreenSlide>
     );
 };

@@ -1,12 +1,12 @@
 import { Statement, StatementSchema } from "delib-npm";
 import { z } from "zod";
-import { setStatmentToDB } from "../../../../../functions/db/statements/setStatments";
+import { setStatementToDB } from "../../../../../controllers/db/statements/setStatements";
 
 export async function handleSetAnswersToDB(answers: Statement[]) {
     try {
         z.array(StatementSchema).parse(answers);
         answers.forEach(async (answer) => {
-            setStatmentToDB({ statement: answer, addSubscription: false });
+            setStatementToDB({ statement: answer, addSubscription: false });
         });
     } catch (error) {
         console.error(error);

@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 // Firebase functions
-import { listenToAuth, logOut } from "./functions/db/auth";
+import { listenToAuth, logOut } from "./controllers/db/auth";
 import { Unsubscribe } from "firebase/auth";
 
 // Redux Store
-import { useAppSelector } from "./functions/hooks/reduxHooks";
+import { useAppSelector } from "./controllers/hooks/reduxHooks";
 import { useDispatch } from "react-redux";
 import { updateAgreementToStore, userSelector } from "./model/users/userSlice";
 
@@ -20,10 +20,10 @@ import Accessibility from "./view/components/accessibility/Accessibility";
 import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 // Helpers
-import { updateUserAgreement } from "./functions/db/users/setUsersDB";
-import { getSigniture } from "./functions/db/users/getUserDB";
-import { onLocalMessage } from "./functions/db/notifications/notifications";
-import { LanguagesEnum, useLanguage } from "./functions/hooks/useLanguages";
+import { updateUserAgreement } from "./controllers/db/users/setUsersDB";
+import { getSigniture } from "./controllers/db/users/getUserDB";
+import { onLocalMessage } from "./controllers/db/notifications/notifications";
+import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
 
 export default function App() {
@@ -131,3 +131,7 @@ export default function App() {
         </div>
     );
 }
+
+export const install: { deferredPrompt: any } = {
+    deferredPrompt: null,
+};
