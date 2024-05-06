@@ -176,15 +176,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }
                             />
                         )}
-                        {/* {shouldLinkToChildren && (
-                            <MenuOption
-                                label={t("Add Question")}
-                                icon={<AddQuestionIcon />}
-                                onOptionClick={() =>
-                                    setIsNewStatementModalOpen(true)
-                                }
-                            />
-                        )} */}
                     </Menu>
                 </div>
                 <div className="bottom-icons">
@@ -197,21 +188,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                             onClick={() => setIsNewStatementModalOpen(true)}
                         >
                             <AddQuestionIcon />
-                            <span className="addQuestion-label">
-                                {t("Add Question")}
-                            </span>
                         </button>
                     )}
-
-                    {/* <div className="actions">
-                    <div className="actions-type"></div>
-                     <div className="evaluations">
-                        <Evaluation
-                            statement={statement}
-                            displayScore={false}
-                        />
-                    </div> 
-                </div>*/}
                 </div>
                 {isNewStatementModalOpen && (
                     <CreateStatementModal
