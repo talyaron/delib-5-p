@@ -1,5 +1,6 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
+import { FieldValue } from "firebase-admin/firestore";
 
 // import { logBase } from "./helpers";
 import {
@@ -11,6 +12,40 @@ import {
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
+
+
+export async function newEvaluation(event: any) {
+    try {
+        //add evaluator to statement
+        const statementEvaluation = event.data.data() as Evaluation;
+        const { statementId } = statementEvaluation;
+        if (!statementId) throw new Error("statementId is not defined");
+
+        //add one evaluator to statement
+        const statementRef = db.collection(Collections.statements).doc(statementId);
+        statementRef.update({ totalEvaluators: FieldValue.increment(1) });
+
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
+export async function deleteEvaluation (event: any) {
+    try {
+        //add evaluator to statement
+        const statementEvaluation = event.data.data() as Evaluation;
+        const { statementId } = statementEvaluation;
+        if (!statementId) throw new Error("statementId is not defined");
+
+        //add one evaluator to statement
+        const statementRef = db.collection(Collections.statements).doc(statementId);
+        statementRef.update({ totalEvaluators: FieldValue.increment(-1) });
+
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
@@ -26,7 +61,7 @@ export async function updateEvaluation(event: any) {
         if (error) throw error;
         if (!statementId) throw new Error("statementId is not defined");
 
-        const statementRef = db.collection("statements").doc(statementId);
+        const statementRef = db.collection(Collections.statements).doc(statementId);
         const { newPro, newCon } = await setNewEvaluation(
             statementRef,
             evaluationDeferneces,
@@ -34,22 +69,27 @@ export async function updateEvaluation(event: any) {
             previousEvaluation,
         );
 
+        const statementDB = await statementRef.get();
+        if (!statementDB.exists) throw new Error("statement does not exist");
+        const statement = statementDB.data() as Statement;
+        if(!statement) throw new Error("statement is not defined");
+        const totalEvaluators = statement.totalEvaluators || 0;
+
         // Fairness calculations (social choice theory)
         // The aim of the consensus calculation is to give statement with more positive evaluation and less negative evaluations,
         // while letting small groups with higher consensus an upper hand, over large groups with a lot of negative evaluations.
 
         const sumEvaluation = newPro - newCon;
-        const n = newPro + Math.abs(newCon); // n = total evaluators
-        const averageEvaluation = n !== 0 ? sumEvaluation / n : 0; // average evaluation
+        const averageEvaluation = totalEvaluators !== 0 ? sumEvaluation / totalEvaluators : 0; // average evaluation
         const consensus =
-            n !== 0
+            totalEvaluators !== 0
                 ? Math.abs(averageEvaluation) *
-                  Math.sign(newPro - newCon) *
-                  Math.sqrt(n)
+                Math.sign(newPro - newCon) *
+                Math.sqrt(totalEvaluators)
                 : 0;
 
         //set consensus to statement in DB
-        await statementRef.update({ consensus });
+        await statementRef.update({ consensus, totalEvaluators });
 
         //update parent statement?
         //get parent statement
