@@ -4,7 +4,7 @@ import { Edge, Node, Position } from "reactflow";
 
 const position = { x: 0, y: 0 };
 
-export const getLayoutedElements = (
+export const getLayoutElements = (
     nodes: Node[],
     edges: Edge[],
     nodeHeight: number,
