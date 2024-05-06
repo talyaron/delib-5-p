@@ -5,7 +5,7 @@ import { Results, Statement } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import TreeChart from "./mapHelpers/TreeChart";
+import TreeChart from "./components/TreeChart";
 import Modal from "../../../../components/modal/Modal";
 
 // Helpers

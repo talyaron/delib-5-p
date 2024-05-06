@@ -6,9 +6,6 @@ import "../../../../statement/components/createStatementModal/CreateStatementMod
 // Third party imports
 import { Results } from "delib-npm";
 
-// Images
-import moveStatementIllustration from "../../../../../../assets/images/moveStatementIllustration.png";
-
 // React Flow imports
 import ReactFlow, {
     Controls,
@@ -20,14 +17,14 @@ import ReactFlow, {
     useReactFlow,
     ReactFlowInstance,
 } from "reactflow";
-import "./reactFlow.scss";
+import "../mapHelpers/reactFlow.scss";
 import "reactflow/dist/style.css";
 
 // Helper functions
 import {
     createInitialNodesAndEdges,
     getLayoutElements,
-} from "./customNodeCont";
+} from "../mapHelpers/customNodeCont";
 import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
 import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
 
@@ -36,7 +33,7 @@ import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 // Custom components
 import CustomNode from "./CustomNode";
-import Modal from "../../../../../components/modal/Modal";
+import MoveStatementModal from "./MoveStatementModal";
 
 const nodeTypes = {
     custom: CustomNode,
@@ -247,37 +244,7 @@ export default function TreeChart({
             </ReactFlow>
 
             {mapContext.moveStatementModal && (
-                <Modal className="create-statement-modal">
-                    <div
-                        className="overlay"
-                        style={{ height: "fit-content", gap: "2rem" }}
-                    >
-                        <div className="modal-image">
-                            <img
-                                src={moveStatementIllustration}
-                                alt="New Statement"
-                            />
-                        </div>
-                        <h1 className="modalText">
-                            Are you sure you want to move statement here?
-                        </h1>
-
-                        <div className="create-statement-buttons">
-                            <button
-                                onClick={() => handleMoveStatement(false)}
-                                className="cancel-button"
-                            >
-                                Not yet
-                            </button>
-                            <button
-                                onClick={() => handleMoveStatement(true)}
-                                className={"add-button question"}
-                            >
-                                Yes, I do
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
+                <MoveStatementModal handleMoveStatement={handleMoveStatement} />
             )}
         </>
     );
