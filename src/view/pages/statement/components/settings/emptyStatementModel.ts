@@ -6,6 +6,7 @@ export const defaultStatementSettings = {
     enableAddVotingOption: true,
     enableAddEvaluationOption: true,
     subScreens: undefined,
+    inVotingGetOnlyResults: false,
 } as const;
 
 export const defaultResultsSettings = {

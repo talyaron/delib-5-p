@@ -19,7 +19,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
     
     const statementSettings = getStatementSettings(statement);
     const {
-        getOnlyResults,
+        inVotingGetOnlyResults,
         enhancedEvaluation,
         showEvaluation,
         enableAddVotingOption,
@@ -93,11 +93,11 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
             />
             <Checkbox
                 label="In Voting page, show only the results of the top options"
-                isChecked={getOnlyResults}
+                isChecked={inVotingGetOnlyResults}
                 toggleSelection={() => {
                     setStatementSetting(
-                        "getOnlyResults",
-                        !getOnlyResults,
+                        "inVotingGetOnlyResults",
+                        !inVotingGetOnlyResults,
                     );
                 }}
             />
