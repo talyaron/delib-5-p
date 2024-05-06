@@ -13,7 +13,7 @@ export enum FilterType {
 }
 
 //create a function which sorts an array according to results
-export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
+export function sortStatementsByHierarchy(statements: Statement[]): Results[] {
     try {
         const results: Results[] = [];
 

@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
+// Styles
+import "../../../../statement/components/createStatementModal/CreateStatementModal.scss";
+
 // Third party imports
 import { Results } from "delib-npm";
+
+// Images
+import moveStatementIllustration from "../../../../../../assets/images/moveStatementIllustration.png";
 
 // React Flow imports
 import ReactFlow, {
@@ -20,14 +26,16 @@ import "reactflow/dist/style.css";
 // Helper functions
 import {
     createInitialNodesAndEdges,
-    getLayoutedElements,
+    getLayoutElements,
 } from "./customNodeCont";
+import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
+import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
+
+// Hooks
+import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 // Custom components
 import CustomNode from "./CustomNode";
-import { useMapContext } from "../../../../../../controllers/hooks/useMap";
-import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
-import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
 import Modal from "../../../../../components/modal/Modal";
 
 const nodeTypes = {
@@ -43,37 +51,38 @@ export default function TreeChart({
     topResult,
     getSubStatements,
 }: Readonly<Props>) {
+    // React Flow hooks
     const { getIntersectingNodes } = useReactFlow();
-
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+    // Use State
     const [tempEdges, setTempEdges] = useState(edges);
     const [rfInstance, setRfInstance] = useState<null | ReactFlowInstance<
         unknown,
         unknown
     >>(null);
-
     const [intersectedNodeId, setIntersectedNodeId] = useState("");
     const [draggedNodeId, setDraggedNodeId] = useState("");
 
+    // Context
     const { mapContext, setMapContext } = useMapContext();
 
     useEffect(() => {
         const { nodes: createdNodes, edges: createdEdges } =
             createInitialNodesAndEdges(topResult);
 
-        const { nodes: layoutedNodes, edges: layoutedEdges } =
-            getLayoutedElements(
-                createdNodes,
-                createdEdges,
-                mapContext.nodeHeight,
-                mapContext.nodeWidth,
-                mapContext.direction,
-            );
+        const { nodes: layoutNodes, edges: layoutEdges } = getLayoutElements(
+            createdNodes,
+            createdEdges,
+            mapContext.nodeHeight,
+            mapContext.nodeWidth,
+            mapContext.direction,
+        );
 
-        setNodes(layoutedNodes);
-        setEdges(layoutedEdges);
-        setTempEdges(layoutedEdges);
+        setNodes(layoutNodes);
+        setEdges(layoutEdges);
+        setTempEdges(layoutEdges);
 
         setTimeout(() => {
             onSave();
@@ -96,11 +105,11 @@ export default function TreeChart({
                 direction,
             }));
 
-            const { nodes: layoutedNodes, edges: layoutedEdges } =
-                getLayoutedElements(nodes, edges, height, width, direction);
+            const { nodes: layoutNodes, edges: layoutEdges } =
+                getLayoutElements(nodes, edges, height, width, direction);
 
-            setNodes([...layoutedNodes]);
-            setEdges([...layoutedEdges]);
+            setNodes([...layoutNodes]);
+            setEdges([...layoutEdges]);
         },
         [nodes, edges],
     );
@@ -109,12 +118,12 @@ export default function TreeChart({
         _: React.MouseEvent<Element, MouseEvent>,
         node: Node,
     ) => {
-        const intersections = getIntersectingNodes(node).map((n) => n.id);
+        const intersectedNode = getIntersectingNodes(node).find((n) => n.id);
 
-        if (intersections.length === 0) return setEdges(tempEdges);
+        if (!intersectedNode) return setEdges(tempEdges);
 
         setDraggedNodeId(node.id);
-        setIntersectedNodeId(intersections[0]);
+        setIntersectedNodeId(intersectedNode.id);
 
         setMapContext((prev) => ({
             ...prev,
@@ -126,16 +135,20 @@ export default function TreeChart({
         (_: React.MouseEvent<Element, MouseEvent>, node: Node) => {
             setEdges([]);
 
-            const intersections = getIntersectingNodes(node).find((n) => n.id);
+            const intersectedNode = getIntersectingNodes(node).find(
+                (n) => n.id,
+            );
+
+            if (!intersectedNode) return;
 
             setNodes((ns) =>
                 ns.map((n) => ({
                     ...n,
-                    className: intersections?.id === n.id ? "highlight" : "",
+                    className: intersectedNode.id === n.id ? "highlight" : "",
                 })),
             );
         },
-        [],
+        [getIntersectingNodes, setNodes],
     );
 
     const onSave = useCallback(() => {
@@ -159,24 +172,31 @@ export default function TreeChart({
         };
 
         restoreFlow();
-    }, [setNodes]);
+    }, [setNodes, setEdges]);
 
     const handleMoveStatement = async (move: boolean) => {
         if (move) {
+            // Get dragged statement and new parent statement id's from DB
             const [draggedStatement, newDraggedStatementParent] =
                 await Promise.all([
                     getStatementFromDB(draggedNodeId),
                     getStatementFromDB(intersectedNodeId),
                 ]);
             if (!draggedStatement || !newDraggedStatementParent) return;
+
+            // Update dragged statement parent array in DB
             await updateStatementParents(
                 draggedStatement,
                 newDraggedStatementParent,
             );
+
+            // Get updated top result and sub statements
             await getSubStatements();
         } else {
             onRestore();
         }
+
+        // Close Modal
         setMapContext((prev) => ({
             ...prev,
             moveStatementModal: !prev.moveStatementModal,
@@ -227,22 +247,33 @@ export default function TreeChart({
             </ReactFlow>
 
             {mapContext.moveStatementModal && (
-                <Modal>
-                    <div style={{ padding: "1rem" }}>
-                        <h1>Are you sure you want to move statement here?</h1>
-                        <br />
-                        <div className="btnBox">
-                            <button
-                                onClick={() => handleMoveStatement(true)}
-                                className="btn btn--large btn--add"
-                            >
-                                Yes
-                            </button>
+                <Modal className="create-statement-modal">
+                    <div
+                        className="overlay"
+                        style={{ height: "fit-content", gap: "2rem" }}
+                    >
+                        <div className="modal-image">
+                            <img
+                                src={moveStatementIllustration}
+                                alt="New Statement"
+                            />
+                        </div>
+                        <h1 className="modalText">
+                            Are you sure you want to move statement here?
+                        </h1>
+
+                        <div className="create-statement-buttons">
                             <button
                                 onClick={() => handleMoveStatement(false)}
-                                className="btn btn--large btn--disagree"
+                                className="cancel-button"
                             >
-                                No
+                                Not yet
+                            </button>
+                            <button
+                                onClick={() => handleMoveStatement(true)}
+                                className={"add-button question"}
+                            >
+                                Yes, I do
                             </button>
                         </div>
                     </div>
