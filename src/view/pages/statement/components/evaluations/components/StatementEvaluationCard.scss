@@ -1,50 +1,79 @@
 .statement-evaluation-card {
+    display: flex;
+    flex-direction: row-reverse;
     border-radius: 4px;
     background-color: white;
     box-shadow: 2px 2px 4px var(--shadow);
-    padding: var(--padding);
+   
     transition: all 1s ease-in-out;
     position: absolute;
     width: calc(100% - 2rem);
     gap: 0.4rem;
     box-sizing: border-box;
 
-    .info {
-        color: var(--header);
-        display: flex;
-        width: 100%;
+    .selected {
+  
 
-        .text {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            flex: 1;
-            width: 100%;
-        }
-    }
+        color: white;
 
-    .actions {
+
+        z-index: 3;
+        color: #57A193;
+        font-size: .8rem;
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        margin-top: 1rem;
-        padding-top: 0.5rem;
-        gap: 1rem;
-        border-top: 1px solid var(--shadow);
+        width: 10px;
 
-        .add-sub-question-button svg {
-            color: #4e88c7;
-            width: 24px;
-            height: 24px;
+        div {
+            transform: rotate(270deg) translate(0, -.35rem);
         }
+
+
+
     }
 
-    &:nth-child(-1) {
-        border-left: 0.71rem solid var(--accent);
-    }
+    .main {
+        width: 100%;
+         padding: var(--padding);
 
-    .menu-option svg {
-        color: #226cbc;
+        .info {
+            color: var(--header);
+            display: flex;
+            width: 100%;
+
+            .text {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                flex: 1;
+                width: 100%;
+            }
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            gap: 1rem;
+            border-top: 1px solid var(--shadow);
+
+            .add-sub-question-button svg {
+                color: #4e88c7;
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        &:nth-child(-1) {
+            border-left: 0.71rem solid var(--accent);
+        }
+
+        .menu-option svg {
+            color: #226cbc;
+        }
     }
 }
