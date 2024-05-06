@@ -4,7 +4,6 @@ import { FieldValue } from "firebase-admin/firestore";
 import {
     Collections,
     Statement,
-    StatementType,
     maxKeyInObject,
 } from "delib-npm";
 
@@ -56,7 +55,7 @@ export async function updateVote(event: any) {
         const previousResultsDB = await db
             .collection(Collections.statements)
             .where("parentId", "==", newVote.parentId)
-            .where("statementType", "==", StatementType.result)
+            .where("selected", "==", true)
             .get();
 
         previousResultsDB.forEach((resultDB: any) => {
@@ -64,7 +63,7 @@ export async function updateVote(event: any) {
             const docRef = db.doc(
                 `${Collections.statements}/${result.statementId}`,
             );
-            batch.update(docRef, { statementType: StatementType.option });
+            batch.update(docRef, { selected: false });
         });
 
         // Commit the batch
@@ -72,7 +71,7 @@ export async function updateVote(event: any) {
 
         await db
             .doc(`${Collections.statements}/${topVotedId}`)
-            .update({ statementType: StatementType.result });
+            .update({ selected: true });
 
         return true;
     } catch (error) {

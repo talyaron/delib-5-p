@@ -26,11 +26,21 @@ const VotingArea: FC<VotingAreaProps> = ({
     totalVotes,
 }) => {
     const { sort } = useParams();
-    
-    //if statementSettings.inVotingGetOnlyResults is true, only show results
-    const _options = statement.statementSettings?.inVotingGetOnlyResults ? subStatements.filter(st=>st.statementType === StatementType.result) : subStatements;
-    console.log("statement.statementSettings?.inVotingGetOnlyResults",statement.statementSettings?.inVotingGetOnlyResults, "Length:", _options.length)
-    const options = getSortedVotingOptions({ statement, subStatements:_options, sort });
+
+    //if statementSettings.inVotingGetOnlyResults is true, only show results or selections
+    const _options = statement.statementSettings?.inVotingGetOnlyResults
+        ? subStatements.filter(
+              (st) =>
+                  st.statementType === StatementType.result ||
+                  st.statementType === StatementType.selection,
+          )
+        : subStatements;
+   
+    const options = getSortedVotingOptions({
+        statement,
+        subStatements: _options,
+        sort,
+    });
     const optionsCount = options.length;
 
     const { width } = useWindowDimensions();
