@@ -15,6 +15,8 @@ import { updateUserFontSize } from "../../../controllers/db/users/setUsersDB";
 // Icons
 import AccessibilityIcon from "../../../assets/icons/accessibilityIcon.svg?react";
 import { defaultFontSize } from "../../../model/fonts/fontsModel";
+import IconButton from "../iconButton/IconButton";
+import "./Accessibility.scss";
 
 const Accessibility = () => {
     const dispatch = useAppDispatch();
@@ -22,7 +24,7 @@ const Accessibility = () => {
     const user = useAppSelector(userSelector);
 
     const [isOpen, setIsOpen] = useState(false);
-const [_fontSize, setFontSize] = useState(fontSize || defaultFontSize);
+    const [_fontSize, setFontSize] = useState(fontSize || defaultFontSize);
 
     useEffect(() => {
         // document.documentElement.style.fontSize = fontSize + "px";
@@ -31,7 +33,7 @@ const [_fontSize, setFontSize] = useState(fontSize || defaultFontSize);
 
     function handleChangeFontSize(number: number) {
         if (!user) {
-            //get curent font size from body
+            //get current font size from body
 
             //update body font size
             // document.documentElement.style.fontSize = `${_fontSize + number}px`;
@@ -61,25 +63,25 @@ const [_fontSize, setFontSize] = useState(fontSize || defaultFontSize);
             className="accessibility"
             style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}
         >
-            <div className="accessibility__button" onClick={handleOpen}>
+            <button className="accessibility-button" onClick={handleOpen}>
                 <AccessibilityIcon />
-            </div>
-            <div className="accessibility__fonts">
-                <div
-                    className="accessibility__fonts__control"
+            </button>
+            <div className="accessibility-fonts">
+                <IconButton
+                    className="change-font-size-button"
                     onClick={() => handleChangeFontSize(1)}
                 >
                     +
-                </div>
+                </IconButton>
                 <div className="accessibility__fonts__size">
                     {user ? fontSize : _fontSize}px
                 </div>
-                <div
-                    className="accessibility__fonts__control"
+                <IconButton
+                    className="change-font-size-button"
                     onClick={() => handleChangeFontSize(-1)}
                 >
                     -
-                </div>
+                </IconButton>
                 <span dir="ltr">Fonts:</span>
             </div>
         </div>

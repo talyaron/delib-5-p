@@ -28,18 +28,17 @@ import useStatementColor, {
 // Custom Components
 import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
-import { setStatementisOption } from "../../../../../../controllers/db/statements/setStatments";
+import { setStatementIsOption } from "../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
-import Evaluation from "../../../../../components/evaluation/Evaluation";
 import Menu from "../../../../../components/menu/Menu";
 import MenuOption from "../../../../../components/menu/MenuOption";
-import Modal from "../../../../../components/modal/Modal";
+import IconButton from "../../../../../components/iconButton/IconButton";
 import StatementChatMore from "../../chat/components/StatementChatMore";
 import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
-import NewSetStatementSimple from "../../set/NewStatementSimple";
+import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
+import Evaluation from "./evaluation/Evaluation";
 import "./StatementEvaluationCard.scss";
-import IconButton from "../../../../../components/iconButton/IconButton";
 
 interface Props {
     statement: Statement;
@@ -107,10 +106,10 @@ const StatementEvaluationCard: FC<Props> = ({
                     "Are you sure you want to cancel this option?",
                 );
                 if (cancelOption) {
-                    setStatementisOption(statement);
+                    setStatementIsOption(statement);
                 }
             } else {
-                setStatementisOption(statement);
+                setStatementIsOption(statement);
             }
         } catch (error) {
             console.error(error);
@@ -134,71 +133,88 @@ const StatementEvaluationCard: FC<Props> = ({
             }}
             ref={elementRef}
         >
-            <div className="info">
-                <div className="text">
-                    <EditTitle
-                        statement={statement}
-                        isEdit={edit}
-                        setEdit={setEdit}
-                        isTextArea={true}
-                    />
+            <div
+                className="selected"
+                style={{
+                    backgroundColor: statement.selected?statementColor.backgroundColor:"",
+                }}
+            >
+                <div
+                    style={{
+                        color: statementColor.color,
+                        display:statement.selected?"block":"none"
+                    }}
+                >
+                    Selected
                 </div>
-                <div className="more">
-                    {_isAuthorized && (
-                        <Menu
-                            setIsOpen={setIsCardMenuOpen}
-                            isMenuOpen={isCardMenuOpen}
-                            iconColor="#5899E0"
+            </div>
+            <div className="main">
+                <div className="info">
+                    <div className="text">
+                        <EditTitle
+                            statement={statement}
+                            isEdit={edit}
+                            setEdit={setEdit}
+                            isTextArea={true}
+                        />
+                    </div>
+                    <div className="more">
+                        {_isAuthorized && (
+                            <Menu
+                                setIsOpen={setIsCardMenuOpen}
+                                isMenuOpen={isCardMenuOpen}
+                                iconColor="#5899E0"
+                            >
+                                <MenuOption
+                                    label={t("Edit Text")}
+                                    icon={<EditIcon />}
+                                    onOptionClick={() => {
+                                        setEdit(!edit);
+                                        setIsCardMenuOpen(false);
+                                    }}
+                                />
+                                <MenuOption
+                                    isOptionSelected={isOptionFn(statement)}
+                                    icon={<LightBulbIcon />}
+                                    label={t("Remove Option")}
+                                    onOptionClick={handleSetOption}
+                                />
+                            </Menu>
+                        )}
+                    </div>
+                </div>
+                {shouldLinkToChildStatements && (
+                    <div className="chat">
+                        <StatementChatMore
+                            statement={statement}
+                            color={statementColor.color}
+                        />
+                    </div>
+                )}
+                <div className="actions">
+                    <Evaluation
+                        parentStatement={parentStatement}
+                        statement={statement}
+                    />
+                    {parentStatement.hasChildren && (
+                        <IconButton
+                            className="add-sub-question-button"
+                            onClick={() =>
+                                setShouldShowAddSubQuestionModal(true)
+                            }
                         >
-                            <MenuOption
-                                label={t("Edit Text")}
-                                icon={<EditIcon />}
-                                onOptionClick={() => {
-                                    setEdit(!edit);
-                                    setIsCardMenuOpen(false);
-                                }}
-                            />
-                            <MenuOption
-                                isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
-                                label={t("Remove Option")}
-                                onOptionClick={handleSetOption}
-                            />
-                        </Menu>
+                            <AddQuestionIcon />
+                        </IconButton>
                     )}
                 </div>
-            </div>
-            {shouldLinkToChildStatements && (
-                <div className="chat">
-                    <StatementChatMore
-                        statement={statement}
-                        color={statementColor.color}
-                    />
-                </div>
-            )}
-            <div className="actions">
-                <Evaluation
-                    parentStatement={parentStatement}
-                    statement={statement}
-                />
-                {parentStatement.hasChildren && (
-                    <IconButton
-                        className="add-sub-question-button"
-                        onClick={() => setShouldShowAddSubQuestionModal(true)}
-                    >
-                        <AddQuestionIcon />
-                    </IconButton>
-                )}
-            </div>
-            {shouldShowAddSubQuestionModal && (
-                <Modal>
-                    <NewSetStatementSimple
+                {shouldShowAddSubQuestionModal && (
+                    <CreateStatementModal
                         parentStatement={statement}
                         isOption={false}
                         setShowModal={setShouldShowAddSubQuestionModal}
                     />
-                </Modal>
-            )}
+                )}
+            </div>
         </div>
     );
 };

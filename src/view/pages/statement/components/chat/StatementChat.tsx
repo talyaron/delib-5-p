@@ -11,6 +11,7 @@ import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAn
 import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../../../model/users/userSlice";
+import "./StatementChat.scss";
 
 interface Props {
     statement: Statement;
@@ -76,8 +77,7 @@ const StatementChat: FC<Props> = ({
     return (
         <>
             <div
-                className={`page__main ${toSlide && slideInOrOut}`}
-                style={{ paddingBottom: "5rem" }}
+                className={`page__main statement-chat ${toSlide && slideInOrOut}`}
             >
                 {subStatements?.map((statementSub: Statement, index) => (
                     <div key={statementSub.statementId}>

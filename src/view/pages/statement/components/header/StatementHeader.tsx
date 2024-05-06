@@ -1,8 +1,7 @@
 import React, { FC, useState } from "react";
 
-
 // Third party imports
-import { Role, Screen, Statement } from "delib-npm";
+import { Role, Screen, Statement, StatementSubscription } from "delib-npm";
 import { useLocation } from "react-router-dom";
 
 // Helpers
@@ -29,7 +28,7 @@ import useStatementColor from "../../../../../controllers/hooks/useStatementColo
 import useNotificationPermission from "../../../../../controllers/hooks/useNotificationPermission";
 import useToken from "../../../../../controllers/hooks/useToken";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatments";
+import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatements";
 import Menu from "../../../../components/menu/Menu";
 import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";
@@ -40,6 +39,7 @@ interface Props {
     title: string;
     screen: Screen;
     statement: Statement | undefined;
+    statementSubscription:StatementSubscription|undefined
     topParentStatement: Statement | undefined;
     role: Role | undefined;
     showAskPermission: boolean;
@@ -50,6 +50,7 @@ const StatementHeader: FC<Props> = ({
     title,
     screen,
     statement,
+    statementSubscription,
     topParentStatement,
     setShowAskPermission,
 }) => {
@@ -67,7 +68,6 @@ const StatementHeader: FC<Props> = ({
         .statements.statements.find(
             (st) => st.statementId === statement?.parentId,
         );
-  
 
     // Redux Store
     const user = store.getState().user.user;
@@ -90,12 +90,10 @@ const StatementHeader: FC<Props> = ({
         navigator.share(shareData);
     }
     function handleEditTitle() {
-        if (isAdmin) {
+        if (statementSubscription?.role === Role.admin) {
             setEditHeader(true);
         }
     }
-
-    
 
     async function handleFollowMe() {
         try {
@@ -112,10 +110,17 @@ const StatementHeader: FC<Props> = ({
     };
 
     return (
-        <div className={`page__header ${dir}`} style={headerColor}>
+        <div
+            className={`page__header ${dir}`}
+            style={{ ...headerColor, direction: dir }}
+        >
             <div className="page__header__wrapper">
                 <div className="page__header__wrapper__actions">
-                    <Back parentStatement={parentStatement} statement={statement} headerColor={headerColor} />
+                    <Back
+                        parentStatement={parentStatement}
+                        statement={statement}
+                        headerColor={headerColor}
+                    />
                     <HomeButton headerColor={headerColor} />
                 </div>
                 {!editHeader ? (
@@ -179,7 +184,7 @@ const StatementHeader: FC<Props> = ({
                 </Menu>
             </div>
             {statement && (
-                <StatementTopNav statement={statement} screen={screen} />
+                <StatementTopNav statement={statement} screen={screen} statementSubscription={statementSubscription}/>
             )}
         </div>
     );

@@ -49,6 +49,7 @@
     "Group Title": "Groepstitel",
     "Install the App": "App Installeren",
     "In conversation:": "In gesprek:",
+    "In Voting page, show only the results of the top options": "In de stemmingspagina, toon alleen de resultaten van de topopties",
     "In Zoom": "In Zoom",
     "Invited:": "Uitgenodigd:",
     "It is necessary to receive notifications": "Het is nodig om meldingen te ontvangen",
@@ -104,5 +105,7 @@
     "Votes": "Stemmen",
     "Welcome to Room Number": "Welkom in Kamer Nummer",
     "Yes": "Ja",
-    "Would you like to receive notifications in this group?": "Wil je meldingen ontvangen in deze groep?"
+    "Would you like to receive notifications in this group?": "Wil je meldingen ontvangen in deze groep?",
+    "Save": "Opslaan",
+    "description": "beschrijving"
 }

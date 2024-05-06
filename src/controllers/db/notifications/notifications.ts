@@ -77,7 +77,7 @@ export async function onLocalMessage() {
     }
 }
 
-export async function setStatmentSubscriptionNotificationToDB(
+export async function setStatementSubscriptionNotificationToDB(
     statement: Statement | undefined,
     notification = true,
 ) {

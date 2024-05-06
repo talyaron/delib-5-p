@@ -2,7 +2,7 @@ import { FC } from "react";
 
 // Third party imports
 import { Link } from "react-router-dom";
-import { NavObject, Statement, Screen } from "delib-npm";
+import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
 
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
@@ -11,13 +11,14 @@ import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
+    statementSubscription: StatementSubscription|undefined;
     screen: Screen;
 }
 
-const StatementTopNav: FC<Props> = ({ statement, screen }) => {
+const StatementTopNav: FC<Props> = ({ statement,statementSubscription, screen }) => {
     const { t } = useLanguage();
 
-    const _navArray = showNavElements(statement, allScreens);
+    const _navArray = showNavElements({statement,statementSubscription, navArray:allScreens});
 
     return (
         <nav className="page__header__nav" data-cy="statement-nav">

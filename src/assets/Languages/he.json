@@ -52,6 +52,7 @@
     "Group Title": "כותרת הקבוצה",
     "Install the App": "התקנת האפליקציה",
     "In conversation:": "בשיחה:",
+    "In Voting page, show only the results of the top options": "בדף ההצבעה, הצג רק את תוצאות האופציות המובילות",
     "In Zoom": "בזום",
     "Invited:": "מוזמנים:",
     "It is necessary to receive notifications": "יש צורך לקבל התראות",
@@ -116,5 +117,7 @@
     "Vote": "הצבעה",
     "Welcome to Room Number": "מוזמן/ת לחדר מספר",
     "Yes": "כן",
-    "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?"
+    "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?",
+    "Save": "שמירה",
+    "description": "תיאור"
 }

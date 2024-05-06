@@ -12,20 +12,6 @@
         align-items: center;
         gap: 1rem;
         padding-top: 0.5rem;
-
-        .avatar {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: black;
-            text-align: center;
-        }
     }
 
     .message-box {
@@ -83,6 +69,7 @@
         .message-box {
             border-right: 0.65rem solid;
             margin-left: 4rem;
+            margin-right: 1rem;
 
             .triangle {
                 clip-path: polygon(30% 0, 100% 100%, 100% 0);
@@ -100,6 +87,7 @@
         .message-box {
             border-left: 0.65rem solid;
             margin-right: 4rem;
+            margin-left: 1rem;
             .triangle {
                 clip-path: polygon(0 0, 0% 100%, 70% 0);
                 right: -1.2rem;

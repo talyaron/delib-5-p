@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { User } from "delib-npm";
+import "./ProfileImage.scss";
 
 interface Props {
     user: User | null;
@@ -11,10 +12,10 @@ const ProfileImage: FC<Props> = ({ user }) => {
 
     return (
         <>
-            <div className="profileImage">
-                <div className="profileImage__box">
+            <div className="profile-image">
+                <div className="profile-image-box">
                     {/* <div
-                        className="profileImage__img"
+                        className="image"
                         style={{ backgroundImage: `url(${photoURL})` }}
                     ></div> */}
                     <h3>{user.displayName}</h3>

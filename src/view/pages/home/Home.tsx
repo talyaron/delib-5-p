@@ -32,7 +32,7 @@ export default function Home() {
     const [displayHeader, setDisplayHeader] = useState(true);
 
     useEffect(() => {
-        if (location.pathname.includes("addStatment") || statementId) {
+        if (location.pathname.includes("addStatement") || statementId) {
             setDisplayHeader(false);
         } else {
             setDisplayHeader(true);

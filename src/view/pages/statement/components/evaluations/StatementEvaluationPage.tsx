@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 // Third party imports
 import { Statement, StatementType, User } from "delib-npm";
 import { useParams } from "react-router";
-import Modal from "../../../../components/modal/Modal";
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
@@ -11,10 +10,10 @@ import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
-import NewSetStatementSimple from "../set/NewStatementSimple";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 
-interface Props {
+interface StatementEvaluationPageProps {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: (talker: User | null) => void;
@@ -23,7 +22,7 @@ interface Props {
     toggleAskNotifications: () => void;
 }
 
-const StatementEvaluation: FC<Props> = ({
+const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     statement,
     subStatements,
     handleShowTalker,
@@ -42,13 +41,18 @@ const StatementEvaluation: FC<Props> = ({
 
         useEffect(() => {
             setSortedSubStatements(() =>
-                sortSubStatements(subStatements, sort).filter((s) => {
-                    if (questions) {
-                        return s.statementType === StatementType.question;
-                    }
+                sortSubStatements(subStatements, sort).filter(
+                    (subStatement) => {
+                        if (questions) {
+                            return (
+                                subStatement.statementType ===
+                                StatementType.question
+                            );
+                        }
 
-                    return isOptionFn(s);
-                }),
+                        return isOptionFn(subStatement);
+                    },
+                ),
             );
         }, [sort, subStatements]);
 
@@ -93,14 +97,12 @@ const StatementEvaluation: FC<Props> = ({
                     />
                 </div>
                 {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={questions ? false : true}
-                            setShowModal={setShowModal}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </Modal>
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={questions ? false : true}
+                        setShowModal={setShowModal}
+                        toggleAskNotifications={toggleAskNotifications}
+                    />
                 )}
             </>
         );
@@ -111,4 +113,4 @@ const StatementEvaluation: FC<Props> = ({
     }
 };
 
-export default StatementEvaluation;
+export default StatementEvaluationPage;

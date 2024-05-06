@@ -1,0 +1,24 @@
+.follow-me-toast {
+    width: fit-content;
+    background-color: var(--alert);
+    color: white;
+    top: 10rem;
+    position: absolute;
+    left: 50%;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    transform: translate(-50%, 1rem);
+    display: flex;
+    gap: 1rem;
+    stroke: yellow;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 1000;
+
+    div {
+        display: flex;
+
+        align-items: center;
+    }
+}

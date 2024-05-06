@@ -4,64 +4,102 @@ import Checkbox from "../../../../../../components/checkbox/Checkbox";
 // HELPERS
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { FC } from "react";
+import { StatementSettingsProps } from "../../settingsTypeHelpers";
+import { getStatementSettings } from "../../statementSettingsCont";
 import "./AdvancedSettings.scss";
-import { WithStatement } from "../../settingsTypeHelpers";
 
-const AdvancedSettings: FC<WithStatement> = ({ statement }) => {
+
+const AdvancedSettings: FC<StatementSettingsProps> = ({
+    statement,
+    setStatementToEdit,
+}) => {
     const { t } = useLanguage();
 
-    const { hasChildren, statementSettings } = statement || {};
+    const hasChildren = statement.hasChildren ?? true;
+    
+    const statementSettings = getStatementSettings(statement);
     const {
+        inVotingGetOnlyResults,
         enhancedEvaluation,
         showEvaluation,
-        enableAddEvaluationOption,
         enableAddVotingOption,
-    } = statementSettings || {};
+        enableAddEvaluationOption,
+    } = statementSettings;
 
-    const shouldEnableSubConversations = hasChildren === false ? false : true;
-
-    const shouldDisplayEnhancedEvaluation =
-        enhancedEvaluation === false ? false : true;
-
-    const shouldDisplayEvaluation = showEvaluation === false ? false : true;
-
-    const shouldEnableAddEvaluationOption =
-        enableAddEvaluationOption === false ? false : true;
-
-    const shouldEnableAddVotingOption =
-        enableAddVotingOption === false ? false : true;
+    const setStatementSetting = (
+        key: keyof typeof statementSettings,
+        newValue: boolean,
+    ) => {
+        setStatementToEdit({
+            ...statement,
+            statementSettings: {
+                ...statementSettings,
+                [key]: newValue,
+            },
+        });
+    };
 
     return (
         <div className="advanced-settings">
             <h3 className="title">{t("Advanced")}</h3>
             <Checkbox
-                name={"hasChildren"}
                 label={"Enable Sub-Conversations"}
-                defaultChecked={shouldEnableSubConversations}
+                isChecked={hasChildren}
+                toggleSelection={() => {
+                    setStatementToEdit({
+                        ...statement,
+                        hasChildren: !hasChildren,
+                    });
+                }}
             />
             <Checkbox
-                name={"enhancedEvaluation"}
                 label={"Enhanced Evaluation"}
-                defaultChecked={shouldDisplayEnhancedEvaluation}
+                isChecked={enhancedEvaluation}
+                toggleSelection={() => {
+                    setStatementSetting(
+                        "enhancedEvaluation",
+                        !enhancedEvaluation,
+                    );
+                }}
             />
             <Checkbox
-                name={"showEvaluation"}
                 label={"Show Evaluations results"}
-                defaultChecked={shouldDisplayEvaluation}
+                isChecked={showEvaluation}
+                toggleSelection={() => {
+                    setStatementSetting("showEvaluation", !showEvaluation);
+                }}
             />
             <Checkbox
-                name={"enableAddVotingOption"}
                 label={
                     "Allow participants to contribute options to the voting page"
                 }
-                defaultChecked={shouldEnableAddVotingOption}
+                isChecked={enableAddVotingOption}
+                toggleSelection={() => {
+                    setStatementSetting(
+                        "enableAddVotingOption",
+                        !enableAddVotingOption,
+                    );
+                }}
             />
             <Checkbox
-                name={"enableAddEvaluationOption"}
-                label={
-                    "Allow participants to contribute options to the evaluation page"
-                }
-                defaultChecked={shouldEnableAddEvaluationOption}
+                label="Allow participants to contribute options to the evaluation page"
+                isChecked={enableAddEvaluationOption}
+                toggleSelection={() => {
+                    setStatementSetting(
+                        "enableAddEvaluationOption",
+                        !enableAddEvaluationOption,
+                    );
+                }}
+            />
+            <Checkbox
+                label="In Voting page, show only the results of the top options"
+                isChecked={inVotingGetOnlyResults}
+                toggleSelection={() => {
+                    setStatementSetting(
+                        "inVotingGetOnlyResults",
+                        !inVotingGetOnlyResults,
+                    );
+                }}
             />
         </div>
     );

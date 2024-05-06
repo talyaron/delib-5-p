@@ -3,6 +3,9 @@
     "Add New Group": "أضف مجموعة جديدة",
     "Add Option": "أضف خياراً",
     "Add Question": "أضف سؤالاً",
+    "Option": "خيار",
+    "Options": "الخيارات",
+    "Question": "سؤال",
     "Admin": "مدير",
     "All": "الكل",
     "Allow participants to contribute options to the voting page": "السماح للمشاركين بالمساهمة في الخيارات لصفحة التصويت",
@@ -49,6 +52,7 @@
     "Group Title": "عنوان المجموعة",
     "Install the App": "تثبيت التطبيق",
     "In conversation:": "في المحادثة:",
+    "In Voting page, show only the results of the top options": "في صفحة التصويت، عرض نتائج الخيارات الأعلى فقط",
     "In Zoom": "في زووم",
     "Invited:": "مدعو:",
     "It is necessary to receive notifications": "من الضروري تلقي الإشعارات",
@@ -105,5 +109,7 @@
     "Votes": "الأصوات",
     "Welcome to Room Number": "مرحباً بك في غرفة رقم",
     "Yes": "نعم",
-    "Would you like to receive notifications in this group?": "هل ترغب في تلقي الإشعارات في هذه المجموعة؟"
+    "Would you like to receive notifications in this group?": "هل ترغب في تلقي الإشعارات في هذه المجموعة؟",
+    "Save": "حفظ",
+    "description": "الوصف"
 }

@@ -48,6 +48,7 @@
     "Group Title": "Título del Grupo",
     "Install the App": "Instalar la App",
     "In conversation:": "En conversación:",
+    "In Voting page, show only the results of the top options": "En la página de Votación, mostrar solo los resultados de las mejores opciones",
     "In Zoom": "En Zoom",
     "Invited:": "Invitado:",
     "It is necessary to receive notifications": "Es necesario recibir notificaciones",
@@ -104,5 +105,7 @@
     "Votes": "Votos",
     "Welcome to Room Number": "Bienvenido a la Sala Número",
     "Yes": "Sí",
-    "Would you like to receive notifications in this group?": "¿Te gustaría recibir notificaciones en este grupo?"
+    "Would you like to receive notifications in this group?": "¿Te gustaría recibir notificaciones en este grupo?",
+    "Save": "Guardar",
+    "description": "descripción"
 }

@@ -51,6 +51,7 @@
     "Group Description": "Group Description",
     "Group Title": "Group Title",
     "In conversation:": "In conversation:",
+    "In Voting page, show only the results of the top options": "In Voting page, show only the results of the top options",
     "In Zoom": "In Zoom",
     "Install the App": "Install the App",
     "Invited:": "Invited:",
@@ -117,5 +118,7 @@
     "Voting Results": "Voting Results",
     "Vote": "Vote",
     "Welcome to Room Number": "Welcome to Room Number",
-    "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?"
+    "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?",
+    "Save": "Save",
+    "description": "description"
 }

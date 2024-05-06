@@ -12,7 +12,7 @@ import DisplayResultsBy from "./../../components/displayResultsBy/DisplayResults
 import ResultsRange from "./../../components/resultsRange/ResultsRange";
 import GetVoters from "./../../components/GetVoters";
 import GetEvaluators from "./../../components/GetEvaluators";
-import TabsToDisplay from "./../../components/tabsToDisplaySwitches/TabsToDisplay";
+import SubScreensToDisplay from "../tabsToDisplaySwitches/SubScreensToDisplay";
 
 // Hooks & Helpers
 import { handleSetStatement } from "./../../statementSettingsCont";
@@ -25,12 +25,14 @@ import "./StatementSettingsForm.scss";
 
 interface StatementSettingsFormProps {
     setIsLoading: (isLoading: boolean) => void;
-    statement: Statement | undefined;
+    statement: Statement;
+    setStatementToEdit: (statement: Statement) => void;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
     setIsLoading,
     statement,
+    setStatementToEdit,
 }) => {
     // * Hooks * //
     const navigate = useNavigate();
@@ -39,13 +41,19 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
     // * Functions * //
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setIsLoading(true);
-        await handleSetStatement(e, navigate, statementId, statement);
+        await handleSetStatement({ navigate, statementId, statement });
 
         setIsLoading(false);
     };
 
     const isNewStatement = !statementId;
+
+    const statementSettingsProps = {
+        statement,
+        setStatementToEdit,
+    } as const;
 
     return (
         <form
@@ -53,20 +61,23 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
             className="statement-settings-form"
             data-cy="statement-settings-form"
         >
-            <TitleAndDescription statement={statement} />
+            <TitleAndDescription
+                statement={statement}
+                setStatementToEdit={setStatementToEdit}
+            />
             <SectionTitle title={t("General Settings")} />
             <section className="switches-area">
-                <TabsToDisplay statement={statement} />
-                <AdvancedSettings statement={statement} />
+                <SubScreensToDisplay {...statementSettingsProps} />
+                <AdvancedSettings {...statementSettingsProps} />
             </section>
-            <DisplayResultsBy statement={statement} />
-            <ResultsRange statement={statement} />
+            <DisplayResultsBy {...statementSettingsProps} />
+            <ResultsRange {...statementSettingsProps} />
 
             {!isNewStatement && (
                 <>
-                    <UploadImage statement={statement} />
+                    <UploadImage {...statementSettingsProps} />
                     <SectionTitle title={t("Members")} />
-                    <MembersSettings statement={statement} />
+                    <MembersSettings {...statementSettingsProps} />
                     <section className="get-members-area">
                         <GetVoters statementId={statementId} />
                     </section>

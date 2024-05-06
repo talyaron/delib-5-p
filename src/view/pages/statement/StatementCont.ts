@@ -1,9 +1,10 @@
-import { Statement, NavObject, Screen } from "delib-npm";
+import { Statement, NavObject, Screen, StatementSubscription } from "delib-npm";
 import { showNavElements } from "./components/nav/top/statementTopNavCont";
 import { allScreens } from "./components/nav/top/StatementTopNavModel";
 
 export function availableScreen(
     statement: Statement | undefined,
+    statementSubscription: StatementSubscription | undefined,
     screenLink: Screen | undefined,
 ): Screen | undefined {
     try {
@@ -14,7 +15,7 @@ export function availableScreen(
         if (statement.subScreens.length === 0)
             throw new Error("statement.subScreens is empty");
 
-        const subScreens: NavObject[] = showNavElements(statement, allScreens);
+        const subScreens: NavObject[] = showNavElements({statement,statementSubscription, navArray:allScreens});
 
         const subScreensLinks: Screen[] = subScreens.map(
             (navObj: NavObject) => navObj.link,

@@ -1,14 +1,15 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import { WithStatement } from "../../settingsTypeHelpers";
+import { StatementSettingsProps } from "../../settingsTypeHelpers";
+import { defaultResultsSettings } from "../../emptyStatementModel";
 import "./ResultsRange.scss";
 
-const ResultsRange: FC<WithStatement> = ({ statement }) => {
+const ResultsRange: FC<StatementSettingsProps> = ({
+    statement,
+    setStatementToEdit,
+}) => {
     const { t } = useLanguage();
-    const defaultNumOfResults =
-        statement?.resultsSettings?.numberOfResults || 1;
-
-    const [numOfResults, setNumOfResults] = React.useState(defaultNumOfResults);
+    const resultsSettings = statement.resultsSettings ?? defaultResultsSettings;
 
     const title = `${t("Number of Results to Display")}: `;
 
@@ -20,12 +21,22 @@ const ResultsRange: FC<WithStatement> = ({ statement }) => {
                     className="range"
                     type="range"
                     name="numberOfResults"
-                    value={numOfResults}
+                    value={resultsSettings.numberOfResults}
                     min="1"
                     max="10"
-                    onChange={(e) => setNumOfResults(Number(e.target.value))}
+                    onChange={(e) => {
+                        setStatementToEdit({
+                            ...statement,
+                            resultsSettings: {
+                                ...resultsSettings,
+                                numberOfResults: Number(e.target.value),
+                            },
+                        });
+                    }}
                 />
-                <span className="number-of-results">{numOfResults}</span>
+                <span className="number-of-results">
+                    {resultsSettings.numberOfResults}
+                </span>
             </div>
         </section>
     );

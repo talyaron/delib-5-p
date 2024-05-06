@@ -1,14 +1,20 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
 import { store } from "../../model/store";
-import { Access, Role, Statement, StatementSchema, StatementSubscription } from "delib-npm";
+import {
+    Access,
+    Role,
+    Statement,
+    StatementSchema,
+    StatementSubscription,
+} from "delib-npm";
 import { useAppSelector } from "./reduxHooks";
 import {
     statementSelector,
     statementSubscriptionSelector,
 } from "../../model/statements/statementsSlice";
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
-import { setStatmentSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
+import { setStatementSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
 
 const useAuth = () => {
     const [isLogged, setIsLogged] = useState(false);
@@ -32,7 +38,7 @@ export function useIsAuthorized(statementId: string | undefined): {
     role: Role | undefined;
     error: boolean;
 } {
-    //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
+    //TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
 
     const allowedRoles = [Role.admin, Role.member];
 
@@ -42,19 +48,22 @@ export function useIsAuthorized(statementId: string | undefined): {
     const role = statementSubscription?.role || Role.unsubscribed;
     const statement = useAppSelector(statementSelector(statementId));
     const user = store.getState().user.user;
-    const [topParentStatement, setTopParentStatement] = useState<Statement | undefined>(undefined)
+    const [topParentStatement, setTopParentStatement] = useState<
+        Statement | undefined
+    >(undefined);
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
+
     // const [role, setRole] = useState<Role | undefined>(Role.unsubscribed);
     useEffect(() => {
         if (statement && statementId && user) {
             getTopParentSubscription(statementId).then(
                 ({ topParentSubscription, topParentStatement, error }) => {
                     try {
-
                         StatementSchema.parse(topParentStatement);
                         setTopParentStatement(topParentStatement);
+
                         // const topRole:Role = getRole()
                         // setRole(topRole);
 
@@ -79,12 +88,15 @@ export function useIsAuthorized(statementId: string | undefined): {
                             if (
                                 topParentStatement &&
                                 topParentStatement?.membership?.access ===
-                                Access.open
+                                    Access.open
                             ) {
                                 //subscribe to top parent statement
-                                if (!topParentStatement) throw new Error("Top parent statement is not defined, cannot subscribe to it.");
+                                if (!topParentStatement)
+                                    throw new Error(
+                                        "Top parent statement is not defined, cannot subscribe to it.",
+                                    );
 
-                                setStatmentSubscriptionToDB({
+                                setStatementSubscriptionToDB({
                                     //@ts-ignore
                                     statement: topParentStatement,
                                     role: Role.member,
@@ -102,7 +114,6 @@ export function useIsAuthorized(statementId: string | undefined): {
                             }
                         }
                     } catch (e) {
-
                         console.error(e);
                         setError(true);
                         setLoading(false);
@@ -134,5 +145,13 @@ export function useIsAuthorized(statementId: string | undefined): {
     //     }
     // }, [statementSubscription, statement]);
 
-    return { isAuthorized, loading, statementSubscription, statement, topParentStatement, error, role };
+    return {
+        isAuthorized,
+        loading,
+        statementSubscription,
+        statement,
+        topParentStatement,
+        error,
+        role,
+    };
 }
