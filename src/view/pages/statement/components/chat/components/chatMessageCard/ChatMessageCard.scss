@@ -98,4 +98,24 @@
     .menu-option svg {
         color: #226cbc;
     }
+
+    .bottom-icons {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: space-between;
+
+        .add-question-btn {
+            margin-top: 13px;
+            left: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    }
+    .add-questionSVG {
+        color: #226cbc;
+        height: 24px;
+        width: 24px;
+    }
 }

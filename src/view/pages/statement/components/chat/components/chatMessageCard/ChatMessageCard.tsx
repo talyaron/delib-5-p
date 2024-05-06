@@ -176,7 +176,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }
                             />
                         )}
-                        {shouldLinkToChildren && (
+                        {/* {shouldLinkToChildren && (
                             <MenuOption
                                 label={t("Add Question")}
                                 icon={<AddQuestionIcon />}
@@ -184,15 +184,23 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                     setIsNewStatementModalOpen(true)
                                 }
                             />
-                        )}
+                        )} */}
                     </Menu>
                 </div>
+                <div className="bottom-icons">
+                    {shouldLinkToChildStatements && (
+                        <StatementChatMore statement={statement} />
+                    )}
+                    {shouldLinkToChildren && (
+                        <button
+                            className="add-question-btn"
+                            onClick={() => setIsNewStatementModalOpen(true)}
+                        >
+                            <AddQuestionIcon />
+                        </button>
+                    )}
 
-                {shouldLinkToChildStatements && (
-                    <StatementChatMore statement={statement} />
-                )}
-
-                {/* <div className="actions">
+                    {/* <div className="actions">
                     <div className="actions-type"></div>
                      <div className="evaluations">
                         <Evaluation
@@ -201,14 +209,15 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         />
                     </div> 
                 </div>*/}
+                </div>
+                {isNewStatementModalOpen && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={false}
+                        setShowModal={setIsNewStatementModalOpen}
+                    />
+                )}
             </div>
-            {isNewStatementModalOpen && (
-                <CreateStatementModal
-                    parentStatement={statement}
-                    isOption={false}
-                    setShowModal={setIsNewStatementModalOpen}
-                />
-            )}
         </div>
     );
 };
