@@ -187,6 +187,7 @@ const getStatementText = (statement: Statement): string | null => {
 export const getStatementSettings = (statement: Statement) => {
     const statementSettings =
         statement.statementSettings ?? defaultStatementSettings;
+    const votingSettings = statement.votingSettings || {};
 
     return {
         enableAddEvaluationOption: Boolean(
@@ -196,6 +197,7 @@ export const getStatementSettings = (statement: Statement) => {
         enhancedEvaluation: Boolean(statementSettings.enhancedEvaluation),
         showEvaluation: Boolean(statementSettings.showEvaluation),
         subScreens: statementSettings.subScreens ?? [],
+        getOnlyResults: Boolean(votingSettings.getOnlyResults),
     };
 };
 

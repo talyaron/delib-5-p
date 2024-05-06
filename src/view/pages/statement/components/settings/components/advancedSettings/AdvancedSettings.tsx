@@ -8,6 +8,7 @@ import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import { getStatementSettings } from "../../statementSettingsCont";
 import "./AdvancedSettings.scss";
 
+
 const AdvancedSettings: FC<StatementSettingsProps> = ({
     statement,
     setStatementToEdit,
@@ -15,8 +16,10 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
     const { t } = useLanguage();
 
     const hasChildren = statement.hasChildren ?? true;
+    
     const statementSettings = getStatementSettings(statement);
     const {
+        getOnlyResults,
         enhancedEvaluation,
         showEvaluation,
         enableAddVotingOption,
@@ -85,6 +88,16 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
                     setStatementSetting(
                         "enableAddEvaluationOption",
                         !enableAddEvaluationOption,
+                    );
+                }}
+            />
+            <Checkbox
+                label="In Voting page, show only the results of the top options"
+                isChecked={getOnlyResults}
+                toggleSelection={() => {
+                    setStatementSetting(
+                        "getOnlyResults",
+                        !getOnlyResults,
                     );
                 }}
             />

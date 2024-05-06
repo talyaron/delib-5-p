@@ -38,6 +38,9 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
     const [statementToEdit, setStatementToEdit] = useState<
         Statement | undefined
     >();
+    useEffect(() => {
+        console.log(statementToEdit);
+    }, [statementToEdit]);
 
     const dispatch = useAppDispatch();
 
