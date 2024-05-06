@@ -81,7 +81,6 @@ const StatementEvaluationCard: FC<Props> = ({
         parentStatement.creatorId,
     );
 
-    const cardHight = elementRef.current?.clientHeight || 170;
     useEffect(() => {
         setNewTop(top);
     }, [top]);
