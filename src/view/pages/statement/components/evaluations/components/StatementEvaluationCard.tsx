@@ -145,7 +145,7 @@ const StatementEvaluationCard: FC<Props> = ({
                         display:statement.selected?"block":"none"
                     }}
                 >
-                    Selected
+                    {t("Selected")}
                 </div>
             </div>
             <div className="main">
