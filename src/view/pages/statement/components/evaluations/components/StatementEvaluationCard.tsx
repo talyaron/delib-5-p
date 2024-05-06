@@ -54,7 +54,7 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     // Hooks
 
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -130,6 +130,7 @@ const StatementEvaluationCard: FC<Props> = ({
                     statementColor.backgroundColor || "wheat"
                 }`,
                 color: statementColor.color,
+                flexDirection: dir === "ltr" ? "row" : "row-reverse",
             }}
             ref={elementRef}
         >
