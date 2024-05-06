@@ -1,5 +1,5 @@
-import React from "react";
-import { Statement } from "delib-npm";
+import React, { FC } from "react";
+import { Statement, StatementType } from "delib-npm";
 import {
     setSelectionsToOptions,
     sortOptionsIndex,
@@ -18,15 +18,19 @@ interface VotingAreaProps {
     totalVotes: number;
 }
 
-export default function VotingArea({
+const VotingArea: FC<VotingAreaProps> = ({
     setStatementInfo,
     subStatements,
     statement,
     setShowInfo,
     totalVotes,
-}: VotingAreaProps) {
+}) => {
     const { sort } = useParams();
-    const options = getSortedVotingOptions({ statement, subStatements, sort });
+    
+    //if statementSettings.inVotingGetOnlyResults is true, only show results
+    const _options = statement.statementSettings?.inVotingGetOnlyResults ? subStatements.filter(st=>st.statementType === StatementType.result) : subStatements;
+    console.log("statement.statementSettings?.inVotingGetOnlyResults",statement.statementSettings?.inVotingGetOnlyResults, "Length:", _options.length)
+    const options = getSortedVotingOptions({ statement, subStatements:_options, sort });
     const optionsCount = options.length;
 
     const { width } = useWindowDimensions();
@@ -54,7 +58,9 @@ export default function VotingArea({
             })}
         </div>
     );
-}
+};
+
+export default VotingArea;
 
 function isVerticalOptionBar(width: number, optionsCount: number) {
     if (width < 350 && optionsCount >= 4) {
