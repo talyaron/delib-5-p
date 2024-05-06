@@ -4,6 +4,7 @@ import Text from "../../../components/text/Text";
 
 import StatementChatMore from "../../statement/components/chat/components/StatementChatMore";
 import { Link } from "react-router-dom";
+import "./MainCard.scss";
 
 interface Props {
     statement: Statement;
@@ -11,10 +12,7 @@ interface Props {
 
 const MainCard: FC<Props> = ({ statement }) => {
     return (
-        <div
-            className="mainCard"
-            style={{ borderInlineStart: `.625rem solid ${statement.color}` }}
-        >
+        <div className="main-card" style={{ borderColor: statement.color }}>
             <Link to={`/statement/${statement.statementId}/chat`}>
                 <Text text={statement.statement} />
                 <StatementChatMore statement={statement} color={"gray"} />

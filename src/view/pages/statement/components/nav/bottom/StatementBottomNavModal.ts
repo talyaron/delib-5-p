@@ -1,12 +1,12 @@
 import { Screen } from "delib-npm";
 
-export interface NavItems {
+export interface NavItem {
     link: Screen;
     name: string;
     id: string;
 }
 
-export const optionsArray: NavItems[] = [
+export const optionsArray: NavItem[] = [
     {
         link: Screen.OPTIONS_NEW,
         name: "New",
@@ -29,7 +29,7 @@ export const optionsArray: NavItems[] = [
     },
 ];
 
-export const votesArray: NavItems[] = [
+export const votesArray: NavItem[] = [
     {
         link: Screen.VOTES_NEW,
         name: "New",
@@ -52,7 +52,7 @@ export const votesArray: NavItems[] = [
     },
 ];
 
-export const questionsArray: NavItems[] = [
+export const questionsArray: NavItem[] = [
     {
         link: Screen.QUESTIONS_NEW,
         name: "New",

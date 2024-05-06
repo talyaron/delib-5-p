@@ -48,7 +48,8 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
 
             //in case the back should direct to the parent statement, go to the parent statement in the order of the parentStatementScreens: home, questions, options, chat, vote
             const firstScreen: Screen = getFirstScreen(parentStatementScreens);
-            return navigate(
+            
+return navigate(
                 `/statement/${statement?.parentId}/${firstScreen}`,
                 {
                     state: { from: window.location.pathname },
@@ -58,7 +59,8 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
             console.error(error);
         }
     }
-    return (
+    
+return (
         <button
             className="page__header__wrapper__actions__iconButton"
             onClick={handleBack}

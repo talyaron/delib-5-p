@@ -300,7 +300,7 @@ async function updateParentStatementWithChildResults(
             (st: Statement) => statementToSimpleStatement(st),
         );
 
-        if(!parentId) throw new Error("parentId is not defined");
+        if (!parentId) throw new Error("parentId is not defined");
 
         //update parent with results
         await db.collection(Collections.statements).doc(parentId).update({

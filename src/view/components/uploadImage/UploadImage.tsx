@@ -2,16 +2,30 @@ import React, { FC, useState } from "react";
 import styles from "./UploadImage.module.scss";
 import { Statement } from "delib-npm";
 import { uploadImageToStorage } from "../../../controllers/db/images/setImages";
-import { updateStatmentMainImage } from "../../../controllers/db/statements/setStatments";
+import { updateStatementMainImage } from "../../../controllers/db/statements/setStatements";
 
 interface Props {
-    statement: Statement | undefined;
+    statement: Statement;
 }
 
 const UploadImage: FC<Props> = ({ statement }) => {
+    const imageUrl = statement.imagesURL?.main ?? null;
+
+    // currently changing image is not possible, when we fix it we can remove this
+    if (imageUrl) {
+        return (
+            <div className={styles.dropZone}>
+                <div
+                    style={{ backgroundImage: `url(${imageUrl})` }}
+                    className={styles.imagePreview}
+                />
+            </div>
+        );
+    }
+
     try {
         const [image, setImage] = useState<File | null>(null);
-        const [percentage, setPercetage] = useState(0);
+        const [percentage, setPercentage] = useState(0);
 
         const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
             try {
@@ -22,9 +36,9 @@ const UploadImage: FC<Props> = ({ statement }) => {
                 const imageURL = await uploadImageToStorage(
                     file,
                     statement,
-                    setPercetage,
+                    setPercentage,
                 );
-                updateStatmentMainImage(statement, imageURL);
+                updateStatementMainImage(statement, imageURL);
             } catch (error) {
                 console.error(error);
             }
@@ -40,7 +54,13 @@ const UploadImage: FC<Props> = ({ statement }) => {
                 onDragOver={handleDragOver}
                 className={styles.dropZone}
             >
-                {image ? (
+                {imageUrl && !image && (
+                    <div
+                        style={{ backgroundImage: `url(${imageUrl})` }}
+                        className={styles.imagePreview}
+                    />
+                )}
+                {image && (
                     <div
                         style={{
                             backgroundImage: `url(${URL.createObjectURL(
@@ -49,9 +69,8 @@ const UploadImage: FC<Props> = ({ statement }) => {
                         }}
                         className={styles.imagePreview}
                     />
-                ) : (
-                    <p>Drag and drop an image here</p>
                 )}
+                {!image && <p>Drag and drop an image here</p>}
                 {percentage > 0 && <progress value={percentage} max="100" />}
             </div>
         );

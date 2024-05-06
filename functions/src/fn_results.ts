@@ -40,7 +40,6 @@ async function transpileResults(
                 logger.info("topOption");
 
                 return await resultsByTopOptions(statementId);
-         
             default:
                 return await resultsByTopOptions(statementId);
         }

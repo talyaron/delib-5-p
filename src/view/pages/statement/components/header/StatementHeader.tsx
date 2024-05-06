@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 
-
 // Third party imports
 import { Role, Screen, Statement, StatementSubscription } from "delib-npm";
 import { useLocation } from "react-router-dom";
@@ -29,7 +28,7 @@ import useStatementColor from "../../../../../controllers/hooks/useStatementColo
 import useNotificationPermission from "../../../../../controllers/hooks/useNotificationPermission";
 import useToken from "../../../../../controllers/hooks/useToken";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatments";
+import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatements";
 import Menu from "../../../../components/menu/Menu";
 import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";
@@ -69,7 +68,6 @@ const StatementHeader: FC<Props> = ({
         .statements.statements.find(
             (st) => st.statementId === statement?.parentId,
         );
-  
 
     // Redux Store
     const user = store.getState().user.user;
@@ -97,8 +95,6 @@ const StatementHeader: FC<Props> = ({
         }
     }
 
-    
-
     async function handleFollowMe() {
         try {
             if (!topParentStatement) throw new Error("No top parent statement");
@@ -114,10 +110,17 @@ const StatementHeader: FC<Props> = ({
     };
 
     return (
-        <div className={`page__header ${dir}`} style={headerColor}>
+        <div
+            className={`page__header ${dir}`}
+            style={{ ...headerColor, direction: dir }}
+        >
             <div className="page__header__wrapper">
                 <div className="page__header__wrapper__actions">
-                    <Back parentStatement={parentStatement} statement={statement} headerColor={headerColor} />
+                    <Back
+                        parentStatement={parentStatement}
+                        statement={statement}
+                        headerColor={headerColor}
+                    />
                     <HomeButton headerColor={headerColor} />
                 </div>
                 {!editHeader ? (
