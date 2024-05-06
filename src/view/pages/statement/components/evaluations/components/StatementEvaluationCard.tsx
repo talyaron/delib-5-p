@@ -81,6 +81,7 @@ const StatementEvaluationCard: FC<Props> = ({
         parentStatement.creatorId,
     );
 
+    const cardHight = elementRef.current?.clientHeight || 170;
     useEffect(() => {
         setNewTop(top);
     }, [top]);
@@ -133,69 +134,88 @@ const StatementEvaluationCard: FC<Props> = ({
             }}
             ref={elementRef}
         >
-            <div className="info">
-                <div className="text">
-                    <EditTitle
-                        statement={statement}
-                        isEdit={edit}
-                        setEdit={setEdit}
-                        isTextArea={true}
-                    />
+            <div
+                className="selected"
+                style={{
+                    backgroundColor: statement.selected?statementColor.backgroundColor:"",
+                }}
+            >
+                <div
+                    style={{
+                        color: statementColor.color,
+                        display:statement.selected?"block":"none"
+                    }}
+                >
+                    Selected
                 </div>
-                <div className="more">
-                    {_isAuthorized && (
-                        <Menu
-                            setIsOpen={setIsCardMenuOpen}
-                            isMenuOpen={isCardMenuOpen}
-                            iconColor="#5899E0"
+            </div>
+            <div className="main">
+                <div className="info">
+                    <div className="text">
+                        <EditTitle
+                            statement={statement}
+                            isEdit={edit}
+                            setEdit={setEdit}
+                            isTextArea={true}
+                        />
+                    </div>
+                    <div className="more">
+                        {_isAuthorized && (
+                            <Menu
+                                setIsOpen={setIsCardMenuOpen}
+                                isMenuOpen={isCardMenuOpen}
+                                iconColor="#5899E0"
+                            >
+                                <MenuOption
+                                    label={t("Edit Text")}
+                                    icon={<EditIcon />}
+                                    onOptionClick={() => {
+                                        setEdit(!edit);
+                                        setIsCardMenuOpen(false);
+                                    }}
+                                />
+                                <MenuOption
+                                    isOptionSelected={isOptionFn(statement)}
+                                    icon={<LightBulbIcon />}
+                                    label={t("Remove Option")}
+                                    onOptionClick={handleSetOption}
+                                />
+                            </Menu>
+                        )}
+                    </div>
+                </div>
+                {shouldLinkToChildStatements && (
+                    <div className="chat">
+                        <StatementChatMore
+                            statement={statement}
+                            color={statementColor.color}
+                        />
+                    </div>
+                )}
+                <div className="actions">
+                    <Evaluation
+                        parentStatement={parentStatement}
+                        statement={statement}
+                    />
+                    {parentStatement.hasChildren && (
+                        <IconButton
+                            className="add-sub-question-button"
+                            onClick={() =>
+                                setShouldShowAddSubQuestionModal(true)
+                            }
                         >
-                            <MenuOption
-                                label={t("Edit Text")}
-                                icon={<EditIcon />}
-                                onOptionClick={() => {
-                                    setEdit(!edit);
-                                    setIsCardMenuOpen(false);
-                                }}
-                            />
-                            <MenuOption
-                                isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
-                                label={t("Remove Option")}
-                                onOptionClick={handleSetOption}
-                            />
-                        </Menu>
+                            <AddQuestionIcon />
+                        </IconButton>
                     )}
                 </div>
-            </div>
-            {shouldLinkToChildStatements && (
-                <div className="chat">
-                    <StatementChatMore
-                        statement={statement}
-                        color={statementColor.color}
+                {shouldShowAddSubQuestionModal && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={false}
+                        setShowModal={setShouldShowAddSubQuestionModal}
                     />
-                </div>
-            )}
-            <div className="actions">
-                <Evaluation
-                    parentStatement={parentStatement}
-                    statement={statement}
-                />
-                {parentStatement.hasChildren && (
-                    <IconButton
-                        className="add-sub-question-button"
-                        onClick={() => setShouldShowAddSubQuestionModal(true)}
-                    >
-                        <AddQuestionIcon />
-                    </IconButton>
                 )}
             </div>
-            {shouldShowAddSubQuestionModal && (
-                <CreateStatementModal
-                    parentStatement={statement}
-                    isOption={false}
-                    setShowModal={setShouldShowAddSubQuestionModal}
-                />
-            )}
         </div>
     );
 };
