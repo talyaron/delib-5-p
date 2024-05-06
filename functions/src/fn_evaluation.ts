@@ -35,11 +35,11 @@ export async function updateEvaluation(event: any) {
         );
 
         // Fairness calculations (social choice theory)
-        // The aim of the consesus calulation is to give statement with more positive evaluation and less vegative evaluations,
-        // while letting small groups with heigher consesus an uper hand, over large groups with alot of negative evaluations.
+        // The aim of the consensus calculation is to give statement with more positive evaluation and less negative evaluations,
+        // while letting small groups with higher consensus an upper hand, over large groups with a lot of negative evaluations.
 
         const sumEvaluation = newPro - newCon;
-        const n = newPro + Math.abs(newCon); // n = total evealuators
+        const n = newPro + Math.abs(newCon); // n = total evaluators
         const averageEvaluation = n !== 0 ? sumEvaluation / n : 0; // average evaluation
         const consensus =
             n !== 0
@@ -229,7 +229,7 @@ async function updateParentStatementWithChildResults(
             throw new Error("parentStatement does not exist");
         const parentStatement = parentStatementDB.data() as Statement;
 
-        //get resutls settings
+        //get results settings
         const { resultsSettings } = parentStatement;
         let { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
@@ -240,6 +240,7 @@ async function updateParentStatementWithChildResults(
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
+            //remove it when other evaluation methods will be added
             //topVote will be calculated in the votes function
             return;
         }
@@ -256,13 +257,8 @@ async function updateParentStatementWithChildResults(
             .orderBy("consensus", "desc")
             .limit(numberOfResults);
 
-        // .and.where("parentId", "==", parentId)
-        // .or.where("statementType", "==", StatementType.option)
-        // .where("statementType", "==", StatementType.result)
-        // .orderBy("consensus", "desc")
-        // .limit(numberOfResults);
 
-        //get all options of the parent statement and convert htme to either result, or an option
+        //get all options of the parent statement and convert them to either result, or an option
         const topOptionsStatementsDB = await topOptionsStatementsRef.get();
         const topOptionsStatements = topOptionsStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement,
@@ -277,7 +273,7 @@ async function updateParentStatementWithChildResults(
         await optionsDB.forEach(async (stDB: any) => {
             const st = stDB.data() as Statement;
 
-            //update childstatment selectd to be of type result
+            //update child statement selected to be of type result
             if (childIds.includes(st.statementId)) {
                 db.collection(Collections.statements)
                     .doc(st.statementId)
@@ -291,7 +287,7 @@ async function updateParentStatementWithChildResults(
 
         await updateParentChildren(topOptionsStatements, numberOfResults);
 
-        //update childstatment selectd to be of type result
+        //update child statement selected to be of type result
     } catch (error) {
         logger.error(error);
     }
@@ -314,6 +310,4 @@ async function updateParentStatementWithChildResults(
     }
 }
 
-// async function updateParentWithResults(parentId:string){
 
-// }
