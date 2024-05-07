@@ -86,18 +86,7 @@ export function isAdmin(role: Role | undefined): boolean {
     return false;
 }
 
-export function isOptionFn(statement: Statement): boolean {
-    try {
-        return (
-            statement.statementType === StatementType.option ||
-            statement.statementType === StatementType.result
-        );
-    } catch (error) {
-        console.error(error);
 
-        return false;
-    }
-}
 
 export function navigateToStatementTab(
     statement: Statement,
