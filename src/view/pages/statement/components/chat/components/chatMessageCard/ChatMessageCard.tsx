@@ -86,6 +86,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
+    const isParentOption = isOptionFn(parentStatement);
 
     const shouldLinkToChildStatements =
         (isQuestion || isOption) && parentStatement.hasChildren;
@@ -148,11 +149,11 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         isMenuOpen={isCardMenuOpen}
                         iconColor="#5899E0"
                     >
-                        {_isAuthorized && !isQuestion && (
+                        {_isAuthorized && !isQuestion && !isParentOption && (
                             <MenuOption
                                 isOptionSelected={isOptionFn(statement)}
                                 icon={<LightBulbIcon />}
-                                label={t("Option")}
+                                label={t("Set as Option")}
                                 onOptionClick={handleSetOption}
                             />
                         )}
@@ -176,39 +177,29 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }
                             />
                         )}
-                        {shouldLinkToChildren && (
-                            <MenuOption
-                                label={t("Add Question")}
-                                icon={<AddQuestionIcon />}
-                                onOptionClick={() =>
-                                    setIsNewStatementModalOpen(true)
-                                }
-                            />
-                        )}
                     </Menu>
                 </div>
-
-                {shouldLinkToChildStatements && (
-                    <StatementChatMore statement={statement} />
+                <div className="bottom-icons">
+                    {shouldLinkToChildStatements && (
+                        <StatementChatMore statement={statement} />
+                    )}
+                    {shouldLinkToChildren && (
+                        <button
+                            className="add-question-btn"
+                            onClick={() => setIsNewStatementModalOpen(true)}
+                        >
+                            <AddQuestionIcon />
+                        </button>
+                    )}
+                </div>
+                {isNewStatementModalOpen && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={false}
+                        setShowModal={setIsNewStatementModalOpen}
+                    />
                 )}
-
-                {/* <div className="actions">
-                    <div className="actions-type"></div>
-                     <div className="evaluations">
-                        <Evaluation
-                            statement={statement}
-                            displayScore={false}
-                        />
-                    </div> 
-                </div>*/}
             </div>
-            {isNewStatementModalOpen && (
-                <CreateStatementModal
-                    parentStatement={statement}
-                    isOption={false}
-                    setShowModal={setIsNewStatementModalOpen}
-                />
-            )}
         </div>
     );
 };
