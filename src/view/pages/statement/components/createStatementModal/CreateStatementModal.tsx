@@ -3,8 +3,6 @@ import { FC, useState } from "react";
 // Third party imports
 import { Statement, StatementType, isAllowedStatementType } from "delib-npm";
 
-// Statements Helpers
-
 // Custom Components
 import Loader from "../../../../components/loaders/Loader";
 

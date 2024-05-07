@@ -11,36 +11,9 @@ import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 
 // Statements functions
-import {
-    calculateFontSize,
-    statementTitleToDisplay,
-} from "../../../../../../controllers/general/helpers";
+import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
 import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
-
-const nodeStyle = (
-    parentStatement: any,
-    statementColor: { backgroundColor: string; color: string },
-    nodeTitle: string,
-) => {
-    const style = {
-        backgroundColor:
-            parentStatement === "top"
-                ? "darkblue"
-                : statementColor.backgroundColor,
-        color: statementColor.color,
-        height: 40,
-        width: 70,
-        borderRadius: "5px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: ".5rem",
-        cursor: "pointer",
-        fontSize: calculateFontSize(nodeTitle),
-    };
-
-    return style;
-};
+import { nodeStyle } from "../mapHelpers/customNodeCont";
 
 export default function CustomNode({ data }: NodeProps) {
     const navigate = useNavigate();
@@ -111,12 +84,10 @@ export default function CustomNode({ data }: NodeProps) {
                         className="addIcon"
                         onClick={handleAddChildNode}
                         style={{
-                            position: "absolute",
-                            cursor: "pointer",
                             right:
-                                mapContext.direction === "TB" ? 0 : "-1.8rem",
+                                mapContext.direction === "TB" ? 0 : "-1.3rem",
                             bottom:
-                                mapContext.direction === "TB" ? "-1.8rem" : 0,
+                                mapContext.direction === "TB" ? "-1.3rem" : 0,
                         }}
                     >
                         <PlusIcon />
@@ -126,10 +97,8 @@ export default function CustomNode({ data }: NodeProps) {
                         className="addIcon"
                         onClick={handleAddSiblingNode}
                         style={{
-                            position: "absolute",
-                            cursor: "pointer",
-                            left: mapContext.direction === "TB" ? "-1.8rem" : 0,
-                            top: mapContext.direction === "TB" ? 0 : "-1.8rem",
+                            left: mapContext.direction === "TB" ? "-1.3rem" : 0,
+                            top: mapContext.direction === "TB" ? 0 : "-1.3rem",
                         }}
                     >
                         <PlusIcon />

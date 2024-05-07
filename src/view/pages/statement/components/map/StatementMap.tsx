@@ -71,8 +71,6 @@ const StatementMap: FC<Props> = ({ statement }) => {
         setResults(topResult);
     };
 
-    
-
     const toggleModal = (show: boolean) => {
         setMapContext((prev) => ({
             ...prev,
