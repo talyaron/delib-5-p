@@ -197,9 +197,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                             onClick={() => setIsNewStatementModalOpen(true)}
                         >
                             <AddQuestionIcon />
-                            <span className="addQuestion-label">
-                                {t("Add Question")}
-                            </span>
                         </button>
                     )}
 
