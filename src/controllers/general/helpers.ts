@@ -6,6 +6,7 @@ import {
     StatementSubscription,
     StatementType,
     User,
+    isOptionFn,
 } from "delib-npm";
 import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";

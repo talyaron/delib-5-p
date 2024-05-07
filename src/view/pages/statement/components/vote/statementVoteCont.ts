@@ -1,5 +1,4 @@
-import { Screen, Statement } from "delib-npm";
-import { isOptionFn } from "../../../../../controllers/general/helpers";
+import { Screen, Statement, isOptionFn } from "delib-npm";
 
 // Updates the displayed options with how many votes each option has from the parent statement
 export function setSelectionsToOptions(

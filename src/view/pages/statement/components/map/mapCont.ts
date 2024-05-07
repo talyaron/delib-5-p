@@ -1,6 +1,5 @@
-import { Statement, ResultsBy, Results } from "delib-npm";
+import { Statement, ResultsBy, Results, isOptionFn } from "delib-npm";
 import { getResultsDB } from "../../../../../controllers/db/results/getResults";
-import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 export async function getResults(
     statement: Statement,

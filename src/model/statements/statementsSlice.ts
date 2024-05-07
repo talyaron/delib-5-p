@@ -11,12 +11,13 @@ import {
     StatementSubscription,
     StatementSubscriptionSchema,
     StatementType,
+    isOptionFn,
 } from "delib-npm";
 
 import { z } from "zod";
 
 // Helpers
-import { isOptionFn, updateArray } from "../../controllers/general/helpers";
+import { updateArray } from "../../controllers/general/helpers";
 
 enum StatementScreen {
     chat = "chat",

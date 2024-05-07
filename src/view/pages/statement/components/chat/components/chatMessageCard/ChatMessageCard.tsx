@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third Party Imports
-import { Statement, StatementType, User } from "delib-npm";
+import { Statement, StatementType, User, isOptionFn } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
@@ -11,7 +11,6 @@ import { store } from "../../../../../../../model/store";
 // Helper functions
 import {
     isAuthorized,
-    isOptionFn,
     linkToChildren,
 } from "../../../../../../../controllers/general/helpers";
 

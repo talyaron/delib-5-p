@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Statement, StatementType } from "delib-npm";
+import { Statement, StatementType, isOptionFn } from "delib-npm";
 import {
     setSelectionsToOptions,
     sortOptionsIndex,
@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 import OptionBar from "../optionBar/OptionBar";
 import "./VotingArea.scss";
 import useWindowDimensions from "../../../../../../../controllers/hooks/useWindowDimentions";
-import { isOptionFn } from "../../../../../../../controllers/general/helpers";
 
 interface VotingAreaProps {
     setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
