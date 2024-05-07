@@ -112,5 +112,9 @@
     "Yes": "نعم",
     "Would you like to receive notifications in this group?": "هل ترغب في تلقي الإشعارات في هذه المجموعة؟",
     "Save": "حفظ",
-    "description": "الوصف"
+    "description": "الوصف",
+    "Unmark as a Solution": "إلغاء تحديد كحل",
+    "Mark as a Solution": "تحديد كحل",
+    "Mark as a Question": "تحديد كسؤال",
+    "Unmark as a Question": "إلغاء تحديد كسؤال"
 }

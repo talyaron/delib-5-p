@@ -108,5 +108,9 @@
     "Yes": "Sí",
     "Would you like to receive notifications in this group?": "¿Te gustaría recibir notificaciones en este grupo?",
     "Save": "Guardar",
-    "description": "descripción"
+    "description": "descripción",
+    "Unmark as a Solution": "Desmarcar como solución",
+    "Mark as a Solution": "Marcar como solución",
+    "Mark as a Question": "Marcar como pregunta",
+    "Unmark as a Question": "Desmarcar como pregunta"
 }

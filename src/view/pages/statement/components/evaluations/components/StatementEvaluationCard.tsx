@@ -69,7 +69,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     // Use States
     const [newTop, setNewTop] = useState(top);
-    const [edit, setEdit] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
     const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
         useState(false);
     const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
@@ -94,7 +94,7 @@ const StatementEvaluationCard: FC<Props> = ({
     }, []);
 
     // function handleGoToOption() {
-    //     if (!edit && linkToChildren(statement, parentStatement))
+    //     if (!isEdit && linkToChildren(statement, parentStatement))
     //         navigate(`/statement/${statement.statementId}/options`);
     // }
 
@@ -134,15 +134,17 @@ const StatementEvaluationCard: FC<Props> = ({
             ref={elementRef}
         >
             <div
-                className="selected"
+                className="selected-option"
                 style={{
-                    backgroundColor: statement.selected?statementColor.backgroundColor:"",
+                    backgroundColor: statement.selected
+                        ? statementColor.backgroundColor
+                        : "",
                 }}
             >
                 <div
                     style={{
                         color: statementColor.color,
-                        display:statement.selected?"block":"none"
+                        display: statement.selected ? "block" : "none",
                     }}
                 >
                     {t("Selected")}
@@ -153,8 +155,8 @@ const StatementEvaluationCard: FC<Props> = ({
                     <div className="text">
                         <EditTitle
                             statement={statement}
-                            isEdit={edit}
-                            setEdit={setEdit}
+                            isEdit={isEdit}
+                            setEdit={setIsEdit}
                             isTextArea={true}
                         />
                     </div>
@@ -165,20 +167,28 @@ const StatementEvaluationCard: FC<Props> = ({
                                 isMenuOpen={isCardMenuOpen}
                                 iconColor="#5899E0"
                             >
-                                <MenuOption
-                                    label={t("Edit Text")}
-                                    icon={<EditIcon />}
-                                    onOptionClick={() => {
-                                        setEdit(!edit);
-                                        setIsCardMenuOpen(false);
-                                    }}
-                                />
-                                <MenuOption
-                                    isOptionSelected={isOptionFn(statement)}
-                                    icon={<LightBulbIcon />}
-                                    label={t("Remove Option")}
-                                    onOptionClick={handleSetOption}
-                                />
+                                {_isAuthorized && (
+                                    <MenuOption
+                                        label={t("Edit Text")}
+                                        icon={<EditIcon />}
+                                        onOptionClick={() => {
+                                            setIsEdit(!isEdit);
+                                            setIsCardMenuOpen(false);
+                                        }}
+                                    />
+                                )}
+                                {_isAuthorized && (
+                                    <MenuOption
+                                        isOptionSelected={isOptionFn(statement)}
+                                        icon={<LightBulbIcon />}
+                                        label={
+                                            isOptionFn(statement)
+                                                ? t("Unmark as a Solution")
+                                                : t("Mark as a Solution")
+                                        }
+                                        onOptionClick={handleSetOption}
+                                    />
+                                )}
                             </Menu>
                         )}
                     </div>

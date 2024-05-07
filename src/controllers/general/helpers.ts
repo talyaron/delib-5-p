@@ -2,7 +2,6 @@ import {
     Role,
     Screen,
     Statement,
-    StatementSchema,
     StatementSubscription,
     StatementType,
     User,

@@ -148,15 +148,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         isMenuOpen={isCardMenuOpen}
                         iconColor="#5899E0"
                     >
-                        {_isAuthorized && !isQuestion && !isParentOption && (
-                            <MenuOption
-                                isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
-                                label={t("Set as Option")}
-                                onOptionClick={handleSetOption}
-                            />
-                        )}
-                        {_isAuthorized && (
+                          {_isAuthorized && (
                             <MenuOption
                                 label={t("Edit Text")}
                                 icon={<EditIcon />}
@@ -166,10 +158,19 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }}
                             />
                         )}
+                        {_isAuthorized && !isQuestion && !isParentOption && (
+                            <MenuOption
+                                isOptionSelected={isOptionFn(statement)}
+                                icon={<LightBulbIcon />}
+                                label={isOptionFn(statement)?t("Unmark as a Solution"):t("Mark as a Solution")}
+                                onOptionClick={handleSetOption}
+                            />
+                        )}
+                      
                         {!isOption && (
                             <MenuOption
                                 isOptionSelected={isQuestion}
-                                label={t("Question")}
+                                label={isQuestion?t("Unmark as a Question"):t("Mark as a Question")}
                                 icon={<QuestionMarkIcon />}
                                 onOptionClick={() =>
                                     updateIsQuestion(statement)

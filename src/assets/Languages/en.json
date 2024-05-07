@@ -121,5 +121,9 @@
     "Welcome to Room Number": "Welcome to Room Number",
     "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?",
     "Save": "Save",
-    "description": "description"
+    "description": "description",
+    "Unmark as a Solution": "Unmark as a Solution",
+    "Mark as a Solution": "Mark as a Solution",
+    "Mark as a Question": "Mark as a Question",
+    "Unmark as a Question": "Unmark as a Question"
 }

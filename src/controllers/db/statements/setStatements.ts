@@ -5,7 +5,6 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import {
     Access,
-    ParentTimerSchema,
     ResultsBy,
     Screen,
     Statement,
@@ -205,7 +204,7 @@ export function createStatement({
 }: CreateStatementProps): Statement | undefined {
     try {
 
-        if (parentStatement !== "top") if (isAllowedStatementType({ parentStatement, statementType }) === false) throw new Error(`Statement type ${newStatement.statementType} is not allowed under ${parentStatement.statementType}`);
+        if (parentStatement !== "top") if (isAllowedStatementType({ parentStatement, statementType }) === false) throw new Error(`Statement type ${statementType} is not allowed under ${parentStatement.statementType}`);
 
         if (toggleAskNotifications) toggleAskNotifications();
         const storeState = store.getState();
