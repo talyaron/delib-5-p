@@ -9,6 +9,7 @@ import {
     ResultsBy,
     SimpleStatement,
     Statement,
+    StatementSchema,
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
@@ -70,9 +71,9 @@ export async function updateEvaluation(event: any) {
         );
 
         const statementDB = await statementRef.get();
-        if (!statementDB.exists) throw new Error("statement does not exist");
+        if (!statementDB.exists) throw new Error("Statement does not exist");
         const statement = statementDB.data() as Statement;
-        if (!statement) throw new Error("statement is not defined");
+        StatementSchema.parse(statement);
         const totalEvaluators = statement.totalEvaluators || 0;
 
 
@@ -82,7 +83,6 @@ export async function updateEvaluation(event: any) {
 
         const sumEvaluation = newPro - newCon;
         const averageEvaluation = totalEvaluators !== 0 ? sumEvaluation / totalEvaluators : 0; // average evaluation
-        console.log(statement.statement, 'totalEvaluators:', totalEvaluators, "newPro:", newPro, "newCon:", newCon, "averageEvaluation:", averageEvaluation, "sumEvaluation:", sumEvaluation);
         const consensus =
             totalEvaluators !== 0
                 ? Math.abs(averageEvaluation) * Math.sqrt(totalEvaluators)
