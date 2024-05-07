@@ -120,5 +120,9 @@
     "Yes": "כן",
     "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?",
     "Save": "שמירה",
-    "description": "תיאור"
+    "description": "תיאור",
+    "Unmark as a Solution": "ביטול סימון כפתרון",
+    "Mark as a Solution":   "סימון כפתרון",
+    "Mark as a Question": "סימון כשאלה",
+    "Unmark as a Question": "ביטול סימון כשאלה"
 }

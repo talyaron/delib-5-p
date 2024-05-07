@@ -85,9 +85,9 @@ export async function updateEvaluation(event: any) {
         const averageEvaluation = totalEvaluators !== 0 ? sumEvaluation / totalEvaluators : 0; // average evaluation
         const consensus =
             totalEvaluators !== 0
-                ? Math.abs(averageEvaluation) * Math.sqrt(totalEvaluators)
+                ? averageEvaluation * Math.sqrt(totalEvaluators)
                 : 0;
-
+console.log(statement.statement, 'consensus',consensus, 'totalEvaluators', totalEvaluators, 'averageEvaluation', averageEvaluation, 'sumEvaluation', sumEvaluation);
         //set consensus to statement in DB
         await statementRef.update({ consensus, totalEvaluators });
 

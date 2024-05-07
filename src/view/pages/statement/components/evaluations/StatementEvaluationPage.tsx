@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement, StatementType, User } from "delib-npm";
+import { Statement, StatementType, User, isOptionFn } from "delib-npm";
 import { useParams } from "react-router";
 
 // Utils & Helpers
 import { sortSubStatements } from "./statementEvaluationCont";
-import { isOptionFn } from "../../../../../controllers/general/helpers";
+
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";

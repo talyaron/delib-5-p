@@ -2,10 +2,10 @@ import {
     Role,
     Screen,
     Statement,
-    StatementSchema,
     StatementSubscription,
     StatementType,
     User,
+    isOptionFn,
 } from "delib-npm";
 import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -86,18 +86,7 @@ export function isAdmin(role: Role | undefined): boolean {
     return false;
 }
 
-export function isOptionFn(statement: Statement): boolean {
-    try {
-        return (
-            statement.statementType === StatementType.option ||
-            statement.statementType === StatementType.result
-        );
-    } catch (error) {
-        console.error(error);
 
-        return false;
-    }
-}
 
 export function navigateToStatementTab(
     statement: Statement,
@@ -155,38 +144,7 @@ export function generateRandomLightColor(uuid: string) {
     return hexColor;
 }
 
-export function isStatementTypeAllowed(
-    parentStatement: Statement,
-    statement: Statement,
-): boolean {
-    // check if statement type is allowed
-    // if parent is option, don't allow options
-    // if parent is question, don't allow questions
 
-    try {
-        if (!parentStatement)
-            throw new Error(
-                `No parent statement at statement ${statement.statement}`,
-            );
-        if (!statement) throw new Error("No statement");
-
-        StatementSchema.parse(parentStatement);
-        StatementSchema.parse(statement);
-
-        if (isOptionFn(parentStatement) && isOptionFn(statement)) return false;
-        if (
-            parentStatement.statementType === StatementType.question &&
-            statement.statementType === StatementType.question
-        )
-            return false;
-
-        return true;
-    } catch (error) {
-        console.error(error);
-
-        return false;
-    }
-}
 
 export const statementTitleToDisplay = (
     statement: string,
