@@ -8,7 +8,7 @@
  */
 import { Collections } from "delib-npm";
 
-import { updateEvaluation } from "./fn_evaluation";
+import { deleteEvaluation, newEvaluation, updateEvaluation } from "./fn_evaluation";
 import { updateResultsSettings } from "./fn_results";
 import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
@@ -55,6 +55,9 @@ exports.updateNotifications = onDocumentCreated(
 );
 
 //evaluations and results
+exports.newEvaluation = onDocumentCreated(`/${Collections.evaluations}/{evaluationId}`,newEvaluation);
+exports.deleteEvaluation = onDocumentDeleted(`/${Collections.evaluations}/{evaluationId}`,deleteEvaluation);
+
 exports.updateEvaluation = onDocumentWritten(
     `/${Collections.evaluations}/{evaluationId}`,
     updateEvaluation,

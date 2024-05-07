@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party
-import { Statement, User } from "delib-npm";
+import { Statement, User, isOptionFn } from "delib-npm";
 
 // Redux Store
 import {
@@ -16,7 +16,6 @@ import {
 // Helpers
 import {
     isAuthorized,
-    isOptionFn,
     linkToChildren,
 } from "../../../../../../controllers/general/helpers";
 
@@ -54,7 +53,7 @@ const StatementEvaluationCard: FC<Props> = ({
 }) => {
     // Hooks
 
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
 
     // Redux Store
     const dispatch = useAppDispatch();
@@ -70,7 +69,7 @@ const StatementEvaluationCard: FC<Props> = ({
 
     // Use States
     const [newTop, setNewTop] = useState(top);
-    const [edit, setEdit] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
     const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
         useState(false);
     const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
@@ -95,7 +94,7 @@ const StatementEvaluationCard: FC<Props> = ({
     }, []);
 
     // function handleGoToOption() {
-    //     if (!edit && linkToChildren(statement, parentStatement))
+    //     if (!isEdit && linkToChildren(statement, parentStatement))
     //         navigate(`/statement/${statement.statementId}/options`);
     // }
 
@@ -130,72 +129,102 @@ const StatementEvaluationCard: FC<Props> = ({
                     statementColor.backgroundColor || "wheat"
                 }`,
                 color: statementColor.color,
+                flexDirection: dir === "ltr" ? "row" : "row-reverse",
             }}
             ref={elementRef}
         >
-            <div className="info">
-                <div className="text">
-                    <EditTitle
-                        statement={statement}
-                        isEdit={edit}
-                        setEdit={setEdit}
-                        isTextArea={true}
-                    />
+            <div
+                className="selected-option"
+                style={{
+                    backgroundColor: statement.selected
+                        ? statementColor.backgroundColor
+                        : "",
+                }}
+            >
+                <div
+                    style={{
+                        color: statementColor.color,
+                        display: statement.selected ? "block" : "none",
+                    }}
+                >
+                    {t("Selected")}
                 </div>
-                <div className="more">
-                    {_isAuthorized && (
-                        <Menu
-                            setIsOpen={setIsCardMenuOpen}
-                            isMenuOpen={isCardMenuOpen}
-                            iconColor="#5899E0"
+            </div>
+            <div className="main">
+                <div className="info">
+                    <div className="text">
+                        <EditTitle
+                            statement={statement}
+                            isEdit={isEdit}
+                            setEdit={setIsEdit}
+                            isTextArea={true}
+                        />
+                    </div>
+                    <div className="more">
+                        {_isAuthorized && (
+                            <Menu
+                                setIsOpen={setIsCardMenuOpen}
+                                isMenuOpen={isCardMenuOpen}
+                                iconColor="#5899E0"
+                            >
+                                {_isAuthorized && (
+                                    <MenuOption
+                                        label={t("Edit Text")}
+                                        icon={<EditIcon />}
+                                        onOptionClick={() => {
+                                            setIsEdit(!isEdit);
+                                            setIsCardMenuOpen(false);
+                                        }}
+                                    />
+                                )}
+                                {_isAuthorized && (
+                                    <MenuOption
+                                        isOptionSelected={isOptionFn(statement)}
+                                        icon={<LightBulbIcon />}
+                                        label={
+                                            isOptionFn(statement)
+                                                ? t("Unmark as a Solution")
+                                                : t("Mark as a Solution")
+                                        }
+                                        onOptionClick={handleSetOption}
+                                    />
+                                )}
+                            </Menu>
+                        )}
+                    </div>
+                </div>
+                {shouldLinkToChildStatements && (
+                    <div className="chat">
+                        <StatementChatMore
+                            statement={statement}
+                            color={statementColor.color}
+                        />
+                    </div>
+                )}
+                <div className="actions">
+                    <Evaluation
+                        parentStatement={parentStatement}
+                        statement={statement}
+                    />
+                    {parentStatement.hasChildren && (
+                        <IconButton
+                            className="add-sub-question-button"
+                            onClick={() =>
+                                setShouldShowAddSubQuestionModal(true)
+                            }
                         >
-                            <MenuOption
-                                label={t("Edit Text")}
-                                icon={<EditIcon />}
-                                onOptionClick={() => {
-                                    setEdit(!edit);
-                                    setIsCardMenuOpen(false);
-                                }}
-                            />
-                            <MenuOption
-                                isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
-                                label={t("Remove Option")}
-                                onOptionClick={handleSetOption}
-                            />
-                        </Menu>
+                            <AddQuestionIcon />
+                        </IconButton>
                     )}
                 </div>
-            </div>
-            {shouldLinkToChildStatements && (
-                <div className="chat">
-                    <StatementChatMore
-                        statement={statement}
-                        color={statementColor.color}
+                {shouldShowAddSubQuestionModal && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={false}
+                        setShowModal={setShouldShowAddSubQuestionModal}
                     />
-                </div>
-            )}
-            <div className="actions">
-                <Evaluation
-                    parentStatement={parentStatement}
-                    statement={statement}
-                />
-                {parentStatement.hasChildren && (
-                    <IconButton
-                        className="add-sub-question-button"
-                        onClick={() => setShouldShowAddSubQuestionModal(true)}
-                    >
-                        <AddQuestionIcon />
-                    </IconButton>
                 )}
             </div>
-            {shouldShowAddSubQuestionModal && (
-                <CreateStatementModal
-                    parentStatement={statement}
-                    isOption={false}
-                    setShowModal={setShouldShowAddSubQuestionModal}
-                />
-            )}
         </div>
     );
 };

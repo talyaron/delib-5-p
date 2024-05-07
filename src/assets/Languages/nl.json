@@ -49,6 +49,7 @@
     "Group Title": "Groepstitel",
     "Install the App": "App Installeren",
     "In conversation:": "In gesprek:",
+    "In Voting page, show only the results of the top options": "In de stemmingspagina, toon alleen de resultaten van de topopties",
     "In Zoom": "In Zoom",
     "Invited:": "Uitgenodigd:",
     "It is necessary to receive notifications": "Het is nodig om meldingen te ontvangen",
@@ -82,6 +83,7 @@
     "Room": "Kamer",
     "Rooms": "Kamers",
     "Room Allocation": "Kamerindeling",
+    "Selected": "Geselecteerd",
     "Send a link to anonymous users": "Stuur een link naar anonieme gebruikers",
     "Settings": "Instellingen",
     "Show": "Weergeven",
@@ -106,5 +108,10 @@
     "Yes": "Ja",
     "Would you like to receive notifications in this group?": "Wil je meldingen ontvangen in deze groep?",
     "Save": "Opslaan",
-    "description": "beschrijving"
+    "description": "beschrijving",
+    "Unmark as a Solution": "Niet markeren als oplossing",
+    "Mark as a Solution": "Markeren als oplossing",
+    "Mark as a Question": "Markeren als vraag",
+    "Unmark as a Question": "Niet markeren als vraag"
+
 }

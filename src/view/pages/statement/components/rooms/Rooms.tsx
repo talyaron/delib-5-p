@@ -1,4 +1,4 @@
-import { RoomsStateSelection, Statement } from "delib-npm";
+import { RoomsStateSelection, Statement, isOptionFn } from "delib-npm";
 import React, { FC, useState, useEffect } from "react";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { listenToAllRoomsRequest } from "../../../../../controllers/db/rooms/getRooms";
@@ -10,7 +10,6 @@ import ChooseRoom from "./components/choose/ChooseRoom";
 // import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../controllers/db/rooms/setRooms";
-import { isOptionFn } from "../../../../../controllers/general/helpers";
 
 interface StatementRoomsProps {
     statement: Statement;

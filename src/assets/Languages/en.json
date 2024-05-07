@@ -51,6 +51,7 @@
     "Group Description": "Group Description",
     "Group Title": "Group Title",
     "In conversation:": "In conversation:",
+    "In Voting page, show only the results of the top options": "In Voting page, show only the results of the top options",
     "In Zoom": "In Zoom",
     "Install the App": "Install the App",
     "Invited:": "Invited:",
@@ -93,6 +94,7 @@
     "Room Allocation": "Room Allocation",
     "Rooms": "Rooms",
     "Send a link to anonymous users": "Send a link to anonymous users",
+    "Selected": "Selected",
     "Settings": "Settings",
     "Share": "Share",
     "Show": "Show",
@@ -119,5 +121,9 @@
     "Welcome to Room Number": "Welcome to Room Number",
     "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?",
     "Save": "Save",
-    "description": "description"
+    "description": "description",
+    "Unmark as a Solution": "Unmark as a Solution",
+    "Mark as a Solution": "Mark as a Solution",
+    "Mark as a Question": "Mark as a Question",
+    "Unmark as a Question": "Unmark as a Question"
 }

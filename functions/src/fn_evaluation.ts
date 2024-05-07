@@ -1,5 +1,6 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
+import { FieldValue } from "firebase-admin/firestore";
 
 // import { logBase } from "./helpers";
 import {
@@ -8,9 +9,44 @@ import {
     ResultsBy,
     SimpleStatement,
     Statement,
+    StatementSchema,
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
+
+
+export async function newEvaluation(event: any) {
+    try {
+        //add evaluator to statement
+        const statementEvaluation = event.data.data() as Evaluation;
+        const { statementId } = statementEvaluation;
+        if (!statementId) throw new Error("statementId is not defined");
+
+        //add one evaluator to statement
+        const statementRef = db.collection(Collections.statements).doc(statementId);
+        statementRef.update({ totalEvaluators: FieldValue.increment(1) });
+
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
+export async function deleteEvaluation(event: any) {
+    try {
+        //add evaluator to statement
+        const statementEvaluation = event.data.data() as Evaluation;
+        const { statementId } = statementEvaluation;
+        if (!statementId) throw new Error("statementId is not defined");
+
+        //add one evaluator to statement
+        const statementRef = db.collection(Collections.statements).doc(statementId);
+        statementRef.update({ totalEvaluators: FieldValue.increment(-1) });
+
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
 
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
@@ -18,7 +54,7 @@ export async function updateEvaluation(event: any) {
         const {
             statementId,
             parentId,
-            evaluationDeferneces,
+            evaluationDeference,
             evaluation,
             previousEvaluation,
             error,
@@ -26,30 +62,34 @@ export async function updateEvaluation(event: any) {
         if (error) throw error;
         if (!statementId) throw new Error("statementId is not defined");
 
-        const statementRef = db.collection("statements").doc(statementId);
+        const statementRef = db.collection(Collections.statements).doc(statementId);
         const { newPro, newCon } = await setNewEvaluation(
             statementRef,
-            evaluationDeferneces,
+            evaluationDeference,
             evaluation,
             previousEvaluation,
         );
 
+        const statementDB = await statementRef.get();
+        if (!statementDB.exists) throw new Error("Statement does not exist");
+        const statement = statementDB.data() as Statement;
+        StatementSchema.parse(statement);
+        const totalEvaluators = statement.totalEvaluators || 0;
+
+
         // Fairness calculations (social choice theory)
-        // The aim of the consesus calulation is to give statement with more positive evaluation and less vegative evaluations,
-        // while letting small groups with heigher consesus an uper hand, over large groups with alot of negative evaluations.
+        // The aim of the consensus calculation is to give statement with more positive evaluation and less negative evaluations,
+        // while letting small groups with higher consensus an upper hand, over large groups with a lot of negative evaluations.
 
         const sumEvaluation = newPro - newCon;
-        const n = newPro + Math.abs(newCon); // n = total evealuators
-        const averageEvaluation = n !== 0 ? sumEvaluation / n : 0; // average evaluation
+        const averageEvaluation = totalEvaluators !== 0 ? sumEvaluation / totalEvaluators : 0; // average evaluation
         const consensus =
-            n !== 0
-                ? Math.abs(averageEvaluation) *
-                  Math.sign(newPro - newCon) *
-                  Math.sqrt(n)
+            totalEvaluators !== 0
+                ? averageEvaluation * Math.sqrt(totalEvaluators)
                 : 0;
-
+console.log(statement.statement, 'consensus',consensus, 'totalEvaluators', totalEvaluators, 'averageEvaluation', averageEvaluation, 'sumEvaluation', sumEvaluation);
         //set consensus to statement in DB
-        await statementRef.update({ consensus });
+        await statementRef.update({ consensus, totalEvaluators });
 
         //update parent statement?
         //get parent statement
@@ -76,15 +116,15 @@ export async function updateEvaluation(event: any) {
             if (isNaN(evaluation))
                 throw new Error("evaluation is not a number");
 
-            const evaluationDeferneces: number =
+            const evaluationDeference: number =
                 evaluation - previousEvaluation || 0;
-            if (!evaluationDeferneces)
-                throw new Error("evaluationDeferneces is not defined");
+            if (!evaluationDeference)
+                throw new Error("evaluationDeference is not defined");
 
             return {
                 parentId,
                 statementId,
-                evaluationDeferneces,
+                evaluationDeference,
                 evaluation,
                 previousEvaluation,
             };
@@ -97,15 +137,15 @@ export async function updateEvaluation(event: any) {
 
     async function setNewEvaluation(
         statementRef: any,
-        evaluationDeferneces: number | undefined,
+        evaluationDeference: number | undefined,
         evaluation = 0,
         previousEvaluation: number | undefined,
     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
         const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
         await db.runTransaction(async (t: any) => {
             try {
-                if (!evaluationDeferneces)
-                    throw new Error("evaluationDeferneces is not defined");
+                if (!evaluationDeference)
+                    throw new Error("evaluationDeference is not defined");
                 if (evaluation === undefined)
                     throw new Error("evaluation is not defined");
                 if (previousEvaluation === undefined)
@@ -229,7 +269,7 @@ async function updateParentStatementWithChildResults(
             throw new Error("parentStatement does not exist");
         const parentStatement = parentStatementDB.data() as Statement;
 
-        //get resutls settings
+        //get results settings
         const { resultsSettings } = parentStatement;
         let { resultsBy, numberOfResults } =
             getResultsSettings(resultsSettings);
@@ -240,6 +280,7 @@ async function updateParentStatementWithChildResults(
         //this function is responsible for converting the results of evaluation of options
 
         if (resultsBy !== ResultsBy.topOptions) {
+            //remove it when other evaluation methods will be added
             //topVote will be calculated in the votes function
             return;
         }
@@ -256,13 +297,8 @@ async function updateParentStatementWithChildResults(
             .orderBy("consensus", "desc")
             .limit(numberOfResults);
 
-        // .and.where("parentId", "==", parentId)
-        // .or.where("statementType", "==", StatementType.option)
-        // .where("statementType", "==", StatementType.result)
-        // .orderBy("consensus", "desc")
-        // .limit(numberOfResults);
 
-        //get all options of the parent statement and convert htme to either result, or an option
+        //get all options of the parent statement and convert them to either result, or an option
         const topOptionsStatementsDB = await topOptionsStatementsRef.get();
         const topOptionsStatements = topOptionsStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement,
@@ -277,7 +313,7 @@ async function updateParentStatementWithChildResults(
         await optionsDB.forEach(async (stDB: any) => {
             const st = stDB.data() as Statement;
 
-            //update childstatment selectd to be of type result
+            //update child statement selected to be of type result
             if (childIds.includes(st.statementId)) {
                 db.collection(Collections.statements)
                     .doc(st.statementId)
@@ -291,7 +327,7 @@ async function updateParentStatementWithChildResults(
 
         await updateParentChildren(topOptionsStatements, numberOfResults);
 
-        //update childstatment selectd to be of type result
+        //update child statement selected to be of type result
     } catch (error) {
         logger.error(error);
     }
@@ -314,6 +350,4 @@ async function updateParentStatementWithChildResults(
     }
 }
 
-// async function updateParentWithResults(parentId:string){
 
-// }

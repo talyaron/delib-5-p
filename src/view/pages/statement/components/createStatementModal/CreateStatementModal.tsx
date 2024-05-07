@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm";
+import { Statement, StatementType, isAllowedStatementType } from "delib-npm";
 
 // Statements Helpers
 
@@ -75,6 +75,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
                     <Tabs
                         isOptionChosen={isOptionSelected}
                         setIsOptionChosen={setIsOptionSelected}
+                        parentStatement={parentStatement}
                     />
 
                     <div className="form-inputs">
@@ -113,28 +114,43 @@ export default CreateStatementModal;
 interface TabsProps {
     isOptionChosen: boolean;
     setIsOptionChosen: (isOptionChosen: boolean) => void;
+    parentStatement: Statement | "top";
 }
 
-const Tabs: FC<TabsProps> = ({ isOptionChosen, setIsOptionChosen }) => {
+const Tabs: FC<TabsProps> = ({
+    isOptionChosen,
+    setIsOptionChosen,
+    parentStatement,
+}) => {
     const { t } = useLanguage();
 
     return (
         <div className="tabs">
-            <button
-                onClick={() => setIsOptionChosen(true)}
-                className={`tab option ${isOptionChosen ? "active" : ""}`}
-            >
-                {t("Option")}
+            {isAllowedStatementType({
+                parentStatement,
+                statementType: StatementType.option,
+            }) && (
+                <button
+                    onClick={() => setIsOptionChosen(true)}
+                    className={`tab option ${isOptionChosen ? "active" : ""}`}
+                >
+                    {t("Option")}
 
-                {isOptionChosen && <div className="block" />}
-            </button>
-            <button
-                onClick={() => setIsOptionChosen(false)}
-                className={`tab question ${isOptionChosen ? "" : "active"}`}
-            >
-                {t("Question")}
-                {!isOptionChosen && <div className="block" />}
-            </button>
+                    {isOptionChosen && <div className="block" />}
+                </button>
+            )}
+            {isAllowedStatementType({
+                parentStatement,
+                statementType: StatementType.question,
+            }) && (
+                <button
+                    onClick={() => setIsOptionChosen(false)}
+                    className={`tab question ${isOptionChosen ? "" : "active"}`}
+                >
+                    {t("Question")}
+                    {!isOptionChosen && <div className="block" />}
+                </button>
+            )}
         </div>
     );
 };

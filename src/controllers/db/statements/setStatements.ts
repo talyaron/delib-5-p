@@ -11,6 +11,7 @@ import {
     StatementSchema,
     StatementType,
     UserSchema,
+    isAllowedStatementType
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
@@ -24,6 +25,8 @@ import {
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
 
 
+
+
 export const updateStatementParents = async (
     statement: Statement,
     parentStatement: Statement,
@@ -31,6 +34,7 @@ export const updateStatementParents = async (
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
+        if (isAllowedStatementType({ parentStatement, statement }) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
 
         const statementRef = doc(
             DB,
@@ -65,6 +69,7 @@ export const setStatementToDB = async ({
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
+        if (parentStatement !== "top" && isAllowedStatementType({ parentStatement, statement }) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
 
         const storeState = store.getState();
         const user = storeState.user.user;
@@ -90,8 +95,8 @@ export const setStatementToDB = async ({
             parentStatement === "top"
                 ? statement.statementId
                 : statement?.topParentId ||
-                  parentStatement?.topParentId ||
-                  "top";
+                parentStatement?.topParentId ||
+                "top";
         statement.subScreens = statement.subScreens || [
             Screen.CHAT,
             Screen.OPTIONS,
@@ -198,6 +203,9 @@ export function createStatement({
     toggleAskNotifications,
 }: CreateStatementProps): Statement | undefined {
     try {
+
+        if (parentStatement !== "top") if (isAllowedStatementType({ parentStatement, statementType }) === false) throw new Error(`Statement type ${statementType} is not allowed under ${parentStatement.statementType}`);
+
         if (toggleAskNotifications) toggleAskNotifications();
         const storeState = store.getState();
         const user = storeState.user.user;
@@ -263,6 +271,8 @@ export function createStatement({
         newStatement.statementSettings.subScreens = subScreens;
 
         StatementSchema.parse(newStatement);
+
+
 
         return newStatement;
     } catch (error) {
@@ -342,10 +352,10 @@ export function updateStatement({
             subScreens !== undefined
                 ? subScreens
                 : statement.subScreens || [
-                      Screen.CHAT,
-                      Screen.OPTIONS,
-                      Screen.VOTE,
-                  ];
+                    Screen.CHAT,
+                    Screen.OPTIONS,
+                    Screen.VOTE,
+                ];
 
         StatementSchema.parse(newStatement);
 
@@ -427,7 +437,7 @@ export async function updateStatementText(
             lastUpdate: Timestamp.now().toMillis(),
         };
         await updateDoc(statementRef, newStatement);
-    } catch (error) {}
+    } catch (error) { }
 }
 
 export async function setStatementIsOption(statement: Statement) {

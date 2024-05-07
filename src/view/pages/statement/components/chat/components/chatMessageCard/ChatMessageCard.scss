@@ -98,4 +98,28 @@
     .menu-option svg {
         color: #226cbc;
     }
+
+    .bottom-icons {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto; /* Push icons to the bottom */
+
+        .add-question-btn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    }
+    .add-questionSVG {
+        margin-top: 13px;
+        height: 22px;
+        width: 20px;
+        color: #62beeb;
+    }
 }

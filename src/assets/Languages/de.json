@@ -49,6 +49,7 @@
     "Group Title": "Gruppentitel",
     "Install the App": "App installieren",
     "In conversation:": "Im Gespräch:",
+    "In Voting page, show only the results of the top options": "Auf der Abstimmungsseite nur die Ergebnisse der Top-Optionen anzeigen",
     "In Zoom": "In Zoom",
     "Invited:": "Eingeladen:",
     "It is necessary to receive notifications": "Es ist notwendig, Benachrichtigungen zu erhalten",
@@ -83,6 +84,7 @@
     "Room": "Raum",
     "Rooms": "Räume",
     "Room Allocation": "Raumzuweisung",
+    "Selected": "Ausgewählt",
     "Send a link to anonymous users": "Link an anonyme Benutzer senden",
     "Settings": "Einstellungen",
     "Show": "Anzeigen",
@@ -106,5 +108,9 @@
     "Yes": "Ja",
     "Would you like to receive notifications in this group?": "Möchten Sie Benachrichtigungen in dieser Gruppe erhalten?",
     "Save": "Speichern",
-    "description": "Beschreibung"
+    "description": "Beschreibung",
+    "Unmark as a Solution": "Als Lösung markieren",
+    "Mark as a Solution": "Als Lösung markieren",
+    "Mark as a Question": "Als Frage markieren",
+    "Unmark as a Question": "Als Frage markieren"
 }

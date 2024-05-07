@@ -38,7 +38,7 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
     const [statementToEdit, setStatementToEdit] = useState<
         Statement | undefined
     >();
-
+  
     const dispatch = useAppDispatch();
 
     const statement: Statement | undefined = useAppSelector(

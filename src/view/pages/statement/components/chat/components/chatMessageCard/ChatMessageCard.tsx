@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third Party Imports
-import { Statement, StatementType, User } from "delib-npm";
+import { Statement, StatementType, User, isOptionFn } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
@@ -11,7 +11,6 @@ import { store } from "../../../../../../../model/store";
 // Helper functions
 import {
     isAuthorized,
-    isOptionFn,
     linkToChildren,
 } from "../../../../../../../controllers/general/helpers";
 
@@ -86,6 +85,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
+    const isParentOption = isOptionFn(parentStatement);
 
     const shouldLinkToChildStatements =
         (isQuestion || isOption) && parentStatement.hasChildren;
@@ -148,15 +148,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         isMenuOpen={isCardMenuOpen}
                         iconColor="#5899E0"
                     >
-                        {_isAuthorized && !isQuestion && (
-                            <MenuOption
-                                isOptionSelected={isOptionFn(statement)}
-                                icon={<LightBulbIcon />}
-                                label={t("Option")}
-                                onOptionClick={handleSetOption}
-                            />
-                        )}
-                        {_isAuthorized && (
+                          {_isAuthorized && (
                             <MenuOption
                                 label={t("Edit Text")}
                                 icon={<EditIcon />}
@@ -166,49 +158,48 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                                 }}
                             />
                         )}
+                        {_isAuthorized && !isQuestion && !isParentOption && (
+                            <MenuOption
+                                isOptionSelected={isOptionFn(statement)}
+                                icon={<LightBulbIcon />}
+                                label={isOptionFn(statement)?t("Unmark as a Solution"):t("Mark as a Solution")}
+                                onOptionClick={handleSetOption}
+                            />
+                        )}
+                      
                         {!isOption && (
                             <MenuOption
                                 isOptionSelected={isQuestion}
-                                label={t("Question")}
+                                label={isQuestion?t("Unmark as a Question"):t("Mark as a Question")}
                                 icon={<QuestionMarkIcon />}
                                 onOptionClick={() =>
                                     updateIsQuestion(statement)
                                 }
                             />
                         )}
-                        {shouldLinkToChildren && (
-                            <MenuOption
-                                label={t("Add Question")}
-                                icon={<AddQuestionIcon />}
-                                onOptionClick={() =>
-                                    setIsNewStatementModalOpen(true)
-                                }
-                            />
-                        )}
                     </Menu>
                 </div>
-
-                {shouldLinkToChildStatements && (
-                    <StatementChatMore statement={statement} />
+                <div className="bottom-icons">
+                    {shouldLinkToChildStatements && (
+                        <StatementChatMore statement={statement} />
+                    )}
+                    {shouldLinkToChildren && (
+                        <button
+                            className="add-question-btn"
+                            onClick={() => setIsNewStatementModalOpen(true)}
+                        >
+                            <AddQuestionIcon />
+                        </button>
+                    )}
+                </div>
+                {isNewStatementModalOpen && (
+                    <CreateStatementModal
+                        parentStatement={statement}
+                        isOption={false}
+                        setShowModal={setIsNewStatementModalOpen}
+                    />
                 )}
-
-                {/* <div className="actions">
-                    <div className="actions-type"></div>
-                     <div className="evaluations">
-                        <Evaluation
-                            statement={statement}
-                            displayScore={false}
-                        />
-                    </div> 
-                </div>*/}
             </div>
-            {isNewStatementModalOpen && (
-                <CreateStatementModal
-                    parentStatement={statement}
-                    isOption={false}
-                    setShowModal={setIsNewStatementModalOpen}
-                />
-            )}
         </div>
     );
 };
