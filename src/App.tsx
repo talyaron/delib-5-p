@@ -132,6 +132,6 @@ export default function App() {
     );
 }
 
-export const install: { deferredPrompt: any } = {
-    deferredPrompt: null,
+export const install: { deferredPrompt: Event } = {
+    deferredPrompt: {} as Event,
 };
