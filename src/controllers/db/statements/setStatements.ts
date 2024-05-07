@@ -22,6 +22,7 @@ import {
     getExistingOptionColors,
     getSiblingOptionsByParentId,
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
+import { isStatementTypeAllowed } from "../../general/helpers";
 
 
 export const updateStatementParents = async (
@@ -31,6 +32,7 @@ export const updateStatementParents = async (
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
+        if (isStatementTypeAllowed(parentStatement, statement) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
 
         const statementRef = doc(
             DB,
@@ -65,6 +67,7 @@ export const setStatementToDB = async ({
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
+        if (isStatementTypeAllowed(parentStatement, statement) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
 
         const storeState = store.getState();
         const user = storeState.user.user;
@@ -90,8 +93,8 @@ export const setStatementToDB = async ({
             parentStatement === "top"
                 ? statement.statementId
                 : statement?.topParentId ||
-                  parentStatement?.topParentId ||
-                  "top";
+                parentStatement?.topParentId ||
+                "top";
         statement.subScreens = statement.subScreens || [
             Screen.CHAT,
             Screen.OPTIONS,
@@ -264,6 +267,8 @@ export function createStatement({
 
         StatementSchema.parse(newStatement);
 
+        if (parentStatement !== "top") if (isStatementTypeAllowed(parentStatement, newStatement) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
+
         return newStatement;
     } catch (error) {
         console.error(error);
@@ -342,10 +347,10 @@ export function updateStatement({
             subScreens !== undefined
                 ? subScreens
                 : statement.subScreens || [
-                      Screen.CHAT,
-                      Screen.OPTIONS,
-                      Screen.VOTE,
-                  ];
+                    Screen.CHAT,
+                    Screen.OPTIONS,
+                    Screen.VOTE,
+                ];
 
         StatementSchema.parse(newStatement);
 
@@ -427,7 +432,7 @@ export async function updateStatementText(
             lastUpdate: Timestamp.now().toMillis(),
         };
         await updateDoc(statementRef, newStatement);
-    } catch (error) {}
+    } catch (error) { }
 }
 
 export async function setStatementIsOption(statement: Statement) {
