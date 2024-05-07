@@ -5,12 +5,14 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import {
     Access,
+    ParentTimerSchema,
     ResultsBy,
     Screen,
     Statement,
     StatementSchema,
     StatementType,
     UserSchema,
+    isAllowedStatementType
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
@@ -22,7 +24,8 @@ import {
     getExistingOptionColors,
     getSiblingOptionsByParentId,
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
-import { isStatementTypeAllowed } from "../../general/helpers";
+
+
 
 
 export const updateStatementParents = async (
@@ -32,7 +35,7 @@ export const updateStatementParents = async (
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
-        if (isStatementTypeAllowed(parentStatement, statement) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
+        if (isAllowedStatementType({ parentStatement, statement }) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
 
         const statementRef = doc(
             DB,
@@ -67,7 +70,7 @@ export const setStatementToDB = async ({
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
-        if (isStatementTypeAllowed(parentStatement, statement) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
+        if (parentStatement !== "top" && isAllowedStatementType({ parentStatement, statement }) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
 
         const storeState = store.getState();
         const user = storeState.user.user;
@@ -201,6 +204,9 @@ export function createStatement({
     toggleAskNotifications,
 }: CreateStatementProps): Statement | undefined {
     try {
+
+        if (parentStatement !== "top") if (isAllowedStatementType({ parentStatement, statementType }) === false) throw new Error(`Statement type ${newStatement.statementType} is not allowed under ${parentStatement.statementType}`);
+
         if (toggleAskNotifications) toggleAskNotifications();
         const storeState = store.getState();
         const user = storeState.user.user;
@@ -267,7 +273,7 @@ export function createStatement({
 
         StatementSchema.parse(newStatement);
 
-        if (parentStatement !== "top") if (isStatementTypeAllowed(parentStatement, newStatement) === false) throw new Error(`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`);
+
 
         return newStatement;
     } catch (error) {
