@@ -86,6 +86,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
     const isMe = userId === creatorId;
     const isQuestion = statementType === StatementType.question;
     const isOption = isOptionFn(statement);
+    const isParentOption = isOptionFn(parentStatement);
 
     const shouldLinkToChildStatements =
         (isQuestion || isOption) && parentStatement.hasChildren;
@@ -148,11 +149,11 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         isMenuOpen={isCardMenuOpen}
                         iconColor="#5899E0"
                     >
-                        {_isAuthorized && !isQuestion && (
+                        {_isAuthorized && !isQuestion && !isParentOption && (
                             <MenuOption
                                 isOptionSelected={isOptionFn(statement)}
                                 icon={<LightBulbIcon />}
-                                label={t("Option")}
+                                label={t("Set as Option")}
                                 onOptionClick={handleSetOption}
                             />
                         )}
