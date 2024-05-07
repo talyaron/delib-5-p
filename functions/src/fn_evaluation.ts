@@ -53,7 +53,7 @@ export async function updateEvaluation(event: any) {
         const {
             statementId,
             parentId,
-            evaluationDeferneces,
+            evaluationDeference,
             evaluation,
             previousEvaluation,
             error,
@@ -64,7 +64,7 @@ export async function updateEvaluation(event: any) {
         const statementRef = db.collection(Collections.statements).doc(statementId);
         const { newPro, newCon } = await setNewEvaluation(
             statementRef,
-            evaluationDeferneces,
+            evaluationDeference,
             evaluation,
             previousEvaluation,
         );
@@ -116,15 +116,15 @@ export async function updateEvaluation(event: any) {
             if (isNaN(evaluation))
                 throw new Error("evaluation is not a number");
 
-            const evaluationDeferneces: number =
+            const evaluationDeference: number =
                 evaluation - previousEvaluation || 0;
-            if (!evaluationDeferneces)
-                throw new Error("evaluationDeferneces is not defined");
+            if (!evaluationDeference)
+                throw new Error("evaluationDeference is not defined");
 
             return {
                 parentId,
                 statementId,
-                evaluationDeferneces,
+                evaluationDeference,
                 evaluation,
                 previousEvaluation,
             };
@@ -137,15 +137,15 @@ export async function updateEvaluation(event: any) {
 
     async function setNewEvaluation(
         statementRef: any,
-        evaluationDeferneces: number | undefined,
+        evaluationDeference: number | undefined,
         evaluation = 0,
         previousEvaluation: number | undefined,
     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
         const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
         await db.runTransaction(async (t: any) => {
             try {
-                if (!evaluationDeferneces)
-                    throw new Error("evaluationDeferneces is not defined");
+                if (!evaluationDeference)
+                    throw new Error("evaluationDeference is not defined");
                 if (evaluation === undefined)
                     throw new Error("evaluation is not defined");
                 if (previousEvaluation === undefined)
