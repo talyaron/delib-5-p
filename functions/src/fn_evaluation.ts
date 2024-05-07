@@ -30,7 +30,7 @@ export async function newEvaluation(event: any) {
     }
 }
 
-export async function deleteEvaluation (event: any) {
+export async function deleteEvaluation(event: any) {
     try {
         //add evaluator to statement
         const statementEvaluation = event.data.data() as Evaluation;
@@ -72,8 +72,9 @@ export async function updateEvaluation(event: any) {
         const statementDB = await statementRef.get();
         if (!statementDB.exists) throw new Error("statement does not exist");
         const statement = statementDB.data() as Statement;
-        if(!statement) throw new Error("statement is not defined");
+        if (!statement) throw new Error("statement is not defined");
         const totalEvaluators = statement.totalEvaluators || 0;
+
 
         // Fairness calculations (social choice theory)
         // The aim of the consensus calculation is to give statement with more positive evaluation and less negative evaluations,
@@ -81,11 +82,10 @@ export async function updateEvaluation(event: any) {
 
         const sumEvaluation = newPro - newCon;
         const averageEvaluation = totalEvaluators !== 0 ? sumEvaluation / totalEvaluators : 0; // average evaluation
+        console.log(statement.statement, 'totalEvaluators:', totalEvaluators, "newPro:", newPro, "newCon:", newCon, "averageEvaluation:", averageEvaluation, "sumEvaluation:", sumEvaluation);
         const consensus =
             totalEvaluators !== 0
-                ? Math.abs(averageEvaluation) *
-                Math.sign(newPro - newCon) *
-                Math.sqrt(totalEvaluators)
+                ? Math.abs(averageEvaluation) * Math.sqrt(totalEvaluators)
                 : 0;
 
         //set consensus to statement in DB
