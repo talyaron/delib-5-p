@@ -23,6 +23,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
     const evaluationScore = useAppSelector(
         evaluationSelector(statement.statementId),
     );
+    const {totalEvaluators} = statement;
 
     const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
 
@@ -55,7 +56,9 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
                 <div
                     className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
                 >
-                    {roundedEvaluationScore}
+                    {roundedEvaluationScore} 
+                    {totalEvaluators && totalEvaluators > 0 && <span className="total-evaluators">{" "}({totalEvaluators})</span>}
+                  
                 </div>
             )}
         </div>
