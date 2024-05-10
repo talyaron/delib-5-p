@@ -1,13 +1,22 @@
-import { Participant, RoomDivied } from "delib-npm";
+import { Participant, RoomDivied, Statement } from "delib-npm";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+
+interface Topic {
+    [key: string]: {
+        statementId: string;
+        statement: Statement | string | undefined;
+        participants: Participant[];
+        rooms?: Array<Array<Participant>>;
+    };
+}
 
 export function divideIntoTopics(
     participants: Participant[],
     maxPerRoom = 7,
-): { rooms: RoomDivied[]; topicsParticipants: any } {
+): { rooms: RoomDivied[]; topicsParticipants: Topic } {
     try {
         const { t } = useLanguage();
-        const topicsParticipants: any = {};
+        const topicsParticipants: Topic = {};
 
         //build topicsParticipantsObject
         participants.forEach((participant) => {
@@ -53,7 +62,7 @@ export function divideIntoTopics(
     } catch (error) {
         console.error(error);
 
-        return { rooms: [], topicsParticipants: undefined };
+        return { rooms: [], topicsParticipants: {} };
     }
 }
 
@@ -85,6 +94,7 @@ function divideParticipantsIntoRoomsRandomly(
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
         let roomNumber = 1;

@@ -22,8 +22,6 @@ import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement;
-    page?: any;
-    color?: string;
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {

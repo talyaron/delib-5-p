@@ -12,11 +12,11 @@ import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
 
-export function updateArray(
-    currentArray: Array<any>,
-    newItem: any,
-    updateByProperty: string,
-): Array<any> {
+export function updateArray<T>(
+    currentArray: Array<T>,
+    newItem: T,
+    updateByProperty: keyof T & string,
+): Array<T> {
     try {
         const arrayTemp = [...currentArray];
 
@@ -86,8 +86,6 @@ export function isAdmin(role: Role | undefined): boolean {
     return false;
 }
 
-
-
 export function navigateToStatementTab(
     statement: Statement,
     navigate: NavigateFunction,
@@ -143,8 +141,6 @@ export function generateRandomLightColor(uuid: string) {
 
     return hexColor;
 }
-
-
 
 export const statementTitleToDisplay = (
     statement: string,
@@ -256,7 +252,7 @@ export function getStatementSubscriptionId(
         return `${user.uid}--${statementId}`;
     } catch (error) {
         console.error(error);
-        
+
         return undefined;
     }
 }

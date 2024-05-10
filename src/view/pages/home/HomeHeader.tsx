@@ -18,7 +18,7 @@ import { install } from "../../../App";
 
 export default function HomeHeader() {
     // Use State
-    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
     const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
     const dispatch = useDispatch();
 

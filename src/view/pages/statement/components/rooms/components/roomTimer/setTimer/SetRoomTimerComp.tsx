@@ -18,7 +18,7 @@ function SetRoomTimerComp({
     roomTimer,
     setTimerAdjustment,
     setInitTime,
-}: TimerProps) {
+}: Readonly<TimerProps>) {
     const [timeDigits, setTimeDigits] = useState<number[]>(
         fromMillisecondsToFourDigits(roomTimer.time || 1000 * 90),
     );
@@ -33,9 +33,7 @@ function SetRoomTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={0}
-                    onInput={handleInputDigit}
-                    onKeyUp={handleInputDigit}
-                    onChange={handleInputDigit}
+                    onKeyUp={(e) => handleInputDigit(e)}
                     defaultValue={timeDigits[0]}
                 />
 
@@ -46,9 +44,7 @@ function SetRoomTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={1}
-                    onInput={handleInputDigit}
-                    onKeyUp={handleInputDigit}
-                    onChange={handleInputDigit}
+                    onKeyUp={(e) => handleInputDigit(e)}
                     defaultValue={timeDigits[1]}
                 />
                 <span>:</span>
@@ -59,9 +55,7 @@ function SetRoomTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={2}
-                    onInput={handleInputDigit}
-                    onKeyUp={handleInputDigit}
-                    onChange={handleInputDigit}
+                    onKeyUp={(e) => handleInputDigit(e)}
                     defaultValue={timeDigits[2]}
                 />
 
@@ -72,9 +66,7 @@ function SetRoomTimerComp({
                     step={1}
                     maxLength={1}
                     tabIndex={3}
-                    onKeyUp={handleInputDigit}
-                    onInput={handleInputDigit}
-                    onChange={handleInputDigit}
+                    onKeyUp={(e) => handleInputDigit(e)}
                     defaultValue={timeDigits[3]}
                 />
             </div>
@@ -105,19 +97,22 @@ function SetRoomTimerComp({
         setTimerAdjustment(false);
     }
 
-    function handleInputDigit(ev: any) {
+    function handleInputDigit(ev: React.KeyboardEvent<HTMLInputElement>) {
+        const target = ev.target as HTMLInputElement;
         let digit = ev.key;
         ev.type === "input" || "change"
-            ? (digit = ev.target.value)
+            ? (digit = target.value)
             : (digit = ev.key);
 
         if (!isNaN(parseInt(digit))) {
-            ev.target.valueAsNumber = parseInt(digit);
-            const max = parseInt(ev.target.max);
-            const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
+            target.valueAsNumber = parseInt(digit);
+            const max = parseInt(target.max);
+            const tabIndex = parseInt(
+                target.getAttribute("tabindex") as string,
+            );
             const maxNumber =
-                ev.target.valueAsNumber > max ? max : ev.target.valueAsNumber;
-            ev.target.value = maxNumber;
+                target.valueAsNumber > max ? max : target.valueAsNumber;
+            target.value = maxNumber.toString();
 
             const nextInput = document.querySelector(
                 `[tabindex="${tabIndex + 1}"]`,
@@ -136,7 +131,7 @@ function SetRoomTimerComp({
                 nextInput.focus();
             }
         } else {
-            ev.target.value = null;
+            target.value = "";
         }
     }
 }

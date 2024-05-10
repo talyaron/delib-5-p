@@ -71,7 +71,7 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
         const evaluationsDB = await getDocs(q);
         const evauatorsIds = new Set<string>();
         const evaluations = evaluationsDB.docs
-            .map((evaluationDB: any) => {
+            .map((evaluationDB) => {
                 const evaluation = evaluationDB.data() as Evaluation;
                 if (!evauatorsIds.has(evaluation.evaluatorId)) {
                     //prevent duplicate evaluators
@@ -96,11 +96,11 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
                     return promise;
                 }
             })
-            .filter((promise) => promise) as Promise<any>[];
+            .filter((promise) => promise);
 
         const evaluatorsDB = await Promise.all(evaluatorsPromise);
-        const evaluators = evaluatorsDB.map(
-            (evaluatorDB) => evaluatorDB?.data(),
+        const evaluators = evaluatorsDB.map((evaluatorDB) =>
+            evaluatorDB?.data(),
         ) as User[];
 
         evaluations.forEach((evaluation) => {
