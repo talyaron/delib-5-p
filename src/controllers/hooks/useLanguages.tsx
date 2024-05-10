@@ -11,7 +11,7 @@ type LanguageContextType = {
     currentLanguage: string;
     changeLanguage: (newLanguage: LanguagesEnum) => void;
     t: (text: string) => string;
-    dir:"ltr"|"rtl"
+    dir: "ltr" | "rtl";
 };
 
 // Create a context to hold the current language and the language change function
@@ -81,8 +81,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
                         `Language data not found for ${currentLanguage}`,
                     );
                 }
-            } catch (error: any) {
-                console.error(`Error fetching language data: ${error.message}`);
+            } catch (error) {
+                console.error(`Error fetching language data: ${error}`);
             }
         }
 
@@ -98,7 +98,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
         currentLanguage,
         changeLanguage,
         t,
-        dir: currentLanguage === "ar" || currentLanguage === "he" ? "rtl" : "ltr",
+        dir:
+            currentLanguage === "ar" || currentLanguage === "he"
+                ? "rtl"
+                : "ltr",
     };
 
     return (
