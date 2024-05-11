@@ -7,7 +7,7 @@ on:
             - main
 
 jobs:
-    cypress-run:
+    basic-checks:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -31,4 +31,4 @@ jobs:
             #   uses: cypress-io/github-action@v6
 
             - name: Vitest
-              run: npm run test
+              run: npm run test:unit
