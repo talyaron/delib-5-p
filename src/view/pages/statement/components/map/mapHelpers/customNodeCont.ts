@@ -11,43 +11,51 @@ export const getLayoutedElements = (
     nodeWidth: number,
     direction = "TB",
 ) => {
-    const dagreGraph = new dagre.graphlib.Graph();
-    dagreGraph.setDefaultEdgeLabel(() => ({}));
-    const isHorizontal = direction === "LR";
+    try {
+        const dagreGraph = new dagre.graphlib.Graph();
+        dagreGraph.setDefaultEdgeLabel(() => ({}));
+        const isHorizontal = direction === "LR";
 
-    dagreGraph.setGraph({ rankdir: direction });
+        dagreGraph.setGraph({ rankdir: direction });
 
-    nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, {
-            width: nodeWidth,
-            height: nodeHeight,
+        nodes.forEach((node) => {
+            dagreGraph.setNode(node.id, {
+                width: nodeWidth,
+                height: nodeHeight,
+            });
         });
-    });
 
-    edges.forEach((edge) => {
-        dagreGraph.setEdge(edge.source, edge.target);
-    });
+        edges.forEach((edge) => {
+            dagreGraph.setEdge(edge.source, edge.target);
+        });
 
-    dagre.layout(dagreGraph);
+        dagre.layout(dagreGraph);
 
-    nodes.forEach((node) => {
-        const nodeWithPosition = dagreGraph.node(node.id);
+        nodes.forEach((node) => {
+            const nodeWithPosition = dagreGraph.node(node.id);
 
-        node.targetPosition = isHorizontal ? Position.Left : Position.Top;
-        node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
-        
-        node.position = {
-            x: nodeWithPosition.x - nodeWidth / 2,
-            y: nodeWithPosition.y - nodeHeight / 2,
-        };
+            node.targetPosition = isHorizontal ? Position.Left : Position.Top;
+            node.sourcePosition = isHorizontal
+                ? Position.Right
+                : Position.Bottom;
 
-        return node;
-    });
+            node.position = {
+                x: nodeWithPosition.x - nodeWidth / 2,
+                y: nodeWithPosition.y - nodeHeight / 2,
+            };
 
-    return { nodes, edges };
+            return node;
+        });
+
+        return { nodes, edges };
+    } catch (error) {
+        console.error("getLayoutedElements() failed: ", error);
+
+        return { nodes: [], edges: [] };
+    }
 };
 
-const edgeStyle = {
+export const edgeStyle = {
     stroke: "#000",
     strokeWidth: 1,
     strokeOpacity: 0.5,
@@ -68,16 +76,29 @@ export const nodeOptions = (
     };
 };
 
-const edgeOptions = (result: Results, parentId: string): Edge => {
-    return {
-        id: `e${parentId}-${result.top.statementId}`,
-        source: parentId,
-        target: result.top.statementId,
-        style: edgeStyle,
-    };
+export const edgeOptions = (result: Results, parentId: string): Edge => {
+    try {
+        return {
+            id: `e${parentId}-${result.top.statementId}`,
+            source: parentId,
+            target: result.top.statementId,
+            style: edgeStyle,
+        };
+    } catch (error) {
+        console.error("edgeOptions() failed: ", error);
+
+        return {
+            id: "",
+            source: "",
+            target: "",
+            style: edgeStyle,
+        };
+    }
 };
 
-export const createInitialNodesAndEdges = (result: Results | undefined) => {
+export const createInitialNodesAndEdges = (
+    result: Results | undefined,
+): { nodes: Node[]; edges: Edge[] } => {
     try {
         if (!result) return { nodes: [], edges: [] };
         const edges: Edge[] = [];
