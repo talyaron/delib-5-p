@@ -15,7 +15,7 @@
         "deploy:h": "npm run build && firebase deploy --only hosting",
         "deploy:f": "cd functions && npm run build && firebase deploy --only functions",
         "deploy": "npm run deploy:h && npm run deploy:f",
-        "test:unit": "npx vitest run"
+        "test:unit": "vitest"
     },
     "dependencies": {
         "@dagrejs/dagre": "^1.0.4",
