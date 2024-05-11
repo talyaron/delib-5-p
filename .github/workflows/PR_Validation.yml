@@ -31,9 +31,3 @@ jobs:
 
         - name: Run TypeScript type checking
           run: npm run typecheck
-
-        # - name: Cypress run
-        #   uses: cypress-io/github-action@v6
-
-        # - name: Vitest
-        #   run: npm run test:unit
