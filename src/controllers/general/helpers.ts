@@ -276,20 +276,4 @@ export function getFirstScreen(array: Array<Screen>): Screen {
     }
 }
 
-export function isScreenAllowedUnderStatementType(statement:Statement | undefined, screen: Screen) {
-    try {
-        if (!statement) return true;
-        if (isOptionFn(statement)) {
-            if (screen === Screen.OPTIONS || screen === Screen.VOTE) return false;
-        }
-        if(statement.statementType === StatementType.statement){
-            if (screen === Screen.OPTIONS || screen === Screen.VOTE) return false;
-        }
 
-        return true;
-    } catch (error) {
-        console.error(error);
-
-        return true;
-    }
-}

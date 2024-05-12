@@ -1,4 +1,4 @@
-import { Collections, Statement } from "delib-npm";
+import { Collections, Screen, Statement, isScreenAllowedUnderStatementType } from "delib-npm";
 import { logger } from "firebase-functions";
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
@@ -78,4 +78,30 @@ export async function updateParentWithNewMessageCB(e: any) {
     }
 }
 
+
+export async function setAllowedScreens(event: any) {
+    try {
+        const { statementId } = event.params;
+        const statement = event.data.data() as Statement;
+        let { subScreens } = statement;
+
+        if(!subScreens) subScreens = [Screen.CHAT];
+
+        //remove sub-screens that are not allowed
+        subScreens = subScreens.filter((screen) => {
+            if(isScreenAllowedUnderStatementType(statement, screen)) return true;
+
+            return false;
+        });
+
+        //update statement
+       await  db.doc(`${Collections.statements}/${statementId}`).update({ subScreens });
+    
+        return;
+    } catch (error) {
+        logger.error(error);
+
+        return;
+    }
+}
 

@@ -10,7 +10,8 @@ import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./SubScreensToDisplay.scss";
 import { toggleSubScreen } from "../../statementSettingsCont";
 import { defaultStatementSubScreens } from "../../emptyStatementModel";
-import { isScreenAllowedUnderStatementType } from "../../../../../../../controllers/general/helpers";
+import { isScreenAllowedUnderStatementType } from "delib-npm";
+
 
 
 const SubScreensToDisplay: FC<StatementSettingsProps> = ({

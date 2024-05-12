@@ -15,6 +15,7 @@ import { addSignature, removeSignature } from "./fn_signatures";
 import {
     updateSubscribedListnersCB,
     updateParentWithNewMessageCB,
+    setAllowedScreens,
 } from "./fn_statements";
 import { updateVote } from "./fn_vote";
 
@@ -39,6 +40,8 @@ export const db = getFirestore();
 
 // update subscribers when statement is updated
 //statements
+exports.setAllowedScreens = onDocumentWritten(`/${Collections.statements}/{statementId}`, setAllowedScreens);
+
 exports.updateSubscribedListners = onDocumentUpdated(
     `/${Collections.statements}/{statementId}`,
     updateSubscribedListnersCB,
