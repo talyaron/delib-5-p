@@ -75,12 +75,14 @@ interface HandleSetStatementParams {
     navigate: NavigateFunction;
     statementId: string | undefined;
     statement: Statement;
+    parentStatement?: Statement | "top";
 }
 
 export async function handleSetStatement({
     navigate,
     statementId,
     statement,
+    parentStatement
 }: HandleSetStatementParams) {
     try {
         const _statement = getStatementText(statement);
@@ -149,7 +151,7 @@ export async function handleSetStatement({
                 throw new Error("newStatement had not been updated");
 
             await setStatementToDB({
-                parentStatement: statement,
+                parentStatement,
                 statement: newStatement,
                 addSubscription: true,
             });

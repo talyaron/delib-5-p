@@ -72,6 +72,7 @@ export const setStatementToDB = async ({
     try {
         if (!statement) throw new Error("Statement is undefined");
         if (!parentStatement) throw new Error("Parent statement is undefined");
+       
         if (
             parentStatement !== "top" &&
             isAllowedStatementType({ parentStatement, statement }) === false
@@ -104,8 +105,8 @@ export const setStatementToDB = async ({
             parentStatement === "top"
                 ? statement.statementId
                 : statement?.topParentId ||
-                  parentStatement?.topParentId ||
-                  "top";
+                parentStatement?.topParentId ||
+                "top";
         statement.subScreens = statement.subScreens || [
             Screen.CHAT,
             Screen.OPTIONS,
@@ -358,10 +359,10 @@ export function updateStatement({
             subScreens !== undefined
                 ? subScreens
                 : statement.subScreens || [
-                      Screen.CHAT,
-                      Screen.OPTIONS,
-                      Screen.VOTE,
-                  ];
+                    Screen.CHAT,
+                    Screen.OPTIONS,
+                    Screen.VOTE,
+                ];
 
         StatementSchema.parse(newStatement);
 
@@ -443,7 +444,7 @@ export async function updateStatementText(
             lastUpdate: Timestamp.now().toMillis(),
         };
         await updateDoc(statementRef, newStatement);
-    } catch (error) {}
+    } catch (error) { }
 }
 
 export async function setStatementIsOption(statement: Statement) {

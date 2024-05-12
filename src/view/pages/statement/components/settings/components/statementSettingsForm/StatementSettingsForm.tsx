@@ -26,12 +26,14 @@ import "./StatementSettingsForm.scss";
 interface StatementSettingsFormProps {
     setIsLoading: (isLoading: boolean) => void;
     statement: Statement;
+    parentStatement?: Statement | "top";
     setStatementToEdit: (statement: Statement) => void;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
     setIsLoading,
     statement,
+    parentStatement,
     setStatementToEdit,
 }) => {
     // * Hooks * //
@@ -43,7 +45,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        await handleSetStatement({ navigate, statementId, statement });
+        await handleSetStatement({ navigate, statementId, statement, parentStatement });
 
         setIsLoading(false);
     };

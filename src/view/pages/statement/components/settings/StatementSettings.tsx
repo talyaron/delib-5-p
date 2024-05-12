@@ -24,6 +24,7 @@ import StatementSettingsForm from "./components/statementSettingsForm/StatementS
 import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
 import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
 import { defaultEmptyStatement } from "./emptyStatementModel";
+import { use } from "chai";
 
 interface StatementSettingsProps {
     simple?: boolean;
@@ -34,6 +35,7 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
     // * Hooks * //
     const { statementId } = useParams();
     const { t } = useLanguage();
+    const [parentStatement, setParentStatement] = useState<Statement | undefined |"top">(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const [statementToEdit, setStatementToEdit] = useState<
         Statement | undefined
@@ -44,6 +46,15 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
     const statement: Statement | undefined = useAppSelector(
         statementSelector(statementId),
     );
+
+    useEffect(() => {
+        if(statement){
+            getStatementFromDB(statement.parentId).then((parentStatement) => {
+                setParentStatement(parentStatement);
+            });
+        }
+       
+    },[statement]);
 
     // * Use Effect * //
     useEffect(() => {
@@ -83,6 +94,7 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
                 <StatementSettingsForm
                     setIsLoading={setIsLoading}
                     statement={statementToEdit}
+                    parentStatement={parentStatement}  
                     setStatementToEdit={setStatementToEdit}
                 />
             )}
