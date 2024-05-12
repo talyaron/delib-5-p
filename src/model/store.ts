@@ -7,6 +7,7 @@ import { resultsSlice } from "./results/resultsSlice";
 import { roomsSlice } from "./rooms/roomsSlice";
 import { timersSlice } from "./timers/timersSlice";
 import { initLocationSlice } from "./location/locationSlice";
+import { historySlice } from "./history/HistorySlice";
 
 export const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         rooms: roomsSlice.reducer,
         timers: timersSlice.reducer,
         initLocation: initLocationSlice.reducer,
+        history: historySlice.reducer,
     },
 });
 
