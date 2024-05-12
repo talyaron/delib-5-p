@@ -42,7 +42,6 @@ import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Page404 from "../page404/Page404";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
-import { setHistory} from "../../../model/history/HistorySlice";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -112,19 +111,23 @@ const StatementMain: FC = () => {
         }
     };
 
-    //in case the url is of undefined screen, navigate to the first available screen
-
-
-
+    //in case the url is of undefined screen, navigate to the first avilable screen
     useEffect(() => {
-        if (statementId && screen) {
-            dispatch(setHistory({ statementId, subScreen: screen }));
-        }
-
         if (screen && screen !== page) {
             navigate(`/statement/${statementId}/${screen}`);
         }
     }, [screen]);
+
+    useEffect(() => {
+        if (statement && screen) {
+            //set navigator tab title
+            const { shortVersion } = statementTitleToDisplay(
+                statement.statement,
+                15,
+            );
+            document.title = `Console - ${shortVersion}-${screen}`;
+        }
+    }, [statement, screen]);
 
     // Listen to statement changes.
     useEffect(() => {
@@ -205,10 +208,6 @@ const StatementMain: FC = () => {
             );
 
             setTitle(shortVersion);
-
-            //set navigator tab title
-
-            document.title = `Consoul - ${shortVersion}`;
 
             (async () => {
                 const isSubscribed = await getIsSubscribed(statementId);
