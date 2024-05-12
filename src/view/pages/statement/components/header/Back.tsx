@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
 import { getFirstScreen } from "../../../../../controllers/general/helpers";
 import { StyleProps } from "../../../../../controllers/hooks/useStatementColor";
+import { historySelect } from "../../../../../model/history/HistorySlice";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
 
 interface Props {
     parentStatement: Statement | undefined;
@@ -15,7 +17,9 @@ interface Props {
 
 const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
     const navigate = useNavigate();
-    const location = useLocation();
+
+    const parentStatementLastSubScreen = useAppSelector(historySelect(parentStatement?.statementId || ""));
+
     const parentStatementScreens = parentStatement?.subScreens || [
         Screen.QUESTIONS,
         Screen.CHAT,
@@ -32,12 +36,8 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
             });
 
             //rules: if history exits --> go back in history
-            //if not --> go back to the parent statement, in this order: home, questions, options, chat, vote
+   
 
-            //check if there is history
-            if (location.state?.from) {
-                return navigate(location.state.from);
-            }
 
             //in case the back should direct to home
             if (statement?.parentId === "top") {
@@ -45,6 +45,18 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
                     state: { from: window.location.pathname },
                 });
             }
+
+            if(parentStatementLastSubScreen){
+                console.log(`Navigate to ${parentStatement?.statement} sub screen: ${parentStatementLastSubScreen}`)
+                return navigate(
+                    `/statement/${statement?.parentId}/${parentStatementLastSubScreen}`,
+                    {
+                        state: { from: window.location.pathname },
+                    },
+                );
+            }
+
+
 
             //in case the back should direct to the parent statement, go to the parent statement in the order of the parentStatementScreens: home, questions, options, chat, vote
             const firstScreen: Screen = getFirstScreen(parentStatementScreens);
