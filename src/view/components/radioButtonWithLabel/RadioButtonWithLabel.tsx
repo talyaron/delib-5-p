@@ -14,6 +14,7 @@ export default function RadioButtonWithLabel({
 }: RadioButtonWithLabelProps) {
     return (
         <label
+            htmlFor={`${labelText}`}
             className={`radio-button-with-label ${checked ? "checked" : ""}`}
         >
             {checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}

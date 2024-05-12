@@ -36,7 +36,7 @@ const DisplayResultsBy: FC<StatementSettingsProps> = ({
         <section className="display-results-by">
             <h3 className="title">{t("Results By")}</h3>
             <RadioButtonWithLabel
-                id="favoriteOption"
+                id={t("Favorite Option")}
                 labelText={t("Favorite Option")}
                 checked={selectedOption === ResultsBy.topOptions}
                 onChange={() => toggleSelection(ResultsBy.topOptions)}

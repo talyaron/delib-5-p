@@ -20,8 +20,9 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 
     return (
         <div className="title-and-description">
-            <label htmlFor="statement">
+            <label htmlFor="statement-title">
                 <input
+                    id="statement-title"
                     data-cy="statement-title"
                     autoFocus={true}
                     type="text"
@@ -38,8 +39,9 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
                     required={true}
                 />
             </label>
-            <label htmlFor="description">
+            <label htmlFor="statement-description">
                 <textarea
+                    id="statement-description"
                     name="description"
                     placeholder={t("Group Description")}
                     rows={3}

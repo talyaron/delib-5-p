@@ -20,7 +20,7 @@ const Checkbox: FC<CheckboxProps> = ({
     const { t } = useLanguage();
 
     return (
-        <label className={`checkbox ${isChecked ? "checked" : ""}`}>
+        <label className={`checkbox ${isChecked ? "checked" : ""}`} htmlFor={`checkbox-${label}`}>
             <div className="checkbox-icon">
                 {isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
             </div>
@@ -28,6 +28,7 @@ const Checkbox: FC<CheckboxProps> = ({
             <input
                 type="checkbox"
                 name={name}
+                id={`checkbox-${label}`}
                 checked={isChecked}
                 onChange={toggleSelection}
             />
