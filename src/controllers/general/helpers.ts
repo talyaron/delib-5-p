@@ -100,8 +100,8 @@ export function navigateToStatementTab(
         const tab = statement.subScreens?.includes(Screen.CHAT)
             ? Screen.CHAT
             : statement.subScreens
-              ? statement.subScreens[0]
-              : Screen.SETTINGS;
+                ? statement.subScreens[0]
+                : Screen.SETTINGS;
 
         navigate(`/statement/${statement.statementId}/${tab}`, {
             state: { from: window.location.pathname },
@@ -273,5 +273,23 @@ export function getFirstScreen(array: Array<Screen>): Screen {
         console.error(error);
 
         return Screen.CHAT;
+    }
+}
+
+export function isScreenAllowedUnderStatementType(statement:Statement | undefined, screen: Screen) {
+    try {
+        if (!statement) return true;
+        if (isOptionFn(statement)) {
+            if (screen === Screen.OPTIONS || screen === Screen.VOTE) return false;
+        }
+        if(statement.statementType === StatementType.statement){
+            if (screen === Screen.OPTIONS || screen === Screen.VOTE) return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error(error);
+
+        return true;
     }
 }

@@ -10,6 +10,8 @@ import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./SubScreensToDisplay.scss";
 import { toggleSubScreen } from "../../statementSettingsCont";
 import { defaultStatementSubScreens } from "../../emptyStatementModel";
+import { isScreenAllowedUnderStatementType } from "../../../../../../../controllers/general/helpers";
+
 
 const SubScreensToDisplay: FC<StatementSettingsProps> = ({
     statement,
@@ -24,6 +26,8 @@ const SubScreensToDisplay: FC<StatementSettingsProps> = ({
             <h3 className="title">{t("Tabs to display")}</h3>
             {allScreensWithoutSettings.map((screenInfo) => {
                 const checked = subScreens.includes(screenInfo.link) ?? false;
+
+                if(isScreenAllowedUnderStatementType(statement, screenInfo.link) === false) return null;
 
                 return (
                     <CustomSwitch
