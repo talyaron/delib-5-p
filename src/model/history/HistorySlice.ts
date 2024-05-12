@@ -5,30 +5,35 @@ import { Screen } from "delib-npm";
 
 export interface HistoryObject {
     statementId: string;
-    subScreen:Screen
+    subScreen:Screen;
 }
 
 interface HistoryState {
-    history: HistoryObject[];
+    history: {
+        [key: string]: Screen;
+    };
 }
 
 const historyState: HistoryState = {
-    history: [],
+    history: {},
 };
 
 export const historySlice = createSlice({
     name: "history",
     initialState: historyState, 
     reducers: {
-        addHistory: (state, action: PayloadAction<HistoryObject>) => {
+        setHistory: (state, action: PayloadAction<HistoryObject>) => {
             const { subScreen, statementId } = action.payload;
-            state.history.push({ subScreen, statementId });
+            state.history[statementId] = subScreen;
         },
+        
     },
 });
 
-export const { addHistory } = historySlice.actions;
 
-export const historySelect = (statementId:string)=> (state: RootState) => state.history.history.find((history)=> history.statementId === statementId);
+
+export const { setHistory} = historySlice.actions;
+
+export const historySelect = (statementId:string)=> (state: RootState) => state.history.history[statementId];
 
 export default historySlice.reducer;

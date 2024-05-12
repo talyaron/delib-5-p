@@ -42,6 +42,7 @@ import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Page404 from "../page404/Page404";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
+import { setHistory} from "../../../model/history/HistorySlice";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -70,7 +71,6 @@ const StatementMain: FC = () => {
         topParentStatement,
         role,
     } = useIsAuthorized(statementId);
-   
 
     // Redux store
     const dispatch = useAppDispatch();
@@ -91,7 +91,7 @@ const StatementMain: FC = () => {
     const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
     // Constants
-    const screen = availableScreen(statement,statementSubscription, page);
+    const screen = availableScreen(statement, statementSubscription, page);
 
     // Functions
     const toggleAskNotifications = () => {
@@ -112,8 +112,15 @@ const StatementMain: FC = () => {
         }
     };
 
-    //in case the url is of undefined screen, navigate to the first avilable screen
+    //in case the url is of undefined screen, navigate to the first available screen
+
+
+
     useEffect(() => {
+        if (statementId && screen) {
+            dispatch(setHistory({ statementId, subScreen: screen }));
+        }
+
         if (screen && screen !== page) {
             navigate(`/statement/${statementId}/${screen}`);
         }
