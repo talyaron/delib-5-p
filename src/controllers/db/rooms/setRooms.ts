@@ -6,7 +6,14 @@ import {
     RoomsStateSelection,
     User,
 } from "delib-npm";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+    DocumentData,
+    DocumentReference,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+} from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/components/adminArrange/AdminArrange";
@@ -70,7 +77,7 @@ export async function setRoomJoinToDB(
 
     interface SaveToDB {
         requestId: string;
-        requestRef: any;
+        requestRef: DocumentReference<DocumentData, DocumentData>;
         statement: Statement;
         user?: User;
         approved?: boolean;
@@ -117,7 +124,10 @@ export async function setRoomJoinToDB(
         return { requestDB, user, requestId, requestRef };
     }
 
-    async function updateRequestToDB(request: Participant, requestRef: any) {
+    async function updateRequestToDB(
+        request: Participant,
+        requestRef: DocumentReference<DocumentData, DocumentData>,
+    ) {
         try {
             const user = store.getState().user.user;
             if (!user) throw new Error("User not logged in");

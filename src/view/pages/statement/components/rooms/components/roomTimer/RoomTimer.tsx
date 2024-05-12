@@ -25,7 +25,7 @@ interface Props {
 export default function Timer({
     roomTimer,
     isActiveTimer,
-}: Props): JSX.Element {
+}: Readonly<Props>): JSX.Element {
     const storeTimer: RoomTimer | undefined = useAppSelector(
         selectTimerByTimerId(roomTimer.roomTimerId),
     );
@@ -41,7 +41,9 @@ export default function Timer({
         getMinutesAndSeconds(roomTimer.time).seconds,
     );
     const [isActive, setIsActive] = useState(false);
-    const [timer, setTimer] = useState<any>();
+    const [timer, setTimer] = useState<
+        string | number | NodeJS.Timeout | undefined
+    >();
 
     const percent = (timeLeft / initTime) * 100;
 
@@ -75,7 +77,7 @@ export default function Timer({
 
         return () => {
             if (timer) {
-                clearInterval(timer as any); // Use 'as any' if necessary
+                clearInterval(timer);
                 setTimer(undefined);
             }
         };

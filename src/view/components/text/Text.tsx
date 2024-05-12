@@ -59,6 +59,7 @@ const Text: FC<Props> = ({ text, onlyTitle, onlyDescription }) => {
             return <span className={styles.p}>{description}</span>;
 
         return <span>{paragraphs}</span>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error(error);
 

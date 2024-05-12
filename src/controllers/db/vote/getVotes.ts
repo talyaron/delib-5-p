@@ -6,18 +6,16 @@ import {
     query,
     where,
 } from "firebase/firestore";
-import { Collections, StatementSchema, Vote } from "delib-npm";
+import { Collections, Statement, StatementSchema, Vote } from "delib-npm";
 import { DB } from "../config";
 import { VoteSchema, getVoteId } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { store } from "../../../model/store";
 
-// TODO: Refactor this function
 // Why get user from firebase when we can pass it as a parameter?
-//
 export async function getToVoteOnParent(
     parentId: string,
-    updateStoreWitehVoteCB: (statement: any) => void,
+    updateStoreWitehVoteCB: (statement: Statement) => void,
 ): Promise<void> {
     try {
         const user = getUserFromFirebase();
@@ -38,7 +36,7 @@ export async function getToVoteOnParent(
         const statementRef = doc(DB, Collections.statements, vote.statementId);
         const statementDB = await getDoc(statementRef);
 
-        const statement = statementDB.data();
+        const statement = statementDB.data() as Statement;
         if (!statement) throw new Error("Parent not found");
         StatementSchema.parse(statement);
 
@@ -56,7 +54,7 @@ export async function getVoters(parentId: string): Promise<Vote[]> {
         const q = query(votesRef, where("parentId", "==", parentId));
 
         const votersDB = await getDocs(q);
-        const voters = votersDB.docs.map((vote: any) => vote.data()) as Vote[];
+        const voters = votersDB.docs.map((vote) => vote.data()) as Vote[];
 
         return voters;
     } catch (error) {

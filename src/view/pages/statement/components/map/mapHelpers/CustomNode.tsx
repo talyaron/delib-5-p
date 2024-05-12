@@ -16,9 +16,10 @@ import {
     statementTitleToDisplay,
 } from "../../../../../../controllers/general/helpers";
 import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
+import { Statement } from "delib-npm";
 
 const nodeStyle = (
-    parentStatement: any,
+    parentStatement: Statement | "top",
     statementColor: { backgroundColor: string; color: string },
     nodeTitle: string,
 ) => {
