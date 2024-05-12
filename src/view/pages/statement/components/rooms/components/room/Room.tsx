@@ -15,7 +15,7 @@ interface Props {
 const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
     const { t } = useLanguage();
 
-    function handleMoveParticipantToRoom(ev: any) {
+    function handleMoveParticipantToRoom(ev: React.DragEvent<HTMLDivElement>) {
         try {
             ev.preventDefault();
 
@@ -50,13 +50,13 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
     return (
         <div
             className="room"
-            onDragEnter={(ev: any) => {
+            onDragEnter={(ev) => {
                 ev.preventDefault();
             }}
-            onDragLeave={(ev: any) => {
+            onDragLeave={(ev) => {
                 ev.preventDefault();
             }}
-            onDragOver={(ev: any) => {
+            onDragOver={(ev) => {
                 ev.preventDefault();
             }}
             onDrop={handleMoveParticipantToRoom}

@@ -13,10 +13,11 @@ import { updateTimerSettingDB } from "./setTimer";
 import { z } from "zod";
 import { getSetTimerId } from "../../general/helpers";
 import { setRoomTimers, setSetTimer } from "../../../model/timers/timersSlice";
+import { AppDispatch } from "../../../model/store";
 
 export async function getSetTimersDB(
     statementId: string,
-    dispatch: React.Dispatch<any>,
+    dispatch: AppDispatch,
 ): Promise<SetTimer[]> {
     try {
         const timersRef = collection(DB, Collections.timers);
@@ -60,7 +61,7 @@ export async function getSetTimersDB(
 export function listenToRoomTimers(
     statementId: string,
     roomNumber: number | undefined,
-    dispatch: React.Dispatch<any>,
+    dispatch: AppDispatch,
 ): Unsubscribe {
     try {
         if (!statementId) throw new Error("Missing statementId");

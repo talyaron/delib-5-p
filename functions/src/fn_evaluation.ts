@@ -18,6 +18,7 @@ import {
 export async function newEvaluation(event: any) {
     try {
         //add evaluator to statement
+        console.log("new evaluation")
         const statementEvaluation = event.data.data() as Evaluation;
         const { statementId } = statementEvaluation;
         if (!statementId) throw new Error("statementId is not defined");

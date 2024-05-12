@@ -29,14 +29,12 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
     const direction = useDirection();
     const [message, setMessage] = useState("");
 
-    function handleKeyUp(e: any) {
+    function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
         try {
             const _isMobile =
-                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
                     navigator.userAgent,
-                )
-                    ? true
-                    : false;
+                );
 
             if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
                 handleSubmitInput(e);
@@ -46,7 +44,11 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
         }
     }
 
-    const handleSubmitInput = (e: any) => {
+    const handleSubmitInput = (
+        e:
+            | React.FormEvent<HTMLFormElement>
+            | React.KeyboardEvent<HTMLTextAreaElement>,
+    ) => {
         e.preventDefault();
 
         // Create statement
@@ -57,7 +59,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
 
     return (
         <form
-            onSubmit={handleSubmitInput}
+            onSubmit={(e) => handleSubmitInput(e)}
             name="theForm"
             className="page__footer__form"
             style={{ flexDirection: direction }}
@@ -75,7 +77,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
                 style={{ height: "4rem" }}
                 className="page__footer__form__input"
                 name="newStatement"
-                onKeyUp={handleKeyUp}
+                onKeyUp={(e) => handleKeyUp(e)}
                 autoFocus={false}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
