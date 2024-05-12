@@ -125,8 +125,6 @@ function listenToSubStatements(
     }
 }
 
-
-
 export async function getStatementFromDB(
     statementId: string,
 ): Promise<Statement | undefined> {
@@ -166,6 +164,7 @@ export async function getStatementDepth(
                 (st: Statement) => getLevelResults(st) as Promise<Statement[]>,
             );
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let statementsTemp: any = await Promise.all(statementsCB);
 
             statementsTemp = statementsTemp.flat(1);
@@ -239,5 +238,3 @@ export async function getChildStatements(
         return [];
     }
 }
-
-

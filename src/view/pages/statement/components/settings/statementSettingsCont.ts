@@ -20,6 +20,7 @@ import {
     defaultResultsSettings,
     defaultStatementSettings,
 } from "./emptyStatementModel";
+import { NavigateFunction } from "react-router-dom";
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -71,7 +72,7 @@ export function isSubPageChecked(
 }
 
 interface HandleSetStatementParams {
-    navigate: any;
+    navigate: NavigateFunction;
     statementId: string | undefined;
     statement: Statement;
 }
@@ -187,7 +188,7 @@ const getStatementText = (statement: Statement): string | null => {
 export const getStatementSettings = (statement: Statement) => {
     const statementSettings =
         statement.statementSettings ?? defaultStatementSettings;
-    
+
     return {
         enableAddEvaluationOption: Boolean(
             statementSettings.enableAddEvaluationOption,
@@ -196,7 +197,9 @@ export const getStatementSettings = (statement: Statement) => {
         enhancedEvaluation: Boolean(statementSettings.enhancedEvaluation),
         showEvaluation: Boolean(statementSettings.showEvaluation),
         subScreens: statementSettings.subScreens ?? [],
-        inVotingGetOnlyResults: Boolean(statementSettings.inVotingGetOnlyResults),
+        inVotingGetOnlyResults: Boolean(
+            statementSettings.inVotingGetOnlyResults,
+        ),
     };
 };
 

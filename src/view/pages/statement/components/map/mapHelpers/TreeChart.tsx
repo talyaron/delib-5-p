@@ -49,8 +49,8 @@ export default function TreeChart({
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [tempEdges, setTempEdges] = useState(edges);
     const [rfInstance, setRfInstance] = useState<null | ReactFlowInstance<
-        any,
-        any
+        unknown,
+        unknown
     >>(null);
 
     const [intersectedNodeId, setIntersectedNodeId] = useState("");

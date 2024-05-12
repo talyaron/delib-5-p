@@ -38,23 +38,29 @@ const EditTitle: FC<Props> = ({
         const title = statement.statement.split("\n")[0];
         const description = statement.statement.split("\n").slice(1).join("\n");
 
-        function handleSetTitle(e: any) {
+        function handleSetTitle(
+            e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+        ) {
             try {
                 if (
                     e.type === "blur" ||
                     (e.key === "Enter" && e.shiftKey === false)
                 ) {
-                    const inputString = e.target.value;
+                    const target = e.target as
+                        | HTMLTextAreaElement
+                        | HTMLInputElement;
 
-                    if (inputString === title) return setEdit(false);
-                    if (!inputString) return;
+                    if (target.value === title) return setEdit(false);
+
+                    if (!target) return;
 
                     if (!statement) throw new Error("statement is undefined");
 
                     if (isTextArea) {
-                        updateStatementText(statement, e.target.value);
+                        updateStatementText(statement, target.value);
                     } else {
-                        const statementTitle = inputString + "\n" + description;
+                        const statementTitle =
+                            target.value + "\n" + description;
 
                         //update title in db
                         updateStatementText(statement, statementTitle);
@@ -80,7 +86,6 @@ const EditTitle: FC<Props> = ({
                     style={{ direction: direction, textAlign: align }}
                     className={styles.textarea}
                     defaultValue={statement.statement}
-                    onBlur={handleSetTitle}
                     onKeyUp={handleSetTitle}
                     autoFocus={true}
                 />
@@ -92,7 +97,6 @@ const EditTitle: FC<Props> = ({
                     className={styles.input}
                     type="text"
                     defaultValue={title}
-                    onBlur={handleSetTitle}
                     onKeyUp={handleSetTitle}
                     autoFocus={true}
                     data-cy="edit-title-input"

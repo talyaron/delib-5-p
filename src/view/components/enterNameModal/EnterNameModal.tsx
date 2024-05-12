@@ -19,7 +19,7 @@ const EnterNameModal: FC<Props> = ({ closeModal }) => {
     const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
     const { t } = useLanguage();
 
-    function handleSetName(ev: any) {
+    function handleSetName(ev: React.ChangeEvent<HTMLInputElement>) {
         setDisplayName(ev.target.value);
         if (isReadyToStart(ev.target.value)) setShowStartBtn(true);
         else setShowStartBtn(false);
@@ -43,7 +43,7 @@ const EnterNameModal: FC<Props> = ({ closeModal }) => {
             <div className={styles.box} data-cy="anonymous-input">
                 <input
                     className={styles.input}
-                    onKeyUp={handleSetName}
+                    onChange={handleSetName}
                     type="text"
                     name="displayName"
                     placeholder={t("Nickname")}

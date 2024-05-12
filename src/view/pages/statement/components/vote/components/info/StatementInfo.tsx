@@ -26,9 +26,12 @@ interface Props {
 }
 
 const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
-    const { t } = useLanguage();
     if (!statement) return null;
 
+    // Hooks
+    const { t } = useLanguage();
+
+    // Redux
     const statementSubscription = useAppSelector(
         statementSubscriptionSelector(statement.statementId),
     );
@@ -36,10 +39,13 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
         statementSelector(statement.parentId),
     );
 
+    // Use State
     const [isInEditMode, setIsInEditMode] = useState(false);
+    const [formData, setFormData] = useState({
+        title: getTitle(statement),
+        description: getDescription(statement),
+    });
 
-    const title = getTitle(statement);
-    const description = getDescription(statement);
     const _isAuthorized = isAuthorized(
         statement,
         statementSubscription,
@@ -55,9 +61,10 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
             {isInEditMode ? (
                 <form
                     className="form"
-                    onSubmit={(e: any) =>
+                    onSubmit={(e) =>
                         handleSubmitInfo(
                             e,
+                            formData,
                             statement,
                             setIsInEditMode,
                             setShowInfo,
@@ -67,13 +74,23 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                     <div className="inputs">
                         <input
                             type="text"
-                            defaultValue={title}
-                            name="title"
+                            value={formData.title}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    title: e.target.value,
+                                })
+                            }
                             required={true}
                         />
                         <textarea
-                            defaultValue={description}
-                            name="description"
+                            value={formData.description}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    description: e.target.value,
+                                })
+                            }
                             placeholder={t("description")}
                         />
                     </div>
@@ -94,7 +111,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                 <>
                     <div className="texts">
                         <h3>
-                            {title}
+                            {formData.title}
                             {_isAuthorized && (
                                 <div className="edit-icon">
                                     <EditIcon
@@ -104,7 +121,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
                             )}
                         </h3>
                         <div className="text">
-                            <Text text={description} />
+                            <Text text={formData.description} />
                         </div>
                     </div>
                     <div className="form-buttons">

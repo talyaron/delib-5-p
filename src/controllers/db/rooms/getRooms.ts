@@ -20,7 +20,7 @@ import { Unsubscribe } from "firebase/auth";
 
 export function listenToAllRoomsRequest(
     statement: Statement,
-    dispatch: ThunkDispatch<any, any, any>,
+    dispatch: ThunkDispatch,
 ): Unsubscribe {
     try {
         const requestRef = collection(DB, Collections.statementRoomsAsked);
@@ -29,10 +29,10 @@ export function listenToAllRoomsRequest(
             where("parentId", "==", statement.statementId),
         );
 
-        return onSnapshot(q, (requestsDB: any) => {
+        return onSnapshot(q, (requestsDB) => {
             try {
                 const requests = requestsDB.docs.map(
-                    (requestDB: any) => requestDB.data() as Participant,
+                    (requestDB) => requestDB.data() as Participant,
                 );
 
                 dispatch(setRoomRequests(requests));

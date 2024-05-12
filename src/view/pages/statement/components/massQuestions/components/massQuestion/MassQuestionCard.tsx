@@ -77,19 +77,20 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
             </div>
             <label>{t("Answer")}:</label>
             <textarea
-                onBlur={(ev: any) => {
+                onBlur={(ev) => {
                     handleSetQuestionFromMassCard({
                         question: statement,
                         answer,
                         text: ev.target.value,
                     });
                 }}
-                onKeyUp={(ev: any) => {
+                onKeyUp={(ev) => {
+                    const target = ev.target as HTMLTextAreaElement;
                     if (ev.key === "Enter" && !ev.shiftKey) {
                         handleSetQuestionFromMassCard({
                             question: statement,
                             answer,
-                            text: ev.target.value,
+                            text: target.value,
                         });
                     }
                 }}

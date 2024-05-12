@@ -2,12 +2,12 @@
     "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
     "plugins": ["import", "react", "@typescript-eslint", "prettier"],
     "rules": {
-        "react/display-name": "off",
+        "react/display-name": "error",
         "react/no-unescaped-entities": "off",
-        "import/no-anonymous-default-export": "off",
+        "import/no-anonymous-default-export": "error",
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-non-null-assertion": "off",
         // add new line above comment
         "lines-around-comment": [
@@ -38,7 +38,8 @@
                     "{}": false
                 }
             }
-        ]
+        ],
+        "no-console": ["error", { "allow": ["warn", "error", "info"] }]
     },
     "settings": {
         "import/parsers": {

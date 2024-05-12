@@ -70,7 +70,7 @@ export async function setParentTimersToDB({
     parentStatement,
     userCanChangeTimer,
     timers,
-}: setParentTimersProps): Promise<{ success: boolean; error?: string }> {
+}: setParentTimersProps): Promise<{ success: boolean }> {
     try {
         const timersRef = doc(
             DB,
@@ -85,10 +85,10 @@ export async function setParentTimersToDB({
         });
 
         return { success: true };
-    } catch (error: any) {
+    } catch (error) {
         console.error(error);
 
-        return { success: false, error: error.message };
+        return { success: false };
     }
 }
 

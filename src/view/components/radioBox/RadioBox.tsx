@@ -14,7 +14,7 @@ export default function RadioBox({
     setCurrentValue,
     radioValue,
     children,
-}: Props) {
+}: Readonly<Props>) {
     const checked = currentValue === radioValue;
 
     return (
@@ -26,7 +26,6 @@ export default function RadioBox({
                 id="favoriteOption"
                 checked={checked}
                 value={radioValue}
-                onChange={(e) => console.log(e)}
             />
             {children}
         </div>

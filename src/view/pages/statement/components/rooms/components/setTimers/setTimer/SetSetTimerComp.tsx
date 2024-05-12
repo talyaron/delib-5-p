@@ -20,7 +20,7 @@ interface TimerProps {
     index: number;
 }
 
-function SetSetTimerComp({ setTimer, index }: TimerProps) {
+function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
     try {
         if (!setTimer) return null;
         if (!setTimer.statementId) throw new Error("statementId is required");
@@ -37,11 +37,12 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
         return (
             <div className={styles.timer}>
                 <div>
-                    <label>Name of Timer</label>
+                    <label htmlFor="timerName">Name of Timer</label>
                     <input
                         type="text"
+                        id="timerName"
                         defaultValue={title}
-                        onInput={handleUpdateName}
+                        onChange={(e) => handleUpdateName(e)}
                     />
                 </div>
                 <div className={styles.time}>
@@ -92,8 +93,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                         data-innerindex={3}
                         maxLength={1}
                         tabIndex={index * 4 + 3}
-                        onKeyUp={handleInputDigit}
-                        onChange={handleInputDigit}
+                        onKeyUp={(e) => handleInputDigit(e)}
                         defaultValue={timeDigits[3]}
 
                         // onInput={handleInputDigit}
@@ -127,7 +127,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             }
         }
 
-        function handleUpdateName(ev: any) {
+        function handleUpdateName(ev: React.ChangeEvent<HTMLInputElement>) {
             try {
                 const newTitle = ev.target.value;
                 setTitle(newTitle);
@@ -142,7 +142,10 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             }
         }
 
-        function getKeyNumber(ev: any): number | false {
+        function getKeyNumber(
+            ev: React.KeyboardEvent<HTMLInputElement>,
+        ): number | false {
+            const target = ev.target as HTMLInputElement;
             try {
                 let digit: number | false = false;
 
@@ -150,7 +153,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                     ev.type === "keyup" &&
                     (ev.key === "ArrowUp" || ev.key === "ArrowDown")
                 ) {
-                    digit = ev.target.valueAsNumber;
+                    digit = target.valueAsNumber;
                 } else if (ev.type === "keyup" && !isNaN(parseInt(ev.key))) {
                     digit = parseInt(ev.key);
                 }
@@ -167,11 +170,14 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             }
         }
 
-        function handleInputDigit(ev: any) {
+        function handleInputDigit(ev: React.KeyboardEvent<HTMLInputElement>) {
             const isTab = ev.key === "Tab";
             const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
+
+            const target = ev.target as HTMLInputElement;
+
             if (isTab) {
-                ev.target.valueAsNumber = parseInt(ev.target.value);
+                target.valueAsNumber = parseInt(target.value);
 
                 return;
             }
@@ -179,7 +185,7 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             let digit = getKeyNumber(ev);
 
             if (digit === false) {
-                digit = ev.target.valueAsNumber;
+                digit = target.valueAsNumber;
                 const _digits = getNewForDigits();
                 const newTime = fromFourDigitsToMilliseconds(_digits);
                 dispatch(
@@ -191,13 +197,13 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
 
                 return;
             }
-            const max = parseInt(ev.target.max);
-            const min = parseInt(ev.target.min);
+            const max = parseInt(target.max);
+            const min = parseInt(target.min);
 
             if (digit > max) digit = max;
             if (digit < min) digit = min;
 
-            ev.target.valueAsNumber = digit;
+            target.valueAsNumber = digit;
             const _digits = getNewForDigits();
 
             setTimeDigits(_digits);
@@ -207,9 +213,9 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
                 setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
             );
 
-            const tabIndex = parseInt(ev.target.getAttribute("tabindex"));
+            const tabIndex = target.getAttribute("tabindex") as string;
             const nextInput = document.querySelector(
-                `[tabindex="${tabIndex + 1}"]`,
+                `[tabindex="${Number(tabIndex) + 1}"]`,
             );
             if (nextInput && !dontGoNext) {
                 //@ts-ignore
@@ -217,8 +223,8 @@ function SetSetTimerComp({ setTimer, index }: TimerProps) {
             }
 
             function getNewForDigits() {
-                const innerindex = ev.target.dataset.innerindex;
-                const _digit: number = digit || ev.target.valueAsNumber;
+                const innerindex = target.dataset.innerindex as string;
+                const _digit: number = digit || target.valueAsNumber;
                 const _digits: number[] = timeDigits.map((d, i) =>
                     i === parseInt(innerindex) ? _digit : d,
                 );

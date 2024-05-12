@@ -82,7 +82,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
         <ScreenFadeIn className="page__main">
             <ReactFlowProvider>
                 <select
-                    onChange={(ev: any) => handleFilter(ev.target.value)}
+                    onChange={(ev) => handleFilter(ev.target.value as FilterType)}
                     defaultValue={FilterType.questionsResultsOptions}
                     style={{
                         width: "100vw",
