@@ -358,10 +358,10 @@ export function updateStatement({
             subScreens !== undefined
                 ? subScreens
                 : statement.subScreens || [
-                      Screen.CHAT,
-                      Screen.OPTIONS,
-                      Screen.VOTE,
-                  ];
+                    Screen.CHAT,
+                    Screen.OPTIONS,
+                    Screen.VOTE,
+                ];
 
         StatementSchema.parse(newStatement);
 

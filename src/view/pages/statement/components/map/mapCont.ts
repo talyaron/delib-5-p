@@ -13,13 +13,13 @@ export async function getResults(
         const result: Results = { top: statement, sub: [] };
 
         switch (resultsBy) {
-            case ResultsBy.topOptions:
-                result.sub = [
-                    ...getResultsByOptions(subStatements, numberOfResults),
-                ];
-                break;
-            default:
-                result.sub = [];
+        case ResultsBy.topOptions:
+            result.sub = [
+                ...getResultsByOptions(subStatements, numberOfResults),
+            ];
+            break;
+        default:
+            result.sub = [];
         }
 
         const subResultsPromises = result.sub.map(

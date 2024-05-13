@@ -100,8 +100,8 @@ export function navigateToStatementTab(
         const tab = statement.subScreens?.includes(Screen.CHAT)
             ? Screen.CHAT
             : statement.subScreens
-              ? statement.subScreens[0]
-              : Screen.SETTINGS;
+                ? statement.subScreens[0]
+                : Screen.SETTINGS;
 
         navigate(`/statement/${statement.statementId}/${tab}`, {
             state: { from: window.location.pathname },

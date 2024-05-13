@@ -121,40 +121,40 @@ interface Filter {
 export function filterByStatementType(filter: FilterType): Filter {
     try {
         switch (filter) {
-            case FilterType.all:
-                return {
-                    types: [
-                        StatementType.question,
-                        StatementType.statement,
-                        StatementType.option,
-                        StatementType.result,
-                    ],
-                };
-            case FilterType.questionsResults:
-                return {
-                    types: [StatementType.question, StatementType.result],
-                };
-            case FilterType.questionsResultsOptions:
-                return {
-                    types: [
-                        StatementType.question,
-                        StatementType.option,
-                        StatementType.result,
-                    ],
-                };
-            case FilterType.questions:
-                return {
-                    types: [StatementType.question],
-                };
-            default:
-                return {
-                    types: [
-                        StatementType.question,
-                        StatementType.statement,
-                        StatementType.option,
-                        StatementType.result,
-                    ],
-                };
+        case FilterType.all:
+            return {
+                types: [
+                    StatementType.question,
+                    StatementType.statement,
+                    StatementType.option,
+                    StatementType.result,
+                ],
+            };
+        case FilterType.questionsResults:
+            return {
+                types: [StatementType.question, StatementType.result],
+            };
+        case FilterType.questionsResultsOptions:
+            return {
+                types: [
+                    StatementType.question,
+                    StatementType.option,
+                    StatementType.result,
+                ],
+            };
+        case FilterType.questions:
+            return {
+                types: [StatementType.question],
+            };
+        default:
+            return {
+                types: [
+                    StatementType.question,
+                    StatementType.statement,
+                    StatementType.option,
+                    StatementType.result,
+                ],
+            };
         }
     } catch (error) {
         console.error(error);

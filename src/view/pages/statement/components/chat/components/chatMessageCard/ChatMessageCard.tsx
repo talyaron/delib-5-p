@@ -148,7 +148,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                         isMenuOpen={isCardMenuOpen}
                         iconColor="#5899E0"
                     >
-                          {_isAuthorized && (
+                        {_isAuthorized && (
                             <MenuOption
                                 label={t("Edit Text")}
                                 icon={<EditIcon />}

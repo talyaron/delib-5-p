@@ -71,24 +71,24 @@ function switchRoomScreens(
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
     switch (roomState) {
-        case RoomsStateSelection.chooseRoom:
-            return (
-                <ChooseRoom
-                    subStatements={subStatements}
-                    setShowModal={setShowModal}
-                />
-            );
-        case RoomsStateSelection.inRoom:
-            return <div>{statement.creatorId}</div>;
+    case RoomsStateSelection.chooseRoom:
+        return (
+            <ChooseRoom
+                subStatements={subStatements}
+                setShowModal={setShowModal}
+            />
+        );
+    case RoomsStateSelection.inRoom:
+        return <div>{statement.creatorId}</div>;
 
         // return <InRoom statement={statement} />;
 
-        default:
-            return (
-                <ChooseRoom
-                    subStatements={subStatements}
-                    setShowModal={setShowModal}
-                />
-            );
+    default:
+        return (
+            <ChooseRoom
+                subStatements={subStatements}
+                setShowModal={setShowModal}
+            />
+        );
     }
 }

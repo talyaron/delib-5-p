@@ -108,14 +108,14 @@ function getNavigationScreens(page: string | undefined): NavItem[] {
     if (!page) return optionsArray;
 
     switch (page) {
-        case Screen.VOTE:
-            return votesArray;
-        case Screen.OPTIONS:
-            return optionsArray;
-        case Screen.QUESTIONS:
-            return questionsArray;
-        default:
-            return optionsArray;
+    case Screen.VOTE:
+        return votesArray;
+    case Screen.OPTIONS:
+        return optionsArray;
+    case Screen.QUESTIONS:
+        return questionsArray;
+    default:
+        return optionsArray;
     }
 }
 
@@ -127,15 +127,15 @@ interface NavIconProps {
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {
     const props = { style: { color } };
     switch (name) {
-        case "New":
-            return <NewestIcon {...props} />;
-        case "Update":
-            return <UpdateIcon {...props} />;
-        case "Random":
-            return <RandomIcon {...props} />;
-        case "Agreement":
-            return <AgreementIcon {...props} />;
-        default:
-            return null;
+    case "New":
+        return <NewestIcon {...props} />;
+    case "Update":
+        return <UpdateIcon {...props} />;
+    case "Random":
+        return <RandomIcon {...props} />;
+    case "Agreement":
+        return <AgreementIcon {...props} />;
+    default:
+        return null;
     }
 };

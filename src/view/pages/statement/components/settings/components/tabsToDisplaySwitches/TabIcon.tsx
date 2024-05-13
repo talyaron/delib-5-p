@@ -17,24 +17,24 @@ interface TabIconProps {
 
 const TabIcon: FC<TabIconProps> = ({ screenLink }) => {
     switch (screenLink) {
-        case Screen.DOC:
-            return <NetworkIcon />;
-        case Screen.CHAT:
-            return <ChatIcon />;
-        case Screen.OPTIONS:
-            return <EvaluationsIcon />;
-        case Screen.VOTE:
-            return <VotingIcon />;
-        case Screen.QUESTIONS:
-            return <QuestionIcon />;
-        case Screen.MASS_QUESTIONS:
-            return <MassQuestionsIcon />;
-        case Screen.GROUPS:
-            return <RoomsIcon />;
-        case Screen.SETTINGS:
-            return <SettingsIcon />;
-        default:
-            return <QuestionIcon />;
+    case Screen.DOC:
+        return <NetworkIcon />;
+    case Screen.CHAT:
+        return <ChatIcon />;
+    case Screen.OPTIONS:
+        return <EvaluationsIcon />;
+    case Screen.VOTE:
+        return <VotingIcon />;
+    case Screen.QUESTIONS:
+        return <QuestionIcon />;
+    case Screen.MASS_QUESTIONS:
+        return <MassQuestionsIcon />;
+    case Screen.GROUPS:
+        return <RoomsIcon />;
+    case Screen.SETTINGS:
+        return <SettingsIcon />;
+    default:
+        return <QuestionIcon />;
     }
 };
 

@@ -15,27 +15,27 @@ export default function useStatementColor(statementType: string): StyleProps {
 
     useEffect(() => {
         switch (statementType) {
-            case "question":
-                setstyle({
-                    backgroundColor: "var(--question)",
-                    color: "var(--white)",
-                });
-                break;
-            case "option":
-                setstyle({
-                    backgroundColor: "var(--option)",
-                    color: "var(--header)",
-                });
-                break;
-            case "result":
-                setstyle({
-                    backgroundColor: "var(--agree)",
-                    color: "var(--white)",
-                });
-                break;
-            default:
-                setstyle(initStyle);
-                break;
+        case "question":
+            setstyle({
+                backgroundColor: "var(--question)",
+                color: "var(--white)",
+            });
+            break;
+        case "option":
+            setstyle({
+                backgroundColor: "var(--option)",
+                color: "var(--header)",
+            });
+            break;
+        case "result":
+            setstyle({
+                backgroundColor: "var(--agree)",
+                color: "var(--white)",
+            });
+            break;
+        default:
+            setstyle(initStyle);
+            break;
         }
     }, [statementType]);
 

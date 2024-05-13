@@ -33,69 +33,69 @@ export default function SwitchScreens({
     if (!statement) return null;
 
     switch (screen) {
-        case Screen.DOC:
-            return <Map statement={statement} />;
+    case Screen.DOC:
+        return <Map statement={statement} />;
 
-        case Screen.CHAT:
-            return (
-                <StatementChat
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                    setShowAskPermission={setShowAskPermission}
-                    toggleAskNotifications={toggleAskNotifications}
-                />
-            );
-        case Screen.OPTIONS:
-            return (
-                <StatementEvaluationPage
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                    toggleAskNotifications={toggleAskNotifications}
-                />
-            );
-        case Screen.VOTE:
-            return (
-                <StatementVote
-                    statement={statement}
-                    subStatements={subStatements}
-                    toggleAskNotifications={toggleAskNotifications}
-                />
-            );
-        case Screen.MASS_QUESTIONS:
-            return (
-                <MassQuestions
-                    statement={statement}
-                    subStatements={subStatements}
-                />
-            );
-        case Screen.GROUPS:
-            return (
-                <Rooms statement={statement} subStatements={subStatements} />
-            );
-        case Screen.SETTINGS:
-            return <StatementSettings />;
-        case Screen.QUESTIONS:
-            return (
-                <StatementEvaluationPage
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                    questions={true}
-                    toggleAskNotifications={toggleAskNotifications}
-                />
-            );
+    case Screen.CHAT:
+        return (
+            <StatementChat
+                statement={statement}
+                subStatements={subStatements}
+                handleShowTalker={handleShowTalker}
+                setShowAskPermission={setShowAskPermission}
+                toggleAskNotifications={toggleAskNotifications}
+            />
+        );
+    case Screen.OPTIONS:
+        return (
+            <StatementEvaluationPage
+                statement={statement}
+                subStatements={subStatements}
+                handleShowTalker={handleShowTalker}
+                toggleAskNotifications={toggleAskNotifications}
+            />
+        );
+    case Screen.VOTE:
+        return (
+            <StatementVote
+                statement={statement}
+                subStatements={subStatements}
+                toggleAskNotifications={toggleAskNotifications}
+            />
+        );
+    case Screen.MASS_QUESTIONS:
+        return (
+            <MassQuestions
+                statement={statement}
+                subStatements={subStatements}
+            />
+        );
+    case Screen.GROUPS:
+        return (
+            <Rooms statement={statement} subStatements={subStatements} />
+        );
+    case Screen.SETTINGS:
+        return <StatementSettings />;
+    case Screen.QUESTIONS:
+        return (
+            <StatementEvaluationPage
+                statement={statement}
+                subStatements={subStatements}
+                handleShowTalker={handleShowTalker}
+                questions={true}
+                toggleAskNotifications={toggleAskNotifications}
+            />
+        );
 
-        default:
-            return (
-                <StatementChat
-                    statement={statement}
-                    subStatements={subStatements}
-                    handleShowTalker={handleShowTalker}
-                    setShowAskPermission={setShowAskPermission}
-                    toggleAskNotifications={toggleAskNotifications}
-                />
-            );
+    default:
+        return (
+            <StatementChat
+                statement={statement}
+                subStatements={subStatements}
+                handleShowTalker={handleShowTalker}
+                setShowAskPermission={setShowAskPermission}
+                toggleAskNotifications={toggleAskNotifications}
+            />
+        );
     }
 }

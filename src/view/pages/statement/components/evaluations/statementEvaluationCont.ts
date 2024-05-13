@@ -14,24 +14,24 @@ export function sortSubStatements(
             (statement: Statement) => statement,
         );
         switch (sort) {
-            case Screen.OPTIONS_CONSENSUS:
-                _subStatements = subStatements.sort(
-                    (a: Statement, b: Statement) => b.consensus - a.consensus,
-                );
-                break;
-            case Screen.OPTIONS_NEW:
-                _subStatements = subStatements.sort(
-                    (a: Statement, b: Statement) => b.createdAt - a.createdAt,
-                );
-                break;
-            case Screen.OPTIONS_RANDOM:
-                _subStatements = subStatements.sort(() => Math.random() - 0.5);
-                break;
-            case Screen.OPTIONS_UPDATED:
-                _subStatements = subStatements.sort(
-                    (a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
-                );
-                break;
+        case Screen.OPTIONS_CONSENSUS:
+            _subStatements = subStatements.sort(
+                (a: Statement, b: Statement) => b.consensus - a.consensus,
+            );
+            break;
+        case Screen.OPTIONS_NEW:
+            _subStatements = subStatements.sort(
+                (a: Statement, b: Statement) => b.createdAt - a.createdAt,
+            );
+            break;
+        case Screen.OPTIONS_RANDOM:
+            _subStatements = subStatements.sort(() => Math.random() - 0.5);
+            break;
+        case Screen.OPTIONS_UPDATED:
+            _subStatements = subStatements.sort(
+                (a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
+            );
+            break;
         }
         const __subStatements = _subStatements.map(
             (statement: Statement, i: number) => {

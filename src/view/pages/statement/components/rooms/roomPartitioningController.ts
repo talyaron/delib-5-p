@@ -60,7 +60,7 @@ function getMinimalRoomIndex(rooms: Participant[][], axisId: string): number {
 }
 
 function getSortedPartipants(participants:Participant[], axisId:string):Participant[]{
-   return  participants.sort((a, b) => {
+    return  participants.sort((a, b) => {
         try {
             const paradigmA = a.paradigmAxes?.find(
                 (paradigm) => paradigm?.paradigmAxis === axisId,
@@ -73,11 +73,11 @@ function getSortedPartipants(participants:Participant[], axisId:string):Particip
             if (paradigmA.value === undefined || paradigmB.value === undefined)
                 throw new Error("Paradigm value not found");
             
-return paradigmA.value - paradigmB.value;
+            return paradigmA.value - paradigmB.value;
         } catch (error) {
             console.error(error);
             
-return 0;
+            return 0;
         }
     });
 }

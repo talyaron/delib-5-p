@@ -29,10 +29,10 @@ const VotingArea: FC<VotingAreaProps> = ({
     //if statementSettings.inVotingGetOnlyResults is true, only show results or selections
     const _options = statement.statementSettings?.inVotingGetOnlyResults
         ? subStatements.filter(
-              (st) =>
-                  st.statementType === StatementType.result ||
+            (st) =>
+                st.statementType === StatementType.result ||
                   st.statementType === StatementType.selection,
-          )
+        )
         : subStatements;
    
     const options = getSortedVotingOptions({

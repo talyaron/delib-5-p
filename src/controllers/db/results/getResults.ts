@@ -20,10 +20,10 @@ export async function getResultsDB(statement: Statement): Promise<Statement[]> {
         const resultsBy = resultsSettings?.resultsBy || ResultsBy.topOptions;
 
         switch (resultsBy) {
-            case ResultsBy.topOptions:
-                return await getTopOptionsDB(statement);
-            default:
-                return [];
+        case ResultsBy.topOptions:
+            return await getTopOptionsDB(statement);
+        default:
+            return [];
         }
     } catch (error) {
         console.error(error);

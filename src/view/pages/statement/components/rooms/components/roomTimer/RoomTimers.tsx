@@ -34,7 +34,7 @@ const RoomTimers: FC<Props> = ({ roomNumber, timers }) => {
     } catch (error) {
         console.error(error);
         
-return null;
+        return null;
     }
 };
 
@@ -54,10 +54,10 @@ function getActiveTimer(timers: RoomTimer[]): RoomTimer | undefined {
             return _timers.sort((a, b) => a.order - b.order)[0];
         }
         
-return activeTimer;
+        return activeTimer;
     } catch (error) {
         console.error(error);
         
-return _timers.sort((a, b) => a.order - b.order)[0];
+        return _timers.sort((a, b) => a.order - b.order)[0];
     }
 }

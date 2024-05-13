@@ -139,8 +139,8 @@ export default function Timer({
                         className="roomsWrapper__timer__time"
                         onClick={() => setTimerAdjustment(true)}
                     >{`${minutes < 10 ? "0" + minutes : minutes}:${
-                        seconds < 10 ? "0" + seconds : seconds
-                    }`}</p>
+                            seconds < 10 ? "0" + seconds : seconds
+                        }`}</p>
                 )}
                 <div style={{ opacity: isActiveTimer ? "1" : "0.2" }}>
                     {!isActive && (

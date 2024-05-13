@@ -49,7 +49,7 @@ export const listenToStatementSubscription = (
                 if (!statementSubscriptionDB.exists()) {
                     console.info("No subscription found");
 
-                   return;
+                    return;
                 }
                 const statementSubscription =
                     statementSubscriptionDB.data() as StatementSubscription;

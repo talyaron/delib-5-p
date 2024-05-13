@@ -25,12 +25,12 @@ export function uploadImageToStorage(
 
                 setProgress(progress);
                 switch (snapshot.state) {
-                    case "paused":
-                        console.info("Upload is paused");
-                        break;
-                    case "running":
-                        console.info("Upload is running");
-                        break;
+                case "paused":
+                    console.info("Upload is paused");
+                    break;
+                case "running":
+                    console.info("Upload is running");
+                    break;
                 }
             },
             (error) => {
