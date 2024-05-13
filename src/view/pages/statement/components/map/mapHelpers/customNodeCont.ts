@@ -1,6 +1,7 @@
 import dagre from "@dagrejs/dagre";
 import { Results, Statement } from "delib-npm";
 import { Edge, Node, Position } from "reactflow";
+import { calculateFontSize } from "../../../../../../controllers/general/helpers";
 
 const position = { x: 0, y: 0 };
 
@@ -127,4 +128,29 @@ export const createInitialNodesAndEdges = (
 
         return { nodes: [], edges: [] };
     }
+};
+
+export const nodeStyle = (
+    parentStatement: Statement | "top",
+    statementColor: { backgroundColor: string; color: string },
+    nodeTitle: string,
+) => {
+    const style = {
+        backgroundColor:
+            parentStatement === "top"
+                ? "darkblue"
+                : statementColor.backgroundColor,
+        color: statementColor.color,
+        height: 40,
+        width: 70,
+        borderRadius: "5px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: ".5rem",
+        cursor: "pointer",
+        fontSize: calculateFontSize(nodeTitle),
+    };
+
+    return style;
 };
