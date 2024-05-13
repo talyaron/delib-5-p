@@ -1,6 +1,6 @@
 {
+	"plugins": ["import", "react", "@typescript-eslint", "prettier", "sonarjs"],
 	"extends": ["plugin:@typescript-eslint/recommended", "prettier"],
-	"plugins": ["import", "react", "@typescript-eslint", "prettier"],
 	"rules": {
 		"react/display-name": "error",
 		"react/no-unescaped-entities": "off",
@@ -10,7 +10,7 @@
 		"@typescript-eslint/no-explicit-any": "error",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		// add new line above comment
-        "no-duplicate-case": "error",
+		"no-duplicate-case": "error",
 		"lines-around-comment": [
 			"error",
 			{
@@ -41,7 +41,11 @@
 			}
 		],
 		"no-console": ["error", { "allow": ["warn", "error", "info"] }],
-		"indent": ["error", 4]
+		"indent": ["error", "tab"],
+
+		// SonarJS rules
+		"sonarjs/no-identical-expressions": "error",
+		"no-useless-catch": "error"
 	},
 	"settings": {
 		"import/parsers": {
