@@ -1,75 +1,75 @@
 import { Statement } from "delib-npm";
 import { Screen } from "../../../../../model/system";
 import {
-    EnhancedEvaluationThumb,
-    enhancedEvaluationsThumbs,
+	EnhancedEvaluationThumb,
+	enhancedEvaluationsThumbs,
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
 
 export function sortSubStatements(
-    subStatements: Statement[],
-    sort: string | undefined,
+	subStatements: Statement[],
+	sort: string | undefined,
 ) {
-    try {
-        let _subStatements = subStatements.map(
-            (statement: Statement) => statement,
-        );
-        switch (sort) {
-        case Screen.OPTIONS_CONSENSUS:
-            _subStatements = subStatements.sort(
-                (a: Statement, b: Statement) => b.consensus - a.consensus,
-            );
-            break;
-        case Screen.OPTIONS_NEW:
-            _subStatements = subStatements.sort(
-                (a: Statement, b: Statement) => b.createdAt - a.createdAt,
-            );
-            break;
-        case Screen.OPTIONS_RANDOM:
-            _subStatements = subStatements.sort(() => Math.random() - 0.5);
-            break;
-        case Screen.OPTIONS_UPDATED:
-            _subStatements = subStatements.sort(
-                (a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
-            );
-            break;
-        }
-        const __subStatements = _subStatements.map(
-            (statement: Statement, i: number) => {
-                const updatedStatement = Object.assign({}, statement);
-                updatedStatement.order = i;
+	try {
+		let _subStatements = subStatements.map(
+			(statement: Statement) => statement,
+		);
+		switch (sort) {
+		case Screen.OPTIONS_CONSENSUS:
+			_subStatements = subStatements.sort(
+				(a: Statement, b: Statement) => b.consensus - a.consensus,
+			);
+			break;
+		case Screen.OPTIONS_NEW:
+			_subStatements = subStatements.sort(
+				(a: Statement, b: Statement) => b.createdAt - a.createdAt,
+			);
+			break;
+		case Screen.OPTIONS_RANDOM:
+			_subStatements = subStatements.sort(() => Math.random() - 0.5);
+			break;
+		case Screen.OPTIONS_UPDATED:
+			_subStatements = subStatements.sort(
+				(a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
+			);
+			break;
+		}
+		const __subStatements = _subStatements.map(
+			(statement: Statement, i: number) => {
+				const updatedStatement = Object.assign({}, statement);
+				updatedStatement.order = i;
 
-                return updatedStatement;
-            },
-        );
+				return updatedStatement;
+			},
+		);
 
-        return __subStatements;
-    } catch (error) {
-        console.error(error);
+		return __subStatements;
+	} catch (error) {
+		console.error(error);
 
-        return subStatements;
-    }
+		return subStatements;
+	}
 }
 
 const defaultThumb = enhancedEvaluationsThumbs[2];
 
 export const getEvaluationThumbIdByScore = (
-    evaluationScore: number | undefined,
+	evaluationScore: number | undefined,
 ): string => {
-    if (evaluationScore === undefined) return defaultThumb.id;
+	if (evaluationScore === undefined) return defaultThumb.id;
 
-    // find the nearest evaluation
-    let nearestThumb = enhancedEvaluationsThumbs[0];
+	// find the nearest evaluation
+	let nearestThumb = enhancedEvaluationsThumbs[0];
 
-    enhancedEvaluationsThumbs.forEach((evaluationThumb) => {
-        const current = Math.abs(evaluationScore - evaluationThumb.evaluation);
-        const nearest = Math.abs(evaluationScore - nearestThumb.evaluation);
+	enhancedEvaluationsThumbs.forEach((evaluationThumb) => {
+		const current = Math.abs(evaluationScore - evaluationThumb.evaluation);
+		const nearest = Math.abs(evaluationScore - nearestThumb.evaluation);
 
-        if (current < nearest) {
-            nearestThumb = evaluationThumb;
-        }
-    });
+		if (current < nearest) {
+			nearestThumb = evaluationThumb;
+		}
+	});
 
-    return nearestThumb.id;
+	return nearestThumb.id;
 };
 
 interface GetEvaluationThumbsParams {
@@ -78,26 +78,26 @@ interface GetEvaluationThumbsParams {
 }
 
 export const getEvaluationThumbsToDisplay = ({
-    evaluationScore,
-    isEvaluationPanelOpen,
+	evaluationScore,
+	isEvaluationPanelOpen,
 }: GetEvaluationThumbsParams): EnhancedEvaluationThumb[] => {
-    if (isEvaluationPanelOpen) {
-        return enhancedEvaluationsThumbs;
-    }
+	if (isEvaluationPanelOpen) {
+		return enhancedEvaluationsThumbs;
+	}
 
-    if (evaluationScore === undefined) {
-        const firstAndLastThumbs = [
-            enhancedEvaluationsThumbs[0],
-            enhancedEvaluationsThumbs[enhancedEvaluationsThumbs.length - 1],
-        ];
+	if (evaluationScore === undefined) {
+		const firstAndLastThumbs = [
+			enhancedEvaluationsThumbs[0],
+			enhancedEvaluationsThumbs[enhancedEvaluationsThumbs.length - 1],
+		];
 
-        return firstAndLastThumbs;
-    }
+		return firstAndLastThumbs;
+	}
 
-    const selectedThumbId = getEvaluationThumbIdByScore(evaluationScore);
-    const selectedThumb = enhancedEvaluationsThumbs.find(
-        (evaluationThumb) => evaluationThumb.id === selectedThumbId,
-    );
+	const selectedThumbId = getEvaluationThumbIdByScore(evaluationScore);
+	const selectedThumb = enhancedEvaluationsThumbs.find(
+		(evaluationThumb) => evaluationThumb.id === selectedThumbId,
+	);
 
-    return [selectedThumb || defaultThumb];
+	return [selectedThumb || defaultThumb];
 };

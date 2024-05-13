@@ -15,19 +15,19 @@ interface HistoryState {
 }
 
 const historyState: HistoryState = {
-    history: {},
+	history: {},
 };
 
 export const historySlice = createSlice({
-    name: "history",
-    initialState: historyState, 
-    reducers: {
-        setHistory: (state, action: PayloadAction<HistoryObject>) => {
-            const { subScreen, statementId } = action.payload;
-            state.history[statementId] = subScreen;
-        },
+	name: "history",
+	initialState: historyState, 
+	reducers: {
+		setHistory: (state, action: PayloadAction<HistoryObject>) => {
+			const { subScreen, statementId } = action.payload;
+			state.history[statementId] = subScreen;
+		},
         
-    },
+	},
 });
 
 

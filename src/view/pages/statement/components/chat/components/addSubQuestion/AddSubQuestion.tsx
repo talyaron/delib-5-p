@@ -16,26 +16,26 @@ interface Props {
 }
 
 const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    function handleShwQuestionModal() {
-        setShowModal(true);
-    }
+	function handleShwQuestionModal() {
+		setShowModal(true);
+	}
 
-    return (
-        <>
-            {text && (
-                <span className="clickable" onClick={handleShwQuestionModal}>
-                    {t(text)}
-                </span>
-            )}
-            <div className="clickable" onClick={handleShwQuestionModal}>
-                <AddQuestionIcon
-                    style={{ height: "24px", width: "24px", color: "#4E88C7" }}
-                />
-            </div>
-        </>
-    );
+	return (
+		<>
+			{text && (
+				<span className="clickable" onClick={handleShwQuestionModal}>
+					{t(text)}
+				</span>
+			)}
+			<div className="clickable" onClick={handleShwQuestionModal}>
+				<AddQuestionIcon
+					style={{ height: "24px", width: "24px", color: "#4E88C7" }}
+				/>
+			</div>
+		</>
+	);
 };
 
 export default AddSubQuestion;

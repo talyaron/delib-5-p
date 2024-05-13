@@ -11,31 +11,31 @@ interface EvaluationsState {
 
 // Define the initial state using that type
 const initialState: EvaluationsState = {
-    userEvaluations: [],
+	userEvaluations: [],
 };
 
 export const evaluationsSlicer = createSlice({
-    name: "evaluations",
-    initialState,
-    reducers: {
-        setEvaluationToStore: (state, action: PayloadAction<Evaluation>) => {
-            try {
-                const newEvaluation = action.payload;
-                EvaluationSchema.parse(newEvaluation);
+	name: "evaluations",
+	initialState,
+	reducers: {
+		setEvaluationToStore: (state, action: PayloadAction<Evaluation>) => {
+			try {
+				const newEvaluation = action.payload;
+				EvaluationSchema.parse(newEvaluation);
 
-                state.userEvaluations = updateArray(
-                    state.userEvaluations,
-                    newEvaluation,
-                    "evaluationId",
-                );
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        resetEvaluations: (state) => {
-            state.userEvaluations = [];
-        },
-    },
+				state.userEvaluations = updateArray(
+					state.userEvaluations,
+					newEvaluation,
+					"evaluationId",
+				);
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		resetEvaluations: (state) => {
+			state.userEvaluations = [];
+		},
+	},
 });
 
 export const { setEvaluationToStore, resetEvaluations } =
@@ -43,16 +43,16 @@ export const { setEvaluationToStore, resetEvaluations } =
 
 // Other code such as selectors can use the imported `RootState` type
 export const evaluationsSelector = (state: RootState) =>
-    state.evaluations.userEvaluations;
+	state.evaluations.userEvaluations;
 export const evaluationsParentSelector =
     (parentId: string | undefined) => (state: RootState) =>
-        state.evaluations.userEvaluations.filter(
-            (evaluation) => evaluation.parentId === parentId,
-        );
+    	state.evaluations.userEvaluations.filter(
+    		(evaluation) => evaluation.parentId === parentId,
+    	);
 export const evaluationSelector =
     (statementId: string | undefined) => (state: RootState) =>
-        state.evaluations.userEvaluations.find(
-            (evaluation) => evaluation.statementId === statementId,
-        )?.evaluation;
+    	state.evaluations.userEvaluations.find(
+    		(evaluation) => evaluation.statementId === statementId,
+    	)?.evaluation;
 
 export default evaluationsSlicer.reducer;

@@ -1,11 +1,11 @@
 import {
-    Role,
-    Screen,
-    Statement,
-    StatementSubscription,
-    StatementType,
-    User,
-    isOptionFn,
+	Role,
+	Screen,
+	Statement,
+	StatementSubscription,
+	StatementType,
+	User,
+	isOptionFn,
 } from "delib-npm";
 import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -13,265 +13,265 @@ import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
 
 export function updateArray<T>(
-    currentArray: Array<T>,
-    newItem: T,
-    updateByProperty: keyof T & string,
+	currentArray: Array<T>,
+	newItem: T,
+	updateByProperty: keyof T & string,
 ): Array<T> {
-    try {
-        const arrayTemp = [...currentArray];
+	try {
+		const arrayTemp = [...currentArray];
 
-        if (!newItem[updateByProperty]) {
-            throw new Error(`Item doesn't have property ${updateByProperty}`);
-        }
+		if (!newItem[updateByProperty]) {
+			throw new Error(`Item doesn't have property ${updateByProperty}`);
+		}
 
-        //find in array;
-        const index = arrayTemp.findIndex(
-            (item) => item[updateByProperty] === newItem[updateByProperty],
-        );
-        if (index === -1) arrayTemp.push(newItem);
-        else {
-            const oldItem = JSON.stringify(arrayTemp[index]);
-            const newItemString = JSON.stringify({
-                ...arrayTemp[index],
-                ...newItem,
-            });
-            if (oldItem !== newItemString)
-                arrayTemp[index] = { ...arrayTemp[index], ...newItem };
-        }
+		//find in array;
+		const index = arrayTemp.findIndex(
+			(item) => item[updateByProperty] === newItem[updateByProperty],
+		);
+		if (index === -1) arrayTemp.push(newItem);
+		else {
+			const oldItem = JSON.stringify(arrayTemp[index]);
+			const newItemString = JSON.stringify({
+				...arrayTemp[index],
+				...newItem,
+			});
+			if (oldItem !== newItemString)
+				arrayTemp[index] = { ...arrayTemp[index], ...newItem };
+		}
 
-        return arrayTemp;
-    } catch (error) {
-        console.error(error);
+		return arrayTemp;
+	} catch (error) {
+		console.error(error);
 
-        return currentArray;
-    }
+		return currentArray;
+	}
 }
 
 export function isAuthorized(
-    statement: Statement,
-    statementSubscription: StatementSubscription | undefined,
-    parentStatementCreatorId?: string | undefined,
-    authorizedRoles?: Array<Role>,
+	statement: Statement,
+	statementSubscription: StatementSubscription | undefined,
+	parentStatementCreatorId?: string | undefined,
+	authorizedRoles?: Array<Role>,
 ) {
-    try {
-        if (!statement) throw new Error("No statement");
+	try {
+		if (!statement) throw new Error("No statement");
 
-        const user = store.getState().user.user;
-        if (!user || !user.uid) throw new Error("No user");
-        if (statement.creatorId === user.uid) return true;
+		const user = store.getState().user.user;
+		if (!user || !user.uid) throw new Error("No user");
+		if (statement.creatorId === user.uid) return true;
 
-        if (parentStatementCreatorId === user.uid) return true;
+		if (parentStatementCreatorId === user.uid) return true;
 
-        if (!statementSubscription) return false;
+		if (!statementSubscription) return false;
 
-        const role = statementSubscription?.role;
+		const role = statementSubscription?.role;
 
-        if (role === Role.admin) {
-            return true;
-        }
+		if (role === Role.admin) {
+			return true;
+		}
 
-        if (authorizedRoles && authorizedRoles.includes(role)) return true;
+		if (authorizedRoles && authorizedRoles.includes(role)) return true;
 
-        return false;
-    } catch (error) {
-        console.error(error);
+		return false;
+	} catch (error) {
+		console.error(error);
 
-        return false;
-    }
+		return false;
+	}
 }
 
 export function isAdmin(role: Role | undefined): boolean {
-    if (role === Role.admin || role === Role.creator) return true;
+	if (role === Role.admin || role === Role.creator) return true;
 
-    return false;
+	return false;
 }
 
 export function navigateToStatementTab(
-    statement: Statement,
-    navigate: NavigateFunction,
+	statement: Statement,
+	navigate: NavigateFunction,
 ) {
-    try {
-        if (!statement) throw new Error("No statement");
-        if (!navigate) throw new Error("No navigate function");
+	try {
+		if (!statement) throw new Error("No statement");
+		if (!navigate) throw new Error("No navigate function");
 
-        // If chat is a sub screen, navigate to chat.
-        // Otherwise, navigate to the first sub screen.
+		// If chat is a sub screen, navigate to chat.
+		// Otherwise, navigate to the first sub screen.
 
-        const tab = statement.subScreens?.includes(Screen.CHAT)
-            ? Screen.CHAT
-            : statement.subScreens
-                ? statement.subScreens[0]
-                : Screen.SETTINGS;
+		const tab = statement.subScreens?.includes(Screen.CHAT)
+			? Screen.CHAT
+			: statement.subScreens
+				? statement.subScreens[0]
+				: Screen.SETTINGS;
 
-        navigate(`/statement/${statement.statementId}/${tab}`, {
-            state: { from: window.location.pathname },
-        });
-    } catch (error) {
-        console.error(error);
-    }
+		navigate(`/statement/${statement.statementId}/${tab}`, {
+			state: { from: window.location.pathname },
+		});
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 export function getInitials(fullName: string) {
-    // Split the full name into words
-    const words = fullName.split(" ");
+	// Split the full name into words
+	const words = fullName.split(" ");
 
-    // Initialize an empty string to store the initials
-    let initials = "";
+	// Initialize an empty string to store the initials
+	let initials = "";
 
-    // Iterate through each word and append the first letter to the initials string
-    for (let i = 0; i < words.length; i++) {
-        const word = words[i];
-        if (word.length > 0) {
-            initials += word[0].toUpperCase();
-        }
-    }
+	// Iterate through each word and append the first letter to the initials string
+	for (let i = 0; i < words.length; i++) {
+		const word = words[i];
+		if (word.length > 0) {
+			initials += word[0].toUpperCase();
+		}
+	}
 
-    return initials;
+	return initials;
 }
 
 export function generateRandomLightColor(uuid: string) {
-    // Generate a random number based on the UUID
-    const seed = parseInt(uuid.replace(/[^\d]/g, ""), 10);
-    const randomValue = (seed * 9301 + 49297) % 233280;
+	// Generate a random number based on the UUID
+	const seed = parseInt(uuid.replace(/[^\d]/g, ""), 10);
+	const randomValue = (seed * 9301 + 49297) % 233280;
 
-    // Convert the random number to a hexadecimal color code
-    const hexColor = `#${((randomValue & 0x00ffffff) | 0xc0c0c0)
-        .toString(16)
-        .toUpperCase()}`;
+	// Convert the random number to a hexadecimal color code
+	const hexColor = `#${((randomValue & 0x00ffffff) | 0xc0c0c0)
+		.toString(16)
+		.toUpperCase()}`;
 
-    return hexColor;
+	return hexColor;
 }
 
 export const statementTitleToDisplay = (
-    statement: string,
-    titleLength: number,
+	statement: string,
+	titleLength: number,
 ) => {
-    const _title =
+	const _title =
         statement.split("\n")[0].replace("*", "") || statement.replace("*", "");
 
-    const titleToSet =
+	const titleToSet =
         _title.length > titleLength - 3
-            ? _title.substring(0, titleLength) + "..."
-            : _title;
+        	? _title.substring(0, titleLength) + "..."
+        	: _title;
 
-    return { shortVersion: titleToSet, fullVersion: _title };
+	return { shortVersion: titleToSet, fullVersion: _title };
 };
 
 //function which check if the statement can be linked to children
 export function linkToChildren(
-    statement: Statement,
-    parentStatement: Statement,
+	statement: Statement,
+	parentStatement: Statement,
 ): boolean {
-    try {
-        const isQuestion = statement.statementType === StatementType.question;
-        const isOption = isOptionFn(statement);
-        const hasChildren = parentStatement.hasChildren;
+	try {
+		const isQuestion = statement.statementType === StatementType.question;
+		const isOption = isOptionFn(statement);
+		const hasChildren = parentStatement.hasChildren;
 
-        if (isQuestion) return true;
-        if (isOption && hasChildren) return true;
+		if (isQuestion) return true;
+		if (isOption && hasChildren) return true;
 
-        return false;
-    } catch (error) {
-        console.error(error);
+		return false;
+	} catch (error) {
+		console.error(error);
 
-        return false;
-    }
+		return false;
+	}
 }
 
 export function getPastelColor() {
-    return `hsl(${360 * Math.random()},100%,75%)` || "red";
+	return `hsl(${360 * Math.random()},100%,75%)` || "red";
 }
 
 export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
-    // Set the base font size and a multiplier for adjusting based on text length
-    const baseFontSize = minSize;
-    const fontSizeMultiplier = 0.2;
+	// Set the base font size and a multiplier for adjusting based on text length
+	const baseFontSize = minSize;
+	const fontSizeMultiplier = 0.2;
 
-    // Calculate the font size based on the length of the text
-    const fontSize = Math.max(
-        baseFontSize - fontSizeMultiplier * text.length,
-        maxSize,
-    );
+	// Calculate the font size based on the length of the text
+	const fontSize = Math.max(
+		baseFontSize - fontSizeMultiplier * text.length,
+		maxSize,
+	);
 
-    return `${fontSize}px`;
+	return `${fontSize}px`;
 }
 
 export function handleLogout(dispatch: AppDispatch) {
-    logOut(dispatch);
-    store.dispatch(setUser(null));
+	logOut(dispatch);
+	store.dispatch(setUser(null));
 }
 
 export function getTitle(statement: Statement) {
-    try {
-        if (!statement) throw new Error("No statement");
+	try {
+		if (!statement) throw new Error("No statement");
 
-        const title = statement.statement.split("\n")[0].replace("*", "");
+		const title = statement.statement.split("\n")[0].replace("*", "");
 
-        return title;
-    } catch (error) {
-        console.error(error);
+		return title;
+	} catch (error) {
+		console.error(error);
 
-        return "";
-    }
+		return "";
+	}
 }
 
 export function getDescription(statement: Statement) {
-    try {
-        if (!statement) throw new Error("No statement");
+	try {
+		if (!statement) throw new Error("No statement");
 
-        const description = statement.statement.split("\n").slice(1).join("\n");
+		const description = statement.statement.split("\n").slice(1).join("\n");
 
-        return description;
-    } catch (error) {
-        console.error(error);
+		return description;
+	} catch (error) {
+		console.error(error);
 
-        return "";
-    }
+		return "";
+	}
 }
 
 export function getSetTimerId(statementId: string, order: number) {
-    return `${statementId}--${order}`;
+	return `${statementId}--${order}`;
 }
 
 export function getRoomTimerId(
-    statementId: string,
-    roomNumber: number,
-    order: number,
+	statementId: string,
+	roomNumber: number,
+	order: number,
 ) {
-    return `${statementId}--${roomNumber}--${order}`;
+	return `${statementId}--${roomNumber}--${order}`;
 }
 
 export function getStatementSubscriptionId(
-    statementId: string,
-    user: User,
+	statementId: string,
+	user: User,
 ): string | undefined {
-    try {
-        if (!user || !user.uid) throw new Error("No user");
-        if (!statementId) throw new Error("No statementId");
+	try {
+		if (!user || !user.uid) throw new Error("No user");
+		if (!statementId) throw new Error("No statementId");
 
-        return `${user.uid}--${statementId}`;
-    } catch (error) {
-        console.error(error);
+		return `${user.uid}--${statementId}`;
+	} catch (error) {
+		console.error(error);
 
-        return undefined;
-    }
+		return undefined;
+	}
 }
 
 export function getFirstScreen(array: Array<Screen>): Screen {
-    try {
-        //get the first screen from the array by this order: home, questions, options, chat, vote
-        if (!array) throw new Error("No array");
+	try {
+		//get the first screen from the array by this order: home, questions, options, chat, vote
+		if (!array) throw new Error("No array");
 
-        if (array.includes(Screen.HOME)) return Screen.HOME;
-        if (array.includes(Screen.QUESTIONS)) return Screen.QUESTIONS;
-        if (array.includes(Screen.OPTIONS)) return Screen.OPTIONS;
-        if (array.includes(Screen.CHAT)) return Screen.CHAT;
-        if (array.includes(Screen.VOTE)) return Screen.VOTE;
+		if (array.includes(Screen.HOME)) return Screen.HOME;
+		if (array.includes(Screen.QUESTIONS)) return Screen.QUESTIONS;
+		if (array.includes(Screen.OPTIONS)) return Screen.OPTIONS;
+		if (array.includes(Screen.CHAT)) return Screen.CHAT;
+		if (array.includes(Screen.VOTE)) return Screen.VOTE;
 
-        return Screen.CHAT;
-    } catch (error) {
-        console.error(error);
+		return Screen.CHAT;
+	} catch (error) {
+		console.error(error);
 
-        return Screen.CHAT;
-    }
+		return Screen.CHAT;
+	}
 }

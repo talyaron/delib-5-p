@@ -30,75 +30,75 @@ interface Props {
 let getVoteFromDB = false;
 
 const StatementVote: FC<Props> = ({
-    statement,
-    subStatements,
-    toggleAskNotifications,
+	statement,
+	subStatements,
+	toggleAskNotifications,
 }) => {
-    // * Hooks * //
-    const dispatch = useAppDispatch();
+	// * Hooks * //
+	const dispatch = useAppDispatch();
 
-    // * Use State * //
-    const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
+	// * Use State * //
+	const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
         useState(false);
-    const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
+	const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
         useState(false);
-    const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
+	const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
-    // * Variables * //
-    const totalVotes = getTotalVoters(statement);
+	// * Variables * //
+	const totalVotes = getTotalVoters(statement);
 
-    useEffect(() => {
-        if (!getVoteFromDB) {
-            getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
-            getVoteFromDB = true;
-        }
-    }, []);
+	useEffect(() => {
+		if (!getVoteFromDB) {
+			getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
+			getVoteFromDB = true;
+		}
+	}, []);
 
-    function updateStoreWithVoteCB(option: Statement) {
-        dispatch(setVoteToStore(option));
-    }
+	function updateStoreWithVoteCB(option: Statement) {
+		dispatch(setVoteToStore(option));
+	}
 
-    return (
-        <>
-            <div className="page__main">
-                <div className="statement-vote">
-                    <div className="number-of-votes-mark">
-                        <HandIcon /> {totalVotes}
-                    </div>
-                    <VotingArea
-                        totalVotes={totalVotes}
-                        setShowInfo={setIsStatementInfoModalOpen}
-                        statement={statement}
-                        subStatements={subStatements}
-                        setStatementInfo={setStatementInfo}
-                    />
-                </div>
+	return (
+		<>
+			<div className="page__main">
+				<div className="statement-vote">
+					<div className="number-of-votes-mark">
+						<HandIcon /> {totalVotes}
+					</div>
+					<VotingArea
+						totalVotes={totalVotes}
+						setShowInfo={setIsStatementInfoModalOpen}
+						statement={statement}
+						subStatements={subStatements}
+						setStatementInfo={setStatementInfo}
+					/>
+				</div>
 
-                {isCreateStatementModalOpen && (
-                    <CreateStatementModal
-                        parentStatement={statement}
-                        isOption={true}
-                        setShowModal={setIsCreateStatementModalOpen}
-                        toggleAskNotifications={toggleAskNotifications}
-                    />
-                )}
-                {isStatementInfoModalOpen && (
-                    <Modal>
-                        <StatementInfo
-                            statement={statementInfo}
-                            setShowInfo={setIsStatementInfoModalOpen}
-                        />
-                    </Modal>
-                )}
-            </div>
-            <div className="page__footer">
-                <StatementBottomNav
-                    setShowModal={setIsCreateStatementModalOpen}
-                    statement={statement}
-                />
-            </div>
-        </>
-    );
+				{isCreateStatementModalOpen && (
+					<CreateStatementModal
+						parentStatement={statement}
+						isOption={true}
+						setShowModal={setIsCreateStatementModalOpen}
+						toggleAskNotifications={toggleAskNotifications}
+					/>
+				)}
+				{isStatementInfoModalOpen && (
+					<Modal>
+						<StatementInfo
+							statement={statementInfo}
+							setShowInfo={setIsStatementInfoModalOpen}
+						/>
+					</Modal>
+				)}
+			</div>
+			<div className="page__footer">
+				<StatementBottomNav
+					setShowModal={setIsCreateStatementModalOpen}
+					statement={statement}
+				/>
+			</div>
+		</>
+	);
 };
 
 export default StatementVote;

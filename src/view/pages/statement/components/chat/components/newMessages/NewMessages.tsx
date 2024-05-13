@@ -8,15 +8,15 @@ interface Props{
 }
 
 const NewMessages:FC<Props> = ({newMessages,setNewMessages,scrollToBottom}) => {
-    if(newMessages === 0) return null;
+	if(newMessages === 0) return null;
 
-    return (
-        <div className={styles.newMessages} onClick={()=>{
-            setNewMessages(0)
-            scrollToBottom()
+	return (
+		<div className={styles.newMessages} onClick={()=>{
+			setNewMessages(0)
+			scrollToBottom()
         
-        }}> {newMessages}</div>
-    )
+		}}> {newMessages}</div>
+	)
 }
 
 export default NewMessages

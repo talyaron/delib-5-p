@@ -14,104 +14,104 @@ export enum FilterType {
 
 //create a function which sorts an array according to results
 export function sortStatementsByHirarrchy(statements: Statement[]): Results[] {
-    try {
-        const results: Results[] = [];
+	try {
+		const results: Results[] = [];
 
-        if (statements.length === 0) return [];
+		if (statements.length === 0) return [];
 
-        let _statements = [...statements];
+		let _statements = [...statements];
 
-        //convert string set to string array
+		//convert string set to string array
 
-        let counter = 0;
-        const ids = new Set<string>();
+		let counter = 0;
+		const ids = new Set<string>();
 
-        while (ids.size < statements.length && counter < 8) {
-            //take firs statement
-            if (_statements.length === 0) break;
-            const statement = _statements[0];
+		while (ids.size < statements.length && counter < 8) {
+			//take firs statement
+			if (_statements.length === 0) break;
+			const statement = _statements[0];
 
-            //find top parent statement
-            const parentStatement = findMostTopStatement(
-                statement,
-                _statements,
-            );
+			//find top parent statement
+			const parentStatement = findMostTopStatement(
+				statement,
+				_statements,
+			);
 
-            const { result, ids: _ids } = createResultLevel(
-                parentStatement,
-                _statements,
-                ids,
-            );
-            _statements = _statements.filter((s) => !_ids.has(s.statementId));
+			const { result, ids: _ids } = createResultLevel(
+				parentStatement,
+				_statements,
+				ids,
+			);
+			_statements = _statements.filter((s) => !_ids.has(s.statementId));
 
-            //add result to results
-            results.push(result);
-            counter++;
-        }
+			//add result to results
+			results.push(result);
+			counter++;
+		}
 
-        return results;
-    } catch (error) {
-        console.error(error);
+		return results;
+	} catch (error) {
+		console.error(error);
 
-        return [];
-    }
+		return [];
+	}
 }
 
 function findMostTopStatement(
-    statement: Statement,
-    statements: Statement[],
-    maxLevels = 10,
+	statement: Statement,
+	statements: Statement[],
+	maxLevels = 10,
 ): Statement {
-    try {
-        if (!statement) throw new Error("statement is undefined");
-        let counter = 0;
-        let parentStatement: Statement | undefined = statement;
+	try {
+		if (!statement) throw new Error("statement is undefined");
+		let counter = 0;
+		let parentStatement: Statement | undefined = statement;
 
-        if (statement.parentId === "top") return statement;
-        while (counter < maxLevels) {
-            parentStatement = statements.find(
-                (s) => s.statementId === statement.parentId,
-            );
+		if (statement.parentId === "top") return statement;
+		while (counter < maxLevels) {
+			parentStatement = statements.find(
+				(s) => s.statementId === statement.parentId,
+			);
 
-            if (!parentStatement) return statement;
-            statement = parentStatement;
-            counter++;
-        }
+			if (!parentStatement) return statement;
+			statement = parentStatement;
+			counter++;
+		}
 
-        return parentStatement;
-    } catch (error) {
-        console.error(error);
+		return parentStatement;
+	} catch (error) {
+		console.error(error);
 
-        return statement;
-    }
+		return statement;
+	}
 }
 
 function createResultLevel(
-    statement: Statement,
-    statements: Statement[],
-    ids: Set<string>,
+	statement: Statement,
+	statements: Statement[],
+	ids: Set<string>,
 ): ResultLevel {
-    try {
-        const _statements = [...statements];
+	try {
+		const _statements = [...statements];
 
-        ids.add(statement.statementId);
+		ids.add(statement.statementId);
 
-        const subs = _statements
-            .filter((s) => s.parentId === statement.statementId)
-            .sort((b, a) => b.lastUpdate - a.lastUpdate);
-        const results: ResultLevel[] = subs.map((sub) =>
-            createResultLevel(sub, statements, ids),
-        );
+		const subs = _statements
+			.filter((s) => s.parentId === statement.statementId)
+			.sort((b, a) => b.lastUpdate - a.lastUpdate);
+		const results: ResultLevel[] = subs.map((sub) =>
+			createResultLevel(sub, statements, ids),
+		);
 
-        return {
-            result: { top: statement, sub: results.map((r) => r.result) },
-            ids,
-        };
-    } catch (error) {
-        console.error(error);
+		return {
+			result: { top: statement, sub: results.map((r) => r.result) },
+			ids,
+		};
+	} catch (error) {
+		console.error(error);
 
-        return { result: { top: statement, sub: [] }, ids };
-    }
+		return { result: { top: statement, sub: [] }, ids };
+	}
 }
 
 interface Filter {
@@ -119,53 +119,53 @@ interface Filter {
 }
 
 export function filterByStatementType(filter: FilterType): Filter {
-    try {
-        switch (filter) {
-        case FilterType.all:
-            return {
-                types: [
-                    StatementType.question,
-                    StatementType.statement,
-                    StatementType.option,
-                    StatementType.result,
-                ],
-            };
-        case FilterType.questionsResults:
-            return {
-                types: [StatementType.question, StatementType.result],
-            };
-        case FilterType.questionsResultsOptions:
-            return {
-                types: [
-                    StatementType.question,
-                    StatementType.option,
-                    StatementType.result,
-                ],
-            };
-        case FilterType.questions:
-            return {
-                types: [StatementType.question],
-            };
-        default:
-            return {
-                types: [
-                    StatementType.question,
-                    StatementType.statement,
-                    StatementType.option,
-                    StatementType.result,
-                ],
-            };
-        }
-    } catch (error) {
-        console.error(error);
+	try {
+		switch (filter) {
+		case FilterType.all:
+			return {
+				types: [
+					StatementType.question,
+					StatementType.statement,
+					StatementType.option,
+					StatementType.result,
+				],
+			};
+		case FilterType.questionsResults:
+			return {
+				types: [StatementType.question, StatementType.result],
+			};
+		case FilterType.questionsResultsOptions:
+			return {
+				types: [
+					StatementType.question,
+					StatementType.option,
+					StatementType.result,
+				],
+			};
+		case FilterType.questions:
+			return {
+				types: [StatementType.question],
+			};
+		default:
+			return {
+				types: [
+					StatementType.question,
+					StatementType.statement,
+					StatementType.option,
+					StatementType.result,
+				],
+			};
+		}
+	} catch (error) {
+		console.error(error);
 
-        return {
-            types: [
-                StatementType.question,
-                StatementType.statement,
-                StatementType.option,
-                StatementType.result,
-            ],
-        };
-    }
+		return {
+			types: [
+				StatementType.question,
+				StatementType.statement,
+				StatementType.option,
+				StatementType.result,
+			],
+		};
+	}
 }
