@@ -1,5 +1,5 @@
 import { FC } from "react";
-import "./StatementChatMore.scss"
+import "./StatementChatMore.scss";
 
 // Icons
 import ChatIcon from "../../../../../../assets/icons/roundedChatDotIcon.svg?react";
@@ -18,8 +18,6 @@ import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
-
-
 interface Props {
     statement: Statement;
 }
@@ -34,8 +32,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
         useAppSelector(statementSubscriptionSelector(statement.statementId));
 
     // Variables
-    const messagesRead = statementSubscription?.totalSubStatementsRead || 0;
-    const messages = statement.totalSubStatements || 0;
+    const messagesRead = statementSubscription?.totalSubStatementsRead ?? 0;
+    const messages = statement.totalSubStatements ?? 0;
 
     const { statementType } = statement;
     if (statementType === StatementType.statement) return;
@@ -45,7 +43,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
         : t("Conversations");
 
     return (
-        <div
+        <button
             className="statementChatMore"
             onClick={() =>
                 navigate(`/statement/${statement.statementId}/chat`, {
@@ -64,7 +62,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
                 <ChatIcon />
             </div>
             <div className="text">{messageToDisplay}</div>
-        </div>
+        </button>
     );
 };
 
