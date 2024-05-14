@@ -5,14 +5,14 @@ import { Results, Statement } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import TreeChart from "./mapHelpers/TreeChart";
+import TreeChart from "./components/TreeChart";
 import Modal from "../../../../components/modal/Modal";
 
 // Helpers
 import {
     FilterType,
     filterByStatementType,
-    sortStatementsByHirarrchy,
+    sortStatementsByHierarchy,
 } from "../../../../../controllers/general/sorting";
 import { getChildStatements } from "../../../../../controllers/db/statements/getStatement";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
@@ -33,6 +33,10 @@ const StatementMap: FC<Props> = ({ statement }) => {
     const [results, setResults] = useState<Results | undefined>();
     const [subStatements, setSubStatements] = useState<Statement[]>([]);
 
+    useEffect(() => {
+        getSubStatements();
+    }, []);
+
     const handleFilter = (filterBy: FilterType) => {
         const filteredArray = filterByStatementType(filterBy).types;
 
@@ -42,7 +46,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
             return filteredArray.includes(state.statementType);
         });
 
-        const sortedResults = sortStatementsByHirarrchy([
+        const sortedResults = sortStatementsByHierarchy([
             statement,
             ...filterSubStatements,
         ]);
@@ -57,7 +61,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
         setSubStatements(childStatements);
 
-        const topResult = sortStatementsByHirarrchy([
+        const topResult = sortStatementsByHierarchy([
             statement,
             ...childStatements.filter(
                 (state) => state.statementType !== "statement",
@@ -67,9 +71,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
         setResults(topResult);
     };
 
-    useEffect(() => {
-        getSubStatements();
-    }, []);
+    
 
     const toggleModal = (show: boolean) => {
         setMapContext((prev) => ({

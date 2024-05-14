@@ -2,7 +2,7 @@ import { Screen, Statement } from "delib-npm";
 import { logEvent } from "firebase/analytics";
 import { analytics } from "../../../../../controllers/db/config";
 import { FC } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../../../../assets/icons/chevronLeftIcon.svg?react";
 import { getFirstScreen } from "../../../../../controllers/general/helpers";
 import { StyleProps } from "../../../../../controllers/hooks/useStatementColor";
@@ -18,7 +18,9 @@ interface Props {
 const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
     const navigate = useNavigate();
 
-    const parentStatementLastSubScreen = useAppSelector(historySelect(parentStatement?.statementId || ""));
+    const parentStatementLastSubScreen = useAppSelector(
+        historySelect(parentStatement?.statementId ?? ""),
+    );
 
     const parentStatementScreens = parentStatement?.subScreens || [
         Screen.QUESTIONS,
@@ -36,8 +38,6 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
             });
 
             //rules: if history exits --> go back in history
-   
-
 
             //in case the back should direct to home
             if (statement?.parentId === "top") {
@@ -46,8 +46,11 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
                 });
             }
 
-            if(parentStatementLastSubScreen){
-                console.log(`Navigate to ${parentStatement?.statement} sub screen: ${parentStatementLastSubScreen}`)
+            if (parentStatementLastSubScreen) {
+                console.info(
+                    `Navigate to ${parentStatement?.statement} sub screen: ${parentStatementLastSubScreen}`,
+                );
+
                 return navigate(
                     `/statement/${statement?.parentId}/${parentStatementLastSubScreen}`,
                     {
@@ -56,12 +59,10 @@ const Back: FC<Props> = ({ parentStatement, statement, headerColor }) => {
                 );
             }
 
-
-
             //in case the back should direct to the parent statement, go to the parent statement in the order of the parentStatementScreens: home, questions, options, chat, vote
             const firstScreen: Screen = getFirstScreen(parentStatementScreens);
-            
-return navigate(
+
+            return navigate(
                 `/statement/${statement?.parentId}/${firstScreen}`,
                 {
                     state: { from: window.location.pathname },
@@ -71,8 +72,8 @@ return navigate(
             console.error(error);
         }
     }
-    
-return (
+
+    return (
         <button
             className="page__header__wrapper__actions__iconButton"
             onClick={handleBack}

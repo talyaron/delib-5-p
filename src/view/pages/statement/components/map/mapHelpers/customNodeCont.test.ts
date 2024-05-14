@@ -4,7 +4,7 @@ import {
     createInitialNodesAndEdges,
     edgeOptions,
     edgeStyle,
-    getLayoutedElements,
+    getLayoutElements,
 } from "./customNodeCont";
 import { Results, Statement } from "delib-npm";
 import { Edge, Node } from "reactflow";
@@ -75,7 +75,7 @@ test("should return empty nodes and edges arrays if input nodes and edges arrays
     const nodeWidth = 100;
     const direction = "TB";
 
-    const result = getLayoutedElements(
+    const result = getLayoutElements(
         nodes,
         edges,
         nodeHeight,
@@ -101,7 +101,7 @@ test("should correctly layout nodes and edges in a horizontal direction", () => 
     const nodeWidth = 100;
     const direction = "LR";
 
-    const result = getLayoutedElements(
+    const result = getLayoutElements(
         nodes,
         edges,
         nodeHeight,
