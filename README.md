@@ -76,8 +76,8 @@ go to ```localhost:5173``` to see the app, and to ```localhost:5002``` to see th
 
 # Our coding style
 ## Naming conventions
-- **File names**: Use camelCase for file names. For example, `myFile.tsx`.
-- **Component names**: Use PascalCase for component names. For example, `MyComponent`.
+- **File names**: Use camelCase for file names. For example, `myFile.ts`.
+- **Component names**: Use PascalCase for component names. For example, `MyComponent.tsx`.
 - **Variable names**: Use camelCase for variable names. For example, `myVariable`.
 - **Function names**: Use camelCase for function names. For example, `myFunction`.
 
