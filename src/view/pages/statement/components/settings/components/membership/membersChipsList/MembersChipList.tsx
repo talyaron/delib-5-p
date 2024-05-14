@@ -8,13 +8,13 @@ interface MembersChipsListProps {
 }
 
 const MembersChipsList: FC<MembersChipsListProps> = ({ members }) => {
-    return (
-        <div className="members-chips-list">
-            {members.map((member) => {
-                return <Chip key={member.uid} user={member} />;
-            })}
-        </div>
-    );
+	return (
+		<div className="members-chips-list">
+			{members.map((member) => {
+				return <Chip key={member.uid} user={member} />;
+			})}
+		</div>
+	);
 };
 
 export default MembersChipsList;

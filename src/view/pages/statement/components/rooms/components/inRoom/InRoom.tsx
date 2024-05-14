@@ -5,8 +5,8 @@ import { Participant, RoomTimer, Statement } from "delib-npm";
 
 // Redux
 import {
-    useAppDispatch,
-    useAppSelector,
+	useAppDispatch,
+	useAppSelector,
 } from "../../../../../../../controllers/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
@@ -26,68 +26,68 @@ interface Props {
 }
 
 const InRoom: FC<Props> = ({ statement }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    const userTopic: Participant | undefined = useAppSelector(
-        userSelectedTopicSelector(statement.statementId),
-    );
-    const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
+	const userTopic: Participant | undefined = useAppSelector(
+		userSelectedTopicSelector(statement.statementId),
+	);
+	const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
 
-    const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        let unsubscribe: Unsubscribe = () => {};
-        if (userTopic?.roomNumber) {
-            unsubscribe = listenToRoomTimers(
-                statement.statementId,
-                userTopic?.roomNumber,
-                dispatch,
-            );
-        }
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let unsubscribe: Unsubscribe = () => {};
+		if (userTopic?.roomNumber) {
+			unsubscribe = listenToRoomTimers(
+				statement.statementId,
+				userTopic?.roomNumber,
+				dispatch,
+			);
+		}
 
-        return () => {
-            unsubscribe();
-        };
-    }, [userTopic?.roomNumber]);
+		return () => {
+			unsubscribe();
+		};
+	}, [userTopic?.roomNumber]);
 
-    try {
-        return (
-            <>
-                <h1>{t("Room Allocation")}</h1>
-                {/* {userTopic && userTopic.approved ? */}
-                <div className={styles.message}>
-                    {userTopic && userTopic.statement ? (
-                        <>
-                            <h2>
-                                <Text
-                                    text={`${
-                                        (t("Discussion Topic:"),
-                                        userTopic.statement.statement)
-                                    }`}
-                                    onlyTitle={true}
-                                />
-                            </h2>
-                            <div className={styles.text}>
-                                {t("Welcome to Room Number")}
-                                <span>{userTopic.roomNumber}</span>
-                                {t("In Zoom")}
-                            </div>
-                        </>
-                    ) : (
-                        <h2>{t("No Topic Chosen by You")}</h2>
-                    )}
-                </div>
-                <RoomTimers
-                    roomNumber={userTopic?.roomNumber}
-                    timers={timers}
-                />
-            </>
-        );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-        return <div>error: {error.message}</div>;
-    }
+	try {
+		return (
+			<>
+				<h1>{t("Room Allocation")}</h1>
+				{/* {userTopic && userTopic.approved ? */}
+				<div className={styles.message}>
+					{userTopic && userTopic.statement ? (
+						<>
+							<h2>
+								<Text
+									text={`${
+										(t("Discussion Topic:"),
+										userTopic.statement.statement)
+									}`}
+									onlyTitle={true}
+								/>
+							</h2>
+							<div className={styles.text}>
+								{t("Welcome to Room Number")}
+								<span>{userTopic.roomNumber}</span>
+								{t("In Zoom")}
+							</div>
+						</>
+					) : (
+						<h2>{t("No Topic Chosen by You")}</h2>
+					)}
+				</div>
+				<RoomTimers
+					roomNumber={userTopic?.roomNumber}
+					timers={timers}
+				/>
+			</>
+		);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (error: any) {
+		return <div>error: {error.message}</div>;
+	}
 };
 
 export default InRoom;

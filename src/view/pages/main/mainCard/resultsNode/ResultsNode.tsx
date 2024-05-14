@@ -11,18 +11,18 @@ interface Props {
     resultsType: StatementType[];
 }
 export const ResultsNode: FC<Props> = ({ statement }) => {
-    return (
-        <div className={styleSwitch(statement)}>
-            <Link
-                state={{
-                    from: window.location.pathname,
-                }}
-                to={`/statement/${statement.statementId}/chat`}
-            >
-                <Text text={statement.statement} />
+	return (
+		<div className={styleSwitch(statement)}>
+			<Link
+				state={{
+					from: window.location.pathname,
+				}}
+				to={`/statement/${statement.statementId}/chat`}
+			>
+				<Text text={statement.statement} />
 
-                <StatementChatMore statement={statement} />
-            </Link>
-        </div>
-    );
+				<StatementChatMore statement={statement} />
+			</Link>
+		</div>
+	);
 };

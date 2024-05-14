@@ -10,24 +10,24 @@ interface Props {
 }
 
 export default function RadioBox({
-    currentValue,
-    setCurrentValue,
-    radioValue,
-    children,
+	currentValue,
+	setCurrentValue,
+	radioValue,
+	children,
 }: Readonly<Props>) {
-    const checked = currentValue === radioValue;
+	const checked = currentValue === radioValue;
 
-    return (
-        <div className="radio-box" onClick={() => setCurrentValue(radioValue)}>
-            {checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
-            <input
-                type="radio"
-                name="resultsBy"
-                id="favoriteOption"
-                checked={checked}
-                value={radioValue}
-            />
-            {children}
-        </div>
-    );
+	return (
+		<div className="radio-box" onClick={() => setCurrentValue(radioValue)}>
+			{checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
+			<input
+				type="radio"
+				name="resultsBy"
+				id="favoriteOption"
+				checked={checked}
+				value={radioValue}
+			/>
+			{children}
+		</div>
+	);
 }

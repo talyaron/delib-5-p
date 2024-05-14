@@ -12,30 +12,30 @@ interface CheckboxProps {
 }
 
 const Checkbox: FC<CheckboxProps> = ({
-    name,
-    label,
-    isChecked,
-    toggleSelection,
+	name,
+	label,
+	isChecked,
+	toggleSelection,
 }: CheckboxProps) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    return (
-        <label className={`checkbox ${isChecked ? "checked" : ""}`} htmlFor={`checkbox-${label}`}>
-            <div className="checkbox-icon">
-                {isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
-            </div>
+	return (
+		<label className={`checkbox ${isChecked ? "checked" : ""}`} htmlFor={`checkbox-${label}`}>
+			<div className="checkbox-icon">
+				{isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
+			</div>
 
-            <input
-                type="checkbox"
-                name={name}
-                id={`checkbox-${label}`}
-                checked={isChecked}
-                onChange={toggleSelection}
-            />
+			<input
+				type="checkbox"
+				name={name}
+				id={`checkbox-${label}`}
+				checked={isChecked}
+				onChange={toggleSelection}
+			/>
 
-            <div className="checkbox-label">{t(label)}</div>
-        </label>
-    );
+			<div className="checkbox-label">{t(label)}</div>
+		</label>
+	);
 };
 
 export default Checkbox;

@@ -9,23 +9,23 @@ import { useLanguage } from "../../../../controllers/hooks/useLanguages";
 import "./AddStatement.scss";
 
 export const AddStatement = () => {
-    const { t, dir } = useLanguage();
+	const { t, dir } = useLanguage();
 
-    return (
-        <ScreenSlide className={`page slide-out add-statement`}>
-            <div className={`page__header ${dir}`}>
-                <Link
-                    to={"/home"}
-                    state={{ from: window.location.pathname }}
-                    className="back-arrow-icon"
-                >
-                    <BackArrowIcon />
-                </Link>
-                <h1>{t("Add New Group")}</h1>
-            </div>
-            <StatementSettings />
-        </ScreenSlide>
-    );
+	return (
+		<ScreenSlide className={`page slide-out add-statement`}>
+			<div className={`page__header ${dir}`}>
+				<Link
+					to={"/home"}
+					state={{ from: window.location.pathname }}
+					className="back-arrow-icon"
+				>
+					<BackArrowIcon />
+				</Link>
+				<h1>{t("Add New Group")}</h1>
+			</div>
+			<StatementSettings />
+		</ScreenSlide>
+	);
 };
 
 export default AddStatement;

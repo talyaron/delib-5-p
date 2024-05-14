@@ -9,19 +9,19 @@ interface Props {
     user: User | undefined;
 }
 const Chip: FC<Props> = ({ user }) => {
-    if (!user) return null;
-    const displayName = user.displayName.slice(0, 15);
+	if (!user) return null;
+	const displayName = user.displayName.slice(0, 15);
 
-    return (
-        <div className={styles.chip}>
-            {user.photoURL ? (
-                <img src={user.photoURL} alt={user.displayName} />
-            ) : (
-                <SmileIcon style={{ opacity: 0.4 }} />
-            )}
-            <span>{displayName}</span>
-        </div>
-    );
+	return (
+		<div className={styles.chip}>
+			{user.photoURL ? (
+				<img src={user.photoURL} alt={user.displayName} />
+			) : (
+				<SmileIcon style={{ opacity: 0.4 }} />
+			)}
+			<span>{displayName}</span>
+		</div>
+	);
 };
 
 export default Chip;

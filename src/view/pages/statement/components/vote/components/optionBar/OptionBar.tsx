@@ -2,12 +2,12 @@ import { FC } from "react";
 
 // Redux store
 import {
-    useAppDispatch,
-    useAppSelector,
+	useAppDispatch,
+	useAppSelector,
 } from "../../../../../../../controllers/hooks/reduxHooks";
 import {
-    parentVoteSelector,
-    setVoteToStore,
+	parentVoteSelector,
+	setVoteToStore,
 } from "../../../../../../../model/vote/votesSlice";
 
 // Statements helpers
@@ -29,109 +29,109 @@ interface OptionBarExtendedProps extends OptionBarProps {
 }
 
 export const OptionBar: FC<OptionBarExtendedProps> = ({
-    option,
-    totalVotes,
-    statement,
-    order,
-    setStatementInfo,
-    setShowInfo,
-    isVertical,
-    optionsCount,
-    screenWidth,
+	option,
+	totalVotes,
+	statement,
+	order,
+	setStatementInfo,
+	setShowInfo,
+	isVertical,
+	optionsCount,
+	screenWidth,
 }) => {
-    // * Redux * //
-    const dispatch = useAppDispatch();
-    const vote = useAppSelector(parentVoteSelector(option.parentId));
+	// * Redux * //
+	const dispatch = useAppDispatch();
+	const vote = useAppSelector(parentVoteSelector(option.parentId));
 
-    // * Variables * //
-    const _optionOrder = option.order || 0;
-    const selections: number = getSelections(statement, option);
+	// * Variables * //
+	const _optionOrder = option.order || 0;
+	const selections: number = getSelections(statement, option);
 
-    const barWidth = getBarWidth({
-        isVertical,
-        totalOptionsCount: optionsCount,
-        screenWidth,
-    });
-    const padding = 40;
+	const barWidth = getBarWidth({
+		isVertical,
+		totalOptionsCount: optionsCount,
+		screenWidth,
+	});
+	const padding = 40;
 
-    const { shortVersion } = statementTitleToDisplay(option.statement, 30);
-    const barHeight =
+	const { shortVersion } = statementTitleToDisplay(option.statement, 30);
+	const barHeight =
         selections > 0 && totalVotes > 0
-            ? Math.round((selections / totalVotes) * 100)
-            : 0;
+        	? Math.round((selections / totalVotes) * 100)
+        	: 0;
 
-    // * Functions * //
-    const handleVotePress = () => {
-        dispatch(setVoteToStore(option));
-        setVote(option);
-        getStatementFromDB(option.statementId);
-    };
+	// * Functions * //
+	const handleVotePress = () => {
+		dispatch(setVoteToStore(option));
+		setVote(option);
+		getStatementFromDB(option.statementId);
+	};
 
-    const isOptionSelected = vote?.statementId === option.statementId;
+	const isOptionSelected = vote?.statementId === option.statementId;
 
-    const containerInset = `${(_optionOrder - order) * barWidth}px`;
-    const containerStyle = {
-        [isVertical ? "right" : "left"]: containerInset,
-        width: `${barWidth}px`,
-    };
+	const containerInset = `${(_optionOrder - order) * barWidth}px`;
+	const containerStyle = {
+		[isVertical ? "right" : "left"]: containerInset,
+		width: `${barWidth}px`,
+	};
 
-    const voteButtonStyle = {
-        width: `${barWidth - padding}px`,
-        backgroundColor: isOptionSelected ? option.color : "White",
-    };
+	const voteButtonStyle = {
+		width: `${barWidth - padding}px`,
+		backgroundColor: isOptionSelected ? option.color : "White",
+	};
 
-    const barStyle = {
-        height: `${barHeight}%`,
-        width: `${barWidth - padding}px`,
-        backgroundColor: option.color,
-    };
+	const barStyle = {
+		height: `${barHeight}%`,
+		width: `${barWidth - padding}px`,
+		backgroundColor: option.color,
+	};
 
-    const shouldShowStat = barHeight > 0;
+	const shouldShowStat = barHeight > 0;
 
-    return (
-        <div
-            className={`option-bar ${isVertical ? "vertical" : "horizontal"}`}
-            style={containerStyle}
-        >
-            <div className="column" style={{ width: `${barWidth}px` }}>
-                {shouldShowStat && (
-                    <div className="percentage-text">{barHeight}%</div>
-                )}
-                <div className="bar drop-shadow" style={barStyle}>
-                    <div className="number-of-selections">{selections}</div>
-                </div>
-            </div>
-            <div className="vote-button-container drop-shadow">
-                <button
-                    onClick={handleVotePress}
-                    style={voteButtonStyle}
-                    className={`vote-button ${
-                        isOptionSelected ? "selected" : ""
-                    }`}
-                >
-                    {isOptionSelected ? (
-                        <LikeIcon />
-                    ) : (
-                        <HandIcon style={{ color: option.color }} />
-                    )}
-                </button>
-            </div>
-            <button
-                className="info-icon"
-                onClick={() => {
-                    setStatementInfo(option);
-                    setShowInfo(true);
-                }}
-            >
-                <InfoIcon
-                    style={{ color: barHeight > 10 ? "white" : "#6E8AA6" }}
-                />
-            </button>
-            <div className={`title ${barWidth < 90 ? "is-bar-small" : ""}`}>
-                {shortVersion}
-            </div>
-        </div>
-    );
+	return (
+		<div
+			className={`option-bar ${isVertical ? "vertical" : "horizontal"}`}
+			style={containerStyle}
+		>
+			<div className="column" style={{ width: `${barWidth}px` }}>
+				{shouldShowStat && (
+					<div className="percentage-text">{barHeight}%</div>
+				)}
+				<div className="bar drop-shadow" style={barStyle}>
+					<div className="number-of-selections">{selections}</div>
+				</div>
+			</div>
+			<div className="vote-button-container drop-shadow">
+				<button
+					onClick={handleVotePress}
+					style={voteButtonStyle}
+					className={`vote-button ${
+						isOptionSelected ? "selected" : ""
+					}`}
+				>
+					{isOptionSelected ? (
+						<LikeIcon />
+					) : (
+						<HandIcon style={{ color: option.color }} />
+					)}
+				</button>
+			</div>
+			<button
+				className="info-icon"
+				onClick={() => {
+					setStatementInfo(option);
+					setShowInfo(true);
+				}}
+			>
+				<InfoIcon
+					style={{ color: barHeight > 10 ? "white" : "#6E8AA6" }}
+				/>
+			</button>
+			<div className={`title ${barWidth < 90 ? "is-bar-small" : ""}`}>
+				{shortVersion}
+			</div>
+		</div>
+	);
 };
 
 export default OptionBar;
@@ -143,21 +143,21 @@ interface GetBarWidthParams {
 }
 
 const getBarWidth = ({
-    isVertical,
-    totalOptionsCount,
-    screenWidth,
+	isVertical,
+	totalOptionsCount,
+	screenWidth,
 }: GetBarWidthParams): number => {
-    if (screenWidth > 500) {
-        return 96;
-    }
-    if (isVertical) {
-        if (totalOptionsCount <= 3) {
-            return 96;
-        }
-        if (totalOptionsCount >= 4) {
-            return 86;
-        }
-    }
+	if (screenWidth > 500) {
+		return 96;
+	}
+	if (isVertical) {
+		if (totalOptionsCount <= 3) {
+			return 96;
+		}
+		if (totalOptionsCount >= 4) {
+			return 86;
+		}
+	}
 
-    return HORIZONTAL_BAR_WIDTH;
+	return HORIZONTAL_BAR_WIDTH;
 };
