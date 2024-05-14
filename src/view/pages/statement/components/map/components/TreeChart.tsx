@@ -24,14 +24,16 @@ import "reactflow/dist/style.css";
 import {
 	createInitialNodesAndEdges,
 	getLayoutedElements,
-} from "./customNodeCont";
+} from "../mapHelpers/customNodeCont";
 
 // Hooks
 import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 // Custom components
 import CustomNode from "./CustomNode";
-import MoveStatementModal from "./MoveStatementModal";
+import Modal from "../../../../../components/modal/Modal";
+import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
+import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
 
 const nodeTypes = {
 	custom: CustomNode,
