@@ -125,4 +125,3 @@ You can access the app at `http://localhost:5173` and the emulators at `http://l
 - **Higher-Order Components**: Use Higher-Order Components (HOCs) for reusable components as much as possible.
 
 By following these guidelines, you can ensure a consistent and maintainable codebase for Delib-5.
-```
