@@ -19,23 +19,23 @@ To install Delib on you local machine, you will have to install the client ```/c
 
 Then you have to install the emulators. You must have Java JDK installed on your machine. If it is not installed, please install [JDK  heigher than version 17](https://www.oracle.com/il-en/java/technologies/downloads/#java21).
 
-To install emulators, first make sure you firebase CLI is installed.
+To install emulators, first make sure your Firebase CLI is installed.
 
 ```firebase --version```
 
-If the firebase cli is not install, run:
+If the firebase cli is not installed, run:
 ```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you use a macOS.
 
 
-if you still get an error try to give permission to your self as a manager with this command and then run all above commands
+if you still get an error try to give permission to yourself as a manager with this command and then run all above commands
 
 ```Set-ExecutionPolicy RemoteSigned -Scope CurrentUser```
 
-Run the commend below and login to your google account
+Run the commend below and login to your Google account
 
 ```firebase login``` 
 
-In firebase console, create a new project, and call it "delib-5", and copy the project id. In ```.firebaserc``` change the project id to the project id you just created.
+In Firebase console, create a new project, and call it "delib-5", and copy the project id. In ```.firebaserc``` change the project id to the project id you just created.
 
 Then run ```firebase use <project-id>``` to select the project you just created.
 
