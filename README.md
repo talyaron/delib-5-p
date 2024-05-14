@@ -65,14 +65,31 @@ export const vapidKey = 'your key';
 
 # Development mode
 
-Then initlise the emualtors by running:
-```firebase init emulators``` and install all the maulators.
+Then initialize the emulators by running:
+```firebase init emulators``` and install all the emulators.
 
-To run the emulators, run ```npm run deve``` in the root direcotry.
-To run client run ```npm run dev``` in the root directory.
-To run function, run in /functions ```npm run dev```.
+To run the emulators, run ```npm run deve``` in the root directory.
+To run the client, run ```npm run dev``` in the root directory.
+To run the Firebase functions (server), run in /functions ```npm run dev```.
 
 go to ```localhost:5173``` to see the app, and to ```localhost:5002``` to see the emulators.
+
+# Our coding style
+## Naming conventions
+- **File names**: Use camelCase for file names. For example, `myFile.tsx`.
+- **Component names**: Use PascalCase for component names. For example, `MyComponent`.
+- **Variable names**: Use camelCase for variable names. For example, `myVariable`.
+- **Function names**: Use camelCase for function names. For example, `myFunction`.
+
+## SCSS
+- **CSS naming**: In a component, use the component name as a prefix for all CSS classes. For example, `myComponent-myElement`.
+- **Component Styling **: Specific component styling must be in the component folder. For example, `myComponent/myComponent.scss`
+- **Global styling**: Global styling must be in the ```view/style``` folder. For example, `src/view/style/buttons.scss`
+
+## React
+- **Component structure**: Each component should have its folder with a `ComponentName.tsx` file and a `ComponentName.scss` file.
+- **MVC architecture**: Each component should have its own folder with a `ComponentName.tsx` file, a `ComponentName.scss` file, and a `ComponentNameCont.ts` file. All folders are divided by MVC structure.
+- **Higher Order Components**: Use HOC for reusable components, as much as possible. 
 
 
 
