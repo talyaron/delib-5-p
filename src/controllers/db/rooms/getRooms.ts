@@ -20,7 +20,8 @@ import { Unsubscribe } from "firebase/auth";
 
 export function listenToAllRoomsRequest(
     statement: Statement,
-    dispatch: ThunkDispatch,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    dispatch: Function,
 ): Unsubscribe {
     try {
         const requestRef = collection(DB, Collections.statementRoomsAsked);

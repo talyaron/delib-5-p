@@ -15,7 +15,7 @@ const MainCard: FC<Props> = ({ statement }) => {
         <div className="main-card" style={{ borderColor: statement.color }}>
             <Link to={`/statement/${statement.statementId}/chat`}>
                 <Text text={statement.statement} />
-                <StatementChatMore statement={statement} color={"gray"} />
+                <StatementChatMore statement={statement} />
             </Link>
         </div>
     );
