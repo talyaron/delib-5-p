@@ -1,83 +1,127 @@
-# delib-5
+Sure, here's the content in Markdown format:
 
-## Goal
 
-The objective of Delib 5 is to serve as an inclusive B2C deliberative app, offering a diverse array of deliberation methods.
-Deliberation stands as an informed and inclusive mode of discussion dedicated to discovering the most optimal solution for all stakeholders while actively striving to minimize any harm to the interests of those who might be adversely affected by the proposed solution.
+# Delib-5
 
-For more information and a roadmap, please look at the [wiki in this repository](https://github.com/delib-org/delib-5/wiki).
+## Introduction
+
+Delib-5 is an inclusive B2C deliberative app that provides a diverse range of deliberation methods. Deliberation is an informed and inclusive mode of discussion aimed at discovering the most optimal solution for all stakeholders while actively striving to minimize any harm to the interests of those who might be adversely affected by the proposed solution.
+
+For more information and a roadmap, please refer to the [wiki](https://github.com/delib-org/delib-5/wiki) in this repository.
+
+## Prerequisites
+
+Before getting started with Delib-5 development, it's recommended to have a basic understanding of the following technologies:
+
+- Firebase
+- React
+- Redux
+- Progressive Web Apps (PWA)
 
 ## Installation
 
-The technological stack consists of React-Redux-PWA (built with Vite) and Firebase. To be able to work efficientyl it is better to get femilier with firebase and React, before turning to delib developemnt. 
+Delib-5 uses a technological stack consisting of React-Redux-PWA (built with Vite) and Firebase. To install and set up the project on your local machine, follow these steps:
 
-To install Delib on you local machine, you will have to install the client ```/clint``` and the ```/functions``` node modules:
+1. **Clone the repository**
 
-    Go to the root directory and run ```npm i```. 
+   ```bash
+   git clone https://github.com/delib-org/delib-5.git
+   cd delib-5
+   ```
 
-    Go to the functions directory and run ```npm i```.
+2. **Install dependencies**
 
-Then you have to install the emulators. You must have Java JDK installed on your machine. If it is not installed, please install [JDK  heigher than version 17](https://www.oracle.com/il-en/java/technologies/downloads/#java21).
+   ```bash
+   # Install client dependencies
+   cd client
+   npm install
 
-To install emulators, first make sure you firebase CLI is installed.
+   # Install functions dependencies
+   cd ../functions
+   npm install
+   ```
 
-```firebase --version```
+3. **Install Firebase emulators**
 
-If the firebase cli is not install, run:
-```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you use a macOS.
+   Make sure you have Java JDK (version 17 or higher) installed on your machine. If not, please install it from [Oracle's website](https://www.oracle.com/il-en/java/technologies/downloads/#java21).
 
+   Then, install the Firebase emulators:
 
-if you still get an error try to give permission to your self as a manager with this command and then run all above commands
+   ```bash
+   # Install Firebase CLI (if not already installed)
+   npm install -g firebase-tools
 
-```Set-ExecutionPolicy RemoteSigned -Scope CurrentUser```
+   # Log in to your Google account
+   firebase login
 
-Run the commend below and login to your google account
+   # Initialize emulators
+   firebase init emulators
+   ```
 
-```firebase login``` 
+4. **Set up Firebase configuration**
 
-In firebase console, create a new project, and call it "delib-5", and copy the project id. In ```.firebaserc``` change the project id to the project id you just created.
+   - In the Firebase console, create a new project named "delib-5" and copy the project ID.
+   - In the `.firebaserc` file, replace the project ID with the one you just created.
+   - Run `firebase use <project-id>` to select the new project.
 
-Then run ```firebase use <project-id>``` to select the project you just created.
+5. **Create `configKey.ts` file**
 
-Then run ```firebase init emulators``` and install all the emulators.
+   Under `src/functions/db/`, create a new file named `configKey.ts` and add the following code, replacing the placeholders with your actual Firebase project configuration:
 
-## settings configKey file
+   ```typescript
+   export const keys = {
+     apiKey: "your-api-key",
+     authDomain: "your-auth-domain",
+     databaseURL: "your-database-url",
+     projectId: "your-project-id",
+     storageBucket: "your-storage-bucket",
+     messagingSenderId: "your-messaging-sender-id",
+     appId: "your-app-id",
+     measurementId: "your-measurement-id"
+   }
 
-under ```/src/functions/db/``` add  ```configKey.ts``` file. This file is not uploaded to github, and you will have to create it yourself.
-use the Project config to set the cofig file:
+   export const vapidKey = 'your-vapid-key';
+   ```
 
+   Note: This file is not uploaded to GitHub, and you'll need to create it yourself.
 
-``` javascript
-export const keys = {
-    apiKey: "your key",
-    authDomain: "your key",
-    databaseURL: "your key",
-    projectId: "your key",
-    storageBucket: "your key",
-    messagingSenderId: "your key",
-    appId: "your key",
-    measurementId: "your key"
-}
+## Development mode
 
+To start the development server, run the following commands:
 
-export const vapidKey = 'your key';
+```bash
+# Start the emulators
+npm run deve
+
+# Start the client
+npm run dev
+
+# Start the Firebase functions (server)
+cd functions
+npm run dev
 ```
 
-# Development mode
+You can access the app at `http://localhost:5173` and the emulators at `http://localhost:5002`.
 
-Then initlise the emualtors by running:
-```firebase init emulators``` and install all the maulators.
+## Coding Style
 
-To run the emulators, run ```npm run deve``` in the root direcotry.
-To run client run ```npm run dev``` in the root directory.
-To run function, run in /functions ```npm run dev```.
+### Naming Conventions
 
-go to ```localhost:5173``` to see the app, and to ```localhost:5002``` to see the emulators.
+- **File names**: Use camelCase for file names (e.g., `myFile.ts`).
+- **Component names**: Use PascalCase for component names (e.g., `MyComponent.tsx`).
+- **Variable names**: Use camelCase for variable names (e.g., `myVariable`).
+- **Function names**: Use camelCase for function names (e.g., `myFunction`).
 
+### SCSS
 
+- **CSS naming**: In a component, use the component name as a prefix for all CSS classes (e.g., `myComponent-myElement`).
+- **Component styling**: Specific component styling must be in the component folder (e.g., `myComponent/myComponent.scss`).
+- **Global styling**: Global styling must be in the `view/style` folder (e.g., `src/view/style/buttons.scss`).
 
+### React
 
+- **Component structure**: Each component should have its own folder with a `ComponentName.tsx` file and a `ComponentName.scss` file.
+- **MVC architecture**: Each component should have its own folder with a `ComponentName.tsx` file, a `ComponentName.scss` file, and a `ComponentNameCont.ts` file. All folders are divided by the MVC structure.
+- **Higher-Order Components**: Use Higher-Order Components (HOCs) for reusable components as much as possible.
 
-
-
-
+By following these guidelines, you can ensure a consistent and maintainable codebase for Delib-5.

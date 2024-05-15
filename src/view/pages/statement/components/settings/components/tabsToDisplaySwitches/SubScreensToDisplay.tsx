@@ -15,18 +15,18 @@ import { isScreenAllowedUnderStatementType } from "delib-npm";
 
 
 const SubScreensToDisplay: FC<StatementSettingsProps> = ({
-    statement,
-    setStatementToEdit,
+	statement,
+	setStatementToEdit,
 }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    const subScreens = statement.subScreens ?? defaultStatementSubScreens;
+	const subScreens = statement.subScreens ?? defaultStatementSubScreens;
 
-    return (
-        <div className="sub-screens-to-display">
-            <h3 className="title">{t("Tabs to display")}</h3>
-            {allScreensWithoutSettings.map((screenInfo) => {
-                const checked = subScreens.includes(screenInfo.link) ?? false;
+	return (
+		<div className="sub-screens-to-display">
+			<h3 className="title">{t("Tabs to display")}</h3>
+			{allScreensWithoutSettings.map((screenInfo) => {
+				const checked = subScreens.includes(screenInfo.link) ?? false;
 
                 if(isScreenAllowedUnderStatementType(statement, screenInfo.link) === false) return null;
 

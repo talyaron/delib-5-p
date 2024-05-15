@@ -19,72 +19,72 @@ interface Props {
 }
 
 const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
-    if (!statement) throw new Error("No statement");
+	if (!statement) throw new Error("No statement");
 
-    // Redux hooks
-    const user = useAppSelector(userSelector);
+	// Redux hooks
+	const user = useAppSelector(userSelector);
 
-    const statementColor = useStatementColor(statement.statementType || "");
+	const statementColor = useStatementColor(statement.statementType || "");
 
-    const direction = useDirection();
-    const [message, setMessage] = useState("");
+	const direction = useDirection();
+	const [message, setMessage] = useState("");
 
-    function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-        try {
-            const _isMobile =
+	function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+		try {
+			const _isMobile =
                 !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                    navigator.userAgent,
+                	navigator.userAgent,
                 );
 
-            if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
-                handleSubmitInput(e);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
+			if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
+				handleSubmitInput(e);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-    const handleSubmitInput = (
-        e:
+	const handleSubmitInput = (
+		e:
             | React.FormEvent<HTMLFormElement>
             | React.KeyboardEvent<HTMLTextAreaElement>,
-    ) => {
-        e.preventDefault();
+	) => {
+		e.preventDefault();
 
-        // Create statement
-        handleAddStatement(message, statement, user, toggleAskNotifications);
+		// Create statement
+		handleAddStatement(message, statement, user, toggleAskNotifications);
 
-        setMessage(""); // Clear input
-    };
+		setMessage(""); // Clear input
+	};
 
-    return (
-        <form
-            onSubmit={(e) => handleSubmitInput(e)}
-            name="theForm"
-            className="page__footer__form"
-            style={{ flexDirection: direction }}
-        >
-            <button
-                type="submit"
-                className="page__footer__form__sendBtnBox"
-                style={statementColor}
-                data-cy="statement-chat-send-btn"
-            >
-                <SendIcon color={statementColor.color} />
-            </button>
-            <textarea
-                data-cy="statement-chat-input"
-                style={{ height: "4rem" }}
-                className="page__footer__form__input"
-                name="newStatement"
-                onKeyUp={(e) => handleKeyUp(e)}
-                autoFocus={false}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-            />
-        </form>
-    );
+	return (
+		<form
+			onSubmit={(e) => handleSubmitInput(e)}
+			name="theForm"
+			className="page__footer__form"
+			style={{ flexDirection: direction }}
+		>
+			<button
+				type="submit"
+				className="page__footer__form__sendBtnBox"
+				style={statementColor}
+				data-cy="statement-chat-send-btn"
+			>
+				<SendIcon color={statementColor.color} />
+			</button>
+			<textarea
+				data-cy="statement-chat-input"
+				style={{ height: "4rem" }}
+				className="page__footer__form__input"
+				name="newStatement"
+				onKeyUp={(e) => handleKeyUp(e)}
+				autoFocus={false}
+				value={message}
+				onChange={(e) => setMessage(e.target.value)}
+				required
+			/>
+		</form>
+	);
 };
 
 export default StatementInput;

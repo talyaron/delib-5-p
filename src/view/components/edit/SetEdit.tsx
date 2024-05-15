@@ -9,24 +9,24 @@ interface Props {
 }
 
 const SetEdit: FC<Props> = ({ isAuthorized, setEdit, edit, text }) => {
-    if (!isAuthorized) return null;
+	if (!isAuthorized) return null;
 
-    return (
-        <>
-            {text && (
-                <span className="clickable" onClick={() => setEdit(!edit)}>
-                    {text}
-                </span>
-            )}
-            <div>
-                {isAuthorized && (
-                    <div className="clickable" onClick={() => setEdit(!edit)}>
-                        <EditIcon style={{ color: "#226CBC" }} />
-                    </div>
-                )}
-            </div>
-        </>
-    );
+	return (
+		<>
+			{text && (
+				<span className="clickable" onClick={() => setEdit(!edit)}>
+					{text}
+				</span>
+			)}
+			<div>
+				{isAuthorized && (
+					<div className="clickable" onClick={() => setEdit(!edit)}>
+						<EditIcon style={{ color: "#226CBC" }} />
+					</div>
+				)}
+			</div>
+		</>
+	);
 };
 
 export default SetEdit;

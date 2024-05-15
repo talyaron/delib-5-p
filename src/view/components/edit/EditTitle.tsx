@@ -23,91 +23,91 @@ interface Props {
 }
 
 const EditTitle: FC<Props> = ({
-    statement,
-    isEdit,
-    setEdit,
-    isTextArea,
-    onlyTitle,
+	statement,
+	isEdit,
+	setEdit,
+	isTextArea,
+	onlyTitle,
 }) => {
-    try {
-        if (!statement) return null;
+	try {
+		if (!statement) return null;
 
-        const direction = document.body.style.direction as "ltr" | "rtl";
-        const align = direction === "ltr" ? "left" : "right";
+		const direction = document.body.style.direction as "ltr" | "rtl";
+		const align = direction === "ltr" ? "left" : "right";
 
-        const title = statement.statement.split("\n")[0];
-        const description = statement.statement.split("\n").slice(1).join("\n");
+		const title = statement.statement.split("\n")[0];
+		const description = statement.statement.split("\n").slice(1).join("\n");
 
-        function handleSetTitle(
-            e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
-        ) {
-            try {
-                if (
-                    e.type === "blur" ||
+		function handleSetTitle(
+			e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+		) {
+			try {
+				if (
+					e.type === "blur" ||
                     (e.key === "Enter" && e.shiftKey === false)
-                ) {
-                    const target = e.target as
+				) {
+					const target = e.target as
                         | HTMLTextAreaElement
                         | HTMLInputElement;
 
-                    if (target.value === title) return setEdit(false);
+					if (target.value === title) return setEdit(false);
 
-                    if (!target) return;
+					if (!target) return;
 
-                    if (!statement) throw new Error("statement is undefined");
+					if (!statement) throw new Error("statement is undefined");
 
-                    if (isTextArea) {
-                        updateStatementText(statement, target.value);
-                    } else {
-                        const statementTitle =
+					if (isTextArea) {
+						updateStatementText(statement, target.value);
+					} else {
+						const statementTitle =
                             target.value + "\n" + description;
 
-                        //update title in db
-                        updateStatementText(statement, statementTitle);
-                    }
+						//update title in db
+						updateStatementText(statement, statementTitle);
+					}
 
-                    setEdit(false);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
+					setEdit(false);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		}
 
-        if (!isEdit)
-            return (
-                <div style={{ direction: direction, textAlign: align }}>
-                    <Text text={statement.statement} onlyTitle={onlyTitle} />
-                </div>
-            );
+		if (!isEdit)
+			return (
+				<div style={{ direction: direction, textAlign: align }}>
+					<Text text={statement.statement} onlyTitle={onlyTitle} />
+				</div>
+			);
 
-        if (isTextArea) {
-            return (
-                <textarea
-                    style={{ direction: direction, textAlign: align }}
-                    className={styles.textarea}
-                    defaultValue={statement.statement}
-                    onKeyUp={handleSetTitle}
-                    autoFocus={true}
-                />
-            );
-        } else {
-            return (
-                <input
-                    style={{ direction: direction, textAlign: align }}
-                    className={styles.input}
-                    type="text"
-                    defaultValue={title}
-                    onKeyUp={handleSetTitle}
-                    autoFocus={true}
-                    data-cy="edit-title-input"
-                />
-            );
-        }
-    } catch (error) {
-        console.error(error);
+		if (isTextArea) {
+			return (
+				<textarea
+					style={{ direction: direction, textAlign: align }}
+					className={styles.textarea}
+					defaultValue={statement.statement}
+					onKeyUp={handleSetTitle}
+					autoFocus={true}
+				/>
+			);
+		} else {
+			return (
+				<input
+					style={{ direction: direction, textAlign: align }}
+					className={styles.input}
+					type="text"
+					defaultValue={title}
+					onKeyUp={handleSetTitle}
+					autoFocus={true}
+					data-cy="edit-title-input"
+				/>
+			);
+		}
+	} catch (error) {
+		console.error(error);
 
-        return null;
-    }
+		return null;
+	}
 };
 
 export default EditTitle;

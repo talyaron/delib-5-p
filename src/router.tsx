@@ -16,90 +16,90 @@ import MemberRejection from "./view/pages/memberRejection/MemberRejection";
 import Page401 from "./view/pages/page401/Page401";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        errorElement: <ErrorPage />,
-        children: [
-            {
-                path: "",
-                element: <Start />,
-                errorElement: <ErrorPage />,
-            },
-            {
-                path: "home",
-                element: <Home />,
-                errorElement: <ErrorPage />,
-                children: [
-                    {
-                        path: "",
-                        element: <Main />,
-                        errorElement: <ErrorPage />,
-                    },
-                    {
-                        path: "addStatement",
-                        element: <AddStatement />,
-                        errorElement: <ErrorPage />,
-                    },
-                    {
-                        path: "updateStatement/:statementId",
-                        element: <AddStatement />,
-                        errorElement: <ErrorPage />,
-                    },
-                ],
-            },
-            {
-                path: "pricing-plan",
-                element: <PricingPlan />,
-                errorElement: <ErrorPage />,
-            },
-            {
-                path: "member-rejection",
-                element: <MemberRejection />,
-                errorElement: <ErrorPage />,
-            },
-            {
-                path: "login-first",
-                element: <LoginPage />,
-                errorElement: <ErrorPage />,
-            },
-            {
-                path: "statement/:statementId/:page",
-                element: <StatementMain />,
-                errorElement: <ErrorPage />,
-                children: [
-                    {
-                        path: ":sort",
-                        element: <StatementMain />,
-                        errorElement: <ErrorPage />,
-                    },
-                ],
-            },
-            {
-                path: "statement-an/:anonymous/:statementId/:page",
-                element: <StatementMain />,
-                errorElement: <ErrorPage />,
-                children: [
-                    {
-                        path: ":sort",
-                        element: <StatementMain />,
-                        errorElement: <ErrorPage />,
-                    },
-                ],
-            },
-            {
-                path: "401",
-                element: <Page401 />,
-            },
-        ],
-    },
-    {
-        path: "404",
-        element: <Page404 />,
-    },
-    {
-        path: "*",
-        element: <Page404 />,
-        errorElement: <ErrorPage />,
-    },
+	{
+		path: "/",
+		element: <App />,
+		errorElement: <ErrorPage />,
+		children: [
+			{
+				path: "",
+				element: <Start />,
+				errorElement: <ErrorPage />,
+			},
+			{
+				path: "home",
+				element: <Home />,
+				errorElement: <ErrorPage />,
+				children: [
+					{
+						path: "",
+						element: <Main />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "addStatement",
+						element: <AddStatement />,
+						errorElement: <ErrorPage />,
+					},
+					{
+						path: "updateStatement/:statementId",
+						element: <AddStatement />,
+						errorElement: <ErrorPage />,
+					},
+				],
+			},
+			{
+				path: "pricing-plan",
+				element: <PricingPlan />,
+				errorElement: <ErrorPage />,
+			},
+			{
+				path: "member-rejection",
+				element: <MemberRejection />,
+				errorElement: <ErrorPage />,
+			},
+			{
+				path: "login-first",
+				element: <LoginPage />,
+				errorElement: <ErrorPage />,
+			},
+			{
+				path: "statement/:statementId/:page",
+				element: <StatementMain />,
+				errorElement: <ErrorPage />,
+				children: [
+					{
+						path: ":sort",
+						element: <StatementMain />,
+						errorElement: <ErrorPage />,
+					},
+				],
+			},
+			{
+				path: "statement-an/:anonymous/:statementId/:page",
+				element: <StatementMain />,
+				errorElement: <ErrorPage />,
+				children: [
+					{
+						path: ":sort",
+						element: <StatementMain />,
+						errorElement: <ErrorPage />,
+					},
+				],
+			},
+			{
+				path: "401",
+				element: <Page401 />,
+			},
+		],
+	},
+	{
+		path: "404",
+		element: <Page404 />,
+	},
+	{
+		path: "*",
+		element: <Page404 />,
+		errorElement: <ErrorPage />,
+	},
 ]);
