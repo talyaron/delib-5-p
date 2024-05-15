@@ -25,19 +25,19 @@ import useStatementColor, {
 } from "../../../../../../controllers/hooks/useStatementColor";
 
 // Custom Components
-import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
 import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
 import { setStatementIsOption } from "../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
-import IconButton from "../../../../../components/iconButton/IconButton";
 import Menu from "../../../../../components/menu/Menu";
 import MenuOption from "../../../../../components/menu/MenuOption";
+import IconButton from "../../../../../components/iconButton/IconButton";
 import StatementChatMore from "../../chat/components/StatementChatMore";
+import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
 import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
-import "./StatementEvaluationCard.scss";
 import Evaluation from "./evaluation/Evaluation";
+import "./StatementEvaluationCard.scss";
 
 interface Props {
     statement: Statement;
@@ -125,9 +125,7 @@ const StatementEvaluationCard: FC<Props> = ({
             className="statement-evaluation-card"
             style={{
                 top: `${newTop}px`,
-                borderLeft: `8px solid ${
-                    statementColor.backgroundColor || "wheat"
-                }`,
+                borderLeft: `8px solid ${statementColor.backgroundColor || "wheat"}`,
                 color: statementColor.color,
                 flexDirection: dir === "ltr" ? "row" : "row-reverse",
             }}
@@ -195,10 +193,7 @@ const StatementEvaluationCard: FC<Props> = ({
                 </div>
                 {shouldLinkToChildStatements && (
                     <div className="chat">
-                        <StatementChatMore
-                            statement={statement}
-                            color={statementColor.color}
-                        />
+                        <StatementChatMore statement={statement} />
                     </div>
                 )}
                 <div className="actions">
