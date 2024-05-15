@@ -25,19 +25,19 @@ import useStatementColor, {
 } from "../../../../../../controllers/hooks/useStatementColor";
 
 // Custom Components
+import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
 import EditIcon from "../../../../../../assets/icons/editIcon.svg?react";
 import LightBulbIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
 import { setStatementIsOption } from "../../../../../../controllers/db/statements/setStatements";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 import EditTitle from "../../../../../components/edit/EditTitle";
+import IconButton from "../../../../../components/iconButton/IconButton";
 import Menu from "../../../../../components/menu/Menu";
 import MenuOption from "../../../../../components/menu/MenuOption";
-import IconButton from "../../../../../components/iconButton/IconButton";
 import StatementChatMore from "../../chat/components/StatementChatMore";
-import AddQuestionIcon from "../../../../../../assets/icons/addQuestion.svg?react";
 import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
-import Evaluation from "./evaluation/Evaluation";
 import "./StatementEvaluationCard.scss";
+import Evaluation from "./evaluation/Evaluation";
 
 interface Props {
     statement: Statement;
