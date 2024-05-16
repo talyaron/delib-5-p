@@ -18,7 +18,7 @@ import {
 export async function newEvaluation(event: any) {
     try {
         //add evaluator to statement
-        console.log("new evaluation")
+   
         const statementEvaluation = event.data.data() as Evaluation;
         const { statementId } = statementEvaluation;
         if (!statementId) throw new Error("statementId is not defined");
@@ -88,7 +88,7 @@ export async function updateEvaluation(event: any) {
             totalEvaluators !== 0
                 ? averageEvaluation * Math.sqrt(totalEvaluators)
                 : 0;
-console.log(statement.statement, 'consensus',consensus, 'totalEvaluators', totalEvaluators, 'averageEvaluation', averageEvaluation, 'sumEvaluation', sumEvaluation);
+
         //set consensus to statement in DB
         await statementRef.update({ consensus, totalEvaluators });
 

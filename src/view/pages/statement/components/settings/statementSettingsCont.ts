@@ -72,18 +72,22 @@ export function isSubPageChecked(
 }
 
 interface HandleSetStatementParams {
-    navigate: NavigateFunction;
-    statementId: string | undefined;
-    statement: Statement;
+	navigate: NavigateFunction;
+	statementId: string | undefined;
+	statement: Statement;
+	parentStatement?: Statement | "top";
 }
 
 export async function handleSetStatement({
 	navigate,
 	statementId,
 	statement,
+	parentStatement
 }: HandleSetStatementParams) {
 	try {
+		
 		const _statement = getStatementText(statement);
+		
 
 		// If statement title is empty, don't save
 		if (!_statement) return;
@@ -149,7 +153,7 @@ export async function handleSetStatement({
 				throw new Error("newStatement had not been updated");
 
 			await setStatementToDB({
-				parentStatement: statement,
+				parentStatement,
 				statement: newStatement,
 				addSubscription: true,
 			});
@@ -171,23 +175,29 @@ const prefixTitle = (title: string): string => {
 };
 
 const getStatementText = (statement: Statement): string | null => {
-	const titleAndDescription = statement.statement;
-	const endOfTitle = titleAndDescription.indexOf("\n");
-	const _title = titleAndDescription.substring(0, endOfTitle);
+	try {
+		const titleAndDescription = statement.statement;
+		const endOfTitle = titleAndDescription.indexOf("\n");
+		const _title = endOfTitle === -1 ? titleAndDescription : titleAndDescription.substring(0, endOfTitle);
 
-	// TODO: add validation for title in UI
-	if (!_title || _title.length < 2) return null;
+		// TODO: add validation for title in UI
+		if (!_title || _title.length < 2) return null;
 
-	const startOfDescription = endOfTitle + 1;
-	const description = titleAndDescription.substring(startOfDescription);
-	const title = prefixTitle(_title);
+		const startOfDescription = endOfTitle + 1;
+		const description = titleAndDescription.substring(startOfDescription);
+		const title = prefixTitle(_title);
 
-	return `${title}\n${description}`;
+		return `${title}\n${description}`;
+	} catch (error) {
+		console.error(error);
+		
+		return null;
+	}
 };
 
 export const getStatementSettings = (statement: Statement) => {
 	const statementSettings =
-        statement.statementSettings ?? defaultStatementSettings;
+		statement.statementSettings ?? defaultStatementSettings;
 
 	return {
 		enableAddEvaluationOption: Boolean(
@@ -213,7 +223,7 @@ const getStatementSubScreens = (statement: Statement) => {
 
 const getSetStatementData = (statement: Statement) => {
 	const { resultsBy, numberOfResults } =
-        statement.resultsSettings ?? defaultResultsSettings;
+		statement.resultsSettings ?? defaultResultsSettings;
 	const {
 		enableAddEvaluationOption,
 		enableAddVotingOption,
@@ -234,9 +244,9 @@ const getSetStatementData = (statement: Statement) => {
 };
 
 interface ToggleSubScreenParams {
-    subScreens: Screen[];
-    screenLink: Screen;
-    statement: Statement;
+	subScreens: Screen[];
+	screenLink: Screen;
+	statement: Statement;
 }
 
 export const toggleSubScreen = ({
@@ -256,11 +266,11 @@ export const toggleSubScreen = ({
 };
 
 interface CreateStatementFromModalParams {
-    title: string;
-    description: string;
-    isOptionSelected: boolean;
-    parentStatement: Statement | "top";
-    toggleAskNotifications?: VoidFunction;
+	title: string;
+	description: string;
+	isOptionSelected: boolean;
+	parentStatement: Statement | "top";
+	toggleAskNotifications?: VoidFunction;
 }
 
 export async function createStatementFromModal({
@@ -292,7 +302,7 @@ export async function createStatementFromModal({
 		await setStatementToDB({
 			statement: newStatement,
 			parentStatement:
-                parentStatement === "top" ? undefined : parentStatement,
+				parentStatement === "top" ? undefined : parentStatement,
 			addSubscription: true,
 		});
 	} catch (error) {

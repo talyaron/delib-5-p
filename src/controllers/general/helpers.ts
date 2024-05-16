@@ -275,3 +275,5 @@ export function getFirstScreen(array: Array<Screen>): Screen {
 		return Screen.CHAT;
 	}
 }
+
+

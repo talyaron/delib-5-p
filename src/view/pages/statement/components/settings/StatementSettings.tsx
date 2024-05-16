@@ -25,25 +25,59 @@ import { listenToMembers } from "../../../../../controllers/db/statements/listen
 import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
 import { defaultEmptyStatement } from "./emptyStatementModel";
 
+
 interface StatementSettingsProps {
-    simple?: boolean;
-    new?: boolean;
+  simple?: boolean;
+  new?: boolean;
 }
 
 const StatementSettings: FC<StatementSettingsProps> = () => {
 	// * Hooks * //
 	const { statementId } = useParams();
 	const { t } = useLanguage();
+	const [parentStatement, setParentStatement] = useState<
+    Statement | undefined | "top"
+  >(undefined);
 	const [isLoading, setIsLoading] = useState(false);
 	const [statementToEdit, setStatementToEdit] = useState<
-        Statement | undefined
-    >();
-  
+    Statement | undefined
+  >();
+
 	const dispatch = useAppDispatch();
 
 	const statement: Statement | undefined = useAppSelector(
-		statementSelector(statementId),
+		statementSelector(statementId)
 	);
+
+  
+
+	useEffect(() => {
+		if (statement) {
+
+			setStatementToEdit(statement);
+
+			if (statement.parentId === "top") {
+				setParentStatement("top");
+				
+				return;
+			}
+
+			//get parent statement
+			getStatementFromDB(statement.parentId)
+				.then((parentStatement) => {
+					try {
+						if (!parentStatement) throw new Error("no parent statement");
+
+						setParentStatement(parentStatement);
+					} catch (error) {
+						console.error(error);
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		}
+	}, [statement]);
 
 	// * Use Effect * //
 	useEffect(() => {
@@ -83,6 +117,7 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
 				<StatementSettingsForm
 					setIsLoading={setIsLoading}
 					statement={statementToEdit}
+					parentStatement={parentStatement}
 					setStatementToEdit={setStatementToEdit}
 				/>
 			)}
