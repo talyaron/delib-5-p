@@ -28,28 +28,28 @@ const SubScreensToDisplay: FC<StatementSettingsProps> = ({
 			{allScreensWithoutSettings.map((screenInfo) => {
 				const checked = subScreens.includes(screenInfo.link) ?? false;
 
-                if(isScreenAllowedUnderStatementType(statement, screenInfo.link) === false) return null;
+				if(isScreenAllowedUnderStatementType(statement, screenInfo.link) === false) return null;
 
-                return (
-                    <CustomSwitch
-                        key={`tabs-${screenInfo.id}`}
-                        setChecked={() => {
-                            const newStatement = toggleSubScreen({
-                                statement,
-                                subScreens,
-                                screenLink: screenInfo.link,
-                            });
-                            setStatementToEdit(newStatement);
-                        }}
-                        name={screenInfo.link}
-                        label={screenInfo.name}
-                        checked={checked}
-                        children={<TabIcon screenLink={screenInfo.link} />}
-                    />
-                );
-            })}
-        </div>
-    );
+				return (
+					<CustomSwitch
+						key={`tabs-${screenInfo.id}`}
+						setChecked={() => {
+							const newStatement = toggleSubScreen({
+								statement,
+								subScreens,
+								screenLink: screenInfo.link,
+							});
+							setStatementToEdit(newStatement);
+						}}
+						name={screenInfo.link}
+						label={screenInfo.name}
+						checked={checked}
+						children={<TabIcon screenLink={screenInfo.link} />}
+					/>
+				);
+			})}
+		</div>
+	);
 };
 
 export default SubScreensToDisplay;

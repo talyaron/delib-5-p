@@ -190,6 +190,7 @@ const getStatementText = (statement: Statement): string | null => {
 		return `${title}\n${description}`;
 	} catch (error) {
 		console.error(error);
+		
 		return null;
 	}
 };

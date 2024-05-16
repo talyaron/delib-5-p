@@ -23,7 +23,8 @@ import {
 	getExistingOptionColors,
 	getSiblingOptionsByParentId,
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
-import { allowedScreens } from "./temp";
+import { allowedScreens } from "../../general/screens";
+
 
 
 export const updateStatementParents = async (
