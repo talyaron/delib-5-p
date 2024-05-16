@@ -23,6 +23,8 @@ import {
 	getExistingOptionColors,
 	getSiblingOptionsByParentId,
 } from "../../../view/pages/statement/components/vote/statementVoteCont";
+import { allowedScreens } from "./temp";
+
 
 export const updateStatementParents = async (
 	statement: Statement,
@@ -59,9 +61,9 @@ export const updateStatementParents = async (
 
 const TextSchema = z.string().min(2);
 interface SetStatementToDBParams {
-    statement: Statement;
-    parentStatement?: Statement | "top";
-    addSubscription: boolean;
+	statement: Statement;
+	parentStatement?: Statement | "top";
+	addSubscription: boolean;
 }
 
 export const setStatementToDB = async ({
@@ -74,7 +76,7 @@ export const setStatementToDB = async ({
 		if (!parentStatement) throw new Error("Parent statement is undefined");
 		if (
 			parentStatement !== "top" &&
-            isAllowedStatementType({ parentStatement, statement }) === false
+			isAllowedStatementType({ parentStatement, statement }) === false
 		)
 			throw new Error(
 				`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`,
@@ -87,29 +89,26 @@ export const setStatementToDB = async ({
 		TextSchema.parse(statement.statement);
 
 		const parentId =
-            parentStatement === "top"
-            	? "top"
-            	: statement.parentId || parentStatement?.statementId || "top";
+			parentStatement === "top"
+				? "top"
+				: statement.parentId || parentStatement?.statementId || "top";
 
 		statement.statementType =
-            statement.statementId === undefined
-            	? StatementType.question
-            	: statement.statementType;
+			statement.statementId === undefined
+				? StatementType.question
+				: statement.statementType;
 
 		statement.creatorId = statement?.creator?.uid || user.uid;
 		statement.creator = statement?.creator || user;
 		statement.statementId = statement?.statementId || crypto.randomUUID();
 		statement.parentId = parentId;
 		statement.topParentId =
-            parentStatement === "top"
-            	? statement.statementId
-            	: statement?.topParentId ||
-                  parentStatement?.topParentId ||
-                  "top";
-		statement.subScreens = statement.subScreens || [
-			Screen.CHAT,
-			Screen.OPTIONS,
-		];
+			parentStatement === "top"
+				? statement.statementId
+				: statement?.topParentId ||
+				parentStatement?.topParentId ||
+				"top";
+		statement.subScreens = allowedScreens(statement,statement.subScreens );
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
@@ -121,7 +120,7 @@ export const setStatementToDB = async ({
 		statement.color = statement.color || getRandomColor(existingColors);
 
 		statement.statementType =
-            statement.statementType || StatementType.statement;
+			statement.statementType || StatementType.statement;
 		const { results, resultsSettings } = statement;
 		if (!results) statement.results = [];
 		if (!resultsSettings)
@@ -184,18 +183,18 @@ export const setStatementToDB = async ({
 };
 
 interface CreateStatementProps {
-    text: string;
-    parentStatement: Statement | "top";
-    subScreens?: Screen[];
-    statementType?: StatementType;
-    enableAddEvaluationOption: boolean;
-    enableAddVotingOption: boolean;
-    enhancedEvaluation: boolean;
-    showEvaluation: boolean;
-    resultsBy?: ResultsBy;
-    numberOfResults?: number;
-    hasChildren: boolean;
-    toggleAskNotifications?: () => void;
+	text: string;
+	parentStatement: Statement | "top";
+	subScreens?: Screen[];
+	statementType?: StatementType;
+	enableAddEvaluationOption: boolean;
+	enableAddVotingOption: boolean;
+	enhancedEvaluation: boolean;
+	showEvaluation: boolean;
+	resultsBy?: ResultsBy;
+	numberOfResults?: number;
+	hasChildren: boolean;
+	toggleAskNotifications?: () => void;
 }
 export function createStatement({
 	text,
@@ -215,7 +214,7 @@ export function createStatement({
 		if (parentStatement !== "top")
 			if (
 				isAllowedStatementType({ parentStatement, statementType }) ===
-                false
+				false
 			)
 				throw new Error(
 					`Statement type ${statementType} is not allowed under ${parentStatement.statementType}`,
@@ -229,24 +228,25 @@ export function createStatement({
 		const statementId = crypto.randomUUID();
 
 		const parentId =
-            parentStatement !== "top" ? parentStatement?.statementId : "top";
+			parentStatement !== "top" ? parentStatement?.statementId : "top";
 		const parentsSet: Set<string> =
-            parentStatement !== "top"
-            	? new Set(parentStatement?.parents)
-            	: new Set();
+			parentStatement !== "top"
+				? new Set(parentStatement?.parents)
+				: new Set();
 		parentsSet.add(parentId);
 		const parents: string[] = [...parentsSet];
 
 		const topParentId =
-            parentStatement !== "top"
-            	? parentStatement?.topParentId
-            	: statementId;
+			parentStatement !== "top"
+				? parentStatement?.topParentId
+				: statementId;
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
 			storeState.statements.statements,
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
+		
 
 		const newStatement: Statement = {
 			statement: text,
@@ -278,6 +278,9 @@ export function createStatement({
 			subScreens,
 		};
 
+		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
+		console.log(newStatement.statementType, newStatement.subScreens)
+
 		StatementSchema.parse(newStatement);
 
 		return newStatement;
@@ -289,22 +292,22 @@ export function createStatement({
 }
 
 interface UpdateStatementProps {
-    text: string;
-    statement: Statement;
-    subScreens?: Screen[];
-    statementType?: StatementType;
-    enableAddEvaluationOption: boolean;
-    enableAddVotingOption: boolean;
-    enhancedEvaluation: boolean;
-    showEvaluation: boolean;
-    resultsBy?: ResultsBy;
-    numberOfResults?: number;
-    hasChildren: boolean;
+	text: string;
+	statement: Statement;
+	subScreens?: Screen[];
+	statementType?: StatementType;
+	enableAddEvaluationOption: boolean;
+	enableAddVotingOption: boolean;
+	enhancedEvaluation: boolean;
+	showEvaluation: boolean;
+	resultsBy?: ResultsBy;
+	numberOfResults?: number;
+	hasChildren: boolean;
 }
 export function updateStatement({
 	text,
 	statement,
-	subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+	subScreens = [Screen.CHAT],
 	statementType = StatementType.statement,
 	enableAddEvaluationOption,
 	enableAddVotingOption,
@@ -331,13 +334,15 @@ export function updateStatement({
 		}
 		if (numberOfResults && newStatement.resultsSettings)
 			newStatement.resultsSettings.numberOfResults =
-                Number(numberOfResults);
+				Number(numberOfResults);
 		else if (numberOfResults && !newStatement.resultsSettings) {
 			newStatement.resultsSettings = {
 				resultsBy: ResultsBy.topOptions,
 				numberOfResults: numberOfResults,
 			};
 		}
+
+		subScreens = allowedScreens(statement, subScreens);
 
 		newStatement.statementSettings = updateStatementSettings({
 			statement,
@@ -352,16 +357,16 @@ export function updateStatement({
 
 		if (statementType !== undefined)
 			newStatement.statementType =
-                statement.statementType ?? StatementType.statement;
+				statement.statementType ?? StatementType.statement;
 
 		newStatement.subScreens =
-            subScreens !== undefined
-            	? subScreens
-            	: statement.subScreens || [
-            		Screen.CHAT,
-            		Screen.OPTIONS,
-            		Screen.VOTE,
-            	];
+			subScreens !== undefined
+				? subScreens
+				: statement.subScreens || [
+					Screen.CHAT,
+					Screen.OPTIONS,
+					Screen.VOTE,
+				];
 
 		StatementSchema.parse(newStatement);
 
@@ -374,20 +379,20 @@ export function updateStatement({
 }
 
 interface UpdateStatementSettingsReturnType {
-    enableAddEvaluationOption?: boolean;
-    enableAddVotingOption?: boolean;
-    enhancedEvaluation?: boolean;
-    showEvaluation?: boolean;
-    subScreens?: Screen[];
+	enableAddEvaluationOption?: boolean;
+	enableAddVotingOption?: boolean;
+	enhancedEvaluation?: boolean;
+	showEvaluation?: boolean;
+	subScreens?: Screen[];
 }
 
 interface UpdateStatementSettingsParams {
-    statement: Statement;
-    enableAddEvaluationOption: boolean;
-    enableAddVotingOption: boolean;
-    enhancedEvaluation: boolean;
-    showEvaluation: boolean;
-    subScreens: Screen[] | undefined;
+	statement: Statement;
+	enableAddEvaluationOption: boolean;
+	enableAddVotingOption: boolean;
+	enhancedEvaluation: boolean;
+	showEvaluation: boolean;
+	subScreens: Screen[] | undefined;
 }
 
 function updateStatementSettings({
@@ -403,13 +408,15 @@ function updateStatementSettings({
 		if (!statement.statementSettings)
 			throw new Error("Statement settings is undefined");
 
+		subScreens = allowedScreens(statement, subScreens);
+
 		return {
 			...statement.statementSettings,
 			enhancedEvaluation,
 			showEvaluation,
 			enableAddEvaluationOption,
 			enableAddVotingOption,
-			subScreens,
+			subScreens
 		};
 	} catch (error) {
 		console.error(error);
@@ -418,7 +425,7 @@ function updateStatementSettings({
 			showEvaluation: true,
 			enableAddEvaluationOption: true,
 			enableAddVotingOption: true,
-			subScreens: [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
+			subScreens: [Screen.CHAT],
 		};
 	}
 }
@@ -443,7 +450,7 @@ export async function updateStatementText(
 			lastUpdate: Timestamp.now().toMillis(),
 		};
 		await updateDoc(statementRef, newStatement);
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function setStatementIsOption(statement: Statement) {

@@ -24,80 +24,92 @@ import SectionTitle from "./../../components/sectionTitle/SectionTitle";
 import "./StatementSettingsForm.scss";
 
 interface StatementSettingsFormProps {
-    setIsLoading: (isLoading: boolean) => void;
-    statement: Statement;
-    parentStatement?: Statement | "top";
-    setStatementToEdit: (statement: Statement) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  statement: Statement;
+  parentStatement?: Statement | "top";
+  setStatementToEdit: (statement: Statement) => void;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
-    setIsLoading,
-    statement,
-    parentStatement,
-    setStatementToEdit,
+  setIsLoading,
+  statement,
+  parentStatement,
+  setStatementToEdit,
 }) => {
-	// * Hooks * //
-	const navigate = useNavigate();
-	const { statementId } = useParams();
-	const { t } = useLanguage();
+  try {
+	if (!parentStatement) console.log("No parent statement");
+	else console.log("Parent statement", parentStatement);
+    // * Hooks * //
+    const navigate = useNavigate();
+    const { statementId } = useParams();
+    const { t } = useLanguage();
 
     // * Functions * //
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setIsLoading(true);
-        await handleSetStatement({ navigate, statementId, statement, parentStatement });
+      e.preventDefault();
+      setIsLoading(true);
+      await handleSetStatement({
+        navigate,
+        statementId,
+        statement,
+        parentStatement,
+      });
 
-		setIsLoading(false);
-	};
+      setIsLoading(false);
+    };
 
-	const isNewStatement = !statementId;
+    const isNewStatement = !statementId;
 
-	const statementSettingsProps = {
-		statement,
-		setStatementToEdit,
-	} as const;
+    const statementSettingsProps = {
+      statement,
+      setStatementToEdit,
+    } as const;
 
-	return (
-		<form
-			onSubmit={handleSubmit}
-			className="statement-settings-form"
-			data-cy="statement-settings-form"
-		>
-			<TitleAndDescription
-				statement={statement}
-				setStatementToEdit={setStatementToEdit}
-			/>
-			<SectionTitle title={t("General Settings")} />
-			<section className="switches-area">
-				<SubScreensToDisplay {...statementSettingsProps} />
-				<AdvancedSettings {...statementSettingsProps} />
-			</section>
-			<DisplayResultsBy {...statementSettingsProps} />
-			<ResultsRange {...statementSettingsProps} />
+    return (
+      <form
+        onSubmit={handleSubmit}
+        className="statement-settings-form"
+        data-cy="statement-settings-form"
+      >
+        <TitleAndDescription
+          statement={statement}
+          setStatementToEdit={setStatementToEdit}
+        />
+        <SectionTitle title={t("General Settings")} />
+        <section className="switches-area">
+          <SubScreensToDisplay {...statementSettingsProps} />
+          <AdvancedSettings {...statementSettingsProps} />
+        </section>
+        <DisplayResultsBy {...statementSettingsProps} />
+        <ResultsRange {...statementSettingsProps} />
 
-			{!isNewStatement && (
-				<>
-					<UploadImage {...statementSettingsProps} />
-					<SectionTitle title={t("Members")} />
-					<MembersSettings {...statementSettingsProps} />
-					<section className="get-members-area">
-						<GetVoters statementId={statementId} />
-					</section>
-					<section className="get-members-area">
-						<GetEvaluators statementId={statementId} />
-					</section>
-				</>
-			)}
+        {!isNewStatement && (
+          <>
+            <UploadImage {...statementSettingsProps} />
+            <SectionTitle title={t("Members")} />
+            <MembersSettings {...statementSettingsProps} />
+            <section className="get-members-area">
+              <GetVoters statementId={statementId} />
+            </section>
+            <section className="get-members-area">
+              <GetEvaluators statementId={statementId} />
+            </section>
+          </>
+        )}
 
-			<button
-				type="submit"
-				className="submit-button"
-				data-cy="settings-statement-submit-btn"
-			>
-				{t(isNewStatement ? "Add" : "Update")}
-			</button>
-		</form>
-	);
+        <button
+          type="submit"
+          className="submit-button"
+          data-cy="settings-statement-submit-btn"
+        >
+          {t(isNewStatement ? "Add" : "Update")}
+        </button>
+      </form>
+    );
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 
 export default StatementSettingsForm;
