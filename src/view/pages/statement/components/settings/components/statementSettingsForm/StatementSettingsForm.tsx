@@ -37,7 +37,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
   setStatementToEdit,
 }) => {
   try {
-
+	
     // * Hooks * //
     const navigate = useNavigate();
     const { statementId } = useParams();
@@ -45,6 +45,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
     // * Functions * //
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		
       e.preventDefault();
       setIsLoading(true);
       await handleSetStatement({

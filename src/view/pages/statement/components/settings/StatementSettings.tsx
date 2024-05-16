@@ -49,12 +49,18 @@ const StatementSettings: FC<StatementSettingsProps> = () => {
     statementSelector(statementId)
   );
 
+  
+
   useEffect(() => {
     if (statement) {
+
+        setStatementToEdit(statement);
+
       if (statement.parentId === "top") {
         setParentStatement("top");
         return;
       }
+      //get parent statement
       getStatementFromDB(statement.parentId)
         .then((parentStatement) => {
           try {

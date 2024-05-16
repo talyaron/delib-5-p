@@ -279,8 +279,7 @@ export function createStatement({
 		};
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
-		console.log(newStatement.statementType, newStatement.subScreens)
-
+	
 		StatementSchema.parse(newStatement);
 
 		return newStatement;

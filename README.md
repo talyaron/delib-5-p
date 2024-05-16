@@ -162,5 +162,8 @@ Deliverability is the ability to deliver a product or service to the customer in
 ### Refactoring
 Refactoring is the process of restructuring existing code without changing its external behavior. It is an important part of software development, as it helps to improve the quality of the code, make it more readable and maintainable, and reduce technical debt. Refactoring involves making small, incremental changes to the code, such as renaming variables, extracting functions, and removing duplication, to improve its design and structure.
 
+### Debugging & Refactoring
+You can use your preferred methods of debugging, and when you find the bug, ensure it is fixed. Sometimes, after debugging, you may understand that refactoring the code is necessary to make it more predictable and maintainable. If that's the case, please refactor the code accordingly.
+
 ### YAGNI
 YAGNI stands for You Aren't Gonna Need It. It is a principle of software development that states that you should not add functionality until it is needed. This means that you should avoid adding features or code that you think you might need in the future, but don't need right now.
