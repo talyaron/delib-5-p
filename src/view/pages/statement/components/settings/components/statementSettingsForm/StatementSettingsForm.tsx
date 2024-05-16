@@ -37,8 +37,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
   setStatementToEdit,
 }) => {
   try {
-	if (!parentStatement) console.log("No parent statement");
-	else console.log("Parent statement", parentStatement);
+
     // * Hooks * //
     const navigate = useNavigate();
     const { statementId } = useParams();

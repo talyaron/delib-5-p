@@ -24,7 +24,7 @@ import StatementSettingsForm from "./components/statementSettingsForm/StatementS
 import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
 import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
 import { defaultEmptyStatement } from "./emptyStatementModel";
-import { use } from "chai";
+
 
 interface StatementSettingsProps {
   simple?: boolean;
