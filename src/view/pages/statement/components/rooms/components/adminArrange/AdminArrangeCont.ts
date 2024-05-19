@@ -1,5 +1,4 @@
 import { Participant, RoomDivied, Statement } from "delib-npm";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Topic {
     [key: string]: {
@@ -15,7 +14,7 @@ export function divideIntoTopics(
 	maxPerRoom = 7,
 ): { rooms: RoomDivied[]; topicsParticipants: Topic } {
 	try {
-		const { t } = useLanguage();
+	
 		const topicsParticipants: Topic = {};
 
 		//build topicsParticipantsObject
@@ -24,7 +23,7 @@ export function divideIntoTopics(
 				if (!participant.statementId) {
 					topicsParticipants["general"] = {
 						statementId: "general",
-						statement: t("General"),
+						statement: "General",
 						participants: [participant],
 					};
 				} else if (!(participant.statementId in topicsParticipants)) {

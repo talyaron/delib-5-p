@@ -122,7 +122,7 @@ export const userSelectedTopicSelector =
                 room.parentId === parentId,
     	);
 
-//loby rooms
+//lobby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.rooms.lobbyRooms;
 export const lobbyRoomSelector =
     (statementId: string | undefined) => (state: RootState) =>
