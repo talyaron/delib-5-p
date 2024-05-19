@@ -1,5 +1,4 @@
 import { Participant, RoomDivied, Statement } from "delib-npm";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Topic {
     [key: string]: {
