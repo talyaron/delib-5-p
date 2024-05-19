@@ -91,12 +91,8 @@ const StatementEvaluationCard: FC<Props> = ({
 				height: elementRef.current?.clientHeight,
 			})
 		);
-	}, []);
+	}, [statement.statement]);
 
-	// function handleGoToOption() {
-	//     if (!isEdit && linkToChildren(statement, parentStatement))
-	//         navigate(`/statement/${statement.statementId}/options`);
-	// }
 
 	function handleSetOption() {
 		try {
