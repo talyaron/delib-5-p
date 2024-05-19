@@ -43,6 +43,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			setSortedSubStatements(() =>
 				sortSubStatements(subStatements, sort).filter(
 					(subStatement) => {
+						//if questions is true, only show questions
 						if (questions) {
 							return (
 								subStatement.statementType ===
@@ -50,6 +51,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							);
 						}
 
+						//if options is true, only show options
 						return isOptionFn(subStatement);
 					},
 				),
