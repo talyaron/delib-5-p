@@ -10,6 +10,7 @@ import ChooseRoom from "./components/choose/ChooseRoom";
 // import InRoom from "./user/inRoom/InRoom";
 import { store } from "../../../../../model/store";
 import { enterRoomsDB } from "../../../../../controllers/db/rooms/setRooms";
+import InRoom from "./components/inRoom/InRoom";
 
 interface StatementRoomsProps {
     statement: Statement;
@@ -79,9 +80,7 @@ function switchRoomScreens(
 			/>
 		);
 	case RoomsStateSelection.inRoom:
-		return <div>{statement.creatorId}</div>;
-
-		// return <InRoom statement={statement} />;
+		return <InRoom statement={statement} />;
 
 	default:
 		return (

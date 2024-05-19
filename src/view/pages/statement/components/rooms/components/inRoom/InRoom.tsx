@@ -11,7 +11,7 @@ import {
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
 // // Styles
-import styles from "./InRoom.module.css";
+import styles from "./InRoom.module.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -31,6 +31,7 @@ const InRoom: FC<Props> = ({ statement }) => {
 	const userTopic: Participant | undefined = useAppSelector(
 		userSelectedTopicSelector(statement.statementId),
 	);
+	
 	const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
 
 	const dispatch = useAppDispatch();

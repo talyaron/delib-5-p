@@ -199,6 +199,7 @@ export async function setRoomsStateToDB(
 export function setParticipantInRoomToDB(participant: ParticipantInRoom) {
 	try {
 		const { uid, topic, roomNumber } = participant;
+		
 		if (!topic) return;
 
 		const requestId = getRequestIdToJoinRoom(uid, topic.parentId);
