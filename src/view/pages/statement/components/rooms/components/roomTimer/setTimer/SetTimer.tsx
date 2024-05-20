@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./setRoomTimer.module.scss";
+import "./SetTimer.scss";
 import {
 	fromFourDigitsToMilliseconds,
 	fromMillisecondsToFourDigits,
@@ -14,7 +14,7 @@ interface TimerProps {
     setInitTime: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function SetRoomTimerComp({
+function SetTimer({
 	roomTimer,
 	setTimerAdjustment,
 	setInitTime,
@@ -24,8 +24,8 @@ function SetRoomTimerComp({
 	);
 
 	return (
-		<div className={styles.timer}>
-			<div className={styles.time}>
+		<div className='set-timer'>
+			<div className="time">
 				<input
 					type="number"
 					min={0}
@@ -136,4 +136,4 @@ function SetRoomTimerComp({
 	}
 }
 
-export default SetRoomTimerComp;
+export default SetTimer;

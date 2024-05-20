@@ -82,6 +82,7 @@
     "Results": "Resultados",
     "Room": "Sala",
     "Rooms": "Salas",
+    "Room's Topic": "Tema de la Sala",
     "Room Allocation": "Asignación de Sala",
     "Selected": "Seleccionado",
     "Send a link to anonymous users": "Enviar un enlace a usuarios anónimos",
@@ -112,5 +113,6 @@
     "Unmark as a Solution": "Desmarcar como solución",
     "Mark as a Solution": "Marcar como solución",
     "Mark as a Question": "Marcar como pregunta",
-    "Unmark as a Question": "Desmarcar como pregunta"
+    "Unmark as a Question": "Desmarcar como pregunta",
+    "Welcome to room": "Bienvenido a la sala"
 }
