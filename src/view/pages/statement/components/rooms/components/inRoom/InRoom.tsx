@@ -10,8 +10,8 @@ import {
 } from "../../../../../../../controllers/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
-// // Styles
-import styles from "./InRoom.module.scss";
+// Styles
+import "./InRoom.scss";
 
 // Custom Components
 import Text from "../../../../../../components/text/Text";
@@ -20,6 +20,7 @@ import { listenToRoomTimers } from "../../../../../../../controllers/db/timer/ge
 import { Unsubscribe } from "firebase/firestore";
 import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { getTitle } from "../../../../../../../controllers/general/helpers";
 
 interface Props {
     statement: Statement;
@@ -54,10 +55,10 @@ const InRoom: FC<Props> = ({ statement }) => {
 
 	try {
 		return (
-			<>
-				<h1>{t("Room Allocation")}</h1>
-				{/* {userTopic && userTopic.approved ? */}
-				<div className={styles.message}>
+			<div className="in-room">
+				<h2>{t("Welcome to room")} {userTopic?.roomNumber}</h2>
+				<h3>{getTitle(userTopic?.statement)}</h3>
+				<div >
 					{userTopic && userTopic.statement ? (
 						<>
 							<h2>
@@ -69,7 +70,7 @@ const InRoom: FC<Props> = ({ statement }) => {
 									onlyTitle={true}
 								/>
 							</h2>
-							<div className={styles.text}>
+							<div>
 								{t("Welcome to Room Number")}
 								<span>{userTopic.roomNumber}</span>
 								{t("In Zoom")}
@@ -83,7 +84,7 @@ const InRoom: FC<Props> = ({ statement }) => {
 					roomNumber={userTopic?.roomNumber}
 					timers={timers}
 				/>
-			</>
+			</div>
 		);
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {

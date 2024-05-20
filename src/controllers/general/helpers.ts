@@ -201,9 +201,9 @@ export function handleLogout(dispatch: AppDispatch) {
 	store.dispatch(setUser(null));
 }
 
-export function getTitle(statement: Statement) {
+export function getTitle(statement: Statement | undefined) {
 	try {
-		if (!statement) throw new Error("No statement");
+		if (!statement) return "";
 
 		const title = statement.statement.split("\n")[0].replace("*", "");
 
