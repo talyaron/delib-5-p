@@ -1,0 +1,22 @@
+.timer{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .clock{
+        display: flex;
+        align-items: center;
+        gap:2rem;
+        
+        @media screen and (max-width: 768px) {
+            max-width: 40vw;
+            
+        }
+    }
+    .timer-buttons{
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+}

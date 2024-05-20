@@ -5,8 +5,8 @@ import { Participant, RoomTimer, Statement } from "delib-npm";
 
 // Redux
 import {
-	useAppDispatch,
-	useAppSelector,
+  useAppDispatch,
+  useAppSelector,
 } from "../../../../../../../controllers/hooks/reduxHooks";
 import { userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
 
@@ -14,8 +14,7 @@ import { userSelectedTopicSelector } from "../../../../../../../model/rooms/room
 import "./InRoom.scss";
 
 // Custom Components
-import Text from "../../../../../../components/text/Text";
-import RoomTimers from "../roomTimer/RoomTimers";
+import RoomTimers from "../roomTimer/Timers";
 import { listenToRoomTimers } from "../../../../../../../controllers/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
 import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
@@ -23,73 +22,57 @@ import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages
 import { getTitle } from "../../../../../../../controllers/general/helpers";
 
 interface Props {
-    statement: Statement;
+  statement: Statement;
 }
 
 const InRoom: FC<Props> = ({ statement }) => {
-	const { t } = useLanguage();
+  const { t } = useLanguage();
 
-	const userTopic: Participant | undefined = useAppSelector(
-		userSelectedTopicSelector(statement.statementId),
-	);
-	
-	const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
+  const userTopic: Participant | undefined = useAppSelector(
+    userSelectedTopicSelector(statement.statementId)
+  );
 
-	const dispatch = useAppDispatch();
+  const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
 
-	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		let unsubscribe: Unsubscribe = () => {};
-		if (userTopic?.roomNumber) {
-			unsubscribe = listenToRoomTimers(
-				statement.statementId,
-				userTopic?.roomNumber,
-				dispatch,
-			);
-		}
+  const dispatch = useAppDispatch();
 
-		return () => {
-			unsubscribe();
-		};
-	}, [userTopic?.roomNumber]);
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    let unsubscribe: Unsubscribe = () => {};
+    if (userTopic?.roomNumber) {
+      unsubscribe = listenToRoomTimers(
+        statement.statementId,
+        userTopic?.roomNumber,
+        dispatch
+      );
+    }
 
-	try {
-		return (
-			<div className="in-room">
-				<h2>{t("Welcome to room")} {userTopic?.roomNumber}</h2>
-				<h3>{getTitle(userTopic?.statement)}</h3>
-				<div >
-					{userTopic && userTopic.statement ? (
-						<>
-							<h2>
-								<Text
-									text={`${
-										(t("Discussion Topic:"),
-										userTopic.statement.statement)
-									}`}
-									onlyTitle={true}
-								/>
-							</h2>
-							<div>
-								{t("Welcome to Room Number")}
-								<span>{userTopic.roomNumber}</span>
-								{t("In Zoom")}
-							</div>
-						</>
-					) : (
-						<h2>{t("No Topic Chosen by You")}</h2>
-					)}
-				</div>
-				<RoomTimers
-					roomNumber={userTopic?.roomNumber}
-					timers={timers}
-				/>
-			</div>
-		);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	} catch (error: any) {
-		return <div>error: {error.message}</div>;
-	}
+    return () => {
+      unsubscribe();
+    };
+  }, [userTopic?.roomNumber]);
+
+  try {
+    return (
+      <div className="in-room">
+        {userTopic && userTopic.statement ? (
+          <div className="welcome">
+            <h2>
+              {t("Welcome to room")} {userTopic?.roomNumber}
+            </h2>
+            <h3>{getTitle(userTopic?.statement)}</h3>
+          </div>
+        ) : (
+          <h2>{t("No Topic Chosen by You")}</h2>
+        )}
+		<div className="image"></div>
+        <RoomTimers roomNumber={userTopic?.roomNumber} timers={timers} />
+      </div>
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return <div>error: {error.message}</div>;
+  }
 };
 
 export default InRoom;

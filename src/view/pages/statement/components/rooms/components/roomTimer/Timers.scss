@@ -3,9 +3,11 @@
     gap:2rem;
     direction: ltr;
 
+  
+
     //on mobile
     @media (max-width: 768px) {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
     }
