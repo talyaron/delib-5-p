@@ -60,7 +60,7 @@ const InRoom: FC<Props> = ({ statement }) => {
             <h2>
               {t("Welcome to room")} {userTopic?.roomNumber}
             </h2>
-            <h3>{getTitle(userTopic?.statement)}</h3>
+            <h3>{t("Room's Topic")}: {getTitle(userTopic?.statement)}</h3>
           </div>
         ) : (
           <h2>{t("No Topic Chosen by You")}</h2>

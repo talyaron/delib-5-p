@@ -3,21 +3,11 @@ interface Props {
   color?: string;
 }
 
-export const actionCircleStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundColor: "#FFF",
-  width: "3rem",
-  height: "3rem",
-  borderRadius: "50%",
-  cursor: "pointer",
-  boxShadow: "0px 5px 10px var(--shadow)",
-};
+
 
 export default function PlayIcon({ onClick, color="#5770F4"}: Props) {
   return (
-    <div style={actionCircleStyle} onClick={onClick}>
+    <div  onClick={onClick}>
       <svg
         width="50"
         height="58"
@@ -37,8 +27,8 @@ export default function PlayIcon({ onClick, color="#5770F4"}: Props) {
         <path
           d="M33 21L21 14V28L33 21Z"
           stroke="white"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <defs>
           <filter
@@ -48,9 +38,9 @@ export default function PlayIcon({ onClick, color="#5770F4"}: Props) {
             width="50"
             height="58"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"
