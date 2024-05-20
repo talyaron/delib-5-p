@@ -121,36 +121,38 @@ export default function Timer({
       <div className="clock">
         <TimerIcon percent={percent} />
       </div>
-      {timerAdjustment ? (
-        <SetRoomTimerComp
-          roomTimer={roomTimer}
-          setTimerAdjustment={setTimerAdjustment}
-          setInitTime={setInitTime}
-        />
-      ) : (
-        <p
-          className="roomsWrapper__timer__time"
-          onClick={() => setTimerAdjustment(true)}
-        >{`${minutes < 10 ? "0" + minutes : minutes}:${
-          seconds < 10 ? "0" + seconds : seconds
-        }`}</p>
-      )}
-      <div style={{ opacity: isActiveTimer ? "1" : "0.2" }}>
+      <div className="digits">
+        {timerAdjustment ? (
+          <SetRoomTimerComp
+            roomTimer={roomTimer}
+            setTimerAdjustment={setTimerAdjustment}
+            setInitTime={setInitTime}
+          />
+        ) : (
+          <p
+            onClick={() => setTimerAdjustment(true)}
+          >{`${minutes < 10 ? "0" + minutes : minutes}:${
+            seconds < 10 ? "0" + seconds : seconds
+          }`}</p>
+        )}
+      </div>
+      <div
+        className="timer-buttons"
+        style={{ opacity: isActiveTimer ? "1" : "0.2" }}
+      >
         {!isActive && (
-          <div className="timer-buttons">
-            <PlayIcon
-              onClick={() => {
-                if (isActiveTimer) {
-                  startTimer();
-                  setTimersStatusDB(roomTimer, TimerStatus.start);
-                }
-              }}
-            />
-          </div>
+          <PlayIcon
+            onClick={() => {
+              if (isActiveTimer) {
+                startTimer();
+                setTimersStatusDB(roomTimer, TimerStatus.start);
+              }
+            }}
+          />
         )}
 
         {isActive && (
-          <div className="timer-buttons">
+          <>
             <StopIcon
               onClick={() => {
                 if (isActiveTimer) {
@@ -167,7 +169,7 @@ export default function Timer({
                 }
               }}
             />
-          </div>
+          </>
         )}
       </div>
     </div>
