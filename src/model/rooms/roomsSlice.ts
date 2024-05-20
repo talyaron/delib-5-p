@@ -122,6 +122,13 @@ export const userSelectedTopicSelector =
                 room.parentId === parentId,
     	);
 
+		//find all user in room number
+export const participantsInRoomSelector =
+	(roomNumber: number | undefined, parentId:string) => (state: RootState) =>
+		state.rooms.askToJoinRooms.filter(
+			(room) => room.roomNumber === roomNumber && room.parentId === parentId,
+		);
+
 //lobby rooms
 export const lobbyRoomsSelector = (state: RootState) => state.rooms.lobbyRooms;
 export const lobbyRoomSelector =

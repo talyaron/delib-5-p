@@ -23,12 +23,24 @@
             margin-top: 1rem;
         }
     }
-    .image{
+
+    .participants {
+        margin: 1rem 0;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+
+        .name {
+            font-size: .85rem;
+        }
+    }
+
+    .image {
         background-image: url('../../../../../../../assets/images/teaching.png');
         width: 100%;
         min-height: 300px;
         background-repeat: no-repeat;
-        background-size:contain;
+        background-size: contain;
         background-position-x: center;
         margin-bottom: 2rem;
     }

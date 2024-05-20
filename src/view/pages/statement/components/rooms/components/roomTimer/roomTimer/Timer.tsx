@@ -137,14 +137,16 @@ export default function Timer({
       )}
       <div style={{ opacity: isActiveTimer ? "1" : "0.2" }}>
         {!isActive && (
-          <PlayIcon
-            onClick={() => {
-              if (isActiveTimer) {
-                startTimer();
-                setTimersStatusDB(roomTimer, TimerStatus.start);
-              }
-            }}
-          />
+          <div className="timer-buttons">
+            <PlayIcon
+              onClick={() => {
+                if (isActiveTimer) {
+                  startTimer();
+                  setTimersStatusDB(roomTimer, TimerStatus.start);
+                }
+              }}
+            />
+          </div>
         )}
 
         {isActive && (

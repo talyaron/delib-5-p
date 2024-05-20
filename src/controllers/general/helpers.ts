@@ -147,12 +147,12 @@ export const statementTitleToDisplay = (
 	titleLength: number,
 ) => {
 	const _title =
-        statement.split("\n")[0].replace("*", "") || statement.replace("*", "");
+		statement.split("\n")[0].replace("*", "") || statement.replace("*", "");
 
 	const titleToSet =
-        _title.length > titleLength - 3
-        	? _title.substring(0, titleLength) + "..."
-        	: _title;
+		_title.length > titleLength - 3
+			? _title.substring(0, titleLength) + "..."
+			: _title;
 
 	return { shortVersion: titleToSet, fullVersion: _title };
 };
@@ -273,6 +273,21 @@ export function getFirstScreen(array: Array<Screen>): Screen {
 		console.error(error);
 
 		return Screen.CHAT;
+	}
+}
+
+//get first name from full name or first name with firs family name letter
+
+export function getFirstName(fullName: string) {
+	try {
+		if(!fullName) return "";
+		const names = fullName.split(" ");
+		if (names.length > 1) return names[0] + " " + names[1][0] + ".";
+		return names[0];
+	} catch (error) {
+		console.error(error);
+
+		return "";
 	}
 }
 
