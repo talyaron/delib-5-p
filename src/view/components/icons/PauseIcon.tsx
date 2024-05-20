@@ -25,16 +25,16 @@ export default function PauseIcon({ onClick, color = "#5899E0" }: Props) {
         <path
           d="M29.5 29C28.67 29 28 28.33 28 27.5V14.5C28 13.67 28.67 13 29.5 13C30.33 13 31 13.67 31 14.5V27.5C31 28.33 30.33 29 29.5 29Z"
           stroke="white"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M20.5 29C19.67 29 19 28.33 19 27.5V14.5C19 13.67 19.67 13 20.5 13C21.33 13 22 13.67 22 14.5V27.5C22 28.33 21.33 29 20.5 29Z"
           stroke="white"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <defs>
           <filter
@@ -44,9 +44,9 @@ export default function PauseIcon({ onClick, color = "#5899E0" }: Props) {
             width="50"
             height="59"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"

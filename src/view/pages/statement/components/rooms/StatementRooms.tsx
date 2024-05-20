@@ -41,7 +41,7 @@ const StatementRooms: FC<StatementRoomsProps> = ({
 
   return (
     <div className="page__main">
-      <div className="wrapper">
+      
         {switchRoomScreens(
           statement.roomsState,
           __subStatements,
@@ -58,7 +58,7 @@ const StatementRooms: FC<StatementRoomsProps> = ({
             setShowModal={setShowModal}
           />
         ) : null}
-      </div>
+   
     </div>
   );
 };

@@ -8,7 +8,7 @@ import PauseIcon from "../../../../../../../components/icons/PauseIcon";
 import StopIcon from "../../../../../../../components/icons/StopIcon";
 import { getMinutesAndSeconds } from "../timerPageController";
 import { RoomTimer, TimerStatus } from "delib-npm";
-import SetRoomTimerComp from "../setTimer/SetRoomTimerComp";
+
 import {
   setTimersStatusDB,
   startNextTimer,
@@ -31,9 +31,9 @@ export default function Timer({
   );
 
   // useState
-  const [initTime, setInitTime] = useState<number>(roomTimer.time); //timers?.timers[timerId as keyof typeof timers.timers].initTime as number
+  const initTime = roomTimer.time; 
   const [timeLeft, setTimeLeft] = useState(roomTimer.time);
-  const [timerAdjustment, setTimerAdjustment] = useState<boolean>(false);
+
   const [minutes, setMinutes] = useState(
     getMinutesAndSeconds(roomTimer.time).minutes
   );
@@ -122,19 +122,9 @@ export default function Timer({
         <TimerIcon percent={percent} />
       </div>
       <div className="digits">
-        {timerAdjustment ? (
-          <SetRoomTimerComp
-            roomTimer={roomTimer}
-            setTimerAdjustment={setTimerAdjustment}
-            setInitTime={setInitTime}
-          />
-        ) : (
-          <p
-            onClick={() => setTimerAdjustment(true)}
-          >{`${minutes < 10 ? "0" + minutes : minutes}:${
-            seconds < 10 ? "0" + seconds : seconds
-          }`}</p>
-        )}
+        <p>{`${minutes < 10 ? "0" + minutes : minutes}:${
+          seconds < 10 ? "0" + seconds : seconds
+        }`}</p>
       </div>
       <div
         className="timer-buttons"
