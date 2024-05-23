@@ -1,13 +1,17 @@
 .input {
-    height: fit-content;
-    width: 100%;
-    font-size: 1.2rem;
-    margin-inline: 10px;
+  height: fit-content;
+  width: 100%;
+  font-size: 1.2rem;
+  margin-inline: 10px;
 }
 
 .textarea {
-    width: 100%;
-    min-height: 4rem;
-    height: fit-content;
-    flex: 1;
+  width: 100%;
+  min-height: 4rem;
+  height: 100%;
+  flex: 1;
+}
+
+.editTitle-btn {
+  background-color: lightblue;
 }
