@@ -64,6 +64,11 @@ const EditTitle: FC<Props> = ({
     }
   }
 
+  function handleEdit() {
+    setEdit(true);
+    setShowSaveButton(true); // Show save button when starting to edit
+  }
+
   if (!isEdit)
     return (
       <div style={{ direction: direction, textAlign: align }}>
