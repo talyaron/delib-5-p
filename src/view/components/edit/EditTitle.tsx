@@ -44,7 +44,7 @@ const EditTitle: FC<Props> = ({
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) {
     setText(e.target.value);
-    setShowSaveButton(true); // Show save button when text changes
+    setShowSaveButton(true);
   }
 
   function handleSave() {
