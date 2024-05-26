@@ -4,7 +4,7 @@ import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
 
 
-export async function updateSubscribedListnersCB(event: any) {
+export async function updateSubscribedListenersCB(event: any) {
     //get statement
     const { statementId } = event.params;
     const statement = event.data.after.data();
@@ -77,5 +77,6 @@ export async function updateParentWithNewMessageCB(e: any) {
         return;
     }
 }
+
 
 

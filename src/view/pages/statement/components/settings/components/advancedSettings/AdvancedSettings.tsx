@@ -10,99 +10,99 @@ import "./AdvancedSettings.scss";
 
 
 const AdvancedSettings: FC<StatementSettingsProps> = ({
-    statement,
-    setStatementToEdit,
+	statement,
+	setStatementToEdit,
 }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    const hasChildren = statement.hasChildren ?? true;
+	const hasChildren = statement.hasChildren ?? true;
     
-    const statementSettings = getStatementSettings(statement);
-    const {
-        inVotingGetOnlyResults,
-        enhancedEvaluation,
-        showEvaluation,
-        enableAddVotingOption,
-        enableAddEvaluationOption,
-    } = statementSettings;
+	const statementSettings = getStatementSettings(statement);
+	const {
+		inVotingGetOnlyResults,
+		enhancedEvaluation,
+		showEvaluation,
+		enableAddVotingOption,
+		enableAddEvaluationOption,
+	} = statementSettings;
 
-    const setStatementSetting = (
-        key: keyof typeof statementSettings,
-        newValue: boolean,
-    ) => {
-        setStatementToEdit({
-            ...statement,
-            statementSettings: {
-                ...statementSettings,
-                [key]: newValue,
-            },
-        });
-    };
+	const setStatementSetting = (
+		key: keyof typeof statementSettings,
+		newValue: boolean,
+	) => {
+		setStatementToEdit({
+			...statement,
+			statementSettings: {
+				...statementSettings,
+				[key]: newValue,
+			},
+		});
+	};
 
-    return (
-        <div className="advanced-settings">
-            <h3 className="title">{t("Advanced")}</h3>
-            <Checkbox
-                label={"Enable Sub-Conversations"}
-                isChecked={hasChildren}
-                toggleSelection={() => {
-                    setStatementToEdit({
-                        ...statement,
-                        hasChildren: !hasChildren,
-                    });
-                }}
-            />
-            <Checkbox
-                label={"Enhanced Evaluation"}
-                isChecked={enhancedEvaluation}
-                toggleSelection={() => {
-                    setStatementSetting(
-                        "enhancedEvaluation",
-                        !enhancedEvaluation,
-                    );
-                }}
-            />
-            <Checkbox
-                label={"Show Evaluations results"}
-                isChecked={showEvaluation}
-                toggleSelection={() => {
-                    setStatementSetting("showEvaluation", !showEvaluation);
-                }}
-            />
-            <Checkbox
-                label={
-                    "Allow participants to contribute options to the voting page"
-                }
-                isChecked={enableAddVotingOption}
-                toggleSelection={() => {
-                    setStatementSetting(
-                        "enableAddVotingOption",
-                        !enableAddVotingOption,
-                    );
-                }}
-            />
-            <Checkbox
-                label="Allow participants to contribute options to the evaluation page"
-                isChecked={enableAddEvaluationOption}
-                toggleSelection={() => {
-                    setStatementSetting(
-                        "enableAddEvaluationOption",
-                        !enableAddEvaluationOption,
-                    );
-                }}
-            />
-            <Checkbox
-                label="In Voting page, show only the results of the top options"
-                isChecked={inVotingGetOnlyResults}
-                toggleSelection={() => {
-                    setStatementSetting(
-                        "inVotingGetOnlyResults",
-                        !inVotingGetOnlyResults,
-                    );
-                }}
-            />
-        </div>
-    );
+	return (
+		<div className="advanced-settings">
+			<h3 className="title">{t("Advanced")}</h3>
+			<Checkbox
+				label={"Enable Sub-Conversations"}
+				isChecked={hasChildren}
+				toggleSelection={() => {
+					setStatementToEdit({
+						...statement,
+						hasChildren: !hasChildren,
+					});
+				}}
+			/>
+			<Checkbox
+				label={"Enhanced Evaluation"}
+				isChecked={enhancedEvaluation}
+				toggleSelection={() => {
+					setStatementSetting(
+						"enhancedEvaluation",
+						!enhancedEvaluation,
+					);
+				}}
+			/>
+			<Checkbox
+				label={"Show Evaluations results"}
+				isChecked={showEvaluation}
+				toggleSelection={() => {
+					setStatementSetting("showEvaluation", !showEvaluation);
+				}}
+			/>
+			<Checkbox
+				label={
+					"Allow participants to contribute options to the voting page"
+				}
+				isChecked={enableAddVotingOption}
+				toggleSelection={() => {
+					setStatementSetting(
+						"enableAddVotingOption",
+						!enableAddVotingOption,
+					);
+				}}
+			/>
+			<Checkbox
+				label="Allow participants to contribute options to the evaluation page"
+				isChecked={enableAddEvaluationOption}
+				toggleSelection={() => {
+					setStatementSetting(
+						"enableAddEvaluationOption",
+						!enableAddEvaluationOption,
+					);
+				}}
+			/>
+			<Checkbox
+				label="In Voting page, show only the results of the top options"
+				isChecked={inVotingGetOnlyResults}
+				toggleSelection={() => {
+					setStatementSetting(
+						"inVotingGetOnlyResults",
+						!inVotingGetOnlyResults,
+					);
+				}}
+			/>
+		</div>
+	);
 };
 
 export default AdvancedSettings;

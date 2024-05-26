@@ -17,8 +17,8 @@ import { listenToEvaluations } from "../../../controllers/db/evaluation/getEvalu
 
 // Redux Store
 import {
-    useAppDispatch,
-    useAppSelector,
+	useAppDispatch,
+	useAppSelector,
 } from "../../../controllers/hooks/reduxHooks";
 import { statementNotificationSelector } from "../../../model/statements/statementsSlice";
 import { RootState } from "../../../model/store";
@@ -45,234 +45,240 @@ import FollowMeToast from "./components/followMeToast/FollowMeToast";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
-    (state: RootState) => state.statements.statements,
-    (_state: RootState, statementId: string | undefined) => statementId,
-    (statements, statementId) =>
-        statements
-            .filter((st) => st.parentId === statementId)
-            .sort((a, b) => a.createdAt - b.createdAt),
+	(state: RootState) => state.statements.statements,
+	(_state: RootState, statementId: string | undefined) => statementId,
+	(statements, statementId) =>
+		statements
+			.filter((st) => st.parentId === statementId)
+			.sort((a, b) => a.createdAt - b.createdAt),
 );
 
 const StatementMain: FC = () => {
-    // Hooks
-    const { statementId } = useParams();
-    const page = useParams().page as Screen;
-    const navigate = useNavigate();
-    const { t } = useLanguage();
+	// Hooks
+	const { statementId } = useParams();
+	const page = useParams().page as Screen;
+	const navigate = useNavigate();
+	const { t } = useLanguage();
 
-    //TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
-    const {
-        error,
-        isAuthorized,
-        loading,
-        statementSubscription,
-        statement,
-        topParentStatement,
-        role,
-    } = useIsAuthorized(statementId);
-   
+	//TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
+	const {
+		error,
+		isAuthorized,
+		loading,
+		statementSubscription,
+		statement,
+		topParentStatement,
+		role,
+	} = useIsAuthorized(statementId);
 
-    // Redux store
-    const dispatch = useAppDispatch();
-    const user = useSelector(userSelector);
-    const hasNotifications = useAppSelector(
-        statementNotificationSelector(statementId),
-    );
+	// Redux store
+	const dispatch = useAppDispatch();
+	const user = useSelector(userSelector);
+	const hasNotifications = useAppSelector(
+		statementNotificationSelector(statementId),
+	);
 
-    const subStatements = useAppSelector((state: RootState) =>
-        subStatementsSelector(state, statementId),
-    );
+	const subStatements = useAppSelector((state: RootState) =>
+		subStatementsSelector(state, statementId),
+	);
 
-    // Use states
-    const [talker, setTalker] = useState<User | null>(null);
-    const [title, setTitle] = useState<string>(t("Group"));
-    const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
-    const [askNotifications, setAskNotifications] = useState(false);
-    const [isStatementNotFound, setIsStatementNotFound] = useState(false);
+	// Use states
+	const [talker, setTalker] = useState<User | null>(null);
+	const [title, setTitle] = useState<string>(t("Group"));
+	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
+	const [askNotifications, setAskNotifications] = useState(false);
+	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
-    // Constants
-    const screen = availableScreen(statement,statementSubscription, page);
+	// Constants
+	const screen = availableScreen(statement, statementSubscription, page);
 
-    // Functions
-    const toggleAskNotifications = () => {
-        // Ask for notifications after user interaction.
-        if (
-            !hasNotifications &&
+	// Functions
+	const toggleAskNotifications = () => {
+		// Ask for notifications after user interaction.
+		if (
+			!hasNotifications &&
             !statementSubscription?.userAskedForNotification
-        ) {
-            setAskNotifications(true);
-        }
-    };
+		) {
+			setAskNotifications(true);
+		}
+	};
 
-    const handleShowTalker = (_talker: User | null) => {
-        if (!talker) {
-            setTalker(_talker);
-        } else {
-            setTalker(null);
-        }
-    };
+	const handleShowTalker = (_talker: User | null) => {
+		if (!talker) {
+			setTalker(_talker);
+		} else {
+			setTalker(null);
+		}
+	};
 
-    //in case the url is of undefined screen, navigate to the first avilable screen
-    useEffect(() => {
-        if (screen && screen !== page) {
-            navigate(`/statement/${statementId}/${screen}`);
-        }
-    }, [screen]);
+	//in case the url is of undefined screen, navigate to the first avilable screen
+	useEffect(() => {
+		if (screen && screen !== page) {
+			navigate(`/statement/${statementId}/${screen}`);
+		}
+	}, [screen]);
 
-    // Listen to statement changes.
-    useEffect(() => {
-        let unsubListenToStatement: () => void = () => {
-            return;
-        };
+	useEffect(() => {
+		if (statement && screen) {
+			//set navigator tab title
+			const { shortVersion } = statementTitleToDisplay(
+				statement.statement,
+				15,
+			);
+			document.title = `Console - ${shortVersion}-${screen}`;
+		}
+	}, [statement, screen]);
 
-        let unsubSubStatements: () => void = () => {
-            return;
-        };
-        let unsubStatementSubscription: () => void = () => {
-            return;
-        };
-        let unsubEvaluations: () => void = () => {
-            return;
-        };
-        let unsubSubSubscribedStatements: () => void = () => {
-            return;
-        };
+	// Listen to statement changes.
+	useEffect(() => {
+		let unsubListenToStatement: () => void = () => {
+			return;
+		};
 
-        if (user && statementId) {
-            unsubListenToStatement = listenToStatement(
-                statementId,
-                dispatch,
-                setIsStatementNotFound,
-            );
+		let unsubSubStatements: () => void = () => {
+			return;
+		};
+		let unsubStatementSubscription: () => void = () => {
+			return;
+		};
+		let unsubEvaluations: () => void = () => {
+			return;
+		};
+		let unsubSubSubscribedStatements: () => void = () => {
+			return;
+		};
 
-            unsubSubStatements = listenToSubStatements(statementId, dispatch);
-            unsubEvaluations = listenToEvaluations(
-                dispatch,
-                statementId,
-                user?.uid,
-            );
-            unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
-                statementId,
-                user,
-                dispatch,
-            );
-            unsubStatementSubscription = listenToStatementSubscription(
-                statementId,
-                user,
-                dispatch,
-            );
-        }
+		if (user && statementId) {
+			unsubListenToStatement = listenToStatement(
+				statementId,
+				dispatch,
+				setIsStatementNotFound,
+			);
 
-        return () => {
-            unsubListenToStatement();
-            unsubSubStatements();
-            unsubStatementSubscription();
-            unsubSubSubscribedStatements();
-            unsubEvaluations();
-        };
-    }, [user, statementId]);
+			unsubSubStatements = listenToSubStatements(statementId, dispatch);
+			unsubEvaluations = listenToEvaluations(
+				dispatch,
+				statementId,
+				user?.uid,
+			);
+			unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
+				statementId,
+				user,
+				dispatch,
+			);
+			unsubStatementSubscription = listenToStatementSubscription(
+				statementId,
+				user,
+				dispatch,
+			);
+		}
 
-    useEffect(() => {
-        //listen to top parent statement
-        let unsub = () => {
-            return;
-        };
-        if (statement?.topParentId) {
-            unsub = listenToStatement(
-                statement?.topParentId,
-                dispatch,
-                setIsStatementNotFound,
-            );
-        }
+		return () => {
+			unsubListenToStatement();
+			unsubSubStatements();
+			unsubStatementSubscription();
+			unsubSubSubscribedStatements();
+			unsubEvaluations();
+		};
+	}, [user, statementId]);
 
-        return () => {
-            unsub();
-        };
-    }, [statement?.topParentId]);
+	useEffect(() => {
+		//listen to top parent statement
+		let unsub = () => {
+			return;
+		};
+		if (statement?.topParentId) {
+			unsub = listenToStatement(
+				statement?.topParentId,
+				dispatch,
+				setIsStatementNotFound,
+			);
+		}
 
-    useEffect(() => {
-        if (statement) {
-            const { shortVersion } = statementTitleToDisplay(
-                statement.statement,
-                100,
-            );
+		return () => {
+			unsub();
+		};
+	}, [statement?.topParentId]);
 
-            setTitle(shortVersion);
+	useEffect(() => {
+		if (statement) {
+			const { shortVersion } = statementTitleToDisplay(
+				statement.statement,
+				100,
+			);
 
-            //set navigator tab title
+			setTitle(shortVersion);
 
-            document.title = `Consoul - ${shortVersion}`;
+			(async () => {
+				const isSubscribed = await getIsSubscribed(statementId);
 
-            (async () => {
-                const isSubscribed = await getIsSubscribed(statementId);
+				// if isSubscribed is false, then subscribe
+				if (!isSubscribed) {
+					// subscribe
+					setStatementSubscriptionToDB(statement, Role.member);
+				} else {
+					//update subscribed field
+					updateSubscriberForStatementSubStatements(statement);
+				}
+			})();
+		}
+	}, [statement]);
 
-                // if isSubscribed is false, then subscribe
-                if (!isSubscribed) {
-                    // subscribe
-                    setStatementSubscriptionToDB(statement, Role.member);
-                } else {
-                    //update subscribed field
-                    updateSubscriberForStatementSubStatements(statement);
-                }
-            })();
-        }
-    }, [statement]);
+	if (isStatementNotFound) return <Page404 />;
+	if (error) return <UnAuthorizedPage />;
+	if (loading) return <LoadingPage />;
 
-    if (isStatementNotFound) return <Page404 />;
-    if (error) return <UnAuthorizedPage />;
-    if (loading) return <LoadingPage />;
+	if (isAuthorized)
+		return (
+			<div className="page">
+				{showAskPermission && (
+					<AskPermisssion showFn={setShowAskPermission} />
+				)}
+				{talker && (
+					<div
+						onClick={() => {
+							handleShowTalker(null);
+						}}
+					>
+						<ProfileImage user={talker} />
+					</div>
+				)}
+				{askNotifications && (
+					<EnableNotifications
+						statement={statement}
+						setAskNotifications={setAskNotifications}
+						setShowAskPermission={setShowAskPermission}
+					/>
+				)}
 
-    if (isAuthorized)
-        return (
-            <div className="page">
-                {showAskPermission && (
-                    <AskPermisssion showFn={setShowAskPermission} />
-                )}
-                {talker && (
-                    <div
-                        onClick={() => {
-                            handleShowTalker(null);
-                        }}
-                    >
-                        <ProfileImage user={talker} />
-                    </div>
-                )}
-                {askNotifications && (
-                    <EnableNotifications
-                        statement={statement}
-                        setAskNotifications={setAskNotifications}
-                        setShowAskPermission={setShowAskPermission}
-                    />
-                )}
+				<>
+					<StatementHeader
+						statement={statement}
+						statementSubscription={statementSubscription}
+						topParentStatement={topParentStatement}
+						screen={screen || Screen.CHAT}
+						title={title}
+						showAskPermission={showAskPermission}
+						setShowAskPermission={setShowAskPermission}
+						role={role}
+					/>
 
-                <>
-                    <StatementHeader
-                        statement={statement}
-                        statementSubscription={statementSubscription}
-                        topParentStatement={topParentStatement}
-                        screen={screen || Screen.CHAT}
-                        title={title}
-                        showAskPermission={showAskPermission}
-                        setShowAskPermission={setShowAskPermission}
-                        role={role}
-                    />
+					<MapProvider>
+						<FollowMeToast role={role} statement={statement} />
+						<SwitchScreens
+							screen={screen}
+							statement={statement}
+							subStatements={subStatements}
+							handleShowTalker={handleShowTalker}
+							setShowAskPermission={setShowAskPermission}
+							toggleAskNotifications={toggleAskNotifications}
+						/>
+					</MapProvider>
+				</>
+			</div>
+		);
 
-                    <MapProvider>
-                        <FollowMeToast role={role} statement={statement} />
-                        <SwitchScreens
-                            screen={screen}
-                            statement={statement}
-                            subStatements={subStatements}
-                            handleShowTalker={handleShowTalker}
-                            setShowAskPermission={setShowAskPermission}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </MapProvider>
-                </>
-            </div>
-        );
-
-    return <UnAuthorizedPage />;
+	return <UnAuthorizedPage />;
 };
 
 export default StatementMain;

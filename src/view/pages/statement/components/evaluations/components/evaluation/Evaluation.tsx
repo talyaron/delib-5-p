@@ -9,19 +9,19 @@ interface EvaluationProps {
 }
 
 const Evaluation: FC<EvaluationProps> = ({ parentStatement, statement }) => {
-    const shouldDisplayScore =
+	const shouldDisplayScore =
         parentStatement.statementSettings?.showEvaluation || false;
 
-    const props = {
-        statement,
-        shouldDisplayScore,
-    } as const;
+	const props = {
+		statement,
+		shouldDisplayScore,
+	} as const;
 
-    if (parentStatement.statementSettings?.enhancedEvaluation) {
-        return <EnhancedEvaluation {...props} />;
-    }
+	if (parentStatement.statementSettings?.enhancedEvaluation) {
+		return <EnhancedEvaluation {...props} />;
+	}
 
-    return <SimpleEvaluation {...props} />;
+	return <SimpleEvaluation {...props} />;
 };
 
 export default Evaluation;

@@ -11,44 +11,44 @@ import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import { defaultResultsSettings } from "../../emptyStatementModel";
 
 const DisplayResultsBy: FC<StatementSettingsProps> = ({
-    statement,
-    setStatementToEdit,
+	statement,
+	setStatementToEdit,
 }) => {
-    const { t } = useLanguage();
-    const resultsSettings = statement.resultsSettings ?? defaultResultsSettings;
+	const { t } = useLanguage();
+	const resultsSettings = statement.resultsSettings ?? defaultResultsSettings;
 
-    const [selectedOption, setSelectedOption] = useState(
-        resultsSettings.resultsBy,
-    );
+	const [selectedOption, setSelectedOption] = useState(
+		resultsSettings.resultsBy,
+	);
 
-    const toggleSelection = (option: ResultsBy) => {
-        setSelectedOption(option);
-        setStatementToEdit({
-            ...statement,
-            resultsSettings: {
-                ...resultsSettings,
-                resultsBy: option,
-            },
-        });
-    };
+	const toggleSelection = (option: ResultsBy) => {
+		setSelectedOption(option);
+		setStatementToEdit({
+			...statement,
+			resultsSettings: {
+				...resultsSettings,
+				resultsBy: option,
+			},
+		});
+	};
 
-    return (
-        <section className="display-results-by">
-            <h3 className="title">{t("Results By")}</h3>
-            <RadioButtonWithLabel
-                id="favoriteOption"
-                labelText={t("Favorite Option")}
-                checked={selectedOption === ResultsBy.topOptions}
-                onChange={() => toggleSelection(ResultsBy.topOptions)}
-            />
-            {/* <RadioButtonWithLabel
+	return (
+		<section className="display-results-by">
+			<h3 className="title">{t("Results By")}</h3>
+			<RadioButtonWithLabel
+				id={t("Favorite Option")}
+				labelText={t("Favorite Option")}
+				checked={selectedOption === ResultsBy.topOptions}
+				onChange={() => toggleSelection(ResultsBy.topOptions)}
+			/>
+			{/* <RadioButtonWithLabel
                 id="favoriteOption"
                 labelText={t("Voting Results")}
                 checked={selectedOption === ResultsBy.topVote}
                 onChange={() => toggleSelection(ResultsBy.topVote)}
             /> */}
-        </section>
-    );
+		</section>
+	);
 };
 
 export default DisplayResultsBy;

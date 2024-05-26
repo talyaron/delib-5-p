@@ -3,17 +3,17 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 const initialState = {
-    path: "",
+	path: "",
 };
 
 export const initLocationSlice = createSlice({
-    name: "initLocation",
-    initialState,
-    reducers: {
-        setInitLocation: (state, action: PayloadAction<string>) => {
-            state.path = action.payload;
-        },
-    },
+	name: "initLocation",
+	initialState,
+	reducers: {
+		setInitLocation: (state, action: PayloadAction<string>) => {
+			state.path = action.payload;
+		},
+	},
 });
 
 export const { setInitLocation } = initLocationSlice.actions;

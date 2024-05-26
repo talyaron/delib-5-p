@@ -8,13 +8,13 @@ interface SectionTitleProps {
 }
 
 const SectionTitle: FC<SectionTitleProps> = ({ title }) => {
-    const { dir } = useLanguage();
+	const { dir } = useLanguage();
 
-    return (
-        <h2 className={`section-title ${dir}`}>
-            {title} <LightCogIcon />
-        </h2>
-    );
+	return (
+		<h2 className={`section-title ${dir}`}>
+			{title} <LightCogIcon />
+		</h2>
+	);
 };
 
 export default SectionTitle;

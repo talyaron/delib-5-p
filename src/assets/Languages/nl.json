@@ -82,6 +82,7 @@
     "Results": "Resultaten",
     "Room": "Kamer",
     "Rooms": "Kamers",
+    "Room's Topic": "Onderwerp van de Kamer",
     "Room Allocation": "Kamerindeling",
     "Selected": "Geselecteerd",
     "Send a link to anonymous users": "Stuur een link naar anonieme gebruikers",
@@ -112,6 +113,7 @@
     "Unmark as a Solution": "Niet markeren als oplossing",
     "Mark as a Solution": "Markeren als oplossing",
     "Mark as a Question": "Markeren als vraag",
-    "Unmark as a Question": "Niet markeren als vraag"
+    "Unmark as a Question": "Niet markeren als vraag",
+    "Welcome to room": "Welkom in kamer"
 
 }

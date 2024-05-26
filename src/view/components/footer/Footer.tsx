@@ -10,13 +10,13 @@ interface Props {
     onclick: () => void;
 }
 const Footer: FC<Props> = ({ onclick }) => {
-    return (
-        <div className="footer" data-cy="add-statement">
-            <IconButton onClick={onclick} className="add-statement-button">
-                <AddIcon />
-            </IconButton>
-        </div>
-    );
+	return (
+		<div className="footer" data-cy="add-statement">
+			<IconButton onClick={onclick} className="add-statement-button">
+				<AddIcon />
+			</IconButton>
+		</div>
+	);
 };
 
 export default Footer;

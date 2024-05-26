@@ -7,17 +7,17 @@ import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import useDirection from "../../../controllers/hooks/useDirection";
 
 export default function GoogleLoginButton() {
-    const direction = useDirection();
-    const { t } = useLanguage();
+	const direction = useDirection();
+	const { t } = useLanguage();
 
-    return (
-        <button className={styles.googleLogin} onClick={googleLogin}>
-            <img
-                src={direction === "row-reverse" ? moreRight : moreLeft}
-                alt="login-with-google"
-            />
-            <img src={googleLogo} alt="login with google" />
-            {t("Connect with Google")}
-        </button>
-    );
+	return (
+		<button className={styles.googleLogin} onClick={googleLogin}>
+			<img
+				src={direction === "row-reverse" ? moreRight : moreLeft}
+				alt="login-with-google"
+			/>
+			<img src={googleLogo} alt="login with google" />
+			{t("Connect with Google")}
+		</button>
+	);
 }

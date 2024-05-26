@@ -92,6 +92,7 @@
     "Rooms": "חדרים",
     "Selected": "נבחר",
     "Room Allocation": "חלוקה לחדרים",
+    "Room's Topic": "נושא החדר",
     "Send a link to anonymous users": "שליחת קישור למשתמשים אנונימיים",
     "Settings": "הגדרות",
     "Share": "שתף/י",
@@ -124,5 +125,6 @@
     "Unmark as a Solution": "ביטול סימון כפתרון",
     "Mark as a Solution":   "סימון כפתרון",
     "Mark as a Question": "סימון כשאלה",
-    "Unmark as a Question": "ביטול סימון כשאלה"
+    "Unmark as a Question": "ביטול סימון כשאלה",
+    "Welcome to room": "ברוך/ה הבא/ה לחדר"
 }
