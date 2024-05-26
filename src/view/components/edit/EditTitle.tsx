@@ -94,7 +94,7 @@ const EditTitle: FC<Props> = ({
         />
       )}
       {showSaveButton && (
-        <button className="editTitle-btn" onClick={handleSave}>
+        <button className="editTitle-btn btn btn--agree btn--small" onClick={handleSave}>
           Save
         </button>
       )}
