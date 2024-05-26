@@ -10,7 +10,7 @@
     background-color: #EFF1FF;
     color: white;
 
-    &__vector1 {
+    &__cloud1 {
         position: absolute;
         top: 0;
         right: 0;
@@ -19,7 +19,7 @@
         opacity: 1;
     }
 
-    &__vector2 {
+    &__cloud2 {
         position: absolute;
         top: 0;
         right: 0;
@@ -28,7 +28,7 @@
         opacity: 1;
     }
 
-    &__vector3 {
+    &__cloud3{
         position: absolute;
         bottom: 0;
         left: 0;
@@ -37,7 +37,7 @@
         opacity: 1;
     }
 
-    &__404 {
+    &__404_textImg {
         position: relative;
         max-width: 100%;
         height: auto;
@@ -51,13 +51,13 @@
         justify-content: center;
         margin-bottom: 2rem;
 
-        &__Cable_A {
+        &__CableDog {
             width: 219px;
             height: 185px;
             opacity: 1;
         }
 
-        &__Cable_B {
+        &__Cable {
             width: 149px;
             height: 55px;
             opacity: 1;

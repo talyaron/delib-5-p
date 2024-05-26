@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import img404 from "../../../assets/images/404.jpg";
 import "./page404.scss";
 import { useDispatch } from "react-redux";
 import { setInitLocation } from "../../../model/location/locationSlice";
@@ -16,35 +15,35 @@ const Page404 = () => {
     return (
         <div className="page404">
             <img
-                className="page404__vector1"
-                src="/src/assets/images/Vector1.png"
-                alt="vector 1"
+                className="page404__cloud1"
+                src="/src/assets/images/Cloud1.png"
+                alt="Cloud 1"
             />
             <img
-                className="page404__vector2"
-                src="/src/assets/images/Vector2.png"
-                alt="vector 2"
+                className="page404__cloud2"
+                src="/src/assets/images/Cloud2.png"
+                alt="Cloud 2"
             />
             <img
-                className="page404__vector3"
-                src="/src/assets/images/Vector3.png"
-                alt="vector 3"
+                className="page404__cloud3"
+                src="/src/assets/images/Cloud3.png"
+                alt="Cloud 3"
             />
             <img
-                className="page404__404"
+                className="page404__404_textImg"
                 src="/src/assets/images/404.png"
                 alt="404"
             />
             <div className="page404__cables">
                 <img
-                    className="page404__cables__Cable_A"
-                    src="/src/assets/images/CableA.png"
+                    className="page404__cables__CableDog"
+                    src="/src/assets/images/CableDog.png"
                     alt="Cable A"
                 />
                 <img
-                    className="page404__cables__Cable_B"
+                    className="page404__cables__Cable"
                     src="/src/assets/images/CableB.png"
-                    alt="Cable B"
+                    alt="Cable"
                 />
             </div>
             <div className="page404__text">
