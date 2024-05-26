@@ -43,7 +43,7 @@ const Page404 = () => {
                 />
                 <img
                     className="page404__cables__Cable"
-                    src="/src/assets/images/CableB.png"
+                    src="/src/assets/images/Cable.png"
                     alt="Cable"
                 />
             </div>
