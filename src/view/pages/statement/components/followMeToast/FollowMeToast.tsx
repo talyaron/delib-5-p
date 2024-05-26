@@ -15,57 +15,57 @@ interface FollowMeToastProps {
 }
 
 const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
-    const { dir, t } = useLanguage();
-    const _isAdmin = isAdmin(role);
-    const { pathname } = useLocation();
+	const { dir, t } = useLanguage();
+	const _isAdmin = isAdmin(role);
+	const { pathname } = useLocation();
 
-    const topParentStatement = useAppSelector(
-        statementSelector(statement?.topParentId),
-    );
+	const topParentStatement = useAppSelector(
+		statementSelector(statement?.topParentId),
+	);
 
-    function handleRemoveToast() {
-        if (!_isAdmin) return;
-        if (!topParentStatement) return;
-        setFollowMeDB(topParentStatement, "");
-    }
+	function handleRemoveToast() {
+		if (!_isAdmin) return;
+		if (!topParentStatement) return;
+		setFollowMeDB(topParentStatement, "");
+	}
 
-    //in case the followers are in the page, turn off the follow me toast
+	//in case the followers are in the page, turn off the follow me toast
 
-    if (pathname === topParentStatement?.followMe && !_isAdmin) return null;
+	if (pathname === topParentStatement?.followMe && !_isAdmin) return null;
 
-    //if the follow me is empty, turn off the follow me toast
-    if (
-        topParentStatement?.followMe === "" ||
+	//if the follow me is empty, turn off the follow me toast
+	if (
+		topParentStatement?.followMe === "" ||
         topParentStatement?.followMe === undefined
-    )
-        return null;
+	)
+		return null;
 
-    if (_isAdmin) {
-        return <ToastInner />;
-    }
+	if (_isAdmin) {
+		return <ToastInner />;
+	}
 
-    return (
-        <Link to={topParentStatement?.followMe || "/home"}>
-            <ToastInner />
-        </Link>
-    );
+	return (
+		<Link to={topParentStatement?.followMe || "/home"}>
+			<ToastInner />
+		</Link>
+	);
 
-    function ToastInner() {
-        return (
-            <div className="follow-me-toast" onClick={handleRemoveToast}>
-                <span>
-                    {t(_isAdmin ? "Follow Mode Active" : "Follow Instructor")}
-                </span>
-                <div
-                    style={{
-                        transform: `rotate(${dir === "rtl" ? "180deg" : "0deg"})`,
-                    }}
-                >
-                    <FollowMeIcon color="white" />
-                </div>
-            </div>
-        );
-    }
+	function ToastInner() {
+		return (
+			<div className="follow-me-toast" onClick={handleRemoveToast}>
+				<span>
+					{t(_isAdmin ? "Follow Mode Active" : "Follow Instructor")}
+				</span>
+				<div
+					style={{
+						transform: `rotate(${dir === "rtl" ? "180deg" : "0deg"})`,
+					}}
+				>
+					<FollowMeIcon color="white" />
+				</div>
+			</div>
+		);
+	}
 };
 
 export default FollowMeToast;

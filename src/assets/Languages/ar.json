@@ -86,6 +86,7 @@
     "Results": "النتائج",
     "Room": "غرفة",
     "Rooms": "الغرف",
+    "Room's Topic": "موضوع الغرفة",
     "Room Allocation": "تخصيص الغرف",
     "Selected": "مختار",
     "Send a link to anonymous users": "إرسال رابط للمستخدمين المجهولين",
@@ -116,5 +117,6 @@
     "Unmark as a Solution": "إلغاء تحديد كحل",
     "Mark as a Solution": "تحديد كحل",
     "Mark as a Question": "تحديد كسؤال",
-    "Unmark as a Question": "إلغاء تحديد كسؤال"
+    "Unmark as a Question": "إلغاء تحديد كسؤال",
+    "Welcome to room": "مرحباً بك في الغرفة"
 }

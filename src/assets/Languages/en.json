@@ -91,6 +91,7 @@
     "Results": "Results",
     "Results By": "Results By",
     "Room": "Room",
+    "Room's Topic": "Room's Topic",
     "Room Allocation": "Room Allocation",
     "Rooms": "Rooms",
     "Send a link to anonymous users": "Send a link to anonymous users",
@@ -125,5 +126,6 @@
     "Unmark as a Solution": "Unmark as a Solution",
     "Mark as a Solution": "Mark as a Solution",
     "Mark as a Question": "Mark as a Question",
-    "Unmark as a Question": "Unmark as a Question"
+    "Unmark as a Question": "Unmark as a Question",
+    "Welcome to room": "Welcome to room"
 }

@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import { setInitLocation } from "../../../model/location/locationSlice";
 
 const Page404 = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-    function handleGoHome() {
-        dispatch(setInitLocation("/home"));
-        navigate("/", { state: { from: window.location.pathname } });
-    }
+	function handleGoHome() {
+		dispatch(setInitLocation("/home"));
+		navigate("/", { state: { from: window.location.pathname } });
+	}
+
 
     return (
         <div className="page404">
@@ -59,6 +60,7 @@ const Page404 = () => {
             </button>
         </div>
     );
+
 };
 
 export default Page404;

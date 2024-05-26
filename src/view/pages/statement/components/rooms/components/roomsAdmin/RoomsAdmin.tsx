@@ -10,27 +10,27 @@ interface Props {
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    const [setRooms, setSetRooms] = useState<boolean>(
-        statement.roomsState === "chooseRoom" ||
+	const [setRooms, setSetRooms] = useState<boolean>(
+		statement.roomsState === "chooseRoom" ||
             statement.roomsState === undefined
-            ? false
-            : true,
-    );
+			? false
+			: true,
+	);
 
-    return (
-        <div className="rooms-admin">
-            <p className="title">{t("Management board")}</p>
+	return (
+		<div className="rooms-admin">
+			<p className="title">{t("Management board")}</p>
 
-            <AdminArrange
-                statement={statement}
-                setRooms={setRooms}
-                setSetRooms={setSetRooms}
-            />
-            {!setRooms && <SetTimers parentStatement={statement} />}
-        </div>
-    );
+			<AdminArrange
+				statement={statement}
+				setRooms={setRooms}
+				setSetRooms={setSetRooms}
+			/>
+			{!setRooms && <SetTimers parentStatement={statement} />}
+		</div>
+	);
 };
 
 export default RoomsAdmin;
