@@ -82,6 +82,7 @@
     "Results": "Resultados",
     "Room": "Sala",
     "Rooms": "Salas",
+    "Room's Topic": "Tema de la Sala",
     "Room Allocation": "Asignación de Sala",
     "Selected": "Seleccionado",
     "Send a link to anonymous users": "Enviar un enlace a usuarios anónimos",
@@ -90,6 +91,7 @@
     "Show division into rooms": "Mostrar división en salas",
     "Show Evaluations results": "Mostrar resultados de las Evaluaciones",
     "So you can communicate": "Para que puedas comunicarte",
+    "Sorry, Page not found!": "¡Lo siento, Página no encontrada!",
     "Evaluations": "Soluciones",
     "Start": "Empezar",
     "Tabs to display": "Pestañas",
@@ -108,5 +110,10 @@
     "Yes": "Sí",
     "Would you like to receive notifications in this group?": "¿Te gustaría recibir notificaciones en este grupo?",
     "Save": "Guardar",
-    "description": "descripción"
+    "description": "descripción",
+    "Unmark as a Solution": "Desmarcar como solución",
+    "Mark as a Solution": "Marcar como solución",
+    "Mark as a Question": "Marcar como pregunta",
+    "Unmark as a Question": "Desmarcar como pregunta",
+    "Welcome to room": "Bienvenido a la sala"
 }

@@ -1,14 +1,13 @@
 import React, { FC } from "react";
-import { Statement, StatementType } from "delib-npm";
+import { Statement, StatementType, isOptionFn } from "delib-npm";
 import {
-    setSelectionsToOptions,
-    sortOptionsIndex,
+	setSelectionsToOptions,
+	sortOptionsIndex,
 } from "../../statementVoteCont";
 import { useParams } from "react-router-dom";
 import OptionBar from "../optionBar/OptionBar";
 import "./VotingArea.scss";
 import useWindowDimensions from "../../../../../../../controllers/hooks/useWindowDimentions";
-import { isOptionFn } from "../../../../../../../controllers/general/helpers";
 
 interface VotingAreaProps {
     setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
@@ -19,69 +18,69 @@ interface VotingAreaProps {
 }
 
 const VotingArea: FC<VotingAreaProps> = ({
-    setStatementInfo,
-    subStatements,
-    statement,
-    setShowInfo,
-    totalVotes,
+	setStatementInfo,
+	subStatements,
+	statement,
+	setShowInfo,
+	totalVotes,
 }) => {
-    const { sort } = useParams();
+	const { sort } = useParams();
 
-    //if statementSettings.inVotingGetOnlyResults is true, only show results or selections
-    const _options = statement.statementSettings?.inVotingGetOnlyResults
-        ? subStatements.filter(
-              (st) =>
-                  st.statementType === StatementType.result ||
+	//if statementSettings.inVotingGetOnlyResults is true, only show results or selections
+	const _options = statement.statementSettings?.inVotingGetOnlyResults
+		? subStatements.filter(
+			(st) =>
+				st.statementType === StatementType.result ||
                   st.statementType === StatementType.selection,
-          )
-        : subStatements;
+		)
+		: subStatements;
    
-    const options = getSortedVotingOptions({
-        statement,
-        subStatements: _options,
-        sort,
-    });
-    const optionsCount = options.length;
+	const options = getSortedVotingOptions({
+		statement,
+		subStatements: _options,
+		sort,
+	});
+	const optionsCount = options.length;
 
-    const { width } = useWindowDimensions();
-    const shouldShowVerticalBar = isVerticalOptionBar(width, optionsCount);
+	const { width } = useWindowDimensions();
+	const shouldShowVerticalBar = isVerticalOptionBar(width, optionsCount);
 
-    return (
-        <div
-            className={`voting-area ${shouldShowVerticalBar ? "vertical" : "horizontal"}`}
-        >
-            {options.map((option, i) => {
-                return (
-                    <OptionBar
-                        isVertical={shouldShowVerticalBar}
-                        key={option.statementId}
-                        order={i}
-                        option={option}
-                        totalVotes={totalVotes}
-                        statement={statement}
-                        setShowInfo={setShowInfo}
-                        setStatementInfo={setStatementInfo}
-                        optionsCount={optionsCount}
-                        screenWidth={width}
-                    />
-                );
-            })}
-        </div>
-    );
+	return (
+		<div
+			className={`voting-area ${shouldShowVerticalBar ? "vertical" : "horizontal"}`}
+		>
+			{options.map((option, i) => {
+				return (
+					<OptionBar
+						isVertical={shouldShowVerticalBar}
+						key={option.statementId}
+						order={i}
+						option={option}
+						totalVotes={totalVotes}
+						statement={statement}
+						setShowInfo={setShowInfo}
+						setStatementInfo={setStatementInfo}
+						optionsCount={optionsCount}
+						screenWidth={width}
+					/>
+				);
+			})}
+		</div>
+	);
 };
 
 export default VotingArea;
 
 function isVerticalOptionBar(width: number, optionsCount: number) {
-    if (width < 350 && optionsCount >= 4) {
-        return false;
-    }
+	if (width < 350 && optionsCount >= 4) {
+		return false;
+	}
 
-    if (width < 90 * optionsCount) {
-        return false;
-    }
+	if (width < 90 * optionsCount) {
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 interface GetVotingOptionsParams {
@@ -91,14 +90,14 @@ interface GetVotingOptionsParams {
 }
 
 const getSortedVotingOptions = ({
-    statement,
-    subStatements,
-    sort,
+	statement,
+	subStatements,
+	sort,
 }: GetVotingOptionsParams): Statement[] => {
-    const options = subStatements.filter((subStatement: Statement) =>
-        isOptionFn(subStatement),
-    );
-    const optionsWithSelections = setSelectionsToOptions(statement, options);
+	const options = subStatements.filter((subStatement: Statement) =>
+		isOptionFn(subStatement),
+	);
+	const optionsWithSelections = setSelectionsToOptions(statement, options);
 
-    return sortOptionsIndex(optionsWithSelections, sort);
+	return sortOptionsIndex(optionsWithSelections, sort);
 };

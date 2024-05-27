@@ -16,29 +16,29 @@ interface Props {
 }
 
 const StatementTopNav: FC<Props> = ({ statement,statementSubscription, screen }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    const _navArray = showNavElements({statement,statementSubscription, navArray:allScreens});
+	const _navArray = showNavElements({statement,statementSubscription, navArray:allScreens});
 
-    return (
-        <nav className="page__header__nav" data-cy="statement-nav">
-            {_navArray.map((screenInfo: NavObject) => (
-                <Link
-                    key={screenInfo.id}
-                    to={`/statement/${statement.statementId}/${screenInfo.link}${
-                        screenInfo.link === Screen.VOTE ? "/votes-voted" : ""
-                    }`}
-                    className={`page__header__nav__button ${
-                        screen === screenInfo.link
-                            ? "page__header__nav__button--selected"
-                            : ""
-                    }`}
-                >
-                    {t(screenInfo.name)}
-                </Link>
-            ))}
-        </nav>
-    );
+	return (
+		<nav className="page__header__nav" data-cy="statement-nav">
+			{_navArray.map((screenInfo: NavObject) => (
+				<Link
+					key={screenInfo.id}
+					to={`/statement/${statement.statementId}/${screenInfo.link}${
+						screenInfo.link === Screen.VOTE ? "/votes-voted" : ""
+					}`}
+					className={`page__header__nav__button ${
+						screen === screenInfo.link
+							? "page__header__nav__button--selected"
+							: ""
+					}`}
+				>
+					{t(screenInfo.name)}
+				</Link>
+			))}
+		</nav>
+	);
 };
 
 export default StatementTopNav;

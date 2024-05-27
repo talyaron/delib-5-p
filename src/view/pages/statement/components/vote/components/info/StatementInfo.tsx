@@ -1,9 +1,9 @@
 import { Statement } from "delib-npm";
 import { FC, useState } from "react";
 import {
-    getDescription,
-    getTitle,
-    isAuthorized,
+	getDescription,
+	getTitle,
+	isAuthorized,
 } from "../../../../../../../controllers/general/helpers";
 import Text from "../../../../../../components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
@@ -14,8 +14,8 @@ import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
 
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 import {
-    statementSelector,
-    statementSubscriptionSelector,
+	statementSelector,
+	statementSubscriptionSelector,
 } from "../../../../../../../model/statements/statementsSlice";
 import "./StatementInfo.scss";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
@@ -26,99 +26,116 @@ interface Props {
 }
 
 const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
-    const { t } = useLanguage();
-    if (!statement) return null;
+	if (!statement) return null;
 
-    const statementSubscription = useAppSelector(
-        statementSubscriptionSelector(statement.statementId),
-    );
-    const parentStatement = useAppSelector(
-        statementSelector(statement.parentId),
-    );
+	// Hooks
+	const { t } = useLanguage();
 
-    const [isInEditMode, setIsInEditMode] = useState(false);
+	// Redux
+	const statementSubscription = useAppSelector(
+		statementSubscriptionSelector(statement.statementId),
+	);
+	const parentStatement = useAppSelector(
+		statementSelector(statement.parentId),
+	);
 
-    const title = getTitle(statement);
-    const description = getDescription(statement);
-    const _isAuthorized = isAuthorized(
-        statement,
-        statementSubscription,
-        parentStatement?.creatorId,
-    );
+	// Use State
+	const [isInEditMode, setIsInEditMode] = useState(false);
+	const [formData, setFormData] = useState({
+		title: getTitle(statement),
+		description: getDescription(statement),
+	});
 
-    return (
-        <div className="statement-info">
-            <div className="info-graphic">
-                <img src={infoGraphic} alt="info" />
-            </div>
+	const _isAuthorized = isAuthorized(
+		statement,
+		statementSubscription,
+		parentStatement?.creatorId,
+	);
 
-            {isInEditMode ? (
-                <form
-                    className="form"
-                    onSubmit={(e: any) =>
-                        handleSubmitInfo(
-                            e,
-                            statement,
-                            setIsInEditMode,
-                            setShowInfo,
-                        )
-                    }
-                >
-                    <div className="inputs">
-                        <input
-                            type="text"
-                            defaultValue={title}
-                            name="title"
-                            required={true}
-                        />
-                        <textarea
-                            defaultValue={description}
-                            name="description"
-                            placeholder={t("description")}
-                        />
-                    </div>
-                    <div className="form-buttons">
-                        <button
-                            type="button"
-                            className="cancel-button"
-                            onClick={() => setIsInEditMode(false)}
-                        >
-                            {t("Cancel")}
-                        </button>
-                        <button type="submit" className="save-button">
-                            {t("Save")}
-                        </button>
-                    </div>
-                </form>
-            ) : (
-                <>
-                    <div className="texts">
-                        <h3>
-                            {title}
-                            {_isAuthorized && (
-                                <div className="edit-icon">
-                                    <EditIcon
-                                        onClick={() => setIsInEditMode(true)}
-                                    />
-                                </div>
-                            )}
-                        </h3>
-                        <div className="text">
-                            <Text text={description} />
-                        </div>
-                    </div>
-                    <div className="form-buttons">
-                        <button
-                            className="close-button"
-                            onClick={() => setShowInfo(false)}
-                        >
-                            {t("Close")}
-                        </button>
-                    </div>
-                </>
-            )}
-        </div>
-    );
+	return (
+		<div className="statement-info">
+			<div className="info-graphic">
+				<img src={infoGraphic} alt="info" />
+			</div>
+
+			{isInEditMode ? (
+				<form
+					className="form"
+					onSubmit={(e) =>
+						handleSubmitInfo(
+							e,
+							formData,
+							statement,
+							setIsInEditMode,
+							setShowInfo,
+						)
+					}
+				>
+					<div className="inputs">
+						<input
+							type="text"
+							value={formData.title}
+							onChange={(e) =>
+								setFormData({
+									...formData,
+									title: e.target.value,
+								})
+							}
+							required={true}
+						/>
+						<textarea
+							value={formData.description}
+							onChange={(e) =>
+								setFormData({
+									...formData,
+									description: e.target.value,
+								})
+							}
+							placeholder={t("description")}
+						/>
+					</div>
+					<div className="form-buttons">
+						<button
+							type="button"
+							className="cancel-button"
+							onClick={() => setIsInEditMode(false)}
+						>
+							{t("Cancel")}
+						</button>
+						<button type="submit" className="save-button">
+							{t("Save")}
+						</button>
+					</div>
+				</form>
+			) : (
+				<>
+					<div className="texts">
+						<h3>
+							{formData.title}
+							{_isAuthorized && (
+								<div className="edit-icon">
+									<EditIcon
+										onClick={() => setIsInEditMode(true)}
+									/>
+								</div>
+							)}
+						</h3>
+						<div className="text">
+							<Text text={formData.description} />
+						</div>
+					</div>
+					<div className="form-buttons">
+						<button
+							className="close-button"
+							onClick={() => setShowInfo(false)}
+						>
+							{t("Close")}
+						</button>
+					</div>
+				</>
+			)}
+		</div>
+	);
 };
 
 export default StatementInfo;

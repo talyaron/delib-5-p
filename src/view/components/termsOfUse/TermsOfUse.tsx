@@ -8,29 +8,29 @@ interface Props {
 }
 
 export default function TermsOfUse({ handleAgreement, agreement }: Props) {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    return (
-        <Modal>
-            <div className="terms-of-use" data-cy="termsOfUse">
-                <h1 className="terms-of-use-title">{t("terms of use")}</h1>
-                <p>{agreement}</p>
-                <div className="btns">
-                    <button
-                        className="btn btn--agree"
-                        onClick={() => handleAgreement(true, agreement)}
-                    >
-                        {t("Agree")}
-                    </button>
-                    <button
-                        data-cy="agree-btn"
-                        className="btn btn--disagree"
-                        onClick={() => handleAgreement(false, agreement)}
-                    >
-                        {t("Dont agree")}
-                    </button>
-                </div>
-            </div>
-        </Modal>
-    );
+	return (
+		<Modal>
+			<div className="terms-of-use" data-cy="termsOfUse">
+				<h1 className="terms-of-use-title">{t("terms of use")}</h1>
+				<p>{agreement}</p>
+				<div className="btns">
+					<button
+						className="btn btn--agree"
+						onClick={() => handleAgreement(true, agreement)}
+					>
+						{t("Agree")}
+					</button>
+					<button
+						data-cy="agree-btn"
+						className="btn btn--disagree"
+						onClick={() => handleAgreement(false, agreement)}
+					>
+						{t("Dont agree")}
+					</button>
+				</div>
+			</div>
+		</Modal>
+	);
 }

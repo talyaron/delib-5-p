@@ -36,7 +36,7 @@
     "Enable Sub-Conversations": "Enable Sub-Conversations",
     "Enhanced Evaluation": "Enhanced Evaluation",
     "Evaluated": "Evaluated",
-    "Evaluations": "Evaluations",
+    "Evaluations": "Solutions",
     "Explain how to open the notifications": "Explain how to open the notifications",
     "Favorite Option": "Favorite Option",
     "From the Institute for Deliberative Democracy": "From the Institute for Deliberative Democracy",
@@ -91,6 +91,7 @@
     "Results": "Results",
     "Results By": "Results By",
     "Room": "Room",
+    "Room's Topic": "Room's Topic",
     "Room Allocation": "Room Allocation",
     "Rooms": "Rooms",
     "Send a link to anonymous users": "Send a link to anonymous users",
@@ -102,6 +103,7 @@
     "Show Evaluations results": "Show Evaluations results",
     "So you can communicate": "So you can communicate",
     "Solutions": "Solutions",
+    "Sorry, Page not found!": "Sorry, Page not found!",
     "Start": "Start",
     "Tabs to display": "Tabs to display",
     "General Settings": "General Settings",
@@ -121,5 +123,10 @@
     "Welcome to Room Number": "Welcome to Room Number",
     "Would you like to receive notifications in this group?": "Would you like to receive notifications in this group?",
     "Save": "Save",
-    "description": "description"
+    "description": "description",
+    "Unmark as a Solution": "Unmark as a Solution",
+    "Mark as a Solution": "Mark as a Solution",
+    "Mark as a Question": "Mark as a Question",
+    "Unmark as a Question": "Unmark as a Question",
+    "Welcome to room": "Welcome to room"
 }

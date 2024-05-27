@@ -8,22 +8,23 @@ interface RadioButtonWithLabelProps extends ComponentProps<"input"> {
 }
 
 export default function RadioButtonWithLabel({
-    labelText,
-    checked,
-    ...inputProps
+	labelText,
+	checked,
+	...inputProps
 }: RadioButtonWithLabelProps) {
-    return (
-        <label
-            className={`radio-button-with-label ${checked ? "checked" : ""}`}
-        >
-            {checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
-            <input
-                type="radio"
-                name="resultsBy"
-                checked={checked}
-                {...inputProps}
-            />
-            {labelText}
-        </label>
-    );
+	return (
+		<label
+			htmlFor={`${labelText}`}
+			className={`radio-button-with-label ${checked ? "checked" : ""}`}
+		>
+			{checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
+			<input
+				type="radio"
+				name="resultsBy"
+				checked={checked}
+				{...inputProps}
+			/>
+			{labelText}
+		</label>
+	);
 }

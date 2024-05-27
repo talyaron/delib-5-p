@@ -9,20 +9,20 @@ interface MenuOptionProps extends ComponentProps<"button"> {
 }
 
 const MenuOption: FC<MenuOptionProps> = ({
-    onOptionClick,
-    label,
-    isOptionSelected = false,
-    icon,
+	onOptionClick,
+	label,
+	isOptionSelected = false,
+	icon,
 }) => {
-    return (
-        <button
-            className={`menu-option ${isOptionSelected ? "selected" : ""}`}
-            onClick={onOptionClick}
-        >
-            {icon}
-            <div className="label">{label}</div>
-        </button>
-    );
+	return (
+		<button
+			className={`menu-option ${isOptionSelected ? "selected" : ""}`}
+			onClick={onOptionClick}
+		>
+			{icon}
+			<div className="label">{label}</div>
+		</button>
+	);
 };
 
 export default MenuOption;

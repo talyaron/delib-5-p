@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm";
+import { Statement, StatementType, isAllowedStatementType } from "delib-npm";
 
 // Statements Helpers
 
@@ -25,87 +25,88 @@ interface CreateStatementModalProps {
 }
 
 const CreateStatementModal: FC<CreateStatementModalProps> = ({
-    parentStatement,
-    isOption,
-    setShowModal,
-    getSubStatements,
-    toggleAskNotifications,
+	parentStatement,
+	isOption,
+	setShowModal,
+	getSubStatements,
+	toggleAskNotifications,
 }) => {
-    const [isOptionSelected, setIsOptionSelected] = useState(isOption);
-    const [isLoading, setIsLoading] = useState(false);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const { t } = useLanguage();
+	const [isOptionSelected, setIsOptionSelected] = useState(isOption);
+	const [isLoading, setIsLoading] = useState(false);
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const { t } = useLanguage();
 
-    const onFormSubmit = async () => {
-        setIsLoading(true);
-        await createStatementFromModal({
-            title,
-            description,
-            isOptionSelected,
-            toggleAskNotifications,
-            parentStatement,
-        });
-        setShowModal(false);
-        setIsLoading(false);
+	const onFormSubmit = async () => {
+		setIsLoading(true);
+		await createStatementFromModal({
+			title,
+			description,
+			isOptionSelected,
+			toggleAskNotifications,
+			parentStatement,
+		});
+		setShowModal(false);
+		setIsLoading(false);
 
-        await getSubStatements?.();
-    };
+		await getSubStatements?.();
+	};
 
-    return (
-        <Modal className="create-statement-modal">
-            {isLoading ? (
-                <div className="center">
-                    <h2>{t("Updating")}</h2>
-                    <Loader />
-                </div>
-            ) : (
-                <form className="overlay" onSubmit={onFormSubmit}>
-                    <div className="modal-image">
-                        <img
-                            src={
-                                isOptionSelected
-                                    ? newOptionGraphic
-                                    : newQuestionGraphic
-                            }
-                            alt="New Statement"
-                        />
-                    </div>
+	return (
+		<Modal className="create-statement-modal">
+			{isLoading ? (
+				<div className="center">
+					<h2>{t("Updating")}</h2>
+					<Loader />
+				</div>
+			) : (
+				<form className="overlay" onSubmit={onFormSubmit}>
+					<div className="modal-image">
+						<img
+							src={
+								isOptionSelected
+									? newOptionGraphic
+									: newQuestionGraphic
+							}
+							alt="New Statement"
+						/>
+					</div>
 
-                    <Tabs
-                        isOptionChosen={isOptionSelected}
-                        setIsOptionChosen={setIsOptionSelected}
-                    />
+					<Tabs
+						isOptionChosen={isOptionSelected}
+						setIsOptionChosen={setIsOptionSelected}
+						parentStatement={parentStatement}
+					/>
 
-                    <div className="form-inputs">
-                        <input
-                            data-cy="statement-title-simple"
-                            autoComplete="off"
-                            autoFocus={true}
-                            type="text"
-                            placeholder={t("Title")}
-                            required
-                            minLength={3}
-                            value={title}
-                            onChange={(ev) => setTitle(ev.target.value)}
-                        />
-                        <textarea
-                            name="description"
-                            placeholder={t("Description")}
-                            rows={4}
-                            value={description}
-                            onChange={(ev) => setDescription(ev.target.value)}
-                        ></textarea>
-                    </div>
+					<div className="form-inputs">
+						<input
+							data-cy="statement-title-simple"
+							autoComplete="off"
+							autoFocus={true}
+							type="text"
+							placeholder={t("Title")}
+							required
+							minLength={3}
+							value={title}
+							onChange={(ev) => setTitle(ev.target.value)}
+						/>
+						<textarea
+							name="description"
+							placeholder={t("Description")}
+							rows={4}
+							value={description}
+							onChange={(ev) => setDescription(ev.target.value)}
+						></textarea>
+					</div>
 
-                    <CreateStatementButtons
-                        isOption={isOptionSelected}
-                        onCancel={() => setShowModal(false)}
-                    />
-                </form>
-            )}
-        </Modal>
-    );
+					<CreateStatementButtons
+						isOption={isOptionSelected}
+						onCancel={() => setShowModal(false)}
+					/>
+				</form>
+			)}
+		</Modal>
+	);
 };
 
 export default CreateStatementModal;
@@ -113,30 +114,45 @@ export default CreateStatementModal;
 interface TabsProps {
     isOptionChosen: boolean;
     setIsOptionChosen: (isOptionChosen: boolean) => void;
+    parentStatement: Statement | "top";
 }
 
-const Tabs: FC<TabsProps> = ({ isOptionChosen, setIsOptionChosen }) => {
-    const { t } = useLanguage();
+const Tabs: FC<TabsProps> = ({
+	isOptionChosen,
+	setIsOptionChosen,
+	parentStatement,
+}) => {
+	const { t } = useLanguage();
 
-    return (
-        <div className="tabs">
-            <button
-                onClick={() => setIsOptionChosen(true)}
-                className={`tab option ${isOptionChosen ? "active" : ""}`}
-            >
-                {t("Option")}
+	return (
+		<div className="tabs">
+			{isAllowedStatementType({
+				parentStatement,
+				statementType: StatementType.option,
+			}) && (
+				<button
+					onClick={() => setIsOptionChosen(true)}
+					className={`tab option ${isOptionChosen ? "active" : ""}`}
+				>
+					{t("Option")}
 
-                {isOptionChosen && <div className="block" />}
-            </button>
-            <button
-                onClick={() => setIsOptionChosen(false)}
-                className={`tab question ${isOptionChosen ? "" : "active"}`}
-            >
-                {t("Question")}
-                {!isOptionChosen && <div className="block" />}
-            </button>
-        </div>
-    );
+					{isOptionChosen && <div className="block" />}
+				</button>
+			)}
+			{isAllowedStatementType({
+				parentStatement,
+				statementType: StatementType.question,
+			}) && (
+				<button
+					onClick={() => setIsOptionChosen(false)}
+					className={`tab question ${isOptionChosen ? "" : "active"}`}
+				>
+					{t("Question")}
+					{!isOptionChosen && <div className="block" />}
+				</button>
+			)}
+		</div>
+	);
 };
 
 interface CreateStatementButtonsProps {
@@ -145,23 +161,23 @@ interface CreateStatementButtonsProps {
 }
 
 const CreateStatementButtons: FC<CreateStatementButtonsProps> = ({
-    isOption,
-    onCancel,
+	isOption,
+	onCancel,
 }) => {
-    const { t } = useLanguage();
+	const { t } = useLanguage();
 
-    return (
-        <div className="create-statement-buttons">
-            <button onClick={onCancel} type="button" className="cancel-button">
-                {t("Cancel")}
-            </button>
-            <button
-                className={`add-button ${isOption ? "option" : "question"}`}
-                type="submit"
-                data-cy="add-statement-simple"
-            >
-                {t(`Add ${isOption ? "Option" : "Question"}`)}
-            </button>
-        </div>
-    );
+	return (
+		<div className="create-statement-buttons">
+			<button onClick={onCancel} type="button" className="cancel-button">
+				{t("Cancel")}
+			</button>
+			<button
+				className={`add-button ${isOption ? "option" : "question"}`}
+				type="submit"
+				data-cy="add-statement-simple"
+			>
+				{t(`Add ${isOption ? "Option" : "Question"}`)}
+			</button>
+		</div>
+	);
 };

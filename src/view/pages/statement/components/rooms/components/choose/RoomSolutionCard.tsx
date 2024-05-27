@@ -6,9 +6,9 @@ interface Props {
 }
 
 const RoomSolutionCard: FC<Props> = ({ statement }) => {
-    return (
-        <div className="roomsCards__solutionCard">{statement.statement}</div>
-    );
+	return (
+		<div className="roomsCards__solutionCard">{statement.statement}</div>
+	);
 };
 
 export default RoomSolutionCard;

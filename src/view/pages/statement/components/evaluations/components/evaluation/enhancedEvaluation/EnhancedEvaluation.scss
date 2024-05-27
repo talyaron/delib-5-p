@@ -6,7 +6,7 @@
     font-size: 0.8rem;
 
     .evaluation-score {
-        direction: ltr;
+        
 
         &.negative {
             color: red;
@@ -48,5 +48,8 @@
                 padding-right: 0.8rem;
             }
         }
+    }
+    .total-evaluators {
+       direction: ltr;
     }
 }

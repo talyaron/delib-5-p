@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
@@ -15,95 +15,91 @@ import Text from "../text/Text";
 // import { statementTitleToDisplay } from "../../../controllers/general/helpers";
 
 interface Props {
-    statement: Statement | undefined;
-    isEdit: boolean;
-    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-    isTextArea?: boolean;
-    onlyTitle?: boolean;
+  statement: Statement | undefined;
+  isEdit: boolean;
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  isTextArea?: boolean;
+  onlyTitle?: boolean;
 }
 
 const EditTitle: FC<Props> = ({
-    statement,
-    isEdit,
-    setEdit,
-    isTextArea,
-    onlyTitle,
+	statement,
+	isEdit,
+	setEdit,
+	isTextArea,
+	onlyTitle,
 }) => {
-    try {
-        if (!statement) return null;
+	const [text, setText] = useState(statement?.statement || "");
+	const [showSaveButton, setShowSaveButton] = useState(false);
 
-        const direction = document.body.style.direction as "ltr" | "rtl";
-        const align = direction === "ltr" ? "left" : "right";
+	if (!statement) return null;
 
-        const title = statement.statement.split("\n")[0];
-        const description = statement.statement.split("\n").slice(1).join("\n");
+	const direction = document.body.style.direction as "ltr" | "rtl";
+	const align = direction === "ltr" ? "left" : "right";
 
-        function handleSetTitle(e: any) {
-            try {
-                if (
-                    e.type === "blur" ||
-                    (e.key === "Enter" && e.shiftKey === false)
-                ) {
-                    const inputString = e.target.value;
+	const title = statement.statement.split("\n")[0];
+	const description = statement.statement.split("\n").slice(1).join("\n");
 
-                    if (inputString === title) return setEdit(false);
-                    if (!inputString) return;
+	function handleTextChange(
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+	) {
+		setText(e.target.value);
+		setShowSaveButton(true);
+	}
 
-                    if (!statement) throw new Error("statement is undefined");
+	function handleSave() {
+		try {
+			if (!text.trim()) return; // Do not save if the text is empty
 
-                    if (isTextArea) {
-                        updateStatementText(statement, e.target.value);
-                    } else {
-                        const statementTitle = inputString + "\n" + description;
+			if (!statement) throw new Error("Statement is undefined");
 
-                        //update title in db
-                        updateStatementText(statement, statementTitle);
-                    }
+			const updatedText = isTextArea
+				? text.trim()
+				: title.trim() + "\n" + description.trim();
+			updateStatementText(statement, updatedText);
 
-                    setEdit(false);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
+			setEdit(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-        if (!isEdit)
-            return (
-                <div style={{ direction: direction, textAlign: align }}>
-                    <Text text={statement.statement} onlyTitle={onlyTitle} />
-                </div>
-            );
+	if (!isEdit)
+		return (
+			<div style={{ direction: direction, textAlign: align }}>
+				<Text text={statement.statement} onlyTitle={onlyTitle} />
+			</div>
+		);
 
-        if (isTextArea) {
-            return (
-                <textarea
-                    style={{ direction: direction, textAlign: align }}
-                    className={styles.textarea}
-                    defaultValue={statement.statement}
-                    onBlur={handleSetTitle}
-                    onKeyUp={handleSetTitle}
-                    autoFocus={true}
-                />
-            );
-        } else {
-            return (
-                <input
-                    style={{ direction: direction, textAlign: align }}
-                    className={styles.input}
-                    type="text"
-                    defaultValue={title}
-                    onBlur={handleSetTitle}
-                    onKeyUp={handleSetTitle}
-                    autoFocus={true}
-                    data-cy="edit-title-input"
-                />
-            );
-        }
-    } catch (error) {
-        console.error(error);
-
-        return null;
-    }
+	return (
+		<div>
+			{isTextArea ? (
+				<textarea
+					style={{ direction: direction, textAlign: align }}
+					className={styles.textarea}
+					value={text}
+					onChange={handleTextChange}
+					autoFocus={true}
+					placeholder="Add text"
+				/>
+			) : (
+				<input
+					style={{ direction: direction, textAlign: align }}
+					className={styles.input}
+					type="text"
+					value={text}
+					onChange={handleTextChange}
+					autoFocus={true}
+					data-cy="edit-title-input"
+				/>
+			)}
+			{showSaveButton && (
+				<button className="editTitle-btn btn btn--agree btn--small" onClick={handleSave}>
+          Save
+				</button>
+			)}
+		</div>
+	);
 };
 
 export default EditTitle;

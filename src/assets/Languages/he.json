@@ -92,6 +92,7 @@
     "Rooms": "חדרים",
     "Selected": "נבחר",
     "Room Allocation": "חלוקה לחדרים",
+    "Room's Topic": "נושא החדר",
     "Send a link to anonymous users": "שליחת קישור למשתמשים אנונימיים",
     "Settings": "הגדרות",
     "Share": "שתף/י",
@@ -101,6 +102,7 @@
     "So you can communicate": "כדי שתוכלו לתקשר",
     "Solutions": "פתרונות",
     "Start": "התחלה",
+    "Sorry, Page not found!": "מצטערים, הדף לא נמצא!",
     "Tabs to display": "לשוניות",
     "General Settings": "הגדרות כלליות",
     "Members": "חברים",
@@ -120,5 +122,10 @@
     "Yes": "כן",
     "Would you like to receive notifications in this group?": "האם תרצה לקבל הודעות בקבוצה הזאת?",
     "Save": "שמירה",
-    "description": "תיאור"
+    "description": "תיאור",
+    "Unmark as a Solution": "ביטול סימון כפתרון",
+    "Mark as a Solution":   "סימון כפתרון",
+    "Mark as a Question": "סימון כשאלה",
+    "Unmark as a Question": "ביטול סימון כשאלה",
+    "Welcome to room": "ברוך/ה הבא/ה לחדר"
 }

@@ -12,14 +12,14 @@ const MapModelContext = createContext<MapProps | undefined>(undefined);
 
 // Define a hook to use the context
 export const useMapContext = (): MapProps => {
-    const context = useContext(MapModelContext);
-    if (!context) {
-        throw new Error(
-            "useMapContext must be used within a MyContextProvider",
-        );
-    }
+	const context = useContext(MapModelContext);
+	if (!context) {
+		throw new Error(
+			"useMapContext must be used within a MyContextProvider",
+		);
+	}
 
-    return context;
+	return context;
 };
 
 // Create a provider component
@@ -41,30 +41,30 @@ interface MapProviderState {
 }
 
 export const MapProvider: FC<MapProviderProps> = ({ children }) => {
-    const [mapContext, setMapContext] = useState<MapProviderState>({
-        showModal: false,
-        moveStatementModal: false,
-        parentStatement: "top",
-        isOption: false,
-        isQuestion: false,
-        targetPosition: Position.Top,
-        sourcePosition: Position.Bottom,
-        nodeWidth: 50,
-        nodeHeight: 50,
-        direction: "TB",
-    });
+	const [mapContext, setMapContext] = useState<MapProviderState>({
+		showModal: false,
+		moveStatementModal: false,
+		parentStatement: "top",
+		isOption: false,
+		isQuestion: false,
+		targetPosition: Position.Top,
+		sourcePosition: Position.Bottom,
+		nodeWidth: 50,
+		nodeHeight: 50,
+		direction: "TB",
+	});
 
-    const contextValue = useMemo(
-        () => ({
-            mapContext,
-            setMapContext,
-        }),
-        [mapContext, setMapContext],
-    );
+	const contextValue = useMemo(
+		() => ({
+			mapContext,
+			setMapContext,
+		}),
+		[mapContext, setMapContext],
+	);
 
-    return (
-        <MapModelContext.Provider value={contextValue}>
-            {children}
-        </MapModelContext.Provider>
-    );
+	return (
+		<MapModelContext.Provider value={contextValue}>
+			{children}
+		</MapModelContext.Provider>
+	);
 };
