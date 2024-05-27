@@ -11,44 +11,44 @@ interface MenuProps extends ComponentProps<"div"> {
 }
 
 const Menu: FC<MenuProps> = ({
-  iconColor,
-  isMenuOpen,
-  setIsOpen,
-  children,
+	iconColor,
+	isMenuOpen,
+	setIsOpen,
+	children,
 }) => {
-  const { dir } = useLanguage();
+	const { dir } = useLanguage();
 
-  useEffect(() => {
-    if (isMenuOpen) {
-      const timer = setTimeout(() => {
-        setIsOpen(false);
-      }, 2000);
+	useEffect(() => {
+		if (isMenuOpen) {
+			const timer = setTimeout(() => {
+				setIsOpen(false);
+			}, 2000);
 
-      return () => clearTimeout(timer); // Cleanup the timer if the component unmounts or isMenuOpen changes
-    }
-  }, [isMenuOpen, setIsOpen]);
+			return () => clearTimeout(timer); // Cleanup the timer if the component unmounts or isMenuOpen changes
+		}
+	}, [isMenuOpen, setIsOpen]);
 
-  if (!children) {
-    return null;
-  }
+	if (!children) {
+		return null;
+	}
 
-  return (
-    <div className="menu">
-      <IconButton onClick={() => setIsOpen(!isMenuOpen)}>
-        <EllipsisIcon style={{ color: iconColor }} />
-      </IconButton>
+	return (
+		<div className="menu">
+			<IconButton onClick={() => setIsOpen(!isMenuOpen)}>
+				<EllipsisIcon style={{ color: iconColor }} />
+			</IconButton>
 
-      {isMenuOpen && (
-        <div className={`menu-content ${dir}`}>
-          {children}
-          <div
-            className="invisibleBackground"
-            onClick={() => setIsOpen(false)}
-          />
-        </div>
-      )}
-    </div>
-  );
+			{isMenuOpen && (
+				<div className={`menu-content ${dir}`}>
+					{children}
+					<div
+						className="invisibleBackground"
+						onClick={() => setIsOpen(false)}
+					/>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default Menu;
