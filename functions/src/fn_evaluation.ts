@@ -64,12 +64,11 @@ export async function updateEvaluation(event: any) {
         const statementEvaluationAfter = event.data.after.data() as Evaluation;
         const { evaluation: evaluationAfter, statementId } = statementEvaluationAfter;
         const evaluationDiff = evaluationAfter - evaluationBefore;
-        console.log("evaluationBefore", evaluationBefore, 'evaluationAfter:', evaluationAfter)
+
         if (!statementId) throw new Error("statementId is not defined");
 
         //get statement
         const statement = await _updateStatementEvaluation({ statementId, evaluationDiff });
-        console.log("updateEvaluation 3", statement?.evaluation)
         if (!statement) throw new Error("statement does not exist");
 
         //update parent statement?
@@ -112,48 +111,46 @@ interface UpdateStatementEvaluation {
 
 async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0 }: UpdateStatementEvaluation): Promise<Statement | undefined> {
     try {
-        console.log("evaluationDiff:", evaluationDiff)
+
         if (!statementId) throw new Error("statementId is not defined");
         const { success } = z.number().safeParse(evaluationDiff);
         if (!success) throw new Error("evaluation is not a number, or evaluation is missing");
 
-        const statementRef = db.collection(Collections.statements).doc(statementId);
-        const statementDB = await statementRef.get();
-        const statement = statementDB.data() as Statement;
+        const _statement: Statement = await db.runTransaction(async (transaction) => {
+            const statementRef = db.collection(Collections.statements).doc(statementId);
+            const statementDB = await transaction.get(statementRef);
+            const statement = statementDB.data() as Statement;
 
-        console.log("updateStatementEvaluation 1 :", statement.evaluation)
+            //for legacy peruses, we need to parse the statement to the new schema
+            if (!statement.evaluation) {
 
-        //for legacy peruses, we need to parse the statement to the new schema
-        if (!statement.evaluation) {
-            console.log("updateStatementEvaluation: parsing statement to new schema")
-            statement.evaluation = { agreement: statement.consensus || 0, sumEvaluations: evaluationDiff, numberOfEvaluators: statement.totalEvaluators || 1 };
-            await statementRef.update({ evaluation: statement.evaluation });
-            console.log("new evaluation:", statement.evaluation)
-        } else {
-            statement.evaluation.sumEvaluations += evaluationDiff;
-            statement.evaluation.numberOfEvaluators += addEvaluator;
-        }
+                statement.evaluation = { agreement: statement.consensus || 0, sumEvaluations: evaluationDiff, numberOfEvaluators: statement.totalEvaluators || 1 };
+                await transaction.update(statementRef, { evaluation: statement.evaluation });
+            } else {
+                statement.evaluation.sumEvaluations += evaluationDiff;
+                statement.evaluation.numberOfEvaluators += addEvaluator;
+            }
 
-        console.log("updateStatementEvaluation 2 :", statement.evaluation)
+            StatementSchema.parse(statement);
+            const newSumEvaluations = statement.evaluation.sumEvaluations;
+            const newNumberOfEvaluators = statement.evaluation.numberOfEvaluators;
 
-        StatementSchema.parse(statement);
-        const newSumEvaluations = statement.evaluation.sumEvaluations;
-        const newNumberOfEvaluators = statement.evaluation.numberOfEvaluators;
-
+            const agreement = calcAgreement(newSumEvaluations, newNumberOfEvaluators);
+            statement.evaluation.agreement = agreement;
+            statement.consensus = agreement;
 
 
-        const agreement = calcAgreement(newSumEvaluations, newNumberOfEvaluators);
-        statement.evaluation.agreement = agreement;
-        statement.consensus = agreement;
+            await transaction.update(statementRef, {
+                totalEvaluators: FieldValue.increment(addEvaluator),
+                consensus: agreement,
+                evaluation: statement.evaluation
+            });
 
-        console.log("update...")
-        await statementRef.update({
-            totalEvaluators: FieldValue.increment(addEvaluator),
-            consensus: agreement,
-            evaluation: statement.evaluation
+            const _st = await statementRef.get();
+            return _st.data() as Statement;
         });
 
-        return statement;
+        return _statement as Statement;
 
 
     } catch (error) {
