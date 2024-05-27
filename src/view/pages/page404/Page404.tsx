@@ -41,11 +41,7 @@ const Page404 = () => {
       </div>
 
       <button className="page404__btn" onClick={handleGoHome}>
-        <img
-          className="page404__btnImg"
-          src="/src/assets/images/takeMeHome.png"
-          alt="Take me home"
-        />
+      <p>{t("Take me home")}</p>
       </button>
     </div>
   );
