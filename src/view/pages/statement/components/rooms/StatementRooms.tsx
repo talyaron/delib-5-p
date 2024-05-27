@@ -18,70 +18,70 @@ interface StatementRoomsProps {
 }
 
 const StatementRooms: FC<StatementRoomsProps> = ({
-  statement,
-  subStatements,
+	statement,
+	subStatements,
 }) => {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    enterRoomsDB(statement);
+	useEffect(() => {
+		enterRoomsDB(statement);
 
-    const unsubscribe = listenToAllRoomsRequest(statement, dispatch);
+		const unsubscribe = listenToAllRoomsRequest(statement, dispatch);
 
-    return unsubscribe;
-  }, []);
+		return unsubscribe;
+	}, []);
 
-  const __subStatements = subStatements.filter((subStatement: Statement) =>
-    isOptionFn(subStatement)
-  );
+	const __subStatements = subStatements.filter((subStatement: Statement) =>
+		isOptionFn(subStatement)
+	);
 
-  const isAdmin = store.getState().user.user?.uid === statement.creatorId;
+	const isAdmin = store.getState().user.user?.uid === statement.creatorId;
 
-  return (
-    <div className="page__main">
+	return (
+		<div className="page__main">
       
-        {switchRoomScreens(
-          statement.roomsState,
-          __subStatements,
-          statement,
-          setShowModal
-        )}
+			{switchRoomScreens(
+				statement.roomsState,
+				__subStatements,
+				statement,
+				setShowModal
+			)}
 
-        {isAdmin ? <RoomsAdmin statement={statement} /> : null}
+			{isAdmin ? <RoomsAdmin statement={statement} /> : null}
 
-        {showModal ? (
-          <CreateStatementModal
-            parentStatement={statement}
-            isOption={true}
-            setShowModal={setShowModal}
-          />
-        ) : null}
+			{showModal ? (
+				<CreateStatementModal
+					parentStatement={statement}
+					isOption={true}
+					setShowModal={setShowModal}
+				/>
+			) : null}
    
-    </div>
-  );
+		</div>
+	);
 };
 
 export default StatementRooms;
 
 function switchRoomScreens(
-  roomState: RoomsStateSelection | undefined,
-  subStatements: Statement[],
-  statement: Statement,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+	roomState: RoomsStateSelection | undefined,
+	subStatements: Statement[],
+	statement: Statement,
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-  switch (roomState) {
-    case RoomsStateSelection.chooseRoom:
-      return (
-        <ChooseRoom subStatements={subStatements} setShowModal={setShowModal} />
-      );
-    case RoomsStateSelection.inRoom:
-      return <InRoom statement={statement} />;
+	switch (roomState) {
+	case RoomsStateSelection.chooseRoom:
+		return (
+			<ChooseRoom subStatements={subStatements} setShowModal={setShowModal} />
+		);
+	case RoomsStateSelection.inRoom:
+		return <InRoom statement={statement} />;
 
-    default:
-      return (
-        <ChooseRoom subStatements={subStatements} setShowModal={setShowModal} />
-      );
-  }
+	default:
+		return (
+			<ChooseRoom subStatements={subStatements} setShowModal={setShowModal} />
+		);
+	}
 }
