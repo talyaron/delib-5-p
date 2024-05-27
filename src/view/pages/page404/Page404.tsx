@@ -37,7 +37,7 @@ const Page404 = () => {
         <img className="page404__cables__Cable" src={cable} alt="Cable" />
       </div>
       <div className="page404__text">
-        <p>{t("Sorry, Page not found!")}</p>
+        <p>{t("Sorry, Page not found")}</p>
       </div>
 
       <button className="page404__btn" onClick={handleGoHome}>
