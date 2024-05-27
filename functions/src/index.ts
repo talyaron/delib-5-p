@@ -62,7 +62,7 @@ exports.updateNotifications = onDocumentCreated(
 exports.newEvaluation = onDocumentCreated(`/${Collections.evaluations}/{evaluationId}`,newEvaluation);
 exports.deleteEvaluation = onDocumentDeleted(`/${Collections.evaluations}/{evaluationId}`,deleteEvaluation);
 
-exports.updateEvaluation = onDocumentWritten(
+exports.updateEvaluation = onDocumentUpdated(
     `/${Collections.evaluations}/{evaluationId}`,
     updateEvaluation,
 );

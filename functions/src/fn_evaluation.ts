@@ -1,8 +1,6 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 import { FieldValue } from "firebase-admin/firestore";
-
-// import { logBase } from "./helpers";
 import {
     Collections,
     Evaluation,
@@ -13,35 +11,43 @@ import {
     StatementType,
     statementToSimpleStatement,
 } from "delib-npm";
+import { z } from "zod";
 
 
 export async function newEvaluation(event: any) {
     try {
         //add evaluator to statement
-   
+
         const statementEvaluation = event.data.data() as Evaluation;
         const { statementId } = statementEvaluation;
         if (!statementId) throw new Error("statementId is not defined");
 
-        //add one evaluator to statement
-        const statementRef = db.collection(Collections.statements).doc(statementId);
-        statementRef.update({ totalEvaluators: FieldValue.increment(1) });
+        //add one evaluator to statement, and add evaluation to statement
+        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1 });
+        if (!statement) throw new Error("statement does not exist");
+        updateParentStatementWithChildResults(statement.parentId);
 
     } catch (error) {
         logger.error(error);
     }
 }
 
+
+
+
 export async function deleteEvaluation(event: any) {
     try {
         //add evaluator to statement
         const statementEvaluation = event.data.data() as Evaluation;
-        const { statementId } = statementEvaluation;
+        const { statementId, evaluation } = statementEvaluation;
         if (!statementId) throw new Error("statementId is not defined");
 
+
+
         //add one evaluator to statement
-        const statementRef = db.collection(Collections.statements).doc(statementId);
-        statementRef.update({ totalEvaluators: FieldValue.increment(-1) });
+        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: (-1 * evaluation), addEvaluator: -1 });
+        if (!statement) throw new Error("statement does not exist");
+        updateParentStatementWithChildResults(statement.parentId);
 
     } catch (error) {
         logger.error(error);
@@ -52,190 +58,244 @@ export async function deleteEvaluation(event: any) {
 //update evaluation of a statement
 export async function updateEvaluation(event: any) {
     try {
-        const {
-            statementId,
-            parentId,
-            evaluationDeference,
-            evaluation,
-            previousEvaluation,
-            error,
-        } = getEvaluationInfo();
-        if (error) throw error;
+
+        const statementEvaluationBefore = event.data.before.data() as Evaluation;
+        const { evaluation: evaluationBefore } = statementEvaluationBefore;
+        const statementEvaluationAfter = event.data.after.data() as Evaluation;
+        const { evaluation: evaluationAfter, statementId } = statementEvaluationAfter;
+        const evaluationDiff = evaluationAfter - evaluationBefore;
+        console.log("evaluationBefore", evaluationBefore, 'evaluationAfter:', evaluationAfter)
         if (!statementId) throw new Error("statementId is not defined");
 
-        const statementRef = db.collection(Collections.statements).doc(statementId);
-        const { newPro, newCon } = await setNewEvaluation(
-            statementRef,
-            evaluationDeference,
-            evaluation,
-            previousEvaluation,
-        );
-
-        const statementDB = await statementRef.get();
-        if (!statementDB.exists) throw new Error("Statement does not exist");
-        const statement = statementDB.data() as Statement;
-        StatementSchema.parse(statement);
-        const totalEvaluators = statement.totalEvaluators || 0;
-
-
-        // Fairness calculations (social choice theory)
-        // The aim of the consensus calculation is to give statement with more positive evaluation and less negative evaluations,
-        // while letting small groups with higher consensus an upper hand, over large groups with a lot of negative evaluations.
-
-        const sumEvaluation = newPro - newCon;
-        const averageEvaluation = totalEvaluators !== 0 ? sumEvaluation / totalEvaluators : 0; // average evaluation
-        const consensus =
-            totalEvaluators !== 0
-                ? averageEvaluation * Math.sqrt(totalEvaluators)
-                : 0;
-
-        //set consensus to statement in DB
-        await statementRef.update({ consensus, totalEvaluators });
+        //get statement
+        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff });
+        console.log("updateEvaluation 3", statement?.evaluation)
+        if (!statement) throw new Error("statement does not exist");
 
         //update parent statement?
-        //get parent statement
-        updateParentStatementWithChildResults(parentId);
+        updateParentStatementWithChildResults(statement.parentId);
     } catch (error) {
+        console.info("error in updateEvaluation");
         logger.error(error);
 
         return;
     }
+}
 
-    //inner functions
+//inner functions
 
-    function getEvaluationInfo() {
-        try {
-            const statementEvaluation = event.data.after.data() as Evaluation;
+function calcAgreement(newSumEvaluations: number, numberOfEvaluators: number): number {
+    // agreement calculations (social choice theory)
+    // The aim of the consensus calculation is to give statement with more positive evaluation and less negative evaluations,
+    // while letting small groups with higher consensus an upper hand, over large groups with a lot of negative evaluations.
+    try {
+        z.number().parse(newSumEvaluations);
+        z.number().parse(numberOfEvaluators);
 
-            const { evaluation, statementId, parentId } = statementEvaluation;
 
-            const dataBefore = event.data.before.data();
-            let previousEvaluation = 0;
-            if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
-            if (isNaN(previousEvaluation))
-                throw new Error("previousEvaluation is not a number");
-            if (isNaN(evaluation))
-                throw new Error("evaluation is not a number");
+        if (numberOfEvaluators === 0) throw new Error("numberOfEvaluators is 0");
+        const averageEvaluation = newSumEvaluations / numberOfEvaluators; // average evaluation
+        const agreement = averageEvaluation * Math.sqrt(numberOfEvaluators)
 
-            const evaluationDeference: number =
-                evaluation - previousEvaluation || 0;
-            if (!evaluationDeference)
-                throw new Error("evaluationDeference is not defined");
-
-            return {
-                parentId,
-                statementId,
-                evaluationDeference,
-                evaluation,
-                previousEvaluation,
-            };
-        } catch (error: any) {
-            logger.error(error);
-
-            return { error: error.message };
-        }
+        return agreement;
+    } catch (error) {
+        logger.error(error);
+        return 0;
     }
+}
 
-    async function setNewEvaluation(
-        statementRef: any,
-        evaluationDeference: number | undefined,
-        evaluation = 0,
-        previousEvaluation: number | undefined,
-    ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
-        const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
-        await db.runTransaction(async (t: any) => {
-            try {
-                if (!evaluationDeference)
-                    throw new Error("evaluationDeference is not defined");
-                if (evaluation === undefined)
-                    throw new Error("evaluation is not defined");
-                if (previousEvaluation === undefined)
-                    throw new Error("previousEvaluation is not defined error");
+interface UpdateStatementEvaluation {
+    statementId: string;
+    evaluationDiff: number;
+    addEvaluator?: number;
+}
 
-                const statementDB = await t.get(statementRef);
+async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0 }: UpdateStatementEvaluation): Promise<Statement | undefined> {
+    try {
+        console.log("evaluationDiff:", evaluationDiff)
+        if (!statementId) throw new Error("statementId is not defined");
+        const { success } = z.number().safeParse(evaluationDiff);
+        if (!success) throw new Error("evaluation is not a number, or evaluation is missing");
 
-                if (!statementDB.exists) {
-                    throw new Error("statement does not exist");
-                }
+        const statementRef = db.collection(Collections.statements).doc(statementId);
+        const statementDB = await statementRef.get();
+        const statement = statementDB.data() as Statement;
 
-                const oldPro = statementDB.data().pro || 0;
-                const oldCon = statementDB.data().con || 0;
+        console.log("updateStatementEvaluation 1 :", statement.evaluation)
 
-                const { newCon, newPro, totalEvaluators } = updateProCon(
-                    oldPro,
-                    oldCon,
-                    evaluation,
-                    previousEvaluation,
-                );
-                results.newCon = newCon;
-                results.newPro = newPro;
-                results.totalEvaluators = totalEvaluators;
+        //for legacy peruses, we need to parse the statement to the new schema
+        if (!statement.evaluation) {
+            console.log("updateStatementEvaluation: parsing statement to new schema")
+            statement.evaluation = { agreement: statement.consensus || 0, sumEvaluations: evaluationDiff, numberOfEvaluators: statement.totalEvaluators || 1 };
+            await statementRef.update({ evaluation: statement.evaluation });
+            console.log("new evaluation:", statement.evaluation)
+        } else {
+            statement.evaluation.sumEvaluations += evaluationDiff;
+            statement.evaluation.numberOfEvaluators += addEvaluator;
+        }
 
-                t.update(statementRef, {
-                    totalEvaluations: newCon + newPro,
-                    con: newCon,
-                    pro: newPro,
-                });
+        console.log("updateStatementEvaluation 2 :", statement.evaluation)
 
-                return results;
-            } catch (error) {
-                logger.error(error);
+        StatementSchema.parse(statement);
+        const newSumEvaluations = statement.evaluation.sumEvaluations;
+        const newNumberOfEvaluators = statement.evaluation.numberOfEvaluators;
 
-                return results;
-            }
+
+
+        const agreement = calcAgreement(newSumEvaluations, newNumberOfEvaluators);
+        statement.evaluation.agreement = agreement;
+        statement.consensus = agreement;
+
+        console.log("update...")
+        await statementRef.update({
+            totalEvaluators: FieldValue.increment(addEvaluator),
+            consensus: agreement,
+            evaluation: statement.evaluation
         });
 
-        return results;
+        return statement;
 
-        function updateProCon(
-            oldPro: number,
-            oldCon: number,
-            evaluation: number,
-            previousEvaluation: number,
-        ): { newPro: number; newCon: number; totalEvaluators: number } {
-            try {
-                let newPro = oldPro;
-                let newCon = oldCon;
 
-                const { pro, con } = clacProCon(previousEvaluation, evaluation);
-
-                newPro += pro;
-                newCon += con;
-                const totalEvaluators: number = newPro + newCon;
-
-                return { newPro, newCon, totalEvaluators };
-            } catch (error) {
-                logger.error(error);
-
-                return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
-            }
-        }
-    }
-}
-
-function clacProCon(prev: number, curr: number): { pro: number; con: number } {
-    try {
-        let pro = 0,
-            con = 0;
-        if (prev > 0) {
-            pro = -prev;
-        } else if (prev < 0) {
-            con = prev;
-        }
-
-        if (curr > 0) {
-            pro += curr;
-        } else if (curr < 0) {
-            con -= curr;
-        }
-
-        return { pro, con };
     } catch (error) {
-        console.error(error);
-
-        return { pro: 0, con: 0 };
+        logger.error(error);
+        return undefined;
     }
 }
+
+
+//     function getEvaluationInfo() {
+//         try {
+//             const statementEvaluation = event.data.after.data() as Evaluation;
+
+//             const { evaluation, statementId, parentId } = statementEvaluation;
+
+//             const dataBefore = event.data.before.data();
+//             let previousEvaluation = 0;
+//             if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
+//             if (isNaN(previousEvaluation))
+//                 throw new Error("previousEvaluation is not a number");
+//             if (isNaN(evaluation))
+//                 throw new Error("evaluation is not a number");
+
+//             const evaluationDeference: number =
+//                 evaluation - previousEvaluation || 0;
+//             if (!evaluationDeference)
+//                 throw new Error("evaluationDeference is not defined");
+
+//             return {
+//                 parentId,
+//                 statementId,
+//                 evaluationDeference,
+//                 evaluation,
+//                 previousEvaluation,
+//             };
+//         } catch (error: any) {
+//             logger.error(error);
+
+//             return { error: error.message };
+//         }
+//     }
+
+//     async function setNewEvaluation(
+//         statementRef: any,
+//         evaluationDeference: number | undefined,
+//         evaluation = 0,
+//         previousEvaluation: number | undefined,
+//     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
+//         const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
+//         await db.runTransaction(async (t: any) => {
+//             try {
+//                 if (!evaluationDeference)
+//                     throw new Error("evaluationDeference is not defined");
+//                 if (evaluation === undefined)
+//                     throw new Error("evaluation is not defined");
+//                 if (previousEvaluation === undefined)
+//                     throw new Error("previousEvaluation is not defined error");
+
+//                 const statementDB = await t.get(statementRef);
+
+//                 if (!statementDB.exists) {
+//                     throw new Error("statement does not exist");
+//                 }
+
+//                 const oldPro = statementDB.data().pro || 0;
+//                 const oldCon = statementDB.data().con || 0;
+
+//                 const { newCon, newPro, totalEvaluators } = updateProCon(
+//                     oldPro,
+//                     oldCon,
+//                     evaluation,
+//                     previousEvaluation,
+//                 );
+//                 results.newCon = newCon;
+//                 results.newPro = newPro;
+//                 results.totalEvaluators = totalEvaluators;
+
+//                 t.update(statementRef, {
+//                     totalEvaluations: newCon + newPro,
+//                     con: newCon,
+//                     pro: newPro,
+//                 });
+
+//                 return results;
+//             } catch (error) {
+//                 logger.error(error);
+
+//                 return results;
+//             }
+//         });
+
+//         return results;
+
+//         function updateProCon(
+//             oldPro: number,
+//             oldCon: number,
+//             evaluation: number,
+//             previousEvaluation: number,
+//         ): { newPro: number; newCon: number; totalEvaluators: number } {
+//             try {
+//                 let newPro = oldPro;
+//                 let newCon = oldCon;
+
+//                 const { pro, con } = clacProCon(previousEvaluation, evaluation);
+
+//                 newPro += pro;
+//                 newCon += con;
+//                 const totalEvaluators: number = newPro + newCon;
+
+//                 return { newPro, newCon, totalEvaluators };
+//             } catch (error) {
+//                 logger.error(error);
+
+//                 return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
+//             }
+//         }
+//     }
+// }
+
+// function clacProCon(prev: number, curr: number): { pro: number; con: number } {
+//     try {
+//         let pro = 0,
+//             con = 0;
+//         if (prev > 0) {
+//             pro = -prev;
+//         } else if (prev < 0) {
+//             con = prev;
+//         }
+
+//         if (curr > 0) {
+//             pro += curr;
+//         } else if (curr < 0) {
+//             con -= curr;
+//         }
+
+//         return { pro, con };
+//     } catch (error) {
+//         console.error(error);
+
+//         return { pro: 0, con: 0 };
+//     }
+// }
 
 interface ResultsSettings {
     resultsBy: ResultsBy;
@@ -244,6 +304,8 @@ interface ResultsSettings {
     minConsensus?: number;
     solutions?: SimpleStatement[];
 }
+
+
 
 function getResultsSettings(
     results: ResultsSettings | undefined,
@@ -295,7 +357,7 @@ async function updateParentStatementWithChildResults(
             ]);
 
         const topOptionsStatementsRef = allOptionsStatementsRef
-            .orderBy("consensus", "desc")
+            .orderBy("consensus", "desc") //TODO: in the future (1st aug 2024), this will be changed to evaluation.agreement
             .limit(numberOfResults);
 
 
