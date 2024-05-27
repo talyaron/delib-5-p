@@ -13,14 +13,15 @@ import cableDog from "../../../assets/images/CableDog.png";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 const Page404 = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const {t} = useLanguage();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const {t} = useLanguage();
 
-  function handleGoHome() {
-    dispatch(setInitLocation("/home"));
-    navigate("/", { state: { from: window.location.pathname } });
-  }
+	function handleGoHome() {
+		dispatch(setInitLocation("/home"));
+		navigate("/", { state: { from: window.location.pathname } });
+	}
+
 
   return (
     <div className="page404">
@@ -45,6 +46,7 @@ const Page404 = () => {
       </button>
     </div>
   );
+
 };
 
 export default Page404;

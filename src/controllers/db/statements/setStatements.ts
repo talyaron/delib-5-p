@@ -275,6 +275,11 @@ export function createStatement({
 			hasChildren,
 			statementType,
 			consensus: 0,
+			evaluation:{
+				numberOfEvaluators:0,
+				sumEvaluations:0,
+				agreement:0,
+			},
 			results: [],
 			subScreens,
 		};

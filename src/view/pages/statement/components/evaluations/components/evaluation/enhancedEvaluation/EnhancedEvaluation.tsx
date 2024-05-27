@@ -23,7 +23,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 	const evaluationScore = useAppSelector(
 		evaluationSelector(statement.statementId),
 	);
-	const {totalEvaluators} = statement;
+	const totalEvaluators = statement.evaluation?.numberOfEvaluators ||  statement.totalEvaluators || 0;
 
 	const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
 
@@ -32,7 +32,9 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 		isEvaluationPanelOpen,
 	});
 
-	const roundedEvaluationScore = Math.round(statement.consensus * 100) / 100;
+	const agreement = statement.evaluation?.agreement || statement.consensus;
+
+	const roundedEvaluationScore = Math.round(agreement * 100) / 100;
 
 	return (
 		<div className="enhanced-evaluation">
@@ -57,7 +59,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 					className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
 				>
 					{roundedEvaluationScore} 
-					{totalEvaluators && totalEvaluators > 0 && <span className="total-evaluators">{" "}({totalEvaluators})</span>}
+					{totalEvaluators > 0 && <span className="total-evaluators">{" "}({totalEvaluators})</span>}
                   
 				</div>
 			)}
