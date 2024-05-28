@@ -35,14 +35,13 @@ import { getFirestore } from "firebase-admin/firestore";
 import { sendNotificationsCB } from "./fn_notifications";
 import { cleanOldTimers } from "./fn_timers";
 import { setAdminsToNewStatement } from "./fn_roles";
+import { updateStatementNumberOfMembers } from "./fn_subscriptions";
 
 initializeApp();
 export const db = getFirestore();
 
 // update subscribers when statement is updated
 //statements
-
-
 exports.updateSubscribedListeners = onDocumentUpdated(
     `/${Collections.statements}/{statementId}`,
     updateSubscribedListenersCB,
@@ -51,6 +50,9 @@ exports.updateParentWithNewMessage = onDocumentCreated(
     `/${Collections.statements}/{statementId}`,
     updateParentWithNewMessageCB,
 );
+
+//update statements with new members
+exports.updateMembers = onDocumentWritten(`/${Collections.statementsSubscribe}/{subscriptionId}`, updateStatementNumberOfMembers);
 
 //notifications
 exports.updateNotifications = onDocumentCreated(
