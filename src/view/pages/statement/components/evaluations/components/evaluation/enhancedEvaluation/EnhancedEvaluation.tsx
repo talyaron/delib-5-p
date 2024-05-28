@@ -25,7 +25,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
     evaluationSelector(statement.statementId)
   );
   const { totalEvaluators } = statement;
-  const { currentLanguage } = useLanguage(); // Assuming this hook provides the current language
+  const { currentLanguage } = useLanguage();
 
   const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
 
