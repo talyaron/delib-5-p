@@ -6,7 +6,11 @@ $SwitchHeight: 2.6729rem;
     flex-direction: column;
     width: fit-content;
     align-items: start;
-    border: 1px solid #c1d8f0;
+   
+
+    input{
+        display: none;
+    }
 
     .background {
         position: relative;
@@ -21,8 +25,6 @@ $SwitchHeight: 2.6729rem;
         margin: 5px 0px 0px 0px;
         font-size: .9rem;
         color: #769cc2;
-
-        border: 1px solid #c1d8f0;
         position: relative;
     }
 

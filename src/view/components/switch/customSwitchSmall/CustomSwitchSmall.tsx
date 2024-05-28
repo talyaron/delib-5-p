@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import "./CustomSwitchSmall.scss";
 import background from "./customSwitchSmallBackground.svg";
 interface Props {
@@ -6,17 +6,18 @@ interface Props {
   textChecked: string;
   textUnchecked: string;
   checked: boolean;
-  setChecked: (checked: boolean) => void;
+  setChecked: () => void;
 }
 
 const CustomSwitchSmall: FC<Props> = ({
+  label,
   checked,
   textChecked,
   textUnchecked,
+  setChecked,
 }) => {
-  const [_checked, _setChecked] = useState(checked);
   const handleChange = () => {
-    _setChecked(!_checked);
+    setChecked();
   };
 
   return (
@@ -26,11 +27,21 @@ const CustomSwitchSmall: FC<Props> = ({
         style={{ backgroundImage: `url(${background})` }}
       >
         <div
-          className={`ball ball--${_checked ? "checked" : "unchecked"}`}
-          style={{ left: `${_checked ? 0 : 4.15}rem` }}
+          className={`ball ball--${checked ? "checked" : "unchecked"}`}
+          style={{ left: `${checked ? 0 : 4.15}rem` }}
         ></div>
       </div>
-      <div className="text">{_checked ? textChecked : textUnchecked}</div>
+      <div className="text">{checked ? textChecked : textUnchecked}</div>
+      <input
+        type="checkbox"
+        name={label}
+        id={`toggleSwitchSimple-${label}`}
+        className="switch-input"
+        onChange={handleChange}
+        value={checked ? "on" : "off"}
+        checked={checked}
+        data-cy={`toggleSwitch-input-${label}`}
+      />
     </div>
   );
 };
