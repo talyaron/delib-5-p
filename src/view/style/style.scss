@@ -168,15 +168,7 @@ b {
     overflow-y: auto;
 }
 
-.background {
-    position: fixed;
-    z-index: 100;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.397);
-    backdrop-filter: blur(7px);
-    overflow-y: auto;
-}
+
 
 .icon {
     cursor: pointer;
