@@ -6,22 +6,25 @@ import { isMember } from "delib-npm/dist/controllers/helpers";
 
 export async function updateStatementNumberOfMembers(event: any) {
     try {
+        console.log("\n \n \n start")
         console.log("updateStatementNumberOfMembers....")
         const statementsSubscribeBefore = event.data.before.data() as StatementSubscription;
         const statementsSubscribeAfter = event.data.after.data() as StatementSubscription;
-       
-        const roleBefore = statementsSubscribeBefore?statementsSubscribeBefore.role : undefined;
-        const roleAfter = statementsSubscribeAfter? statementsSubscribeAfter.role: undefined;
+
+        const roleBefore = statementsSubscribeBefore ? statementsSubscribeBefore.role : undefined;
+        const roleAfter = statementsSubscribeAfter ? statementsSubscribeAfter.role : undefined;
 
         const eventType = getEventType(event);
-console.log("eventType:", eventType)
+        console.log("eventType:", eventType)
 
         const _isMemberAfter = isMember(roleAfter);
         const _isMemberBefore = isMember(roleBefore);
-        const statementId:string = statementsSubscribeBefore?.statementId || statementsSubscribeAfter?.statementId;
+        const statementId: string = statementsSubscribeBefore?.statementId || statementsSubscribeAfter?.statementId;
         console.log("statementId:", statementId)
         await addOrRemoveMemberFromStatementDB(statementId, eventType, _isMemberAfter, _isMemberBefore);
 
+        
+        //inner functions
         function getEventType(event: any): "new" | "update" | "delete" {
             const beforeSnapshot = event.data.before;
             const afterSnapshot = event.data.after;
@@ -35,35 +38,35 @@ console.log("eventType:", eventType)
             }
         }
 
-        async function addOrRemoveMemberFromStatementDB(statementId:string, eventType: "new" | "update" | "delete", isMemberAfter: boolean, isMemberBefore: boolean): Promise<void> {
+        async function addOrRemoveMemberFromStatementDB(statementId: string, eventType: "new" | "update" | "delete", isMemberAfter: boolean, isMemberBefore: boolean): Promise<void> {
             try {
 
-                if(!statementId) throw new Error("statementId is required")
+                if (!statementId) throw new Error("statementId is required")
 
-                const statementRef = db.doc(`${Collections.statements}/${statementId}`);
+                const statementRef = db.doc(`${Collections.statementsMeta}/${statementId}`);
                 if (eventType === "new" && isMemberAfter) {
                     console.log("adding member")
-                    statementRef.update({
+                    statementRef.set({
                         numberOfMembers: FieldValue.increment(1),
-                    });
+                    },{merge:true});
                     return;
                 } else if (eventType === "delete" && isMemberBefore) {
                     console.log("removing member")
-                    // statementRef.update({
-                    //     numberOfMembers: FieldValue.increment(-1),
-                    // });
+                    statementRef.set({
+                        numberOfMembers: FieldValue.increment(-1),
+                    }, { merge: true });
                     return;
                 } else if (eventType === "update" && isMemberAfter && !isMemberBefore) {
                     console.log("adding member")
-                    // statementRef.update({
-                    //     numberOfMembers: FieldValue.increment(1),
-                    // });
+                    statementRef.set({
+                        numberOfMembers: FieldValue.increment(1),
+                    },{merge:true});
                     return;
                 } else if (eventType === "update" && !isMemberAfter && isMemberBefore) {
                     console.log("removing member")
-                    // statementRef.update({
-                    //     numberOfMembers: FieldValue.increment(-1),
-                    // });
+                    statementRef.set({
+                        numberOfMembers: FieldValue.increment(-1),
+                    },{merge:true});
                     return;
                 }
                 console.log("----------------- no action taken -----------------")

@@ -7,7 +7,6 @@ import { db } from "./index";
 export async function updateSubscribedListenersCB(event: any) {
     //get statement
     const { statementId } = event.params;
-    const statement = event.data.after.data();
 
     //get all subscribers to this statement
     const subscribersRef = db.collection(Collections.statementsSubscribe);
@@ -22,7 +21,6 @@ export async function updateSubscribedListenersCB(event: any) {
 
             db.doc(`statementsSubscribe/${subscriberId}`).set(
                 {
-                    statement: statement,
                     lastUpdate: Timestamp.now().toMillis(),
                 },
                 { merge: true },
@@ -39,7 +37,7 @@ export async function updateParentWithNewMessageCB(e: any) {
     try {
         //get parentId
         const statement = e.data.data() as Statement;
-        const { parentId, topParentId } = statement;
+        const { parentId, topParentId, statementId } = statement;
 
         if (parentId === "top") return;
 
@@ -69,6 +67,16 @@ export async function updateParentWithNewMessageCB(e: any) {
 
         const topParentRef = db.doc(`statements/${topParentId}`);
         topParentRef.update({ lastChildUpdate: lastUpdate, lastUpdate });
+
+        //create statement metadata
+        const statementMetaRef = db.doc(`${Collections.statementsMeta}/${statementId}`);
+        statementMetaRef.set(
+            {
+                statementId,
+                lastUpdate,
+            },
+            { merge: true },
+        );
 
         return;
     } catch (error) {

@@ -42,8 +42,8 @@ export async function setStatementSubscriptionToDB(
 			statementsSubscribeRef,
 			{
 				user,
-				statement,
 				statementsSubscribeId,
+				statement,
 				role,
 				userId: user.uid,
 				statementId,
