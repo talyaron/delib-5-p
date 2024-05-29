@@ -17,6 +17,7 @@
 
     //alerts
     --alert: #dd90b6;
+    --notify:#D98FF3;
 
     // Option
     --option: #e7d080;
@@ -34,6 +35,7 @@
     --header: #3b4f7d;
     --h2Color: #232F4A;
     --subTopic: #7D9DBC;
+    --dark-text:#3B4F7D;
     --text: #6e8aa6;
     --textOnDark: white;
     --placeHolder: #93b6da;
@@ -45,20 +47,34 @@
     //shadow
     --shadow: rgba(181, 197, 232, 0.486);
 
-    --accent: #7cacf8;
-    --light-green: #84cccf;
-    --light-purple: #b1a4fc;
-    --light-blue: #3989cf;
+    
+   
+    
+ 
 
     //buttons
     --inactive: rgb(207, 207, 207);
     --inactive-text: #acacac;
+
+    //tooltip
+    --tooltip: #6DB0F9;
+    --accent: #7cacf8;
 
     // --- SIZES ---
     --padding: 1rem;
 
     --white: white;
     --red: #e8749e;
+
+    // --- Colors ---
+    --green:#6FC5BE;
+    --light-green: #84cccf;
+    --blue:#5899E0;
+    --light-blue:#8DBEF2;
+    --dark-blue:#4789D1;
+    --crimson:#E8749E;
+    --purple:#B1A4FC;
+    --light-purple: #b1a4fc;
 }
 
 * {

@@ -6,8 +6,8 @@ import { isMember } from "delib-npm/dist/controllers/helpers";
 
 export async function updateStatementNumberOfMembers(event: any) {
     try {
-        console.log("\n \n \n start")
-        console.log("updateStatementNumberOfMembers....")
+        
+        
         const statementsSubscribeBefore = event.data.before.data() as StatementSubscription;
         const statementsSubscribeAfter = event.data.after.data() as StatementSubscription;
 
@@ -15,12 +15,12 @@ export async function updateStatementNumberOfMembers(event: any) {
         const roleAfter = statementsSubscribeAfter ? statementsSubscribeAfter.role : undefined;
 
         const eventType = getEventType(event);
-        console.log("eventType:", eventType)
+        
 
         const _isMemberAfter = isMember(roleAfter);
         const _isMemberBefore = isMember(roleBefore);
         const statementId: string = statementsSubscribeBefore?.statementId || statementsSubscribeAfter?.statementId;
-        console.log("statementId:", statementId)
+        
         await addOrRemoveMemberFromStatementDB(statementId, eventType, _isMemberAfter, _isMemberBefore);
 
         
@@ -45,31 +45,31 @@ export async function updateStatementNumberOfMembers(event: any) {
 
                 const statementRef = db.doc(`${Collections.statementsMeta}/${statementId}`);
                 if (eventType === "new" && isMemberAfter) {
-                    console.log("adding member")
+                    
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(1),
                     },{merge:true});
                     return;
                 } else if (eventType === "delete" && isMemberBefore) {
-                    console.log("removing member")
+                    
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(-1),
                     }, { merge: true });
                     return;
                 } else if (eventType === "update" && isMemberAfter && !isMemberBefore) {
-                    console.log("adding member")
+                    
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(1),
                     },{merge:true});
                     return;
                 } else if (eventType === "update" && !isMemberAfter && isMemberBefore) {
-                    console.log("removing member")
+                    
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(-1),
                     },{merge:true});
                     return;
                 }
-                console.log("----------------- no action taken -----------------")
+                
                 return;
             } catch (error) {
                 logger.error("error updating statement with number of members", error);
