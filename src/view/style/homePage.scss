@@ -24,16 +24,22 @@
     .treeImg {
       position: absolute;
       right: 4rem;
-      top: 5.7rem;
+      top: 6rem;
       width: 65%;
       height: 15%;
 
-      //   @media only screen and (max-width: 400px) {
-      //     right: 1.2rem;
-      //     top: 6.3rem;
-      //     width: 360px;
-      //     height: 120px;
-      //   }
+      @media only screen and (min-width: 770px) {
+        right: 7rem;
+        top: 6.2rem;
+        width: 60%;
+        height: 15%;
+      }
+      @media only screen and (min-width: 1000px) {
+        right: 30%;
+        top: 6.5rem;
+        width: 40%;
+        height: 15%;
+      }
     }
 
     &.rtl {
