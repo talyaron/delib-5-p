@@ -48,24 +48,28 @@ export async function updateStatementNumberOfMembers(event: any) {
                     
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(1),
+                        statementId
                     },{merge:true});
                     return;
                 } else if (eventType === "delete" && isMemberBefore) {
                     
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(-1),
+                        statementId
                     }, { merge: true });
                     return;
                 } else if (eventType === "update" && isMemberAfter && !isMemberBefore) {
                     
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(1),
+                        statementId
                     },{merge:true});
                     return;
                 } else if (eventType === "update" && !isMemberAfter && isMemberBefore) {
                     
                     statementRef.set({
                         numberOfMembers: FieldValue.increment(-1),
+                        statementId
                     },{merge:true});
                     return;
                 }

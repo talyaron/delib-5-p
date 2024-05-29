@@ -4,6 +4,8 @@ import "./QuestionDashboard.scss";
 
 import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.svg?react";
 import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react";
+import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
+import { statementMetaSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
 
 interface Props {
   statement: Statement;
@@ -11,6 +13,8 @@ interface Props {
 
 const QuestionDashboard: FC<Props> = ({ statement }) => {
   try {
+    const numberOfMembers:number = useAppSelector(statementMetaSelector(statement.statementId))?.numberOfMembers || 0;
+
     return (
       <div className="question-dashboard">
         <div className="question-dashboard__info">
@@ -19,7 +23,7 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
               <UsersIcon />
             </div>
             <div className="joined__text">Joined members</div>
-            <div className="joined__number">473</div>
+            <div className="joined__number">{numberOfMembers}</div>
           </div>
           <div className="current-stage">
             <div className="current-stage__title">Current stage</div>
