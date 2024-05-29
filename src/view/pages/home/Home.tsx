@@ -5,8 +5,8 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
 import {
-	useAppDispatch,
-	useAppSelector,
+  useAppDispatch,
+  useAppSelector,
 } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
@@ -20,50 +20,47 @@ import ScreenSlide from "../../components/animation/ScreenSlide";
 export const listenedStatements = new Set<string>();
 
 export default function Home() {
-	// Hooks
-	const { statementId } = useParams();
-	const location = useLocation();
+  // Hooks
+  const { statementId } = useParams();
+  const location = useLocation();
 
-	// Redux Store
-	const dispatch = useAppDispatch();
-	const user = useAppSelector(userSelector);
+  // Redux Store
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(userSelector);
 
-	// Use States
-	const [displayHeader, setDisplayHeader] = useState(true);
+  // Use States
+  const [displayHeader, setDisplayHeader] = useState(true);
 
-	useEffect(() => {
-		if (location.pathname.includes("addStatement") || statementId) {
-			setDisplayHeader(false);
-		} else {
-			setDisplayHeader(true);
-		}
-	}, [location]);
+  useEffect(() => {
+    if (location.pathname.includes("addStatement") || statementId) {
+      setDisplayHeader(false);
+    } else {
+      setDisplayHeader(true);
+    }
+  }, [location]);
 
-	useEffect(() => {
-		let unsubscribe: Promise<void> | undefined;
-		try {
-			if (user) {
-				unsubscribe = listenToStatementSubscriptions(dispatch)(
-					user,
-					30,
-					true,
-				);
-			}
-		} catch (error) {}
+  useEffect(() => {
+    let unsubscribe: Promise<void> | undefined;
+    try {
+      if (user) {
+        unsubscribe = listenToStatementSubscriptions(dispatch)(user, 30, true);
+      }
+    } catch (error) {}
 
-		return () => {
-			if (unsubscribe) {
-				unsubscribe.then((unsub) => {
-					unsub;
-				});
-			}
-		};
-	}, [user]);
+    return () => {
+      if (unsubscribe) {
+        unsubscribe.then((unsub) => {
+          unsub;
+        });
+      }
+    };
+  }, [user]);
 
-	return (
-		<ScreenSlide className="page slide-in">
-			{displayHeader && <HomeHeader />}
-			<Outlet />
-		</ScreenSlide>
-	);
+  return (
+    <ScreenSlide className="page slide-in">
+      {displayHeader && <HomeHeader />}
+
+      <Outlet />
+    </ScreenSlide>
+  );
 }

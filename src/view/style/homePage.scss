@@ -1,89 +1,108 @@
 .homePage {
-    width: 100vw;
-    height: 100svh;
-    position: relative;
+  width: 100vw;
+  height: 100svh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+
+  &__header {
+    height: 230px;
+    min-width: 390px;
     display: flex;
-    flex-direction: column;
-    position: fixed;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #5899e0;
+    box-shadow: 0px 1px 4px 0px #a9adf49a;
+    z-index: 1;
+    gap: 0px;
+    margin-bottom: 2rem;
+    border-bottom-right-radius: 55%;
+    border-bottom-left-radius: 55%;
 
-    &__header {
-        min-height: 6.25rem;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        background-color: #5899e0;
-        box-shadow: 0px 1px 4px 0px #a9adf49a;
-        border-bottom-right-radius: 50px;
-        z-index: 1;
-        gap: 0px;
-        margin-bottom: 2rem;
+    .treeImg {
+      position: absolute;
+      right: 4rem;
+      top: 5.7rem;
+      width: 65%;
+      height: 15%;
 
-        &.rtl {
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 50px;
-        }
-
-        &__wrapper {
-            display: grid;
-            grid-template-columns: 1fr 70px;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 1rem;
-            max-width: 75ch;
-            margin: auto;
-
-            &__title {
-                text-align: center;
-                font-size: 2rem;
-                color: white;
-            }
-
-            &__icons {
-                position: relative;
-                display: flex;
-                justify-content: space-between;
-
-                svg {
-                    height: 27px;
-                    color: white;
-                }
-
-                .homeMenu {
-                    position: absolute;
-                    user-select: none;
-                    cursor: pointer;
-                    top: 2rem;
-                    left: 2rem;
-                    display: flex;
-                    flex-direction: row-reverse;
-                    align-items: center;
-                    gap: 0.4rem;
-                    background-color: white;
-                    padding: 1rem;
-                    box-shadow: 0px 1px 4px 0px #a9adf49a;
-                    border-radius: 0.36rem;
-                    z-index: 1003;
-                    transform: translateX(-20%);
-
-                    svg {
-                        color: black;
-                    }
-
-                    &__background {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100vw;
-                        height: 100vh;
-                        background-color: rgba(0, 0, 0, 0.5);
-                    }
-                }
-                .homeMenu:hover {
-                    background-color: #d6d6d6;
-                }
-            }
-        }
+      //   @media only screen and (max-width: 400px) {
+      //     right: 1.2rem;
+      //     top: 6.3rem;
+      //     width: 360px;
+      //     height: 120px;
+      //   }
     }
+
+    &.rtl {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 50px;
+    }
+
+    &__wrapper {
+      display: grid;
+      grid-template-columns: 1fr 70px;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 1rem;
+      max-width: 75ch;
+      margin: auto;
+
+      &__title {
+        margin-bottom: 10rem;
+        text-align: left;
+        font-size: 2rem;
+        color: white;
+      }
+
+      &__icons {
+        margin-bottom: 10rem;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+
+        svg {
+          height: 27px;
+          color: white;
+        }
+
+        .homeMenu {
+          position: absolute;
+          user-select: none;
+          cursor: pointer;
+          top: 2rem;
+          left: 2rem;
+          display: flex;
+          flex-direction: row-reverse;
+          align-items: center;
+          gap: 0.4rem;
+          background-color: white;
+          padding: 1rem;
+          box-shadow: 0px 1px 4px 0px #a9adf49a;
+          border-radius: 0.36rem;
+          z-index: 1003;
+          transform: translateX(-20%);
+
+          svg {
+            color: black;
+          }
+
+          &__background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+        }
+        .homeMenu:hover {
+          background-color: #d6d6d6;
+        }
+      }
+    }
+  }
 }
