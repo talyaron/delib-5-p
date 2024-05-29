@@ -43,23 +43,23 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
           <QuestionDashboard statement={statement} />
           <QuestionStageRadioBtn
             stage={QuestionStage.suggestion}
-            statementId={statement.statementId}
+            statement={statement}
           />
           <QuestionStageRadioBtn
             stage={QuestionStage.firstEvaluation}
-            statementId={statement.statementId}
+            statement={statement}
           />
           <QuestionStageRadioBtn
             stage={QuestionStage.secondEvaluation}
-            statementId={statement.statementId}
+            statement={statement}
           />
           <QuestionStageRadioBtn
             stage={QuestionStage.voting}
-            statementId={statement.statementId}
+            statement={statement}
           />
           <QuestionStageRadioBtn
             stage={QuestionStage.finished}
-            statementId={statement.statementId}
+            statement={statement}
           />
         </div>
       </div>

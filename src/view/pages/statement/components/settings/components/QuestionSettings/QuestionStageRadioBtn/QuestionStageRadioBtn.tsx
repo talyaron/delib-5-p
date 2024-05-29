@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./QuestionStageRadioBtn.scss";
-import { QuestionStage } from "delib-npm";
+import { QuestionStage, Statement } from "delib-npm";
 
 import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.svg?react";
 import ArrowUp from "../../../../../../../../assets/icons/arrowUpIcon.svg?react";
@@ -11,13 +11,13 @@ import { setQuestionStage } from "../../../../../../../../controllers/db/stateme
 
 interface Props {
   stage: QuestionStage;
-  statementId: string;
+  statement: Statement;
 }
 
 const stages = {
   [QuestionStage.suggestion]: {
     name: "Suggestion",
-    icon:  <LightBulbIcon className="img" />,
+    icon: <LightBulbIcon className="img" />,
     color: "--settings-suggestions",
   },
   [QuestionStage.firstEvaluation]: {
@@ -42,23 +42,41 @@ const stages = {
   },
 };
 
-const QuestionStageRadioBtn: FC<Props> = ({ stage, statementId }) => {
+const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
+  const isSelected = statement.questionSettings?.currentStage === stage;
+  
+  const backgroundColor = stages[stage] ? `var(${stages[stage].color})` : "var(--green)";
+  const btnBackgroundColor = stages[stage]
+    ? isSelected? `var(${stages[stage].color})`: "#DCE7FF": "#DCE7FF";
+    
 
-  const backgroundColor = stages[stage] ? stages[stage].color : "--green"
   return (
     <div className="question-stage-radio-btn">
       <div
         className="question-stage-radio-btn__top"
         style={{
-          backgroundColor: `var(${backgroundColor})`,
+          backgroundColor: backgroundColor,
+          opacity: isSelected ? 1 : 0.5,
         }}
       >
-       {stages[stage] ? stages[stage].icon : <LightBulbIcon className="img" />}
+        {stages[stage] ? stages[stage].icon : <LightBulbIcon className="img" />}
         <div className="number">324</div>
       </div>
-      <div className="question-stage-radio-btn__radio" onClick={()=>{setQuestionStage({statementId,stage})}}>
-        <div className="radio-button" style={{backgroundColor: `var(${backgroundColor})`}} >
-          <input type="radio" name="question-stage" id={`question-stage-${stage}`} />
+      <div
+        className="question-stage-radio-btn__radio"
+        onClick={() => {
+          setQuestionStage({ statementId: statement.statementId, stage });
+        }}
+      >
+        <div
+          className="radio-button"
+          style={{ backgroundColor: btnBackgroundColor }}
+        >
+          <input
+            type="radio"
+            name="question-stage"
+            id={`question-stage-${stage}`}
+          />
           <div className="radio-button__inner"></div>
         </div>
         {stages[stage] ? stages[stage].name : stage}
