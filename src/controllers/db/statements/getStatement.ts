@@ -16,114 +16,113 @@ import {
 import {
 	Collections,
 	Statement,
-	StatementSubscription,
 	StatementType,
 } from "delib-npm";
 
 // Helpers
-import { listenedStatements } from "../../../view/pages/home/Home";
+// import { listenedStatements } from "../../../view/pages/home/Home";
 import { DB } from "../config";
 
 // Redux Store
-import { store } from "../../../model/store";
+// import { store } from "../../../model/store";
 
 // TODO: this function is not used. Delete it?
-export function listenToTopStatements(
-	setStatementsCB: (statement: Statement) => void,
-	deleteStatementCB: (statementId: string) => void,
-) {
-	try {
-		const user = store.getState().user.user;
-		if (!user) throw new Error("User not logged in");
+// export function listenToTopStatements(
+// 	setStatementsCB: (statement: Statement) => void,
+// 	deleteStatementCB: (statementId: string) => void,
+// ) {
+// 	try {
+// 		const user = store.getState().user.user;
+// 		if (!user) throw new Error("User not logged in");
 
-		const statementsRef = collection(DB, Collections.statementsSubscribe);
-		const q = query(
-			statementsRef,
-			where("userId", "==", user.uid),
-			where("statement.parentId", "==", "top"),
-			orderBy("lastUpdate", "desc"),
-			limit(60),
-		);
+// 		const statementsRef = collection(DB, Collections.statementsSubscribe);
+// 		const q = query(
+// 			statementsRef,
+// 			where("userId", "==", user.uid),
+// 			where("statement.parentId", "==", "top"),
+// 			orderBy("lastUpdate", "desc"),
+// 			limit(60),
+// 		);
 
-		return onSnapshot(q, (statementsDB) => {
-			statementsDB.docChanges().forEach((change) => {
-				const statementSubscription =
-                    change.doc.data() as StatementSubscription;
+// 		return onSnapshot(q, (statementsDB) => {
+// 			statementsDB.docChanges().forEach((change) => {
+// 				const statementSubscription =
+//                     change.doc.data() as StatementSubscription;
 
-				if (change.type === "added") {
-					listenedStatements.add(
-						statementSubscription.statement.statementId,
-					);
-					setStatementsCB(statementSubscription.statement);
-					listenToSubStatements(
-						statementSubscription.statement.statementId,
-						setStatementsCB,
-						deleteStatementCB,
-					);
-				}
+// 				if (change.type === "added") {
+// 					listenedStatements.add(
+// 						statementSubscription.statementId,
+// 					);
+// 					setStatementsCB(statementSubscription.statement);
+// 					listenToSubStatements(
+// 						statementSubscription.statementId,
+// 						setStatementsCB,
+// 						deleteStatementCB,
+// 					);
+// 				}
 
-				if (change.type === "modified") {
-					listenedStatements.add(
-						statementSubscription.statement.statementId,
-					);
-				}
+// 				if (change.type === "modified") {
+// 					listenedStatements.add(
+// 						statementSubscription.statementId,
+// 					);
+// 				}
 
-				if (change.type === "removed") {
-					listenedStatements.delete(
-						statementSubscription.statement.statementId,
-					);
-					deleteStatementCB(
-						statementSubscription.statement.statementId,
-					);
-				}
-			});
-		});
-	} catch (error) {
-		console.error(error);
-	}
-}
+// 				if (change.type === "removed") {
+// 					listenedStatements.delete(
+// 						statementSubscription.statementId,
+// 					);
+// 					deleteStatementCB(
+// 						statementSubscription.statementId,
+// 					);
+// 				}
+// 			});
+// 		});
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// }
 
 // TODO: this function is not used. Delete it?
-function listenToSubStatements(
-	topStatementId: string,
-	setStatementsCB: (statement: Statement) => void,
-	deleteStatementCB: (statementId: string) => void,
-) {
-	try {
-		const subStatementsRef = collection(DB, Collections.statements);
-		const q = query(
-			subStatementsRef,
-			where("topParentId", "==", topStatementId),
+// function listenToSubStatements(
+// 	topStatementId: string,
+// 	setStatementsCB: (statement: Statement) => void,
+// 	deleteStatementCB: (statementId: string) => void,
+// ) {
+// 	try {
+// 		const subStatementsRef = collection(DB, Collections.statements);
+// 		const q = query(
+// 			subStatementsRef,
+// 			where("topParentId", "==", topStatementId),
 
-			// where("statementType", "==", StatementType.question),
-			orderBy("createdAt", "asc"),
-			limit(50),
-		);
+// 			// where("statementType", "==", StatementType.question),
+// 			orderBy("createdAt", "asc"),
+// 			limit(50),
+// 		);
 
-		return onSnapshot(q, (statementsDB) => {
-			statementsDB.docChanges().forEach((change) => {
-				const statement = change.doc.data() as Statement;
+// 		return onSnapshot(q, (statementsDB) => {
+// 			statementsDB.docChanges().forEach((change) => {
+// 				const statement = change.doc.data() as Statement;
 
-				if (change.type === "added") {
-					listenedStatements.add(statement.statementId);
-					setStatementsCB(statement);
-				}
+// 				if (change.type === "added") {
+// 					listenedStatements.add(statement.statementId);
+// 					setStatementsCB(statement);
+// 				}
 
-				if (change.type === "modified") {
-					listenedStatements.add(statement.statementId);
-					setStatementsCB(statement);
-				}
+// 				if (change.type === "modified") {
+// 					listenedStatements.add(statement.statementId);
+// 					setStatementsCB(statement);
+// 				}
 
-				if (change.type === "removed") {
-					listenedStatements.delete(statement.statementId);
-					deleteStatementCB(statement.statementId);
-				}
-			});
-		});
-	} catch (error) {
-		console.error(error);
-	}
-}
+// 				if (change.type === "removed") {
+// 					listenedStatements.delete(statement.statementId);
+// 					deleteStatementCB(statement.statementId);
+// 				}
+// 			});
+// 		});
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// }
 
 export async function getStatementFromDB(
 	statementId: string,

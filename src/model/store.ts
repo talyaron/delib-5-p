@@ -8,10 +8,12 @@ import { roomsSlice } from "./rooms/roomsSlice";
 import { timersSlice } from "./timers/timersSlice";
 import { initLocationSlice } from "./location/locationSlice";
 import { historySlice } from "./history/HistorySlice";
+import { statementMeta } from "./statements/statementsMetaSlice";
 
 export const store = configureStore({
 	reducer: {
 		statements: statementsSlicer.reducer,
+		statementMeta: statementMeta.reducer,
 		evaluations: evaluationsSlicer.reducer,
 		user: userSlicer.reducer,
 		votes: votesSlicer.reducer,

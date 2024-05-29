@@ -19,8 +19,11 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
+        "baseUrl": "./src",
         "paths": {
-            "@shared/*": ["../delib-models/*"]
+            "@shared/*": ["../delib-models/*"],
+            "@assets/*": ["./assets/*"],
+
         }
     },
     "include": ["src", "cypress"],

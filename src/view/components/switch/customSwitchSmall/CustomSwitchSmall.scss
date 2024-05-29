@@ -1,0 +1,95 @@
+$SwitchWidth: 6.9rem;
+$SwitchHeight: 2.6729rem;
+
+.custom-switch-small {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: start;
+   
+
+    input{
+        display: none;
+    }
+
+    .background {
+        position: relative;
+        width: $SwitchWidth;
+        height: $SwitchHeight;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .text {
+        margin: 5px 0px 0px 0px;
+        font-size: .9rem;
+        color: #769cc2;
+        position: relative;
+    }
+
+    .ball {
+        height: $SwitchHeight;
+        width: $SwitchHeight;
+        position: absolute;
+        background-color: #c1d8f0;
+        border-radius: 100%;
+        
+        animation-duration: 0.15s;
+        animation-timing-function: ease-in-out;
+
+        &--checked {
+            background-color: #1abe35;
+            left: 4.15rem;
+            animation-name: toChecked;
+           
+            animation-fill-mode: forwards;
+            animation-direction:normal;
+        }
+
+        &--unchecked {
+            background-color: #c54f40;
+            left: 0;
+
+            animation-name: toUnchecked;
+           
+            animation-fill-mode: forwards;
+            animation-direction: reverse;
+        }
+
+        @keyframes toUnchecked {
+            0% {
+                left: 4.15rem;
+               scale: 1;
+            }
+
+            50% {
+                left: 2.07rem;
+                scale: .4;
+            }
+
+            100% {
+                left: 0;
+               scale: 1;
+            }
+
+        }
+        @keyframes toChecked {
+            0% {
+                left: 4.15rem;
+               scale: 1;
+            }
+
+            50% {
+                left: 2.07rem;
+                scale: .4;
+            }
+
+            100% {
+                left: 0;
+               scale: 1;
+            }
+
+        }
+    }
+}

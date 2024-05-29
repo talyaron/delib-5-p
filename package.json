@@ -20,7 +20,7 @@
     "dependencies": {
         "@dagrejs/dagre": "^1.0.4",
         "@reduxjs/toolkit": "^1.9.5",
-        "delib-npm": "^1.2.43",
+        "delib-npm": "^1.2.63",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-sonarjs": "^1.0.3",
         "firebase": "^10.0.0",

@@ -1,5 +1,5 @@
 // custom components
-import CustomSwitch from "../../../../../../components/switch/CustomSwitch";
+import CustomSwitch from "../../../../../../components/switch/customSwitch/CustomSwitch";
 
 // HELPERS
 import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel";
