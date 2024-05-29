@@ -5,6 +5,7 @@ import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import {
 	Access,
+	QuestionStage,
 	ResultsBy,
 	Screen,
 	Statement,
@@ -109,7 +110,7 @@ export const setStatementToDB = async ({
 				: statement?.topParentId ||
 				parentStatement?.topParentId ||
 				"top";
-		statement.subScreens = allowedScreens(statement,statement.subScreens );
+		statement.subScreens = allowedScreens(statement, statement.subScreens);
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
@@ -247,7 +248,7 @@ export function createStatement({
 			storeState.statements.statements,
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
-		
+
 
 		const newStatement: Statement = {
 			statement: text,
@@ -275,17 +276,17 @@ export function createStatement({
 			hasChildren,
 			statementType,
 			consensus: 0,
-			evaluation:{
-				numberOfEvaluators:0,
-				sumEvaluations:0,
-				agreement:0,
+			evaluation: {
+				numberOfEvaluators: 0,
+				sumEvaluations: 0,
+				agreement: 0,
 			},
 			results: [],
 			subScreens,
 		};
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
-	
+
 		StatementSchema.parse(newStatement);
 
 		return newStatement;
@@ -624,6 +625,20 @@ export async function setFollowMeDB(
 		} else {
 			await updateDoc(statementRef, { followMe: "" });
 		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+interface SetStatementStageParams {
+	statementId: string;
+	stage: QuestionStage;
+}
+export async function setQuestionStage({ statementId, stage = QuestionStage.suggestion }: SetStatementStageParams) {
+	try {
+		if (!statementId) throw new Error("Statement ID is undefined");
+		const statementRef = doc(DB, Collections.statements, statementId);
+		await updateDoc(statementRef, { questionSettings: { currentStage: stage } });
 	} catch (error) {
 		console.error(error);
 	}

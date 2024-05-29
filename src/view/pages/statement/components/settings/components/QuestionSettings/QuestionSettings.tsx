@@ -6,7 +6,7 @@ import { QuestionStage, QuestionType, StatementType } from "delib-npm";
 import QuestionDashboard from "./questionDashboard/QuestionDashboard";
 import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
 
-import './QuestionSettings.scss';
+import "./QuestionSettings.scss";
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
   statement,
@@ -41,7 +41,26 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
         />
         <div className="question-settings__wrapper">
           <QuestionDashboard statement={statement} />
-          <QuestionStageRadioBtn stage={QuestionStage.suggestion} />
+          <QuestionStageRadioBtn
+            stage={QuestionStage.suggestion}
+            statementId={statement.statementId}
+          />
+          <QuestionStageRadioBtn
+            stage={QuestionStage.firstEvaluation}
+            statementId={statement.statementId}
+          />
+          <QuestionStageRadioBtn
+            stage={QuestionStage.secondEvaluation}
+            statementId={statement.statementId}
+          />
+          <QuestionStageRadioBtn
+            stage={QuestionStage.voting}
+            statementId={statement.statementId}
+          />
+          <QuestionStageRadioBtn
+            stage={QuestionStage.finished}
+            statementId={statement.statementId}
+          />
         </div>
       </div>
     );
