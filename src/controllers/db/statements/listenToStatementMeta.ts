@@ -1,4 +1,4 @@
-import { StatementMeta } from "delib-npm";
+import { Collections, StatementMeta } from "delib-npm";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { DB } from "../config";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -10,7 +10,7 @@ export function listenToStatementMeta(statementId: string, dispatch: Dispatch): 
             throw new Error("Statement ID is missing");
         }
 
-        const statementMetaRef = doc(DB, "statementsMeta", statementId);
+        const statementMetaRef = doc(DB, Collections.statementsMetaData, statementId);
         return onSnapshot(statementMetaRef, (statementMetaDB) => {
             try {
                 if (!statementMetaDB.exists()) {

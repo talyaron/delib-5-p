@@ -1,6 +1,6 @@
 .create-statement-modal {
-    --questionTabColor: #3989cf;
-    --questionCreateButtonColor: #5899e0;
+    --question-headerTabColor: #3989cf;
+    --question-headerCreateButtonColor: #5899e0;
     --optionTabColor: #2da482;
     --optionCreateButtonColor: #6fc5be;
 
@@ -58,9 +58,9 @@
                 &.active {
                     font-weight: 500;
                     &.question {
-                        color: var(--questionTabColor);
+                        color: var(--question-headerTabColor);
                         .block {
-                            background-color: var(--questionTabColor);
+                            background-color: var(--question-headerTabColor);
                         }
                     }
                     &.option {
@@ -109,7 +109,7 @@
                     background-color: var(--optionCreateButtonColor);
                 }
                 &.question {
-                    background-color: var(--questionCreateButtonColor);
+                    background-color: var(--question-headerCreateButtonColor);
                 }
             }
 

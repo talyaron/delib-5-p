@@ -25,7 +25,7 @@ export const statementMeta = createSlice({
 
                 const statementMeta = action.payload as StatementMeta;
                 // StatementMetaSchema.parse(statementMeta);
-                console.log(statementMeta)
+                
                 state.statementsMeta = updateArray(state.statementsMeta, statementMeta, "statementId");
 
             } catch (error) {

@@ -4,6 +4,9 @@ import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import CustomSwitchSmall from "../../../../../../components/switch/customSwitchSmall/CustomSwitchSmall";
 import { QuestionStage, QuestionType, StatementType } from "delib-npm";
 import QuestionDashboard from "./questionDashboard/QuestionDashboard";
+import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
+
+import './QuestionSettings.scss';
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
   statement,
@@ -13,7 +16,6 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
-      
       if (!statement.questionSettings) {
         setChecked(false);
         return;
@@ -37,7 +39,10 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
           textChecked="simple question"
           textUnchecked="multistage question"
         />
-        <QuestionDashboard statement={statement} />
+        <div className="question-settings__wrapper">
+          <QuestionDashboard statement={statement} />
+          <QuestionStageRadioBtn stage={QuestionStage.suggestion} />
+        </div>
       </div>
     );
 
@@ -70,10 +75,9 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
         });
       }
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-
-    return null;
+    return <p>{error.message}</p>;
   }
 };
 
