@@ -39,6 +39,8 @@ export default function HomeHeader() {
 
   return (
     <div className={`homePage__header ${dir}`}>
+      <img className="bikeImg" src="/src/assets/images/bike.png"></img>
+
       <img className="treeImg" src="/src/assets/images/tree.png"></img>
 
       <div className="homePage__header__wrapper">
