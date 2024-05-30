@@ -81,7 +81,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
           ...statement,
           questionSettings: {
             questionType: QuestionType.singleStep,
-            currentStep: QuestionStage.suggestion,
+            currentStage: QuestionStage.suggestion,
           },
         });
       } else {

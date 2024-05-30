@@ -1,4 +1,4 @@
-import { Collections, StatementMeta } from "delib-npm";
+import { Collections, StatementMeta, StatementMetaSchema } from "delib-npm";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { DB } from "../config";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -15,9 +15,11 @@ export function listenToStatementMeta(statementId: string, dispatch: Dispatch): 
             try {
                 if (!statementMetaDB.exists()) {
                     throw new Error("Statement meta does not exist");
+
                 }
                 const statementMeta = statementMetaDB.data() as StatementMeta;
-                // StatementMetaSchema.parse(statementMeta);
+    
+                StatementMetaSchema.parse(statementMeta);
 
 
                 dispatch(setStatementMeta(statementMeta));

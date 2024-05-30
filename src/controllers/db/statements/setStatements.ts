@@ -1,5 +1,5 @@
 // Firestore
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {Timestamp, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 // Third Party Imports
 import { z } from "zod";
@@ -638,7 +638,7 @@ export async function setQuestionStage({ statementId, stage = QuestionStage.sugg
 	try {
 		if (!statementId) throw new Error("Statement ID is undefined");
 		const statementRef = doc(DB, Collections.statements, statementId);
-		await updateDoc(statementRef, { questionSettings: { currentStage: stage } });
+		await updateDoc(statementRef, { questionSettings: { currentStage: stage, lastUpdate:serverTimestamp() } });
 	} catch (error) {
 		console.error(error);
 	}

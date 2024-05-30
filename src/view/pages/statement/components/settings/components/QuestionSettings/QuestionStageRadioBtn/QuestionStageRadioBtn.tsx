@@ -51,12 +51,13 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
     
 
   return (
-    <div className="question-stage-radio-btn">
+    <div className="question-stage-radio-btn" style={{ transform: isSelected ? "scale(1.04)" : "scale(1)"}}>
       <div
         className="question-stage-radio-btn__top"
         style={{
           backgroundColor: backgroundColor,
-          opacity: isSelected ? 1 : 0.5,
+          opacity: isSelected ? 1 : 0.5
+         
         }}
       >
         {stages[stage] ? stages[stage].icon : <LightBulbIcon className="img" />}
