@@ -2,11 +2,11 @@ import { QuestionStage, Statement } from "delib-npm";
 import { FC } from "react";
 import "./QuestionDashboard.scss";
 
-import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.svg?react";
+
 import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react";
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
 import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
-import { getStageInfo, stages } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
+import { getStageInfo } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
 
 interface Props {
   statement: Statement;
@@ -37,7 +37,7 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
           </div>
         </div>
         <div className="question-dashboard__icon" style={{backgroundColor}}>
-          {stageInfo.icon?stageInfo.icon:null}
+          {stageInfo?.icon?stageInfo.icon:null}
         </div>
       </div>
     );
