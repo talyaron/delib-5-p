@@ -1,32 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { StatementMeta } from "delib-npm";
+import { StatementMetaData, StatementMetaDataSchema } from "delib-npm";
 import { updateArray } from "../../controllers/general/helpers";
 
 
 
 // Define a type for the slice state
-interface StatementMetaState {
-    statementsMeta: StatementMeta[];
+interface StatementMetaDataState {
+    statementsMetaData: StatementMetaData[];
 }
 
 // Define the initial state using that type
-const initialState: StatementMetaState = {
-    statementsMeta: [],
+const initialState: StatementMetaDataState = {
+    statementsMetaData: [],
 };
 
-export const statementMeta = createSlice({
-    name: "statements-meta",
+export const statementMetaData = createSlice({
+    name: "statements-meta-data",
     initialState,
     reducers: {
-        setStatementMeta: (state, action: PayloadAction<StatementMeta>) => {
+        setStatementMetaData: (state, action: PayloadAction<StatementMetaData>) => {
             try {
 
-                const statementMeta = action.payload as StatementMeta;
-                // StatementMetaSchema.parse(statementMeta);
+                const statementMetaData = action.payload as StatementMetaData;
+                StatementMetaDataSchema.parse(statementMetaData);
                 
-                state.statementsMeta = updateArray(state.statementsMeta, statementMeta, "statementId");
+                state.statementsMetaData = updateArray(state.statementsMetaData, statementMetaData, "statementId");
 
             } catch (error) {
                 console.error(error);
@@ -36,11 +36,11 @@ export const statementMeta = createSlice({
 });
 
 export const {
-    setStatementMeta
-} = statementMeta.actions;
+    setStatementMetaData
+} = statementMetaData.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const statementMetaSelector = (statementId:string) => (state: RootState) => state.statementMeta.statementsMeta.find((statementMeta) => statementMeta.statementId === statementId);
+export const statementMetaDataSelector = (statementId:string) => (state: RootState) => state.statementMetaData.statementsMetaData.find((statementMetaData) => statementMetaData.statementId === statementId);
 
 
-export default statementMeta.reducer;
+export default statementMetaData.reducer;

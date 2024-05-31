@@ -1,28 +1,28 @@
-import { Collections, StatementMeta, StatementMetaSchema } from "delib-npm";
+import { Collections, StatementMetaData, StatementMetaDataSchema } from "delib-npm";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { DB } from "../../config";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setStatementMeta } from "../../../../model/statements/statementsMetaSlice";
+import { setStatementMetaData } from "../../../../model/statements/statementsMetaSlice";
 
-export function listenToStatementMeta(statementId: string, dispatch: Dispatch): Unsubscribe {
+export function listenToStatementMetaData(statementId: string, dispatch: Dispatch): Unsubscribe {
     try {
         if (!statementId) {
             throw new Error("Statement ID is missing");
         }
 
-        const statementMetaRef = doc(DB, Collections.statementsMetaData, statementId);
-        return onSnapshot(statementMetaRef, (statementMetaDB) => {
+        const statementMetaDataRef = doc(DB, Collections.statementsMetaData, statementId);
+        return onSnapshot(statementMetaDataRef, (statementMetaDataDB) => {
             try {
-                if (!statementMetaDB.exists()) {
+                if (!statementMetaDataDB.exists()) {
                     throw new Error("Statement meta does not exist");
 
                 }
-                const statementMeta = statementMetaDB.data() as StatementMeta;
+                const statementMetaData = statementMetaDataDB.data() as StatementMetaData;
     
-                StatementMetaSchema.parse(statementMeta);
+                StatementMetaDataSchema.parse(statementMetaData);
 
 
-                dispatch(setStatementMeta(statementMeta));
+                dispatch(setStatementMetaData(statementMetaData));
             } catch (error) {
                 console.error(error);
             }

@@ -5,7 +5,7 @@ import "./QuestionDashboard.scss";
 import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.svg?react";
 import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react";
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { statementMetaSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
+import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
 
 interface Props {
   statement: Statement;
@@ -13,7 +13,7 @@ interface Props {
 
 const QuestionDashboard: FC<Props> = ({ statement }) => {
   try {
-    const numberOfMembers:number = useAppSelector(statementMetaSelector(statement.statementId))?.numberOfMembers || 0;
+    const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.numberOfMembers || 0;
 
     return (
       <div className="question-dashboard">
