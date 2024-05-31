@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { StatementMetaData, StatementMetaDataSchema } from "delib-npm";
-import { updateArray } from "../../controllers/general/helpers";
+import { updateArray, writeZodError } from "../../controllers/general/helpers";
 
 
 
@@ -24,8 +24,12 @@ export const statementMetaData = createSlice({
             try {
 
                 const statementMetaData = action.payload as StatementMetaData;
-                StatementMetaDataSchema.parse(statementMetaData);
-                
+                const results = StatementMetaDataSchema.safeParse(statementMetaData);
+                if (!results.success) {
+                    writeZodError(results.error, statementMetaData);
+                    throw new Error("StatementMetaDataSchema failed to parse");
+                }
+
                 state.statementsMetaData = updateArray(state.statementsMetaData, statementMetaData, "statementId");
 
             } catch (error) {
@@ -40,7 +44,7 @@ export const {
 } = statementMetaData.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const statementMetaDataSelector = (statementId:string) => (state: RootState) => state.statementMetaData.statementsMetaData.find((statementMetaData) => statementMetaData.statementId === statementId);
+export const statementMetaDataSelector = (statementId: string) => (state: RootState) => state.statementMetaData.statementsMetaData.find((statementMetaData) => statementMetaData.statementId === statementId);
 
 
 export default statementMetaData.reducer;

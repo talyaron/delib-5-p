@@ -24,7 +24,7 @@ import StatementSettingsForm from "./components/statementSettingsForm/StatementS
 import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
 import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
 import { defaultEmptyStatement } from "./emptyStatementModel";
-import { listenToStatementMeta } from "../../../../../controllers/db/statements/statementMetaData/listenToStatementMeta";
+import { listenToStatementMetaData } from "../../../../../controllers/db/statements/statementMetaData/listenToStatementMeta";
 
 
 const StatementSettings: FC = () => {
@@ -85,7 +85,7 @@ const StatementSettings: FC = () => {
 
         if (statementId) {
           unsubscribe = listenToMembers(dispatch)(statementId);
-          unsubMeta = listenToStatementMeta(statementId, dispatch);
+          unsubMeta = listenToStatementMetaData(statementId, dispatch);
 
           if (statement) {
             setStatementToEdit(statement);

@@ -44,7 +44,7 @@ export async function updateStatementNumberOfMembers(event: any) {
 
                 if (!statementId) throw new Error("statementId is required")
 
-               
+
 
                 let increment = 0;
                 if (eventType === "new" && isMemberAfter) {
@@ -62,9 +62,10 @@ export async function updateStatementNumberOfMembers(event: any) {
 
                 const statementRef = db.doc(`${Collections.statementsMetaData}/${statementId}`);
                 statementRef.set({
-                    numberOfMembers: FieldValue.increment(increment),
-                    statementId,
-                    lastUpdate:Timestamp.now().toMillis() 
+                    question: {
+                        numberOfMembers: FieldValue.increment(increment),
+                        lastUpdate: Timestamp.now().toMillis()
+                    }
                 }, { merge: true });
                 return;
 
