@@ -13,7 +13,7 @@ interface Props {
 
 const QuestionDashboard: FC<Props> = ({ statement }) => {
   try {
-    const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.numberOfMembers || 0;
+    const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.question?.numberOfMembers || 0;
 
     return (
       <div className="question-dashboard">
@@ -28,7 +28,7 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
           <div className="current-stage">
             <div className="current-stage__title">Current stage</div>
             <div className="current-stage__stage">
-              {questionStepDictionary(statement.questionSettings?.currentStep)}
+              {questionStepDictionary(statement.questionSettings?.currentStage)}
             </div>
           </div>
         </div>
