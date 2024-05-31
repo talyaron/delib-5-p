@@ -3,6 +3,7 @@ import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { DB } from "../../config";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setStatementMetaData } from "../../../../model/statements/statementsMetaSlice";
+import { writeZodError } from "../../../general/helpers";
 
 export function listenToStatementMetaData(statementId: string, dispatch: Dispatch): Unsubscribe {
     try {
@@ -18,8 +19,12 @@ export function listenToStatementMetaData(statementId: string, dispatch: Dispatc
 
                 }
                 const statementMetaData = statementMetaDataDB.data() as StatementMetaData;
-    
-                StatementMetaDataSchema.parse(statementMetaData);
+
+                const results = StatementMetaDataSchema.safeParse(statementMetaData);
+                if (!results.success) {
+                    writeZodError(results.error, statementMetaData);
+                    throw new Error("StatementMetaDataSchema failed to parse");
+                }
 
 
                 dispatch(setStatementMetaData(statementMetaData));

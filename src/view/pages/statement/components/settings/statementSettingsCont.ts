@@ -116,7 +116,7 @@ export async function handleSetStatement({
 				enableAddEvaluationOption,
 				enableAddVotingOption,
 				enhancedEvaluation,
-				showEvaluation,
+				showEvaluation
 			});
 			if (!newStatement)
 				throw new Error("newStatement had error in creating");

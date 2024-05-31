@@ -70,7 +70,7 @@ export async function updateParentWithNewMessageCB(e: any) {
 
         //create statement metadata
         const statementMetaRef = db.doc(`${Collections.statementsMetaData}/${statementId}`);
-        statementMetaRef.set(
+        await statementMetaRef.set(
             { statementId },
             { merge: true },
         );

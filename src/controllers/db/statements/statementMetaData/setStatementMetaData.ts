@@ -1,5 +1,5 @@
-import { Collections, QuestionStage } from "delib-npm";
-import { doc, setDoc } from "firebase/firestore";
+import { Collections, QuestionStage, QuestionType } from "delib-npm";
+import { doc, updateDoc } from "firebase/firestore";
 import { DB } from "../../config";
 
 interface SetStatementStageParams {
@@ -9,8 +9,8 @@ interface SetStatementStageParams {
 export async function setQuestionStage({ statementId, stage = QuestionStage.suggestion }: SetStatementStageParams) {
 	try {
 		if (!statementId) throw new Error("Statement ID is undefined");
-		const statementRef = doc(DB, Collections.statementsMetaData, statementId);
-		await setDoc(statementRef, { question: { statementId, currentStage: stage, lastUpdate: new Date().getTime() } }, { merge: true });
+		const statementRef = doc(DB, Collections.statements, statementId);
+		await updateDoc(statementRef, { questionSettings: {  currentStage: stage,questionType:QuestionType.singleStep  } });
 	} catch (error) {
 		console.error(error);
 	}

@@ -44,6 +44,7 @@ const stages = {
 
 const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
   const isSelected = statement.questionSettings?.currentStage === stage;
+  console.log(statement.questionSettings)
   
   const backgroundColor = stages[stage] ? `var(${stages[stage].color})` : "var(--green)";
   const btnBackgroundColor = stages[stage]

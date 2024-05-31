@@ -1,8 +1,7 @@
-import { Collections, StatementSubscription } from "delib-npm";
+import { StatementSubscription } from "delib-npm";
 import { logger } from "firebase-functions";
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
-import { db } from "./index";
 import { isMember } from "delib-npm/dist/controllers/helpers";
+import { addOrRemoveMemberFromStatementDB } from "./fn_statementsMetaData";
 
 
 export async function updateStatementNumberOfMembers(event: any) {
@@ -39,41 +38,7 @@ export async function updateStatementNumberOfMembers(event: any) {
             }
         }
 
-        async function addOrRemoveMemberFromStatementDB(statementId: string, eventType: "new" | "update" | "delete", isMemberAfter: boolean, isMemberBefore: boolean): Promise<void> {
-            try {
-
-                if (!statementId) throw new Error("statementId is required")
-
-
-
-                let increment = 0;
-                if (eventType === "new" && isMemberAfter) {
-                    increment = 1;
-
-                } else if (eventType === "delete" && isMemberBefore) {
-                    increment = -1;
-
-                } else if (eventType === "update" && isMemberAfter && !isMemberBefore) {
-                    increment = 1;
-
-                } else if (eventType === "update" && !isMemberAfter && isMemberBefore) {
-                    increment = -1;
-                }
-
-                const statementRef = db.doc(`${Collections.statementsMetaData}/${statementId}`);
-                statementRef.set({
-                    question: {
-                        numberOfMembers: FieldValue.increment(increment),
-                        lastUpdate: Timestamp.now().toMillis()
-                    }
-                }, { merge: true });
-                return;
-
-            } catch (error) {
-                logger.error("error updating statement with number of members", error);
-                return;
-            }
-        }
+        
     } catch (error) {
         logger.error("error updating statement with number of members", error);
     }
