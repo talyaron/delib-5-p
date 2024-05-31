@@ -127,5 +127,10 @@
     "Mark as a Solution":   "סימון כפתרון",
     "Mark as a Question": "סימון כשאלה",
     "Unmark as a Question": "ביטול סימון כשאלה",
-    "Welcome to room": "ברוך/ה הבא/ה לחדר"
+    "Welcome to room": "ברוך/ה הבא/ה לחדר",
+    "Current stage": "שלב נוכחי",
+    "Suggestions": "הצעות",
+    "First Evaluation": "הערכה ראשונה",
+    "Second Evaluation": "הערכה שנייה",
+    "Finished": "סיום"
 }

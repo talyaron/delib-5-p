@@ -1,6 +1,10 @@
 import { FC } from "react";
 import "./CustomSwitchSmall.scss";
 import background from "./customSwitchSmallBackground.svg";
+
+import StepsNoIcon from "../../../../assets/icons/stepsNoIcon.svg?react";
+import StepsIcon from "../../../../assets/icons/stepsIcon.svg?react";
+
 interface Props {
   label: string;
   textChecked: string;
@@ -26,10 +30,18 @@ const CustomSwitchSmall: FC<Props> = ({
         className="background"
         style={{ backgroundImage: `url(${background})` }}
       >
+        <div className="ball ball-background">
+          <StepsNoIcon /> 
+        </div>
+        <div className="ball ball-background ball-background-off">
+          <StepsIcon />
+        </div>
         <div
-          className={`ball ball--${checked ? "checked" : "unchecked"}`}
+          className={`ball ball-switch ball-switch--${checked ? "checked" : "unchecked"}`}
           style={{ left: `${checked ? 0 : 4.15}rem` }}
-        ></div>
+        >
+          {checked ? <StepsIcon /> : <StepsNoIcon />}
+        </div>
       </div>
       <div className="text">{checked ? textChecked : textUnchecked}</div>
       <input

@@ -7,6 +7,7 @@ import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react"
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
 import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
 import { getStageInfo } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
+import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
   statement: Statement;
@@ -14,6 +15,8 @@ interface Props {
 
 const QuestionDashboard: FC<Props> = ({ statement }) => {
   try {
+
+    const { t } = useLanguage();
     const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.question?.numberOfMembers || 0;
     const currentStage = statement.questionSettings?.currentStage || QuestionStage.suggestion;
 
@@ -26,13 +29,13 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
             <div className="joined__icon" >
               <UsersIcon />
             </div>
-            <div className="joined__text">Joined members</div>
+            <div className="joined__text">{t("Joined members")}</div>
             <div className="joined__number">{numberOfMembers}</div>
           </div>
           <div className="current-stage">
-            <div className="current-stage__title">Current stage</div>
+            <div className="current-stage__title">{t("Current stage") } </div>
             <div className="current-stage__stage">
-              {questionStepDictionary(statement.questionSettings?.currentStage)}
+              {t(questionStepDictionary(statement.questionSettings?.currentStage))}
             </div>
           </div>
         </div>
@@ -53,15 +56,17 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
 
     switch (questionStage) {
       case QuestionStage.suggestion:
-        return "Suggestion";
+        return "Suggestions";
       case QuestionStage.voting:
         return "Voting";
       case QuestionStage.firstEvaluation:
         return "First Evaluation";
       case QuestionStage.secondEvaluation:
         return "Second Evaluation";
+      case QuestionStage.finished:
+        return "Finished";
       default:
-        return "Suggestion";
+        return "Suggestions";
     }
   }
 };

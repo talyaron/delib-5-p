@@ -8,6 +8,7 @@ import EvaluationsIcon from "../../../../../../../../assets/icons/evaluations2Ic
 import HandIcon from "../../../../../../../../assets/icons/handIcon.svg?react";
 import FlagIcon from "../../../../../../../../assets/icons/flagIcon.svg?react";
 import { setQuestionStage } from "../../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
+import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
   stage: QuestionStage;
@@ -16,7 +17,7 @@ interface Props {
 
 export const stages = {
   [QuestionStage.suggestion]: {
-    name: "Suggestion",
+    name: "Suggestions",
     icon: <LightBulbIcon className="img" />,
     color: "--settings-suggestions",
   },
@@ -43,6 +44,7 @@ export const stages = {
 };
 
 const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
+  const {t} = useLanguage();
   const isSelected = statement.questionSettings?.currentStage === stage;
   const { backgroundColor, btnBackgroundColor } = getStageInfo(stage, isSelected);
 
@@ -78,7 +80,7 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
           />
           <div className="radio-button__inner"></div>
         </div>
-        {stages[stage] ? stages[stage].name : stage}
+        {t(stages[stage] ? stages[stage].name : stage)}
       </div>
     </div>
   );

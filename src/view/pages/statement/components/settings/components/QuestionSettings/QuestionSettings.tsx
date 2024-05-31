@@ -39,8 +39,11 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
           textChecked="simple question"
           textUnchecked="multistage question"
         />
+
         <div className="question-settings__wrapper">
-          <QuestionDashboard statement={statement} />
+          <div className="question-settings-dashboard">
+            <QuestionDashboard statement={statement} />
+          </div>
           <QuestionStageRadioBtn
             stage={QuestionStage.suggestion}
             statement={statement}
