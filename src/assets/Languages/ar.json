@@ -119,5 +119,7 @@
     "Mark as a Solution": "تحديد كحل",
     "Mark as a Question": "تحديد كسؤال",
     "Unmark as a Question": "إلغاء تحديد كسؤال",
-    "Welcome to room": "مرحباً بك في الغرفة"
+    "Welcome to room": "مرحباً بك في الغرفة",
+    "single-step": "خطوة واحدة",
+    "multiple-steps": "عدة خطوات"
 }

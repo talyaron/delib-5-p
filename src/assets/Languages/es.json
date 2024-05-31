@@ -115,5 +115,7 @@
     "Mark as a Solution": "Marcar como solución",
     "Mark as a Question": "Marcar como pregunta",
     "Unmark as a Question": "Desmarcar como pregunta",
-    "Welcome to room": "Bienvenido a la sala"
+    "Welcome to room": "Bienvenido a la sala",
+    "single-step": "Un solo paso",
+    "multiple-steps": "Múltiples pasos"
 }

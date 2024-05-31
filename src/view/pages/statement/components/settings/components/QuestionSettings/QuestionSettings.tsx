@@ -5,14 +5,18 @@ import CustomSwitchSmall from "../../../../../../components/switch/customSwitchS
 import { QuestionStage, QuestionType, StatementType } from "delib-npm";
 import QuestionDashboard from "./questionDashboard/QuestionDashboard";
 import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
+import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 import "./QuestionSettings.scss";
+
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
   statement,
   setStatementToEdit,
 }) => {
   try {
+
+    const {t} = useLanguage();
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
@@ -36,8 +40,8 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
           label="Multi-Stage Question"
           checked={checked}
           setChecked={_setChecked}
-          textChecked="simple question"
-          textUnchecked="multistage question"
+          textChecked={t(QuestionType.multipleSteps)}
+          textUnchecked={t(QuestionType.singleStep)}
         />
 
         <div className="question-settings__wrapper">

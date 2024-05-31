@@ -132,5 +132,7 @@
     "Suggestions": "הצעות",
     "First Evaluation": "הערכה ראשונה",
     "Second Evaluation": "הערכה שנייה",
-    "Finished": "סיום"
+    "Finished": "סיום",
+    "single-step": "שלב אחד",
+    "multiple-steps": "מספר שלבים"
 }

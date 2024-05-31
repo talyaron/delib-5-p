@@ -120,5 +120,7 @@
     "Suggestions": "Suggesties",
     "First Evaluation": "Eerste Evaluatie",
     "Second Evaluation": "Tweede Evaluatie",
-    "Finished": "Voltooid"
+    "Finished": "Voltooid",
+    "single-step": "Enkele stap",
+    "multiple-steps": "Meerdere stappen"
 }
