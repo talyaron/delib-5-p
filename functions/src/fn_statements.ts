@@ -69,7 +69,7 @@ export async function updateParentWithNewMessageCB(e: any) {
         topParentRef.update({ lastChildUpdate: lastUpdate, lastUpdate });
 
         //create statement metadata
-        const statementMetaRef = db.doc(`${Collections.statementsMeta}/${statementId}`);
+        const statementMetaRef = db.doc(`${Collections.statementsMetaData}/${statementId}`);
         statementMetaRef.set(
             {
                 statementId,

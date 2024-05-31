@@ -60,7 +60,7 @@ export async function updateStatementNumberOfMembers(event: any) {
                     increment = -1;
                 }
 
-                const statementRef = db.doc(`${Collections.statementsMeta}/${statementId}`);
+                const statementRef = db.doc(`${Collections.statementsMetaData}/${statementId}`);
                 statementRef.set({
                     numberOfMembers: FieldValue.increment(increment),
                     statementId,

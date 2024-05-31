@@ -7,7 +7,7 @@ import ArrowUp from "../../../../../../../../assets/icons/arrowUpIcon.svg?react"
 import EvaluationsIcon from "../../../../../../../../assets/icons/evaluations2Icon.svg?react";
 import HandIcon from "../../../../../../../../assets/icons/handIcon.svg?react";
 import FlagIcon from "../../../../../../../../assets/icons/flagIcon.svg?react";
-import { setQuestionStage } from "../../../../../../../../controllers/db/statements/setStatements";
+import { setQuestionStage } from "../../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
 
 interface Props {
   stage: QuestionStage;

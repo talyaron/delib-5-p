@@ -1,8 +1,8 @@
 import { Collections, StatementMeta, StatementMetaSchema } from "delib-npm";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
-import { DB } from "../config";
+import { DB } from "../../config";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setStatementMeta } from "../../../model/statements/statementsMetaSlice";
+import { setStatementMeta } from "../../../../model/statements/statementsMetaSlice";
 
 export function listenToStatementMeta(statementId: string, dispatch: Dispatch): Unsubscribe {
     try {

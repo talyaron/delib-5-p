@@ -24,7 +24,7 @@ import StatementSettingsForm from "./components/statementSettingsForm/StatementS
 import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
 import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
 import { defaultEmptyStatement } from "./emptyStatementModel";
-import { listenToStatementMeta } from "../../../../../controllers/db/statements/listenToStatementMeta";
+import { listenToStatementMeta } from "../../../../../controllers/db/statements/statementMetaData/listenToStatementMeta";
 
 
 const StatementSettings: FC = () => {
