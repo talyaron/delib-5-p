@@ -14,7 +14,7 @@ interface Props {
   statement: Statement;
 }
 
-const stages = {
+export const stages = {
   [QuestionStage.suggestion]: {
     name: "Suggestion",
     icon: <LightBulbIcon className="img" />,
@@ -44,21 +44,18 @@ const stages = {
 
 const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
   const isSelected = statement.questionSettings?.currentStage === stage;
-  console.log(statement.questionSettings)
-  
-  const backgroundColor = stages[stage] ? `var(${stages[stage].color})` : "var(--green)";
-  const btnBackgroundColor = stages[stage]
-    ? isSelected? `var(${stages[stage].color})`: "#DCE7FF": "#DCE7FF";
-    
+  const { backgroundColor, btnBackgroundColor } = getStageInfo(stage, isSelected);
 
   return (
-    <div className="question-stage-radio-btn" style={{ transform: isSelected ? "scale(1.04)" : "scale(1)"}}>
+    <div
+      className="question-stage-radio-btn"
+      style={{ transform: isSelected ? "scale(1.04)" : "scale(1)" }}
+    >
       <div
         className="question-stage-radio-btn__top"
         style={{
           backgroundColor: backgroundColor,
-          opacity: isSelected ? 1 : 0.5
-         
+          opacity: isSelected ? 1 : 0.5,
         }}
       >
         {stages[stage] ? stages[stage].icon : <LightBulbIcon className="img" />}
@@ -88,3 +85,21 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 };
 
 export default QuestionStageRadioBtn;
+
+export function getStageInfo(stage: QuestionStage, isSelected: boolean = true) {
+  try {
+    const stageInfo = stages[stage];
+    const backgroundColor = stageInfo
+      ? `var(${stageInfo.color})`
+      : "var(--green)";
+    const btnBackgroundColor = stageInfo
+      ? isSelected
+        ? `var(${stageInfo.color})`
+        : "#DCE7FF"
+      : "#DCE7FF";
+    return { backgroundColor, btnBackgroundColor,stageInfo};
+  } catch (error) {
+    console.error(error);
+    return { backgroundColor: "var(--green)", btnBackgroundColor: "#DCE7FF",stageInfo:undefined, error:true};
+  }
+}

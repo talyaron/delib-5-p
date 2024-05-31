@@ -6,6 +6,7 @@ import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.sv
 import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react";
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
 import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
+import { getStageInfo, stages } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
 
 interface Props {
   statement: Statement;
@@ -14,12 +15,15 @@ interface Props {
 const QuestionDashboard: FC<Props> = ({ statement }) => {
   try {
     const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.question?.numberOfMembers || 0;
+    const currentStage = statement.questionSettings?.currentStage || QuestionStage.suggestion;
+
+    const {backgroundColor, stageInfo} = getStageInfo(currentStage, true);
 
     return (
       <div className="question-dashboard">
         <div className="question-dashboard__info">
           <div className="joined">
-            <div className="joined__icon">
+            <div className="joined__icon" >
               <UsersIcon />
             </div>
             <div className="joined__text">Joined members</div>
@@ -32,8 +36,8 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
             </div>
           </div>
         </div>
-        <div className="question-dashboard__icon">
-          <LightBulbIcon />
+        <div className="question-dashboard__icon" style={{backgroundColor}}>
+          {stageInfo.icon?stageInfo.icon:null}
         </div>
       </div>
     );
