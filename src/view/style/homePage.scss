@@ -21,13 +21,19 @@
     border-bottom-right-radius: 60%;
     border-bottom-left-radius: 60%;
 
-    .treeImg {
+    .heroImg {
       position: absolute;
-      display: flex;
-      top: 7.9rem;
-      width: 450px;
-      height: 14%;
-      rotate: (1.7deg);
+      justify-content: stretch;
+      width: 100%;
+      height: 60vh;
+      z-index: -1;
+
+      // position: absolute;
+      // display: flex;
+      // top: 7.9rem;
+      // width: 450px;
+      // height: 14%;
+      // rotate: (1.7deg);
 
       // @media only screen and (min-width: 550px) {
       //   right: 16%;

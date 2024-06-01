@@ -41,8 +41,6 @@ export default function HomeHeader() {
     <div className={`homePage__header ${dir}`}>
       <img className="bikeImg" src="/src/assets/images/bike.png"></img>
 
-      <img className="treeImg" src="/src/assets/images/tree.png"></img>
-
       <div className="homePage__header__wrapper">
         <div
           className="homePage__header__wrapper__title"
@@ -68,6 +66,7 @@ export default function HomeHeader() {
           </Menu>
         </div>
       </div>
+      <img className="heroImg" src="/src/assets/images/herox3.png"></img>
     </div>
   );
 }
