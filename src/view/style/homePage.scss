@@ -24,29 +24,29 @@
     .treeImg {
       position: absolute;
       display: flex;
-      right: 2.8rem;
-      top: 7.5rem;
-      width: 78%;
+      top: 7.9rem;
+      width: 450px;
       height: 14%;
+      rotate: (1.7deg);
 
-      @media only screen and (min-width: 550px) {
-        right: 16%;
-        top: 8rem;
-        width: 65%;
-        height: 14%;
-      }
-      @media only screen and (min-width: 750px) {
-        right: 20%;
-        top: 8.2rem;
-        width: 60%;
-        height: 14%;
-      }
-      @media only screen and (min-width: 1140px) {
-        right: 28%;
-        top: 7rem;
-        width: 40%;
-        height: 18%;
-      }
+      // @media only screen and (min-width: 550px) {
+      //   right: 16%;
+      //   top: 8rem;
+      //   width: 65%;
+      //   height: 14%;
+      // }
+      // @media only screen and (min-width: 750px) {
+      //   right: 20%;
+      //   top: 8.2rem;
+      //   width: 60%;
+      //   height: 14%;
+      // }
+      // @media only screen and (min-width: 1140px) {
+      //   right: 28%;
+      //   top: 7rem;
+      //   width: 40%;
+      //   height: 18%;
+      // }
     }
 
     .bikeImg {
