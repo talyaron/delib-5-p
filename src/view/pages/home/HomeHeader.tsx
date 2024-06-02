@@ -66,7 +66,7 @@ export default function HomeHeader() {
           </Menu>
         </div>
       </div>
-      <img className="heroImg" src="/src/assets/images/herox3.png"></img>
+      <img className="heroImg" src="/src/assets/images/heroX4.png"></img>
     </div>
   );
 }

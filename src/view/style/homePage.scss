@@ -14,9 +14,6 @@
     align-items: center;
     justify-content: center;
     background-color: #6394ef;
-    // background-image: url("/src/assets/images/Herox3.png");
-    // background-size: cover; // Adjust these properties as needed
-
     box-shadow: 0px 1px 4px 0px #a9adf49a;
     z-index: 1;
     gap: 0px;
@@ -50,9 +47,16 @@
       }
       @media only screen and (min-width: 970px) {
         position: absolute;
-        top: 10.5rem;
-        width: 360px;
-        height: 200px;
+        top: 10.2rem;
+        width: 380px;
+        height: 220px;
+      }
+
+      @media only screen and (min-width: 1800px) {
+        position: absolute;
+        top: 10.2rem;
+        width: 380px;
+        height: 220px;
       }
     }
 
