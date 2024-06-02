@@ -1,0 +1,36 @@
+import { Collections } from "delib-npm";
+import { db } from ".";
+import { Query } from "firebase-admin/firestore";
+
+export const getRandomStatements = async (req: any, res: any) => {
+    try {
+
+        const parentId = req.query.parentId;
+        let limit = req.query.limit || 10 as number;
+        if (limit > 50) limit = 50;
+
+        if (!parentId) {
+            res.status(400).send({ error: "parentId is required", ok: false });
+            return;
+        }
+
+
+        const allSolutionStatementsRef = db.collection(Collections.statements);
+        const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement");
+        const allSolutionStatementsDB = await q.get();
+        const allSolutionStatements = allSolutionStatementsDB.docs.map((doc) => doc.data());
+
+        //randomize the statements and return the first 10 (or limit give by the client)
+        allSolutionStatements.sort(() => Math.random() - 0.5);
+        const randomStatements = allSolutionStatements.splice(limit);
+
+
+        res.send({ randomStatements, ok: true });
+
+    } catch (error: any) {
+        res.status(500).send({ error: error.message, ok: false });
+        return;
+    }
+}
+
+
