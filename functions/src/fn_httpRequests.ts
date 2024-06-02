@@ -2,11 +2,13 @@ import { Collections } from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
 
+
+
 export const getRandomStatements = async (req: any, res: any) => {
     try {
 
         const parentId = req.query.parentId;
-        let limit = req.query.limit || 10 as number;
+        let limit =Number(req.query.limit) || 10 as number;
         if (limit > 50) limit = 50;
 
         if (!parentId) {
@@ -22,10 +24,9 @@ export const getRandomStatements = async (req: any, res: any) => {
 
         //randomize the statements and return the first 10 (or limit give by the client)
         allSolutionStatements.sort(() => Math.random() - 0.5);
-        const randomStatements = allSolutionStatements.splice(limit);
+        const randomStatements = allSolutionStatements.splice(0,limit);
 
-
-        res.send({ randomStatements, ok: true });
+        res.send({ randomStatements,ok: true });
 
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
@@ -33,4 +34,28 @@ export const getRandomStatements = async (req: any, res: any) => {
     }
 }
 
+export const getTopStatements = async (req: any, res: any) => {
+    try {
 
+        const parentId = req.query.parentId;
+        let limit = Number(req.query.limit) || 10 as number;
+        if (limit > 50) limit = 50;
+
+        if (!parentId) {
+            res.status(400).send({ error: "parentId is required", ok: false });
+            return;
+        }
+
+        const topSolutionsRef = db.collection(Collections.statements);
+        const q: Query = topSolutionsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement").orderBy("consensus", "desc").limit(limit);
+        const topSolutionsDB = await q.get();
+        const topSolutions = topSolutionsDB.docs.map((doc) => doc.data());
+
+        res.send({ topSolutions, ok: true });
+        return;
+
+    } catch (error: any) {
+        res.status(500).send({ error: error.message, ok: false });
+        return;
+    }
+}
