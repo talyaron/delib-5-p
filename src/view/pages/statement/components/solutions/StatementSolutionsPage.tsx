@@ -39,6 +39,7 @@ const dispatch = useAppDispatch();
 
 		// Use States
 		const [showModal, setShowModal] = useState(false);
+    const [showToast, setShowToast] = useState(false);
 		const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
 			[...subStatements]
 		);
@@ -79,7 +80,7 @@ const dispatch = useAppDispatch();
 			<>
 				<div className="page__main">
 					<div className="wrapper">
-            <Toast text="This is a toast" />
+            <Toast text="This is a toast" type="message" show={showToast} setShow={setShowToast}/>
 						{sortedSubStatements?.map((statementSub: Statement, i: number) => {
 							//get the top of the element
 							if (statementSub.elementHight) {
