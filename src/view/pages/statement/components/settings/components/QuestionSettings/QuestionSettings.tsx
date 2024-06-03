@@ -9,7 +9,7 @@ import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages
 
 import "./QuestionSettings.scss";
 import { setQuestionType } from "../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
-import { set } from "firebase/database";
+
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
   statement,
@@ -79,8 +79,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
         : QuestionType.multipleSteps;
       const currentStage: QuestionStage =
         statement.questionSettings?.currentStage || QuestionStage.suggestion;
-      console.log("current stage", currentStage);
-      console.log("question type", questionType);
+      
 
       setChecked(!checked);
 

@@ -1,7 +1,14 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement, StatementType, User, isOptionFn } from "delib-npm";
+import {
+  QuestionStage,
+  QuestionType,
+  Statement,
+  StatementType,
+  User,
+  isOptionFn,
+} from "delib-npm";
 import { useParams } from "react-router";
 
 // Utils & Helpers
@@ -11,6 +18,16 @@ import { sortSubStatements } from "./statementSolutionsCont";
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
+
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../controllers/hooks/reduxHooks";
+import {
+  questionsSelector,
+  setTempStatementsForPresentation,
+  statementOptionsSelector,
+} from "../../../../../model/statements/statementsSlice";
 
 interface StatementSolutionsPageProps {
   statement: Statement;
@@ -31,49 +48,51 @@ const StatementSolutionsPage: FC<StatementSolutionsPageProps> = ({
   try {
     // Hooks
     const { sort } = useParams();
+    console.log("questions", questions);
 
-    // Use States
+    const isMultiStage =
+      statement.questionSettings?.questionType === QuestionType.multipleSteps;
+
+    const _subStatements = isMultiStage
+      ? useAppSelector(statementOptionsSelector(statement.statementId)).filter(
+          (statement: Statement) => statement.isPartOfTempPresentation
+        )
+      : questions
+        ? questionsSelector(statement.statementId)
+        : subStatements;
+
+    const dispatch = useAppDispatch();
+
     const [showModal, setShowModal] = useState(false);
-    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
-      [...subStatements]
-    );
+
+    console.log("isMultiStage", isMultiStage);
 
     useEffect(() => {
-      const _sortedSubStatements = sortSubStatements(
-        subStatements,
-        sort
-      ).filter((subStatement) => {
-        //if questions is true, only show questions
-        if (questions) {
-          return subStatement.statementType === StatementType.question;
+      (async () => {
+        console.log("useEffect statement.questionSettings?.questionType");
+        if (isMultiStage) {
+          getMultiStageOptions(statement, dispatch);
+          console.log("get by rest api multiStageOptions");
         }
-
-        //if options is true, only show options
-        return isOptionFn(subStatement);
-      });
-
-      setSortedSubStatements(_sortedSubStatements);
-    }, [sort, subStatements]);
-
-    useEffect(() => {
-      console.log("current stage", statement.questionSettings?.currentStage);
-    }, [statement.questionSettings?.currentStage]);
-
-	useEffect(() => {
-		console.log("question type", statement.questionSettings?.questionType);
-	  }, [statement.questionSettings?.questionType]);
+        // setSortedSubStatements(sortSubStatements(__subStatements, sort));
+      })();
+    }, [statement.questionSettings?.questionType]);
 
     // Variables
     let topSum = 30;
     const tops: number[] = [topSum];
+    console.log("tops", tops);
+    // console.log("run.........", sortedSubStatements.length);
+    console.log("sort", sort);
 
     return (
       <>
         <div className="page__main">
           <div className="wrapper">
-            {sortedSubStatements?.map((statementSub: Statement, i: number) => {
+            {_subStatements?.map((statementSub: Statement, i: number) => {
               //get the top of the element
               if (statementSub.elementHight) {
+                console.log("add topSum", topSum);
                 topSum += statementSub.elementHight + 30;
                 tops.push(topSum);
               }
@@ -119,3 +138,44 @@ const StatementSolutionsPage: FC<StatementSolutionsPageProps> = ({
 };
 
 export default StatementSolutionsPage;
+
+async function getMultiStageOptions(
+  statement: Statement,
+  dispatch: any
+): Promise<void> {
+  try {
+    if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
+      const response = await fetch(
+        `http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
+      );
+      const { randomStatements, error } = await response.json();
+      if (error) throw new Error(error);
+
+      dispatch(setTempStatementsForPresentation(randomStatements));
+    } else if (
+      statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
+    ) {
+      const response = await fetch(
+        `http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
+      );
+      const { randomStatements, error } = await response.json();
+      if (error) throw new Error(error);
+      dispatch(setTempStatementsForPresentation(randomStatements));
+    } else if (
+      statement.questionSettings?.currentStage ===
+      QuestionStage.secondEvaluation
+    ) {
+      const response = await fetch(
+        `http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=2`
+      );
+      const { topSolutions, error } = await response.json();
+      if (error) throw new Error(error);
+      dispatch(setTempStatementsForPresentation(topSolutions));
+    } else {
+      dispatch(setTempStatementsForPresentation([]));
+    }
+  } catch (error) {
+    console.error(error);
+    dispatch(setTempStatementsForPresentation([]));
+  }
+}

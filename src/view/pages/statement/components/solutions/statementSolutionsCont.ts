@@ -8,7 +8,7 @@ import {
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
-) {
+):Statement[] {
 	try {
 		let _subStatements = subStatements.map(
 			(statement: Statement) => statement,

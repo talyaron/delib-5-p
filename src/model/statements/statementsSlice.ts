@@ -18,6 +18,7 @@ import { ZodError, z } from "zod";
 
 // Helpers
 import { updateArray, writeZodError } from "../../controllers/general/helpers";
+import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
 
 enum StatementScreen {
 	chat = "chat",
@@ -225,6 +226,32 @@ export const statementsSlicer = createSlice({
 				console.error(error);
 			}
 		},
+		setTempStatementsForPresentation: (state, action: PayloadAction<Statement[]>) => {
+			try {
+				const statements = action.payload;
+
+				const results = z
+					.array(StatementSchema)
+					.safeParse(statements);
+				if (!results.success) {
+					writeZodError(results.error, statements);
+				}
+				state.statements.forEach((statement) => {
+					statement.isPartOfTempPresentation = false;
+				});
+
+				statements.forEach((statement) => {
+					statement.isPartOfTempPresentation = true;
+					state.statements = updateArray(
+						state.statements,
+						statement,
+						"statementId",
+					);
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		setScreen: (state, action: PayloadAction<StatementScreen>) => {
 			try {
 				state.screen = action.payload;
@@ -310,6 +337,7 @@ export const {
 	setStatements,
 	setStatementSubscription,
 	setStatementsSubscription,
+	setTempStatementsForPresentation,
 	deleteStatement,
 	deleteSubscribedStatement,
 	setStatementOrder,
@@ -356,8 +384,8 @@ export const statementSubsSelector =
 			.map((statement) => ({ ...statement }));
 
 export const statementOptionsSelector =
-	(statementId: string | undefined) => (state: RootState) =>
-		state.statements.statements
+	(statementId: string | undefined) => (state: RootState) => {
+		const subStatements = state.statements.statements
 			.filter(
 				(statementSub) =>
 					statementSub.parentId === statementId &&
@@ -365,6 +393,12 @@ export const statementOptionsSelector =
 			)
 			.sort((a, b) => a.createdAt - b.createdAt)
 			.map((statement) => ({ ...statement }));
+
+		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
+		return sortedSubStatements;
+	};
+
+export const questionsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter((statement) => statement.parentId === statementId && statement.statementType === StatementType.question).sort((a, b) => a.createdAt - b.createdAt);
 
 const selectedStatementId = (statementId: string | undefined) => statementId;
 
