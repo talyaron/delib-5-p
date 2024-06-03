@@ -5,7 +5,7 @@ import { QuestionType, Statement, StatementType, User, isOptionFn } from "delib-
 import { useParams } from "react-router";
 
 // Utils & Helpers
-import { getMultiStageOptions, sortSubStatements } from "./statementSolutionsCont";
+import { getMultiStageOptions, getMultiStageToastMessage, sortSubStatements } from "./statementSolutionsCont";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementEvaluationCard";
@@ -64,13 +64,25 @@ const dispatch = useAppDispatch();
 
 			setSortedSubStatements(_sortedSubStatements);
 
-		}, [sort, subStatements]);
+		}, [sort, subStatements, questions]);
+
+    useEffect(() => {
+      if (questions) {
+        setShowToast(false);
+      }
+    }, [questions]);
 
     useEffect(() => {
       if (isMuliStage) {
         getMultiStageOptions(statement, dispatch);
       }
     }, [isMuliStage]);
+
+    useEffect(() => {
+      if(!showToast && !questions){
+        setShowToast(true);
+      }
+    },[statement.questionSettings?.currentStage,questions]);
 
 		// Variables
 		let topSum = 30;
@@ -80,7 +92,7 @@ const dispatch = useAppDispatch();
 			<>
 				<div className="page__main">
 					<div className="wrapper">
-            <Toast text="This is a toast" type="message" show={showToast} setShow={setShowToast}/>
+            <Toast text={getMultiStageToastMessage(statement.questionSettings?.currentStage)} type="message" show={showToast} setShow={setShowToast}/>
 						{sortedSubStatements?.map((statementSub: Statement, i: number) => {
 							//get the top of the element
 							if (statementSub.elementHight) {

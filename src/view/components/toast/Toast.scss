@@ -13,11 +13,13 @@
 
     .text {
         padding: var(--padding);
+        font-size: 1.3rem;
     }
 
     .close {
 
-        // display: flex;
+        display: flex;
+        justify-content: end;
         &__x {
             padding: 10px;
             min-height: 40px;

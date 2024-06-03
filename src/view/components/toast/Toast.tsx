@@ -16,7 +16,7 @@ const Toast: FC<Props> = ({ text, type, show, setShow }) => {
 
   return (
     <div className="toast" style={{backgroundColor:getToastColor(type)}}>
-      <p className="text"> Toast: {text}</p>
+      <p className="text"> {text}</p>
       <div className="close">
         <div className="close__x" onClick={() => setShow(false)}>
           <X />
