@@ -1,41 +1,42 @@
-import { Statement, Screen } from "delib-npm";
+import { Statement, Screen, QuestionStage } from "delib-npm";
 
 import {
 	EnhancedEvaluationThumb,
 	enhancedEvaluationsThumbs,
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
+import { setTempStatementsForPresentation } from "../../../../../model/statements/statementsSlice";
 
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
-):Statement[] {
+): Statement[] {
 	try {
 		let _subStatements = subStatements.map(
 			(statement: Statement) => statement,
 		);
 		switch (sort) {
-		case Screen.OPTIONS_CONSENSUS:
-		case Screen.QUESTIONS_CONSENSUS:
-			_subStatements = subStatements.sort(
-				(a: Statement, b: Statement) => b.consensus - a.consensus,
-			);
-			break;
-		case Screen.OPTIONS_NEW:
-		case Screen.QUESTIONS_NEW:
-			_subStatements = subStatements.sort(
-				(a: Statement, b: Statement) => b.createdAt - a.createdAt,
-			);
-			break;
-		case Screen.OPTIONS_RANDOM:
-		case Screen.QUESTIONS_RANDOM:
-			_subStatements = subStatements.sort(() => Math.random() - 0.5);
-			break;
-		case Screen.OPTIONS_UPDATED:
-		case Screen.QUESTIONS_UPDATED:
-			_subStatements = subStatements.sort(
-				(a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
-			);
-			break;
+			case Screen.OPTIONS_CONSENSUS:
+			case Screen.QUESTIONS_CONSENSUS:
+				_subStatements = subStatements.sort(
+					(a: Statement, b: Statement) => b.consensus - a.consensus,
+				);
+				break;
+			case Screen.OPTIONS_NEW:
+			case Screen.QUESTIONS_NEW:
+				_subStatements = subStatements.sort(
+					(a: Statement, b: Statement) => b.createdAt - a.createdAt,
+				);
+				break;
+			case Screen.OPTIONS_RANDOM:
+			case Screen.QUESTIONS_RANDOM:
+				_subStatements = subStatements.sort(() => Math.random() - 0.5);
+				break;
+			case Screen.OPTIONS_UPDATED:
+			case Screen.QUESTIONS_UPDATED:
+				_subStatements = subStatements.sort(
+					(a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
+				);
+				break;
 		}
 		const __subStatements = _subStatements.map(
 			(statement: Statement, i: number) => {
@@ -105,3 +106,44 @@ export const getEvaluationThumbsToDisplay = ({
 
 	return [selectedThumb || defaultThumb];
 };
+
+export async function getMultiStageOptions(
+	statement: Statement,
+	dispatch: any
+): Promise<void> {
+	try {
+		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
+			const response = await fetch(
+				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
+			);
+			const { randomStatements, error } = await response.json();
+			if (error) throw new Error(error);
+
+			dispatch(setTempStatementsForPresentation(randomStatements));
+		} else if (
+			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
+		) {
+			const response = await fetch(
+				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
+			);
+			const { randomStatements, error } = await response.json();
+			if (error) throw new Error(error);
+			dispatch(setTempStatementsForPresentation(randomStatements));
+		} else if (
+			statement.questionSettings?.currentStage ===
+			QuestionStage.secondEvaluation
+		) {
+			const response = await fetch(
+				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=2`
+			);
+			const { topSolutions, error } = await response.json();
+			if (error) throw new Error(error);
+			dispatch(setTempStatementsForPresentation(topSolutions));
+		} else {
+			dispatch(setTempStatementsForPresentation([]));
+		}
+	} catch (error) {
+		console.error(error);
+		dispatch(setTempStatementsForPresentation([]));
+	}
+}
