@@ -8,7 +8,7 @@ import { EnhancedEvaluationThumb } from "./EnhancedEvaluationModel";
 import {
 	getEvaluationThumbIdByScore,
 	getEvaluationThumbsToDisplay,
-} from "../../../statementEvaluationCont";
+} from "../../../statementSolutionsCont";
 import "./EnhancedEvaluation.scss";
 
 interface EnhancedEvaluationProps {

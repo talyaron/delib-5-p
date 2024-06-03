@@ -8,15 +8,15 @@ import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 import "./QuestionSettings.scss";
-
+import { setQuestionType } from "../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
+import { set } from "firebase/database";
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
   statement,
   setStatementToEdit,
 }) => {
   try {
-
-    const {t} = useLanguage();
+    const { t } = useLanguage();
     const [checked, setChecked] = useState(false);
 
     useEffect(() => {
@@ -26,8 +26,8 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
       }
       const isChecked =
         statement.questionSettings?.questionType === QuestionType.multipleSteps
-          ? false
-          : true;
+          ? true
+          : false;
       setChecked(isChecked);
     }, [statement.questionSettings]);
 
@@ -73,33 +73,30 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
     );
 
     function _setChecked() {
-      if (
-        statement.questionSettings?.questionType === QuestionType.multipleSteps
-      ) {
-        setStatementToEdit({
-          ...statement,
-          questionSettings: {
-            ...statement.questionSettings,
-            questionType: QuestionType.singleStep,
-          },
-        });
-      } else if (statement.questionSettings === undefined) {
-        setStatementToEdit({
-          ...statement,
-          questionSettings: {
-            questionType: QuestionType.singleStep,
-            currentStage: QuestionStage.suggestion,
-          },
-        });
-      } else {
-        setStatementToEdit({
-          ...statement,
-          questionSettings: {
-            ...statement.questionSettings,
-            questionType: QuestionType.multipleSteps,
-          },
-        });
-      }
+      console.log("checked", checked);
+      const questionType = checked
+        ? QuestionType.singleStep
+        : QuestionType.multipleSteps;
+      const currentStage: QuestionStage =
+        statement.questionSettings?.currentStage || QuestionStage.suggestion;
+      console.log("current stage", currentStage);
+      console.log("question type", questionType);
+
+      setChecked(!checked);
+
+      setQuestionType({
+        statementId: statement.statementId,
+        type: questionType,
+        stage: currentStage,
+      });
+      setStatementToEdit({
+        ...statement,
+        questionSettings: {
+          ...statement.questionSettings,
+          questionType,
+          currentStage,
+        },
+      });
     }
   } catch (error: any) {
     console.error(error);

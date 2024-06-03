@@ -1,4 +1,4 @@
-import { Collections, QuestionStage, QuestionType } from "delib-npm";
+import { Collections, QuestionSettings, QuestionStage, QuestionType } from "delib-npm";
 import { doc, updateDoc } from "firebase/firestore";
 import { DB } from "../../config";
 
@@ -10,7 +10,25 @@ export async function setQuestionStage({ statementId, stage = QuestionStage.sugg
 	try {
 		if (!statementId) throw new Error("Statement ID is undefined");
 		const statementRef = doc(DB, Collections.statements, statementId);
-		await updateDoc(statementRef, { questionSettings: {  currentStage: stage,questionType:QuestionType.singleStep  } });
+		const questionSettings: QuestionSettings = { currentStage: stage, questionType: QuestionType.multipleSteps }
+		await updateDoc(statementRef, { questionSettings });
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+interface SetStatementTypeProps {
+	statementId: string;
+	type: QuestionType;
+	stage: QuestionStage;
+}
+
+export async function setQuestionType({ statementId, type = QuestionType.singleStep, stage = QuestionStage.suggestion }: SetStatementTypeProps) {
+	try {
+		if (!statementId) throw new Error("Statement ID is undefined");
+		const statementRef = doc(DB, Collections.statements, statementId);
+		const questionSettings: QuestionSettings = { currentStage: stage, questionType: type }
+		await updateDoc(statementRef, { questionSettings });
 	} catch (error) {
 		console.error(error);
 	}

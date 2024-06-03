@@ -24,6 +24,9 @@ const CustomSwitchSmall: FC<Props> = ({
     setChecked();
   };
 
+
+  //checked means multi-stage question
+
   return (
     <div className="custom-switch-small" onClick={handleChange}>
       <div
