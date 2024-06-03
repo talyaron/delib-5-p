@@ -12,6 +12,7 @@ import StatementEvaluationCard from "./components/StatementEvaluationCard";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
+import Toast from "../../../../components/toast/Toast";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -78,6 +79,7 @@ const dispatch = useAppDispatch();
 			<>
 				<div className="page__main">
 					<div className="wrapper">
+            <Toast text="This is a toast" />
 						{sortedSubStatements?.map((statementSub: Statement, i: number) => {
 							//get the top of the element
 							if (statementSub.elementHight) {

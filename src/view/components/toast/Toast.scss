@@ -1,0 +1,30 @@
+.toast {
+    position: absolute;
+    left: 50%;
+    top: 1rem;
+    transform: translateX(-50%);
+    box-shadow: 0 3px 6px #4162862b;
+    font-size: 1rem;
+
+    background-color: var(--tooltip);
+    color: white;
+
+    z-index: 1000;
+
+    .text {
+        padding: var(--padding);
+    }
+
+    .close {
+
+        // display: flex;
+        &__x {
+            padding: 10px;
+            min-height: 40px;
+            min-width: 40px;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+    }
+}
