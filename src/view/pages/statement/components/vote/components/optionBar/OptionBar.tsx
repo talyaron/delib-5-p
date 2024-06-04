@@ -20,8 +20,9 @@ import LikeIcon from "../../../../../../../assets/icons/likeIcon.svg?react";
 import { OptionBarProps } from "../../voteTypesHelper";
 import "./OptionBar.scss";
 import { getStatementFromDB } from "../../../../../../../controllers/db/statements/getStatement";
+import { getBarWidth } from "./OptionBarCont";
 
-const HORIZONTAL_BAR_WIDTH = 70;
+
 
 interface OptionBarExtendedProps extends OptionBarProps {
     isVertical: boolean;
@@ -136,28 +137,3 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 
 export default OptionBar;
 
-interface GetBarWidthParams {
-    isVertical: boolean;
-    totalOptionsCount: number;
-    screenWidth: number;
-}
-
-const getBarWidth = ({
-	isVertical,
-	totalOptionsCount,
-	screenWidth,
-}: GetBarWidthParams): number => {
-	if (screenWidth > 500) {
-		return 96;
-	}
-	if (isVertical) {
-		if (totalOptionsCount <= 3) {
-			return 96;
-		}
-		if (totalOptionsCount >= 4) {
-			return 86;
-		}
-	}
-
-	return HORIZONTAL_BAR_WIDTH;
-};
