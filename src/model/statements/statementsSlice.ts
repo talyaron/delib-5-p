@@ -440,7 +440,7 @@ export const statementElementHightSelector =
 export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
 	state.statements.statementSubscriptionLastUpdate;
 
-// Membeship
+// Membership
 export const statementMembershipSelector =
 	(statementId: string | undefined) => (state: RootState) =>
 		state.statements.statementMembership.filter(

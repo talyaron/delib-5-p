@@ -148,19 +148,4 @@ export async function getMultiStageOptions(
 	}
 }
 
-export function getMultiStageToastMessage(stage:QuestionStage|undefined):string{
-	switch (stage) {
-		case QuestionStage.suggestion:
-			return "Please suggest a solution ";
-		case QuestionStage.firstEvaluation:
-			return "Please Evaluate each set of 10 proposed solutions that are provided to you";
-		case QuestionStage.secondEvaluation:
-			return "Please evaluate the top solutions that are presented to you";
-		case QuestionStage.voting:
-			return "Please vote the 5 most high-ranking solutions that are presented to you";
-		case QuestionStage.finished:
-			return "The voting process for this question has concluded";
-		default:
-			return "The voting process for this question has concluded";
-	}
-}
+

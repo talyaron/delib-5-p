@@ -52,7 +52,7 @@ const StatementEvaluationCard: FC<Props> = ({
 	top,
 }) => {
 	// Hooks
-console.log(statement.statement, top);
+
 	const { t, dir } = useLanguage();
 
 	// Redux Store

@@ -49,6 +49,10 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
             <QuestionDashboard statement={statement} />
           </div>
           <QuestionStageRadioBtn
+            stage={QuestionStage.explanation}
+            statement={statement}
+          />
+          <QuestionStageRadioBtn
             stage={QuestionStage.suggestion}
             statement={statement}
           />

@@ -13,7 +13,6 @@ import { useParams } from "react-router";
 // Utils & Helpers
 import {
   getMultiStageOptions,
-  getMultiStageToastMessage,
   sortSubStatements,
 } from "./statementSolutionsCont";
 
@@ -23,6 +22,7 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 import Toast from "../../../../components/toast/Toast";
+import { stages } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -97,21 +97,23 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     // Variables
     let topSum = 30;
     const tops: number[] = [topSum];
+    const currentStage = statement.questionSettings?.currentStage;
 
     return (
       <>
         <div className="page__main">
           <div className="wrapper">
-            {isMuliStage && (
-              <Toast
-                text={getMultiStageToastMessage(
-                  statement.questionSettings?.currentStage
-                )}
-                type="message"
-                show={showToast}
-                setShow={setShowToast}
-              />
-            )}
+            {isMuliStage &&
+              currentStage &&
+              stages[currentStage] &&
+              stages[currentStage].message && (
+                <Toast
+                  text={`${stages[currentStage].message}`}
+                  type="message"
+                  show={showToast}
+                  setShow={setShowToast}
+                />
+              )}
             {sortedSubStatements?.map((statementSub: Statement, i: number) => {
               //get the top of the element
               if (statementSub.elementHight) {

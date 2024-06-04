@@ -70,7 +70,7 @@ const StatementMain: FC = () => {
 		role,
 	} = useIsAuthorized(statementId);
 
-	console.log(statement?.statement)
+	
 
 	// Redux store
 	const dispatch = useAppDispatch();

@@ -10,36 +10,50 @@ import FlagIcon from "../../../../../../../../assets/icons/flagIcon.svg?react";
 import { setQuestionStage } from "../../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
 import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 
+
 interface Props {
   stage: QuestionStage;
   statement: Statement;
 }
 
+
+
 export const stages = {
+  [QuestionStage.explanation]: {
+    name: "Explanation",
+    icon: <LightBulbIcon className="img" />,
+    color: "--green",
+    message:undefined
+  },
   [QuestionStage.suggestion]: {
     name: "Suggestions",
     icon: <LightBulbIcon className="img" />,
     color: "--settings-suggestions",
+    message:"Please suggest a solution "
   },
   [QuestionStage.firstEvaluation]: {
     name: "First Evaluation",
     icon: <EvaluationsIcon className="img" />,
     color: "--settings-first-evaluation",
+    message:"Please Evaluate each set of 10 proposed solutions that are provided to you"
   },
   [QuestionStage.secondEvaluation]: {
     name: "Second Evaluation",
     icon: <ArrowUp className="img" />,
     color: "--settings-second-evaluation",
+    message:"Please evaluate the top solutions that are presented to you",
   },
   [QuestionStage.voting]: {
     name: "Voting",
     icon: <HandIcon className="img" />,
     color: "--settings-voting",
+    message:"Please vote on the top solutions that are presented to you",
   },
   [QuestionStage.finished]: {
     name: "Finished",
     icon: <FlagIcon className="img" />,
     color: "--settings-finished",
+    message:"The voting process for this question has concluded",
   },
 };
 
