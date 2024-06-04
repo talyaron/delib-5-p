@@ -10,7 +10,6 @@ import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages
 import "./QuestionSettings.scss";
 import { setQuestionType } from "../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
 
-
 const QuestionSettings: FC<StatementSettingsProps> = ({
   statement,
   setStatementToEdit,
@@ -18,6 +17,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
   try {
     const { t } = useLanguage();
     const [checked, setChecked] = useState(false);
+    const isMuliStage = statement.questionSettings?.questionType === QuestionType.multipleSteps;
 
     useEffect(() => {
       if (!statement.questionSettings) {
@@ -48,30 +48,34 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
           <div className="question-settings-dashboard">
             <QuestionDashboard statement={statement} />
           </div>
-          <QuestionStageRadioBtn
-            stage={QuestionStage.explanation}
-            statement={statement}
-          />
-          <QuestionStageRadioBtn
-            stage={QuestionStage.suggestion}
-            statement={statement}
-          />
-          <QuestionStageRadioBtn
-            stage={QuestionStage.firstEvaluation}
-            statement={statement}
-          />
-          <QuestionStageRadioBtn
-            stage={QuestionStage.secondEvaluation}
-            statement={statement}
-          />
-          <QuestionStageRadioBtn
-            stage={QuestionStage.voting}
-            statement={statement}
-          />
-          <QuestionStageRadioBtn
-            stage={QuestionStage.finished}
-            statement={statement}
-          />
+          {isMuliStage && (
+            <>
+              <QuestionStageRadioBtn
+                stage={QuestionStage.explanation}
+                statement={statement}
+              />
+              <QuestionStageRadioBtn
+                stage={QuestionStage.suggestion}
+                statement={statement}
+              />
+              <QuestionStageRadioBtn
+                stage={QuestionStage.firstEvaluation}
+                statement={statement}
+              />
+              <QuestionStageRadioBtn
+                stage={QuestionStage.secondEvaluation}
+                statement={statement}
+              />
+              <QuestionStageRadioBtn
+                stage={QuestionStage.voting}
+                statement={statement}
+              />
+              <QuestionStageRadioBtn
+                stage={QuestionStage.finished}
+                statement={statement}
+              />
+            </>
+          )}
         </div>
       </div>
     );
@@ -83,7 +87,6 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
         : QuestionType.multipleSteps;
       const currentStage: QuestionStage =
         statement.questionSettings?.currentStage || QuestionStage.suggestion;
-      
 
       setChecked(!checked);
 

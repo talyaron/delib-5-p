@@ -1,4 +1,4 @@
-import { QuestionStage, Statement } from "delib-npm";
+import { QuestionStage, QuestionType, Statement } from "delib-npm";
 import { FC } from "react";
 import "./QuestionDashboard.scss";
 
@@ -19,6 +19,7 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
     const { t } = useLanguage();
     const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.question?.numberOfMembers || 0;
     const currentStage = statement.questionSettings?.currentStage || QuestionStage.suggestion;
+    const questionType = statement.questionSettings?.questionType || QuestionType.singleStep;
 
     const {backgroundColor, stageInfo} = getStageInfo(currentStage, true);
 
@@ -32,12 +33,12 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
             <div className="joined__text">{t("Joined members")}</div>
             <div className="joined__number">{numberOfMembers}</div>
           </div>
-          <div className="current-stage">
+         {questionType === QuestionType.multipleSteps && <div className="current-stage">
             <div className="current-stage__title">{t("Current stage") } </div>
             <div className="current-stage__stage">
               {t(questionStepDictionary(statement.questionSettings?.currentStage))}
             </div>
-          </div>
+          </div>}
         </div>
         <div className="question-dashboard__icon" style={{backgroundColor}}>
           {stageInfo?.icon?stageInfo.icon:null}
