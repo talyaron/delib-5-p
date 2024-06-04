@@ -26,6 +26,8 @@ import Toast from "../../../../components/toast/Toast";
 import { stages } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import Modal from "../../../../components/modal/Modal";
 import StatementInfo from "../vote/components/info/StatementInfo";
+import Button from "../../../../components/buttons/button/Button";
+import LightBulbIcon from '../../../../../assets/icons/lightBulbIcon.svg?react';
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -131,7 +133,9 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
                   type="message"
                   show={showToast}
                   setShow={setShowToast}
-                />
+                >
+                  <Button text="Add a Solution" iconOnRight={false} onClick={()=>{setShowModal(true); setShowToast(false)}} Icon={<LightBulbIcon />} color="var(--crimson)" />
+                </Toast>
               )}
             {sortedSubStatements?.map((statementSub: Statement, i: number) => {
               //get the top of the element

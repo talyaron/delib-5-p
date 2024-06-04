@@ -11,12 +11,19 @@
 
     z-index: 1000;
 
-    .text {
+    &__text {
         padding: var(--padding);
         font-size: 1.3rem;
     }
 
-    .close {
+    &__children {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin:.5rem 0;
+    }
+
+    &__close {
 
         display: flex;
         justify-content: end;
