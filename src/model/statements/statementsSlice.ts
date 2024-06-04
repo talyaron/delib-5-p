@@ -133,33 +133,33 @@ export const statementsSlicer = createSlice({
 			action: PayloadAction<StatementSubscription>,
 		) => {
 			try {
-				const newStatement = action.payload;
-				const oldStatement = state.statements.find(
+				const newStatementSubscription = action.payload;
+				const oldStatementSubscription = state.statements.find(
 					(statement) =>
-						statement.statementId === newStatement.statementId,
+						statement.statementId === newStatementSubscription.statementId,
 				);
 				const isEqualStatements =
-					JSON.stringify(oldStatement) ===
-					JSON.stringify(newStatement);
+					JSON.stringify(oldStatementSubscription) ===
+					JSON.stringify(newStatementSubscription);
 				if (!isEqualStatements)
 					state.statementSubscription = updateArray(
 						state.statementSubscription,
 						action.payload,
 						"statementsSubscribeId",
 					);
-				state.statements = updateArray(
-					state.statements,
-					newStatement.statement,
+				state.statementSubscription = updateArray(
+					state.statementSubscription,
+					newStatementSubscription,
 					"statementId",
 				);
 
 				//update last update if bigger than current
 				if (
-					newStatement.lastUpdate >
+					newStatementSubscription.lastUpdate >
 					state.statementSubscriptionLastUpdate
 				) {
 					state.statementSubscriptionLastUpdate =
-						newStatement.lastUpdate;
+					newStatementSubscription.lastUpdate;
 				}
 			} catch (error) {
 				console.error(error);

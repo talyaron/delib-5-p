@@ -9,7 +9,6 @@ import { User, Role, Screen } from "delib-npm";
 import { getIsSubscribed } from "../../../controllers/db/subscriptions/getSubscriptions";
 import { listenToSubStatements } from "../../../controllers/db/statements/listenToStatements";
 import { listenToStatement } from "../../../controllers/db/statements/listenToStatements";
-import { listenToStatementSubSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
 import { listenToStatementSubscription } from "../../../controllers/db/statements/listenToStatements";
 import { updateSubscriberForStatementSubStatements } from "../../../controllers/db/subscriptions/setSubscriptions";
 import { setStatementSubscriptionToDB } from "../../../controllers/db/subscriptions/setSubscriptions";
@@ -70,6 +69,8 @@ const StatementMain: FC = () => {
 		topParentStatement,
 		role,
 	} = useIsAuthorized(statementId);
+
+	console.log(statement?.statement)
 
 	// Redux store
 	const dispatch = useAppDispatch();
