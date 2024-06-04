@@ -9,7 +9,7 @@ import {
   User,
   isOptionFn,
 } from "delib-npm";
-import { useParams,useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 // Utils & Helpers
 import {
@@ -27,7 +27,9 @@ import { stages } from "../settings/components/QuestionSettings/QuestionStageRad
 import Modal from "../../../../components/modal/Modal";
 import StatementInfo from "../vote/components/info/StatementInfo";
 import Button from "../../../../components/buttons/button/Button";
-import LightBulbIcon from '../../../../../assets/icons/lightBulbIcon.svg?react';
+import LightBulbIcon from "../../../../../assets/icons/lightBulbIcon.svg?react";
+import X from "../../../../../assets/icons/x.svg?react";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -50,6 +52,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const { sort } = useParams();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const {t} = useLanguage();
 
     const isMuliStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
@@ -109,10 +112,9 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
       ) {
         setShowExplanation(true);
       }
-      if(currentStage === QuestionStage.voting && !questions){
+      if (currentStage === QuestionStage.voting && !questions) {
         //redirect us react router dom to voting page
-        navigate(`/statement/${statement.statementId}/vote`)
-        
+        navigate(`/statement/${statement.statementId}/vote`);
       }
     }, [statement.questionSettings?.currentStage, questions]);
 
@@ -129,12 +131,30 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
               stages[currentStage] &&
               stages[currentStage].message && (
                 <Toast
-                  text={`${stages[currentStage].message}`}
+                  text={t(`${stages[currentStage].message}`)}
                   type="message"
                   show={showToast}
                   setShow={setShowToast}
                 >
-                  <Button text="Add a Solution" iconOnRight={false} onClick={()=>{setShowModal(true); setShowToast(false)}} Icon={<LightBulbIcon />} color="var(--crimson)" />
+                  <Button
+                    text={t("Close")}
+                    iconOnRight={false}
+                    onClick={() => {
+                      setShowModal(true);
+                      setShowToast(false);
+                    }}
+                    Icon={<X />}
+                    color="var(--dark-blue)"
+                  />
+                  <Button
+                    text={t("Add a solution")}
+                    iconOnRight={true}
+                    onClick={() => {
+                      setShowToast(false);
+                    }}
+                    Icon={<LightBulbIcon />}
+                    color="var(--dark-blue)"
+                  />
                 </Toast>
               )}
             {sortedSubStatements?.map((statementSub: Statement, i: number) => {

@@ -4,7 +4,9 @@ import { useLanguage } from "../../../../controllers/hooks/useLanguages";
 
 interface Props {
   text: string;
+  bckColor?: string;
   color?: string;
+
   iconOnRight?: boolean;
   onClick: () => void;
   Icon?: React.ReactNode;
@@ -16,6 +18,7 @@ const Button: FC<Props> = ({
   onClick,
   iconOnRight = true,
   color = "var(--green)",
+  bckColor = "var(--white)",
 }) => {
   let { dir } = useLanguage();
   if (iconOnRight === false) {
@@ -37,7 +40,7 @@ const Button: FC<Props> = ({
           className={
             dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
           }
-          style={{ backgroundColor: color }}
+          style={{ backgroundColor: bckColor, color: color}}
         >
           {Icon}
         </div>

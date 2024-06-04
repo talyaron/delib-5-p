@@ -1,7 +1,8 @@
 {
     "Add": "הוספה",
     "Add New Group": "הוספת קבוצה חדשה",
-    "Add Option": "הוספת אפשרות",
+    "Add Option": "הוספת פתרון",
+    "Add a solution": "הוספת פתרון",
     "Add Question": "הוספת שאלה",
     "Admin": "מנהל",
     "Advanced": "מתקדם",
@@ -75,6 +76,7 @@
     "No voters found": "לא נמצאו מצביעים",
     "Number of Results to Display": "כמה תוצאות להציג",
     "Number of Solutions in Each Level": "כמות פתרונות בכל רמה",
+    "Please suggest a solution": "אנא הציעו פתרון",
     "Option": "אפשרות",
     "Options": "אפשרויות",
     "Parent Admin": "מנהל על",

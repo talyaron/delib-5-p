@@ -1,37 +1,43 @@
-.button{
+.button {
     background-color: white;
-       
+    color: var(--text);
     display: flex;
     border-radius: 2px;
     width: fit-content;
-    &__text{
-        padding:.25rem .95rem;
+    align-items: center;
+
+    &__text {
+        padding: .25rem .95rem;
         font-size: 1.1rem;
+        text-align: center;
     }
-    &__icon{
-        height:100%;
+
+    &__icon {
+        height: 100%;
         min-width: 2rem;
-        color:white;
+        color: white;
         padding: .4rem;
         display: flex;
         justify-content: center;
         align-items: center;
-      
+
         border-radius: 0px 2px 2px 0px;
-      &--right{
-       
-        border-radius: 2px 0px 0px 2px;
-      }
+
+        svg {
+            width: 1.5rem;
+            height: 1.5rem;
+
+        }
+
+        &--right {
+
+            border-radius: 2px 0px 0px 2px;
+        }
     }
 
-    &--right{
-       flex-direction: row-reverse;
-      
+    &--right {
+        flex-direction: row-reverse;
+
     }
-    :hover{
-        background-color: rgb(233, 233, 233);
-    }
+
 }
-
-
-

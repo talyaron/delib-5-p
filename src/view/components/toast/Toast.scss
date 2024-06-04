@@ -5,6 +5,7 @@
     transform: translateX(-50%);
     box-shadow: 0 3px 6px #4162862b;
     font-size: 1rem;
+    width: max-content;
 
     background-color: var(--tooltip);
     color: white;
@@ -18,22 +19,12 @@
 
     &__children {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
+        gap:3rem;
         align-items: center;
-        margin:.5rem 0;
+        margin:.5rem 2rem 2rem;
+        
     }
 
-    &__close {
-
-        display: flex;
-        justify-content: end;
-        &__x {
-            padding: 10px;
-            min-height: 40px;
-            min-width: 40px;
-            cursor: pointer;
-            width: fit-content;
-        }
-
-    }
+    
 }

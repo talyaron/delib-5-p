@@ -18,11 +18,11 @@ const Toast: FC<Props> = ({ text, type, show, setShow, children }) => {
     <div className="toast" style={{ backgroundColor: getToastColor(type) }}>
       <p className="toast__text"> {text}</p>
       {children && <div className="toast__children">{children}</div>}
-      <div className="toast__close">
+      {!children&& <div className="toast__close">
         <div className="toast__close__x" onClick={() => setShow(false)}>
           <X />
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

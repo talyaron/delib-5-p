@@ -29,7 +29,7 @@ export const stages = {
     name: "Suggestions",
     icon: <LightBulbIcon className="img" />,
     color: "--settings-suggestions",
-    message:"Please suggest a solution "
+    message:"Please suggest a solution"
   },
   [QuestionStage.firstEvaluation]: {
     name: "First Evaluation",
