@@ -9,7 +9,7 @@ import {
   User,
   isOptionFn,
 } from "delib-npm";
-import { useParams } from "react-router";
+import { useParams,useNavigate } from "react-router";
 
 // Utils & Helpers
 import {
@@ -46,6 +46,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
   try {
     // Hooks
     const { sort } = useParams();
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const isMuliStage =
@@ -105,6 +106,11 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
         !questions
       ) {
         setShowExplanation(true);
+      }
+      if(currentStage === QuestionStage.voting && !questions){
+        //redirect us react router dom to voting page
+        navigate(`/statement/${statement.statementId}/vote`)
+        
       }
     }, [statement.questionSettings?.currentStage, questions]);
 
