@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import {
+  QuestionStage,
   QuestionType,
   Statement,
   StatementType,
@@ -23,6 +24,8 @@ import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 import Toast from "../../../../components/toast/Toast";
 import { stages } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
+import Modal from "../../../../components/modal/Modal";
+import StatementInfo from "../vote/components/info/StatementInfo";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -47,10 +50,14 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 
     const isMuliStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
+    const currentStage = statement.questionSettings?.currentStage;
 
     // Use States
     const [showModal, setShowModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [showExplanation, setShowExplanation] = useState(
+      currentStage === QuestionStage.explanation && isMuliStage && !questions
+    );
     const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
       [...subStatements]
     );
@@ -92,12 +99,18 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
       if (!showToast && !questions) {
         setShowToast(true);
       }
+      if (
+        currentStage === QuestionStage.explanation &&
+        isMuliStage &&
+        !questions
+      ) {
+        setShowExplanation(true);
+      }
     }, [statement.questionSettings?.currentStage, questions]);
 
     // Variables
     let topSum = 30;
     const tops: number[] = [topSum];
-    const currentStage = statement.questionSettings?.currentStage;
 
     return (
       <>
@@ -144,6 +157,14 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
             statement={statement}
           />
         </div>
+        {showExplanation && (
+          <Modal>
+            <StatementInfo
+              statement={statement}
+              setShowInfo={setShowExplanation}
+            />
+          </Modal>
+        )}
         {showModal && (
           <CreateStatementModal
             parentStatement={statement}
