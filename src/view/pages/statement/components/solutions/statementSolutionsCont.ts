@@ -159,8 +159,8 @@ export function getMultiStageToastMessage(stage:QuestionStage|undefined):string{
 		case QuestionStage.voting:
 			return "Please vote the 5 most high-ranking solutions that are presented to you";
 		case QuestionStage.finished:
-			return "The question is finished";
+			return "The voting process for this question has concluded";
 		default:
-			return "The question is finished";
+			return "The voting process for this question has concluded";
 	}
 }
