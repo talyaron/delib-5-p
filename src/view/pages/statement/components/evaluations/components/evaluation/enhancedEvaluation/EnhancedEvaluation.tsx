@@ -25,7 +25,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
     evaluationSelector(statement.statementId)
   );
   const { totalEvaluators } = statement;
-  const { currentLanguage } = useLanguage();
+  const { dir } = useLanguage();
 
   const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
 
@@ -38,7 +38,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
   return (
     <div
-      className={`enhanced-evaluation ${currentLanguage !== "he" && currentLanguage !== "ar" ? "mirrorReverse" : ""}`}
+      className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
     >
       <div
         className="evaluation-thumbs"
