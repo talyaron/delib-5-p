@@ -1,64 +1,21 @@
 .homePage {
   width: 100vw;
-  height: 100svh;
-  position: relative;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: relative;
 
   &__header {
-    height: 250px;
+    height: 50px;
     width: 100vw;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #6394ef;
+    background-color: #659af0fa; //switch to Masha's name of color
     box-shadow: 0px 1px 4px 0px #a9adf49a;
-    z-index: 1;
+    z-index: -1;
     gap: 0px;
-    margin-bottom: 5rem;
-    border-bottom-right-radius: 60%;
-    border-bottom-left-radius: 60%;
-
-    .heroImg {
-      position: absolute;
-      justify-content: stretch;
-      width: 100%;
-      height: 35vh;
-      z-index: -2;
-
-      @media only screen and (min-width: 970px) {
-        height: 47vh;
-      }
-    }
-
-    .bikeImg {
-      position: absolute;
-      top: 10.5rem;
-      width: 276px;
-      height: 140px;
-
-      @media only screen and (min-width: 700px) {
-        position: absolute;
-        top: 9rem;
-        width: 340px;
-        height: 180px;
-      }
-      @media only screen and (min-width: 970px) {
-        position: absolute;
-        top: 10.2rem;
-        width: 380px;
-        height: 220px;
-      }
-
-      @media only screen and (min-width: 1800px) {
-        position: absolute;
-        top: 10.2rem;
-        width: 380px;
-        height: 220px;
-      }
-    }
 
     &.rtl {
       border-bottom-right-radius: 0;
@@ -129,4 +86,68 @@
       }
     }
   }
+}
+
+.main-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  position: sticky;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.heroImg,
+.bikeImg {
+  top: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.heroImg {
+  width: 100%;
+  height: 30vh;
+  top: -20rem;
+
+  // @media only screen and (min-width: 970px) {
+  //   height: 47vh;
+  // }
+}
+
+.bikeImg {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: -6rem;
+  width: 276px;
+  height: 140px;
+}
+
+//   // @media only screen and (min-width: 700px) {
+//   //   top: 9rem;
+//   //   width: 340px;
+//   //   height: 180px;
+//   // }
+
+//   // @media only screen and (min-width: 970px) {
+//   //   top: 10.2rem;
+//   //   width: 380px;
+//   //   height: 220px;
+//   // }
+
+//   // @media only screen and (min-width: 1800px) {
+//   //   top: 10.2rem;
+//   //   width: 380px;
+//   //   height: 220px;
+//   // }
+// }
+
+.scrollable-content {
+  overflow-y: auto;
+  height: 100%;
+  position: relative;
+  z-index: 0;
 }
