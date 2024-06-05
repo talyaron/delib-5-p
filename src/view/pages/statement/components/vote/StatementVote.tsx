@@ -21,7 +21,7 @@ import "./StatementVote.scss";
 
 // Helpers
 import VotingArea from "./components/votingArea/VotingArea";
-import { stages } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
+import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import Toast from "../../../../components/toast/Toast";
 
 interface Props {
@@ -41,7 +41,8 @@ const StatementVote: FC<Props> = ({
 
   const currentStage = statement.questionSettings?.currentStage;
   const isCurrentStageVoting = currentStage === QuestionStage.voting;
-  const toastMessage = currentStage ? stages[currentStage].message : "";
+  const stageInfo = getStagesInfo(currentStage);
+  const toastMessage = stageInfo ? stageInfo.message : "";
 
   // * Use State * //
   const [showMultiStageMessage, setShowMultiStageMessage] =

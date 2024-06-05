@@ -118,7 +118,7 @@ export function getStagesInfo( questionStage: QuestionStage | undefined) {
         name: "Voting",
         icon: <HandIcon className="img" />,
         color: "--settings-voting",
-        message: "Please vote on the top solutions",
+        message: "Please chose your preferred solution",
       },
       [QuestionStage.finished]: {
         name: "Finished",
