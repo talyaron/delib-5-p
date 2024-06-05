@@ -18,6 +18,7 @@
     &__text {
         padding: var(--padding);
         font-size: 1.3rem;
+        max-width: 50ch;
     }
 
     &__children {

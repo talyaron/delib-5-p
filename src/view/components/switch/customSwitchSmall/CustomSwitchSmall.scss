@@ -7,6 +7,7 @@ $SwitchHeight: 2.6729rem;
     width: fit-content;
     align-items: start;
 
+   
 
     input {
         display: none;
@@ -19,6 +20,11 @@ $SwitchHeight: 2.6729rem;
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
+
+        &--ltr{
+            transform: scale(-1, 1);
+        }
+
     }
 
     .text {

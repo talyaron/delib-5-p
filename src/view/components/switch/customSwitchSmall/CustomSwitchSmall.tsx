@@ -4,6 +4,7 @@ import background from "./customSwitchSmallBackground.svg";
 
 import StepsNoIcon from "../../../../assets/icons/stepsNoIcon.svg?react";
 import StepsIcon from "../../../../assets/icons/stepsIcon.svg?react";
+import { useLanguage } from "../../../../controllers/hooks/useLanguages";
 
 interface Props {
   label: string;
@@ -20,9 +21,13 @@ const CustomSwitchSmall: FC<Props> = ({
   textUnchecked,
   setChecked,
 }) => {
+
+  const {dir} = useLanguage();
   const handleChange = () => {
     setChecked();
   };
+
+
 
 
   //checked means multi-stage question
@@ -30,10 +35,10 @@ const CustomSwitchSmall: FC<Props> = ({
   return (
     <div className="custom-switch-small" onClick={handleChange}>
       <div
-        className="background"
+        className={dir==="rtl"?"background":"background background--ltr"}
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="ball ball-background">
+        <div className="ball ball-background" style={{left:dir === 'rtl'?"0rem":"4.15rem"}}>
           <StepsNoIcon /> 
         </div>
         <div className="ball ball-background ball-background-off">

@@ -18,11 +18,14 @@ import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import "./StatementVote.scss";
+import X from "../../../../../assets/icons/x.svg?react";
 
 // Helpers
 import VotingArea from "./components/votingArea/VotingArea";
 import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import Toast from "../../../../components/toast/Toast";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import Button from "../../../../components/buttons/button/Button";
 
 interface Props {
   statement: Statement;
@@ -38,6 +41,7 @@ const StatementVote: FC<Props> = ({
 }) => {
   // * Hooks * //
   const dispatch = useAppDispatch();
+  const {t} = useLanguage();
 
   const currentStage = statement.questionSettings?.currentStage;
   const isCurrentStageVoting = currentStage === QuestionStage.voting;
@@ -74,11 +78,19 @@ const StatementVote: FC<Props> = ({
         <div className="statement-vote">
 		{showMultiStageMessage && (
           <Toast
-            text={`${toastMessage}`}
+            text={t(`${toastMessage}`)}
             type="message"
             show={showMultiStageMessage}
             setShow={setShowMultiStageMessage}
-          />
+          >
+             <Button
+              text={t("Got it")}
+              iconOnRight={true}
+              Icon={<X />}
+              bckColor="var(--crimson)"
+              color="var(--white)"
+              onClick={() => setShowMultiStageMessage(false)} />
+            </Toast>
         )}
           <div className="number-of-votes-mark">
             <HandIcon /> {totalVotes}

@@ -187,7 +187,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
       </>
     );
 
-    function getToastButtons(questionStage: QuestionStage | undefined) {
+  function getToastButtons(questionStage: QuestionStage | undefined) {
       try {
         switch (questionStage) {
           case QuestionStage.voting:
