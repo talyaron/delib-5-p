@@ -12,6 +12,9 @@
 
     z-index: 1000;
 
+    animation: jumpIn 1s cubic-bezier(.92,-0.02,.86,2.28) 0ms 1 normal forwards;
+    //timing-function delay iteration-count direction fill-mode;
+
     &__text {
         padding: var(--padding);
         font-size: 1.3rem;
@@ -23,6 +26,20 @@
         gap:3rem;
         align-items: center;
         margin:.5rem 2rem 2rem;
+        
+    }
+
+    @keyframes jumpIn {
+        0% {
+            top:12rem;
+            opacity: 0.3;
+            transform: translateX(-50%) scale(0.5);
+        }
+        100% {
+            top:1rem;
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
         
     }
 

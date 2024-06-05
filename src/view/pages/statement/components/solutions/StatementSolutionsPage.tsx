@@ -23,13 +23,13 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
 import Toast from "../../../../components/toast/Toast";
-import { stages } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import Modal from "../../../../components/modal/Modal";
 import StatementInfo from "../vote/components/info/StatementInfo";
 import Button from "../../../../components/buttons/button/Button";
 import LightBulbIcon from "../../../../../assets/icons/lightBulbIcon.svg?react";
 import X from "../../../../../assets/icons/x.svg?react";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -52,11 +52,12 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const { sort } = useParams();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const {t} = useLanguage();
+    const { t } = useLanguage();
 
     const isMuliStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
     const currentStage = statement.questionSettings?.currentStage;
+    const stageInfo = getStagesInfo(currentStage);
 
     // Use States
     const [showModal, setShowModal] = useState(false);
@@ -121,42 +122,22 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     // Variables
     let topSum = 30;
     const tops: number[] = [topSum];
+    const message = stageInfo ? stageInfo.message : false;
 
     return (
       <>
         <div className="page__main">
           <div className="wrapper">
-            {isMuliStage &&
-              currentStage &&
-              stages[currentStage] &&
-              stages[currentStage].message && (
-                <Toast
-                  text={t(`${stages[currentStage].message}`)}
-                  type="message"
-                  show={showToast}
-                  setShow={setShowToast}
-                >
-                  <Button
-                    text={t("Close")}
-                    iconOnRight={false}
-                    onClick={() => {
-                      setShowModal(true);
-                      setShowToast(false);
-                    }}
-                    Icon={<X />}
-                    color="var(--dark-blue)"
-                  />
-                  <Button
-                    text={t("Add a solution")}
-                    iconOnRight={true}
-                    onClick={() => {
-                      setShowToast(false);
-                    }}
-                    Icon={<LightBulbIcon />}
-                    color="var(--dark-blue)"
-                  />
-                </Toast>
-              )}
+            {isMuliStage && message && (
+              <Toast
+                text={t(`${message}`)}
+                type="message"
+                show={showToast}
+                setShow={setShowToast}
+              >
+                {getToastButtons(currentStage)}
+              </Toast>
+            )}
             {sortedSubStatements?.map((statementSub: Statement, i: number) => {
               //get the top of the element
               if (statementSub.elementHight) {
@@ -205,6 +186,75 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
         )}
       </>
     );
+
+    function getToastButtons(questionStage: QuestionStage | undefined) {
+      try {
+        switch (questionStage) {
+          case QuestionStage.voting:
+          case QuestionStage.firstEvaluation:
+          case QuestionStage.secondEvaluation:
+          case QuestionStage.finished:
+          case QuestionStage.explanation:
+            return (
+              <>
+                <Button
+                  text={t("Close")}
+                  iconOnRight={false}
+                  onClick={() => {
+                    setShowToast(false);
+                  }}
+                  Icon={<X />}
+                  color="white"
+                  bckColor="var(--crimson)"
+                />
+              </>
+            );
+          case QuestionStage.suggestion:
+            return (
+              <>
+                <Button
+                  text={t("Close")}
+                  iconOnRight={false}
+                  onClick={() => {
+                    setShowToast(false);
+                  }}
+                  Icon={<X />}
+                  color="white"
+                  bckColor="var(--crimson)"
+                />
+                <Button
+                  text={t("Add a solution")}
+                  iconOnRight={true}
+                  onClick={() => {
+                    setShowToast(false);
+                    setShowModal(true);
+                  }}
+                  Icon={<LightBulbIcon />}
+                  color="white"
+                  bckColor="var(--green)"
+                />
+              </>
+            );
+
+          default:
+            return (
+              <Button
+                text={t("Close")}
+                iconOnRight={false}
+                onClick={() => {
+                  setShowToast(false);
+                }}
+                Icon={<X />}
+                color="white"
+                bckColor="var(--crimson)"
+              />
+            );
+        }
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    }
   } catch (error) {
     console.error(error);
 
