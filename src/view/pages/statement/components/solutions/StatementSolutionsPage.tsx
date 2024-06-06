@@ -30,6 +30,7 @@ import LightBulbIcon from "../../../../../assets/icons/lightBulbIcon.svg?react";
 import X from "../../../../../assets/icons/x.svg?react";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
+import { getTitle } from "../../../../../controllers/general/helpers";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -124,6 +125,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     let topSum = 30;
     const tops: number[] = [topSum];
     const message = stageInfo ? stageInfo.message : false;
+  
 
     return (
       <>
@@ -131,7 +133,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
           <div className="wrapper">
             {isMuliStage && message && (
               <Toast
-                text={t(`${message}`)}
+                text={t(`${message}: "${getTitle(statement)}"`)}
                 type="message"
                 show={showToast}
                 setShow={setShowToast}

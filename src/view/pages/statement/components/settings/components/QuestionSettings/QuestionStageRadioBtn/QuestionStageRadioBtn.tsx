@@ -100,7 +100,7 @@ export function getStagesInfo( questionStage: QuestionStage | undefined) {
         name: "Suggestions",
         icon: <LightBulbIcon className="img" />,
         color: "--settings-suggestions",
-        message: "Please suggest a solution",
+        message: "Please suggest a solution to the question",
       },
       [QuestionStage.firstEvaluation]: {
         name: "First Evaluation",
