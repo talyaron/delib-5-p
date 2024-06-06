@@ -102,7 +102,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			if (isMuliStage) {
 				getMultiStageOptions(statement, dispatch);
 			}
-		}, [isMuliStage]);
+		}, [currentStage]);
 
 		useEffect(() => {
 			if (!showToast && !questions) {
