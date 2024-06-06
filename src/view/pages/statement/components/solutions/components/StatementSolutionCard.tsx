@@ -37,7 +37,7 @@ import StatementChatMore from '../../chat/components/StatementChatMore';
 import AddQuestionIcon from '../../../../../../assets/icons/addQuestion.svg?react';
 import CreateStatementModal from '../../createStatementModal/CreateStatementModal';
 import Evaluation from './evaluation/Evaluation';
-import './StatementEvaluationCard.scss';
+import './StatementSolutionCard.scss';
 
 interface Props {
 	statement: Statement;
@@ -84,6 +84,8 @@ const StatementEvaluationCard: FC<Props> = ({
 		setNewTop(top);
 	}, [top]);
 
+	
+
 	useEffect(() => {
 		dispatch(
 			setStatementElementHight({
@@ -116,9 +118,11 @@ const StatementEvaluationCard: FC<Props> = ({
 		parentStatement
 	);
 
+	const statementAge = new Date().getTime() - statement.createdAt;
+	
 	return (
 		<div
-			className='statement-evaluation-card'
+			className={statementAge<10000?"statement-evaluation-card statement-evaluation-card--new":'statement-evaluation-card'}
 			style={{
 				top: `${newTop}px`,
 				borderLeft: `8px solid ${statementColor.backgroundColor || 'wheat'}`,

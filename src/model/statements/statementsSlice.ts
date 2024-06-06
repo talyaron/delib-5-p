@@ -236,10 +236,12 @@ export const statementsSlicer = createSlice({
 				if (!results.success) {
 					writeZodError(results.error, statements);
 				}
-				state.statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = false;
-				});
+				//clear all temp statements
+				// state.statements.forEach((statement) => {
+				// 	statement.isPartOfTempPresentation = false;
+				// });
 
+				//set new temp statements
 				statements.forEach((statement) => {
 					statement.isPartOfTempPresentation = true;
 					state.statements = updateArray(

@@ -68,4 +68,22 @@
       color: #226cbc;
     }
   }
+
+  &--new {
+
+    animation: newCard 1s ease-in-out;
+    
+    @keyframes newCard {
+      0% {
+        background-color: var(--blue);
+        transform: translateY(6rem) scale(0.8);
+      }
+      100% {
+        background-color: white;
+        transform: translateY(0rem) scale(1);
+
+      }
+      
+    }
+  }
 }

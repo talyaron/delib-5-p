@@ -18,7 +18,7 @@ import {
 } from "./statementSolutionsCont";
 
 // Custom Components
-import StatementEvaluationCard from "./components/StatementEvaluationCard";
+import StatementEvaluationCard from "./components/StatementSolutionCard";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
@@ -183,6 +183,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
             isOption={questions ? false : true}
             setShowModal={setShowModal}
             toggleAskNotifications={toggleAskNotifications}
+            isSendToStoreTemp={isMuliStage}
           />
         )}
       </>
