@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Statement } from "delib-npm";
+import { QuestionStage, Statement } from "delib-npm";
 
 // Redux
 import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
@@ -18,14 +18,19 @@ import HandIcon from "../../../../../assets/icons/handIcon.svg?react";
 import StatementInfo from "./components/info/StatementInfo";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
 import "./StatementVote.scss";
+import X from "../../../../../assets/icons/x.svg?react";
 
 // Helpers
 import VotingArea from "./components/votingArea/VotingArea";
+import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
+import Toast from "../../../../components/toast/Toast";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import Button from "../../../../components/buttons/button/Button";
 
 interface Props {
-    statement: Statement;
-    subStatements: Statement[];
-    toggleAskNotifications: () => void;
+  statement: Statement;
+  subStatements: Statement[];
+  toggleAskNotifications: () => void;
 }
 let getVoteFromDB = false;
 
@@ -36,12 +41,20 @@ const StatementVote: FC<Props> = ({
 }) => {
 	// * Hooks * //
 	const dispatch = useAppDispatch();
+	const {t} = useLanguage();
+
+	const currentStage = statement.questionSettings?.currentStage;
+	const isCurrentStageVoting = currentStage === QuestionStage.voting;
+	const stageInfo = getStagesInfo(currentStage);
+	const toastMessage = stageInfo ? stageInfo.message : "";
 
 	// * Use State * //
+	const [showMultiStageMessage, setShowMultiStageMessage] =
+    useState(isCurrentStageVoting);
 	const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
-        useState(false);
+    useState(false);
 	const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
-        useState(false);
+    useState(false);
 	const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
 	// * Variables * //
@@ -60,8 +73,25 @@ const StatementVote: FC<Props> = ({
 
 	return (
 		<>
+	
 			<div className="page__main">
 				<div className="statement-vote">
+					{showMultiStageMessage && (
+						<Toast
+							text={t(`${toastMessage}`)}
+							type="message"
+							show={showMultiStageMessage}
+							setShow={setShowMultiStageMessage}
+						>
+							<Button
+								text={t("Got it")}
+								iconOnRight={true}
+								Icon={<X />}
+								bckColor="var(--crimson)"
+								color="var(--white)"
+								onClick={() => setShowMultiStageMessage(false)} />
+						</Toast>
+					)}
 					<div className="number-of-votes-mark">
 						<HandIcon /> {totalVotes}
 					</div>
@@ -90,6 +120,7 @@ const StatementVote: FC<Props> = ({
 						/>
 					</Modal>
 				)}
+        
 			</div>
 			<div className="page__footer">
 				<StatementBottomNav

@@ -22,6 +22,7 @@ interface CreateStatementModalProps {
     setShowModal: (bool: boolean) => void;
     getSubStatements?: () => Promise<void>;
     toggleAskNotifications?: () => void;
+	isSendToStoreTemp?: boolean; // This is used for setting the input from the user to the store and from there to the UI as a new statement
 }
 
 const CreateStatementModal: FC<CreateStatementModalProps> = ({
@@ -30,6 +31,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 	setShowModal,
 	getSubStatements,
 	toggleAskNotifications,
+	isSendToStoreTemp
 }) => {
 	const [isOptionSelected, setIsOptionSelected] = useState(isOption);
 	const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +47,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 			isOptionSelected,
 			toggleAskNotifications,
 			parentStatement,
+			isSendToStoreTemp
 		});
 		setShowModal(false);
 		setIsLoading(false);

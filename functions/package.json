@@ -15,7 +15,8 @@
     },
     "main": "lib/index.js",
     "dependencies": {
-        "delib-npm": "^1.2.59",
+        "delib-npm": "^1.2.70",
+        "express": "^4.19.2",
         "firebase-admin": "^11.8.0",
         "firebase-functions": "^4.7.0",
         "typescript": "^5.3.2"

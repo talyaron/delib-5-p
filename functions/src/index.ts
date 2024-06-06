@@ -6,6 +6,9 @@
  *
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
+import functions = require('firebase-functions');
+
+
 import { Collections } from "delib-npm";
 
 import { deleteEvaluation, newEvaluation, updateEvaluation } from "./fn_evaluation";
@@ -36,6 +39,7 @@ import { sendNotificationsCB } from "./fn_notifications";
 import { cleanOldTimers } from "./fn_timers";
 import { setAdminsToNewStatement } from "./fn_roles";
 import { updateStatementNumberOfMembers } from "./fn_subscriptions";
+import { getRandomStatements, getTopStatements, getUserOptions } from './fn_httpRequests';
 
 initializeApp();
 export const db = getFirestore();
@@ -61,8 +65,8 @@ exports.updateNotifications = onDocumentCreated(
 );
 
 //evaluations and results
-exports.newEvaluation = onDocumentCreated(`/${Collections.evaluations}/{evaluationId}`,newEvaluation);
-exports.deleteEvaluation = onDocumentDeleted(`/${Collections.evaluations}/{evaluationId}`,deleteEvaluation);
+exports.newEvaluation = onDocumentCreated(`/${Collections.evaluations}/{evaluationId}`, newEvaluation);
+exports.deleteEvaluation = onDocumentDeleted(`/${Collections.evaluations}/{evaluationId}`, deleteEvaluation);
 
 exports.updateEvaluation = onDocumentUpdated(
     `/${Collections.evaluations}/{evaluationId}`,
@@ -99,3 +103,10 @@ exports.cleanTimers = onSchedule("every day 00:00", cleanOldTimers)
 
 //roles
 exports.setAdminsToNewStatement = onDocumentCreated(`/${Collections.statements}/{statementId}`, setAdminsToNewStatement);
+
+//http requests
+exports.getRandomStatements = functions.https.onRequest(getRandomStatements);
+exports.getTopStatements = functions.https.onRequest(getTopStatements);
+exports.getUserOptions = functions.https.onRequest(getUserOptions);
+
+

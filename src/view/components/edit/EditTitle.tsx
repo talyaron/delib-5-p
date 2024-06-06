@@ -49,9 +49,13 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
+   
 			if (!text.trim()) return; // Do not save if the text is empty
 
 			if (!statement) throw new Error("Statement is undefined");
+
+			const title = text.split("\n")[0];
+			const description = text.split("\n").slice(1).join("\n");
 
 			const updatedText = isTextArea
 				? text.trim()
@@ -94,7 +98,10 @@ const EditTitle: FC<Props> = ({
 				/>
 			)}
 			{showSaveButton && (
-				<button className="editTitle-btn btn btn--agree btn--small" onClick={handleSave}>
+				<button
+					className="editTitle-btn btn btn--agree btn--small"
+					onClick={handleSave}
+				>
           Save
 				</button>
 			)}

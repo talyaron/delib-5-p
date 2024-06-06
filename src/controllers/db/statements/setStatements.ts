@@ -1,5 +1,5 @@
 // Firestore
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // Third Party Imports
 import { z } from "zod";
@@ -109,7 +109,7 @@ export const setStatementToDB = async ({
 				: statement?.topParentId ||
 				parentStatement?.topParentId ||
 				"top";
-		statement.subScreens = allowedScreens(statement,statement.subScreens );
+		statement.subScreens = allowedScreens(statement, statement.subScreens);
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
@@ -247,7 +247,7 @@ export function createStatement({
 			storeState.statements.statements,
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
-		
+
 
 		const newStatement: Statement = {
 			statement: text,
@@ -275,17 +275,17 @@ export function createStatement({
 			hasChildren,
 			statementType,
 			consensus: 0,
-			evaluation:{
-				numberOfEvaluators:0,
-				sumEvaluations:0,
-				agreement:0,
+			evaluation: {
+				numberOfEvaluators: 0,
+				sumEvaluations: 0,
+				agreement: 0,
 			},
 			results: [],
 			subScreens,
 		};
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
-	
+
 		StatementSchema.parse(newStatement);
 
 		return newStatement;
@@ -628,3 +628,5 @@ export async function setFollowMeDB(
 		console.error(error);
 	}
 }
+
+

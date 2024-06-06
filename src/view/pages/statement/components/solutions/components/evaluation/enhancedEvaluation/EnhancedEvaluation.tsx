@@ -6,9 +6,9 @@ import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxH
 import { evaluationSelector } from "../../../../../../../../model/evaluations/evaluationsSlice";
 import { EnhancedEvaluationThumb } from "./EnhancedEvaluationModel";
 import {
-  getEvaluationThumbIdByScore,
-  getEvaluationThumbsToDisplay,
-} from "../../../statementEvaluationCont";
+	getEvaluationThumbIdByScore,
+	getEvaluationThumbsToDisplay,
+} from "../../../statementSolutionsCont";
 import "./EnhancedEvaluation.scss";
 import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 

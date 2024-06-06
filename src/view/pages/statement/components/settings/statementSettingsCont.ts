@@ -21,6 +21,8 @@ import {
 	defaultStatementSettings,
 } from "./emptyStatementModel";
 import { NavigateFunction } from "react-router-dom";
+import { store } from "../../../../../model/store";
+import { setTempStatementsForPresentation } from "../../../../../model/statements/statementsSlice";
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -116,7 +118,7 @@ export async function handleSetStatement({
 				enableAddEvaluationOption,
 				enableAddVotingOption,
 				enhancedEvaluation,
-				showEvaluation,
+				showEvaluation
 			});
 			if (!newStatement)
 				throw new Error("newStatement had error in creating");
@@ -271,6 +273,7 @@ interface CreateStatementFromModalParams {
 	isOptionSelected: boolean;
 	parentStatement: Statement | "top";
 	toggleAskNotifications?: VoidFunction;
+	isSendToStoreTemp?: boolean;
 }
 
 export async function createStatementFromModal({
@@ -279,6 +282,7 @@ export async function createStatementFromModal({
 	isOptionSelected,
 	toggleAskNotifications,
 	parentStatement,
+	isSendToStoreTemp
 }: CreateStatementFromModalParams) {
 	try {
 		if (!title) throw new Error("title is undefined");
@@ -299,12 +303,19 @@ export async function createStatementFromModal({
 
 		if (!newStatement) throw new Error("newStatement was not created");
 
+		
+
 		await setStatementToDB({
 			statement: newStatement,
 			parentStatement:
 				parentStatement === "top" ? undefined : parentStatement,
 			addSubscription: true,
 		});
+
+		if (isSendToStoreTemp) {
+			//dispatch to the store
+			store.dispatch(setTempStatementsForPresentation([newStatement]));
+		}
 	} catch (error) {
 		console.error(error);
 	}
