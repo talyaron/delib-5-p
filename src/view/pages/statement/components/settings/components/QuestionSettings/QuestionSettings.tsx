@@ -82,7 +82,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 		);
 
 		function _setChecked() {
-			console.log("checked", checked);
+		
 			const questionType = checked
 				? QuestionType.singleStep
 				: QuestionType.multipleSteps;
@@ -105,10 +105,10 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 				},
 			});
 		}
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error(error);
 		
-		return <p>{error.message}</p>;
+		return <p>{(error as Error).message}</p>;
 	}
 };
 
