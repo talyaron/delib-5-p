@@ -4,6 +4,34 @@ import { Query } from "firebase-admin/firestore";
 const cors = require('cors')({ origin: 'http://localhost:5173' })
 
 
+export const getUserOptions = async (req: any, res: any) => {
+    cors(req, res, async () => {
+        try {
+            const userId = req.query.userId;
+            const parentId = req.query.parentId;
+            if (!parentId) {
+                res.status(400).send({ error: "parentId is required", ok: false });
+                return;
+            }
+            if (!userId) {
+                res.status(400).send({ error: "userId is required", ok: false });
+                return;
+            }
+
+            const userOptionsRef = db.collection(Collections.statements).where("creatorId", "==", userId).where("parentId", "==", parentId);
+            const userOptionsDB = await userOptionsRef.get();
+            const statements = userOptionsDB.docs.map((doc) => doc.data());
+
+            res.send({ statements, ok: true });
+            return;
+
+        } catch (error: any) {
+            res.status(500).send({ error: error.message, ok: false });
+            return;
+        }
+    });
+}
+
 export const getRandomStatements = async (req: any, res: any) => {
     cors(req, res, async () => {
         try {

@@ -80,6 +80,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
         }
 
         if (isMuliStage) {
+          //filter the temp presentation designed for this stage
           return subStatement.isPartOfTempPresentation;
         }
 

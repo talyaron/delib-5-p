@@ -299,7 +299,7 @@ export function writeZodError(error: ZodError, object: any): void {
 			console.error(`Error at ${issue.path.join('.')}: ${issue.message} (${issue.code})`);
 
 
-			console.info(object)
+			console.info("Object sent:",object)
 		});
 
 	} catch (error) {

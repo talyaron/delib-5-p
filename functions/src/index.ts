@@ -39,7 +39,7 @@ import { sendNotificationsCB } from "./fn_notifications";
 import { cleanOldTimers } from "./fn_timers";
 import { setAdminsToNewStatement } from "./fn_roles";
 import { updateStatementNumberOfMembers } from "./fn_subscriptions";
-import { getRandomStatements, getTopStatements } from './fn_httpRequests';
+import { getRandomStatements, getTopStatements, getUserOptions } from './fn_httpRequests';
 
 initializeApp();
 export const db = getFirestore();
@@ -107,5 +107,6 @@ exports.setAdminsToNewStatement = onDocumentCreated(`/${Collections.statements}/
 //http requests
 exports.getRandomStatements = functions.https.onRequest(getRandomStatements);
 exports.getTopStatements = functions.https.onRequest(getTopStatements);
+exports.getUserOptions = functions.https.onRequest(getUserOptions);
 
 
