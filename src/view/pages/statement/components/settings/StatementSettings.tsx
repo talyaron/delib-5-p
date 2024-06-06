@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { Collections, QuestionStage, Statement } from "delib-npm";
+import {Statement } from "delib-npm";
 
 // Redux Store
 import {

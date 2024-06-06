@@ -10,10 +10,11 @@ import {
 	getEvaluationThumbsToDisplay,
 } from "../../../statementSolutionsCont";
 import "./EnhancedEvaluation.scss";
+import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
 
 interface EnhancedEvaluationProps {
-    statement: Statement;
-    shouldDisplayScore?: boolean;
+  statement: Statement;
+  shouldDisplayScore?: boolean;
 }
 
 const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
@@ -21,9 +22,10 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 	shouldDisplayScore,
 }) => {
 	const evaluationScore = useAppSelector(
-		evaluationSelector(statement.statementId),
+		evaluationSelector(statement.statementId)
 	);
-	const totalEvaluators = statement.evaluation?.numberOfEvaluators ||  statement.totalEvaluators || 0;
+	const { totalEvaluators } = statement;
+	const { dir } = useLanguage();
 
 	const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
 
@@ -32,12 +34,12 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 		isEvaluationPanelOpen,
 	});
 
-	const agreement = statement.evaluation?.agreement || statement.consensus;
-
-	const roundedEvaluationScore = Math.round(agreement * 100) / 100;
+	const roundedEvaluationScore = Math.round(statement.consensus * 100) / 100;
 
 	return (
-		<div className="enhanced-evaluation">
+		<div
+			className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
+		>
 			<div
 				className="evaluation-thumbs"
 				onClick={() => {
@@ -58,9 +60,10 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 				<div
 					className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
 				>
-					{roundedEvaluationScore} 
-					{totalEvaluators > 0 && <span className="total-evaluators">{" "}({totalEvaluators})</span>}
-                  
+					{roundedEvaluationScore}
+					{totalEvaluators && totalEvaluators > 0 && (
+						<span className="total-evaluators"> ({totalEvaluators})</span>
+					)}
 				</div>
 			)}
 		</div>
@@ -70,10 +73,10 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 export default EnhancedEvaluation;
 
 interface EvaluationThumbProps {
-    statement: Statement;
-    evaluationScore: number | undefined;
-    evaluationThumb: EnhancedEvaluationThumb;
-    isEvaluationPanelOpen: boolean;
+  statement: Statement;
+  evaluationScore: number | undefined;
+  evaluationThumb: EnhancedEvaluationThumb;
+  isEvaluationPanelOpen: boolean;
 }
 
 const EvaluationThumb: FC<EvaluationThumbProps> = ({
@@ -89,7 +92,7 @@ const EvaluationThumb: FC<EvaluationThumbProps> = ({
 	};
 
 	const isThumbActive =
-        evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
+    evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
 
 	return (
 		<button

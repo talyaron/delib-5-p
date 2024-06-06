@@ -133,7 +133,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 					<div className="wrapper">
 						{isMuliStage && message && (
 							<Toast
-								text={`${t(message)}: "${getTitle(statement)}"`}
+								text={`${t(message)}${currentStage === QuestionStage.suggestion?`: "${getTitle(statement)}`:""}`}
 								type="message"
 								show={showToast}
 								setShow={setShowToast}

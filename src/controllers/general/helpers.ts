@@ -293,7 +293,7 @@ export function getFirstName(fullName: string) {
 	}
 }
 
-export function writeZodError(error: ZodError, object: any): void {
+export function writeZodError(error: ZodError, object: unknown): void {
 	try {
 		error.issues.forEach((issue: ZodIssue) => {
 			console.error(`Error at ${issue.path.join('.')}: ${issue.message} (${issue.code})`);
