@@ -145,7 +145,7 @@ const StatementMain: FC = () => {
 		let unsubEvaluations: () => void = () => {
 			return;
 		};
-		let unsubSubSubscribedStatements: () => void = () => {
+		const unsubSubSubscribedStatements: () => void = () => {
 			return;
 		};
 
@@ -162,6 +162,7 @@ const StatementMain: FC = () => {
 				statementId,
 				user?.uid,
 			);
+
 			// unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
 			// 	statementId,
 			// 	user,

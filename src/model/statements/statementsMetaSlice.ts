@@ -13,34 +13,34 @@ interface StatementMetaDataState {
 
 // Define the initial state using that type
 const initialState: StatementMetaDataState = {
-    statementsMetaData: [],
+	statementsMetaData: [],
 };
 
 export const statementMetaData = createSlice({
-    name: "statements-meta-data",
-    initialState,
-    reducers: {
-        setStatementMetaData: (state, action: PayloadAction<StatementMetaData>) => {
-            try {
+	name: "statements-meta-data",
+	initialState,
+	reducers: {
+		setStatementMetaData: (state, action: PayloadAction<StatementMetaData>) => {
+			try {
 
-                const statementMetaData = action.payload as StatementMetaData;
-                const results = StatementMetaDataSchema.safeParse(statementMetaData);
-                if (!results.success) {
-                    writeZodError(results.error, statementMetaData);
-                    throw new Error("StatementMetaDataSchema failed to parse");
-                }
+				const statementMetaData = action.payload as StatementMetaData;
+				const results = StatementMetaDataSchema.safeParse(statementMetaData);
+				if (!results.success) {
+					writeZodError(results.error, statementMetaData);
+					throw new Error("StatementMetaDataSchema failed to parse");
+				}
 
-                state.statementsMetaData = updateArray(state.statementsMetaData, statementMetaData, "statementId");
+				state.statementsMetaData = updateArray(state.statementsMetaData, statementMetaData, "statementId");
 
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    },
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	},
 });
 
 export const {
-    setStatementMetaData
+	setStatementMetaData
 } = statementMetaData.actions;
 
 // Other code such as selectors can use the imported `RootState` type

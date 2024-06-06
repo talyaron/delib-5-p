@@ -91,7 +91,7 @@ const StatementHeader: FC<Props> = ({
 	}
 	function handleEditTitle(text:string):void {
 		if (statementSubscription?.role === Role.admin) {
-		updateStatementText(statement, text);
+			updateStatementText(statement, text);
 			setEditHeader(true);
 		}
 	}

@@ -236,6 +236,7 @@ export const statementsSlicer = createSlice({
 				if (!results.success) {
 					writeZodError(results.error, statements);
 				}
+
 				//clear all temp statements
 				// state.statements.forEach((statement) => {
 				// 	statement.isPartOfTempPresentation = false;
@@ -397,6 +398,7 @@ export const statementOptionsSelector =
 			.map((statement) => ({ ...statement }));
 
 		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
+		
 		return sortedSubStatements;
 	};
 

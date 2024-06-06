@@ -35,101 +35,101 @@ interface Props {
 let getVoteFromDB = false;
 
 const StatementVote: FC<Props> = ({
-  statement,
-  subStatements,
-  toggleAskNotifications,
+	statement,
+	subStatements,
+	toggleAskNotifications,
 }) => {
-  // * Hooks * //
-  const dispatch = useAppDispatch();
-  const {t} = useLanguage();
+	// * Hooks * //
+	const dispatch = useAppDispatch();
+	const {t} = useLanguage();
 
-  const currentStage = statement.questionSettings?.currentStage;
-  const isCurrentStageVoting = currentStage === QuestionStage.voting;
-  const stageInfo = getStagesInfo(currentStage);
-  const toastMessage = stageInfo ? stageInfo.message : "";
+	const currentStage = statement.questionSettings?.currentStage;
+	const isCurrentStageVoting = currentStage === QuestionStage.voting;
+	const stageInfo = getStagesInfo(currentStage);
+	const toastMessage = stageInfo ? stageInfo.message : "";
 
-  // * Use State * //
-  const [showMultiStageMessage, setShowMultiStageMessage] =
+	// * Use State * //
+	const [showMultiStageMessage, setShowMultiStageMessage] =
     useState(isCurrentStageVoting);
-  const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
+	const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
     useState(false);
-  const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
+	const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
     useState(false);
-  const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
+	const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
-  // * Variables * //
-  const totalVotes = getTotalVoters(statement);
+	// * Variables * //
+	const totalVotes = getTotalVoters(statement);
 
-  useEffect(() => {
-    if (!getVoteFromDB) {
-      getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
-      getVoteFromDB = true;
-    }
-  }, []);
+	useEffect(() => {
+		if (!getVoteFromDB) {
+			getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
+			getVoteFromDB = true;
+		}
+	}, []);
 
-  function updateStoreWithVoteCB(option: Statement) {
-    dispatch(setVoteToStore(option));
-  }
+	function updateStoreWithVoteCB(option: Statement) {
+		dispatch(setVoteToStore(option));
+	}
 
-  return (
-    <>
+	return (
+		<>
 	
-      <div className="page__main">
-        <div className="statement-vote">
-		{showMultiStageMessage && (
-          <Toast
-            text={t(`${toastMessage}`)}
-            type="message"
-            show={showMultiStageMessage}
-            setShow={setShowMultiStageMessage}
-          >
-             <Button
-              text={t("Got it")}
-              iconOnRight={true}
-              Icon={<X />}
-              bckColor="var(--crimson)"
-              color="var(--white)"
-              onClick={() => setShowMultiStageMessage(false)} />
-            </Toast>
-        )}
-          <div className="number-of-votes-mark">
-            <HandIcon /> {totalVotes}
-          </div>
-          <VotingArea
-            totalVotes={totalVotes}
-            setShowInfo={setIsStatementInfoModalOpen}
-            statement={statement}
-            subStatements={subStatements}
-            setStatementInfo={setStatementInfo}
-          />
-        </div>
+			<div className="page__main">
+				<div className="statement-vote">
+					{showMultiStageMessage && (
+						<Toast
+							text={t(`${toastMessage}`)}
+							type="message"
+							show={showMultiStageMessage}
+							setShow={setShowMultiStageMessage}
+						>
+							<Button
+								text={t("Got it")}
+								iconOnRight={true}
+								Icon={<X />}
+								bckColor="var(--crimson)"
+								color="var(--white)"
+								onClick={() => setShowMultiStageMessage(false)} />
+						</Toast>
+					)}
+					<div className="number-of-votes-mark">
+						<HandIcon /> {totalVotes}
+					</div>
+					<VotingArea
+						totalVotes={totalVotes}
+						setShowInfo={setIsStatementInfoModalOpen}
+						statement={statement}
+						subStatements={subStatements}
+						setStatementInfo={setStatementInfo}
+					/>
+				</div>
 
-        {isCreateStatementModalOpen && (
-          <CreateStatementModal
-            parentStatement={statement}
-            isOption={true}
-            setShowModal={setIsCreateStatementModalOpen}
-            toggleAskNotifications={toggleAskNotifications}
-          />
-        )}
-        {isStatementInfoModalOpen && (
-          <Modal>
-            <StatementInfo
-              statement={statementInfo}
-              setShowInfo={setIsStatementInfoModalOpen}
-            />
-          </Modal>
-        )}
+				{isCreateStatementModalOpen && (
+					<CreateStatementModal
+						parentStatement={statement}
+						isOption={true}
+						setShowModal={setIsCreateStatementModalOpen}
+						toggleAskNotifications={toggleAskNotifications}
+					/>
+				)}
+				{isStatementInfoModalOpen && (
+					<Modal>
+						<StatementInfo
+							statement={statementInfo}
+							setShowInfo={setIsStatementInfoModalOpen}
+						/>
+					</Modal>
+				)}
         
-      </div>
-      <div className="page__footer">
-        <StatementBottomNav
-          setShowModal={setIsCreateStatementModalOpen}
-          statement={statement}
-        />
-      </div>
-    </>
-  );
+			</div>
+			<div className="page__footer">
+				<StatementBottomNav
+					setShowModal={setIsCreateStatementModalOpen}
+					statement={statement}
+				/>
+			</div>
+		</>
+	);
 };
 
 export default StatementVote;

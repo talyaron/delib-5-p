@@ -13,40 +13,40 @@ interface Props {
 }
 
 const Button: FC<Props> = ({
-  text,
-  Icon,
-  onClick,
-  iconOnRight = true,
-  color = "var(--green)",
-  bckColor = "var(--white)",
+	text,
+	Icon,
+	onClick,
+	iconOnRight = true,
+	color = "var(--green)",
+	bckColor = "var(--white)",
 }) => {
-  let { dir } = useLanguage();
-  if (iconOnRight === false) {
-    if (dir === "rtl") {
-      dir = "ltr";
-    } else {
-      dir = "rtl";
-    }
-  }
+	let { dir } = useLanguage();
+	if (iconOnRight === false) {
+		if (dir === "rtl") {
+			dir = "ltr";
+		} else {
+			dir = "rtl";
+		}
+	}
 
-  return (
-    <button
-      className={iconOnRight ? "button" : "button button--right"}
-      onClick={onClick}
-    >
-      <div className="button__text">{text}</div>
-      {Icon && (
-        <div
-          className={
-            dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
-          }
-          style={{ backgroundColor: bckColor, color: color}}
-        >
-          {Icon}
-        </div>
-      )}
-    </button>
-  );
+	return (
+		<button
+			className={iconOnRight ? "button" : "button button--right"}
+			onClick={onClick}
+		>
+			<div className="button__text">{text}</div>
+			{Icon && (
+				<div
+					className={
+						dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
+					}
+					style={{ backgroundColor: bckColor, color: color}}
+				>
+					{Icon}
+				</div>
+			)}
+		</button>
+	);
 };
 
 export default Button;

@@ -16,124 +16,129 @@ interface Props {
 }
 
 const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
-  const { t } = useLanguage();
-  const isSelected = statement.questionSettings?.currentStage === stage;
-  const { backgroundColor, btnBackgroundColor } = getStageInfo(
-    stage,
-    isSelected
-  );
-  const stageInfo = getStagesInfo(stage);
-  return (
-    <div
-      className="question-stage-radio-btn"
-      style={{ transform: isSelected ? "scale(1.04)" : "scale(1)" }}
-    >
-      <div
-        className="question-stage-radio-btn__top"
-        style={{
-          backgroundColor: backgroundColor,
-          opacity: isSelected ? 1 : 0.5,
-        }}
-      >
-        {stageInfo ? stageInfo.icon : <LightBulbIcon className="img" />}
-        <div className="number">324</div>
-      </div>
-      <div
-        className="question-stage-radio-btn__radio"
-        onClick={() => {
-          setQuestionStage({ statementId: statement.statementId, stage });
-        }}
-      >
-        <div
-          className="radio-button"
-          style={{ backgroundColor: btnBackgroundColor }}
-        >
-          <input
-            type="radio"
-            name="question-stage"
-            id={`question-stage-${stage}`}
-          />
-          <div className="radio-button__inner"></div>
-        </div>
-        {t(stageInfo ? stageInfo.name : stage)}
-      </div>
-    </div>
-  );
+	const { t } = useLanguage();
+	const isSelected = statement.questionSettings?.currentStage === stage;
+	const { backgroundColor, btnBackgroundColor } = getStageInfo(
+		stage,
+		isSelected
+	);
+	const stageInfo = getStagesInfo(stage);
+	
+	return (
+		<div
+			className="question-stage-radio-btn"
+			style={{ transform: isSelected ? "scale(1.04)" : "scale(1)" }}
+		>
+			<div
+				className="question-stage-radio-btn__top"
+				style={{
+					backgroundColor: backgroundColor,
+					opacity: isSelected ? 1 : 0.5,
+				}}
+			>
+				{stageInfo ? stageInfo.icon : <LightBulbIcon className="img" />}
+				<div className="number">324</div>
+			</div>
+			<div
+				className="question-stage-radio-btn__radio"
+				onClick={() => {
+					setQuestionStage({ statementId: statement.statementId, stage });
+				}}
+			>
+				<div
+					className="radio-button"
+					style={{ backgroundColor: btnBackgroundColor }}
+				>
+					<input
+						type="radio"
+						name="question-stage"
+						id={`question-stage-${stage}`}
+					/>
+					<div className="radio-button__inner"></div>
+				</div>
+				{t(stageInfo ? stageInfo.name : stage)}
+			</div>
+		</div>
+	);
 };
 
 export default QuestionStageRadioBtn;
 
-export function getStageInfo(stage: QuestionStage, isSelected: boolean = true) {
-  try {
-    const stageInfo = getStagesInfo(stage);
-    const backgroundColor = stageInfo
-      ? `var(${stageInfo.color})`
-      : "var(--green)";
-    const btnBackgroundColor = stageInfo
-      ? isSelected
-        ? `var(${stageInfo.color})`
-        : "#DCE7FF"
-      : "#DCE7FF";
-    return { backgroundColor, btnBackgroundColor, stageInfo };
-  } catch (error) {
-    console.error(error);
-    return {
-      backgroundColor: "var(--green)",
-      btnBackgroundColor: "#DCE7FF",
-      stageInfo: undefined,
-      error: true,
-    };
-  }
+export function getStageInfo(stage: QuestionStage, isSelected = true) {
+	try {
+		const stageInfo = getStagesInfo(stage);
+		const backgroundColor = stageInfo
+			? `var(${stageInfo.color})`
+			: "var(--green)";
+		const btnBackgroundColor = stageInfo
+			? isSelected
+				? `var(${stageInfo.color})`
+				: "#DCE7FF"
+			: "#DCE7FF";
+		
+		return { backgroundColor, btnBackgroundColor, stageInfo };
+	} catch (error) {
+		console.error(error);
+		
+		return {
+			backgroundColor: "var(--green)",
+			btnBackgroundColor: "#DCE7FF",
+			stageInfo: undefined,
+			error: true,
+		};
+	}
 }
 
 
 export function getStagesInfo( questionStage: QuestionStage | undefined) {
-  try {
-    const stages = {
-      [QuestionStage.explanation]: {
-        name: "Explanation",
-        icon: <LightBulbIcon className="img" />,
-        color: "--green",
-        message: undefined,
-      },
-      [QuestionStage.suggestion]: {
-        name: "Suggestions",
-        icon: <LightBulbIcon className="img" />,
-        color: "--settings-suggestions",
-        message: "Please suggest a solution to the question",
-      },
-      [QuestionStage.firstEvaluation]: {
-        name: "First Evaluation",
-        icon: <EvaluationsIcon className="img" />,
-        color: "--settings-first-evaluation",
-        message: `Please evaluate each solution in the next set of solutions. For each solution, indicate your rating using the smiley (positive) or frown (negative) icons`,
-      },
-      [QuestionStage.secondEvaluation]: {
-        name: "Second Evaluation",
-        icon: <ArrowUp className="img" />,
-        color: "--settings-second-evaluation",
-        message: "Please evaluate the top solutions",
-      },
-      [QuestionStage.voting]: {
-        name: "Voting",
-        icon: <HandIcon className="img" />,
-        color: "--settings-voting",
-        message: "Please chose your preferred solution",
-      },
-      [QuestionStage.finished]: {
-        name: "Finished",
-        icon: <FlagIcon className="img" />,
-        color: "--settings-finished",
-        message: "The voting process for this question has concluded",
-      },
-    };
+	try {
+		const stages = {
+			[QuestionStage.explanation]: {
+				name: "Explanation",
+				icon: <LightBulbIcon className="img" />,
+				color: "--green",
+				message: undefined,
+			},
+			[QuestionStage.suggestion]: {
+				name: "Suggestions",
+				icon: <LightBulbIcon className="img" />,
+				color: "--settings-suggestions",
+				message: "Please suggest a solution to the question",
+			},
+			[QuestionStage.firstEvaluation]: {
+				name: "First Evaluation",
+				icon: <EvaluationsIcon className="img" />,
+				color: "--settings-first-evaluation",
+				message: `Please evaluate each solution in the next set of solutions. For each solution, indicate your rating using the smiley (positive) or frown (negative) icons`,
+			},
+			[QuestionStage.secondEvaluation]: {
+				name: "Second Evaluation",
+				icon: <ArrowUp className="img" />,
+				color: "--settings-second-evaluation",
+				message: "Please evaluate the top solutions",
+			},
+			[QuestionStage.voting]: {
+				name: "Voting",
+				icon: <HandIcon className="img" />,
+				color: "--settings-voting",
+				message: "Please chose your preferred solution",
+			},
+			[QuestionStage.finished]: {
+				name: "Finished",
+				icon: <FlagIcon className="img" />,
+				color: "--settings-finished",
+				message: "The voting process for this question has concluded",
+			},
+		};
 
-    if (questionStage) {
-      return stages[questionStage];
-    }
-    return false;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
+		if (questionStage) {
+			return stages[questionStage];
+		}
+		
+		return false;
+	} catch (error) {
+		console.error(error);
+		
+		return false;
+	}
 }

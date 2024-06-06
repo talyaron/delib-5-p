@@ -6,34 +6,36 @@ import { setStatementMetaData } from "../../../../model/statements/statementsMet
 import { writeZodError } from "../../../general/helpers";
 
 export function listenToStatementMetaData(statementId: string, dispatch: Dispatch): Unsubscribe {
-    try {
-        if (!statementId) {
-            throw new Error("Statement ID is missing");
-        }
+	try {
+		if (!statementId) {
+			throw new Error("Statement ID is missing");
+		}
 
-        const statementMetaDataRef = doc(DB, Collections.statementsMetaData, statementId);
-        return onSnapshot(statementMetaDataRef, (statementMetaDataDB) => {
-            try {
-                if (!statementMetaDataDB.exists()) {
-                    throw new Error("Statement meta does not exist");
+		const statementMetaDataRef = doc(DB, Collections.statementsMetaData, statementId);
+		
+		return onSnapshot(statementMetaDataRef, (statementMetaDataDB) => {
+			try {
+				if (!statementMetaDataDB.exists()) {
+					throw new Error("Statement meta does not exist");
 
-                }
-                const statementMetaData = statementMetaDataDB.data() as StatementMetaData;
+				}
+				const statementMetaData = statementMetaDataDB.data() as StatementMetaData;
 
-                const results = StatementMetaDataSchema.safeParse(statementMetaData);
-                if (!results.success) {
-                    writeZodError(results.error, statementMetaData);
-                    throw new Error("StatementMetaDataSchema failed to parse");
-                }
+				const results = StatementMetaDataSchema.safeParse(statementMetaData);
+				if (!results.success) {
+					writeZodError(results.error, statementMetaData);
+					throw new Error("StatementMetaDataSchema failed to parse");
+				}
 
 
-                dispatch(setStatementMetaData(statementMetaData));
-            } catch (error) {
-                console.error(error);
-            }
-        });
-    } catch (error) {
-        console.error(error);
-        return () => { };
-    }
+				dispatch(setStatementMetaData(statementMetaData));
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	} catch (error) {
+		console.error(error);
+		
+		return () => { };
+	}
 }
