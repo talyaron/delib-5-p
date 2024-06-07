@@ -17,17 +17,18 @@ import { countRoomJoiners } from "./fn_rooms";
 import { addSignature, removeSignature } from "./fn_signatures";
 import {
 
-    updateParentWithNewMessageCB,
-    // updateSubscribedListenersCB,
+	updateParentWithNewMessageCB,
+
+	// updateSubscribedListenersCB,
 
 } from "./fn_statements";
 import { updateVote } from "./fn_vote";
 
 import {
-    onDocumentUpdated,
-    onDocumentCreated,
-    onDocumentWritten,
-    onDocumentDeleted,
+	onDocumentUpdated,
+	onDocumentCreated,
+	onDocumentWritten,
+	onDocumentDeleted,
 } from "firebase-functions/v2/firestore";
 
 import { onSchedule } from "firebase-functions/v2/scheduler";
@@ -40,6 +41,8 @@ import { cleanOldTimers } from "./fn_timers";
 import { setAdminsToNewStatement } from "./fn_roles";
 import { updateStatementNumberOfMembers } from "./fn_subscriptions";
 import { getRandomStatements, getTopStatements, getUserOptions } from './fn_httpRequests';
+import { onRequest } from 'firebase-functions/v2/https';
+import { findSimilarStatements } from './fn_findSimilarStatements';
 
 initializeApp();
 export const db = getFirestore();
@@ -51,17 +54,23 @@ export const db = getFirestore();
 //     updateSubscribedListenersCB,
 // );
 
+
+exports.checkForSimilarStatements = onRequest(
+	{ timeoutSeconds: 1200, cors: ['https://delib-testing.web.app/'] },
+	findSimilarStatements
+);
+
 exports.updateParentWithNewMessage = onDocumentCreated(
-    `/${Collections.statements}/{statementId}`,
-    updateParentWithNewMessageCB);
+	`/${Collections.statements}/{statementId}`,
+	updateParentWithNewMessageCB);
 
 //update statements with the amount of  members
 exports.updateMembers = onDocumentWritten(`/${Collections.statementsSubscribe}/{subscriptionId}`, updateStatementNumberOfMembers);
 
 //notifications
 exports.updateNotifications = onDocumentCreated(
-    `/${Collections.statements}/{statementId}`,
-    sendNotificationsCB,
+	`/${Collections.statements}/{statementId}`,
+	sendNotificationsCB,
 );
 
 //evaluations and results
@@ -69,12 +78,12 @@ exports.newEvaluation = onDocumentCreated(`/${Collections.evaluations}/{evaluati
 exports.deleteEvaluation = onDocumentDeleted(`/${Collections.evaluations}/{evaluationId}`, deleteEvaluation);
 
 exports.updateEvaluation = onDocumentUpdated(
-    `/${Collections.evaluations}/{evaluationId}`,
-    updateEvaluation,
+	`/${Collections.evaluations}/{evaluationId}`,
+	updateEvaluation,
 );
 exports.updateResultsSettings = onDocumentWritten(
-    `${Collections.resultsTriggers}/{statementId}`,
-    updateResultsSettings,
+	`${Collections.resultsTriggers}/{statementId}`,
+	updateResultsSettings,
 );
 
 //votes
@@ -84,18 +93,18 @@ exports.addVote = onDocumentWritten("/votes/{voteId}", updateVote);
 
 //signatures (part of delib-signatures)
 exports.changeSignature = onDocumentCreated(
-    "/statementsSignatures/{signatureId}",
-    addSignature,
+	"/statementsSignatures/{signatureId}",
+	addSignature,
 );
 exports.deleteSignature = onDocumentDeleted(
-    "/statementsSignatures/{signatureId}",
-    removeSignature,
+	"/statementsSignatures/{signatureId}",
+	removeSignature,
 );
 
 //rooms
 exports.countRoomJoiners = onDocumentWritten(
-    `${Collections.statementRoomsAsked}/{requestId}`,
-    countRoomJoiners,
+	`${Collections.statementRoomsAsked}/{requestId}`,
+	countRoomJoiners,
 );
 
 //timers
