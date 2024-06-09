@@ -38,11 +38,7 @@ const Main = () => {
   return (
     <div className="main-container">
       <div className="scrollable-content">
-        <img
-          className="heroImg"
-          src="/src/assets/images/heroX4.png"
-          alt="Hero"
-        />
+        <div className="heroImg"></div>
         <img className="bikeImg" src="/src/assets/images/bike.png" alt="Bike" />
         <ScreenSlide className="page__main slide-in">
           <div

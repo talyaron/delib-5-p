@@ -12,10 +12,17 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #659af0fa; //switch to Masha's name of color
+    background-color: #659af0fa;
     box-shadow: 0px 1px 4px 0px #a9adf49a;
     z-index: -1;
     gap: 0px;
+
+    @media only screen and (min-width: 1000px) {
+      background-color: #5d93f0;
+    }
+    @media only screen and (min-width: 1500px) {
+      background-color: #5d8eec;
+    }
 
     &.rtl {
       border-bottom-right-radius: 0;
@@ -98,21 +105,29 @@
   align-items: center;
 }
 
-.heroImg,
-.bikeImg {
-  top: 0;
-  transition: opacity 0.3s ease-in-out;
-  z-index: 1;
-}
-
 .heroImg {
   width: 100%;
-  height: 30vh;
-  top: -20rem;
+  height: 50vh;
+  top: -5px;
+  background-image: url("/src/assets/images/hero.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: -4;
+  transition: opacity 0.3s ease-in-out;
 
-  // @media only screen and (min-width: 970px) {
-  //   height: 47vh;
-  // }
+  @media only screen and (min-width: 900px) {
+    background-size: cover;
+    background-position: center;
+    height: 55vh;
+    z-index: -2;
+    background-image: url("/src/assets/images/Hero BG illustrations (2).png");
+  }
+
+  @media only screen and (min-width: 1500px) {
+    height: 20vh;
+    top: 0;
+  }
 }
 
 .bikeImg {
@@ -121,29 +136,20 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: 1.5rem;
   margin-top: -6rem;
   width: 276px;
   height: 140px;
+
+  @media only screen and (min-width: 970px) {
+    margin-top: -9rem;
+    width: 350px;
+    height: 220px;
+  }
+  @media only screen and (min-width: 1500px) {
+    margin-top: -9rem;
+  }
 }
-
-//   // @media only screen and (min-width: 700px) {
-//   //   top: 9rem;
-//   //   width: 340px;
-//   //   height: 180px;
-//   // }
-
-//   // @media only screen and (min-width: 970px) {
-//   //   top: 10.2rem;
-//   //   width: 380px;
-//   //   height: 220px;
-//   // }
-
-//   // @media only screen and (min-width: 1800px) {
-//   //   top: 10.2rem;
-//   //   width: 380px;
-//   //   height: 220px;
-//   // }
-// }
 
 .scrollable-content {
   overflow-y: auto;
