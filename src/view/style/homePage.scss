@@ -107,7 +107,7 @@
 
 .heroImg {
   width: 100%;
-  height: 50vh;
+  height: 58vh;
   top: -5px;
   background-image: url("/src/assets/images/hero.png");
   background-size: cover;
@@ -119,7 +119,7 @@
   @media only screen and (min-width: 900px) {
     background-size: cover;
     background-position: center;
-    height: 58vh;
+    height: 60vh;
     z-index: -2;
     background-image: url("/src/assets/images/Hero BG illustrations (2).png");
   }
