@@ -49,8 +49,8 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
-			console.log('handleSave')
-			console.log('text: ', text)
+			
+			
 			if (!text.trim()) return; // Do not save if the text is empty
 
 			if (!statement) throw new Error("Statement is undefined");
@@ -58,7 +58,7 @@ const EditTitle: FC<Props> = ({
 			const updatedText = isTextArea
 				? text.trim()
 				: title.trim() + "\n" + description.trim();
-				console.log("updataedText: ", updatedText)
+				
 			updateStatementText(statement, updatedText);
 			setEdit(false);
 		} catch (error) {
