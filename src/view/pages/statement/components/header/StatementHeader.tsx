@@ -89,9 +89,10 @@ const StatementHeader: FC<Props> = ({
 		};
 		navigator.share(shareData);
 	}
-	function handleEditTitle(text:string):void {
+	function handleEditTitle():void {
+		
 		if (statementSubscription?.role === Role.admin) {
-			updateStatementText(statement, text);
+		
 			setEditHeader(true);
 		}
 	}
