@@ -5,7 +5,6 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
 import {
-	useAppDispatch,
 	useAppSelector,
 } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
@@ -17,7 +16,12 @@ import { listenToStatementSubscriptions } from "../../../controllers/db/subscrip
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
-export const listenedStatements = new Set<string>();
+interface ListenedStatements{
+	unsubFunction:()=>void;
+	statementId:string;
+}
+
+export const listenedStatements:Array<ListenedStatements> = [];
 
 export default function Home() {
 	// Hooks
@@ -25,7 +29,6 @@ export default function Home() {
 	const location = useLocation();
 
 	// Redux Store
-	const dispatch = useAppDispatch();
 	const user = useAppSelector(userSelector);
 
 	// Use States
@@ -40,21 +43,20 @@ export default function Home() {
 	}, [location]);
 
 	useEffect(() => {
-		let unsubscribe: Promise<void> | undefined;
+		
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let unsubscribe: () => void = () => {};
 		try {
 			if (user) {
-				unsubscribe = listenToStatementSubscriptions(dispatch)(
-					user,
-					30,
-					true,
-				);
+				unsubscribe = listenToStatementSubscriptions(30);
 			}
 		} catch (error) {}
 
 		return () => {
 			if (unsubscribe) {
-				unsubscribe.then((unsub) => {
-					unsub;
+				unsubscribe();
+				listenedStatements.forEach((ls)=>{
+					ls.unsubFunction();
 				});
 			}
 		};

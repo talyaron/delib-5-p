@@ -64,7 +64,7 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 
 export default QuestionStageRadioBtn;
 
-export function getStageInfo(stage: QuestionStage, isSelected = true) {
+export function getStageInfo(stage: QuestionStage, isSelected = true):{ backgroundColor: string; btnBackgroundColor: string; stageInfo: any; error?: boolean } {
 	try {
 		const stageInfo = getStagesInfo(stage);
 		const backgroundColor = stageInfo

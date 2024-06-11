@@ -152,7 +152,6 @@ const StatementMain: FC = () => {
 		if (user && statementId) {
 			unsubListenToStatement = listenToStatement(
 				statementId,
-				dispatch,
 				setIsStatementNotFound,
 			);
 
@@ -163,11 +162,6 @@ const StatementMain: FC = () => {
 				user?.uid,
 			);
 
-			// unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
-			// 	statementId,
-			// 	user,
-			// 	dispatch,
-			// );
 			unsubStatementSubscription = listenToStatementSubscription(
 				statementId,
 				user,
@@ -192,7 +186,6 @@ const StatementMain: FC = () => {
 		if (statement?.topParentId) {
 			unsub = listenToStatement(
 				statement?.topParentId,
-				dispatch,
 				setIsStatementNotFound,
 			);
 		}

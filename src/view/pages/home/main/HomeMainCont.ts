@@ -1,4 +1,4 @@
-import { install } from "../../../App";
+import { install } from "../../../../App";
 
 export function prompStore(
 	setDeferredPrompt: React.Dispatch<React.SetStateAction<Event | null>>,

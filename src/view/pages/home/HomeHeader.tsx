@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Helpers
-import { prompStore } from "../main/mainCont";
+import { prompStore } from "./main/HomeMainCont";
 
 // icons
 import InstallIcon from "../../../assets/icons/installIcon.svg?react";

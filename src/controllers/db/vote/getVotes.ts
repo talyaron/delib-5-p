@@ -15,21 +15,25 @@ import { store } from "../../../model/store";
 // Why get user from firebase when we can pass it as a parameter?
 export async function getToVoteOnParent(
 	parentId: string,
-	updateStoreWitehVoteCB: (statement: Statement) => void,
+	updateStoreWithVoteCB: (statement: Statement) => void,
 ): Promise<void> {
 	try {
 		const user = getUserFromFirebase();
 		if (!user) throw new Error("User not logged in");
+		if(!parentId) throw new Error("ParentId not provided");
+		const voteId = getVoteId(user.uid, parentId);
+		if (!voteId) throw new Error("VoteId not found");
+
 		const parentVoteRef = doc(
 			DB,
 			Collections.votes,
-			getVoteId(user.uid, parentId),
+			voteId
 		);
 
 		const voteDB = await getDoc(parentVoteRef);
 
 		const vote = voteDB.data();
-		if (!vote) throw new Error("Vote not found");
+		if (!vote) return; // the user has not voted on this statement
 		VoteSchema.parse(vote);
 
 		//get statemtn to update to store
@@ -40,7 +44,7 @@ export async function getToVoteOnParent(
 		if (!statement) throw new Error("Parent not found");
 		StatementSchema.parse(statement);
 
-		updateStoreWitehVoteCB(statement);
+		updateStoreWithVoteCB(statement);
 	} catch (error) {
 		console.error(error);
 	}

@@ -28,7 +28,7 @@ import useStatementColor from "../../../../../controllers/hooks/useStatementColo
 import useNotificationPermission from "../../../../../controllers/hooks/useNotificationPermission";
 import useToken from "../../../../../controllers/hooks/useToken";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import { setFollowMeDB, updateStatementText } from "../../../../../controllers/db/statements/setStatements";
+import { setFollowMeDB } from "../../../../../controllers/db/statements/setStatements";
 import Menu from "../../../../components/menu/Menu";
 import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";

@@ -2,38 +2,33 @@ import { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
-import { StatementSubscription } from "delib-npm";
+import { Statement } from "delib-npm";
 
 // Redux store
-import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
-import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
+import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
+import { statementsSelector } from "../../../../model/statements/statementsSlice";
 
 // Custom components
-import Footer from "../../components/footer/Footer";
-import ScreenSlide from "../../components/animation/ScreenSlide";
-import PeopleLoader from "../../components/loaders/PeopleLoader";
+import Footer from "../../../components/footer/Footer";
+import ScreenSlide from "../../../components/animation/ScreenSlide";
+import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
-const Main = () => {
+const HomeMain = () => {
 	// Hooks
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 
-	const statements: StatementSubscription[] = useAppSelector(
-		statementsSubscriptionsSelector,
+	const statements: Statement[] = useAppSelector(
+		statementsSelector,
 	)
-		.filter((s) => s.statement.parentId === "top")
+		.filter((s) => s.parentId === "top")
 		.sort((a, b) => b.lastUpdate - a.lastUpdate);
 
 	function handleAddStatement() {
 		navigate("/home/addStatement", {
 			state: { from: window.location.pathname },
 		});
-
-		//TODO: Add this when the business model is ready
-		// navigate("/pricing-plan", {
-		//     state: { from: window.location.pathname },
-		// });
 	}
 
 	useEffect(() => {
@@ -57,8 +52,8 @@ const Main = () => {
 				{!loading ? (
 					statements.map((statement) => (
 						<MainCard
-							key={statement.statement.statementId}
-							statement={statement.statement}
+							key={statement.statementId}
+							statement={statement}
 						/>
 					))
 				) : (
@@ -70,4 +65,4 @@ const Main = () => {
 	);
 };
 
-export default Main;
+export default HomeMain;
