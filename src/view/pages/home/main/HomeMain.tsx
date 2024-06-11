@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
-import { StatementSubscription } from "delib-npm";
+import { Statement, StatementSubscription } from "delib-npm";
 
 // Redux store
 import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
-import { statementsSubscriptionsSelector } from "../../../../model/statements/statementsSlice";
+import { statementsSelector, statementsSubscriptionsSelector } from "../../../../model/statements/statementsSlice";
 
 // Custom components
 import Footer from "../../../components/footer/Footer";
@@ -19,10 +19,10 @@ const HomeMain = () => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 
-	const statements: StatementSubscription[] = useAppSelector(
-		statementsSubscriptionsSelector,
+	const statements: Statement[] = useAppSelector(
+		statementsSelector,
 	)
-		.filter((s) => s.statement.parentId === "top")
+		.filter((s) => s.parentId === "top")
 		.sort((a, b) => b.lastUpdate - a.lastUpdate);
 
 	function handleAddStatement() {
@@ -52,8 +52,8 @@ const HomeMain = () => {
 				{!loading ? (
 					statements.map((statement) => (
 						<MainCard
-							key={statement.statement.statementId}
-							statement={statement.statement}
+							key={statement.statementId}
+							statement={statement}
 						/>
 					))
 				) : (

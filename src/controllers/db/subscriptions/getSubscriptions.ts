@@ -28,8 +28,9 @@ import {
 } from "../../../model/statements/statementsSlice";
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "@firebase/util";
-import { getStatementSubscriptionId } from "../../general/helpers";
+import { getStatementSubscriptionId, updateArray } from "../../general/helpers";
 import { getStatementFromDB } from "../statements/getStatement";
+import { listenToStatement } from "../statements/listenToStatements";
 
 export const listenToStatementSubSubscriptions = (
 	statementId: string,
@@ -92,170 +93,65 @@ export const listenToStatementSubSubscriptions = (
 	}
 };
 
-export const listenToStatementSubscriptions =
-	(dispatch: AppDispatch) =>
-		(user: User, numberOfStatements?: number, onlyTop?: true) => {
-			try {
-				if (!user) throw new Error("User not logged in");
-				if (!user.uid) throw new Error("User not logged in");
+export function listenToStatementSubscriptions(numberOfStatements: number = 30): () => void {
+	try {
+		const dispatch = store.dispatch;
+		const user = store.getState().user.user;
+		if (!user) throw new Error("User not logged in");
+		if (!user.uid) throw new Error("User not logged in");
 
-				const q = getQuery(onlyTop, numberOfStatements);
+		const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
+		const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where('statement.parentId', "==", "top"), orderBy("lastUpdate", "desc"), limit(numberOfStatements));
 
-				const statementsSubscribeRef = getDocs(q)
-					.then((statementsDB) => {
-						statementsDB.forEach((doc) => {
-							const statementSubscription =
-								doc.data() as StatementSubscription;
 
-							dispatch(
-								setStatementSubscription(statementSubscription),
-							);
-						});
-					})
-					.catch((error) => {
-						console.error(error);
-					})
-					.finally(() => {
-						return onSnapshot(q, (subsDB) => {
-							subsDB.docChanges().forEach((change) => {
-								const statementSubscription =
-									change.doc.data() as StatementSubscription;
 
-								if (change.type === "added") {
-									listenedStatements.add(
-										statementSubscription.statementId,
-									);
-									statementSubscription.lastUpdate =
-										statementSubscription.lastUpdate;
-									dispatch(
-										setStatementSubscription(
-											statementSubscription,
-										),
-									);
-								}
+		return onSnapshot(q, (subscriptionsDB) => {
+			subscriptionsDB.docChanges().forEach((change) => {
+				const statementSubscription = change.doc.data() as StatementSubscription;
 
-								if (change.type === "modified") {
-									listenedStatements.add(
-										statementSubscription.statementId,
-									);
+				if (change.type === "added") {
 
-									statementSubscription.lastUpdate =
-										statementSubscription.lastUpdate;
-									dispatch(
-										setStatementSubscription(
-											statementSubscription,
-										),
-									);
-								}
 
-								if (change.type === "removed") {
-									listenedStatements.delete(
-										statementSubscription.statementId,
-									);
-									statementSubscription.lastUpdate =
-										statementSubscription.lastUpdate;
-									dispatch(
-										deleteSubscribedStatement(statementSubscription.statementId),
-									);
-								}
-							});
-						});
-					});
-
-				return statementsSubscribeRef;
-			} catch (error) {
-				console.error(error);
-			}
-
-			function getQuery(onlyTop?: boolean, numberOfStatements = 40) {
-				try {
-					const statementsSubscribeRef = collection(
-						DB,
-						Collections.statementsSubscribe,
-					);
-					if (onlyTop) {
-						return query(
-							statementsSubscribeRef,
-							where("userId", "==", user.uid),
-							where("statement.parentId", "==", "top"),
-							where(
-								"statement.statementType",
-								"==",
-								StatementType.question,
-							),
-							orderBy("lastUpdate", "desc"),
-							limit(numberOfStatements),
-						);
+					const unsubFunction = listenToStatement(statementSubscription.statementId);
+					
+					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
+					if (index === -1) {
+						listenedStatements.push({ unsubFunction, statementId: statementSubscription.statementId });
 					}
 
-					return query(
-						statementsSubscribeRef,
-						and(
-							where("userId", "==", user.uid),
-							or(
-								where(
-									"statement.statementType",
-									"==",
-									StatementType.question,
-								),
-								where(
-									"statement.statementType",
-									"==",
-									StatementType.option,
-								),
-								where(
-									"statement.statementType",
-									"==",
-									StatementType.result,
-								),
-							),
-						),
-						orderBy("lastUpdate", "desc"),
-						limit(numberOfStatements),
-					);
-				} catch (error) {
-					console.error(error);
-					const user = store.getState().user.user;
-					if (!user) throw new Error("User not logged in");
-					if (!user.uid) throw new Error("User not logged in");
-
-					const statementsSubscribeRef = collection(
-						DB,
-						Collections.statementsSubscribe,
-					);
-
-					return query(
-						statementsSubscribeRef,
-						and(
-							where("userId", "==", user.uid),
-							or(
-								where(
-									"statement.statementType",
-									"==",
-									StatementType.question,
-								),
-								where(
-									"statement.statementType",
-									"==",
-									StatementType.option,
-								),
-								where(
-									"statement.statementType",
-									"==",
-									StatementType.result,
-								),
-							),
-						),
-						orderBy("lastUpdate", "desc"),
-						limit(numberOfStatements),
-					);
+					dispatch(setStatementSubscription(statementSubscription));
 				}
-			}
-		};
+
+				if (change.type === "modified") {
+
+					dispatch(setStatementSubscription(statementSubscription));
+				}
+
+				if (change.type === "removed") {
+					// listenedStatements.delete(statementSubscription.statementId);
+					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
+					if (index !== -1) {
+						listenedStatements[index].unsubFunction();
+						listenedStatements.splice(index, 1);
+					}
+
+					dispatch(deleteSubscribedStatement(statementSubscription.statementId));
+				}
+			});
+		});
+
+
+	} catch (error) {
+		console.error(error);
+		return () => { };
+	}
+
+
+};
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-	> {
+> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
