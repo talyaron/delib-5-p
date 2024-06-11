@@ -3,20 +3,17 @@ import {
 	Statement,
 	StatementSubscription,
 	StatementSubscriptionSchema,
-	StatementType,
 	User,
 } from "delib-npm";
 import { AppDispatch, store } from "../../../model/store";
 import { DB } from "../config";
 import {
-	and,
 	collection,
 	doc,
 	getDoc,
 	getDocs,
 	limit,
 	onSnapshot,
-	or,
 	orderBy,
 	query,
 	where,
@@ -28,7 +25,7 @@ import {
 } from "../../../model/statements/statementsSlice";
 import { listenedStatements } from "../../../view/pages/home/Home";
 import { Unsubscribe } from "@firebase/util";
-import { getStatementSubscriptionId, updateArray } from "../../general/helpers";
+import { getStatementSubscriptionId } from "../../general/helpers";
 import { getStatementFromDB } from "../statements/getStatement";
 import { listenToStatement } from "../statements/listenToStatements";
 
@@ -93,7 +90,7 @@ export const listenToStatementSubSubscriptions = (
 	}
 };
 
-export function listenToStatementSubscriptions(numberOfStatements: number = 30): () => void {
+export function listenToStatementSubscriptions(numberOfStatements = 30): () => void {
 	try {
 		const dispatch = store.dispatch;
 		const user = store.getState().user.user;
@@ -128,7 +125,7 @@ export function listenToStatementSubscriptions(numberOfStatements: number = 30):
 				}
 
 				if (change.type === "removed") {
-					// listenedStatements.delete(statementSubscription.statementId);
+					
 					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
 					if (index !== -1) {
 						listenedStatements[index].unsubFunction();
@@ -143,6 +140,8 @@ export function listenToStatementSubscriptions(numberOfStatements: number = 30):
 
 	} catch (error) {
 		console.error(error);
+		
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		return () => { };
 	}
 
@@ -151,7 +150,7 @@ export function listenToStatementSubscriptions(numberOfStatements: number = 30):
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-> {
+	> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");

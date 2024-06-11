@@ -37,8 +37,6 @@ const EditTitle: FC<Props> = ({
 	const direction = document.body.style.direction as "ltr" | "rtl";
 	const align = direction === "ltr" ? "left" : "right";
 
-	const title = text.split("\n")[0];
-	const description = text.split("\n").slice(1).join("\n");
 
 	function handleTextChange(
 		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

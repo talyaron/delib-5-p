@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
-import { Statement, StatementSubscription } from "delib-npm";
+import { Statement } from "delib-npm";
 
 // Redux store
 import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
-import { statementsSelector, statementsSubscriptionsSelector } from "../../../../model/statements/statementsSlice";
+import { statementsSelector } from "../../../../model/statements/statementsSlice";
 
 // Custom components
 import Footer from "../../../components/footer/Footer";

@@ -5,7 +5,6 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
 import {
-	useAppDispatch,
 	useAppSelector,
 } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
@@ -22,7 +21,7 @@ interface ListenedStatements{
 	statementId:string;
 }
 
-export let listenedStatements:Array<ListenedStatements> = [];
+export const listenedStatements:Array<ListenedStatements> = [];
 
 export default function Home() {
 	// Hooks
@@ -44,6 +43,8 @@ export default function Home() {
 	}, [location]);
 
 	useEffect(() => {
+		
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		let unsubscribe: () => void = () => {};
 		try {
 			if (user) {
