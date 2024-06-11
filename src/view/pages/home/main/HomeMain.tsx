@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { StatementSubscription } from "delib-npm";
 
 // Redux store
-import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
-import { statementsSubscriptionsSelector } from "../../../model/statements/statementsSlice";
+import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
+import { statementsSubscriptionsSelector } from "../../../../model/statements/statementsSlice";
 
 // Custom components
-import Footer from "../../components/footer/Footer";
-import ScreenSlide from "../../components/animation/ScreenSlide";
-import PeopleLoader from "../../components/loaders/PeopleLoader";
+import Footer from "../../../components/footer/Footer";
+import ScreenSlide from "../../../components/animation/ScreenSlide";
+import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
-const Main = () => {
+const HomeMain = () => {
 	// Hooks
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
@@ -29,11 +29,6 @@ const Main = () => {
 		navigate("/home/addStatement", {
 			state: { from: window.location.pathname },
 		});
-
-		//TODO: Add this when the business model is ready
-		// navigate("/pricing-plan", {
-		//     state: { from: window.location.pathname },
-		// });
 	}
 
 	useEffect(() => {
@@ -70,4 +65,4 @@ const Main = () => {
 	);
 };
 
-export default Main;
+export default HomeMain;

@@ -163,11 +163,6 @@ const StatementMain: FC = () => {
 				user?.uid,
 			);
 
-			// unsubSubSubscribedStatements = listenToStatementSubSubscriptions(
-			// 	statementId,
-			// 	user,
-			// 	dispatch,
-			// );
 			unsubStatementSubscription = listenToStatementSubscription(
 				statementId,
 				user,
