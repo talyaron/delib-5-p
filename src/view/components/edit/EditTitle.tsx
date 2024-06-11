@@ -37,8 +37,8 @@ const EditTitle: FC<Props> = ({
 	const direction = document.body.style.direction as "ltr" | "rtl";
 	const align = direction === "ltr" ? "left" : "right";
 
-	const title = statement.statement.split("\n")[0];
-	const description = statement.statement.split("\n").slice(1).join("\n");
+	const title = text.split("\n")[0];
+	const description = text.split("\n").slice(1).join("\n");
 
 	function handleTextChange(
 		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -49,6 +49,8 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
+			console.log('handleSave')
+			console.log('text: ', text)
 			if (!text.trim()) return; // Do not save if the text is empty
 
 			if (!statement) throw new Error("Statement is undefined");
@@ -56,8 +58,8 @@ const EditTitle: FC<Props> = ({
 			const updatedText = isTextArea
 				? text.trim()
 				: title.trim() + "\n" + description.trim();
+				console.log("updataedText: ", updatedText)
 			updateStatementText(statement, updatedText);
-
 			setEdit(false);
 		} catch (error) {
 			console.error(error);
