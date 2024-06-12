@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../../../style/homePage.scss"
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
@@ -19,9 +20,7 @@ const HomeMain = () => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 
-	const statements: Statement[] = useAppSelector(
-		statementsSelector,
-	)
+	const statements: Statement[] = useAppSelector(statementsSelector)
 		.filter((s) => s.parentId === "top")
 		.sort((a, b) => b.lastUpdate - a.lastUpdate);
 
@@ -49,12 +48,11 @@ const HomeMain = () => {
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
+        			<div className="heroImg"></div>
+
 				{!loading ? (
 					statements.map((statement) => (
-						<MainCard
-							key={statement.statementId}
-							statement={statement}
-						/>
+						<MainCard key={statement.statementId} statement={statement} />
 					))
 				) : (
 					<PeopleLoader />
