@@ -13,19 +13,21 @@
         align-items: center;
         justify-content: center;
         background-color: #659cf0;
-        box-shadow: 0px 1px 4px 0px #a9adf49a;
-        margin-bottom: -.2rem;
-        // border-bottom-right-radius: 50px;
-        z-index: -1;
-        gap: 0px;
+        margin-bottom: 0;
+        z-index: 1;
+
+        @media only screen and (max-width: 570px) {
+            margin-bottom: -.5px;
+        }
+
 
         @media only screen and (min-width: 570px) {
-            background-color: #588fee;
+            background-color: #588feef1;
         }
 
         @media only screen and (min-width: 870px) {
             background-color:
-                #5c88e8fb;
+                #5c88e8f4;
         }
 
         &.rtl {
@@ -103,10 +105,10 @@
     background-size: cover;
     background-position: center;
     margin-bottom: 2rem;
-    margin-top: -20rem;
+    margin-top: 0;
     width: 100vw;
     height: 45vh;
-    z-index: -1;
+    z-index: -2;
 
     @media only screen and (min-width: 570px) {
 
@@ -114,11 +116,11 @@
         background-size: cover;
         background-position: center;
         margin-bottom: 2rem;
-        margin-top: -20rem;
+        margin-top: 0;
     }
 
     @media only screen and (min-width: 870px) {
         height: 16vh;
-        margin-top: -30rem;
+        margin-top: 0;
     }
 }

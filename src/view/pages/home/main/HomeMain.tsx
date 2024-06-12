@@ -42,13 +42,14 @@ const HomeMain = () => {
 
 	return (
 		<ScreenSlide className="page__main slide-in">
+			<div className="heroImg"></div>
+
 			<div
 				className="wrapper"
 				style={{
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
-        			<div className="heroImg"></div>
 
 				{!loading ? (
 					statements.map((statement) => (
