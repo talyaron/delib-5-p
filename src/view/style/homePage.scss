@@ -1,30 +1,25 @@
 .homePage {
     width: 100vw;
     height: 100svh;
-    position: relative;
+    position: fixed;
     display: flex;
     flex-direction: column;
-    position: fixed;
 
     &__header {
         min-height: 6.25rem;
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
-        background-color: #659cf0;
+        background-color: #629bf1fd;
         margin-bottom: -.5px;
         z-index: 1;
 
-
-
-
-        @media only screen and (min-width: 570px) {
-            background-color: #588feef1;
+        @media (min-width: 570px) {
+            background-color: #5d8eec;
         }
 
-        @media only screen and (min-width: 870px) {
-            background-color: #5d90eefc;
+        @media (min-width: 870px) {
+            background-color: #5b91effc;
         }
 
         &__wrapper {
@@ -65,7 +60,7 @@
                     gap: 0.4rem;
                     background-color: white;
                     padding: 1rem;
-                    box-shadow: 0px 1px 4px 0px #a9adf49a;
+                    box-shadow: 0 1px 4px #a9adf49a;
                     border-radius: 0.36rem;
                     z-index: 1003;
                     transform: translateX(-20%);
@@ -92,26 +87,31 @@
     }
 }
 
+.hp {
+    &__main {
+        height: 100%;
+        overflow-y: auto;
+        width: 100vw;
+    }
+}
+
 .heroImg {
-    background-image: url(../../assets/images/hero.png);
     background-size: cover;
     background-position: center;
-    margin-bottom: 2rem;
-    margin-top: 0;
+    margin-bottom: 3rem;
     width: 100vw;
-    height: 47vh;
+    height: 45vh;
 
-    @media only screen and (min-width: 570px) {
+    background-image: url('../../assets/images/hero.png');
+    margin-top: -6rem;
 
-        background-image: url(../../assets/images/Hero-BG-illustrations.png);
-        background-size: cover;
-        background-position: center;
-        margin-bottom: 2rem;
-        margin-top: 0;
+    @media (min-width: 570px) {
+        background-image: url('../../assets/images/Hero-BG-illustrations.png');
     }
 
-    @media only screen and (min-width: 870px) {
-        background-image: url(../../assets/images/Hero-rectangle.png);
+    @media (min-width: 870px) {
+        background-image: url('../../assets/images/Hero-rectangle.png');
         height: 30vh;
+        margin-top: 0;
     }
 }

@@ -41,7 +41,7 @@ const HomeMain = () => {
 	}, [statements]);
 
 	return (
-		<ScreenSlide className="page__main slide-in">
+		<ScreenSlide className="hp__main slide-in">
 			<div className="heroImg"></div>
 
 			<div
