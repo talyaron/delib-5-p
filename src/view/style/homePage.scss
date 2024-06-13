@@ -13,12 +13,10 @@
         align-items: center;
         justify-content: center;
         background-color: #659cf0;
-        margin-bottom: -.1rem;
+        margin-bottom: -.5px;
         z-index: 1;
 
-        @media only screen and (max-width: 570px) {
-            margin-bottom: -.5px;
-        }
+
 
 
         @media only screen and (min-width: 570px) {
@@ -26,8 +24,7 @@
         }
 
         @media only screen and (min-width: 870px) {
-            background-color:
-                #5c88e8f4;
+            background-color: #5d90eefc;
         }
 
         &__wrapper {
@@ -102,8 +99,7 @@
     margin-bottom: 2rem;
     margin-top: 0;
     width: 100vw;
-    height: 45vh;
-    z-index: -2;
+    height: 47vh;
 
     @media only screen and (min-width: 570px) {
 
@@ -115,7 +111,7 @@
     }
 
     @media only screen and (min-width: 870px) {
-        height: 14vh;
-        margin-top: 0;
+        background-image: url(../../assets/images/Hero-rectangle.png);
+        height: 30vh;
     }
 }
