@@ -1,19 +1,22 @@
 .slide-in {
     animation: slideIn 0.7s ease-in;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-    
+
 }
 
 .slide-out {
     animation: slideOut 0.7s ease-in;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+
 }
 
 @keyframes slideIn {
     0% {
+
         opacity: 0;
         transform: translateX(-100%);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0);
@@ -25,6 +28,7 @@
         opacity: 0;
         transform: translateX(100%);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0);
@@ -43,6 +47,7 @@
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -52,6 +57,7 @@
     0% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }

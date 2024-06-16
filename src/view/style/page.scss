@@ -7,6 +7,7 @@
     grid-template-rows: auto 1fr auto;
     background-color: var(--statementBackground);
 
+
     &__header {
         width: 100%;
         box-shadow: 0px 3px 9px #00000026;
@@ -93,6 +94,7 @@
         height: 100%;
         overflow-y: auto;
         width: 100vw;
+
 
 
     }

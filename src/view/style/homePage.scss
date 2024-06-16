@@ -87,23 +87,24 @@
     }
 }
 
-.hp {
+.home-page {
     &__main {
         height: 100%;
         overflow-y: auto;
         width: 100vw;
+
     }
 }
 
 .heroImg {
     background-size: cover;
     background-position: center;
-    margin-bottom: 3rem;
-    width: 100vw;
-    height: 45vh;
-
-    background-image: url('../../assets/images/hero.png');
+    margin-bottom: 2rem;
     margin-top: -6rem;
+    width: 100vw;
+    height: 33vh;
+    background-image: url('../../assets/images/hero.png');
+
 
     @media (min-width: 570px) {
         background-image: url('../../assets/images/Hero-BG-illustrations.png');
@@ -111,7 +112,17 @@
 
     @media (min-width: 870px) {
         background-image: url('../../assets/images/Hero-rectangle.png');
-        height: 30vh;
-        margin-top: 0;
+        height: 20vh;
+        margin-top: -1rem;
     }
+}
+
+.heroImg {
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 2rem;
+    margin-top: -6rem;
+    width: 100vw;
+    height: 33vh;
+    background-image: url('../../assets/images/hero.png');
 }
