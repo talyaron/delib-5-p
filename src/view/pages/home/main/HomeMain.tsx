@@ -14,6 +14,7 @@ import Footer from "../../../components/footer/Footer";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
+import { screenSelector } from './../../../../model/statements/statementsSlice';
 
 const HomeMain = () => {
 	// Hooks
@@ -43,7 +44,7 @@ const HomeMain = () => {
 	return (
 		<ScreenSlide className="home-page__main slide-in">
 			<div className="heroImg"></div>
-			<div className="bikeImg"></div>
+			<img className="bikeImg" src={"src/assets/images/bike.png"} />
 
 
 			<div
@@ -62,6 +63,7 @@ const HomeMain = () => {
 				)}
 			</div>
 			<Footer onclick={handleAddStatement} />
+
 		</ScreenSlide>
 	);
 };
