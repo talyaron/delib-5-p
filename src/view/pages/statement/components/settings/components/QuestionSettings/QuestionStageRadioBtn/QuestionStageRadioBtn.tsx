@@ -64,9 +64,11 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 
 export default QuestionStageRadioBtn;
 
-export function getStageInfo(stage: QuestionStage, isSelected = true):{ backgroundColor: string; btnBackgroundColor: string; stageInfo: any; error?: boolean } {
+export function getStageInfo(stage: QuestionStage, isSelected = true):{ backgroundColor: string; btnBackgroundColor: string; stageInfo:StageInfo|undefined; error?: boolean } {
 	try {
-		const stageInfo = getStagesInfo(stage);
+		const stageInfo:StageInfo|undefined = getStagesInfo(stage);
+		if(!stageInfo) throw new Error("Stage info not found");
+
 		const backgroundColor = stageInfo
 			? `var(${stageInfo.color})`
 			: "var(--green)";
@@ -89,8 +91,14 @@ export function getStageInfo(stage: QuestionStage, isSelected = true):{ backgrou
 	}
 }
 
+export interface StageInfo {
+	name: string;
+	icon: JSX.Element;
+	color: string;
+	message: string | undefined;
+}
 
-export function getStagesInfo( questionStage: QuestionStage | undefined) {
+export function getStagesInfo( questionStage: QuestionStage | undefined):StageInfo|undefined {
 	try {
 		const stages = {
 			[QuestionStage.explanation]: {
@@ -135,10 +143,10 @@ export function getStagesInfo( questionStage: QuestionStage | undefined) {
 			return stages[questionStage];
 		}
 		
-		return false;
+		return undefined;
 	} catch (error) {
 		console.error(error);
 		
-		return false;
+		return undefined;
 	}
 }
