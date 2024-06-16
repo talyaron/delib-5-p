@@ -1,6 +1,7 @@
 .memberRejectionPage {
     width: 100svw;
     height: 100svh;
+
     &__wrapper {
         display: flex;
         flex-direction: column;
@@ -10,6 +11,8 @@
         max-width: 75ch;
         height: 100%;
         margin: 0 auto;
+
+
         &__apologize {
             font-family: Roboto;
             font-size: 1.2rem;

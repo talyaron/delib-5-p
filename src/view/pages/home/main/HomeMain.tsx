@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../../../style/homePage.scss"
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
@@ -13,15 +14,14 @@ import Footer from "../../../components/footer/Footer";
 import ScreenSlide from "../../../components/animation/ScreenSlide";
 import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
+import { screenSelector } from './../../../../model/statements/statementsSlice';
 
 const HomeMain = () => {
 	// Hooks
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 
-	const statements: Statement[] = useAppSelector(
-		statementsSelector,
-	)
+	const statements: Statement[] = useAppSelector(statementsSelector)
 		.filter((s) => s.parentId === "top")
 		.sort((a, b) => b.lastUpdate - a.lastUpdate);
 
@@ -42,25 +42,28 @@ const HomeMain = () => {
 	}, [statements]);
 
 	return (
-		<ScreenSlide className="page__main slide-in">
+		<ScreenSlide className="home-page__main slide-in">
+			<div className="heroImg"></div>
+			<img className="bikeImg" src={"src/assets/images/bike.png"} />
+
+
 			<div
 				className="wrapper"
 				style={{
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
+
 				{!loading ? (
 					statements.map((statement) => (
-						<MainCard
-							key={statement.statementId}
-							statement={statement}
-						/>
+						<MainCard key={statement.statementId} statement={statement} />
 					))
 				) : (
 					<PeopleLoader />
 				)}
 			</div>
 			<Footer onclick={handleAddStatement} />
+
 		</ScreenSlide>
 	);
 };

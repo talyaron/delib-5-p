@@ -1,27 +1,25 @@
 .homePage {
     width: 100vw;
     height: 100svh;
-    position: relative;
+    position: fixed;
     display: flex;
     flex-direction: column;
-    position: fixed;
 
     &__header {
         min-height: 6.25rem;
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
-        background-color: #5899e0;
-        box-shadow: 0px 1px 4px 0px #a9adf49a;
-        border-bottom-right-radius: 50px;
+        background-color: #5f9bf5;
+        margin-bottom: -.5px;
         z-index: 1;
-        gap: 0px;
-        margin-bottom: 2rem;
 
-        &.rtl {
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 50px;
+        @media (min-width: 570px) {
+            background-color: #5a8ded;
+        }
+
+        @media (min-width: 870px) {
+            background-color: #5a91f0;
         }
 
         &__wrapper {
@@ -62,7 +60,7 @@
                     gap: 0.4rem;
                     background-color: white;
                     padding: 1rem;
-                    box-shadow: 0px 1px 4px 0px #a9adf49a;
+                    box-shadow: 0 1px 4px #a9adf49a;
                     border-radius: 0.36rem;
                     z-index: 1003;
                     transform: translateX(-20%);
@@ -80,10 +78,59 @@
                         background-color: rgba(0, 0, 0, 0.5);
                     }
                 }
+
                 .homeMenu:hover {
                     background-color: #d6d6d6;
                 }
             }
         }
+    }
+}
+
+.home-page {
+    &__main {
+        height: 100%;
+        overflow-y: auto;
+        width: 100vw;
+
+    }
+}
+
+.heroImg {
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 2rem;
+    margin-top: -6rem;
+    width: 100vw;
+    height: 41vh;
+    background-image: url('../../assets/images/hero.png');
+
+
+    @media (min-width: 570px) {
+        background-image: url('../../assets/images/Hero-BG-illustrations.png');
+    }
+
+    @media (min-width: 870px) {
+        background-image: url('../../assets/images/Hero-rectangle.png');
+        height: 20vh;
+        margin-top: -1rem;
+    }
+}
+
+.bikeImg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 240px;
+    height: 160px;
+    margin-bottom: 1.5rem;
+    margin-top: -8.5rem;
+
+    @media (min-width: 870px) {
+        width: 310px;
+        height: 200px;
+        margin-bottom: 1.5rem;
+        margin-top: -10.5rem;
     }
 }
