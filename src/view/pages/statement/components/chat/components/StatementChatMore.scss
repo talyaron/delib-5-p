@@ -5,19 +5,22 @@
     overflow-x: auto;
     align-items: center;
     cursor: pointer;
+    color: rgba(129, 143, 173, 1);
+
 
     .text {
         font-size: 0.75rem;
         max-height: 2rem;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: var(--text);
+
     }
 
     .icon {
         display: flex;
         align-items: center;
         color: var(--question-header);
+
         .redCircle {
             position: absolute;
             top: -0.5rem;

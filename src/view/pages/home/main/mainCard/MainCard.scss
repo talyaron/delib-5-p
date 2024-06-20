@@ -1,8 +1,9 @@
 .main-card {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 6.625rem;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 342px;
+    min-height: 296px;
     background-color: var(--white);
     border-radius: 0.25rem;
     padding: 1.5rem;
@@ -11,6 +12,25 @@
     width: 100%;
     border-inline-start: 0.625rem solid;
 
+    &__content {
+        width: 400px;
+    }
+
+    &__img {
+        background-image: url(/src/assets/images/imgThumb.png);
+        width: 270px;
+        height: 154px;
+        margin-bottom: 1rem;
+        background-repeat: no-repeat;
+    }
+
+    &__text {
+        display: flex;
+        flex-flow: column;
+        width: 40px;
+        color: rgba(129, 143, 173, 1);
+    }
+
     //mobile
     @media (max-width: 768px) {
         width: 90%;
@@ -18,5 +38,9 @@
 
     a {
         text-decoration: none;
+    }
+
+    &__link {
+        color: rgba(129, 143, 173, 1);
     }
 }

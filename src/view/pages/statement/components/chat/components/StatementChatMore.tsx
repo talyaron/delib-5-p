@@ -19,7 +19,7 @@ import { statementTitleToDisplay } from "../../../../../../controllers/general/h
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
-    statement: Statement;
+	statement: Statement;
 }
 
 const StatementChatMore: FC<Props> = ({ statement }) => {
@@ -29,7 +29,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 
 	// Redux store
 	const statementSubscription: StatementSubscription | undefined =
-        useAppSelector(statementSubscriptionSelector(statement.statementId));
+		useAppSelector(statementSubscriptionSelector(statement.statementId));
 
 	// Variables
 	const messagesRead = statementSubscription?.totalSubStatementsRead || 0;
