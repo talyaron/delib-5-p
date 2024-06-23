@@ -63,7 +63,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				)}
 				<ChatIcon />
 			</div>
-			{/* <div className="text">{messageToDisplay}</div> */}
+			<div className="text">{messageToDisplay}</div>
 
 		</div>
 	);
