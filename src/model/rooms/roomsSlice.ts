@@ -103,12 +103,18 @@ export const userSelectedRoomSelector =
 				room.participant.uid === state.user.user?.uid &&
 				room.parentId === statementId,
 		);
-export const topicParticipantsSelector =
-	(statementId: string | undefined) => (state: RootState) =>
-		state.rooms.askToJoinRooms.filter(
-			(room) => room.statementId === statementId,
-		);
+export const topicParticipantsSelector = (statementId: string | undefined) => createSelector(
+	(state: RootState) => state.rooms.askToJoinRooms,
+	(askToJoinRooms) =>
+		askToJoinRooms.filter((room) => room.statementId === statementId)
+);
 
+		// export const topicParticipantsSelector = createSelector(
+		// 	(statementId: string | undefined) => statementId,
+		// 	(state: RootState) => state.rooms.askToJoinRooms,
+		// 	(statementId, askToJoinRooms) =>
+		// 		askToJoinRooms.filter((room) => room.statementId === statementId)
+		// );
 export const participantSelector =
 	(userId: string | undefined) => (state: RootState) =>
 		state.rooms.askToJoinRooms.filter(
