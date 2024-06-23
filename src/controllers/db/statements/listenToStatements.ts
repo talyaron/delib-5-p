@@ -30,6 +30,7 @@ import { DB } from "../config";
 
 // Helpers
 import { Unsubscribe } from "firebase/auth";
+import { useState } from "react";
 
 
 export const listenToStatementSubscription = (
@@ -73,15 +74,6 @@ export const listenToStatementSubscription = (
 				}
 
 
-				// const { success } = StatementSubscriptionSchema.safeParse(
-				//     statementSubscription,
-				// );
-				// if (!success) {
-				//     console.info("No subscription found");
-
-				//     return;
-				// }
-
 				StatementSubscriptionSchema.parse(statementSubscription);
 
 				dispatch(setStatementSubscription(statementSubscription));
@@ -96,6 +88,8 @@ export const listenToStatementSubscription = (
 		return () => { };
 	}
 };
+
+
 
 export const listenToStatement = (
 	statementId: string,

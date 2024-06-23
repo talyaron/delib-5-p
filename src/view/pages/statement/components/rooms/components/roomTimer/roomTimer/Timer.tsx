@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
 import { selectTimerByTimerId } from "../../../../../../../../model/timers/timersSlice";
 import "./Timer.scss";
+import { set } from "firebase/database";
 
 interface Props {
   roomTimer: RoomTimer;
@@ -29,7 +30,10 @@ export default function Timer({
 	const storeTimer: RoomTimer | undefined = useAppSelector(
 		selectTimerByTimerId(roomTimer.roomTimerId)
 	);
-
+	console.log("Timer");
+				
+					console.log("roomTimer",roomTimer.title, roomTimer.time);
+			
 	// useState
 	const initTime = roomTimer.time; 
 	const [timeLeft, setTimeLeft] = useState(roomTimer.time);
@@ -67,6 +71,13 @@ export default function Timer({
 				return newTime;
 			});
 		}, 1000);
+
+		useEffect(() => {
+			console.log("useEffect Timer", roomTimer.title, roomTimer.time);
+			setTimeLeft(initTime);
+			setMinutes(getMinutesAndSeconds(initTime).minutes);
+			setSeconds(getMinutesAndSeconds(initTime).seconds);
+		},[roomTimer]);
 
 	useEffect(() => {
 		if (isActive) {

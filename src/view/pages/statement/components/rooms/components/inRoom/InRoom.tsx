@@ -36,6 +36,10 @@ const InRoom: FC<Props> = ({ statement }) => {
  
 
 	const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
+	console.log("InRoom", timers.length);
+				timers.forEach((timer,i) => {
+					console.log("timer",i, timer.time);
+				});
 
 	const dispatch = useAppDispatch();
 
