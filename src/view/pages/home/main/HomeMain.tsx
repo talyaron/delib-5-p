@@ -50,7 +50,7 @@ const HomeMain = () => {
 
 
 			<div
-				className="wrapper"
+				className="wrapper main-wrap"
 				style={{
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
