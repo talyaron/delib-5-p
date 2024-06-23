@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 import Loader from '../../../../components/loaders/Loader';
+import { findSimilarStatements } from '../../../../../controllers/db/statements/getSimilarstatements';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -9,23 +10,40 @@ interface SimilarStatementsSuggestionProps {
 	setNewStatementInput: React.Dispatch<
 		React.SetStateAction<{ title: string; description: string }>
 	>;
+	setSimilarStatements: React.Dispatch<
+		React.SetStateAction<{ title: string; description: string }[]>
+	>;
+	onFormSubmit: () => void;
 }
 
 export default function StepOneStatementInput({
-	setCurrentStep,
+	// setCurrentStep,
 	newStatementInput,
 	setNewStatementInput,
+
+	// setSimilarStatements,
+	// onFormSubmit,
 }: SimilarStatementsSuggestionProps) {
 	const [isLoading, setIsLoading] = useState(false);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		setIsLoading(true);
 
 		// Search for similar statements
-		setTimeout(() => {
-			setCurrentStep((prev) => prev + 1);
-			setIsLoading(false);
-		}, 2000);
+		const getStatements = await findSimilarStatements(
+			'123',
+			newStatementInput.title
+		);
+		console.log(getStatements);
+
+		// if (getStatements.length === 0) {
+		// 	onFormSubmit();
+		// }
+
+		// setSimilarStatements(getStatements);
+
+		// setCurrentStep((prev) => prev + 1);
+		// setIsLoading(false);
 	};
 
 	return (

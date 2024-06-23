@@ -1,51 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 	newStatementInput: { title: string; description: string };
-	setSimilarStatement: React.Dispatch<
+	setViewSimilarStatement: React.Dispatch<
 		React.SetStateAction<{
 			title: string;
 			description: string;
 		}>
 	>;
+	similarStatements: { title: string; description: string }[];
 }
 
 export default function StepTwoShowSimilarStatements({
 	setCurrentStep,
 	newStatementInput,
-	setSimilarStatement,
+	similarStatements,
+	setViewSimilarStatement
 }: SimilarStatementsSuggestionProps) {
-	const [similarStatements] = useState<
-		{
-			title: string;
-			description: string;
-		}[]
-	>([
-		{
-			title: 'Statement 1',
-			description:
-				'lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum vel, ultricies nunc. Nullam',
-		},
-		{
-			title: 'Statement 2',
-			description:
-				'lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum vel, ultricies nunc. Nullam',
-		},
-		{
-			title: 'Statement 3',
-			description:
-				'lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum vel, ultricies nunc. Nullamlorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum vel, ultricies nunc. Nullams',
-		},
-	]);
 
 	const handleViewSimilarStatement = (statement: {
 		title: string;
 		description: string;
 	}) => {
-		setSimilarStatement(statement);
+		setViewSimilarStatement(statement);
 		setCurrentStep(2);
 	};
 

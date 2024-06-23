@@ -1,4 +1,3 @@
-import React from 'react';
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
 
@@ -9,9 +8,8 @@ interface StepFourContinueWithOwnInput {
 
 export default function StepFourContinueWithOwnInput({
 	newStatementInput,
-	onFormSubmit
+	onFormSubmit,
 }: StepFourContinueWithOwnInput) {
-
 	return (
 		<>
 			<h4 className='similarities__title'>Your statement details</h4>

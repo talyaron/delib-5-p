@@ -8,7 +8,7 @@ import LightBulbPlusIcon from '../../../../../assets/icons/lightBulbPlus.svg?rea
 import CloseIcon from '../../../../../assets/icons/close.svg?react';
 import ArrowLeftIcon from '../../../../../assets/icons/arrow-left.svg?react';
 import illustration from '../../../../../assets/images/similarities-Illustration.png';
-import viewSimilarStatement from '../../../../../assets/images/view-similar-statement.png';
+import illustration02 from '../../../../../assets/images/view-similar-statement.png';
 import StepOneStatementInput from './StepOneStatementInput';
 import StepTwoShowSimilarStatements from './StepTwoShowSimilarStatements';
 import StepThreeViewSimilarStatement from './StepThreeViewSimilarStatement';
@@ -39,7 +39,10 @@ export default function SimilarStatementsSuggestion({
 		title: 'New Statement Title',
 		description: 'New Statement Description text goes here.',
 	});
-	const [similarStatement, setSimilarStatement] = useState({
+	const [similarStatements, setSimilarStatements] = useState([
+		{ title: '', description: '' },
+	]);
+	const [viewSimilarStatement, setViewSimilarStatement] = useState({
 		title: '',
 		description: '',
 	});
@@ -68,15 +71,18 @@ export default function SimilarStatementsSuggestion({
 			setCurrentStep={setCurrentStep}
 			newStatementInput={newStatementInput}
 			setNewStatementInput={setNewStatementInput}
+			setSimilarStatements={setSimilarStatements}
+			onFormSubmit={onFormSubmit}
 		/>,
 		<StepTwoShowSimilarStatements
 			setCurrentStep={setCurrentStep}
 			newStatementInput={newStatementInput}
-			setSimilarStatement={setSimilarStatement}
+			similarStatements={similarStatements}
+			setViewSimilarStatement={setViewSimilarStatement}
 		/>,
 		<StepThreeViewSimilarStatement
 			setCurrentStep={setCurrentStep}
-			similarStatement={similarStatement}
+			viewSimilarStatement={viewSimilarStatement}
 		/>,
 		<StepFourContinueWithOwnInput
 			newStatementInput={newStatementInput}
@@ -103,10 +109,7 @@ export default function SimilarStatementsSuggestion({
 								>
 									<ArrowLeftIcon />
 								</button>
-								<img
-									src={viewSimilarStatement}
-									alt='Similarities illustration'
-								/>
+								<img src={illustration02} alt='Similarities illustration' />
 							</div>
 						) : (
 							<div className='similarities__header__top'>

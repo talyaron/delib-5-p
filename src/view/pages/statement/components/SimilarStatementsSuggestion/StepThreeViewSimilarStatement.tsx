@@ -4,12 +4,12 @@ import BackIcon from '../../../../../assets/icons/chevronLeftIcon.svg?react';
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 
 interface StepThreeViewSimilarStatementProps {
-	similarStatement: { title: string; description: string };
+	viewSimilarStatement: { title: string; description: string };
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function StepThreeViewSimilarStatement({
-	similarStatement,
+	viewSimilarStatement,
 	setCurrentStep,
 }: StepThreeViewSimilarStatementProps) {
 	const handleSimilarStatementChosen = () => {
@@ -22,8 +22,8 @@ export default function StepThreeViewSimilarStatement({
 				One of the relevant statements from the given topic:
 			</h4>
 
-			<h4>{similarStatement.title}</h4>
-			<p>{similarStatement.description}</p>
+			<h4>{viewSimilarStatement.title}</h4>
+			<p>{viewSimilarStatement.description}</p>
 
 			<div className='twoButtonBox'>
 				<TwoColorButton
