@@ -1,18 +1,37 @@
+$border:3rem;
+
 .card {
     background-color: #427b9e2f;
-box-sizing:border-box;
+    box-sizing: border-box;
     color: var(--body-dark);
-    border-radius: 20px 2px;
-    border-left: #3a7ae2 5px solid;
+    border-radius: calc($border / 2) 4px;
+    border-left: #3a7ae2 3px solid;
 
     &__info {
         display: flex;
-        gap:1rem;
+      
+
         &__img {
+            position: relative;
+            border: #3a7ae2 3px solid;
+            left: -3px;
             width: 3rem;
             height: 3rem;
             border-radius: 50%;
-            background-color: gray;
+            background-color: rgb(191, 191, 191);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            
+        }
+
+        &__name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: .5rem;
         }
     }
 }
