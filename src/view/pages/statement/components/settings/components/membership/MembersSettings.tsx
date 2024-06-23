@@ -8,7 +8,7 @@ import { StatementSubscription, Statement } from "delib-npm";
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
 
 // Custom components
-import MembershipLine from "./membershipLine/MembershipLine";
+import MembershipLine from "./membershipCard/MembershipCard";
 import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers

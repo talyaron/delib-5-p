@@ -1,13 +1,14 @@
 import { Participant, Statement } from "delib-npm";
 import { FC } from "react";
-import Text from "../../../../../../components/text/Text";
-import { setRoomJoinToDB } from "../../../../../../../controllers/db/rooms/setRooms";
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
-import { statementSelector } from "../../../../../../../model/statements/statementsSlice";
+import Text from "../../../../../../../components/text/Text";
+import { setRoomJoinToDB } from "../../../../../../../../controllers/db/rooms/setRooms";
+import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
+import { statementSelector } from "../../../../../../../../model/statements/statementsSlice";
 import {
 	topicParticipantsSelector,
 	userSelectedTopicSelector,
-} from "../../../../../../../model/rooms/roomsSlice";
+} from "../../../../../../../../model/rooms/roomsSlice";
+import styles from "./RoomChoosingCard.module.scss";
 
 interface Props {
     statement: Statement;
@@ -29,27 +30,27 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 		setRoomJoinToDB(statement);
 	}
 
-	const fill = fillHieght(topicJoiners, roomSize);
+	const fill = fillHeight(topicJoiners, roomSize);
 	const borderRadius = fill > 0.9 ? `1rem` : "0px 0px 1rem 1rem";
 
 	return (
 		<div
 			className={
 				requestStatementId === statement.statementId
-					? "roomCard roomCard--selected"
-					: "roomCard"
+					? `${styles.roomCard} ${styles["roomCard--selected"]}`
+					: `${styles.roomCard}`
 			}
 			onClick={handleAskToJoinRoom}
 		>
-			<div className="roomCard__title">
+			<div className={styles.roomCard__title}>
 				<Text text={statement.statement} />
 			</div>
-			<div className="roomCard__count">
+			<div className={styles.roomCard__count}>
 				<span>{topicJoiners ? topicJoiners.length : 0}</span>/
 				{roomSize || 7}
 			</div>
 			<div
-				className="roomCard__fill"
+				className={styles.roomCard__fill}
 				style={{
 					height: `${fill * 100}%`,
 					borderRadius,
@@ -62,7 +63,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 
 export default RoomChoosingCard;
 
-function fillHieght(topicJoiners: Participant[], maxRoomJoiners = 5) {
+function fillHeight(topicJoiners: Participant[], maxRoomJoiners = 5) {
 	try {
 		if (!topicJoiners) return 0;
 

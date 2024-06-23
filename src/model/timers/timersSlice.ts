@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { RoomTimer, SetTimer } from "delib-npm";
@@ -70,11 +70,13 @@ export const { setSetTimer, setSetTimerTitle, setSetTimerTime, setRoomTimers } =
 // Other code such as selectors can use the imported `RootState` type
 export const selectTimersSetting = (state: RootState) =>
 	state.timers.settingTimers;
-export const selectStatementSettingTimers =
-    (statementId: string) => (state: RootState) =>
-    	state.timers.settingTimers.filter(
-    		(timer) => timer.statementId === statementId,
-    	);
+export const selectStatementSettingTimers = (statementId: string) => {
+	return createSelector(
+		(state: RootState) => state.timers.settingTimers,
+		(settingTimers) =>
+			settingTimers.filter((timer) => timer.statementId === statementId)
+	);
+};
 
 export const selectRoomTimers = (state: RootState) => state.timers.roomTimers;
 export const selectTimerByTimerId = (roomTimerId: string) => (state: RootState) => state.timers.roomTimers.find((timer: RoomTimer | undefined) => timer?.roomTimerId === roomTimerId);
