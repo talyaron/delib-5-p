@@ -12,10 +12,10 @@ interface Props {
 
 const MainCard: FC<Props> = ({ statement }) => {
 	return (
-		<div className='main-card' style={{ borderColor: statement.color }}>
+		<div className='main-card'>
 
 			<div className='main-card__content'>
-				<div className='main-card__img'></div>
+				<img src='/src/assets/images/ImgThumb.png' className='main-card__img'></img>
 				<StatementChatMore statement={statement} />
 			</div>
 

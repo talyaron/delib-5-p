@@ -4,12 +4,14 @@
     justify-content: space-evenly;
     height: fit-content;
     min-height: 296px;
-    width: 342px;
+    min-width: 340px;
+    width: 400px;
     background-color: var(--white);
     border-radius: 0.25rem;
     padding: 1rem;
     box-shadow: 0px 3px 6px rgba(159, 183, 195, 0.227);
     left: 0.121rem;
+    border-bottom: 1px solid rgba(191, 207, 242, 0.913);
 
     &__content {
         display: flex;
@@ -26,11 +28,9 @@
     }
 
     &__img {
-        background-image: url(/src/assets/images/imgThumb.png);
-        width: 270px;
-        height: 154px;
-        margin: 1rem 0 1rem 0;
-        background-repeat: no-repeat;
+        display: flex;
+        width: 80%;
+        margin: 1rem 1.7rem 1rem 0;
     }
 
     &__text {
@@ -39,7 +39,6 @@
         width: 40px;
         color: rgba(129, 143, 173, 1);
     }
-
 
     //mobile
     @media (max-width: 768px) {
