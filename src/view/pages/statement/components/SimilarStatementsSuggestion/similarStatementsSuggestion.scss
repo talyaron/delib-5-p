@@ -1,0 +1,121 @@
+.similarities {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 80ch;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	padding: 1.5rem;
+	background-color: #f2f6ff;
+
+	&__header {
+		display: flex;
+		flex-direction: column;
+
+		&__top {
+			display: flex;
+			justify-content: space-between;
+			gap: 1rem;
+
+			&__closeButton {
+				width: 2rem;
+				height: 2rem;
+			}
+		}
+
+		&__types {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			width: 80%;
+			margin: 0 auto;
+			.type {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+
+				h2 {
+					font-size: 1.2rem;
+					font-weight: 700;
+				}
+			}
+		}
+	}
+
+	&__title {
+		color: var(--h2Color);
+		font-size: 1rem;
+	}
+
+	&__titleInput {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		textarea::placeholder {
+			font-size: 0.8rem;
+			line-height: 1.2rem;
+		}
+
+		input {
+			padding: 1rem;
+		}
+		input::placeholder {
+			font-size: 0.8rem;
+		}
+	}
+
+	&__statementsBox {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+		overflow-y: auto;
+
+		&__similarStatement {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		&__similarStatement:last-child {
+			margin-bottom: 5rem;
+		}
+	}
+
+	&__submitBox {
+		display: flex;
+		justify-content: center;
+		width: fit-content;
+		margin: 0 auto;
+		border-radius: 5px;
+		padding: none;
+		position: absolute;
+		bottom: 1rem;
+		left: 0;
+		width: 100%;
+		background-color: transparent;
+		p {
+			font-size: 1rem;
+			color: var(--dark-text);
+			background-color: #fff;
+			display: flex;
+			align-items: center;
+			padding: 0.5rem 1rem;
+			border-radius: 5px 0 0 5px;
+			box-shadow: 5px 5px 10px 0px var(--shadow);
+		}
+
+		div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: var(--dark-blue);
+			padding: 0.5rem;
+			border-radius: 0 5px 5px 0;
+			height: 100%;
+			box-shadow: 5px 5px 10px 0px var(--shadow);
+		}
+	}
+}

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
 // Third party imports
 import {
@@ -8,37 +8,38 @@ import {
 	StatementType,
 	User,
 	isOptionFn,
-} from "delib-npm";
-import { useParams, useNavigate } from "react-router";
+} from 'delib-npm';
+import { useParams, useNavigate } from 'react-router';
 
 // Utils & Helpers
 import {
 	getMultiStageOptions,
 	sortSubStatements,
-} from "./statementSolutionsCont";
+} from './statementSolutionsCont';
 
 // Custom Components
-import StatementEvaluationCard from "./components/StatementSolutionCard";
-import CreateStatementModal from "../createStatementModal/CreateStatementModal";
-import StatementBottomNav from "../nav/bottom/StatementBottomNav";
-import { useAppDispatch } from "../../../../../controllers/hooks/reduxHooks";
-import Toast from "../../../../components/toast/Toast";
-import Modal from "../../../../components/modal/Modal";
-import StatementInfo from "../vote/components/info/StatementInfo";
-import Button from "../../../../components/buttons/button/Button";
-import LightBulbIcon from "../../../../../assets/icons/lightBulbIcon.svg?react";
-import X from "../../../../../assets/icons/x.svg?react";
-import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
-import { getTitle } from "../../../../../controllers/general/helpers";
+import StatementEvaluationCard from './components/StatementSolutionCard';
+import CreateStatementModal from '../createStatementModal/CreateStatementModal';
+import StatementBottomNav from '../nav/bottom/StatementBottomNav';
+import { useAppDispatch } from '../../../../../controllers/hooks/reduxHooks';
+import Toast from '../../../../components/toast/Toast';
+import Modal from '../../../../components/modal/Modal';
+import StatementInfo from '../vote/components/info/StatementInfo';
+import Button from '../../../../components/buttons/button/Button';
+import LightBulbIcon from '../../../../../assets/icons/lightBulbIcon.svg?react';
+import X from '../../../../../assets/icons/x.svg?react';
+import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
+import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
+import { getTitle } from '../../../../../controllers/general/helpers';
+import SimilarStatementsSuggestion from '../SimilarStatementsSuggestion/SimilarStatementsSuggestion';
 
 interface StatementEvaluationPageProps {
-  statement: Statement;
-  subStatements: Statement[];
-  handleShowTalker: (talker: User | null) => void;
-  showNav?: boolean;
-  questions?: boolean;
-  toggleAskNotifications: () => void;
+	statement: Statement;
+	subStatements: Statement[];
+	handleShowTalker: (talker: User | null) => void;
+	showNav?: boolean;
+	questions?: boolean;
+	toggleAskNotifications: () => void;
 }
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
@@ -56,7 +57,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		const { t } = useLanguage();
 
 		const isMuliStage =
-      statement.questionSettings?.questionType === QuestionType.multipleSteps;
+			statement.questionSettings?.questionType === QuestionType.multipleSteps;
 		const currentStage = statement.questionSettings?.currentStage;
 		const stageInfo = getStagesInfo(currentStage);
 
@@ -110,8 +111,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			}
 			if (
 				currentStage === QuestionStage.explanation &&
-        isMuliStage &&
-        !questions
+				isMuliStage &&
+				!questions
 			) {
 				setShowExplanation(true);
 			}
@@ -125,16 +126,15 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		let topSum = 30;
 		const tops: number[] = [topSum];
 		const message = stageInfo ? stageInfo.message : false;
-  
 
 		return (
 			<>
-				<div className="page__main">
-					<div className="wrapper">
+				<div className='page__main'>
+					<div className='wrapper'>
 						{isMuliStage && message && (
 							<Toast
 								text={`${t(message)}: "${getTitle(statement)}"`}
-								type="message"
+								type='message'
 								show={showToast}
 								setShow={setShowToast}
 							>
@@ -159,13 +159,13 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							);
 						})}
 						<div
-							className="options__bottom"
+							className='options__bottom'
 							style={{ height: `${topSum + 70}px` }}
 						></div>
 					</div>
 				</div>
 
-				<div className="page__footer">
+				<div className='page__footer'>
 					<StatementBottomNav
 						setShowModal={setShowModal}
 						statement={statement}
@@ -179,14 +179,18 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 						/>
 					</Modal>
 				)}
-				{showModal && (
+				{/* {showModal && (
 					<CreateStatementModal
-						parentStatement={statement}
-						isOption={questions ? false : true}
-						setShowModal={setShowModal}
-						toggleAskNotifications={toggleAskNotifications}
-						isSendToStoreTemp={isMuliStage}
-					/>
+					// 	parentStatement={statement}
+					// 	isOption={questions ? false : true}
+					// 	setShowModal={setShowModal}
+					// 	toggleAskNotifications={toggleAskNotifications}
+					// 	isSendToStoreTemp={isMuliStage}
+					// />
+				)} */}
+
+				{showModal && (
+					<SimilarStatementsSuggestion setShowModal={setShowModal} />
 				)}
 			</>
 		);
@@ -202,14 +206,14 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 					return (
 						<>
 							<Button
-								text={t("Close")}
+								text={t('Close')}
 								iconOnRight={false}
 								onClick={() => {
 									setShowToast(false);
 								}}
 								Icon={<X />}
-								color="white"
-								bckColor="var(--crimson)"
+								color='white'
+								bckColor='var(--crimson)'
 							/>
 						</>
 					);
@@ -217,25 +221,25 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 					return (
 						<>
 							<Button
-								text={t("Close")}
+								text={t('Close')}
 								iconOnRight={false}
 								onClick={() => {
 									setShowToast(false);
 								}}
 								Icon={<X />}
-								color="white"
-								bckColor="var(--crimson)"
+								color='white'
+								bckColor='var(--crimson)'
 							/>
 							<Button
-								text={t("Add a solution")}
+								text={t('Add a solution')}
 								iconOnRight={true}
 								onClick={() => {
 									setShowToast(false);
 									setShowModal(true);
 								}}
 								Icon={<LightBulbIcon />}
-								color="white"
-								bckColor="var(--green)"
+								color='white'
+								bckColor='var(--green)'
 							/>
 						</>
 					);
@@ -243,20 +247,20 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				default:
 					return (
 						<Button
-							text={t("Close")}
+							text={t('Close')}
 							iconOnRight={false}
 							onClick={() => {
 								setShowToast(false);
 							}}
 							Icon={<X />}
-							color="white"
-							bckColor="var(--crimson)"
+							color='white'
+							bckColor='var(--crimson)'
 						/>
 					);
 				}
 			} catch (error) {
 				console.error(error);
-				
+
 				return null;
 			}
 		}
