@@ -23,12 +23,15 @@ export default function CreateStatementModalSwitch({
 	return type === QuestionType.multipleSteps ? (
 		<SimilarStatementsSuggestion
 			setShowModal={setShowModal}
-			isQuestion={false}
+			isQuestion={isQuestion}
+			parentStatement={parentStatement}
+			toggleAskNotifications={toggleAskNotifications}
+			isSendToStoreTemp={isMuliStage}
 		/>
 	) : (
 		<CreateStatementModal
 			parentStatement={parentStatement}
-			isOption={isQuestion}
+			isOption={!isQuestion}
 			setShowModal={setShowModal}
 			toggleAskNotifications={toggleAskNotifications}
 			isSendToStoreTemp={isMuliStage}

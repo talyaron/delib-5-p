@@ -3,20 +3,14 @@ import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
 
 interface StepFourContinueWithOwnInput {
-	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	newStatementInput: { title: string; description: string };
+	onFormSubmit: () => void;
 }
 
 export default function StepFourContinueWithOwnInput({
-	setShowModal,
 	newStatementInput,
+	onFormSubmit
 }: StepFourContinueWithOwnInput) {
-	const handleSubmit = () => {
-		// Submit the user statement
-
-		// Close the modal
-		setShowModal(false);
-	};
 
 	return (
 		<>
@@ -49,7 +43,7 @@ export default function StepFourContinueWithOwnInput({
 					textBackgroundColor='#fff'
 					textColor='var(--dark-text)'
 					iconBackgroundColor='var(--dark-blue)'
-					onClick={handleSubmit}
+					onClick={onFormSubmit}
 				/>
 			</div>
 		</>

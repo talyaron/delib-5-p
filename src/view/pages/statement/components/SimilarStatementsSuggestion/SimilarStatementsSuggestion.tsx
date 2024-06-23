@@ -13,15 +13,26 @@ import StepOneStatementInput from './StepOneStatementInput';
 import StepTwoShowSimilarStatements from './StepTwoShowSimilarStatements';
 import StepThreeViewSimilarStatement from './StepThreeViewSimilarStatement';
 import StepFourContinueWithOwnInput from './StepFourContinueWithOwnInput';
+import { createStatementFromModal } from '../settings/statementSettingsCont';
+import { Statement } from 'delib-npm';
+import Loader from '../../../../components/loaders/Loader';
 
 interface SimilarStatementsSuggestionProps {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	isQuestion: boolean;
+	parentStatement: Statement | 'top';
+	toggleAskNotifications?: () => void;
+	isSendToStoreTemp?: boolean;
+	getSubStatements?: () => Promise<void>;
 }
 
 export default function SimilarStatementsSuggestion({
 	setShowModal,
 	isQuestion,
+	parentStatement,
+	isSendToStoreTemp,
+	toggleAskNotifications,
+	getSubStatements,
 }: SimilarStatementsSuggestionProps) {
 	const [currentStep, setCurrentStep] = useState(0);
 	const [newStatementInput, setNewStatementInput] = useState({
@@ -32,6 +43,25 @@ export default function SimilarStatementsSuggestion({
 		title: '',
 		description: '',
 	});
+	const [isLoading, setIsLoading] = useState(false);
+
+	const onFormSubmit = async () => {
+		setIsLoading(true);
+
+		await createStatementFromModal({
+			title: newStatementInput.title,
+			description: newStatementInput.description,
+			isOptionSelected: !isQuestion,
+			toggleAskNotifications,
+			parentStatement,
+			isSendToStoreTemp,
+		});
+
+		setShowModal(false);
+		setIsLoading(false);
+
+		await getSubStatements?.();
+	};
 
 	const stepsComponents = [
 		<StepOneStatementInput
@@ -50,7 +80,7 @@ export default function SimilarStatementsSuggestion({
 		/>,
 		<StepFourContinueWithOwnInput
 			newStatementInput={newStatementInput}
-			setShowModal={setShowModal}
+			onFormSubmit={onFormSubmit}
 		/>,
 	];
 
@@ -60,46 +90,53 @@ export default function SimilarStatementsSuggestion({
 
 	return (
 		<FullScreenModal>
-			<main className='similarities'>
-				<header className='similarities__header'>
-					{currentStep === 2 ? (
-						<div className='similarities__header__top'>
-							<button
-								className='similarities__header__top__closeButton'
-								onClick={() => setShowModal(false)}
-							>
-								<ArrowLeftIcon />
-							</button>
-							<img src={viewSimilarStatement} alt='Similarities illustration' />
+			{isLoading ? (
+				<Loader />
+			) : (
+				<main className='similarities'>
+					<header className='similarities__header'>
+						{currentStep === 2 ? (
+							<div className='similarities__header__top'>
+								<button
+									className='similarities__header__top__closeButton'
+									onClick={() => setShowModal(false)}
+								>
+									<ArrowLeftIcon />
+								</button>
+								<img
+									src={viewSimilarStatement}
+									alt='Similarities illustration'
+								/>
+							</div>
+						) : (
+							<div className='similarities__header__top'>
+								<img
+									src={illustration}
+									alt='Similarities illustration'
+									style={{ width: '40%' }}
+								/>
+								<button
+									className='similarities__header__top__closeButton'
+									onClick={() => setShowModal(false)}
+								>
+									<CloseIcon />
+								</button>
+							</div>
+						)}
+						<div className='similarities__header__types'>
+							<div className='type'>
+								<AddQuestionIcon />
+								<h2 className={isQuestion ? 'marked' : 'unmarked'}>Question</h2>
+							</div>
+							<div className='type'>
+								<LightBulbPlusIcon />
+								<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>
+							</div>
 						</div>
-					) : (
-						<div className='similarities__header__top'>
-							<img
-								src={illustration}
-								alt='Similarities illustration'
-								style={{ width: '40%' }}
-							/>
-							<button
-								className='similarities__header__top__closeButton'
-								onClick={() => setShowModal(false)}
-							>
-								<CloseIcon />
-							</button>
-						</div>
-					)}
-					<div className='similarities__header__types'>
-						<div className='type'>
-							<AddQuestionIcon />
-							<h2 className={isQuestion ? 'marked' : 'unmarked'}>Question</h2>
-						</div>
-						<div className='type'>
-							<LightBulbPlusIcon />
-							<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>
-						</div>
-					</div>
-				</header>
-				{renderStep()}
-			</main>
+					</header>
+					{renderStep()}
+				</main>
+			)}
 		</FullScreenModal>
 	);
 }
