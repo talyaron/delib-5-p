@@ -4,7 +4,7 @@ import { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Custom components
-import RoomChoosingCard from "./RoomChoosingCard";
+import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
