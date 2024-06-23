@@ -1,0 +1,18 @@
+.card {
+    background-color: #427b9e2f;
+box-sizing:border-box;
+    color: var(--body-dark);
+    border-radius: 20px 2px;
+    border-left: #3a7ae2 5px solid;
+
+    &__info {
+        display: flex;
+        gap:1rem;
+        &__img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: gray;
+        }
+    }
+}
