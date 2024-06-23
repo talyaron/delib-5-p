@@ -64,6 +64,7 @@ const Accessibility = () => {
 			style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}
 		>
 			<button className="accessibility-button" onClick={handleOpen}>
+				
 				<AccessibilityIcon />
 			</button>
 			<div className="accessibility-fonts">

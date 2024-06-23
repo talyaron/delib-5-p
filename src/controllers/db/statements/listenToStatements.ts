@@ -30,7 +30,7 @@ import { DB } from "../config";
 
 // Helpers
 import { Unsubscribe } from "firebase/auth";
-import { useState } from "react";
+console.log("listenToStatements.ts");
 
 
 export const listenToStatementSubscription = (

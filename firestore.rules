@@ -18,11 +18,6 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
-
-    match /statementsMeta/{statementSubId=**}{
-      allow read;
-      allow write: if request.auth.uid != null;
-    }
     
     match /statementsSignatures/{signatureId=**}{
       allow read: if request.auth.uid != null;
@@ -181,4 +176,3 @@ service cloud.firestore {
     }
   }
   
-}

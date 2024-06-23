@@ -7,6 +7,7 @@
     &__wrapper {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        grid-row-end: auto;
         grid-auto-rows: 120px;
         gap: 0.7rem;
         width: 100%;
