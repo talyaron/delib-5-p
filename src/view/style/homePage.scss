@@ -102,23 +102,41 @@
 
 .heroImg {
     background-size: cover;
-    background-position: center;
+    background-position:bottom;
     margin-bottom: 2rem;
     margin-top: -5rem;
     width: 100vw;
-    height: 27vh;
-    background-image: url('../../assets/images/hero.png');
-
-
-    @media (min-width: 570px) {
-        background-image: url('../../assets/images/Hero-BG-illustrations.png');
-    }
-
-    @media (min-width: 870px) {
-        background-image: url('../../assets/images/Hero-rectangle.png');
+    background-image: url('../../assets/images/hero-rectangle.png');
+    height: 30vh;
+    
+    @media (max-width: 1200px) {
+       
+        background-image: url('../../assets/images/hero-x4.png');
         height: 25vh;
         margin-top: 0;
     }
+    
+
+    @media (max-width: 870px) {
+       
+        background-image: url('../../assets/images/hero-x3.png');
+        height: 24vh;
+        margin-top: 0;
+    }
+
+    @media (max-width: 570px) {
+        background-image: url('../../assets/images/hero-x1.png');
+       
+        height: 15vh;
+    }
+
+    @media (max-width: 440px) {
+        background-image: url('../../assets/images/hero-x1.png');
+       
+        height: 15vh;
+    }
+
+   
 }
 
 .bikeImg {
