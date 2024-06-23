@@ -5,6 +5,7 @@
 	},
 	"functions": [
 		{
+			"runtime": "nodejs22",
 			"source": "functions",
 			"codebase": "default",
 			"ignore": [
@@ -17,7 +18,6 @@
 		}
 	],
 	"hosting": {
-		"site": "delib-v3-dev",
 		"public": "dist",
 		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 		"rewrites": [
