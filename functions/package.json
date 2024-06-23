@@ -12,6 +12,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@google/generative-ai": "^0.13.0",
     "delib-npm": "^1.2.71",
     "express": "^4.19.2",
     "firebase-admin": "^12.1.1",

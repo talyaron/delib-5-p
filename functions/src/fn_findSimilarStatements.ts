@@ -10,6 +10,7 @@ export async function findSimilarStatements(
 	response: Response
 ) {
 	const statementId = request.body.statementId as string;
+	const userInput = request.body.userInput as string;
 
 	const query = db
 		.collection(Collections.statements)
@@ -27,9 +28,13 @@ export async function findSimilarStatements(
 		(subStatement) => subStatement.statement
 	);
 
-	const genAiResponse = await runGenAI(statementsText);
+	const genAiResponse = await runGenAI(statementsText, userInput);
 
-	response.status(200).send(genAiResponse);
+	const similarStatementsIds = subStatements
+		.filter((subStatement) => genAiResponse.includes(subStatement.statement))
+		.map((subStatement) => subStatement.statementId);
+
+	response.status(200).send(similarStatementsIds);
 }
 
 const apiKey = defineSecret('GOOGLE_API_KEY');
@@ -40,13 +45,11 @@ onInit(() => {
 	genAI = new GoogleGenerativeAI(apiKey.value());
 });
 
-export async function runGenAI(inputArr: string[]) {
+export async function runGenAI(allStatements: string[], userInput: string) {
 	const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-	const input = 'go eat dinner with colleagues';
-
 	const prompt = `
-		Find the strings in the following text that are similar to '${input}': ${inputArr}. 
+		Find the strings in the following text that are similar to '${userInput}': ${allStatements}. 
 		Consider a match if the sentence shares at least 70% similarity in meaning.
 		Give answer back in this json format: { strings: ['string1', 'string2', ...] }
 	`;
