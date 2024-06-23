@@ -9,7 +9,7 @@ $border:3rem;
 
     &__info {
         display: flex;
-      
+
 
         &__img {
             position: relative;
@@ -25,7 +25,7 @@ $border:3rem;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-            
+
         }
 
         &__name {
@@ -33,5 +33,40 @@ $border:3rem;
             font-weight: 500;
             padding: .5rem;
         }
+    }
+
+    &__membership {
+        display: flex;
+        justify-content: space-between;
+        
+        padding: 0.5rem 1.5rem;
+
+        &--member {
+
+            border-radius: 3rem;
+            padding: .5rem;
+        }
+
+        &--admin {
+            background-color: #3a7ae22f;
+            color: white;
+            border-radius: 3rem;
+            padding: .5rem;
+        }
+
+        &__svg {
+           padding: .5rem;
+           color: var(--crimson);
+        }
+
+        svg {
+            font-size: 1.7rem;
+            height: 2rem;
+            width: 2rem;
+            
+            cursor: pointer;
+            user-select: none;
+        }
+
     }
 }
