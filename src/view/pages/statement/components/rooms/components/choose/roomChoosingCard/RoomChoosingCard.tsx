@@ -30,7 +30,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 		setRoomJoinToDB(statement);
 	}
 
-	const fill = fillHieght(topicJoiners, roomSize);
+	const fill = fillHeight(topicJoiners, roomSize);
 	const borderRadius = fill > 0.9 ? `1rem` : "0px 0px 1rem 1rem";
 
 	return (
@@ -63,7 +63,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 
 export default RoomChoosingCard;
 
-function fillHieght(topicJoiners: Participant[], maxRoomJoiners = 5) {
+function fillHeight(topicJoiners: Participant[], maxRoomJoiners = 5) {
 	try {
 		if (!topicJoiners) return 0;
 
