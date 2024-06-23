@@ -175,4 +175,4 @@ service cloud.firestore {
       allow write: if request.auth.uid == request.resource.data.creator.uid
     }
   }
-  
+}
