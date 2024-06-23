@@ -30,8 +30,6 @@ import { DB } from "../config";
 
 // Helpers
 import { Unsubscribe } from "firebase/auth";
-console.log("listenToStatements.ts");
-
 
 export const listenToStatementSubscription = (
 	statementId: string,

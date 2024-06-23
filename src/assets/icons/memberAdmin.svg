@@ -1,6 +1,6 @@
 <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M15 12.0767C13.67 11.2967 12.66 11.0767 11 11.0767C6.03 11.0767 2 15.1067 2 20.0767H11"
-        stroke="currentColor" strokeMterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+        stroke="currentColor" strokemterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
     <path
         d="M11 11.0767C13.4853 11.0767 15.5 9.06194 15.5 6.57666C15.5 4.09138 13.4853 2.07666 11 2.07666C8.51472 2.07666 6.5 4.09138 6.5 6.57666C6.5 9.06194 8.51472 11.0767 11 11.0767Z"
         stroke="currentColor" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />

@@ -109,12 +109,12 @@ export const topicParticipantsSelector = (statementId: string | undefined) => cr
 		askToJoinRooms.filter((room) => room.statementId === statementId)
 );
 
-		// export const topicParticipantsSelector = createSelector(
-		// 	(statementId: string | undefined) => statementId,
-		// 	(state: RootState) => state.rooms.askToJoinRooms,
-		// 	(statementId, askToJoinRooms) =>
-		// 		askToJoinRooms.filter((room) => room.statementId === statementId)
-		// );
+// export const topicParticipantsSelector = createSelector(
+// 	(statementId: string | undefined) => statementId,
+// 	(state: RootState) => state.rooms.askToJoinRooms,
+// 	(statementId, askToJoinRooms) =>
+// 		askToJoinRooms.filter((room) => room.statementId === statementId)
+// );
 export const participantSelector =
 	(userId: string | undefined) => (state: RootState) =>
 		state.rooms.askToJoinRooms.filter(

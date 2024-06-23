@@ -6,6 +6,7 @@ $border:3rem;
     color: var(--body-dark);
     border-radius: calc($border / 2) 4px;
     border-left: #3a7ae2 3px solid;
+    direction: ltr;
 
     &__info {
         display: flex;

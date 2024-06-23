@@ -6,6 +6,9 @@ import StatementChatMore from '../../../statement/components/chat/components/Sta
 import { Link } from 'react-router-dom';
 import './MainCard.scss';
 
+//img
+import ImgThumb from '../../../../../assets/images/ImgThumb.png';
+
 interface Props {
 	statement: Statement;
 }
@@ -15,7 +18,7 @@ const MainCard: FC<Props> = ({ statement }) => {
 		<div className='main-card'>
 
 			<div className='main-card__content'>
-				<img src='/src/assets/images/ImgThumb.png' className='main-card__img'></img>
+				<img src={ImgThumb} className='main-card__img'></img>
 				<StatementChatMore statement={statement} />
 			</div>
 

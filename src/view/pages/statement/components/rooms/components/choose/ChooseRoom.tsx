@@ -15,31 +15,31 @@ interface Props {
 }
 
 const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
-  const { t } = useLanguage();
+	const { t } = useLanguage();
 
-  return (
-    <>
-      <h2>{t("Division into rooms")}</h2>
-      <div className="roomsCards__wrapper">
-        {subStatements.map((subStatement: Statement) => {
-          return (
-            <RoomChoosingCard
-              key={subStatement.statementId}
-              statement={subStatement}
-            />
-          );
-        })}
-        <div
-          className={styles.fav}
-          style={{ height: "3rem" }}
-          onClick={() => setShowModal(true)}
-        >
+	return (
+		<>
+			<h2>{t("Division into rooms")}</h2>
+			<div className="roomsCards__wrapper">
+				{subStatements.map((subStatement: Statement) => {
+					return (
+						<RoomChoosingCard
+							key={subStatement.statementId}
+							statement={subStatement}
+						/>
+					);
+				})}
+				<div
+					className={styles.fav}
+					style={{ height: "3rem" }}
+					onClick={() => setShowModal(true)}
+				>
           +
-        </div>
-      </div>
+				</div>
+			</div>
 	  
-    </>
-  );
+		</>
+	);
 };
 
 export default ChooseRoom;
