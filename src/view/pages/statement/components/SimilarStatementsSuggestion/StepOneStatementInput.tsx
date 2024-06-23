@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
+import TwoColorButton from '../../../../components/buttons/TwoColorButton';
+import Loader from '../../../../components/loaders/Loader';
 
 interface SimilarStatementsSuggestionProps {
-	nextStep: () => void;
+	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+	newStatementInput: { title: string; description: string };
+	setNewStatementInput: React.Dispatch<
+		React.SetStateAction<{ title: string; description: string }>
+	>;
 }
 
 export default function StepOneStatementInput({
-	nextStep,
+	setCurrentStep,
+	newStatementInput,
+	setNewStatementInput,
 }: SimilarStatementsSuggestionProps) {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSubmit = () => {
-		nextStep();
+		setIsLoading(true);
+
+		// Search for similar statements
+		setTimeout(() => {
+			setCurrentStep((prev) => prev + 1);
+			setIsLoading(false);
+		}, 2000);
 	};
 
 	return (
@@ -23,10 +37,17 @@ export default function StepOneStatementInput({
 					type='text'
 					id='titleInput'
 					placeholder='Statement title. What people would see at first sight.'
+					value={newStatementInput.title}
+					onChange={(e) =>
+						setNewStatementInput({
+							...newStatementInput,
+							title: e.target.value,
+						})
+					}
 				/>
 			</div>
 			{isLoading ? (
-				<div>loading...</div>
+				<Loader />
 			) : (
 				<>
 					<div className='similarities__titleInput'>
@@ -35,15 +56,26 @@ export default function StepOneStatementInput({
 							rows={5}
 							id='descriptionInput'
 							placeholder='Formulate here the statement description. Add as much detail as you can to help others understand your statement.'
+							value={newStatementInput.description}
+							onChange={(e) =>
+								setNewStatementInput({
+									...newStatementInput,
+									description: e.target.value,
+								})
+							}
 						/>
 					</div>
 
-					<button className='similarities__submitBox' onClick={handleSubmit}>
-						<p>Submit Statement</p>
-						<div>
-							<SendIcon style={{ color: 'white' }} />
-						</div>
-					</button>
+					<div className='similarities__buttonBox'>
+						<TwoColorButton
+							icon={SendIcon}
+							text='Submit Statement'
+							textBackgroundColor='#fff'
+							textColor='var(--dark-text)'
+							iconBackgroundColor='var(--dark-blue)'
+							onClick={handleSubmit}
+						/>
+					</div>
 				</>
 			)}
 		</>

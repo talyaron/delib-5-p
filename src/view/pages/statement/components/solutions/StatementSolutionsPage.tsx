@@ -19,7 +19,6 @@ import {
 
 // Custom Components
 import StatementEvaluationCard from './components/StatementSolutionCard';
-import CreateStatementModal from '../createStatementModal/CreateStatementModal';
 import StatementBottomNav from '../nav/bottom/StatementBottomNav';
 import { useAppDispatch } from '../../../../../controllers/hooks/reduxHooks';
 import Toast from '../../../../components/toast/Toast';
@@ -31,7 +30,7 @@ import X from '../../../../../assets/icons/x.svg?react';
 import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
 import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
 import { getTitle } from '../../../../../controllers/general/helpers';
-import SimilarStatementsSuggestion from '../SimilarStatementsSuggestion/SimilarStatementsSuggestion';
+import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
 
 interface StatementEvaluationPageProps {
 	statement: Statement;
@@ -179,18 +178,19 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 						/>
 					</Modal>
 				)}
-				{/* {showModal && (
-					<CreateStatementModal
-					// 	parentStatement={statement}
-					// 	isOption={questions ? false : true}
-					// 	setShowModal={setShowModal}
-					// 	toggleAskNotifications={toggleAskNotifications}
-					// 	isSendToStoreTemp={isMuliStage}
-					// />
-				)} */}
 
 				{showModal && (
-					<SimilarStatementsSuggestion setShowModal={setShowModal} />
+					<CreateStatementModalSwitch
+						toggleAskNotifications={toggleAskNotifications}
+						parentStatement={statement}
+						isQuestion={questions}
+						isMuliStage={isMuliStage}
+						setShowModal={setShowModal}
+						type={
+							statement.questionSettings?.questionType ||
+							QuestionType.singleStep
+						}
+					/>
 				)}
 			</>
 		);
