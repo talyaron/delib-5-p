@@ -21,7 +21,6 @@ import bell from "../../../../../../../../assets/sounds/bell.mp3";
 
 
 
-
 interface Props {
   roomTimer: RoomTimer;
   isActiveTimer: boolean;
@@ -79,7 +78,7 @@ export default function Timer({
     }, 1000);
 
   useEffect(() => {
-    console.log("useEffect Timer", roomTimer.title, roomTimer.time);
+  
     setTimeLeft(initTime);
     setMinutes(getMinutesAndSeconds(initTime).minutes);
     setSeconds(getMinutesAndSeconds(initTime).seconds);

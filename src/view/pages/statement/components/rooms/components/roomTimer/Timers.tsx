@@ -15,10 +15,7 @@ const Timers: FC<Props> = ({ roomNumber, timers }) => {
 		const activeTimer: RoomTimer | undefined = getActiveTimer(timers);
 		if (!activeTimer) return null;
 
-		console.log("Timers", timers.length);
-				timers.forEach((timer,i) => {
-					console.log("timer",i, timer.time);
-				});
+	
 
 		return (
 			<div className="timers">

@@ -8,6 +8,7 @@ import {
 	topicParticipantsSelector,
 	userSelectedTopicSelector,
 } from "../../../../../../../model/rooms/roomsSlice";
+import styles from "./RoomChoosingCard.module.scss";
 
 interface Props {
     statement: Statement;
@@ -36,20 +37,20 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 		<div
 			className={
 				requestStatementId === statement.statementId
-					? "roomCard roomCard--selected"
-					: "roomCard"
+					? `${styles.roomCard} ${styles["roomCard--selected"]}`
+					: `${styles.roomCard}`
 			}
 			onClick={handleAskToJoinRoom}
 		>
-			<div className="roomCard__title">
+			<div className={styles.roomCard__title}>
 				<Text text={statement.statement} />
 			</div>
-			<div className="roomCard__count">
+			<div className={styles.roomCard__count}>
 				<span>{topicJoiners ? topicJoiners.length : 0}</span>/
 				{roomSize || 7}
 			</div>
 			<div
-				className="roomCard__fill"
+				className={styles.roomCard__fill}
 				style={{
 					height: `${fill * 100}%`,
 					borderRadius,
