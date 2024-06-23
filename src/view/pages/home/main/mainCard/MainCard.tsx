@@ -16,15 +16,12 @@ const MainCard: FC<Props> = ({ statement }) => {
 
 			<div className='main-card__content'>
 				<div className='main-card__img'></div>
-				<Link to={`/statement/${statement.statementId}/chat`} className='main-card__link'>
-					<Text text={statement.statement} />
-
-
-				</Link>
-
+				<StatementChatMore statement={statement} />
 			</div>
-			<StatementChatMore statement={statement} />
 
+			<Link to={`/statement/${statement.statementId}/chat`} className='main-card__link'>
+				<Text text={statement.statement} />
+			</Link>
 		</div>
 	);
 };

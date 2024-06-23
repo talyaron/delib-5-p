@@ -51,6 +51,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				})
 			}
 		>
+			<div className='notify'></div>
+
 			<div className="icon">
 				{messages - messagesRead > 0 && (
 					<div className="redCircle">
@@ -61,7 +63,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				)}
 				<ChatIcon />
 			</div>
-			<div className="text">{messageToDisplay}</div>
+			{/* <div className="text">{messageToDisplay}</div> */}
+
 		</div>
 	);
 };

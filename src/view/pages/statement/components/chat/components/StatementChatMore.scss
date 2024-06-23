@@ -1,9 +1,10 @@
 .statementChatMore {
     margin-top: 10px;
     display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    align-items: center;
+    margin-bottom: 0;
+    flex-direction: column;
+    gap: 26px;
+    justify-content: center;
     cursor: pointer;
     color: rgba(129, 143, 173, 1);
 
@@ -37,5 +38,12 @@
             margin-left: 5px;
             z-index: 100;
         }
+    }
+
+    .notify {
+        background-image: url(/src/assets/images/Notify.png);
+        margin: -4px;
+        width: 30px;
+        height: 30px;
     }
 }

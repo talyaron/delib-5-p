@@ -1,26 +1,35 @@
 .main-card {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
-    width: 342px;
+    height: fit-content;
     min-height: 296px;
+    width: 342px;
     background-color: var(--white);
     border-radius: 0.25rem;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: 0px 3px 6px rgba(159, 183, 195, 0.227);
     left: 0.121rem;
-    width: 100%;
-    border-inline-start: 0.625rem solid;
 
     &__content {
-        width: 400px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &__notify {
+        display: flex;
+        flex-wrap: wrap;
+        background-image: url(/src/assets/images/Notify.png);
+        width: 30px;
+        height: 30px;
     }
 
     &__img {
         background-image: url(/src/assets/images/imgThumb.png);
         width: 270px;
         height: 154px;
-        margin-bottom: 1rem;
+        margin: 1rem 0 1rem 0;
         background-repeat: no-repeat;
     }
 
@@ -30,6 +39,7 @@
         width: 40px;
         color: rgba(129, 143, 173, 1);
     }
+
 
     //mobile
     @media (max-width: 768px) {
@@ -42,5 +52,7 @@
 
     &__link {
         color: rgba(129, 143, 173, 1);
+        width: 100%;
+
     }
 }
