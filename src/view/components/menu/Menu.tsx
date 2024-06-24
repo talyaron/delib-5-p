@@ -5,9 +5,9 @@ import "./Menu.scss";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 interface MenuProps extends ComponentProps<"div"> {
-  iconColor: string;
-  isMenuOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+	iconColor: string;
+	isMenuOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
 }
 
 const Menu: FC<MenuProps> = ({
@@ -17,16 +17,6 @@ const Menu: FC<MenuProps> = ({
 	children,
 }) => {
 	const { dir } = useLanguage();
-
-	useEffect(() => {
-		if (isMenuOpen) {
-			const timer = setTimeout(() => {
-				setIsOpen(false);
-			}, 2000);
-
-			return () => clearTimeout(timer); // Cleanup the timer if the component unmounts or isMenuOpen changes
-		}
-	}, [isMenuOpen, setIsOpen]);
 
 	if (!children) {
 		return null;
