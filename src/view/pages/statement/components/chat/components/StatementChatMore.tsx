@@ -51,8 +51,6 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				})
 			}
 		>
-			<div className='notify'></div>
-
 			<div className="icon">
 				{messages - messagesRead > 0 && (
 					<div className="redCircle">
