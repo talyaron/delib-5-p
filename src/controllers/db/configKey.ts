@@ -1,16 +1,15 @@
 export const keys = {
-	apiKey: "AIzaSyBEumZUTCL3Jc9pt7_CjiSVTxmz9aMqSvo",
-	authDomain: "synthesistalyaron.firebaseapp.com",
-	databaseURL: "https://synthesistalyaron.firebaseio.com",
-	projectId: "synthesistalyaron",
-	storageBucket: "synthesistalyaron.appspot.com",
-	messagingSenderId: "799655218679",
-	appId: "1:799655218679:web:1409dd5e3b4154ecb9b2f2",
-	measurementId: "G-XSGFFBXM9X",
+	apiKey: "AIzaSyCyTznSbd4ThkzBRAzAU6vFsGl1T-cYbI8",
+	authDomain: "delib-5-72f2d.firebaseapp.com",
+	projectId: "delib-5-72f2d",
+	storageBucket: "delib-5-72f2d.appspot.com",
+	messagingSenderId: "606834979246",
+	appId: "1:606834979246:web:78fed696c2a3dfd6c7583f",
+	measurementId: "G-H8MPDJNWV2"
 };
 
 export const vapidKey =
-    "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
+    "BB2CW0KOxhSmfC8WMnM_GBHFDbTYLijQrOSqOrjs2w5yY7OxbvWHIFIwMOebaZEVAwYGDdfcbdgjMqtxsu0yYxE";
 
 // export const keys = {
 // 	apiKey: 'AIzaSyBk_koXPde8Aheeyf8xUGbeoPT71S-qHpM',
