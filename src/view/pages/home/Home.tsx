@@ -15,13 +15,14 @@ import { listenToStatementSubscriptions } from "../../../controllers/db/subscrip
 // Custom Components
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
+import HomeTabs from "./main/hometabs/HomeTabs";
 
-interface ListenedStatements{
-	unsubFunction:()=>void;
-	statementId:string;
+interface ListenedStatements {
+	unsubFunction: () => void;
+	statementId: string;
 }
 
-export const listenedStatements:Array<ListenedStatements> = [];
+export const listenedStatements: Array<ListenedStatements> = [];
 
 export default function Home() {
 	// Hooks
@@ -43,19 +44,19 @@ export default function Home() {
 	}, [location]);
 
 	useEffect(() => {
-		
+
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		let unsubscribe: () => void = () => {};
+		let unsubscribe: () => void = () => { };
 		try {
 			if (user) {
 				unsubscribe = listenToStatementSubscriptions(30);
 			}
-		} catch (error) {}
+		} catch (error) { }
 
 		return () => {
 			if (unsubscribe) {
 				unsubscribe();
-				listenedStatements.forEach((ls)=>{
+				listenedStatements.forEach((ls) => {
 					ls.unsubFunction();
 				});
 			}
@@ -64,6 +65,7 @@ export default function Home() {
 
 	return (
 		<ScreenSlide className="page slide-in">
+			<HomeTabs />
 			{displayHeader && <HomeHeader />}
 			<Outlet />
 		</ScreenSlide>
