@@ -34,9 +34,10 @@ import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";
 import Back from "./Back";
 import HomeButton from "./HomeButton";
-import { handleCreateInvitation } from "./statementHeaderCont";
-import InvitationModal from "../../../home/main/invitationModal/InvitationModal";
 import InvitePanel from "./invitePanel/InvitePanel";
+
+// icons
+import InvitationIcon from '../../../../../assets/icons/invitation.svg?react'
 
 interface Props {
   title: string;
@@ -196,7 +197,7 @@ const StatementHeader: FC<Props> = ({
               />
               <MenuOption
                 label={t("Invite with PIN number")}
-                icon={<FollowMe style={menuIconStyle} />}
+                icon={<InvitationIcon style={menuIconStyle} />}
                 onOptionClick={handleInvitePanel}
               />
             </>

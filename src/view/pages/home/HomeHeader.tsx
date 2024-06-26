@@ -5,6 +5,7 @@ import { prompStore } from "./main/HomeMainCont";
 
 // icons
 import InstallIcon from "../../../assets/icons/installIcon.svg?react";
+import InvitationIcon from "../../../assets/icons/invitation.svg?react";
 
 // Components
 import { useDispatch } from "react-redux";
@@ -16,7 +17,7 @@ import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
 import { install } from "../../../App";
 import InvitationModal from "./main/invitationModal/InvitationModal";
-import { set } from "firebase/database";
+
 
 export default function HomeHeader() {
   // Use State
@@ -44,7 +45,8 @@ export default function HomeHeader() {
   function handleInvitationPanel() {
     try {
       setShowInvitationModal(true);
-      console.log("invitation panel opened");
+      setIsHomeMenuOpen(false);
+   
     } catch (error) {
       console.error(error);
     }
@@ -75,7 +77,7 @@ export default function HomeHeader() {
               onOptionClick={() => handleLogout(dispatch)}
             />
             <MenuOption
-              icon={<DisconnectIcon />}
+              icon={<InvitationIcon style={{ color: "#4E88C7" }}/>}
               label={t("Join with PIN number")}
               onOptionClick={handleInvitationPanel}
             />

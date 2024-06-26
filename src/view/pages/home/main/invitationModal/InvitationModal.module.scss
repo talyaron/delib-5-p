@@ -19,6 +19,20 @@
             -webkit-appearance: none;
             margin: 0;
             -moz-appearance: textfield;
+            border-radius: .5rem;
+            font-size: 2rem;
+            padding: 1rem;
         }
+    }
+
+    &__error{
+        background-color: var(--crimson);
+        color: white;
+        padding: .3rem 1.5rem;
+        border-radius: .5rem;
+        max-width: 25ch;
+        line-height: 1.7rem;
+        text-align: center;
+        box-shadow: 0 0 1rem var(--crimson);
     }
 }
