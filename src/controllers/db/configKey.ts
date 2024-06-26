@@ -1,13 +1,12 @@
 export const keys = {
-	apiKey: "AIzaSyBEumZUTCL3Jc9pt7_CjiSVTxmz9aMqSvo",
-	authDomain: "synthesistalyaron.firebaseapp.com",
-	databaseURL: "https://synthesistalyaron.firebaseio.com",
-	projectId: "synthesistalyaron",
-	storageBucket: "synthesistalyaron.appspot.com",
-	messagingSenderId: "799655218679",
-	appId: "1:799655218679:web:1409dd5e3b4154ecb9b2f2",
-	measurementId: "G-XSGFFBXM9X",
-};
+	apiKey: "AIzaSyC0gSfb9f5qtkY4PfKpEibU-NLmtqn_WYw",
+	authDomain: "shakedproject97.firebaseapp.com",
+	projectId: "shakedproject97",
+	storageBucket: "shakedproject97.appspot.com",
+	messagingSenderId: "1062905547562",
+	appId: "1:1062905547562:web:a66780211a8b82b56b6c53",
+	measurementId: "G-4DCJZCK8H9"
+  };
 
 export const vapidKey =
     "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";

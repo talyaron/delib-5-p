@@ -12,14 +12,15 @@ import styles from "./EditTitle.module.scss";
 // Custom components
 import Text from "../text/Text";
 
-// import { statementTitleToDisplay } from "../../../controllers/general/helpers";
+// Import the SaveTextIcon
+import SaveTextIcon from "../../../assets/icons/SaveTextIcon.png";
 
 interface Props {
-  statement: Statement | undefined;
-  isEdit: boolean;
-  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  isTextArea?: boolean;
-  onlyTitle?: boolean;
+	statement: Statement | undefined;
+	isEdit: boolean;
+	setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+	isTextArea?: boolean;
+	onlyTitle?: boolean;
 }
 
 const EditTitle: FC<Props> = ({
@@ -30,7 +31,7 @@ const EditTitle: FC<Props> = ({
 	onlyTitle,
 }) => {
 	const [text, setText] = useState(statement?.statement || "");
-	const [showSaveButton, setShowSaveButton] = useState(false);
+	const [showSaveIconButton, setShowSaveIconButton] = useState(false);
 
 	if (!statement) return null;
 
@@ -44,13 +45,11 @@ const EditTitle: FC<Props> = ({
 		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
 		setText(e.target.value);
-		setShowSaveButton(true);
+		setShowSaveIconButton(true);
 	}
 
 	function handleSave() {
 		try {
-			
-			
 			if (!text.trim()) return; // Do not save if the text is empty
 
 			if (!statement) throw new Error("Statement is undefined");
@@ -58,7 +57,7 @@ const EditTitle: FC<Props> = ({
 			const updatedText = isTextArea
 				? text.trim()
 				: title.trim() + "\n" + description.trim();
-				
+
 			updateStatementText(statement, updatedText);
 			setEdit(false);
 		} catch (error) {
@@ -85,20 +84,23 @@ const EditTitle: FC<Props> = ({
 					placeholder="Add text"
 				/>
 			) : (
-				<input
-					style={{ direction: direction, textAlign: align }}
-					className={styles.input}
-					type="text"
-					value={text}
-					onChange={handleTextChange}
-					autoFocus={true}
-					data-cy="edit-title-input"
-				/>
-			)}
-			{showSaveButton && (
-				<button className="editTitle-btn btn btn--agree btn--small" onClick={handleSave}>
-          Save
-				</button>
+				<div className={styles.inputWrapper}>
+					<input
+						style={{ direction: direction, textAlign: align }}
+						className={styles.input}
+						type="text"
+						value={text}
+						onChange={handleTextChange}
+						autoFocus={true}
+						data-cy="edit-title-input"
+					/>
+					<img
+						src={SaveTextIcon}
+						onClick={handleSave}
+						className={styles.icon}
+						alt="Icon"
+					/>
+				</div>
 			)}
 		</div>
 	);

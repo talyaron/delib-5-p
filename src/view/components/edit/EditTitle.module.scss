@@ -15,3 +15,24 @@
 .editTitle-btn {
   background-color: lightblue;
 }
+
+.inputWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.input {
+  width: 100%;
+  padding-right: 35px; 
+  border-radius: 10px;
+}
+
+.icon {
+  position: absolute;
+  right: 1px; 
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px; 
+  height: 40px; 
+}
+
