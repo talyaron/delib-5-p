@@ -307,4 +307,9 @@ export function writeZodError(error: ZodError, object: unknown): void {
 	}
 }
 
+export function getNumberDigits(number: number): number {
+	const _number = Math.floor(number);
+	return _number.toString().length;
+}
+
 

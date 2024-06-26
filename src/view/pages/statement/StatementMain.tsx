@@ -41,6 +41,7 @@ import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Page404 from "../page404/Page404";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
+import InvitationModal from "../home/main/invitationModal/InvitationModal";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -89,7 +90,7 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
-
+	const [showInvitationModal, setShowInvitationModal] = useState(true);
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
 
@@ -257,9 +258,9 @@ const StatementMain: FC = () => {
 						setShowAskPermission={setShowAskPermission}
 						role={role}
 					/>
-
 					<MapProvider>
 						<FollowMeToast role={role} statement={statement} />
+						{showInvitationModal && <InvitationModal />}
 						<SwitchScreens
 							screen={screen}
 							statement={statement}

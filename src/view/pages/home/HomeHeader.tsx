@@ -17,55 +17,67 @@ import MenuOption from "../../components/menu/MenuOption";
 import { install } from "../../../App";
 
 export default function HomeHeader() {
-	// Use State
-	const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
-	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
-	const dispatch = useDispatch();
+  // Use State
+  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
+  const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
+  const dispatch = useDispatch();
 
-	const { t, dir } = useLanguage();
+  const { t, dir } = useLanguage();
 
-	useEffect(() => {
-		// for deferred app install
-		setDeferredPrompt(install.deferredPrompt);
-	}, []);
+  useEffect(() => {
+    // for deferred app install
+    setDeferredPrompt(install.deferredPrompt);
+  }, []);
 
-	function handleInstallApp() {
-		try {
-			prompStore(setDeferredPrompt);
-		} catch (error) {
-			console.error(error);
-		}
-	}
+  function handleInstallApp() {
+    try {
+      prompStore(setDeferredPrompt);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-	return (
-		<div className={`homePage__header ${dir}`}>
-			<div className="homePage__header__wrapper">
-				<div
-					className="homePage__header__wrapper__title"
-					children={t("Delib")}
-				/>
-				<div className="homePage__header__wrapper__icons">
-					{deferredPrompt && (
-						<IconButton onClick={handleInstallApp}>
-							<InstallIcon />
-						</IconButton>
-					)}
+  function handleInvitationPanel() {
+    try {
+      // handleCreateInvitation({ pathname, statementId });
+      console.log("invitation panel opened");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-					<Menu
-						isMenuOpen={isHomeMenuOpen}
-						setIsOpen={setIsHomeMenuOpen}
-						iconColor="white"
-					>
-						<MenuOption
-							icon={
-								<DisconnectIcon style={{ color: "#4E88C7" }} />
-							}
-							label={t("Disconnect")}
-							onOptionClick={() => handleLogout(dispatch)}
-						/>
-					</Menu>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className={`homePage__header ${dir}`}>
+      <div className="homePage__header__wrapper">
+        <div
+          className="homePage__header__wrapper__title"
+          children={t("Delib")}
+        />
+        <div className="homePage__header__wrapper__icons">
+          {deferredPrompt && (
+            <IconButton onClick={handleInstallApp}>
+              <InstallIcon />
+            </IconButton>
+          )}
+
+          <Menu
+            isMenuOpen={isHomeMenuOpen}
+            setIsOpen={setIsHomeMenuOpen}
+            iconColor="white"
+          >
+            <MenuOption
+              icon={<DisconnectIcon style={{ color: "#4E88C7" }} />}
+              label={t("Disconnect")}
+              onOptionClick={() => handleLogout(dispatch)}
+            />
+            <MenuOption
+              icon={<DisconnectIcon />}
+              label={t("Invitation")}
+              onOptionClick={handleInvitationPanel}
+            />
+          </Menu>
+        </div>
+      </div>
+    </div>
+  );
 }
