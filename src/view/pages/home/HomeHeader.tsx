@@ -15,11 +15,14 @@ import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
 import { install } from "../../../App";
+import InvitationModal from "./main/invitationModal/InvitationModal";
 
 export default function HomeHeader() {
   // Use State
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
   const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
+  const [showInvitationModal, setShowInvitationModal] = useState(true);
+
   const dispatch = useDispatch();
 
   const { t, dir } = useLanguage();
@@ -78,6 +81,7 @@ export default function HomeHeader() {
           </Menu>
         </div>
       </div>
+      {showInvitationModal && <InvitationModal setShowModal={setShowInvitationModal} />}
     </div>
   );
 }

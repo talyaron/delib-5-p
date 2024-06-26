@@ -18,3 +18,26 @@ export async function getMaxInvitationDigits():Promise<number | undefined>{
        return undefined; 
     }
 }
+
+export async function getInvitationPathName(number:number):Promise<string | undefined>{
+    try {
+        if(!number) throw new Error("No number");
+        if(typeof number !== "number") number = Number(number);
+        console.log(number, typeof number)
+        const invitationsRef = collection(DB, Collections.invitations);
+        const q = query(invitationsRef, where("number", "==", number));
+        const numbersDB = await getDocs(q);
+        const numbers = numbersDB.docs.map(doc => doc.data());
+        console.log(numbers)
+        if(numbers.length === 0) throw new Error("No number found in DB");
+        const {pathname} = numbers[0];
+        if(!pathname) throw new Error("No path name found");
+        return pathname;
+
+    } catch (error) {
+        console.error(error);
+       return undefined; 
+    }
+}
+
+//where("lastUpdate", ">", new Date().getTime() - 24 * 60 * 60 * 1000)
