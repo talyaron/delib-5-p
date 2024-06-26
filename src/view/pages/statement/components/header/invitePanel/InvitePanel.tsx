@@ -12,41 +12,42 @@ interface Props {
 }
 
 const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
-  try {
+	try {
 
-    if(!statementId) throw new Error("StatementId is missing");
+		if(!statementId) throw new Error("StatementId is missing");
 
-    const [invitationNumber, setInvitationNumber] = useState<number | null>(
-      null
-    );
+		const [invitationNumber, setInvitationNumber] = useState<number | null>(
+			null
+		);
 
-    useEffect(() => {
-      setInvitationToDB({ statementId, pathname }).then(
-        (invitation: Invitation | undefined) => {
-          try {
-            if (!invitation) throw new Error("No invitation found in DB");
-            console.log("invitation", invitation);
-            console.log("invitation number", invitation?.number)
-            setInvitationNumber(invitation?.number);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-      );
-    }, []);
-    return (
-      <Modal>
-        <div className={styles.panel}>
-        <h3  className={styles.panel__title}>Invite using Number:</h3>
-        <h3 className={styles.panel__number}>{invitationNumber}</h3>
-        <button onClick={() => setShowModal(false)}>Close</button>
-        </div>
-      </Modal>
-    );
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+		useEffect(() => {
+			setInvitationToDB({ statementId, pathname }).then(
+				(invitation: Invitation | undefined) => {
+					try {
+						if (!invitation) throw new Error("No invitation found in DB");
+						
+						setInvitationNumber(invitation?.number);
+					} catch (error) {
+						console.error(error);
+					}
+				}
+			);
+		}, []);
+		
+		return (
+			<Modal>
+				<div className={styles.panel}>
+					<h3  className={styles.panel__title}>Invite using Number:</h3>
+					<h3 className={styles.panel__number}>{invitationNumber}</h3>
+					<button onClick={() => setShowModal(false)}>Close</button>
+				</div>
+			</Modal>
+		);
+	} catch (error) {
+		console.error(error);
+		
+		return null;
+	}
 };
 
 export default InvitePanel;

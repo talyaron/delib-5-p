@@ -1,22 +1,18 @@
 import { expect, test } from "vitest";
 import { Role, Screen, Statement, StatementSubscription, StatementType, User } from "delib-npm";
-import {  store } from "../../model/store";
 
-import { logOut } from "../db/auth";
-import { setUser } from "../../model/users/userSlice";
+
 import { ZodError } from "zod";
 import {
 	updateArray,
 	isAuthorized,
 	isAdmin,
-	navigateToStatementTab,
 	getInitials,
 	generateRandomLightColor,
 	statementTitleToDisplay,
 	linkToChildren,
 	getPastelColor,
 	calculateFontSize,
-	handleLogout,
 	getTitle,
 	getDescription,
 	getSetTimerId,
