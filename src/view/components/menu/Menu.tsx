@@ -18,15 +18,6 @@ const Menu: FC<MenuProps> = ({
 }) => {
 	const { dir } = useLanguage();
 
-	useEffect(() => {
-		if (isMenuOpen) {
-			const timer = setTimeout(() => {
-				setIsOpen(false);
-			}, 2000);
-
-			return () => clearTimeout(timer); // Cleanup the timer if the component unmounts or isMenuOpen changes
-		}
-	}, [isMenuOpen, setIsOpen]);
 
 	if (!children) {
 		return null;

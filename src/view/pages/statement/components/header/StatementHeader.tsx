@@ -35,6 +35,8 @@ import { useDispatch } from "react-redux";
 import Back from "./Back";
 import HomeButton from "./HomeButton";
 import { handleCreateInvitation } from "./statementHeaderCont";
+import InvitationModal from "../../../home/main/invitationModal/InvitationModal";
+import InvitePanel from "./invitePanel/InvitePanel";
 
 interface Props {
   title: string;
@@ -62,6 +64,7 @@ const StatementHeader: FC<Props> = ({
   const headerColor = useStatementColor(statement?.statementType || "");
   const permission = useNotificationPermission(token);
   const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
+  const [showInvitationModal, setShowInvitationModal] = useState(false);
   const dispatch = useDispatch();
   const { t, dir } = useLanguage();
   const parentStatement = store
@@ -103,6 +106,16 @@ const StatementHeader: FC<Props> = ({
       console.error(error);
     }
   }
+
+  function handleInvitePanel() {
+    try {
+      setShowInvitationModal(true);
+      console.log("invitation panel opened");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const menuIconStyle = {
     color: headerColor.backgroundColor,
     width: "24px",
@@ -122,17 +135,7 @@ const StatementHeader: FC<Props> = ({
           />
           <HomeButton headerColor={headerColor} />
         </div>
-        <button
-          onClick={() => {
-            if (statement)
-              handleCreateInvitation({
-                statementId: statement.statementId,
-                pathname,
-              });
-          }}
-        >
-          Create invitation
-        </button>
+
         {!editHeader ? (
           <h1
             className={isAdmin ? "clickable" : ""}
@@ -185,11 +188,18 @@ const StatementHeader: FC<Props> = ({
             onOptionClick={() => handleLogout(dispatch)}
           />
           {isAdmin && (
-            <MenuOption
-              label={t("Follow Me")}
-              icon={<FollowMe style={menuIconStyle} />}
-              onOptionClick={handleFollowMe}
-            />
+            <>
+              <MenuOption
+                label={t("Follow Me")}
+                icon={<FollowMe style={menuIconStyle} />}
+                onOptionClick={handleFollowMe}
+              />
+              <MenuOption
+                label={t("Invite with PIN number")}
+                icon={<FollowMe style={menuIconStyle} />}
+                onOptionClick={handleInvitePanel}
+              />
+            </>
           )}
         </Menu>
       </div>
@@ -200,6 +210,7 @@ const StatementHeader: FC<Props> = ({
           statementSubscription={statementSubscription}
         />
       )}
+      {showInvitationModal && <InvitePanel setShowModal={setShowInvitationModal} statementId={statement?.statementId} pathname={pathname}/>}
     </div>
   );
 };

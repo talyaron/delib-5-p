@@ -90,7 +90,6 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
-	const [showInvitationModal, setShowInvitationModal] = useState(true);
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
 

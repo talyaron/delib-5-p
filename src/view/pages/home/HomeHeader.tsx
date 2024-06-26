@@ -16,12 +16,13 @@ import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
 import { install } from "../../../App";
 import InvitationModal from "./main/invitationModal/InvitationModal";
+import { set } from "firebase/database";
 
 export default function HomeHeader() {
   // Use State
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
   const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
-  const [showInvitationModal, setShowInvitationModal] = useState(true);
+  const [showInvitationModal, setShowInvitationModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,7 +43,7 @@ export default function HomeHeader() {
 
   function handleInvitationPanel() {
     try {
-      // handleCreateInvitation({ pathname, statementId });
+      setShowInvitationModal(true);
       console.log("invitation panel opened");
     } catch (error) {
       console.error(error);
@@ -75,7 +76,7 @@ export default function HomeHeader() {
             />
             <MenuOption
               icon={<DisconnectIcon />}
-              label={t("Invitation")}
+              label={t("Join with PIN number")}
               onOptionClick={handleInvitationPanel}
             />
           </Menu>
