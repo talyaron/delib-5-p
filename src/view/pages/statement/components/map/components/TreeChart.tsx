@@ -116,7 +116,7 @@ export default function TreeChart({
 		_: React.MouseEvent<Element, MouseEvent>,
 		node: Node,
 	) => {
-		if(!isAdmin) return;
+		
 		const intersections = getIntersectingNodes(node).map((n) => n.id);
 
 		if (intersections.length === 0) return setEdges(tempEdges);
@@ -199,6 +199,7 @@ export default function TreeChart({
 				nodeTypes={nodeTypes}
 				fitView
 				style={{ height: `100vh` }}
+				nodesDraggable={isAdmin}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
 				onNodeDrag={onNodeDrag}
