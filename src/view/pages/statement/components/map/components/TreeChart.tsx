@@ -41,11 +41,13 @@ const nodeTypes = {
 
 interface Props {
     topResult: Results;
+	isAdmin: boolean;
     getSubStatements: () => Promise<void>;
 }
 
 export default function TreeChart({
 	topResult,
+	isAdmin,
 	getSubStatements,
 }: Readonly<Props>) {
 	const { getIntersectingNodes } = useReactFlow();
@@ -114,6 +116,7 @@ export default function TreeChart({
 		_: React.MouseEvent<Element, MouseEvent>,
 		node: Node,
 	) => {
+		if(!isAdmin) return;
 		const intersections = getIntersectingNodes(node).map((n) => n.id);
 
 		if (intersections.length === 0) return setEdges(tempEdges);

@@ -1,7 +1,7 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC, useEffect, createContext } from "react";
 
 // Third party imports
-import { Results, Statement } from "delib-npm";
+import { Results, Role, Statement } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
@@ -10,9 +10,9 @@ import Modal from "../../../../components/modal/Modal";
 
 // Helpers
 import {
-	FilterType,
-	filterByStatementType,
-	sortStatementsByHirarrchy,
+  FilterType,
+  filterByStatementType,
+  sortStatementsByHirarrchy,
 } from "../../../../../controllers/general/sorting";
 import { getChildStatements } from "../../../../../controllers/db/statements/getStatement";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
@@ -21,114 +21,124 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import { useMapContext } from "../../../../../controllers/hooks/useMap";
 import { ReactFlowProvider } from "reactflow";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import { isAdmin } from "../../../../../controllers/general/helpers";
 
 interface Props {
-    statement: Statement;
+  statement: Statement;
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
-	const { t } = useLanguage();
-	const { mapContext, setMapContext } = useMapContext();
+  const userSubscription = useAppSelector(
+    statementSubscriptionSelector(statement.statementId)
+  );
+  console.log("userSubscription", userSubscription);
+  const role = userSubscription ? userSubscription.role : Role.member;
+  const _isAdmin = isAdmin(role);
+  console.log("isAdmin", _isAdmin);
 
-	const [results, setResults] = useState<Results | undefined>();
-	const [subStatements, setSubStatements] = useState<Statement[]>([]);
+  const { t } = useLanguage();
+  const { mapContext, setMapContext } = useMapContext();
 
-	const handleFilter = (filterBy: FilterType) => {
-		const filteredArray = filterByStatementType(filterBy).types;
+  const [results, setResults] = useState<Results | undefined>();
+  const [subStatements, setSubStatements] = useState<Statement[]>([]);
 
-		const filterSubStatements = subStatements.filter((state) => {
-			if (!state.statementType) return false;
+  const handleFilter = (filterBy: FilterType) => {
+    const filteredArray = filterByStatementType(filterBy).types;
 
-			return filteredArray.includes(state.statementType);
-		});
+    const filterSubStatements = subStatements.filter((state) => {
+      if (!state.statementType) return false;
 
-		const sortedResults = sortStatementsByHirarrchy([
-			statement,
-			...filterSubStatements,
-		]);
+      return filteredArray.includes(state.statementType);
+    });
 
-		setResults(sortedResults[0]);
-	};
+    const sortedResults = sortStatementsByHirarrchy([
+      statement,
+      ...filterSubStatements,
+    ]);
 
-	// Get all child statements and set top result to display map
-	// In the future refactor to listen to changes in sub statements
-	const getSubStatements = async () => {
-		const childStatements = await getChildStatements(statement.statementId);
+    setResults(sortedResults[0]);
+  };
 
-		setSubStatements(childStatements);
+  // Get all child statements and set top result to display map
+  // In the future refactor to listen to changes in sub statements
+  const getSubStatements = async () => {
+    const childStatements = await getChildStatements(statement.statementId);
 
-		const topResult = sortStatementsByHirarrchy([
-			statement,
-			...childStatements.filter(
-				(state) => state.statementType !== "statement",
-			),
-		])[0];
+    setSubStatements(childStatements);
 
-		setResults(topResult);
-	};
+    const topResult = sortStatementsByHirarrchy([
+      statement,
+      ...childStatements.filter((state) => state.statementType !== "statement"),
+    ])[0];
 
-	useEffect(() => {
-		getSubStatements();
-	}, []);
+    setResults(topResult);
+  };
 
-	const toggleModal = (show: boolean) => {
-		setMapContext((prev) => ({
-			...prev,
-			showModal: show,
-		}));
-	};
+  useEffect(() => {
+    getSubStatements();
+  }, []);
 
-	return (
-		<ScreenFadeIn className="page__main">
-			<ReactFlowProvider>
-				<select
-					onChange={(ev) => handleFilter(ev.target.value as FilterType)}
-					defaultValue={FilterType.questionsResultsOptions}
-					style={{
-						width: "100vw",
-						maxWidth: "300px",
-						margin: "1rem auto",
-						position: "absolute",
-						right: "1rem",
-						zIndex: 100,
-					}}
-				>
-					<option value={FilterType.questionsResults}>
-						{t("Questions and Results")}
-					</option>
-					<option value={FilterType.questionsResultsOptions}>
-						{t("Questions, options and Results")}
-					</option>
-				</select>
-				<div
-					style={{
-						flex: "auto",
-						height: "20vh",
-						width: "100%",
-						direction: "ltr",
-					}}
-				>
-					{results && (
-						<TreeChart
-							topResult={results}
-							getSubStatements={getSubStatements}
-						/>
-					)}
-				</div>
+  const toggleModal = (show: boolean) => {
+    setMapContext((prev) => ({
+      ...prev,
+      showModal: show,
+    }));
+  };
 
-				{mapContext.showModal && (
-					<Modal>
-						<CreateStatementModal
-							parentStatement={mapContext.parentStatement}
-							isOption={mapContext.isOption}
-							setShowModal={toggleModal}
-							getSubStatements={getSubStatements}
-						/>
-					</Modal>
-				)}
-			</ReactFlowProvider>
-		</ScreenFadeIn>
-	);
+  return (
+    <ScreenFadeIn className="page__main">
+      <ReactFlowProvider>
+        <select
+          onChange={(ev) => handleFilter(ev.target.value as FilterType)}
+          defaultValue={FilterType.questionsResultsOptions}
+          style={{
+            width: "100vw",
+            maxWidth: "300px",
+            margin: "1rem auto",
+            position: "absolute",
+            right: "1rem",
+            zIndex: 100,
+          }}
+        >
+          <option value={FilterType.questionsResults}>
+            {t("Questions and Results")}
+          </option>
+          <option value={FilterType.questionsResultsOptions}>
+            {t("Questions, options and Results")}
+          </option>
+        </select>
+        <div
+          style={{
+            flex: "auto",
+            height: "20vh",
+            width: "100%",
+            direction: "ltr",
+          }}
+        >
+          {results && (
+            <TreeChart
+              topResult={results}
+              isAdmin={_isAdmin}
+              getSubStatements={getSubStatements}
+            />
+          )}
+        </div>
+
+        {mapContext.showModal && (
+          <Modal>
+            <CreateStatementModal
+              parentStatement={mapContext.parentStatement}
+              isOption={mapContext.isOption}
+              setShowModal={toggleModal}
+              getSubStatements={getSubStatements}
+            />
+          </Modal>
+        )}
+      </ReactFlowProvider>
+    </ScreenFadeIn>
+  );
 };
 
 export default StatementMap;
