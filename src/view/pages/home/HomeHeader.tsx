@@ -15,6 +15,7 @@ import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
 import { install } from "../../../App";
+import HomeTabs from "./main/hometabs/HomeTabs";
 
 export default function HomeHeader() {
 	// Use State
@@ -66,6 +67,8 @@ export default function HomeHeader() {
 					</Menu>
 				</div>
 			</div>
+
+
 		</div>
 	);
 }
