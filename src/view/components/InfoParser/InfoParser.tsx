@@ -10,7 +10,7 @@ interface Props {
 const InfoParser: FC<Props> = ({ statement }) => {
   
 
-  return <Section sectionText={statement.statement} parentLevel={1} />;
+  return <Section sectionText={statement.statement} parentLevel={0} />;
 };
 
 export default InfoParser;

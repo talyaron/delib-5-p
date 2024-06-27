@@ -1,51 +1,57 @@
-export function getTextArrays(text: string, level: number): { title: string, paragraphs: string[], sections: string[] } {
+export function getTextArrays(text: string, level: number): { title: string, paragraphs: string[], sectionsString: string[]} {
     try {
-        const { title, remainingString } = getTitle(text);
-        console.log("remainingString", remainingString)
-        const { paragraphs, sectionsString } = getParagraphs(remainingString, level);
-        const markdownLevel = switchLevelToMarkdown(level);
-        const sections = getSections(sectionsString, markdownLevel);
-        return { title, paragraphs, sections };
+        const title = getTitle(text, level);
+        const paragraphs = getParagraphs(text, level);
+        const sectionsString = getSectionsString(text, level);
+        
+        return { title,paragraphs ,sectionsString };
     } catch (error) {
         console.error(error);
-        return { title: "", paragraphs: [], sections: [] };
+        return { title: "", paragraphs: [], sectionsString: []};
     }
 }
-export function getTitle(text: string): { remainingString: string, title: string } {
+
+export function getTitle(text: string, level: number): string {
     try {
         const texts = text.split('\n');
-        const title = texts[0].replace('# ', '');
-        //sections are all the text after the title
-        const remainingString = texts.slice(1).join('\n');
+        const markdownLevel = switchLevelToMarkdown(level);
+        const title = texts[0].replace(`${markdownLevel} `, '').replace("*", "");
 
-
-        return { remainingString, title };
+        return title;
     } catch (error) {
         console.error(error);
-        return { remainingString: "", title: text };
+        return "";
     }
 
 }
 
-export function getParagraphs(text: string, level:number): { paragraphs: string[], sectionsString: string } {
+export function getParagraphs(text: string, level: number): string[]  {
+    try {
+ 
+        const texts = text.split('\n');
+        const markdownLevel = switchLevelToMarkdown(level);
+        texts.splice(0,1);
+        const paragraphs = texts.splice(0,texts.findIndex((text) => text.startsWith(markdownLevel))).filter((p) => p.length > 0);
+        return paragraphs;
+        
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+export function getSectionsString(text: string, level:number): string[] {
     try {
         const markdownLevel = switchLevelToMarkdown(level);
-        const _paragraphs = text.split('\n').filter((paragraph) => paragraph.length > 0);
-        //get only paragraphs that are before the first time a # is found
-        const paragraphs = _paragraphs.slice(0, _paragraphs.findIndex((paragraph) => paragraph.startsWith(`${markdownLevel} `)));
-        const _sections = _paragraphs.slice(_paragraphs.findIndex((paragraph) => paragraph.startsWith(`${markdownLevel} `)));
-        const sectionsString = _sections.join('\n');
-        return { paragraphs, sectionsString };
-    } catch (error) {
-        console.error(error);
-        return { paragraphs: [], sectionsString: text };
-    }
-}
 
-export function getSections(text: string, symbol: string): string[] {
-    try {
-        const sections = text.split(`${symbol} `).filter((section) => section.length > 0);
-        return sections;
+        const mrkdn = new RegExp(`\n${markdownLevel} `, 'g');
+
+        const _texts = text.split(mrkdn);
+  
+        const texts= _texts.splice(1)        
+
+
+        return texts;
     } catch (error) {
         console.error(error);
         return [];

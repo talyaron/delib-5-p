@@ -7,12 +7,16 @@ interface Props {
 }
 
 export const Section: FC<Props> = ({ sectionText, parentLevel }) => {
-    console.log('sectionText', sectionText)
+  console.log("sectionText", sectionText);
   const level = parentLevel + 1;
-  console.log('level', level)
-  const { title, paragraphs, sections } = getTextArrays(sectionText, level);
+  console.log("level", level);
+  const { title, paragraphs, sectionsString } = getTextArrays(
+    sectionText,
+    level
+  );
 
-  console.log({ title, paragraphs, sections });
+  console.log("paragraphs", paragraphs);
+    console.log("sectionsString", sectionsString);
 
   return (
     <section>
@@ -20,11 +24,11 @@ export const Section: FC<Props> = ({ sectionText, parentLevel }) => {
       {paragraphs.map((paragraph, index) => (
         <p key={`p-${level}-${index}`}>{paragraph}</p>
       ))}
-      {sections.map((section, index) => (
+      {sectionsString.map((sectionString, index) => (
         <Section
           key={`section-${index}`}
-          sectionText={section}
-          parentLevel={parentLevel + 1}
+          sectionText={sectionString}
+          parentLevel={level}
         />
       ))}
     </section>
