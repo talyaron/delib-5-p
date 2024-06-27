@@ -14,7 +14,7 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 
 	const [errorMessage, setErrorMessage] = useState<string>("");
 
-	async function handleJoin(ev: React.FormEventHandler<HTMLFormElement>) {
+	async function handleJoin(ev) {
 		try {
 			ev.preventDefault();
 			if (!ev.target.pin.value) throw new Error("No pin value");
