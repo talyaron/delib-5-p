@@ -1,9 +1,10 @@
 {
-  "projects": {
-    "default": "delib-5-avni",
-    "dev": "delib-v3-dev",
-    "prod": "synthesistalyaron"
-  },
-  "targets": {},
-  "etags": {}
+	"projects": {
+		"default": "delib-5-avni",
+		"dev": "delib-v3-dev",
+		"prod": "synthesistalyaron",
+		"test": "delib-testing"
+	},
+	"targets": {},
+	"etags": {}
 }
