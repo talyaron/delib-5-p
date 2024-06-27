@@ -21,7 +21,7 @@ const Menu: FC<MenuProps> = ({
 	if (!children) {
 		return null;
 	}
-
+   
 	return (
 		<div className="menu">
 			<IconButton onClick={() => setIsOpen(!isMenuOpen)}>
