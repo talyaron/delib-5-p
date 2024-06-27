@@ -18,6 +18,7 @@ export const allScreensWithoutSettings: NavObject[] = [
 		default: false,
 	},
 	{ link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false },
+	{ link: Screen.INFO, name: "Info", id: "info", default: false },
 ];
 
 export const allScreens = [
