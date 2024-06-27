@@ -20,7 +20,7 @@ export const Section: FC<Props> = ({ sectionText, parentLevel }) => {
 
   return (
     <section>
-      {switchHeaders(title, level)}
+      {switchHeaders(`${level}) ${title}`, level)}
       {paragraphs.map((paragraph, index) => (
         <p key={`p-${level}-${index}`}>{paragraph}</p>
       ))}
