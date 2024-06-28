@@ -7,16 +7,15 @@ interface Props {
 }
 
 export const Section: FC<Props> = ({ sectionText, parentLevel }) => {
-  console.log("sectionText", sectionText);
+  
   const level = parentLevel + 1;
-  console.log("level", level);
+  
+
   const { title, paragraphs, sectionsString } = getTextArrays(
     sectionText,
     level
   );
-
-  console.log("paragraphs", paragraphs);
-    console.log("sectionsString", sectionsString);
+ 
 
   return (
     <section>

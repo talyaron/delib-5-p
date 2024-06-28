@@ -2,13 +2,16 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 import { Section } from "./Section";
 import "./InfoParser.scss";
+import { getSectionObj } from "./InfoParserCont";
 
 interface Props {
   statement: Statement;
 }
 
 const InfoParser: FC<Props> = ({ statement }) => {
-  
+
+  const sections = getSectionObj(statement.statement, 1);
+  console.log(sections)
 
   return <Section sectionText={statement.statement} parentLevel={0} />;
 };
