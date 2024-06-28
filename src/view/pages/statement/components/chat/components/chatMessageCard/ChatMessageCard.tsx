@@ -36,7 +36,7 @@ import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages
 import Menu from "../../../../../../components/menu/Menu";
 import MenuOption from "../../../../../../components/menu/MenuOption";
 import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
-import SaveTextIcon from "../../../../../../../assets/icons/SaveTextIcon.png"; 
+import SaveTextIcon from "../../../../../../../assets/icons/SaveTextIcon.svg"; 
 
 import "./ChatMessageCard.scss";
 

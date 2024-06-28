@@ -13,7 +13,7 @@ import styles from "./EditTitle.module.scss";
 import Text from "../text/Text";
 
 // Import the SaveTextIcon
-import SaveTextIcon from "../../../assets/icons/SaveTextIcon.png";
+import SaveTextIcon from "../../../assets/icons/SaveTextIcon.svg";
 
 interface Props {
 	statement: Statement | undefined;
