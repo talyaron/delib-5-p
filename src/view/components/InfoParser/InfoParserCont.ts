@@ -9,19 +9,16 @@ export interface Sections {
 
 export function getSectionObj(text: string, level: number): Sections | undefined {
     try {
-        console.log("level", level)
-        console.log(text)
-        const { title, paragraphs, sectionsString } = getLevelTexts(text, level + 1)
-        console.log("getSectionObj - title", title)
 
-        console.log("getSectionObj - p", paragraphs)
-        console.log("getSectionObj - strSec", sectionsString)
+        const nextLevel = level + 1;
+        const { title, paragraphs, sectionsString } = getLevelTexts(text, nextLevel)
+
         let sections: Sections[] = [];
-        if(sectionsString.length > 0){
-            sections = sectionsString.map(sct => getSectionObj(sct, level+1) as Sections);
+        if (sectionsString.length > 0) {
+            sections = sectionsString.map(sct => getSectionObj(sct, nextLevel) as Sections);
         }
-       
-        return { level, title, paragraphs, sections, sectionsString };
+
+        return { level:nextLevel, title, paragraphs, sections, sectionsString };
 
     } catch (error) {
         console.error(error);
@@ -68,12 +65,12 @@ export function getParagraphs(text: string, level: number): string[] {
 
         if (nextSectionIndex !== -1) {
             texts = texts.splice(0, nextSectionIndex);
-            console.log("found some paragraphs before next section", texts);
+
 
             return texts;
 
         } else {
-            console.log("couldn't find a section, therefore returning all texts", texts);
+
             return texts;
         }
 
