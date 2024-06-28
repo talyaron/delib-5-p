@@ -1,17 +1,40 @@
-export function getTextArrays(text: string, level: number): { title: string, paragraphs: string[], sectionsString: string[] } {
+export function getSectionObj(text: string, level: number): Sections | undefined {
     try {
+        console.log("level", level)
+        console.log(text)
+        const { title, paragraphs, sectionsString } = getLevelTexts(text, level + 1)
+        console.log("getSectionObj - title", title)
 
+        console.log("getSectionObj - p", paragraphs)
+        console.log("getSectionObj - strSec", sectionsString)
+        let sections: Sections[] = [];
+        if(sectionsString.length > 0){
+            sections = sectionsString.map(sct => getSectionObj(sct, level+1) as Sections);
+        }
+       
+        return { level, title, paragraphs, sections, sectionsString };
+
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+
+}
+
+function getLevelTexts(text: string, level: number): { level: number, title: string, paragraphs: string[], sectionsString: string[] } {
+    try {
+        // if(level >=3) debugger;
         const title = getTitle(text);
         const paragraphs = getParagraphs(text, level);
         const sectionsString = getSectionsString(text, level);
 
-
-        return { title, paragraphs, sectionsString };
+        return { level, title, paragraphs, sectionsString };
     } catch (error) {
         console.error(error);
-        return { title: "", paragraphs: [], sectionsString: [] };
+        return { level, title: "", paragraphs: [], sectionsString: [] };
     }
 }
+
 
 export function getTitle(text: string): string {
     try {
@@ -28,19 +51,24 @@ export function getTitle(text: string): string {
 
 export function getParagraphs(text: string, level: number): string[] {
     try {
-        // if(level === 3) debugger;
+
+        const markdown = switchLevelToMarkdown(level);
         let texts = text.split('\n');
-   
-        //is there another section?
-        const nextSectionIndex = texts.findIndex((text) => text.startsWith("#"));
-        if (nextSectionIndex > 0) {
-           texts= texts.splice(1,nextSectionIndex);
+        texts.splice(0, 1);
+        const nextSectionIndex = texts.findIndex((text) => text.startsWith(markdown));
+
+        if (nextSectionIndex !== -1) {
+            texts = texts.splice(0, nextSectionIndex);
+            console.log("found some paragraphs before next section", texts);
+
+            return texts;
+
         } else {
-            texts.splice(0,1);
+            console.log("couldn't find a section, therefore returning all texts", texts);
+            return texts;
         }
-        const paragraphs = texts.filter((p) => p.length > 0);
-        return paragraphs;
-        return texts;
+
+
     } catch (error) {
         console.error(error);
         return [];
@@ -49,18 +77,9 @@ export function getParagraphs(text: string, level: number): string[] {
 
 function getSectionsString(text: string, level: number): string[] {
     try {
-
-        const markdownLevel = switchLevelToMarkdown(level);
-
-
-        const markdnRegExp = new RegExp(`\n${markdownLevel} `, 'g');
-
-        const _texts = text.split(markdnRegExp).map((t) => `${markdownLevel} ${t}`);
-
-
-        const texts = _texts.splice(1)
-
-
+        const markdown = switchLevelToMarkdown(level);
+        let texts = text.split(`\n${markdown} `).map((text) => `${markdown} ${text}`);
+        texts.splice(0, 1);
         return texts;
     } catch (error) {
         console.error(error);
@@ -91,32 +110,8 @@ interface Sections {
 
 }
 
-export function getSectionObj(text: string, level: number): Sections | undefined {
-    try {
 
-        const { title, paragraphs, sectionsString } = getLevelTexts(text, level)
-        const sections: Sections[] = sectionsString.map(sct => getSectionObj(sct, level) as Sections);
-        return { level, title, paragraphs, sections, sectionsString};
 
-    } catch (error) {
-        console.error(error);
-        return undefined;
-    }
 
-}
-
-function getLevelTexts(text: string, level: number): { level: number, title: string, paragraphs: string[], sectionsString: string[] } {
-    try {
-        // if(level >=3) debugger;
-        const title = getTitle(text);
-        const paragraphs = getParagraphs(text, level);
-        const sectionsString = getSectionsString(text, level);
-    
-        return { level, title, paragraphs, sectionsString};
-    } catch (error) {
-        console.error(error);
-        return { level, title: "", paragraphs: [], sectionsString: [] };
-    }
-}
 
 
