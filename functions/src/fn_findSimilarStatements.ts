@@ -34,6 +34,8 @@ export async function findSimilarStatements(
 		.filter((subStatement) => genAiResponse.includes(subStatement.statement))
 		.map((subStatement) => subStatement.statementId);
 
+	response.set('Access-Control-Allow-Origin', '*');
+
 	response.status(200).send(similarStatementsIds);
 }
 
