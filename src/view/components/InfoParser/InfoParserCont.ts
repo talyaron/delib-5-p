@@ -1,3 +1,12 @@
+export interface Sections {
+    level: number;
+    title: string;
+    paragraphs: string[];
+    sections: Sections[];
+    sectionsString?: string[];
+
+}
+
 export function getSectionObj(text: string, level: number): Sections | undefined {
     try {
         console.log("level", level)
@@ -101,14 +110,7 @@ export function switchLevelToMarkdown(level: number) {
     }
 }
 
-interface Sections {
-    level: number;
-    title: string;
-    paragraphs: string[];
-    sections: Sections[];
-    sectionsString?: string[];
 
-}
 
 
 

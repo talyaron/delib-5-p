@@ -1,33 +1,26 @@
 import { FC } from "react";
-import { getTextArrays } from "./InfoParserCont";
+
 import { switchHeaders } from "./InfoParser";
-interface Props {
-  sectionText: string;
-  parentLevel: number;
-}
+import { Sections } from "./InfoParserCont";
 
-export const Section: FC<Props> = ({ sectionText, parentLevel }) => {
-  
-  const level = parentLevel + 1;
+
+export const Section: FC<Sections> = ({ title,paragraphs,sections, level }) => {
   
 
-  const { title, paragraphs, sectionsString } = getTextArrays(
-    sectionText,
-    level
-  );
- 
 
   return (
     <section>
-      {switchHeaders(`${level}) ${title}`, level)}
+      {switchHeaders(title, level)}
       {paragraphs.map((paragraph, index) => (
         <p key={`p-${level}-${index}`}>{paragraph}</p>
       ))}
-      {sectionsString.map((sectionString, index) => (
+      {sections.map((section, index) => (
         <Section
-          key={`section-${index}`}
-          sectionText={sectionString}
-          parentLevel={level}
+          key={`section-${index}-${level}`}
+          title={section.title}
+          level={level}
+          paragraphs={section.paragraphs}
+          sections={section.sections}
         />
       ))}
     </section>

@@ -9,10 +9,20 @@ interface Props {
 }
 
 const InfoParser: FC<Props> = ({ statement }) => {
+  const section = getSectionObj(statement.statement, 0);
+  console.log(section);
 
-  const sections = getSectionObj(statement.statement, 0);
-  console.log(sections)
-return null;
+  if (!section) return null;
+
+  return (
+    <Section
+      title={section.title}
+      level={section.level}
+      paragraphs={section.paragraphs}
+      sections={section.sections}
+    />
+  );
+
   // return <Section sectionText={statement.statement} parentLevel={0} />;
 };
 
