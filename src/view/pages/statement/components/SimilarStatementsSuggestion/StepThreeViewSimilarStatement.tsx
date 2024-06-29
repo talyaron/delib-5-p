@@ -6,14 +6,16 @@ import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 interface StepThreeViewSimilarStatementProps {
 	viewSimilarStatement: { title: string; description: string };
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function StepThreeViewSimilarStatement({
 	viewSimilarStatement,
 	setCurrentStep,
-}: StepThreeViewSimilarStatementProps) {
+	setShowModal,
+}: Readonly<StepThreeViewSimilarStatementProps>) {
 	const handleSimilarStatementChosen = () => {
-		// Submit the user statement
+		setShowModal(false);
 	};
 
 	return (
@@ -37,7 +39,7 @@ export default function StepThreeViewSimilarStatement({
 				/>
 				<TwoColorButton
 					icon={SendIcon}
-					text='Choose this statement'
+					text='Go vote on this statement'
 					textBackgroundColor='#fff'
 					textColor='var(--dark-text)'
 					iconBackgroundColor='var(--dark-blue)'

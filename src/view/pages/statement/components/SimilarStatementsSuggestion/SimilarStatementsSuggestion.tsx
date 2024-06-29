@@ -26,6 +26,16 @@ interface SimilarStatementsSuggestionProps {
 	getSubStatements?: () => Promise<void>;
 }
 
+interface DisplayStatement {
+	title: string;
+	description: string;
+}
+
+const initDisplayStatement: DisplayStatement = {
+	title: '',
+	description: '',
+};
+
 export default function SimilarStatementsSuggestion({
 	setShowModal,
 	isQuestion,
@@ -33,19 +43,15 @@ export default function SimilarStatementsSuggestion({
 	isSendToStoreTemp,
 	toggleAskNotifications,
 	getSubStatements,
-}: SimilarStatementsSuggestionProps) {
+}: Readonly<SimilarStatementsSuggestionProps>) {
 	const [currentStep, setCurrentStep] = useState(0);
-	const [newStatementInput, setNewStatementInput] = useState({
-		title: 'New Statement Title',
-		description: 'New Statement Description text goes here.',
-	});
-	const [similarStatements, setSimilarStatements] = useState([
-		{ title: '', description: '' },
-	]);
-	const [viewSimilarStatement, setViewSimilarStatement] = useState({
-		title: '',
-		description: '',
-	});
+	const [newStatementInput, setNewStatementInput] =
+		useState(initDisplayStatement);
+	const [similarStatements, setSimilarStatements] = useState<
+		DisplayStatement[]
+	>([]);
+	const [viewSimilarStatement, setViewSimilarStatement] =
+		useState(initDisplayStatement);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const onFormSubmit = async () => {
@@ -68,6 +74,7 @@ export default function SimilarStatementsSuggestion({
 
 	const stepsComponents = [
 		<StepOneStatementInput
+			key={0}
 			statementId={parentStatement.statementId}
 			setCurrentStep={setCurrentStep}
 			newStatementInput={newStatementInput}
@@ -76,16 +83,20 @@ export default function SimilarStatementsSuggestion({
 			onFormSubmit={onFormSubmit}
 		/>,
 		<StepTwoShowSimilarStatements
+			key={1}
 			setCurrentStep={setCurrentStep}
 			newStatementInput={newStatementInput}
 			similarStatements={similarStatements}
 			setViewSimilarStatement={setViewSimilarStatement}
 		/>,
 		<StepThreeViewSimilarStatement
+			key={2}
 			setCurrentStep={setCurrentStep}
 			viewSimilarStatement={viewSimilarStatement}
+			setShowModal={setShowModal}
 		/>,
 		<StepFourContinueWithOwnInput
+			key={3}
 			newStatementInput={newStatementInput}
 			onFormSubmit={onFormSubmit}
 		/>,

@@ -21,13 +21,12 @@ interface SimilarStatementsSuggestionProps {
 }
 
 export default function StepOneStatementInput({
-	// setCurrentStep,
+	setCurrentStep,
 	newStatementInput,
 	setNewStatementInput,
 	statementId,
-
-	// setSimilarStatements,
-	// onFormSubmit,
+	setSimilarStatements,
+	onFormSubmit,
 }: Readonly<SimilarStatementsSuggestionProps>) {
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -44,24 +43,36 @@ export default function StepOneStatementInput({
 			newStatementInput.title
 		);
 
-		console.log(similarStatementsIds);
-
 		const getSubStatements = subStatements
 			.filter((subStatement) =>
 				similarStatementsIds.includes(subStatement.statementId)
 			)
-			.map((subState) => subState.statement);
+			.map((subState) => {
+				const arrayOfStatementParagraphs =
+					subState?.statement.split('\n') || [];
+				const title = removeNonAlphabeticalCharacters(
+					arrayOfStatementParagraphs[0]
+				);
 
-		console.log(getSubStatements);
+				// Get all elements of the array except the first one
+				const description = removeNonAlphabeticalCharacters(
+					arrayOfStatementParagraphs.slice(1).join('\n')
+				);
 
-		// if (getStatements.length === 0) {
-		// 	onFormSubmit();
-		// }
+				return {
+					title,
+					description,
+				};
+			});
 
-		// setSimilarStatements(getStatements);
+		if (getSubStatements.length === 0) {
+			onFormSubmit();
+		}
 
-		// setCurrentStep((prev) => prev + 1);
-		// setIsLoading(false);
+		setSimilarStatements(getSubStatements);
+
+		setCurrentStep((prev) => prev + 1);
+		setIsLoading(false);
 	};
 
 	return (
@@ -116,4 +127,8 @@ export default function StepOneStatementInput({
 			)}
 		</>
 	);
+}
+
+function removeNonAlphabeticalCharacters(input: string) {
+	return input.replace(/[^a-zA-Z ]/g, '');
 }

@@ -9,7 +9,6 @@ export async function findSimilarStatements(
 	response: Response
 ) {
 	const parsedBody = JSON.parse(request.body);
-
 	const { statementId, userInput } = parsedBody;
 
 	const ref = db.collection(Collections.statements);
@@ -21,17 +20,21 @@ export async function findSimilarStatements(
 		doc.data()
 	) as Statement[];
 
-	const statementsText = subStatements.map(
-		(subStatement) => subStatement.statement
+	const statementsText = subStatements.map((subStatement) => ({
+		statement: removeNonAlphabeticalCharacters(
+			subStatement.statement.split('\n')[0]
+		),
+		id: subStatement.statementId,
+	}));
+
+	const genAiResponse = await runGenAI(
+		statementsText.map((s) => s.statement),
+		userInput
 	);
 
-	const genAiResponse = await runGenAI(statementsText, userInput);
-
-	const similarStatementsIds = subStatements
+	const similarStatementsIds = statementsText
 		.filter((subStatement) => genAiResponse.includes(subStatement.statement))
-		.map((subStatement) => subStatement.statementId);
-
-	response.set('Access-Control-Allow-Origin', '*');
+		.map((subStatement) => subStatement.id);
 
 	response.status(200).send(similarStatementsIds);
 }
@@ -50,7 +53,7 @@ export async function runGenAI(allStatements: string[], userInput: string) {
 		Find the strings in the following text that are similar to '${userInput}': ${allStatements}. 
 		Consider a match if the sentence shares at least 70% similarity in meaning.
 		Give answer back in this json format: { strings: ['string1', 'string2', ...] }
-	`;
+		`;
 
 		const result = await model.generateContent(prompt);
 
@@ -63,6 +66,10 @@ export async function runGenAI(allStatements: string[], userInput: string) {
 
 		return [];
 	}
+}
+
+function removeNonAlphabeticalCharacters(input: string) {
+	return input.replace(/[^a-zA-Z ]/g, '');
 }
 
 function extractAndParseJsonString(input: string): { strings: string[] } {

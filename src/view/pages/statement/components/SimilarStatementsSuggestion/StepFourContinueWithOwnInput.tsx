@@ -9,7 +9,7 @@ interface StepFourContinueWithOwnInput {
 export default function StepFourContinueWithOwnInput({
 	newStatementInput,
 	onFormSubmit,
-}: StepFourContinueWithOwnInput) {
+}: Readonly<StepFourContinueWithOwnInput>) {
 	return (
 		<>
 			<h4 className='similarities__title'>Your statement details</h4>
@@ -18,7 +18,6 @@ export default function StepFourContinueWithOwnInput({
 				<input
 					type='text'
 					id='titleInput'
-					placeholder='Statement title. What people would see at first sight.'
 					value={newStatementInput.title}
 					disabled
 				/>
@@ -28,9 +27,9 @@ export default function StepFourContinueWithOwnInput({
 				<textarea
 					rows={5}
 					id='descriptionInput'
-					placeholder='Formulate here the statement description. Add as much detail as you can to help others understand your statement.'
 					value={newStatementInput.description}
 					disabled
+					placeholder={newStatementInput.description ? '' : 'No description provided'}
 				/>
 			</div>
 
