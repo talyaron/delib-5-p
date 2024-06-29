@@ -35,6 +35,9 @@ export default function StepOneStatementInput({
 	);
 
 	const handleSubmit = async () => {
+		if (!newStatementInput.title || newStatementInput.title.length < 5) {
+			return;
+		}
 		setIsLoading(true);
 
 		// Search for similar statements
@@ -81,6 +84,7 @@ export default function StepOneStatementInput({
 			<div className='similarities__titleInput'>
 				<label htmlFor='titleInput'>Your statement title</label>
 				<input
+					autoFocus
 					type='text'
 					id='titleInput'
 					placeholder='Statement title. What people would see at first sight.'
@@ -91,6 +95,11 @@ export default function StepOneStatementInput({
 							title: e.target.value,
 						})
 					}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							handleSubmit();
+						}
+					}}
 				/>
 			</div>
 			{isLoading ? (

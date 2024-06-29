@@ -1,6 +1,7 @@
 import React from 'react';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
+import BackIcon from '../../../../../assets/icons/chevronLeftIcon.svg?react';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -59,7 +60,16 @@ export default function StepTwoShowSimilarStatements({
 				))}
 			</section>
 
-			<div className='similarities__buttonBox'>
+			<div className='twoButtonBox'>
+				<TwoColorButton
+					reverse={true}
+					icon={BackIcon}
+					text='back'
+					textBackgroundColor='#fff'
+					textColor='var(--dark-text)'
+					iconBackgroundColor='var(--dark-blue)'
+					onClick={() => setCurrentStep((prev) => prev - 1)}
+				/>
 				<TwoColorButton
 					icon={SendIcon}
 					text='Continue with your statement'

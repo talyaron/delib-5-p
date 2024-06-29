@@ -97,6 +97,7 @@ export default function SimilarStatementsSuggestion({
 		/>,
 		<StepFourContinueWithOwnInput
 			key={3}
+			setCurrentStep={setCurrentStep}
 			newStatementInput={newStatementInput}
 			onFormSubmit={onFormSubmit}
 		/>,

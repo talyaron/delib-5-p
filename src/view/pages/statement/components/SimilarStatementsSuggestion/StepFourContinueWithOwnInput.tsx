@@ -1,14 +1,17 @@
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
+import BackIcon from '../../../../../assets/icons/chevronLeftIcon.svg?react';
 
 interface StepFourContinueWithOwnInput {
 	newStatementInput: { title: string; description: string };
 	onFormSubmit: () => void;
+	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function StepFourContinueWithOwnInput({
 	newStatementInput,
 	onFormSubmit,
+	setCurrentStep
 }: Readonly<StepFourContinueWithOwnInput>) {
 	return (
 		<>
@@ -29,11 +32,22 @@ export default function StepFourContinueWithOwnInput({
 					id='descriptionInput'
 					value={newStatementInput.description}
 					disabled
-					placeholder={newStatementInput.description ? '' : 'No description provided'}
+					placeholder={
+						newStatementInput.description ? '' : 'No description provided'
+					}
 				/>
 			</div>
 
-			<div className='similarities__buttonBox'>
+			<div className='twoButtonBox'>
+				<TwoColorButton
+					reverse={true}
+					icon={BackIcon}
+					text='back'
+					textBackgroundColor='#fff'
+					textColor='var(--dark-text)'
+					iconBackgroundColor='var(--dark-blue)'
+					onClick={() => setCurrentStep(1)}
+				/>
 				<TwoColorButton
 					icon={SendIcon}
 					text='Submit my Statement'
