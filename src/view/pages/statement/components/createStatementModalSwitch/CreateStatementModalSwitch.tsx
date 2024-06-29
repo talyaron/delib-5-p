@@ -8,7 +8,7 @@ interface CreateStatementModalSwitchProps {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	isQuestion: boolean;
 	isMuliStage: boolean;
-	parentStatement: Statement | 'top';
+	parentStatement: Statement;
 	toggleAskNotifications: () => void;
 }
 

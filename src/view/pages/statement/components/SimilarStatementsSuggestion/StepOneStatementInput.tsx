@@ -3,6 +3,9 @@ import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-righ
 import TwoColorButton from '../../../../components/buttons/TwoColorButton';
 import Loader from '../../../../components/loaders/Loader';
 import { findSimilarStatements } from '../../../../../controllers/db/statements/getSimilarstatements';
+import { useAppSelector } from '../../../../../controllers/hooks/reduxHooks';
+import { subStatementsSelector } from '../../StatementMain';
+import { RootState } from '../../../../../model/store';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -14,27 +17,42 @@ interface SimilarStatementsSuggestionProps {
 		React.SetStateAction<{ title: string; description: string }[]>
 	>;
 	onFormSubmit: () => void;
+	statementId: string;
 }
 
 export default function StepOneStatementInput({
 	// setCurrentStep,
 	newStatementInput,
 	setNewStatementInput,
+	statementId,
 
 	// setSimilarStatements,
 	// onFormSubmit,
-}: SimilarStatementsSuggestionProps) {
+}: Readonly<SimilarStatementsSuggestionProps>) {
 	const [isLoading, setIsLoading] = useState(false);
+
+	const subStatements = useAppSelector((state: RootState) =>
+		subStatementsSelector(state, statementId)
+	);
 
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
 		// Search for similar statements
-		const getStatements = await findSimilarStatements(
-			'123',
+		const similarStatementsIds = await findSimilarStatements(
+			statementId,
 			newStatementInput.title
 		);
-		console.log(getStatements);
+
+		console.log(similarStatementsIds);
+
+		const getSubStatements = subStatements
+			.filter((subStatement) =>
+				similarStatementsIds.includes(subStatement.statementId)
+			)
+			.map((subState) => subState.statement);
+
+		console.log(getSubStatements);
 
 		// if (getStatements.length === 0) {
 		// 	onFormSubmit();

@@ -20,7 +20,7 @@ import Loader from '../../../../components/loaders/Loader';
 interface SimilarStatementsSuggestionProps {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	isQuestion: boolean;
-	parentStatement: Statement | 'top';
+	parentStatement: Statement;
 	toggleAskNotifications?: () => void;
 	isSendToStoreTemp?: boolean;
 	getSubStatements?: () => Promise<void>;
@@ -68,6 +68,7 @@ export default function SimilarStatementsSuggestion({
 
 	const stepsComponents = [
 		<StepOneStatementInput
+			statementId={parentStatement.statementId}
 			setCurrentStep={setCurrentStep}
 			newStatementInput={newStatementInput}
 			setNewStatementInput={setNewStatementInput}
