@@ -47,6 +47,8 @@ const StatementVote: FC<Props> = ({
 	const isCurrentStageVoting = currentStage === QuestionStage.voting;
 	const stageInfo = getStagesInfo(currentStage);
 	const toastMessage = stageInfo ? stageInfo.message : '';
+	const useSearchForSimilarStatements =
+		statement.statementSettings?.enableSimilaritiesSearch || false;
 
 	// * Use State * //
 	const [showMultiStageMessage, setShowMultiStageMessage] =
@@ -109,10 +111,7 @@ const StatementVote: FC<Props> = ({
 				{isCreateStatementModalOpen && (
 					<CreateStatementModalSwitch
 						isMuliStage={isMuliStage}
-						type={
-							statement.questionSettings?.questionType ||
-							QuestionType.singleStep
-						}
+						useSimilarStatements={useSearchForSimilarStatements}
 						parentStatement={statement}
 						isQuestion={false}
 						setShowModal={setIsCreateStatementModalOpen}

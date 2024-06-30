@@ -1,10 +1,10 @@
-import { QuestionType, Statement } from 'delib-npm';
+import { Statement } from 'delib-npm';
 import React from 'react';
 import SimilarStatementsSuggestion from '../SimilarStatementsSuggestion/SimilarStatementsSuggestion';
 import CreateStatementModal from '../createStatementModal/CreateStatementModal';
 
 interface CreateStatementModalSwitchProps {
-	type: QuestionType;
+	useSimilarStatements: boolean;
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	isQuestion: boolean;
 	isMuliStage: boolean;
@@ -13,14 +13,14 @@ interface CreateStatementModalSwitchProps {
 }
 
 export default function CreateStatementModalSwitch({
-	type,
+	useSimilarStatements,
 	setShowModal,
 	isQuestion,
 	isMuliStage,
 	parentStatement,
 	toggleAskNotifications,
 }: CreateStatementModalSwitchProps) {
-	return type === QuestionType.multipleSteps ? (
+	return useSimilarStatements ? (
 		<SimilarStatementsSuggestion
 			setShowModal={setShowModal}
 			isQuestion={isQuestion}

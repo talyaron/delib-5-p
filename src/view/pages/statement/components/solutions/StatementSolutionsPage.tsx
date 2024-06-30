@@ -59,6 +59,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			statement.questionSettings?.questionType === QuestionType.multipleSteps;
 		const currentStage = statement.questionSettings?.currentStage;
 		const stageInfo = getStagesInfo(currentStage);
+		const useSearchForSimilarStatements =
+			statement.statementSettings?.enableSimilaritiesSearch || false;
 
 		// Use States
 		const [showModal, setShowModal] = useState(false);
@@ -186,10 +188,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 						isQuestion={questions}
 						isMuliStage={isMuliStage}
 						setShowModal={setShowModal}
-						type={
-							statement.questionSettings?.questionType ||
-							QuestionType.singleStep
-						}
+						useSimilarStatements={useSearchForSimilarStatements}
 					/>
 				)}
 			</>
@@ -204,18 +203,16 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				case QuestionStage.finished:
 				case QuestionStage.explanation:
 					return (
-						<>
-							<Button
-								text={t('Close')}
-								iconOnRight={false}
-								onClick={() => {
-									setShowToast(false);
-								}}
-								Icon={<X />}
-								color='white'
-								bckColor='var(--crimson)'
-							/>
-						</>
+						<Button
+							text={t('Close')}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							Icon={<X />}
+							color='white'
+							bckColor='var(--crimson)'
+						/>
 					);
 				case QuestionStage.suggestion:
 					return (
