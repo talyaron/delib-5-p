@@ -8,11 +8,7 @@ interface Props{
 export const Section: FC<Props> = ({section}) => {
   
   const {level, title, paragraphs, sections} = section;
- console.log("level", level)
- console.log("title", title)
-  console.log("paragraphs", paragraphs)
-  console.log("sections", sections)
-
+ 
   return (
     <section>
       {switchHeaders(title, level)}

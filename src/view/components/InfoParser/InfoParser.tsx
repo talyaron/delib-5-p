@@ -10,7 +10,7 @@ interface Props {
 
 const InfoParser: FC<Props> = ({ statement }) => {
   const section = getSectionObj(statement.statement, 0);
-  console.log(section);
+  
 
   if (!section) return null;
 
