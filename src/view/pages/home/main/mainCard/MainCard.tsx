@@ -6,16 +6,24 @@ import StatementChatMore from '../../../statement/components/chat/components/Sta
 import { Link } from 'react-router-dom';
 import './MainCard.scss';
 
+//img
+import ImgThumb from '../../../../../assets/images/ImgThumb.png';
+
 interface Props {
 	statement: Statement;
 }
 
 const MainCard: FC<Props> = ({ statement }) => {
 	return (
-		<div className='main-card' style={{ borderColor: statement.color }}>
-			<Link to={`/statement/${statement.statementId}/chat`}>
-				<Text text={statement.statement} />
+		<div className='main-card'>
+
+			<div className='main-card__content'>
+				<img src={ImgThumb} className='main-card__img'></img>
 				<StatementChatMore statement={statement} />
+			</div>
+
+			<Link to={`/statement/${statement.statementId}/chat`} className='main-card__link'>
+				<Text text={statement.statement} />
 			</Link>
 		</div>
 	);

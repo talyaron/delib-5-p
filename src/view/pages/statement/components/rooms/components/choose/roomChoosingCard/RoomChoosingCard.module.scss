@@ -1,0 +1,37 @@
+.roomCard {
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    color: var(--black);
+    padding: 0.7rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: all 100ms ease-in-out;
+    transform: scale(0.9);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
+    &__fill {
+        transition: all 100ms ease-in-out;
+        background-color: rgba(2, 197, 2, 0.294);
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        border-radius: 0px 0px 1rem 1rem;
+    }
+
+    &--selected {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+        //on mobile
+        @media (max-width: 768px) {
+            transform: scale(0.98);
+           
+        }
+    }
+}

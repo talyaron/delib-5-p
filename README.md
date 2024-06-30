@@ -56,6 +56,9 @@ Delib-5 uses a technological stack consisting of React-Redux-PWA (built with Vit
 
    # Initialize emulators
    firebase init emulators
+
+   # run emulators
+   npm run deve
    ```
 
 4. **Set up Firebase configuration**

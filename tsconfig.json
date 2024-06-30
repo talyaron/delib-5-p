@@ -21,9 +21,6 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": ["src", "cypress"],
-    "exclude": [
-        "src/functions/db/config.ts"
-        // Add more patterns as necessary
-    ],
+    "exclude": ["node_modules"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -10,16 +10,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #5f9bf5;
+        background-color: #659bf0;
         margin-bottom: -.5px;
         z-index: 1;
 
         @media (min-width: 570px) {
-            background-color: #5a8ded;
+            background-color: #5c8fed;
         }
 
         @media (min-width: 870px) {
-            background-color: #5a91f0;
+            background-color: #5d90effd;
         }
 
         &__wrapper {
@@ -87,6 +87,10 @@
     }
 }
 
+.main-wrap {
+    gap: 0;
+}
+
 .home-page {
     &__main {
         height: 100%;
@@ -98,23 +102,41 @@
 
 .heroImg {
     background-size: cover;
-    background-position: center;
+    background-position:bottom;
     margin-bottom: 2rem;
-    margin-top: -6rem;
+    margin-top: -5rem;
     width: 100vw;
-    height: 27vh;
-    background-image: url('../../assets/images/hero.png');
+    background-image: url('../../assets/images/hero-rectangle.png');
+    height: 30vh;
+    
+    @media (max-width: 1200px) {
+       
+        background-image: url('../../assets/images/hero-x4.png');
+        height: 25vh;
+        margin-top: 0;
+    }
+    
 
-
-    @media (min-width: 570px) {
-        background-image: url('../../assets/images/Hero-BG-illustrations.png');
+    @media (max-width: 870px) {
+       
+        background-image: url('../../assets/images/hero-x3.png');
+        height: 24vh;
+        margin-top: 0;
     }
 
-    @media (min-width: 870px) {
-        background-image: url('../../assets/images/Hero-rectangle.png');
-        height: 20vh;
-        margin-top: -1rem;
+    @media (max-width: 570px) {
+        background-image: url('../../assets/images/hero-x1.png');
+       
+        height: 15vh;
     }
+
+    @media (max-width: 440px) {
+        background-image: url('../../assets/images/hero-x1.png');
+       
+        height: 15vh;
+    }
+
+   
 }
 
 .bikeImg {
