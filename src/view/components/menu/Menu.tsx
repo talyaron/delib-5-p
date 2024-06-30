@@ -1,4 +1,4 @@
-import { ComponentProps, FC, useEffect } from "react";
+import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
 import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
 import "./Menu.scss";
@@ -17,6 +17,7 @@ const Menu: FC<MenuProps> = ({
 	children,
 }) => {
 	const { dir } = useLanguage();
+
 
 	if (!children) {
 		return null;
