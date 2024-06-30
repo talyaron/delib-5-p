@@ -19,6 +19,7 @@ import FollowMe from "../../../../../assets/icons/follow.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
 	calculateFontSize,
+	getTitle,
 	handleLogout,
 } from "../../../../../controllers/general/helpers";
 import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
@@ -40,7 +41,6 @@ import InvitePanel from "./invitePanel/InvitePanel";
 import InvitationIcon from '../../../../../assets/icons/invitation.svg?react'
 
 interface Props {
-  title: string;
   screen: Screen;
   statement: Statement | undefined;
   statementSubscription: StatementSubscription | undefined;
@@ -51,7 +51,6 @@ interface Props {
 }
 
 const StatementHeader: FC<Props> = ({
-	title,
 	screen,
 	statement,
 	statementSubscription,
@@ -60,6 +59,7 @@ const StatementHeader: FC<Props> = ({
 }) => {
 	// Hooks
 	const { pathname } = useLocation();
+	const title = getTitle(statement);
 
 	const token = useToken();
 	const headerColor = useStatementColor(statement?.statementType || "");
@@ -151,6 +151,7 @@ const StatementHeader: FC<Props> = ({
 						isEdit={editHeader}
 						statement={statement}
 						setEdit={setEditHeader}
+						onlyTitle={true}
 					/>
 				)}
 

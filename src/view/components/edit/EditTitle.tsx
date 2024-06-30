@@ -11,6 +11,7 @@ import styles from "./EditTitle.module.scss";
 
 // Custom components
 import Text from "../text/Text";
+import { getDescription, getTitle } from "../../../controllers/general/helpers";
 
 // import { statementTitleToDisplay } from "../../../controllers/general/helpers";
 
@@ -53,8 +54,8 @@ const EditTitle: FC<Props> = ({
 
 			if (!statement) throw new Error("Statement is undefined");
 
-			const title = text.split("\n")[0];
-			const description = text.split("\n").slice(1).join("\n");
+			const title =getTitle(statement)
+			const description = getDescription(statement);
 
 			const updatedText = isTextArea
 				? text.trim()
