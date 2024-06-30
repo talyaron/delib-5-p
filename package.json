@@ -9,7 +9,7 @@
 		"devf": "cd functions && npm run build:watch",
 		"deve": "firebase emulators:start",
 		"build": "tsc && vite build",
-		"lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
+		"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
 		"typecheck": "tsc",
 		"preview": "vite preview",
 		"deploy:h": "npm run build && firebase deploy --only hosting",
