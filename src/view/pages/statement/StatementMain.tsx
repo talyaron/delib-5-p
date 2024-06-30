@@ -42,6 +42,7 @@ import { useLanguage } from "../../../controllers/hooks/useLanguages";
 import Page404 from "../page404/Page404";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
 
+
 // Create selectors
 export const subStatementsSelector = createSelector(
 	(state: RootState) => state.statements.statements,
@@ -252,14 +253,13 @@ const StatementMain: FC = () => {
 						statementSubscription={statementSubscription}
 						topParentStatement={topParentStatement}
 						screen={screen || Screen.CHAT}
-						title={title}
 						showAskPermission={showAskPermission}
 						setShowAskPermission={setShowAskPermission}
 						role={role}
 					/>
-
 					<MapProvider>
 						<FollowMeToast role={role} statement={statement} />
+					
 						<SwitchScreens
 							screen={screen}
 							statement={statement}

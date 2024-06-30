@@ -18,6 +18,7 @@ const Menu: FC<MenuProps> = ({
 }) => {
 	const { dir } = useLanguage();
 
+
 	if (!children) {
 		return null;
 	}

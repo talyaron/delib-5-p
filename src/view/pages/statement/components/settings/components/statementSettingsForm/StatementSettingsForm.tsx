@@ -24,6 +24,9 @@ import SectionTitle from './../../components/sectionTitle/SectionTitle';
 import './StatementSettingsForm.scss';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
 
+// icons
+import SaveIcon from '../../../../../../../assets/icons/save.svg';
+
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
 	statement: Statement;
@@ -84,7 +87,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
 				{!isNewStatement && (
 					<>
-						<QuestionSettings {...statementSettingsProps} />
 						<UploadImage {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
 						<MembersSettings {...statementSettingsProps} />
@@ -102,7 +104,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 					className='submit-button'
 					data-cy='settings-statement-submit-btn'
 				>
-					{t(isNewStatement ? 'Add' : 'Update')}
+					<img src={SaveIcon} alt='Save Icon' />
 				</button>
 			</form>
 		);

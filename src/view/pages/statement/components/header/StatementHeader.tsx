@@ -19,6 +19,7 @@ import FollowMe from "../../../../../assets/icons/follow.svg?react";
 import ShareIcon from "../../../../../assets/icons/shareIcon.svg?react";
 import {
 	calculateFontSize,
+	getTitle,
 	handleLogout,
 } from "../../../../../controllers/general/helpers";
 import DisconnectIcon from "../../../../../assets/icons/disconnectIcon.svg?react";
@@ -34,20 +35,22 @@ import MenuOption from "../../../../components/menu/MenuOption";
 import { useDispatch } from "react-redux";
 import Back from "./Back";
 import HomeButton from "./HomeButton";
+import InvitePanel from "./invitePanel/InvitePanel";
+
+// icons
+import InvitationIcon from '../../../../../assets/icons/invitation.svg?react'
 
 interface Props {
-    title: string;
-    screen: Screen;
-    statement: Statement | undefined;
-    statementSubscription:StatementSubscription|undefined
-    topParentStatement: Statement | undefined;
-    role: Role | undefined;
-    showAskPermission: boolean;
-    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+  screen: Screen;
+  statement: Statement | undefined;
+  statementSubscription: StatementSubscription | undefined;
+  topParentStatement: Statement | undefined;
+  role: Role | undefined;
+  showAskPermission: boolean;
+  setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatementHeader: FC<Props> = ({
-	title,
 	screen,
 	statement,
 	statementSubscription,
@@ -56,18 +59,18 @@ const StatementHeader: FC<Props> = ({
 }) => {
 	// Hooks
 	const { pathname } = useLocation();
+	const title = getTitle(statement);
 
 	const token = useToken();
 	const headerColor = useStatementColor(statement?.statementType || "");
 	const permission = useNotificationPermission(token);
 	const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
+	const [showInvitationModal, setShowInvitationModal] = useState(false);
 	const dispatch = useDispatch();
 	const { t, dir } = useLanguage();
 	const parentStatement = store
 		.getState()
-		.statements.statements.find(
-			(st) => st.statementId === statement?.parentId,
-		);
+		.statements.statements.find((st) => st.statementId === statement?.parentId);
 
 	// Redux Store
 	const user = store.getState().user.user;
@@ -89,10 +92,8 @@ const StatementHeader: FC<Props> = ({
 		};
 		navigator.share(shareData);
 	}
-	function handleEditTitle():void {
-		
+	function handleEditTitle(): void {
 		if (statementSubscription?.role === Role.admin) {
-		
 			setEditHeader(true);
 		}
 	}
@@ -106,6 +107,16 @@ const StatementHeader: FC<Props> = ({
 			console.error(error);
 		}
 	}
+
+	function handleInvitePanel() {
+		try {
+			setShowInvitationModal(true);
+	
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	const menuIconStyle = {
 		color: headerColor.backgroundColor,
 		width: "24px",
@@ -125,6 +136,7 @@ const StatementHeader: FC<Props> = ({
 					/>
 					<HomeButton headerColor={headerColor} />
 				</div>
+
 				{!editHeader ? (
 					<h1
 						className={isAdmin ? "clickable" : ""}
@@ -139,6 +151,7 @@ const StatementHeader: FC<Props> = ({
 						isEdit={editHeader}
 						statement={statement}
 						setEdit={setEditHeader}
+						onlyTitle={true}
 					/>
 				)}
 
@@ -167,7 +180,7 @@ const StatementHeader: FC<Props> = ({
 								statement,
 								permission,
 								setShowAskPermission,
-								t,
+								t
 							)
 						}
 					/>
@@ -177,17 +190,29 @@ const StatementHeader: FC<Props> = ({
 						onOptionClick={() => handleLogout(dispatch)}
 					/>
 					{isAdmin && (
-						<MenuOption
-							label={t("Follow Me")}
-							icon={<FollowMe style={menuIconStyle} />}
-							onOptionClick={handleFollowMe}
-						/>
+						<>
+							<MenuOption
+								label={t("Follow Me")}
+								icon={<FollowMe style={menuIconStyle} />}
+								onOptionClick={handleFollowMe}
+							/>
+							<MenuOption
+								label={t("Invite with PIN number")}
+								icon={<InvitationIcon style={menuIconStyle} />}
+								onOptionClick={handleInvitePanel}
+							/>
+						</>
 					)}
 				</Menu>
 			</div>
 			{statement && (
-				<StatementTopNav statement={statement} screen={screen} statementSubscription={statementSubscription}/>
+				<StatementTopNav
+					statement={statement}
+					screen={screen}
+					statementSubscription={statementSubscription}
+				/>
 			)}
+			{showInvitationModal && <InvitePanel setShowModal={setShowInvitationModal} statementId={statement?.statementId} pathname={pathname}/>}
 		</div>
 	);
 };
