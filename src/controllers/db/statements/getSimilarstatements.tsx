@@ -5,7 +5,8 @@ export const findSimilarStatements = async (
 	const url =
 		location.hostname === 'localhost'
 			? 'http://localhost:5001/delib-testing/us-central1/checkForSimilarStatements'
-			: 'https://checkforsimilarstatements-7qsv67fbvq-uc.a.run.app';
+			: 'https://checkforsimilarstatements-oeqnq63ina-uc.a.run.app';
+	
 
 	const body = { statementId, userInput };
 
