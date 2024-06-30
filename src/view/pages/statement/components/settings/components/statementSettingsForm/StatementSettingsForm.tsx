@@ -22,7 +22,6 @@ import AdvancedSettings from './../../components/advancedSettings/AdvancedSettin
 import MembersSettings from './../../components/membership/MembersSettings';
 import SectionTitle from './../../components/sectionTitle/SectionTitle';
 import './StatementSettingsForm.scss';
-import QuestionSettings from '../QuestionSettings/QuestionSettings';
 
 // icons
 import SaveIcon from '../../../../../../../assets/icons/save.svg';
