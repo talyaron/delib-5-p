@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "delib-5-avni",
+    "default": "real-time-chat-4a32b",
     "dev": "delib-v3-dev",
     "prod": "synthesistalyaron"
   },
