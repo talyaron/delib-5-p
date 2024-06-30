@@ -31,18 +31,21 @@ const EditTitle: FC<Props> = ({
 	onlyTitle,
 }) => {
 	const [text, setText] = useState(statement?.statement || "");
+	const [title, setTitle] = useState(getTitle(statement) || "");
 	const [showSaveButton, setShowSaveButton] = useState(false);
 
 	if (!statement) return null;
 
 	const direction = document.body.style.direction as "ltr" | "rtl";
 	const align = direction === "ltr" ? "left" : "right";
+	
 
 
-	function handleTextChange(
-		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+	function handleChange(
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+		setState: React.Dispatch<React.SetStateAction<string>>
 	) {
-		setText(e.target.value);
+		setState(e.target.value);
 		setShowSaveButton(true);
 	}
 
@@ -53,13 +56,15 @@ const EditTitle: FC<Props> = ({
 			if (!text.trim()) return; // Do not save if the text is empty
 
 			if (!statement) throw new Error("Statement is undefined");
+			
 
-			const title =getTitle(statement)
 			const description = getDescription(statement);
+
+			
 
 			const updatedText = isTextArea
 				? text.trim()
-				: title.trim() + "\n" + description.trim();
+				: title + "\n" + description.trim();
 				
 			updateStatementText(statement, updatedText);
 			setEdit(false);
@@ -82,7 +87,7 @@ const EditTitle: FC<Props> = ({
 					style={{ direction: direction, textAlign: align }}
 					className={styles.textarea}
 					value={text}
-					onChange={handleTextChange}
+					onChange={(e) => handleChange(e,setText)}
 					autoFocus={true}
 					placeholder="Add text"
 				/>
@@ -91,13 +96,13 @@ const EditTitle: FC<Props> = ({
 					style={{ direction: direction, textAlign: align }}
 					className={styles.input}
 					type="text"
-					value={text}
-					onChange={handleTextChange}
+					value={title}
+					onChange={(e) => handleChange(e,setTitle)}
 					autoFocus={true}
 					data-cy="edit-title-input"
 				/>
 			)}
-			{showSaveButton && (
+			{isEdit && (
 				<button
 					className="editTitle-btn btn btn--agree btn--small"
 					onClick={handleSave}
