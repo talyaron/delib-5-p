@@ -1,15 +1,4 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-import functions = require('firebase-functions');
-
 import { Collections } from 'delib-npm';
-
 import {
 	deleteEvaluation,
 	newEvaluation,
@@ -131,6 +120,9 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 );
 
 //http requests
-exports.getRandomStatements = functions.https.onRequest(getRandomStatements);
-exports.getTopStatements = functions.https.onRequest(getTopStatements);
-exports.getUserOptions = functions.https.onRequest(getUserOptions);
+const isProduction = process.env.FUNCTION_REGION !== undefined;
+
+const cors = isProduction?{cors:["https//delib-5.web.app"]}:{cors:true};
+exports.getRandomStatements = onRequest(cors, getRandomStatements);
+exports.getTopStatements = onRequest(cors,getTopStatements);
+exports.getUserOptions = onRequest(cors,getUserOptions);

@@ -102,9 +102,10 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 
 		useEffect(() => {
 			if (isMuliStage) {
+				alert("getMultiStageOptions", currentStage);
 				getMultiStageOptions(statement, dispatch);
 			}
-		}, [isMuliStage]);
+		}, [currentStage]);
 
 		useEffect(() => {
 			if (!showToast && !questions) {
@@ -134,8 +135,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 					<div className='wrapper'>
 						{isMuliStage && message && (
 							<Toast
-								text={`${t(message)}: "${getTitle(statement)}"`}
-								type='message'
+								text={`${t(message)}${currentStage === QuestionStage.suggestion?`: "${getTitle(statement)}`:""}`}
+								type="message"
 								show={showToast}
 								setShow={setShowToast}
 							>
