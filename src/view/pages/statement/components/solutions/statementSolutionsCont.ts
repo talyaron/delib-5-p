@@ -130,7 +130,7 @@ export async function getMultiStageOptions(
 			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
 		) {
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
+				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=6`
 			);
 			const { randomStatements, error } = await response.json();
 			if (error) throw new Error(error);
@@ -140,7 +140,7 @@ export async function getMultiStageOptions(
 			QuestionStage.secondEvaluation
 		) {
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=2`
+				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=10`
 			);
 			const { topSolutions, error } = await response.json();
 			if (error) throw new Error(error);
