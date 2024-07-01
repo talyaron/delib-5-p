@@ -60,6 +60,7 @@ const EditTitle: FC<Props> = ({
 
 			updateStatementText(statement, updatedText);
 			setEdit(false);
+			setShowSaveIconButton(false);
 		} catch (error) {
 			console.error(error);
 		}
@@ -94,12 +95,14 @@ const EditTitle: FC<Props> = ({
 						autoFocus={true}
 						data-cy="edit-title-input"
 					/>
-					<img
-						src={SaveTextIcon}
-						onClick={handleSave}
-						className={styles.icon}
-						alt="Icon"
-					/>
+					{showSaveIconButton && (
+						<img
+							src={SaveTextIcon}
+							onClick={handleSave}
+							className={styles.icon}
+							alt="Icon"
+						/>
+					)}
 				</div>
 			)}
 		</div>
