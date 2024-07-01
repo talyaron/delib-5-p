@@ -50,7 +50,7 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return; // Do not save if the text is empty
+			if (!text.trim()) return; 
 
 			if (!statement) throw new Error("Statement is undefined");
 
