@@ -25,6 +25,7 @@ import './StatementSettingsForm.scss';
 
 // icons
 import SaveIcon from '../../../../../../../assets/icons/save.svg';
+import QuestionSettings from '../QuestionSettings/QuestionSettings';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
@@ -87,6 +88,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				{!isNewStatement && (
 					<>
 						<UploadImage {...statementSettingsProps} />
+						<QuestionSettings {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
 						<MembersSettings {...statementSettingsProps} />
 						<section className='get-members-area'>
