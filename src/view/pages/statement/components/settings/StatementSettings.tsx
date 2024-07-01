@@ -84,7 +84,7 @@ const StatementSettings: FC = () => {
 
 				if (statementId) {
 					unsubscribe = listenToMembers(dispatch)(statementId);
-					unsubMeta = listenToStatementMetaData(statementId, dispatch);
+					unsubMeta = listenToStatementMetaData(statementId);
 
 					if (statement) {
 						setStatementToEdit(statement);
