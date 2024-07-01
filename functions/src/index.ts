@@ -122,7 +122,8 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 //http requests
 const isProduction = process.env.FUNCTION_REGION !== undefined;
 
-const cors = isProduction?{cors:["https//delib-5.web.app"]}:{cors:true};
+console.log('isProduction', isProduction);
+const cors = isProduction?{cors:["https://delib-5.web.app"]}:{cors:["http://localhost:5173"], methods: ["GET", "POST", "PUT", "DELETE"]};
 exports.getRandomStatements = onRequest(cors, getRandomStatements);
-exports.getTopStatements = onRequest(cors,getTopStatements);
-exports.getUserOptions = onRequest(cors,getUserOptions);
+exports.getTopStatements = onRequest(cors, getTopStatements);
+exports.getUserOptions = onRequest(cors, getUserOptions);

@@ -19,7 +19,7 @@
     }
   ],
   "hosting": {
-    "site": "my-first-project-for-lea-4b68d",
+    "site": "delib-5",
     "public": "dist",
     "ignore": [
       "firebase.json",
