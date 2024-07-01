@@ -35,7 +35,6 @@ export function listenToStatementMetaData(statementId: string, dispatch: Dispatc
 		});
 	} catch (error) {
 		console.error(error);
-
 		//@ts-ignore
 		return () => {console.error("Unsubscribe function not returned")};
 	}
