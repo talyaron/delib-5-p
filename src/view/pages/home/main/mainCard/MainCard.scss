@@ -7,7 +7,7 @@
     min-width: 340px;
     width: 400px;
     border-radius: 0.25rem;
-    padding: 1rem;
+    padding: .5rem;
     left: 0.121rem;
     position: relative;
 
@@ -50,7 +50,7 @@
 
     // mobile
     @media (max-width: 768px) {
-        width: 90%;
+        width: 95%;
     }
 
     a {
