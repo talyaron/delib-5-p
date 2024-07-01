@@ -50,7 +50,7 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return; // Do not save if the text is empty
+			if (!text.trim()) return; 
 
 			if (!statement) throw new Error("Statement is undefined");
 
@@ -60,6 +60,7 @@ const EditTitle: FC<Props> = ({
 
 			updateStatementText(statement, updatedText);
 			setEdit(false);
+			setShowSaveIconButton(false);
 		} catch (error) {
 			console.error(error);
 		}
@@ -94,12 +95,14 @@ const EditTitle: FC<Props> = ({
 						autoFocus={true}
 						data-cy="edit-title-input"
 					/>
-					<img
-						src={SaveTextIcon}
-						onClick={handleSave}
-						className={styles.icon}
-						alt="Icon"
-					/>
+					{showSaveIconButton && (
+						<img
+							src={SaveTextIcon}
+							onClick={handleSave}
+							className={styles.icon}
+							alt="Icon"
+						/>
+					)}
 				</div>
 			)}
 		</div>

@@ -131,7 +131,7 @@
 
 .edit-input {
   width: 100%;
-  padding-right: 40px; 
+  padding-right: 55px; 
   direction: rtl; 
 }
 
@@ -139,4 +139,8 @@
   position: absolute;
   right: 1px;
   cursor: pointer;
+  border-radius: 25px;
+}
+.save-icon:hover{
+  opacity: 0.7;
 }
