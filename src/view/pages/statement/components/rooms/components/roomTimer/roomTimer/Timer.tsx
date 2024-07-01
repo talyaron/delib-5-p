@@ -1,14 +1,6 @@
-import { useEffect, useState } from "react";
-
-// Style
-
-import TimerIcon from "../timerIcon/TimerIcon";
-import PlayIcon from "../../../../../../../components/icons/PlayIcon";
-import PauseIcon from "../../../../../../../components/icons/PauseIcon";
-import StopIcon from "../../../../../../../components/icons/StopIcon";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { getMinutesAndSeconds } from "../timerPageController";
 import { RoomTimer, TimerStatus } from "delib-npm";
-
 import {
 	setTimersStatusDB,
 	startNextTimer,
@@ -16,6 +8,18 @@ import {
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
 import { selectTimerByTimerId } from "../../../../../../../../model/timers/timersSlice";
 import "./Timer.scss";
+
+// icons
+
+import TimerIcon from "../timerIcon/TimerIcon";
+import PlayIcon from "../../../../../../../components/icons/PlayIcon";
+import PauseIcon from "../../../../../../../components/icons/PauseIcon";
+import StopIcon from "../../../../../../../components/icons/StopIcon";
+
+//sound
+import bell from "../../../../../../../../assets/sounds/bell.mp3";
+
+
 
 interface Props {
   roomTimer: RoomTimer;
@@ -30,8 +34,14 @@ export default function Timer({
 		selectTimerByTimerId(roomTimer.roomTimerId)
 	);
 
+	//@ts-ignore
+	const bellRef:MutableRefObject = useRef(null);
+	const playSound = () => {
+		bellRef?.current?.play();
+	};
+
 	// useState
-	const initTime = roomTimer.time; 
+	const initTime = roomTimer.time;
 	const [timeLeft, setTimeLeft] = useState(roomTimer.time);
 
 	const [minutes, setMinutes] = useState(
@@ -57,8 +67,10 @@ export default function Timer({
 					clearInterval(timer);
 					setTimersStatusDB(roomTimer, TimerStatus.finish);
 					startNextTimer(roomTimer);
-
+		  playSound();
+					
 					return 0;
+		 
 				}
 
 				setMinutes(getMinutesAndSeconds(newTime).minutes);
@@ -67,6 +79,13 @@ export default function Timer({
 				return newTime;
 			});
 		}, 1000);
+
+	useEffect(() => {
+  
+		setTimeLeft(initTime);
+		setMinutes(getMinutesAndSeconds(initTime).minutes);
+		setSeconds(getMinutesAndSeconds(initTime).seconds);
+	}, [roomTimer]);
 
 	useEffect(() => {
 		if (isActive) {
@@ -162,6 +181,10 @@ export default function Timer({
 					</>
 				)}
 			</div>
+			<audio ref={bellRef}>
+				<source src={bell} type="audio/mpeg" />
+        Your browser does not support the audio element.
+			</audio>
 		</div>
 	);
 }

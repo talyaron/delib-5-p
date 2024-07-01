@@ -22,6 +22,7 @@ const Page404 = () => {
 		navigate("/", { state: { from: window.location.pathname } });
 	}
 
+
 	return (
 		<div className="page404">
 			<img className="page404__cloud1" src={Cloud1} alt="Cloud 1" />
@@ -37,18 +38,15 @@ const Page404 = () => {
 				<img className="page404__cables__Cable" src={cable} alt="Cable" />
 			</div>
 			<div className="page404__text">
-				<p>{t("Sorry, Page not found!")}</p>
+				<p>{t("Sorry, Page not found")}</p>
 			</div>
 
 			<button className="page404__btn" onClick={handleGoHome}>
-				<img
-					className="page404__btnImg"
-					src="/src/assets/images/takeMeHome.png"
-					alt="Take me home"
-				/>
+				<p>{t("Take me home")}</p>
 			</button>
 		</div>
 	);
+
 };
 
 export default Page404;

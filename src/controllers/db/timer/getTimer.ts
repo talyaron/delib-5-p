@@ -79,6 +79,7 @@ export function listenToRoomTimers(
 				const timers: RoomTimer[] = roomTimersDB.docs.map(
 					(roomTimer) => roomTimer.data() as RoomTimer,
 				);
+			
 
 				z.array(RoomTimerSchema).parse(timers);
 

@@ -10,6 +10,15 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
 
+     match /statementsMeta/{statementId=**}{
+        allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /invitations/{invitationId=**}{
+       allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
       match /admins/{adminStatementId=**}{
      
       allow write: if request.auth.uid == request.resource.data.user.uid;
@@ -175,5 +184,4 @@ service cloud.firestore {
       allow write: if request.auth.uid == request.resource.data.creator.uid
     }
   }
-  
 }

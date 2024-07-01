@@ -5,28 +5,30 @@ import {
 	Evaluation,
 	StatementType,
 	Screen,
-} from "delib-npm";
+} from 'delib-npm';
 
 // Helpers
-import { getVoters } from "../../../../../controllers/db/vote/getVotes";
-import { getEvaluations } from "../../../../../controllers/db/evaluation/getEvaluation";
-import { navigateToStatementTab } from "../../../../../controllers/general/helpers";
+import { getVoters } from '../../../../../controllers/db/vote/getVotes';
+import { getEvaluations } from '../../../../../controllers/db/evaluation/getEvaluation';
+import { navigateToStatementTab } from '../../../../../controllers/general/helpers';
 import {
 	createStatement,
 	setStatementToDB,
 	updateStatement,
-} from "../../../../../controllers/db/statements/setStatements";
+} from '../../../../../controllers/db/statements/setStatements';
 import {
 	defaultResultsSettings,
 	defaultStatementSettings,
-} from "./emptyStatementModel";
-import { NavigateFunction } from "react-router-dom";
+} from './emptyStatementModel';
+import { NavigateFunction } from 'react-router-dom';
+import { store } from '../../../../../model/store';
+import { setTempStatementsForPresentation } from '../../../../../model/statements/statementsSlice';
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
 	parentId: string | undefined,
 	setVoters: React.Dispatch<React.SetStateAction<Vote[]>>,
-	setClicked: React.Dispatch<React.SetStateAction<boolean>>,
+	setClicked: React.Dispatch<React.SetStateAction<boolean>>
 ) {
 	if (!parentId) return;
 	const voters = await getVoters(parentId);
@@ -38,7 +40,7 @@ export async function handleGetVoters(
 export async function handleGetEvaluators(
 	parentId: string | undefined,
 	setEvaluators: React.Dispatch<React.SetStateAction<Evaluation[]>>,
-	setClicked: React.Dispatch<React.SetStateAction<boolean>>,
+	setClicked: React.Dispatch<React.SetStateAction<boolean>>
 ) {
 	if (!parentId) return;
 	const evaluators = await getEvaluations(parentId);
@@ -49,7 +51,7 @@ export async function handleGetEvaluators(
 // Check if sub-page is checked in stored statement
 export function isSubPageChecked(
 	statement: Statement | undefined,
-	navObj: NavObject,
+	navObj: NavObject
 ): boolean {
 	try {
 		//in case of a new statement
@@ -75,19 +77,17 @@ interface HandleSetStatementParams {
 	navigate: NavigateFunction;
 	statementId: string | undefined;
 	statement: Statement;
-	parentStatement?: Statement | "top";
+	parentStatement?: Statement | 'top';
 }
 
 export async function handleSetStatement({
 	navigate,
 	statementId,
 	statement,
-	parentStatement
+	parentStatement,
 }: HandleSetStatementParams) {
 	try {
-		
 		const _statement = getStatementText(statement);
-		
 
 		// If statement title is empty, don't save
 		if (!_statement) return;
@@ -109,7 +109,7 @@ export async function handleSetStatement({
 				text: _statement,
 				subScreens,
 				statementType: StatementType.question,
-				parentStatement: "top",
+				parentStatement: 'top',
 				resultsBy,
 				numberOfResults,
 				hasChildren,
@@ -118,11 +118,10 @@ export async function handleSetStatement({
 				enhancedEvaluation,
 				showEvaluation,
 			});
-			if (!newStatement)
-				throw new Error("newStatement had error in creating");
+			if (!newStatement) throw new Error('newStatement had error in creating');
 
 			await setStatementToDB({
-				parentStatement: "top",
+				parentStatement: 'top',
 				statement: newStatement,
 				addSubscription: true,
 			});
@@ -134,7 +133,7 @@ export async function handleSetStatement({
 		// If statementId, user is on Settings tab in statement page
 		else {
 			// update statement
-			if (!statement) throw new Error("statement is undefined");
+			if (!statement) throw new Error('statement is undefined');
 
 			const newStatement = updateStatement({
 				statement,
@@ -149,8 +148,7 @@ export async function handleSetStatement({
 				enhancedEvaluation,
 				showEvaluation,
 			});
-			if (!newStatement)
-				throw new Error("newStatement had not been updated");
+			if (!newStatement) throw new Error('newStatement had not been updated');
 
 			await setStatementToDB({
 				parentStatement,
@@ -167,7 +165,7 @@ export async function handleSetStatement({
 }
 
 const prefixTitle = (title: string): string => {
-	if (title && !title.startsWith("*")) {
+	if (title && !title.startsWith('*')) {
 		return `*${title}`;
 	}
 
@@ -177,8 +175,11 @@ const prefixTitle = (title: string): string => {
 const getStatementText = (statement: Statement): string | null => {
 	try {
 		const titleAndDescription = statement.statement;
-		const endOfTitle = titleAndDescription.indexOf("\n");
-		const _title = endOfTitle === -1 ? titleAndDescription : titleAndDescription.substring(0, endOfTitle);
+		const endOfTitle = titleAndDescription.indexOf('\n');
+		const _title =
+			endOfTitle === -1
+				? titleAndDescription
+				: titleAndDescription.substring(0, endOfTitle);
 
 		// TODO: add validation for title in UI
 		if (!_title || _title.length < 2) return null;
@@ -190,7 +191,7 @@ const getStatementText = (statement: Statement): string | null => {
 		return `${title}\n${description}`;
 	} catch (error) {
 		console.error(error);
-		
+
 		return null;
 	}
 };
@@ -201,14 +202,15 @@ export const getStatementSettings = (statement: Statement) => {
 
 	return {
 		enableAddEvaluationOption: Boolean(
-			statementSettings.enableAddEvaluationOption,
+			statementSettings.enableAddEvaluationOption
 		),
 		enableAddVotingOption: Boolean(statementSettings.enableAddVotingOption),
 		enhancedEvaluation: Boolean(statementSettings.enhancedEvaluation),
 		showEvaluation: Boolean(statementSettings.showEvaluation),
 		subScreens: statementSettings.subScreens ?? [],
-		inVotingGetOnlyResults: Boolean(
-			statementSettings.inVotingGetOnlyResults,
+		inVotingGetOnlyResults: Boolean(statementSettings.inVotingGetOnlyResults),
+		enableSimilaritiesSearch: Boolean(
+			statementSettings.enableSimilaritiesSearch
 		),
 	};
 };
@@ -269,8 +271,9 @@ interface CreateStatementFromModalParams {
 	title: string;
 	description: string;
 	isOptionSelected: boolean;
-	parentStatement: Statement | "top";
+	parentStatement: Statement | 'top';
 	toggleAskNotifications?: VoidFunction;
+	isSendToStoreTemp?: boolean;
 }
 
 export async function createStatementFromModal({
@@ -279,9 +282,10 @@ export async function createStatementFromModal({
 	isOptionSelected,
 	toggleAskNotifications,
 	parentStatement,
+	isSendToStoreTemp,
 }: CreateStatementFromModalParams) {
 	try {
-		if (!title) throw new Error("title is undefined");
+		if (!title) throw new Error('title is undefined');
 
 		const _title = prefixTitle(title);
 		const text = `${_title}\n${description}`;
@@ -297,14 +301,18 @@ export async function createStatementFromModal({
 				: StatementType.question,
 		});
 
-		if (!newStatement) throw new Error("newStatement was not created");
+		if (!newStatement) throw new Error('newStatement was not created');
 
 		await setStatementToDB({
 			statement: newStatement,
-			parentStatement:
-				parentStatement === "top" ? undefined : parentStatement,
+			parentStatement: parentStatement === 'top' ? undefined : parentStatement,
 			addSubscription: true,
 		});
+
+		if (isSendToStoreTemp) {
+			//dispatch to the store
+			store.dispatch(setTempStatementsForPresentation([newStatement]));
+		}
 	} catch (error) {
 		console.error(error);
 	}

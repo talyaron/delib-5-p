@@ -54,21 +54,11 @@
     }
 
     .submit-button {
-        width: 20%;
-        height: 2rem;
         margin: auto;
-        font-size: 1rem;
-        border: none;
-        outline: none;
-        background-color: #4e88c7;
-        color: var(--question-text);
-        border-radius: 3px;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 10px 10px var(--shadow);
         position: fixed;
-        bottom: 2rem;
-        left: 40%;
+        bottom: 2%;
+        left: 63%;
         z-index: 1000;
         &:hover {
             transform: scale(0.9);

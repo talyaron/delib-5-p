@@ -11,6 +11,7 @@ import { AppDispatch, store } from "../../model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "../../model/users/userSlice";
+import { ZodError, ZodIssue } from "zod";
 
 export function updateArray<T>(
 	currentArray: Array<T>,
@@ -280,16 +281,36 @@ export function getFirstScreen(array: Array<Screen>): Screen {
 
 export function getFirstName(fullName: string) {
 	try {
-		if(!fullName) return "";
+		if (!fullName) return "";
 		const names = fullName.split(" ");
 		if (names.length > 1) return names[0] + " " + names[1][0] + ".";
-		
+
 		return names[0];
 	} catch (error) {
 		console.error(error);
 
 		return "";
 	}
+}
+
+export function writeZodError(error: ZodError, object: unknown): void {
+	try {
+		error.issues.forEach((issue: ZodIssue) => {
+			console.error(`Error at ${issue.path.join('.')}: ${issue.message} (${issue.code})`);
+
+
+			console.info("Object sent:",object)
+		});
+
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+export function getNumberDigits(number: number): number {
+	const _number = Math.floor(number);
+	
+	return _number.toString().length;
 }
 
 

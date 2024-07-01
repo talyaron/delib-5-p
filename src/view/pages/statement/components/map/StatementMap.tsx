@@ -1,7 +1,7 @@
 import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { Results, Statement } from "delib-npm";
+import { Results, Role, Statement } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
@@ -21,12 +21,23 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import { useMapContext } from "../../../../../controllers/hooks/useMap";
 import { ReactFlowProvider } from "reactflow";
+import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
+import { isAdmin } from "../../../../../controllers/general/helpers";
 
 interface Props {
-    statement: Statement;
+  statement: Statement;
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
+	const userSubscription = useAppSelector(
+		statementSubscriptionSelector(statement.statementId)
+	);
+	
+	const role = userSubscription ? userSubscription.role : Role.member;
+	const _isAdmin = isAdmin(role);
+	
+
 	const { t } = useLanguage();
 	const { mapContext, setMapContext } = useMapContext();
 
@@ -59,9 +70,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
 		const topResult = sortStatementsByHirarrchy([
 			statement,
-			...childStatements.filter(
-				(state) => state.statementType !== "statement",
-			),
+			...childStatements.filter((state) => state.statementType !== "statement"),
 		])[0];
 
 		setResults(topResult);
@@ -111,6 +120,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 					{results && (
 						<TreeChart
 							topResult={results}
+							isAdmin={_isAdmin}
 							getSubStatements={getSubStatements}
 						/>
 					)}

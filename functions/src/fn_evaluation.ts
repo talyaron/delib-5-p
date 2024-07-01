@@ -95,6 +95,7 @@ function calcAgreement(newSumEvaluations: number, numberOfEvaluators: number): n
         if (numberOfEvaluators === 0) throw new Error("numberOfEvaluators is 0");
         const averageEvaluation = newSumEvaluations / numberOfEvaluators; // average evaluation
         const agreement = averageEvaluation * Math.sqrt(numberOfEvaluators)
+        //TODO: divide by the number of question members to get a scale of 100% agreement
 
         return agreement;
     } catch (error) {

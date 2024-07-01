@@ -1,0 +1,73 @@
+$border:3rem;
+
+.card {
+    background-color: #427b9e2f;
+    box-sizing: border-box;
+    color: var(--body-dark);
+    border-radius: calc($border / 2) 4px;
+    border-left: #3a7ae2 3px solid;
+    direction: ltr;
+
+    &__info {
+        display: flex;
+
+
+        &__img {
+            position: relative;
+            border: #3a7ae2 3px solid;
+            left: -3px;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: rgb(191, 191, 191);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
+
+        &__name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: .5rem;
+        }
+    }
+
+    &__membership {
+        display: flex;
+        justify-content: space-between;
+        
+        padding: 0.5rem 1.5rem;
+
+        &--member {
+
+            border-radius: 3rem;
+            padding: .5rem;
+        }
+
+        &--admin {
+            background-color: #3a7ae22f;
+            color: white;
+            border-radius: 3rem;
+            padding: .5rem;
+        }
+
+        &__svg {
+           padding: .5rem;
+           color: var(--crimson);
+        }
+
+        svg {
+            font-size: 1.7rem;
+            height: 2rem;
+            width: 2rem;
+            
+            cursor: pointer;
+            user-select: none;
+        }
+
+    }
+}

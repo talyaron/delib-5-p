@@ -18,15 +18,9 @@
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true,
-        "paths": {
-            "@shared/*": ["../delib-models/*"]
-        }
+        "noFallthroughCasesInSwitch": true
     },
     "include": ["src", "cypress"],
-    "exclude": [
-        "src/functions/db/config.ts"
-        // Add more patterns as necessary
-    ],
+    "exclude": ["node_modules"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

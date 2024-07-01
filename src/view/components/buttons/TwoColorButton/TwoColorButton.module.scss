@@ -1,0 +1,21 @@
+.wrapper {
+	display: flex;
+	box-shadow: 5px 5px 10px 0px var(--shadow);
+	border-radius: 5px;
+	overflow: hidden;
+	p {
+		font-size: 1rem;
+		display: flex;
+		align-items: center;
+		padding: 0.5rem;
+		height: 100%;
+	}
+
+	div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		height: 100%;
+	}
+}

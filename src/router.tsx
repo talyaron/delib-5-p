@@ -6,8 +6,8 @@ import ErrorPage from "./view/pages/error/ErrorPage";
 import App from "./App";
 import Start from "./view/pages/start/Start";
 import Home from "./view/pages/home/Home";
-import Main from "./view/pages/main/Main";
-import AddStatement from "./view/pages/main/addStatement/AddStatement";
+import HomeMain from "./view/pages/home/main/HomeMain";
+import AddStatement from "./view/pages/home/main/addStatement/AddStatement";
 import StatementMain from "./view/pages/statement/StatementMain";
 import Page404 from "./view/pages/page404/Page404";
 import PricingPlan from "./view/pages/pricing/PricingPlan";
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
 				children: [
 					{
 						path: "",
-						element: <Main />,
+						element: <HomeMain />,
 						errorElement: <ErrorPage />,
 					},
 					{
