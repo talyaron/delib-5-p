@@ -1,13 +1,12 @@
 // custom components
-import Checkbox from "../../../../../../components/checkbox/Checkbox";
+import Checkbox from '../../../../../../components/checkbox/Checkbox';
 
 // HELPERS
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import { FC } from "react";
-import { StatementSettingsProps } from "../../settingsTypeHelpers";
-import { getStatementSettings } from "../../statementSettingsCont";
-import "./AdvancedSettings.scss";
-
+import { useLanguage } from '../../../../../../../controllers/hooks/useLanguages';
+import { FC } from 'react';
+import { StatementSettingsProps } from '../../settingsTypeHelpers';
+import { getStatementSettings } from '../../statementSettingsCont';
+import './AdvancedSettings.scss';
 
 const AdvancedSettings: FC<StatementSettingsProps> = ({
 	statement,
@@ -16,7 +15,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 	const { t } = useLanguage();
 
 	const hasChildren = statement.hasChildren ?? true;
-    
+
 	const statementSettings = getStatementSettings(statement);
 	const {
 		inVotingGetOnlyResults,
@@ -24,11 +23,12 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 		showEvaluation,
 		enableAddVotingOption,
 		enableAddEvaluationOption,
+		enableSimilaritiesSearch,
 	} = statementSettings;
 
 	const setStatementSetting = (
 		key: keyof typeof statementSettings,
-		newValue: boolean,
+		newValue: boolean
 	) => {
 		setStatementToEdit({
 			...statement,
@@ -40,10 +40,10 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 	};
 
 	return (
-		<div className="advanced-settings">
-			<h3 className="title">{t("Advanced")}</h3>
+		<div className='advanced-settings'>
+			<h3 className='title'>{t('Advanced')}</h3>
 			<Checkbox
-				label={"Enable Sub-Conversations"}
+				label={'Enable Sub-Conversations'}
 				isChecked={hasChildren}
 				toggleSelection={() => {
 					setStatementToEdit({
@@ -53,51 +53,53 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 				}}
 			/>
 			<Checkbox
-				label={"Enhanced Evaluation"}
+				label={'Enhanced Evaluation'}
 				isChecked={enhancedEvaluation}
 				toggleSelection={() => {
-					setStatementSetting(
-						"enhancedEvaluation",
-						!enhancedEvaluation,
-					);
+					setStatementSetting('enhancedEvaluation', !enhancedEvaluation);
 				}}
 			/>
 			<Checkbox
-				label={"Show Evaluations results"}
+				label={'Show Evaluations results'}
 				isChecked={showEvaluation}
 				toggleSelection={() => {
-					setStatementSetting("showEvaluation", !showEvaluation);
+					setStatementSetting('showEvaluation', !showEvaluation);
 				}}
 			/>
 			<Checkbox
-				label={
-					"Allow participants to contribute options to the voting page"
-				}
+				label={'Allow participants to contribute options to the voting page'}
 				isChecked={enableAddVotingOption}
 				toggleSelection={() => {
-					setStatementSetting(
-						"enableAddVotingOption",
-						!enableAddVotingOption,
-					);
+					setStatementSetting('enableAddVotingOption', !enableAddVotingOption);
 				}}
 			/>
 			<Checkbox
-				label="Allow participants to contribute options to the evaluation page"
+				label='Allow participants to contribute options to the evaluation page'
 				isChecked={enableAddEvaluationOption}
 				toggleSelection={() => {
 					setStatementSetting(
-						"enableAddEvaluationOption",
-						!enableAddEvaluationOption,
+						'enableAddEvaluationOption',
+						!enableAddEvaluationOption
 					);
 				}}
 			/>
 			<Checkbox
-				label="In Voting page, show only the results of the top options"
+				label='In Voting page, show only the results of the top options'
 				isChecked={inVotingGetOnlyResults}
 				toggleSelection={() => {
 					setStatementSetting(
-						"inVotingGetOnlyResults",
-						!inVotingGetOnlyResults,
+						'inVotingGetOnlyResults',
+						!inVotingGetOnlyResults
+					);
+				}}
+			/>
+			<Checkbox
+				label='Allow similarity search'
+				isChecked={enableSimilaritiesSearch}
+				toggleSelection={() => {
+					setStatementSetting(
+						'enableSimilaritiesSearch',
+						!enableSimilaritiesSearch
 					);
 				}}
 			/>

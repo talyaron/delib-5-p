@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "my-first-project-for-lea-4b68d",
+    "dev": "delib-v3-dev",
+    "prod": "synthesistalyaron"
+  },
+  "targets": {},
+  "etags": {}
+}
