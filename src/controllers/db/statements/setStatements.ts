@@ -442,6 +442,10 @@ export async function updateStatementText(
 	try {
 		if (!newText) throw new Error("New text is undefined");
 		if (!statement) throw new Error("Statement is undefined");
+		// console.log(statement.statement);
+		// console.log(newText);
+		
+		
 		if (statement.statement === newText) return;
 
 		StatementSchema.parse(statement);
@@ -450,6 +454,7 @@ export async function updateStatementText(
 			Collections.statements,
 			statement.statementId,
 		);
+		
 		const newStatement = {
 			statement: newText,
 			lastUpdate: Timestamp.now().toMillis(),
