@@ -52,7 +52,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		// Hooks
 		const { sort } = useParams();
 		const navigate = useNavigate();
-		const dispatch = useAppDispatch();
 		const { t } = useLanguage();
 
 		const isMuliStage =
@@ -102,8 +101,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 
 		useEffect(() => {
 			if (isMuliStage) {
-				alert("getMultiStageOptions", currentStage);
-				getMultiStageOptions(statement, dispatch);
+			
+				getMultiStageOptions(statement);
 			}
 		}, [currentStage]);
 

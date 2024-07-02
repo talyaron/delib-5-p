@@ -110,11 +110,12 @@ export const getEvaluationThumbsToDisplay = ({
 };
 
 export async function getMultiStageOptions(
-	statement: Statement,
-	dispatch: Dispatch<unknown>,
+	statement: Statement
 ): Promise<void> {
 	try {
-		
+		const dispatch: Dispatch<any> = store.dispatch;
+		console.log("getMultiStageOptions", statement.statement)
+
 		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
 			const userId = store.getState().user.user?.uid;
 			if(!userId) throw new Error("User not found");
