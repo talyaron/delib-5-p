@@ -7,6 +7,7 @@ import {
 import { setTempStatementsForPresentation } from "../../../../../model/statements/statementsSlice";
 import { Dispatch } from "react";
 import { store } from "../../../../../model/store";
+import { isProduction } from "../../../../../controllers/general/helpers";
 
 export function sortSubStatements(
 	subStatements: Statement[],
@@ -114,13 +115,14 @@ export async function getMultiStageOptions(
 	dispatch: Dispatch<unknown>,
 ): Promise<void> {
 	try {
+		const urlBase = isProduction()? "https://us-central1-synthesistalyaron.cloudfunctions.net" : "http://localhost:5001/synthesistalyaron/us-central1";
 		
 		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
 			const userId = store.getState().user.user?.uid;
 			if(!userId) throw new Error("User not found");
 		
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getUserOptions?parentId=${statement.statementId}&userId=${userId}`
+				`${urlBase}/getUserOptions?parentId=${statement.statementId}&userId=${userId}`
 			);
 			const { statements, error } = await response.json();
 			if (error) throw new Error(error);
@@ -130,7 +132,7 @@ export async function getMultiStageOptions(
 			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
 		) {
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=6`
+				`${urlBase}/getRandomStatements?parentId=${statement.statementId}&limit=6`
 			);
 			const { randomStatements, error } = await response.json();
 			if (error) throw new Error(error);
@@ -140,7 +142,7 @@ export async function getMultiStageOptions(
 			QuestionStage.secondEvaluation
 		) {
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=10`
+				`${urlBase}/getTopStatements?parentId=${statement.statementId}&limit=10`
 			);
 			const { topSolutions, error } = await response.json();
 			if (error) throw new Error(error);

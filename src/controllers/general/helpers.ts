@@ -313,4 +313,8 @@ export function getNumberDigits(number: number): number {
 	return _number.toString().length;
 }
 
+export function isProduction(): boolean {
+	return location.hostname !== "localhost"
+}
+
 
