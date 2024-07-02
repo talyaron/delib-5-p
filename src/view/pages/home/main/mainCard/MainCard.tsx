@@ -1,13 +1,17 @@
-import { Statement } from "delib-npm";
-import { FC } from "react";
-import Text from "../../../../components/text/Text";
+/* eslint-disable indent */
+import { Statement } from 'delib-npm';
+import { FC } from 'react';
+import Text from '../../../../components/text/Text';
 
 import StatementChatMore from "../../../statement/components/chat/components/StatementChatMore";
 import { Link } from "react-router-dom";
 import "./MainCard.scss";
 
+
+
 //img
-import ImgThumb from "../../../../../assets/images/ImgThumb.png";
+import ImgThumb from '../../../../../assets/images/ImgThumb.png';
+import MessageBoxCounter from '../../../statement/components/chat/components/messageBoxCounter/MessageBoxCounter';
 
 interface Props {
   statement: Statement;

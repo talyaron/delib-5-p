@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -353,6 +354,9 @@ export const {
 } = statementsSlicer.actions;
 
 // statements
+export const totalMessageBoxesSelector = (state: RootState) => state.statements.statements.length;
+
+
 export const screenSelector = (state: RootState) => state.statements.screen;
 export const statementsSelector = (state: RootState) =>
 	state.statements.statements;
@@ -460,5 +464,6 @@ export const hasTokenSelector =
 
 		return statement?.token?.includes(token) || false;
 	};
+
 
 export default statementsSlicer.reducer;
