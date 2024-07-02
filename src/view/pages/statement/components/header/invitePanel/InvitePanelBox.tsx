@@ -4,7 +4,7 @@ type Props = {number:number}
 
 function InvitePanelBox({number}: Props) {
   return (
-    <div className={styles.panel__boxWrapper__box}>{number}</div>
+    <input className={styles.panel__boxWrapper__box} readOnly={true} value={number}/>
   )
 }
 

@@ -50,8 +50,8 @@ const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
       <InviteModal>
         <div className={styles.panel}>
           <div className={styles.panel__boxWrapper}>
-            {invitationNumberArr.map((number) => {
-              return <InvitePanelBox number={number} />;
+            {invitationNumberArr.map((number,i) => {
+              return <InvitePanelBox number={number} key={i}/>;
             })}
           </div>
           <button onClick={() => setShowModal(false)}>
@@ -62,7 +62,6 @@ const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
     );
   } catch (error) {
     console.error(error);
-
     return null;
   }
 };
