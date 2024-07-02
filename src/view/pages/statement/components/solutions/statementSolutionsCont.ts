@@ -112,10 +112,9 @@ export const getEvaluationThumbsToDisplay = ({
 export async function getMultiStageOptions(
 	statement: Statement
 ): Promise<void> {
+	const dispatch: Dispatch<any> = store.dispatch;
 	try {
-		const dispatch: Dispatch<any> = store.dispatch;
-		console.log("getMultiStageOptions", statement.statement)
-
+		
 		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
 			const userId = store.getState().user.user?.uid;
 			if(!userId) throw new Error("User not found");
@@ -130,8 +129,9 @@ export async function getMultiStageOptions(
 		} else if (
 			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
 		) {
+			console.log("getRandomStatements")
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=6`
+				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
 			);
 			const { randomStatements, error } = await response.json();
 			if (error) throw new Error(error);
@@ -141,7 +141,7 @@ export async function getMultiStageOptions(
 			QuestionStage.secondEvaluation
 		) {
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=10`
+				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=6`
 			);
 			const { topSolutions, error } = await response.json();
 			if (error) throw new Error(error);

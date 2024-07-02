@@ -39,6 +39,7 @@ export const getRandomStatements = async (req: any, res: any) => {
         const parentId = req.query.parentId;
         let limit = Number(req.query.limit) || 10 as number;
         if (limit > 50) limit = 50;
+      
 
         if (!parentId) {
             res.status(400).send({ error: "parentId is required", ok: false });
@@ -47,7 +48,7 @@ export const getRandomStatements = async (req: any, res: any) => {
 
 
         const allSolutionStatementsRef = db.collection(Collections.statements);
-        const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement");
+        const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement")
         const allSolutionStatementsDB = await q.get();
         const allSolutionStatements = allSolutionStatementsDB.docs.map((doc) => doc.data());
 

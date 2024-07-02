@@ -20,7 +20,6 @@ import {
 // Custom Components
 import StatementEvaluationCard from './components/StatementSolutionCard';
 import StatementBottomNav from '../nav/bottom/StatementBottomNav';
-import { useAppDispatch } from '../../../../../controllers/hooks/reduxHooks';
 import Toast from '../../../../components/toast/Toast';
 import Modal from '../../../../components/modal/Modal';
 import StatementInfo from '../vote/components/info/StatementInfo';
