@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { FC } from "react";
 import "./StatementChatMore.scss";
 
@@ -17,6 +18,8 @@ import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 // Helpers
 import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
+
+import ChatMessageNotify from "../components/chatMessageNotify/ChatMessageNotify"
 
 interface Props {
 	statement: Statement;
@@ -60,9 +63,9 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 					</div>
 				)}
 				<ChatIcon />
+				<ChatMessageNotify count={messages - messagesRead} />
 			</div>
 			<div className="text">{messageToDisplay}</div>
-
 		</div>
 	);
 };

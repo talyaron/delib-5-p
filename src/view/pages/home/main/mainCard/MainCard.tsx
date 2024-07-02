@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
 import Text from '../../../../components/text/Text';
@@ -6,8 +7,11 @@ import StatementChatMore from '../../../statement/components/chat/components/Sta
 import { Link } from 'react-router-dom';
 import './MainCard.scss';
 
+
+
 //img
 import ImgThumb from '../../../../../assets/images/ImgThumb.png';
+import MessageBoxCounter from '../../../statement/components/chat/components/messageBoxCounter/MessageBoxCounter';
 
 interface Props {
 	statement: Statement;
@@ -18,13 +22,17 @@ const MainCard: FC<Props> = ({ statement }) => {
 		<div className='main-card'>
 
 			<div className='main-card__content'>
-				<img src={ImgThumb} className='main-card__img'></img>
-				<StatementChatMore statement={statement} />
+
+				<img src={ImgThumb} className='main-card__img' alt="Thumbnail" />
+				<StatementChatMore statement={statement} /><MessageBoxCounter />
 			</div>
+
 
 			<Link to={`/statement/${statement.statementId}/chat`} className='main-card__link'>
 				<Text text={statement.statement} />
+
 			</Link>
+
 		</div>
 	);
 };
