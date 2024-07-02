@@ -38,6 +38,9 @@ import {
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
 
+const express = require('express');
+const app = express();
+
 initializeApp();
 export const db = getFirestore();
 
@@ -120,10 +123,19 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 );
 
 //http requests
-const isProduction = process.env.FUNCTION_REGION !== undefined;
+const isProduction = process.env.NODE_ENV === 'production';
+
 
 console.log('isProduction', isProduction);
-const cors = isProduction?{cors:["https://delib-5.web.app"]}:{cors:["http://localhost:5173"], methods: ["GET", "POST", "PUT", "DELETE"]};
+const cors = {cors:["https://delib-5.web.app"]}
+
+
+exports.getTest = onRequest(cors, (req, res) => {
+	const {stam} = req.query;
+	res.send(`hello world ${stam} ... isProduction: ${isProduction}, ${process.env.FUNCTION_REGION} ${process.env.GCLOUD_PROJECT}`)
+});
 exports.getRandomStatements = onRequest(cors, getRandomStatements);
 exports.getTopStatements = onRequest(cors, getTopStatements);
 exports.getUserOptions = onRequest(cors, getUserOptions);
+
+exports.app = onRequest(cors, app);

@@ -115,14 +115,14 @@ export async function getMultiStageOptions(
 	dispatch: Dispatch<unknown>,
 ): Promise<void> {
 	try {
-		const urlBase = isProduction()? "https://us-central1-synthesistalyaron.cloudfunctions.net" : "http://localhost:5001/synthesistalyaron/us-central1";
+		const urlBase = isProduction()? "qeesi7aziq-uc.a.run.app" : "http://localhost:5001/synthesistalyaron/us-central1";
 		
 		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
 			const userId = store.getState().user.user?.uid;
 			if(!userId) throw new Error("User not found");
 		
 			const response = await fetch(
-				`${urlBase}/getUserOptions?parentId=${statement.statementId}&userId=${userId}`
+				`https://getUserOptions-${urlBase}?parentId=${statement.statementId}&userId=${userId}`
 			);
 			const { statements, error } = await response.json();
 			if (error) throw new Error(error);
@@ -132,7 +132,7 @@ export async function getMultiStageOptions(
 			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
 		) {
 			const response = await fetch(
-				`${urlBase}/getRandomStatements?parentId=${statement.statementId}&limit=6`
+				`https://getrandomstatements-${urlBase}?parentId=${statement.statementId}&limit=6`
 			);
 			const { randomStatements, error } = await response.json();
 			if (error) throw new Error(error);
@@ -142,7 +142,7 @@ export async function getMultiStageOptions(
 			QuestionStage.secondEvaluation
 		) {
 			const response = await fetch(
-				`${urlBase}/getTopStatements?parentId=${statement.statementId}&limit=10`
+				`https://getTopStatements-${urlBase}?parentId=${statement.statementId}&limit=10`
 			);
 			const { topSolutions, error } = await response.json();
 			if (error) throw new Error(error);

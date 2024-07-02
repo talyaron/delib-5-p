@@ -29,6 +29,13 @@
     ],
     "rewrites": [
       {
+        "source": "/getRandomStatements2",
+        "function": {
+          "functionId": "getRandomStatements2",
+          "region": "us-central1" 
+        }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
