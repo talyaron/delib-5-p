@@ -110,9 +110,9 @@ export const getEvaluationThumbsToDisplay = ({
 };
 
 export async function getMultiStageOptions(
-	statement: Statement,
-	dispatch: Dispatch<unknown>,
+	statement: Statement
 ): Promise<void> {
+	const dispatch: Dispatch<any> = store.dispatch;
 	try {
 		
 		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
@@ -129,6 +129,7 @@ export async function getMultiStageOptions(
 		} else if (
 			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
 		) {
+			console.log("getRandomStatements")
 			const response = await fetch(
 				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
 			);
@@ -140,7 +141,7 @@ export async function getMultiStageOptions(
 			QuestionStage.secondEvaluation
 		) {
 			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=2`
+				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=6`
 			);
 			const { topSolutions, error } = await response.json();
 			if (error) throw new Error(error);

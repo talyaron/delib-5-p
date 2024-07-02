@@ -11,7 +11,7 @@ import InvitationModalInputBoxWrapper from "./InvitationModalInputBoxWrapper";
 import InviteModal from "../../../../components/modal/InviteModal";
 
 interface Props {
-  setShowModal: (show: boolean) => void;
+	setShowModal: (show: boolean) => void;
 }
 const InvitationModal: FC<Props> = ({ setShowModal }) => {
   const navigate = useNavigate();

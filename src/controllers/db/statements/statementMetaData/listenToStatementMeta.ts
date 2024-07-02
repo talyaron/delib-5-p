@@ -4,9 +4,11 @@ import { DB } from "../../config";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setStatementMetaData } from "../../../../model/statements/statementsMetaSlice";
 import { writeZodError } from "../../../general/helpers";
+import { store } from "../../../../model/store";
 
-export function listenToStatementMetaData(statementId: string, dispatch: Dispatch): Unsubscribe {
+export function listenToStatementMetaData(statementId: string): Unsubscribe {
 	try {
+		const dispatch = store.dispatch as Dispatch;
 		if (!statementId) {
 			throw new Error("Statement ID is missing");
 		}
@@ -35,7 +37,6 @@ export function listenToStatementMetaData(statementId: string, dispatch: Dispatc
 		});
 	} catch (error) {
 		console.error(error);
-
 		//@ts-ignore
 		return () => {console.error("Unsubscribe function not returned")};
 	}
