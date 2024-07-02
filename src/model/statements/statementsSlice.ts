@@ -238,9 +238,9 @@ export const statementsSlicer = createSlice({
 				}
 
 				//clear all temp statements
-				// state.statements.forEach((statement) => {
-				// 	statement.isPartOfTempPresentation = false;
-				// });
+				state.statements.forEach((statement) => {
+					statement.isPartOfTempPresentation = false;
+				});
 
 				//set new temp statements
 				statements.forEach((statement) => {
