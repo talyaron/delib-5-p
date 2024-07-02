@@ -54,10 +54,11 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
     }
   }
 
-  function gettingPinsFromInput(maxInvitation:number | undefined, ev:any) {
+  function gettingPinsFromInput(maxInvitation:number | undefined, ev: React.FormEvent<HTMLFormElement>) {
     const pins:number[] = [];
+    const form = ev.target as HTMLFormElement;
     for (let i = 0; i < maxInvitation!; i++) {
-      let pinValue = ev.target['pin' + i].value;
+      let pinValue = (form['pin' + i] as HTMLInputElement).value;
 
       if (Number.isInteger(Number(pinValue)) && Number(pinValue) >= 0 && Number(pinValue) <= 9) {
         pins.push(Number(pinValue));
