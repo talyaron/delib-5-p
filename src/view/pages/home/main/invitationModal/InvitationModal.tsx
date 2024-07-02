@@ -28,7 +28,7 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
     });
   }, []);
 
-  async function handleJoin(ev: any) {
+  async function handleJoin(ev: React.FormEvent<HTMLFormElement>) {
     try {
       ev.preventDefault();
 
