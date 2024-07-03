@@ -54,6 +54,9 @@
     }
 
     .submit-button {
+        transform: scale(1.25);
+        transition: all 0.13s ease-in-out;
+        color:var(--white);
         margin: auto;
         cursor: pointer;
         position: fixed;
@@ -61,7 +64,7 @@
         left: 63%;
         z-index: 1000;
         &:hover {
-            transform: scale(0.9);
+            transform: scale(1.4);
         }
     }
 

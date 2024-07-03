@@ -17,6 +17,7 @@ import MainCard from "./mainCard/MainCard";
 
 //images
 import bike from "../../../../assets/images/bike.png";
+import HomeTabs from "./hometabs/HomeTabs";
 
 const HomeMain = () => {
 	// Hooks
@@ -55,6 +56,7 @@ const HomeMain = () => {
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
+				<HomeTabs />
 
 				{!loading ? (
 					statements.map((statement) => (
