@@ -10,7 +10,7 @@ export async function getMultiStageOptions(
 ): Promise<void> {
     const dispatch: Dispatch<any> = store.dispatch;
     try {
-        console.log("isProduction", isProduction());
+       
         const urlBase = isProduction() ? "qeesi7aziq-uc.a.run.app" : "http://localhost:5001/synthesistalyaron/us-central1";
 
         if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {

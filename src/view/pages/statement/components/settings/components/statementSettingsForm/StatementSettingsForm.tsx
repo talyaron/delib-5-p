@@ -24,7 +24,7 @@ import SectionTitle from './../../components/sectionTitle/SectionTitle';
 import './StatementSettingsForm.scss';
 
 // icons
-import SaveIcon from '../../../../../../../assets/icons/save.svg';
+import SaveIcon from '../../../../../../../assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
 
 interface StatementSettingsFormProps {
@@ -105,7 +105,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 					className='submit-button'
 					data-cy='settings-statement-submit-btn'
 				>
-					<img src={SaveIcon} alt='Save Icon' />
+					<SaveIcon />
 				</button>
 			</form>
 		);

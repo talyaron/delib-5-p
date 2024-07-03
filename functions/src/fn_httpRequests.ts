@@ -2,11 +2,7 @@ import { Collections } from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
 
-const isProduction = process.env.FUNCTION_REGION !== undefined;
 
-console.log('isProduction', isProduction);
-// const cors = isProduction? require('cors')({ origin: 'https://delib-5.web.app' }):require('cors')({ origin: 'http://localhost:5173' })
-// const cors = require('cors')({ origin: 'http://localhost:5173',methods: ["GET", "POST", "PUT", "DELETE"] })
 
 
 export const getUserOptions = async (req: any, res: any) => {
@@ -23,7 +19,7 @@ export const getUserOptions = async (req: any, res: any) => {
                 return;
             }
 
-            const userOptionsRef = db.collection(Collections.statements).where("creatorId", "==", userId).where("parentId", "==", parentId);
+            const userOptionsRef = db.collection(Collections.statements).where("creatorId", "==", userId).where("parentId", "==", parentId).where("statementType", "in", ["result","option"]);
             const userOptionsDB = await userOptionsRef.get();
             const statements = userOptionsDB.docs.map((doc) => doc.data());
 
@@ -52,7 +48,7 @@ export const getRandomStatements = async (req: any, res: any) => {
 
 
             const allSolutionStatementsRef = db.collection(Collections.statements);
-            const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement");
+            const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "in", ["result","option"]);
             const allSolutionStatementsDB = await q.get();
             const allSolutionStatements = allSolutionStatementsDB.docs.map((doc) => doc.data());
 
@@ -83,7 +79,7 @@ export const getTopStatements = async (req: any, res: any) => {
             }
 
             const topSolutionsRef = db.collection(Collections.statements);
-            const q: Query = topSolutionsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement").orderBy("consensus", "desc").limit(limit);
+            const q: Query = topSolutionsRef.where("parentId", "==", parentId).where("statementType", "in", ["result","option"]).orderBy("consensus", "desc").limit(limit);
             const topSolutionsDB = await q.get();
             const topSolutions = topSolutionsDB.docs.map((doc) => doc.data());
 
