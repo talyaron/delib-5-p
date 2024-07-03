@@ -20,7 +20,6 @@ import {
 // Custom Components
 import StatementEvaluationCard from './components/StatementSolutionCard';
 import StatementBottomNav from '../nav/bottom/StatementBottomNav';
-import { useAppDispatch } from '../../../../../controllers/hooks/reduxHooks';
 import Toast from '../../../../components/toast/Toast';
 import Modal from '../../../../components/modal/Modal';
 import StatementInfo from '../vote/components/info/StatementInfo';
@@ -52,7 +51,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		// Hooks
 		const { sort } = useParams();
 		const navigate = useNavigate();
-		const dispatch = useAppDispatch();
+
 		const { t } = useLanguage();
 
 		const isMuliStage =
@@ -103,7 +102,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		useEffect(() => {
 			if (isMuliStage) {
 			
-				getMultiStageOptions(statement, dispatch);
+				getMultiStageOptions(statement);
 			}
 		}, [currentStage]);
 

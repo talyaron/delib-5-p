@@ -8,10 +8,12 @@ import { updateStatementText } from "../../../controllers/db/statements/setState
 
 // Styles
 import styles from "./EditTitle.module.scss";
+import Save from "../../../assets/icons/saveIcon.svg?react";
 
 // Custom components
 import Text from "../text/Text";
 import { getDescription, getTitle } from "../../../controllers/general/helpers";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 // import { statementTitleToDisplay } from "../../../controllers/general/helpers";
 
@@ -35,7 +37,8 @@ const EditTitle: FC<Props> = ({
 
   if (!statement) return null;
 
-  const direction = document.body.style.direction as "ltr" | "rtl";
+  const {dir:direction } = useLanguage();
+ 
   const align = direction === "ltr" ? "left" : "right";
 
   function handleChange(
@@ -72,16 +75,21 @@ const EditTitle: FC<Props> = ({
     );
 
   return (
-    <div>
+    <div className={styles.container}>
       {isTextArea ? (
-        <textarea
-          style={{ direction: direction, textAlign: align }}
-          className={styles.textarea}
-          value={text}
-          onChange={(e) => handleChange(e, setText)}
-          autoFocus={true}
-          placeholder="Add text"
-        />
+        <>
+          <textarea
+            style={{ direction: direction, textAlign: align }}
+            className={styles.textarea}
+            value={text}
+            onChange={(e) => handleChange(e, setText)}
+            autoFocus={true}
+            placeholder="Add text"
+          ></textarea>
+          <button className={styles.save} onClick={handleSave}>
+            <Save />
+          </button>
+        </>
       ) : (
         <>
           <input
@@ -92,13 +100,9 @@ const EditTitle: FC<Props> = ({
             onChange={(e) => handleChange(e, setTitle)}
             autoFocus={true}
             data-cy="edit-title-input"
-          />
-
-          <button
-            className="editTitle-btn btn btn--agree btn--small"
-            onClick={handleSave}
-          >
-            Save
+          ></input>
+          <button className={styles.save} onClick={handleSave} style={{left:direction === 'rtl'?"-1.4rem":"none"}}>
+            <Save />
           </button>
         </>
       )}
