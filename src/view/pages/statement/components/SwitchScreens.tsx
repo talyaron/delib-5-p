@@ -7,11 +7,12 @@ import { Screen, Statement, User } from "delib-npm";
 // import Rooms from "./rooms/Rooms";
 import Map from "./map/StatementMap";
 import StatementChat from "./chat/StatementChat";
-import StatementEvaluationPage from "./evaluations/StatementEvaluationPage";
+import StatementEvaluationPage from "./solutions/StatementSolutionsPage";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
 import StatementSettings from "./settings/StatementSettings";
 import Rooms from "./rooms/StatementRooms";
+import Info from "./info/Info";
 
 interface SwitchScreensProps {
     screen: string | undefined;
@@ -86,6 +87,8 @@ export default function SwitchScreens({
 				toggleAskNotifications={toggleAskNotifications}
 			/>
 		);
+	case Screen.INFO:
+		return(<Info statement={statement}/>)
 
 	default:
 		return (

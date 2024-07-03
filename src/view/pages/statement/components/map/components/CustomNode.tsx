@@ -18,16 +18,15 @@ import {
 import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 import { Statement } from "delib-npm";
 
+
 const nodeStyle = (
 	parentStatement: Statement | "top",
 	statementColor: { backgroundColor: string; color: string },
-	nodeTitle: string,
+	nodeTitle: string
 ) => {
 	const style = {
 		backgroundColor:
-            parentStatement === "top"
-            	? "darkblue"
-            	: statementColor.backgroundColor,
+      parentStatement === "top" ? "darkblue" : statementColor.backgroundColor,
 		color: statementColor.color,
 		height: 40,
 		width: 70,
@@ -45,6 +44,7 @@ const nodeStyle = (
 
 export default function CustomNode({ data }: NodeProps) {
 	const navigate = useNavigate();
+ 
 
 	const { result, parentStatement } = data;
 
@@ -114,10 +114,8 @@ export default function CustomNode({ data }: NodeProps) {
 						style={{
 							position: "absolute",
 							cursor: "pointer",
-							right:
-                                mapContext.direction === "TB" ? 0 : "-1.8rem",
-							bottom:
-                                mapContext.direction === "TB" ? "-1.8rem" : 0,
+							right: mapContext.direction === "TB" ? 0 : "-1.8rem",
+							bottom: mapContext.direction === "TB" ? "-1.8rem" : 0,
 						}}
 					>
 						<PlusIcon />

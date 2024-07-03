@@ -55,14 +55,14 @@ export default function App() {
 
 	useEffect(() => {
 		// dispatch(setInitLocation(window.location.pathname));
-		const usub: Unsubscribe = listenToAuth(dispatch)(
+		const unsub: Unsubscribe = listenToAuth(dispatch)(
 			anonymous === "true" ? true : false,
 			navigate,
 			initLocation,
 		);
 
 		return () => {
-			usub();
+			unsub();
 		};
 	}, []);
 

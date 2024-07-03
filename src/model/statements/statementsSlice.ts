@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -14,28 +15,29 @@ import {
 	isOptionFn,
 } from "delib-npm";
 
-import { z } from "zod";
+import { ZodError, z } from "zod";
 
 // Helpers
-import { updateArray } from "../../controllers/general/helpers";
+import { updateArray, writeZodError } from "../../controllers/general/helpers";
+import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
 
 enum StatementScreen {
-    chat = "chat",
-    options = "options",
+	chat = "chat",
+	options = "options",
 }
 
 // Define a type for the slice state
 interface StatementsState {
-    statements: Statement[];
-    statementSubscription: StatementSubscription[];
-    statementSubscriptionLastUpdate: number;
-    statementMembership: StatementSubscription[];
-    screen: StatementScreen;
+	statements: Statement[];
+	statementSubscription: StatementSubscription[];
+	statementSubscriptionLastUpdate: number;
+	statementMembership: StatementSubscription[];
+	screen: StatementScreen;
 }
 
 interface StatementOrder {
-    statementId: string;
-    order: number;
+	statementId: string;
+	order: number;
 }
 
 // Define the initial state using that type
@@ -54,9 +56,12 @@ export const statementsSlicer = createSlice({
 		setStatement: (state, action: PayloadAction<Statement>) => {
 			try {
 				const newStatement = { ...action.payload };
-				const { success } = StatementSchema.safeParse(newStatement);
-				if (!success) {
-					console.error("statement not valid on setStatement");
+
+				const results = StatementSchema.safeParse(newStatement);
+				if (!results.success) {
+					const error = results.error as ZodError; // Type assertion for clarity
+					writeZodError(error, newStatement);
+					throw new Error("statement not valid on setStatement");
 				}
 
 				//for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
@@ -70,8 +75,8 @@ export const statementsSlicer = createSlice({
 				);
 
 				const isEqualStatements =
-                    JSON.stringify(oldStatement) ===
-                    JSON.stringify(newStatement);
+					JSON.stringify(oldStatement) ===
+					JSON.stringify(newStatement);
 				if (!isEqualStatements)
 					state.statements = updateArray(
 						state.statements,
@@ -82,10 +87,10 @@ export const statementsSlicer = createSlice({
 				//update last update if bigger than current
 				if (
 					newStatement.lastUpdate >
-                    state.statementSubscriptionLastUpdate
+					state.statementSubscriptionLastUpdate
 				) {
 					state.statementSubscriptionLastUpdate =
-                        newStatement.lastUpdate;
+						newStatement.lastUpdate;
 				}
 			} catch (error) {
 				console.error(error);
@@ -129,33 +134,33 @@ export const statementsSlicer = createSlice({
 			action: PayloadAction<StatementSubscription>,
 		) => {
 			try {
-				const newStatement = action.payload;
-				const oldStatement = state.statements.find(
+				const newStatementSubscription = action.payload;
+				const oldStatementSubscription = state.statements.find(
 					(statement) =>
-						statement.statementId === newStatement.statementId,
+						statement.statementId === newStatementSubscription.statementId,
 				);
 				const isEqualStatements =
-                    JSON.stringify(oldStatement) ===
-                    JSON.stringify(newStatement);
+					JSON.stringify(oldStatementSubscription) ===
+					JSON.stringify(newStatementSubscription);
 				if (!isEqualStatements)
 					state.statementSubscription = updateArray(
 						state.statementSubscription,
 						action.payload,
 						"statementsSubscribeId",
 					);
-				state.statements = updateArray(
-					state.statements,
-					newStatement.statement,
+				state.statementSubscription = updateArray(
+					state.statementSubscription,
+					newStatementSubscription,
 					"statementId",
 				);
 
 				//update last update if bigger than current
 				if (
-					newStatement.lastUpdate >
-                    state.statementSubscriptionLastUpdate
+					newStatementSubscription.lastUpdate >
+					state.statementSubscriptionLastUpdate
 				) {
 					state.statementSubscriptionLastUpdate =
-                        newStatement.lastUpdate;
+					newStatementSubscription.lastUpdate;
 				}
 			} catch (error) {
 				console.error(error);
@@ -187,9 +192,9 @@ export const statementsSlicer = createSlice({
 				const statementId = action.payload;
 
 				state.statementSubscription =
-                    state.statementSubscription.filter(
-                    	(statement) => statement.statementId !== statementId,
-                    );
+					state.statementSubscription.filter(
+						(statement) => statement.statementId !== statementId,
+					);
 			} catch (error) {
 				console.error(error);
 			}
@@ -208,9 +213,9 @@ export const statementsSlicer = createSlice({
 		setStatementElementHight: (
 			state,
 			action: PayloadAction<{
-                statementId: string;
-                height: number | undefined;
-            }>,
+				statementId: string;
+				height: number | undefined;
+			}>,
 		) => {
 			try {
 				const { statementId, height } = action.payload;
@@ -218,6 +223,35 @@ export const statementsSlicer = createSlice({
 					(statement) => statement.statementId === statementId,
 				);
 				if (statement) statement.elementHight = height;
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		setTempStatementsForPresentation: (state, action: PayloadAction<Statement[]>) => {
+			try {
+				const statements = action.payload;
+
+				const results = z
+					.array(StatementSchema)
+					.safeParse(statements);
+				if (!results.success) {
+					writeZodError(results.error, statements);
+				}
+
+				//clear all temp statements
+				state.statements.forEach((statement) => {
+					statement.isPartOfTempPresentation = false;
+				});
+
+				//set new temp statements
+				statements.forEach((statement) => {
+					statement.isPartOfTempPresentation = true;
+					state.statements = updateArray(
+						state.statements,
+						statement,
+						"statementId",
+					);
+				});
 			} catch (error) {
 				console.error(error);
 			}
@@ -264,7 +298,7 @@ export const statementsSlicer = createSlice({
 				const newMembership = action.payload;
 
 				const { success } =
-                    StatementSubscriptionSchema.safeParse(newMembership);
+					StatementSubscriptionSchema.safeParse(newMembership);
 
 				if (!success) {
 					console.error(
@@ -286,7 +320,7 @@ export const statementsSlicer = createSlice({
 				state.statementMembership = state.statementMembership.filter(
 					(statement) =>
 						statement.statementsSubscribeId !==
-                        statementsSubscribeId,
+						statementsSubscribeId,
 				);
 			} catch (error) {
 				console.error(error);
@@ -307,6 +341,7 @@ export const {
 	setStatements,
 	setStatementSubscription,
 	setStatementsSubscription,
+	setTempStatementsForPresentation,
 	deleteStatement,
 	deleteSubscribedStatement,
 	setStatementOrder,
@@ -319,49 +354,59 @@ export const {
 } = statementsSlicer.actions;
 
 // statements
+export const totalMessageBoxesSelector = (state: RootState) => state.statements.statements.length;
+
+
 export const screenSelector = (state: RootState) => state.statements.screen;
 export const statementsSelector = (state: RootState) =>
 	state.statements.statements;
 
 export const statementsChildSelector =
-    (statementId: string) => (state: RootState) =>
-    	state.statements.statements.filter((statement) =>
-    		statement.parents?.includes(statementId),
-    	);
+	(statementId: string) => (state: RootState) =>
+		state.statements.statements.filter((statement) =>
+			statement.parents?.includes(statementId),
+		);
 export const statementsRoomSolutions =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statements
-    		.filter(
-    			(statement) =>
-    				statement.parentId === statementId &&
-                    statement.statementType === StatementType.result,
-    		)
-    		.sort((a, b) => a.createdAt - b.createdAt);
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statements
+			.filter(
+				(statement) =>
+					statement.parentId === statementId &&
+					statement.statementType === StatementType.result,
+			)
+			.sort((a, b) => a.createdAt - b.createdAt);
 export const statementsSubscriptionsSelector = (
 	state: RootState,
 ): StatementSubscription[] => state.statements.statementSubscription;
 export const statementSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statements.find(
-    		(statement) => statement.statementId === statementId,
-    	);
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statements.find(
+			(statement) => statement.statementId === statementId,
+		);
 export const statementSubsSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statements
-    		.filter((statementSub) => statementSub.parentId === statementId)
-    		.sort((a, b) => a.createdAt - b.createdAt)
-    		.map((statement) => ({ ...statement }));
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statements
+			.filter((statementSub) => statementSub.parentId === statementId)
+			.sort((a, b) => a.createdAt - b.createdAt)
+			.map((statement) => ({ ...statement }));
 
 export const statementOptionsSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statements
-    		.filter(
-    			(statementSub) =>
-    				statementSub.parentId === statementId &&
-                    isOptionFn(statementSub),
-    		)
-    		.sort((a, b) => a.createdAt - b.createdAt)
-    		.map((statement) => ({ ...statement }));
+	(statementId: string | undefined) => (state: RootState) => {
+		const subStatements = state.statements.statements
+			.filter(
+				(statementSub) =>
+					statementSub.parentId === statementId &&
+					isOptionFn(statementSub),
+			)
+			.sort((a, b) => a.createdAt - b.createdAt)
+			.map((statement) => ({ ...statement }));
+
+		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
+		
+		return sortedSubStatements;
+	};
+
+export const questionsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter((statement) => statement.parentId === statementId && statement.statementType === StatementType.question).sort((a, b) => a.createdAt - b.createdAt);
 
 const selectedStatementId = (statementId: string | undefined) => statementId;
 
@@ -381,43 +426,44 @@ export const statementSubsSelectorMemo = createSelector(
 );
 
 export const statementNotificationSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statementSubscription.find(
-    		(statementSub) => statementSub.statementId === statementId,
-    	)?.notification || false;
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statementSubscription.find(
+			(statementSub) => statementSub.statementId === statementId,
+		)?.notification || false;
 export const statementSubscriptionSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statementSubscription.find(
-    		(statementSub) => statementSub.statementId === statementId,
-    	) || undefined;
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statementSubscription.find(
+			(statementSub) => statementSub.statementId === statementId,
+		) || undefined;
 export const statementOrderSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statements.find(
-    		(statement) => statement.statementId === statementId,
-    	)?.order || 0;
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statements.find(
+			(statement) => statement.statementId === statementId,
+		)?.order || 0;
 export const statementElementHightSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statements.find(
-    		(statement) => statement.statementId === statementId,
-    	)?.elementHight || 0;
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statements.find(
+			(statement) => statement.statementId === statementId,
+		)?.elementHight || 0;
 export const lastUpdateStatementSubscriptionSelector = (state: RootState) =>
 	state.statements.statementSubscriptionLastUpdate;
 
-// Membeship
+// Membership
 export const statementMembershipSelector =
-    (statementId: string | undefined) => (state: RootState) =>
-    	state.statements.statementMembership.filter(
-    		(statement: StatementSubscription) =>
-    			statement.statementId === statementId,
-    	);
+	(statementId: string | undefined) => (state: RootState) =>
+		state.statements.statementMembership.filter(
+			(statement: StatementSubscription) =>
+				statement.statementId === statementId,
+		);
 
 export const hasTokenSelector =
-    (token: string, statementId: string) => (state: RootState) => {
-    	const statement = state.statements.statementSubscription.find(
-    		(statement) => statement.statementId === statementId,
-    	);
+	(token: string, statementId: string) => (state: RootState) => {
+		const statement = state.statements.statementSubscription.find(
+			(statement) => statement.statementId === statementId,
+		);
 
-    	return statement?.token?.includes(token) || false;
-    };
+		return statement?.token?.includes(token) || false;
+	};
+
 
 export default statementsSlicer.reducer;

@@ -8,9 +8,12 @@ import { updateStatementText } from "../../../controllers/db/statements/setState
 
 // Styles
 import styles from "./EditTitle.module.scss";
+import Save from "../../../assets/icons/saveIcon.svg?react";
 
 // Custom components
 import Text from "../text/Text";
+import { getDescription, getTitle } from "../../../controllers/general/helpers";
+import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
 // Import the SaveTextIcon
 import SaveTextIcon from "../../../assets/icons/SaveTextIcon.svg";
@@ -31,21 +34,19 @@ const EditTitle: FC<Props> = ({
 	onlyTitle,
 }) => {
 	const [text, setText] = useState(statement?.statement || "");
-	const [showSaveIconButton, setShowSaveIconButton] = useState(false);
+	const [title, setTitle] = useState(getTitle(statement) || "");
 
 	if (!statement) return null;
 
-	const direction = document.body.style.direction as "ltr" | "rtl";
+	const {dir:direction } = useLanguage();
+ 
 	const align = direction === "ltr" ? "left" : "right";
 
-	const title = text.split("\n")[0];
-	const description = text.split("\n").slice(1).join("\n");
-
-	function handleTextChange(
-		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+	function handleChange(
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+		setState: React.Dispatch<React.SetStateAction<string>>
 	) {
-		setText(e.target.value);
-		setShowSaveIconButton(true);
+		setState(e.target.value);
 	}
 
 	function handleSave() {
@@ -54,9 +55,11 @@ const EditTitle: FC<Props> = ({
 
 			if (!statement) throw new Error("Statement is undefined");
 
+			const description = getDescription(statement);
+
 			const updatedText = isTextArea
 				? text.trim()
-				: title.trim() + "\n" + description.trim();
+				: title + "\n" + description.trim();
 
 			updateStatementText(statement, updatedText);
 			setEdit(false);
@@ -73,34 +76,36 @@ const EditTitle: FC<Props> = ({
 		);
 
 	return (
-		<div>
+		<div className={styles.container}>
 			{isTextArea ? (
-				<textarea
-					style={{ direction: direction, textAlign: align }}
-					className={styles.textarea}
-					value={text}
-					onChange={handleTextChange}
-					autoFocus={true}
-					placeholder="Add text"
-				/>
+				<>
+					<textarea
+						style={{ direction: direction, textAlign: align }}
+						className={styles.textarea}
+						value={text}
+						onChange={(e) => handleChange(e, setText)}
+						autoFocus={true}
+						placeholder="Add text"
+					></textarea>
+					<button className={styles.save} onClick={handleSave}>
+						<Save />
+					</button>
+				</>
 			) : (
-				<div className={styles.inputWrapper}>
+				<>
 					<input
 						style={{ direction: direction, textAlign: align }}
 						className={styles.input}
 						type="text"
-						value={text}
-						onChange={handleTextChange}
+						value={title}
+						onChange={(e) => handleChange(e, setTitle)}
 						autoFocus={true}
 						data-cy="edit-title-input"
-					/>
-					<img
-						src={SaveTextIcon}
-						onClick={handleSave}
-						className={styles.icon}
-						alt="Icon"
-					/>
-				</div>
+					></input>
+					<button className={styles.save} onClick={handleSave} style={{left:direction === 'rtl'?"-1.4rem":"none"}}>
+						<Save />
+					</button>
+				</>
 			)}
 		</div>
 	);

@@ -9,6 +9,7 @@ import QuestionIcon from "../../../../../../../assets/icons/questionIcon.svg?rea
 import MassQuestionsIcon from "../../../../../../../assets/icons/massQuestionsIcon.svg?react";
 import RoomsIcon from "../../../../../../../assets/icons/roomsIcon.svg?react";
 import SettingsIcon from "../../../../../../../assets/icons/settingsIcon.svg?react";
+import InfoIcon from "../../../../../../../assets/icons/infoCircleIcon.svg?react";
 import { FC } from "react";
 
 interface TabIconProps {
@@ -33,6 +34,8 @@ const TabIcon: FC<TabIconProps> = ({ screenLink }) => {
 		return <RoomsIcon />;
 	case Screen.SETTINGS:
 		return <SettingsIcon />;
+	case Screen.INFO:
+		return <InfoIcon />;
 	default:
 		return <QuestionIcon />;
 	}

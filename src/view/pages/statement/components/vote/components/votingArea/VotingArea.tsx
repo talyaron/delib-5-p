@@ -1,13 +1,10 @@
 import React, { FC } from "react";
-import { Statement, StatementType, isOptionFn } from "delib-npm";
-import {
-	setSelectionsToOptions,
-	sortOptionsIndex,
-} from "../../statementVoteCont";
+import { Statement, StatementType } from "delib-npm";
 import { useParams } from "react-router-dom";
 import OptionBar from "../optionBar/OptionBar";
 import "./VotingArea.scss";
 import useWindowDimensions from "../../../../../../../controllers/hooks/useWindowDimentions";
+import { getSortedVotingOptions, isVerticalOptionBar } from "./VotingAreaCont";
 
 interface VotingAreaProps {
     setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;
@@ -71,33 +68,6 @@ const VotingArea: FC<VotingAreaProps> = ({
 
 export default VotingArea;
 
-function isVerticalOptionBar(width: number, optionsCount: number) {
-	if (width < 350 && optionsCount >= 4) {
-		return false;
-	}
 
-	if (width < 90 * optionsCount) {
-		return false;
-	}
 
-	return true;
-}
 
-interface GetVotingOptionsParams {
-    statement: Statement;
-    subStatements: Statement[];
-    sort: string | undefined;
-}
-
-const getSortedVotingOptions = ({
-	statement,
-	subStatements,
-	sort,
-}: GetVotingOptionsParams): Statement[] => {
-	const options = subStatements.filter((subStatement: Statement) =>
-		isOptionFn(subStatement),
-	);
-	const optionsWithSelections = setSelectionsToOptions(statement, options);
-
-	return sortOptionsIndex(optionsWithSelections, sort);
-};

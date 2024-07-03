@@ -16,23 +16,23 @@
   background-color: lightblue;
 }
 
-.inputWrapper {
+.container {
   position: relative;
-  display: inline-block;
 }
 
-.input {
-  width: 100%;
-  padding-right: 35px; 
-  border-radius: 10px;
-}
-
-.icon {
-  position: absolute;
-  right: 10px; 
+.save {
+  color: var(--dark-text);
+  user-select: none;
+  cursor: pointer;
   top: 50%;
-  transform: translateY(-50%);
-  width: 40px; 
-  height: 40px; 
-}
+  right: 1rem;
+  transform: translate(1.1rem, -50%);
+  border: none;
+  position: absolute;
+ background-color: white;
 
+  padding: .3rem;
+
+  
+
+}

@@ -5,6 +5,7 @@
   },
   "functions": [
     {
+      "runtime": "nodejs20",
       "source": "functions",
       "codebase": "default",
       "ignore": [
@@ -19,7 +20,7 @@
     }
   ],
   "hosting": {
-    "site": "my-first-project-for-lea-4b68d",
+    "site": "delib-5",
     "public": "dist",
     "ignore": [
       "firebase.json",
@@ -27,6 +28,13 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/getRandomStatements2",
+        "function": {
+          "functionId": "getRandomStatements2",
+          "region": "us-central1" 
+        }
+      },
       {
         "source": "**",
         "destination": "/index.html"

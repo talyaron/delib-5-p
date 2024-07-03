@@ -31,7 +31,6 @@ import { DB } from "../config";
 // Helpers
 import { Unsubscribe } from "firebase/auth";
 
-
 export const listenToStatementSubscription = (
 	statementId: string,
 	user: User,
@@ -52,9 +51,9 @@ export const listenToStatementSubscription = (
 					return;
 				}
 				const statementSubscription =
-                    statementSubscriptionDB.data() as StatementSubscription;
+					statementSubscriptionDB.data() as StatementSubscription;
 
-                  
+
 
 				const { role } = statementSubscription;
 
@@ -73,15 +72,6 @@ export const listenToStatementSubscription = (
 				}
 
 
-				// const { success } = StatementSubscriptionSchema.safeParse(
-				//     statementSubscription,
-				// );
-				// if (!success) {
-				//     console.info("No subscription found");
-
-				//     return;
-				// }
-
 				StatementSubscriptionSchema.parse(statementSubscription);
 
 				dispatch(setStatementSubscription(statementSubscription));
@@ -97,12 +87,14 @@ export const listenToStatementSubscription = (
 	}
 };
 
+
+
 export const listenToStatement = (
 	statementId: string,
-	dispatch: AppDispatch,
-	setIsStatementNotFound: React.Dispatch<React.SetStateAction<boolean>>,
+	setIsStatementNotFound?: React.Dispatch<React.SetStateAction<boolean>>,
 ): Unsubscribe => {
 	try {
+		const dispatch = store.dispatch;
 		const statementRef = doc(DB, Collections.statements, statementId);
 
 		return onSnapshot(
@@ -110,21 +102,25 @@ export const listenToStatement = (
 			(statementDB) => {
 				try {
 					if (!statementDB.exists()) {
-						setIsStatementNotFound(true);
+						if (setIsStatementNotFound)
+							setIsStatementNotFound(true);
 						throw new Error("Statement does not exist");
 					}
 					const statement = statementDB.data() as Statement;
 
 					dispatch(setStatement(statement));
 				} catch (error) {
-					console.error(error), setIsStatementNotFound(true);
+					console.error(error)
+					if (setIsStatementNotFound)
+						setIsStatementNotFound(true);
 				}
 			},
 			(error) => console.error(error),
 		);
 	} catch (error) {
 		console.error(error);
-		setIsStatementNotFound(true);
+		if (setIsStatementNotFound)
+			setIsStatementNotFound(true);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		return () => { };
@@ -179,37 +175,37 @@ export const listenToSubStatements = (
 };
 
 export const listenToMembers =
-    (dispatch: AppDispatch) => (statementId: string) => {
-    	try {
-    		const membersRef = collection(DB, Collections.statementsSubscribe);
-    		const q = query(
-    			membersRef,
-    			where("statementId", "==", statementId),
-    			orderBy("createdAt", "desc"),
-    		);
+	(dispatch: AppDispatch) => (statementId: string) => {
+		try {
+			const membersRef = collection(DB, Collections.statementsSubscribe);
+			const q = query(
+				membersRef,
+				where("statementId", "==", statementId),
+				orderBy("createdAt", "desc"),
+			);
 
-    		return onSnapshot(q, (subsDB) => {
-    			subsDB.docChanges().forEach((change) => {
-    				const member = change.doc.data() as StatementSubscription;
-    				if (change.type === "added") {
-    					dispatch(setMembership(member));
-    				}
+			return onSnapshot(q, (subsDB) => {
+				subsDB.docChanges().forEach((change) => {
+					const member = change.doc.data() as StatementSubscription;
+					if (change.type === "added") {
+						dispatch(setMembership(member));
+					}
 
-    				if (change.type === "modified") {
-    					dispatch(setMembership(member));
-    				}
+					if (change.type === "modified") {
+						dispatch(setMembership(member));
+					}
 
-    				if (change.type === "removed") {
-    					dispatch(
-    						removeMembership(member.statementsSubscribeId),
-    					);
-    				}
-    			});
-    		});
-    	} catch (error) {
-    		console.error(error);
-    	}
-    };
+					if (change.type === "removed") {
+						dispatch(
+							removeMembership(member.statementsSubscribeId),
+						);
+					}
+				});
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 export async function listenToUserAnswer(
 	questionId: string,

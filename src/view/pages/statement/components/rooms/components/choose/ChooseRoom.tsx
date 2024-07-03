@@ -4,12 +4,14 @@ import { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Custom components
-import RoomChoosingCard from "./RoomChoosingCard";
+import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 
+import styles from "./ChooseRoom.module.scss";
+
 interface Props {
-    subStatements: Statement[];
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  subStatements: Statement[];
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
@@ -17,7 +19,7 @@ const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
 
 	return (
 		<>
-			<h2>"{t("Division into rooms")}"</h2>
+			<h2>{t("Division into rooms")}</h2>
 			<div className="roomsCards__wrapper">
 				{subStatements.map((subStatement: Statement) => {
 					return (
@@ -27,10 +29,15 @@ const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
 						/>
 					);
 				})}
+				<div
+					className={styles.fav}
+					style={{ height: "3rem" }}
+					onClick={() => setShowModal(true)}
+				>
+          +
+				</div>
 			</div>
-			<div className="fav fav--fixed" onClick={() => setShowModal(true)}>
-				<div>+</div>
-			</div>
+	  
 		</>
 	);
 };

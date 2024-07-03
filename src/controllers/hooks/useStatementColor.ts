@@ -17,7 +17,7 @@ export default function useStatementColor(statementType: string): StyleProps {
 		switch (statementType) {
 		case "question":
 			setstyle({
-				backgroundColor: "var(--question)",
+				backgroundColor: "var(--question-header)",
 				color: "var(--white)",
 			});
 			break;

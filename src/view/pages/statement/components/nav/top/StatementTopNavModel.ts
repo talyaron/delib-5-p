@@ -1,7 +1,8 @@
 import { NavObject, Screen } from "delib-npm";
 
 export const allScreensWithoutSettings: NavObject[] = [
-	{ link: Screen.DOC, name: "Main", id: "doc", default: false },
+	{ link: Screen.INFO, name: "Info", id: "info", default: false },
+	{ link: Screen.DOC, name: "Map", id: "map", default: false },
 	{ link: Screen.CHAT, name: "Chat", id: "chat", default: true },
 	{ link: Screen.OPTIONS, name: "Evaluations", id: "options", default: true },
 	{
@@ -18,6 +19,7 @@ export const allScreensWithoutSettings: NavObject[] = [
 		default: false,
 	},
 	{ link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false },
+	
 ];
 
 export const allScreens = [
