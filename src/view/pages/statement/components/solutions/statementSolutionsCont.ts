@@ -6,6 +6,7 @@ import {
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
 
 
+
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
@@ -107,52 +108,6 @@ export const getEvaluationThumbsToDisplay = ({
 	return [selectedThumb || defaultThumb];
 };
 
-
-export async function getMultiStageOptions(
-	statement: Statement
-): Promise<void> {
-	const dispatch: Dispatch<any> = store.dispatch;
-	try {
-		
-		if (statement.questionSettings?.currentStage === QuestionStage.suggestion) {
-			const userId = store.getState().user.user?.uid;
-			if(!userId) throw new Error("User not found");
-		
-			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getUserOptions?parentId=${statement.statementId}&userId=${userId}`
-			);
-			const { statements, error } = await response.json();
-			if (error) throw new Error(error);
-
-			dispatch(setTempStatementsForPresentation(statements));
-		} else if (
-			statement.questionSettings?.currentStage === QuestionStage.firstEvaluation
-		) {
-			console.log("getRandomStatements")
-			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements?parentId=${statement.statementId}&limit=2`
-			);
-			const { randomStatements, error } = await response.json();
-			if (error) throw new Error(error);
-			dispatch(setTempStatementsForPresentation(randomStatements));
-		} else if (
-			statement.questionSettings?.currentStage ===
-			QuestionStage.secondEvaluation
-		) {
-			const response = await fetch(
-				`http://localhost:5001/synthesistalyaron/us-central1/getTopStatements?parentId=${statement.statementId}&limit=6`
-			);
-			const { topSolutions, error } = await response.json();
-			if (error) throw new Error(error);
-			dispatch(setTempStatementsForPresentation(topSolutions));
-		} else {
-			dispatch(setTempStatementsForPresentation([]));
-		}
-	} catch (error) {
-		console.error(error);
-		dispatch(setTempStatementsForPresentation([]));
-	}
-}
 
 
 

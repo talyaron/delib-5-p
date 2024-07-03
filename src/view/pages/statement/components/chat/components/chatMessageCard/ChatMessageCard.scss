@@ -123,3 +123,20 @@
     color: #62beeb;
   }
 }
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.edit-input {
+  width: 100%;
+  padding-right: 40px; 
+  direction: rtl; 
+}
+
+.save-icon {
+  position: absolute;
+  right: 1px;
+  cursor: pointer;
+}

@@ -15,14 +15,15 @@ import Text from "../text/Text";
 import { getDescription, getTitle } from "../../../controllers/general/helpers";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
-// import { statementTitleToDisplay } from "../../../controllers/general/helpers";
+// Import the SaveTextIcon
+import SaveTextIcon from "../../../assets/icons/SaveTextIcon.svg";
 
 interface Props {
-  statement: Statement | undefined;
-  isEdit: boolean;
-  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  isTextArea?: boolean;
-  onlyTitle?: boolean;
+	statement: Statement | undefined;
+	isEdit: boolean;
+	setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+	isTextArea?: boolean;
+	onlyTitle?: boolean;
 }
 
 const EditTitle: FC<Props> = ({
