@@ -1,12 +1,10 @@
-import { Statement, Screen, QuestionStage } from "delib-npm";
+import { Statement, Screen } from "delib-npm";
 
 import {
 	EnhancedEvaluationThumb,
 	enhancedEvaluationsThumbs,
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
-import { setTempStatementsForPresentation } from "../../../../../model/statements/statementsSlice";
-import { Dispatch } from "react";
-import { store } from "../../../../../model/store";
+
 
 export function sortSubStatements(
 	subStatements: Statement[],
@@ -109,6 +107,7 @@ export const getEvaluationThumbsToDisplay = ({
 	return [selectedThumb || defaultThumb];
 };
 
+
 export async function getMultiStageOptions(
 	statement: Statement
 ): Promise<void> {
@@ -154,6 +153,7 @@ export async function getMultiStageOptions(
 		dispatch(setTempStatementsForPresentation([]));
 	}
 }
+
 
 
 

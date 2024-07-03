@@ -15,3 +15,24 @@
 .editTitle-btn {
   background-color: lightblue;
 }
+
+.container {
+  position: relative;
+}
+
+.save {
+  color: var(--dark-text);
+  user-select: none;
+  cursor: pointer;
+  top: 50%;
+  right: 1rem;
+  transform: translate(1.1rem, -50%);
+  border: none;
+  position: absolute;
+ background-color: white;
+
+  padding: .3rem;
+
+  
+
+}

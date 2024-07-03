@@ -18,21 +18,21 @@ interface Props {
 }
 
 const MainCard: FC<Props> = ({ statement }) => {
-  return (
-    <div className="main-card">
-      <Link
-        to={`/statement/${statement.statementId}/chat`}
-        className="main-card__link"
-      >
-        <div className="main-card__content">
-          <img src={ImgThumb} className="main-card__img"></img>
-          <StatementChatMore statement={statement} />
-        </div>
+	return (
+		<div className="main-card">
+			<Link
+				to={`/statement/${statement.statementId}/chat`}
+				className="main-card__link"
+			>
+				<div className="main-card__content">
+					<img src={ImgThumb} className="main-card__img"></img>
+					<StatementChatMore statement={statement} />
+				</div>
 
-        <Text text={statement.statement} />
-      </Link>
-    </div>
-  );
+				<Text text={statement.statement} />
+			</Link>
+		</div>
+	);
 };
 
 export default MainCard;

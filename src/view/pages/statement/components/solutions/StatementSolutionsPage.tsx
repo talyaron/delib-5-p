@@ -12,10 +12,7 @@ import {
 import { useParams, useNavigate } from 'react-router';
 
 // Utils & Helpers
-import {
-	getMultiStageOptions,
-	sortSubStatements,
-} from './statementSolutionsCont';
+import {sortSubStatements} from './statementSolutionsCont';
 
 // Custom Components
 import StatementEvaluationCard from './components/StatementSolutionCard';
@@ -30,6 +27,7 @@ import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
 import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
 import { getTitle } from '../../../../../controllers/general/helpers';
 import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
+import { getMultiStageOptions } from '../../../../../controllers/db/multiStageQuestion/getMultiStageStatements';
 
 interface StatementEvaluationPageProps {
 	statement: Statement;
@@ -51,6 +49,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		// Hooks
 		const { sort } = useParams();
 		const navigate = useNavigate();
+
 		const { t } = useLanguage();
 
 		const isMuliStage =

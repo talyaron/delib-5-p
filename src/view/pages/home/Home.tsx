@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
-import {
-	useAppSelector,
-} from "../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
@@ -16,12 +14,13 @@ import { listenToStatementSubscriptions } from "../../../controllers/db/subscrip
 import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
 
-interface ListenedStatements{
-	unsubFunction:()=>void;
-	statementId:string;
+
+interface ListenedStatements {
+  unsubFunction: () => void;
+  statementId: string;
 }
 
-export const listenedStatements:Array<ListenedStatements> = [];
+export const listenedStatements: Array<ListenedStatements> = [];
 
 export default function Home() {
 	// Hooks
@@ -43,7 +42,6 @@ export default function Home() {
 	}, [location]);
 
 	useEffect(() => {
-		
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		let unsubscribe: () => void = () => {};
 		try {
@@ -55,16 +53,19 @@ export default function Home() {
 		return () => {
 			if (unsubscribe) {
 				unsubscribe();
-				listenedStatements.forEach((ls)=>{
+				listenedStatements.forEach((ls) => {
 					ls.unsubFunction();
 				});
 			}
 		};
 	}, [user]);
 
+
+
 	return (
 		<ScreenSlide className="page slide-in">
 			{displayHeader && <HomeHeader />}
+     
 			<Outlet />
 		</ScreenSlide>
 	);
