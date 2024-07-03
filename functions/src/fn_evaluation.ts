@@ -9,6 +9,8 @@ import {
     Statement,
     StatementSchema,
     StatementType,
+    User,
+    getStatementSubscriptionId,
     statementToSimpleStatement,
 } from "delib-npm";
 import { z } from "zod";
@@ -26,6 +28,15 @@ export async function newEvaluation(event: any) {
         const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1 });
         if (!statement) throw new Error("statement does not exist");
         updateParentStatementWithChildResults(statement.parentId);
+
+        //update evaluators that the statement was evaluated
+        const evaluator:User|undefined = statementEvaluation.evaluator;
+        if(!evaluator) throw new Error("evaluator is not defined");
+
+        const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
+        if(!evaluationId) throw new Error("evaluationId is not defined");
+        const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
+        await evaluatorRef.set({ statementId:statement.parentId, evaluated:true, evaluatorId:evaluator.uid}, {merge:true});
 
     } catch (error) {
         logger.error(error);

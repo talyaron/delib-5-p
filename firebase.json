@@ -3,22 +3,20 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "functions": [
-    {
-      "runtime": "nodejs20",
-      "source": "functions",
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
-    }
-  ],
+  "functions": [{
+    "runtime": "nodejs20",
+    "source": "functions",
+    "codebase": "default",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ],
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ]
+  }],
   "hosting": {
     "site": "delib-5",
     "public": "dist",
@@ -27,12 +25,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
-      {
+    "rewrites": [{
         "source": "/getRandomStatements2",
         "function": {
           "functionId": "getRandomStatements2",
-          "region": "us-central1" 
+          "region": "us-central1"
         }
       },
       {
