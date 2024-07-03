@@ -48,6 +48,9 @@
 		"no-useless-catch": "error"
 	},
 	"settings": {
+		"react": {
+            "version": "detect" // Tells eslint-plugin-react to autodetect the version
+        },
 		"import/parsers": {
 			"@typescript-eslint/parser": [".ts", ".tsx"]
 		},

@@ -23,50 +23,50 @@ interface ListenedStatements {
 export const listenedStatements: Array<ListenedStatements> = [];
 
 export default function Home() {
-  // Hooks
-  const { statementId } = useParams();
-  const location = useLocation();
+	// Hooks
+	const { statementId } = useParams();
+	const location = useLocation();
 
-  // Redux Store
-  const user = useAppSelector(userSelector);
+	// Redux Store
+	const user = useAppSelector(userSelector);
 
-  // Use States
-  const [displayHeader, setDisplayHeader] = useState(true);
+	// Use States
+	const [displayHeader, setDisplayHeader] = useState(true);
 
-  useEffect(() => {
-    if (location.pathname.includes("addStatement") || statementId) {
-      setDisplayHeader(false);
-    } else {
-      setDisplayHeader(true);
-    }
-  }, [location]);
+	useEffect(() => {
+		if (location.pathname.includes("addStatement") || statementId) {
+			setDisplayHeader(false);
+		} else {
+			setDisplayHeader(true);
+		}
+	}, [location]);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    let unsubscribe: () => void = () => {};
-    try {
-      if (user) {
-        unsubscribe = listenToStatementSubscriptions(30);
-      }
-    } catch (error) {}
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let unsubscribe: () => void = () => {};
+		try {
+			if (user) {
+				unsubscribe = listenToStatementSubscriptions(30);
+			}
+		} catch (error) {}
 
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-        listenedStatements.forEach((ls) => {
-          ls.unsubFunction();
-        });
-      }
-    };
-  }, [user]);
+		return () => {
+			if (unsubscribe) {
+				unsubscribe();
+				listenedStatements.forEach((ls) => {
+					ls.unsubFunction();
+				});
+			}
+		};
+	}, [user]);
 
 
 
-  return (
-    <ScreenSlide className="page slide-in">
-      {displayHeader && <HomeHeader />}
+	return (
+		<ScreenSlide className="page slide-in">
+			{displayHeader && <HomeHeader />}
      
-      <Outlet />
-    </ScreenSlide>
-  );
+			<Outlet />
+		</ScreenSlide>
+	);
 }

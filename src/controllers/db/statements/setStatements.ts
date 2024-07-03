@@ -442,6 +442,7 @@ export async function updateStatementText(
 	try {
 		if (!newText) throw new Error("New text is undefined");
 		if (!statement) throw new Error("Statement is undefined");
+
 		// console.log(statement.statement);
 		// console.log(newText);
 		
