@@ -63,7 +63,6 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 					</div>
 				)}
 				<ChatIcon />
-				<ChatMessageNotify count={messages - messagesRead} />
 			</div>
 			<div className="text">{messageToDisplay}</div>
 		</div>
