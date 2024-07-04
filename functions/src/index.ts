@@ -37,12 +37,25 @@ import {
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
-
+require('dotenv').config()
 const express = require('express');
 const app = express();
 
+
 initializeApp();
 export const db = getFirestore();
+const firebaseConfig = process.env.FIREBASE_CONFIG
+if (firebaseConfig) {
+	console.log("firebaseConfig", JSON.parse(firebaseConfig))
+}
+
+
+
+
+
+
+
+
 
 // update subscribers when statement is updated
 //statements
