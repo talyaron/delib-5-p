@@ -12,6 +12,10 @@
         align-items: center;
         width: 100%;
 
+        &__noRooms{
+            color: white;
+        }
+
         &__btn {
             width: 9.5rem;
             height: 3rem;

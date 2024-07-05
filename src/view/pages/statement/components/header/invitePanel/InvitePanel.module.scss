@@ -4,7 +4,8 @@
     align-items: center;
     justify-content: center;
     gap: 3rem;
-    margin-top: 3.5rem;
+    margin-top: 4rem;
+    padding-bottom: 1rem;
     &__title{
         color: black;
         font-size: 1.5rem;
@@ -35,5 +36,19 @@
             padding: 0.7px 0.9px;
             text-align: center;
         }
+    }
+}
+
+
+
+@media screen and (max-width: 576px) {
+    .panel{
+        padding-bottom: 0;
+    }
+}
+
+@media screen and (min-width: 576px) and (max-width: 1024px) {
+    .panel{
+        padding-bottom: .5rem;
     }
 }

@@ -317,4 +317,11 @@ export function isProduction(): boolean {
 	return location.hostname !== "localhost"
 }
 
+export const handleCloseInviteModal = (setShowModal: (show: boolean) => void) => {
+	const inviteModal = document.querySelector(".inviteModal") as HTMLDivElement;
+	inviteModal.classList.add("closing");
 
+	setTimeout(() => {
+		setShowModal(false);
+	}, 400);
+};

@@ -9,9 +9,10 @@ import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
 import XIcon from "../../../../components/icons/XIcon";
 import InvitationModalInputBoxWrapper from "./InvitationModalInputBoxWrapper";
 import InviteModal from "../../../../components/modal/InviteModal";
+import { handleCloseInviteModal } from "../../../../../controllers/general/helpers";
 
 interface Props {
-	setShowModal: (show: boolean) => void;
+  setShowModal: (show: boolean) => void;
 }
 const InvitationModal: FC<Props> = ({ setShowModal }) => {
   const navigate = useNavigate();
@@ -32,9 +33,9 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
     try {
       ev.preventDefault();
 
-      let pins = gettingPinsFromInput(maxInvitation,ev);
-      gettingPinsFromInput(maxInvitation,ev);
-      
+      let pins = gettingPinsFromInput(maxInvitation, ev);
+      gettingPinsFromInput(maxInvitation, ev);
+
       const fullPin = settingPins(pins);
 
       if (!fullPin) throw new Error("No pin value");
@@ -54,21 +55,26 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
     }
   }
 
-  function gettingPinsFromInput(maxInvitation:number | undefined, ev: React.FormEvent<HTMLFormElement>) {
-    const pins:number[] = [];
+  function gettingPinsFromInput(
+    maxInvitation: number | undefined,
+    ev: React.FormEvent<HTMLFormElement>
+  ) {
+    const pins: number[] = [];
     const form = ev.target as HTMLFormElement;
     for (let i = 0; i < maxInvitation!; i++) {
-      let pinValue = (form['pin' + i] as HTMLInputElement).value;
+      let pinValue = (form["pin" + i] as HTMLInputElement).value;
 
-      if (Number.isInteger(Number(pinValue)) && Number(pinValue) >= 0 && Number(pinValue) <= 9) {
+      if (
+        Number.isInteger(Number(pinValue)) &&
+        Number(pinValue) >= 0 &&
+        Number(pinValue) <= 9
+      ) {
         pins.push(Number(pinValue));
-      }
-      else {
+      } else {
         pins.push(0);
       }
     }
     return pins;
-    
   }
 
   function settingPins(pins: number[]) {
@@ -78,27 +84,30 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
     }
     return fullPin;
   }
+  
 
   return (
     <InviteModal>
       <div className={styles.invitation}>
         <form className={styles.invitation__form} onSubmit={handleJoin}>
-
-          <InvitationModalInputBoxWrapper maxInvitation={maxInvitation}/>
+          <InvitationModalInputBoxWrapper maxInvitation={maxInvitation} />
           {errorMessage && (
             <div className={styles.invitation__error}>{errorMessage}</div>
           )}
 
-          <input
-            type="submit"
-            className={styles.invitation__form__btn}
-            value={t("Join")}
-          ></input>
-          
-          <button onClick={() => setShowModal(false)}>
+          {maxInvitation === undefined ? (
+            <p className={styles.invitation__form__noRooms}>{t("There are no rooms yet")}</p>
+          ) : (
+            <input
+              type="submit"
+              className={styles.invitation__form__btn}
+              value={t("Join")}
+            ></input>
+          )}
+
+          <button onClick={() => handleCloseInviteModal(setShowModal)}>
             <XIcon />
           </button>
-          
         </form>
       </div>
     </InviteModal>

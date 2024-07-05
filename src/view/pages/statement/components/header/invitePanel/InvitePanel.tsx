@@ -6,6 +6,7 @@ import styles from "./InvitePanel.module.scss";
 import XIcon from "../../../../../components/icons/XIcon";
 import InvitePanelBox from "./InvitePanelBox";
 import InviteModal from "../../../../../components/modal/InviteModal";
+import { handleCloseInviteModal } from "../../../../../../controllers/general/helpers";
 
 interface Props {
   setShowModal: (show: boolean) => void;
@@ -54,7 +55,7 @@ const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
               return <InvitePanelBox number={number} key={i}/>;
             })}
           </div>
-          <button onClick={() => setShowModal(false)}>
+          <button onClick={() => handleCloseInviteModal(setShowModal)}>
             <XIcon />
           </button>
         </div>
