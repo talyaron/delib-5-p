@@ -37,6 +37,9 @@ import {
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
+require('dotenv').config()
+
+console.log('process.env.FUNCTION_REGION', process.env.FUNCTION_REGION);
 
 const express = require('express');
 const app = express();

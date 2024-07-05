@@ -1,9 +1,11 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import {
     Collections,
     Evaluation,
+    Evaluator,
+    QuestionStage,
     ResultsBy,
     SimpleStatement,
     Statement,
@@ -30,16 +32,83 @@ export async function newEvaluation(event: any) {
         updateParentStatementWithChildResults(statement.parentId);
 
         //update evaluators that the statement was evaluated
-        const evaluator:User|undefined = statementEvaluation.evaluator;
-        if(!evaluator) throw new Error("evaluator is not defined");
+        const evaluator: User | undefined = statementEvaluation.evaluator;
+        if (!evaluator) throw new Error("evaluator is not defined");
+        const evaluatorData = await getEvaluatorData(evaluator, statement);
+        if (!evaluatorData) throw new Error("evaluatorData is not defined");
 
-        const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-        if(!evaluationId) throw new Error("evaluationId is not defined");
-        const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
-        await evaluatorRef.set({ statementId:statement.parentId, evaluated:true, evaluatorId:evaluator.uid}, {merge:true});
+        await updateStatementMetaDataAndEvaluator(evaluator, evaluatorData, statement);
+
+
+        return;
+
+
 
     } catch (error) {
         logger.error(error);
+        return;
+    }
+
+    function getUpdatedFields(statement: Statement, isFirstTime: boolean, evaluator?: Evaluator) {
+
+        const update = { lastUpdate: Timestamp.now().toMillis() }
+        //@ts-ignore
+        if (isFirstTime) update.numberOfEvaluators = FieldValue.increment(1);
+        //@ts-ignore
+        if (statement.questionSettings?.currentStage === QuestionStage.suggestion && !evaluator?.suggested) update.numberOfFirstSuggesters = FieldValue.increment(1);
+        //@ts-ignore
+        if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation && !evaluator?.firstEvaluation) update.numberOfFirstEvaluators = FieldValue.increment(1);
+        //@ts-ignore
+        if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation && !evaluator?.secondEvaluation) update.numberOfSecondEvaluators = FieldValue.increment(1);
+        console.log(evaluator)
+        console.log(update)
+        return update;
+    }
+
+    async function getEvaluatorData(evaluator: User, statement: Statement) {
+        try {
+            const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
+            if (!evaluationId) throw new Error("evaluationId is not defined");
+            const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
+            const evaluatorDB = await evaluatorRef.get();
+            const evaluatorData = evaluatorDB.data() as Evaluator;
+            if (!evaluatorData) throw new Error("evaluatorData was not found");
+        } catch (error) {
+            logger.error(error);
+            return undefined;
+        }
+    }
+
+    async function updateStatementMetaDataAndEvaluator(evaluator: User, evaluatorData: Evaluator | undefined, statement: Statement) {
+        try {
+            const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
+            if (!evaluationId) throw new Error("evaluationId is not defined");
+            const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
+
+            if (!evaluatorData) {
+                console.log("evaluator does not exist")
+                await evaluatorRef.set({ statementId: statement.parentId, evaluated: true, evaluatorId: evaluator.uid });
+
+                const update = getUpdatedFields(statement, true);
+                await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
+            } else {
+
+                console.log("evaluator exists")
+                const update = getUpdatedFields(statement, false, evaluatorData);
+                await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
+            }
+
+            const evaluatorUpdate: Evaluator = { evaluated: true };
+            if (statement.questionSettings?.currentStage === QuestionStage.suggestion) evaluatorUpdate.suggested = true;
+            if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation) evaluatorUpdate.firstEvaluation = true;
+            if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation) evaluatorUpdate.secondEvaluation = true;
+
+            await evaluatorRef.update(evaluatorUpdate);
+        } catch (error) {
+            logger.error(error);
+
+
+        }
     }
 }
 
