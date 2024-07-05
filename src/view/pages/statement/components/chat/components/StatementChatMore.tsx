@@ -19,8 +19,6 @@ import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
-import ChatMessageNotify from "../components/chatMessageNotify/ChatMessageNotify"
-
 interface Props {
 	statement: Statement;
 }
