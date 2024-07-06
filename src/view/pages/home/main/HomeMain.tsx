@@ -57,23 +57,7 @@ const HomeMain = () => {
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
-				<Button
-					text="Next"
-					onClick={handleAddStatement}
-					className="btn btn--affirmation"
-				/>
-				<Button
-					text="Back"
-					onClick={handleAddStatement}
-					className="btn"
-				/>
-				<Button 
-					icon={<SendIcon color="white" />}
-					text="Button with SVG"
-					onClick={handleAddStatement}
-					className="btn btn--affirmation"
-				/>
-
+				
 				{!loading ? (
 					statements.map((statement) => (
 						<MainCard key={statement.statementId} statement={statement} />
