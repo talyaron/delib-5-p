@@ -17,8 +17,6 @@ import MainCard from "./mainCard/MainCard";
 
 //images
 import bike from "../../../../assets/images/bike.png";
-import Button from "../../../components/buttons/button/Button";
-import SendIcon from "../../../components/icons/SendIcon";
 
 const HomeMain = () => {
 	// Hooks
@@ -49,15 +47,13 @@ const HomeMain = () => {
 		<ScreenSlide className="home-page__main slide-in">
 			<div className="heroImg"></div>
 			<img className="bikeImg" src={bike} />
-
-
 			<div
 				className="wrapper main-wrap"
 				style={{
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
-				
+
 				{!loading ? (
 					statements.map((statement) => (
 						<MainCard key={statement.statementId} statement={statement} />
