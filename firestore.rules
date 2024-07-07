@@ -9,6 +9,11 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
+    
+      match /passwords/{passwordId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
 
      match /statementsMeta/{statementId=**}{
         allow read: if request.auth.uid != null;

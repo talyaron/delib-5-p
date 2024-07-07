@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
@@ -26,6 +26,7 @@ import './StatementSettingsForm.scss';
 // icons
 import SaveIcon from '../../../../../../../assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
+import { getPasswordFlow } from '../../../../../../../controllers/db/password/managePasswords';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
@@ -45,6 +46,8 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const navigate = useNavigate();
 		const { statementId } = useParams();
 		const { t } = useLanguage();
+
+		const [password, setPassword] = useState('XXXX');
 
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,6 +70,16 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 			setStatementToEdit,
 		} as const;
 
+		const handleGetPassword = async () => {
+			if (!statementId) return console.error('No statement ID');
+
+			const getPassword = await getPasswordFlow(statementId);
+
+			console.log(getPassword);
+
+			setPassword(getPassword.password);
+		};
+
 		return (
 			<form
 				onSubmit={handleSubmit}
@@ -84,6 +97,18 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				</section>
 				<DisplayResultsBy {...statementSettingsProps} />
 				<ResultsRange {...statementSettingsProps} />
+				<div className='get-password'>
+					<button
+						type='button'
+						className='form-button get-password__button'
+						onClick={() => {
+							handleGetPassword();
+						}}
+					>
+						Get password
+					</button>
+					<div>{password}</div>
+				</div>
 
 				{!isNewStatement && (
 					<>

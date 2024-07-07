@@ -1,81 +1,92 @@
 .statement-settings-form {
-    flex: auto;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 75ch;
-    margin: 0.5rem auto;
-    padding: 1.5rem;
-    position: relative;
-    padding-bottom: 5rem;
-    font-family: "Roboto", "Open Sans", sans-serif;
+	flex: auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 75ch;
+	margin: 0.5rem auto;
+	padding: 1.5rem;
+	position: relative;
+	padding-bottom: 5rem;
+	font-family: 'Roboto', 'Open Sans', sans-serif;
 
-    textarea,
-    input[type="text"] {
-        padding: 1rem;
-        font-size: 1.2rem;
-        width: 100%;
-        outline: none;
-        resize: none;
-        background-color: #f5fcff;
-        box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
-        box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
-    }
+	textarea,
+	input[type='text'] {
+		padding: 1rem;
+		font-size: 1.2rem;
+		width: 100%;
+		outline: none;
+		resize: none;
+		background-color: #f5fcff;
+		box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
+		box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
+	}
 
-    .title {
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: 24px;
-        color: #232f4a;
-    }
+	.get-password {
+		display: flex;
+        align-items: center;
+		gap: 2rem;
+        margin: 1rem 0;
+		&__button {
+			background-color: var(--settings-voting);
+			color: var(--white);
+		}
+	}
 
-    .switches-area {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 3rem 5rem;
-    }
+	.title {
+		font-size: 1rem;
+		font-weight: 500;
+		line-height: 24px;
+		color: #232f4a;
+	}
 
-    .get-members-area {
-        height: fit-content;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-        padding-block: 1rem;
+	.switches-area {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 3rem 5rem;
+	}
 
-        .evaluators-button {
-            background-color: var(--light-green);
-            color: var(--white);
-        }
-        .voters-button {
-            background-color: var(--light-purple);
-            color: var(--white);
-        }
-    }
+	.get-members-area {
+		height: fit-content;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+		padding-block: 1rem;
 
-    .submit-button {
-        transform: scale(1.25);
-        transition: all 0.13s ease-in-out;
-        color:var(--white);
-        margin: auto;
-        cursor: pointer;
-        position: fixed;
-        bottom: 2%;
-        left: 63%;
-        z-index: 1000;
-        &:hover {
-            transform: scale(1.4);
-        }
-    }
+		.evaluators-button {
+			background-color: var(--light-green);
+			color: var(--white);
+		}
+		.voters-button {
+			background-color: var(--light-purple);
+			color: var(--white);
+		}
+	}
 
-    .form-button {
-        height: 2rem;
-        padding: 0 1rem;
-        font-size: 1rem;
-        border: none;
-        outline: none;
-        border-radius: 3px;
-        cursor: pointer;
-        box-shadow: 0 10px 10px var(--shadow);
-    }
+	.submit-button {
+		transform: scale(1.25);
+		transition: all 0.13s ease-in-out;
+		color: var(--white);
+		margin: auto;
+		cursor: pointer;
+		position: fixed;
+		bottom: 2%;
+		left: 63%;
+		z-index: 1000;
+		&:hover {
+			transform: scale(1.4);
+		}
+	}
+
+	.form-button {
+		height: 2rem;
+		padding: 0 1rem;
+		font-size: 1rem;
+		border: none;
+		outline: none;
+		border-radius: 3px;
+		cursor: pointer;
+		box-shadow: 0 10px 10px var(--shadow);
+	}
 }

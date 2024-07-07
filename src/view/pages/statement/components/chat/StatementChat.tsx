@@ -12,7 +12,12 @@ import NewMessages from './components/newMessages/NewMessages';
 import { useAppSelector } from '../../../../../controllers/hooks/reduxHooks';
 import { userSelector } from '../../../../../model/users/userSlice';
 import './StatementChat.scss';
-import { generatePasswordForStatement } from '../../../../../controllers/db/password/managePasswords';
+import {
+	generatePasswordForStatement,
+	getPasswordFromDB,
+	passwordExpired,
+	setPasswordInDB,
+} from '../../../../../controllers/db/password/managePasswords';
 
 interface Props {
 	statement: Statement;
@@ -54,7 +59,6 @@ const StatementChat: FC<Props> = ({
 
 	//effects
 	useEffect(() => {
-		console.log(generatePasswordForStatement(statement.statementId));
 		firstTime = true;
 		scrollToBottom();
 	}, []);
