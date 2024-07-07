@@ -26,9 +26,7 @@ import './StatementSettingsForm.scss';
 // icons
 import SaveIcon from '../../../../../../../assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
-import {
-	getPasswordFlow,
-} from '../../../../../../../controllers/db/password/managePasswords';
+import { providePasswordToAdmin } from '../../../../../../../controllers/db/password/managePasswords';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
@@ -75,7 +73,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const handleGetPassword = async () => {
 			if (!statementId) return console.error('No statement ID');
 
-			const getPassword = await getPasswordFlow(statementId);
+			const getPassword = await providePasswordToAdmin(statementId);
 
 			setPassword(getPassword.password);
 		};
@@ -97,18 +95,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				</section>
 				<DisplayResultsBy {...statementSettingsProps} />
 				<ResultsRange {...statementSettingsProps} />
-				<div className='get-password'>
-					<button
-						type='button'
-						className='form-button get-password__button'
-						onClick={() => {
-							handleGetPassword();
-						}}
-					>
-						Get password
-					</button>
-					<div>{password}</div>
-				</div>
 
 				{!isNewStatement && (
 					<>
@@ -124,6 +110,19 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						</section>
 					</>
 				)}
+
+				<div className='get-password'>
+					<button
+						type='button'
+						className='form-button get-password__button'
+						onClick={() => {
+							handleGetPassword();
+						}}
+					>
+						Get password
+					</button>
+					<div>{password}</div>
+				</div>
 
 				<button
 					type='submit'
