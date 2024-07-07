@@ -38,4 +38,3 @@ dev-dist/
 firebase.json
 firebase-debug.log
 firebase-debug.log*
-configKey.ts
