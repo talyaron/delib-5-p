@@ -26,7 +26,7 @@ import './StatementSettingsForm.scss';
 // icons
 import SaveIcon from '../../../../../../../assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
-import { providePasswordToAdmin } from '../../../../../../../controllers/db/password/managePasswords';
+import { providePasswordToAdmin } from '@/controllers/db/password/managePasswords';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
