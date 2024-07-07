@@ -26,7 +26,9 @@ import './StatementSettingsForm.scss';
 // icons
 import SaveIcon from '../../../../../../../assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
-import { getPasswordFlow } from '../../../../../../../controllers/db/password/managePasswords';
+import {
+	getPasswordFlow,
+} from '../../../../../../../controllers/db/password/managePasswords';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
@@ -74,8 +76,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 			if (!statementId) return console.error('No statement ID');
 
 			const getPassword = await getPasswordFlow(statementId);
-
-			console.log(getPassword);
 
 			setPassword(getPassword.password);
 		};

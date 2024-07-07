@@ -4,7 +4,7 @@ import { where } from 'firebase/firestore/lite';
 
 export interface Password {
 	password: string;
-	expiryDate: Date;
+	expiryDate: number;
 	statementId: string;
 	passwordId: string;
 }
@@ -12,8 +12,7 @@ export interface Password {
 // Function generates a 4 number password for a statement and sets an expiry date for the password
 export function generatePasswordForStatement(statementId: string): Password {
 	const password = Math.floor(1000 + Math.random() * 9000).toString();
-	const expiryDate = new Date();
-	expiryDate.setSeconds(expiryDate.getSeconds() + 10);
+	const expiryDate = new Date().getTime() + 10000;
 
 	const passwordObj: Password = {
 		password,
@@ -43,18 +42,30 @@ export async function setPasswordInDB(statementId: string): Promise<Password> {
 	if (!querySnapshot.empty) {
 		const d = querySnapshot.docs[0];
 
-		const password = d.data() as Password;
-		const newPassword = generatePasswordForStatement(statementId);
+		const passwordDB = d.data() as Password;
 
-		const passwordRef = doc(DB, 'passwords', password.passwordId);
+		// If the password has expired, generate a new password and update the expiry date
+		if (passwordDB.expiryDate < new Date().getTime()) {
+			const { password, expiryDate } =
+				generatePasswordForStatement(statementId);
 
-		await setDoc(passwordRef, newPassword, { merge: true });
+			const passwordRef = doc(DB, 'passwords', statementId);
 
-		return password;
+			await setDoc(passwordRef, { password, expiryDate }, { merge: true });
+
+			return {
+				password,
+				expiryDate,
+				statementId,
+				passwordId: passwordDB.passwordId,
+			};
+		}
+
+		return passwordDB;
 	} else {
 		const newPassword = generatePasswordForStatement(statementId);
 
-		const passwordRef = doc(DB, 'passwords', newPassword.passwordId);
+		const passwordRef = doc(DB, 'passwords', statementId);
 
 		await setDoc(passwordRef, newPassword);
 
@@ -96,7 +107,7 @@ export async function passwordIsValid(
 	}
 
 	return {
-		valid: password.expiryDate > new Date(),
+		valid: password.expiryDate > new Date().getTime(),
 		password,
 	};
 }
