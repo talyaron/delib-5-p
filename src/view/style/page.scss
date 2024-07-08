@@ -91,9 +91,8 @@
                     margin-top: 0.5rem;
 
                     @media only screen and (max-width: 600px) {
-                        // margin: 1rem;
-                    }
-                }
+                        height: 5rem;
+                    }}
 
                 &__tabTxt {
                     display: none;
@@ -109,7 +108,7 @@
                     height: 2rem;
 
                     @media only screen and (max-width: 600px) {
-                        height: 1.6rem;
+                        height: 1.3rem;
                     }
                 }
 
