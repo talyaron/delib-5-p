@@ -4,6 +4,7 @@ import styles from './InvitationModal.module.scss';
 import { getInvitationPathName } from '../../../../../controllers/db/invitations/getInvitations';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
+import Button from '../../../../components/buttons/button/Button';
 
 interface Props {
 	setShowModal: (show: boolean) => void;
@@ -54,15 +55,17 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 						<div className={styles.invitation__error}>{errorMessage}</div>
 					)}
 					<div className='btns'>
-						<button type='submit' className='btn btn--agree'>
+						<button type='submit'
+							className="btn btn--affirmation"
+						>
 							{t('Join')}
 						</button>
-						<button
+
+						<Button
+							text={t('Cancel')}
 							onClick={() => setShowModal(false)}
-							className='btn btn--cancel'
-						>
-							{t('Cancel')}
-						</button>
+							className="btn"
+						/>
 					</div>
 				</form>
 			</div>
