@@ -6,7 +6,7 @@ import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
 
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
-import { allScreens } from "./StatementTopNavModel";
+import { allScreens } from "./StatementTopNavModel.tsx";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
@@ -34,10 +34,11 @@ const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }
 				>
 					<p className="page__header__nav__button__tabTxt">
 						{t(screenInfo.name)}
-					</p>
-					<img className='page__header__nav__button__navIcon' src={screenInfo.icon} />
+					</p>					
+					<screenInfo.icon fill={screen === screenInfo.link ? 'var(--question)' : 'none'} />
 				</Link>
 			))}
+			
 		</nav>
 	);
 };

@@ -2,7 +2,7 @@
 import CustomSwitch from "../../../../../../components/switch/CustomSwitch";
 
 // HELPERS
-import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel";
+import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel.tsx";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
 import { FC } from "react";
 import TabIcon from "./TabIcon";
