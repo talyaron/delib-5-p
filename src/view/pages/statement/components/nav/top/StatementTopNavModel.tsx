@@ -7,7 +7,7 @@ import NavQuestionsIcon from '../../../../../../assets/icons/navQuestionsIcon.sv
 import NavVoteIcon from '../../../../../../assets/icons/navVoteIcon.svg?react'
 import NavRoomsIcon from '../../../../../../assets/icons/navRoomsIcon.svg?react'
 import NavMassQuestionsIcon from '../../../../../../assets/icons/NavMassQuestionsIcon.svg?react'
-import NavInformationIcon from '../../../../../../assets/icons/NavInformationIcon.svg?react'
+import NavInfoIcon from '../../../../../../assets/icons/NavInfoIcon.svg?react'
 
 export const allScreensWithoutSettings: NavObject[] = [
 	{ link: Screen.DOC, name: "Main", id: "doc", default: false, icon: NavMainPageIcon, }, 
@@ -17,7 +17,7 @@ export const allScreensWithoutSettings: NavObject[] = [
 	{ link: Screen.VOTE, name: "Voting", id: "vote", default: true, icon: NavVoteIcon, },
 	{ link: Screen.MASS_QUESTIONS, name: "Mass Questions", id: "questions-mass", default: false, icon: NavMassQuestionsIcon, },
 	{ link: Screen.GROUPS, name: "Rooms", id: "rooms", default: false, icon: NavRoomsIcon, },
-	{ link: Screen.GROUPS, name: "Information", id: "information", default: false, icon: NavInformationIcon, },
+	{ link: Screen.INFO,	 name: "Info", id: "info", default: false, icon: NavInfoIcon, },
 ];
 
 export const allScreens = [
