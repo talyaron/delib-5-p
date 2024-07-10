@@ -20,7 +20,7 @@ const UploadExcel: React.FC = () => {
   };
 
   const handleFileUpload = async () => {
-    if (!file) return;
+    if (!file) return alert("No file has been selected");
 
     const reader = new FileReader();
 
