@@ -16,8 +16,6 @@ import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
 import bike from "../../../../assets/images/bike.png";
-import UploadExcel from "../../../../controllers/db/subscriptions/UploadExcel";
-
 
 const HomeMain = () => {
 	// Hooks
@@ -49,7 +47,6 @@ const HomeMain = () => {
 			<div className="heroImg"></div>
 			<img className="bikeImg" src={bike} />
 			<div className="as">
-			<UploadExcel />
 
 			</div>
 			<div
