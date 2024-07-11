@@ -2,12 +2,13 @@ import { FC } from "react";
 
 // Third party imports
 import { Link } from "react-router-dom";
-import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
+import { NavObject, Statement, Screen, StatementSubscription, StatementType } from "delib-npm";
 
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
 import { allScreens } from "./StatementTopNavModel.tsx";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor.ts";
 
 interface Props {
 	statement: Statement;
@@ -17,11 +18,12 @@ interface Props {
 
 const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }) => {
 	const { t } = useLanguage();
-
+	const headerColor = useStatementColor(statement?.statementType || '');
 	const _navArray = showNavElements({ statement, statementSubscription, navArray: allScreens });
 
+
 	return (
-		<nav className="page__header__nav" data-cy="statement-nav">
+		<nav className="page__header__nav" data-cy="statement-nav" style={{color:headerColor.color, backgroundColor:headerColor.backgroundColor}}>
 			{_navArray.map((screenInfo: NavObject) => (
 				<Link
 					key={screenInfo.id}
@@ -35,7 +37,7 @@ const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }
 					<p className="page__header__nav__button__tabTxt">
 						{t(screenInfo.name)}
 					</p>					
-					<screenInfo.icon fill={screen === screenInfo.link ? 'var(--question)' : 'none'} />
+					<screenInfo.icon fill={screen === screenInfo.link ? `${headerColor.color}` : 'none'} />
 				</Link>
 			))}
 			
