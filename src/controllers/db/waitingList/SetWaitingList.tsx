@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
+import Button from "../../../view/components/buttons/button/Button";
+import UploadFileIcon from "../../../view/components/icons/UploadFileIcon";
 
 interface User {
   Name: string;
@@ -53,7 +55,12 @@ const UploadExcel: React.FC = () => {
   return (
     <div>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
-      <button onClick={() => handleFileUpload()}>Upload</button>
+      <Button
+        icon={<UploadFileIcon />}
+        text={'Upload members list'}
+        onClick={() => handleFileUpload()}
+        className={"btn btn--affirmation"}
+      />
     </div>
   );
 };
