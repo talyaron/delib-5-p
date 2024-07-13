@@ -19,7 +19,6 @@ import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
 import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
-
 interface Props {
 	statement: Statement;
 }

@@ -64,9 +64,7 @@ export default function Home() {
 
 	return (
 		<ScreenSlide className="page slide-in">
-
-			{displayHeader && <HomeHeader />}
-     
+			{displayHeader && <HomeHeader />}     
 			<Outlet />
 		</ScreenSlide>
 	);

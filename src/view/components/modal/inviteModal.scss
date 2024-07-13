@@ -3,11 +3,13 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: max-content;
     z-index: 300;
     display: flex;
     align-items: center;
     flex-direction: column;
+    animation: fallingDown .8s forwards;
+    transition: 1s ease-in-out;
 
     &__content {
         background: linear-gradient(to bottom, rgba(101, 156, 240, 1), rgba(94, 128, 234, 1));
@@ -16,7 +18,7 @@
         0px 53px 32px 0px #2C2F720D,
         0px 94px 38px 0px #2C2F7203,
         0px 147px 41px 0px #2C2F7200;
-        border-radius: 0% 0% 50% 50% / 0% 0% 30% 30%;
+        clip-path: ellipse(70% 100% at 50% 0%);
         width: 100%;
         height: max-content;
         padding-bottom: 1rem;
@@ -24,5 +26,66 @@
         justify-content: flex-end;
         align-items: center;
         flex-direction: column;
+    }
+}
+
+.closing {
+    animation: closingTab .5s;
+    transition: 1s ease-in-out;
+}
+
+@keyframes fallingDown {
+    0% {
+        top: -300px;
+        animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); 
+    }
+    
+    50% {
+        top: 50px;
+        animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); 
+    }
+
+    70% {
+        top: -5px;
+        animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); 
+    }
+    
+    90% {
+        top: 5px;
+        animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); 
+    }
+
+    100% {
+        top: 0px;
+        animation-timing-function: ease-out; 
+    }
+}
+
+@keyframes closingTab {
+    0% {
+        top: 0px;
+        animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); 
+    }
+    
+    100% {
+        top: -300px;
+        animation-timing-function: ease-out; 
+    }
+}
+
+
+@media screen and (max-width: 375px) {
+    .inviteModal {
+        &__content {
+            clip-path: ellipse(95% 100% at 50% 0%);
+        }
+    }
+}
+
+@media screen and (min-width: 376px) and (max-width: 576px) {
+    .inviteModal {
+        &__content {
+            clip-path: ellipse(85% 100% at 50% 0%);
+        }
     }
 }

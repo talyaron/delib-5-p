@@ -6,6 +6,7 @@ import styles from "./InvitePanel.module.scss";
 import XIcon from "../../../../../components/icons/XIcon";
 import InvitePanelBox from "./InvitePanelBox";
 import InviteModal from "../../../../../components/modal/InviteModal";
+import { handleCloseInviteModal } from "../../../../../../controllers/general/helpers";
 
 interface Props {
   setShowModal: (show: boolean) => void;
@@ -14,56 +15,55 @@ interface Props {
 }
 
 const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
-	try {
-		if (!statementId) throw new Error("StatementId is missing");
+  try {
+    if (!statementId) throw new Error("StatementId is missing");
 
-		const [invitationNumberArr, setInvitationNumberArr] = useState<number[]>(
-			[]
-		);
+    const [invitationNumberArr, setInvitationNumberArr] = useState<number[]>(
+      []
+    );
 
-		useEffect(() => {
-			setInvitationToDB({ statementId, pathname }).then(
-				(invitation: Invitation | undefined) => {
-					try {
-						if (!invitation) throw new Error("No invitation found in DB");
+    useEffect(() => {
+      setInvitationToDB({ statementId, pathname }).then(
+        (invitation: Invitation | undefined) => {
+          try {
+            if (!invitation) throw new Error("No invitation found in DB");
 
-						invitationNumberToArray(invitation?.number);
-					} catch (error) {
-						console.error(error);
-					}
-				}
-			);
-		}, []);
+            invitationNumberToArray(invitation?.number);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      );
+    }, []);
 
-		function invitationNumberToArray(invitationNumber: number) {
-			let number = invitationNumber;
-			const newNumber: number[] = [];
-			while (number > 0) {
-				newNumber.push(number % 10);
-				number = Math.floor(number / 10);
-			}
+    function invitationNumberToArray(invitationNumber: number) {
+      let number = invitationNumber;
+      const newNumber: number[] = [];
+      while (number > 0) {
+        newNumber.push(number % 10);
+        number = Math.floor(number / 10);
+      }
 
-			return setInvitationNumberArr(newNumber);
-		}
+      return setInvitationNumberArr(newNumber);
+    }
 
-		return (
-			<InviteModal>
-				<div className={styles.panel}>
-					<div className={styles.panel__boxWrapper}>
-						{invitationNumberArr.map((number,i) => {
-							return <InvitePanelBox number={number} key={i}/>;
-						})}
-					</div>
-					<button onClick={() => setShowModal(false)}>
-						<XIcon />
-					</button>
-				</div>
-			</InviteModal>
-		);
-	} catch (error) {
-		console.error(error);
-		
-		return null;
-	}
+    return (
+      <InviteModal>
+        <div className={styles.panel}>
+          <div className={styles.panel__boxWrapper}>
+            {invitationNumberArr.map((number,i) => {
+              return <InvitePanelBox number={number} key={i}/>;
+            })}
+          </div>
+          <button onClick={() => handleCloseInviteModal(setShowModal)}>
+            <XIcon />
+          </button>
+        </div>
+      </InviteModal>
+    );
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 export default InvitePanel;
