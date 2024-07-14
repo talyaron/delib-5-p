@@ -207,7 +207,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							onClick={() => {
 								setShowToast(false);
 							}}
-							Icon={<X />}
+							icon={<X />}
 							color='white'
 							bckColor='var(--crimson)'
 						/>
@@ -221,7 +221,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 								onClick={() => {
 									setShowToast(false);
 								}}
-								Icon={<X />}
+								icon={<X />}
 								color='white'
 								bckColor='var(--crimson)'
 							/>
@@ -232,7 +232,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 									setShowToast(false);
 									setShowModal(true);
 								}}
-								Icon={<LightBulbIcon />}
+								icon={<LightBulbIcon />}
 								color='white'
 								bckColor='var(--green)'
 							/>
@@ -247,7 +247,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							onClick={() => {
 								setShowToast(false);
 							}}
-							Icon={<X />}
+							icon={<X />}
 							color='white'
 							bckColor='var(--crimson)'
 						/>

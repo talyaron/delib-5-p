@@ -49,7 +49,6 @@ const HomeMain = () => {
 			<div className="heroImg"></div>
 			<img className="bikeImg" src={bike} />
 
-
 			<div
 				className="wrapper main-wrap"
 				style={{
@@ -68,7 +67,7 @@ const HomeMain = () => {
 			</div>
 			<Footer onclick={handleAddStatement} />
 
-		</ScreenSlide>
+		</ScreenSlide >
 	);
 };
 
