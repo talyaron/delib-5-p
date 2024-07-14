@@ -32,6 +32,7 @@
     "reactflow": "^11.11.1",
     "rollup-plugin-visualizer": "^5.10.0",
     "sass": "^1.63.6",
+    "xlsx": "^0.18.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {
