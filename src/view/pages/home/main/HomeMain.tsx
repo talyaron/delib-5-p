@@ -16,7 +16,6 @@ import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
 import bike from "../../../../assets/images/bike.png";
-import SetWaitingList from "../../../../controllers/db/waitingList/SetWaitingList";
 
 const HomeMain = () => {
 	// Hooks
@@ -47,10 +46,7 @@ const HomeMain = () => {
 		<ScreenSlide className="home-page__main slide-in">
 			<div className="heroImg"></div>
 			<img className="bikeImg" src={bike} />
-			<div className="as">
-				<SetWaitingList />
-
-			</div>
+			
 			<div
 				className="wrapper main-wrap"
 				style={{
