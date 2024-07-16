@@ -27,6 +27,12 @@ export async function findSimilarStatements(
 		id: subStatement.statementId,
 	}));
 
+	if (statementsText.length === 0) {
+		response.status(200).send([]);
+
+		return;
+	}
+
 	const genAiResponse = await runGenAI(
 		statementsText.map((s) => s.statement),
 		userInput
@@ -51,7 +57,7 @@ export async function runGenAI(allStatements: string[], userInput: string) {
 
 		const prompt = `
 		Find the strings in the following text that are similar to '${userInput}': ${allStatements}. 
-		Consider a match if the sentence shares at least 70% similarity in meaning.
+		Consider a match if the sentence shares at least 60% similarity in meaning.
 		Give answer back in this json format: { strings: ['string1', 'string2', ...] }
 		`;
 
