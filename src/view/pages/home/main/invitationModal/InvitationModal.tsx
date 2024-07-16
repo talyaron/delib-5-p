@@ -1,10 +1,13 @@
-import { FC, useState } from 'react';
-import Modal from '../../../../components/modal/Modal';
-import styles from './InvitationModal.module.scss';
-import { getInvitationPathName } from '../../../../../controllers/db/invitations/getInvitations';
-import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
-import Button from '../../../../components/buttons/button/Button';
+import { FC, useState, useEffect } from "react";
+import Modal from "../../../../components/modal/Modal";
+import styles from "./InvitationModal.module.scss";
+import {
+  getInvitationPathName,
+  getMaxInvitationDigits,
+} from "../../../../../controllers/db/invitations/getInvitations";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import Button from "../../../../components/buttons/button/Button";
 
 interface Props {
   setShowModal: (show: boolean) => void;
@@ -29,42 +32,44 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
       ev.preventDefault();
 
       let pins = gettingPinsFromInput(maxInvitation, ev);
-      gettingPinsFromInput(maxInvitation, ev);
+	  setMaxInvitation(pins);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-	return (
-		<Modal>
-			<div className={styles.invitation}>
-				<form
-					className={styles.invitation__form}
-					onSubmit={(e) => handleJoin(e)}
-				>
-					<input
-						type='number'
-						placeholder='Enter PIN'
-						id='pin'
-						required={true}
-						value={pin}
-						onChange={(e) => setPin(parseInt(e.target.value))}
-					/>
-					{errorMessage && (
-						<div className={styles.invitation__error}>{errorMessage}</div>
-					)}
-					<div className='btns'>
-						<button type='submit'
-							className="btn btn--affirmation"
-						>
-							{t('Join')}
-						</button>
+  return (
+    <Modal>
+      <div className={styles.invitation}>
+        <form
+          className={styles.invitation__form}
+          onSubmit={(e) => handleJoin(e)}
+        >
+          <input
+            type="number"
+            placeholder="Enter PIN"
+            id="pin"
+            required={true}
+            value={pin}
+            onChange={(e) => setPin(parseInt(e.target.value))}
+          />
+          {errorMessage && (
+            <div className={styles.invitation__error}>{errorMessage}</div>
+          )}
+          <div className="btns">
+            <button type="submit" className="btn btn--affirmation">
+              {t("Join")}
+            </button>
 
-						<Button
-							text={t('Cancel')}
-							onClick={() => setShowModal(false)}
-							className="btn"
-						/>
-					</div>
-				</form>
-			</div>
-		</Modal>
-	);
+            <Button
+              text={t("Cancel")}
+              onClick={() => setShowModal(false)}
+              className="btn"
+            />
+          </div>
+        </form>
+      </div>
+    </Modal>
+  );
 };
 export default InvitationModal;
