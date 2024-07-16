@@ -17,7 +17,6 @@ interface Props {
 
 const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }) => {
 	const { t } = useLanguage();
-
 	const _navArray = showNavElements({ statement, statementSubscription, navArray: allScreens });
 
 	return (
