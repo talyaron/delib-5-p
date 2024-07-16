@@ -10,16 +10,16 @@ export default function XIcon({ color = "white" }: { color?: string }) {
       <path
         d="M24.0002 7.99988L8.00018 23.9999"
         stroke={color}
-        stroke-width="1.99832"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.99832"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8.00018 7.99988L24.0002 23.9999"
         stroke={color}
-        stroke-width="1.99832"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.99832"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

@@ -2,7 +2,7 @@ import { FC } from "react";
 
 // Third party imports
 import { Link } from "react-router-dom";
-import { NavObject, Statement, Screen, StatementSubscription, StatementType } from "delib-npm";
+import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
 
 // Helpers
 import { showNavElements } from "./statementTopNavCont";

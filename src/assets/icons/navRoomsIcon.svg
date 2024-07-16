@@ -1,5 +1,5 @@
 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21.2002 2.5C21.2002 2.22386 20.9763 2 20.7002 2H3.7002C3.42405 2 3.2002 2.22386 3.2002 2.5V21.5C3.2002 21.7761 3.42405 22 3.7002 22H20.7002C20.9763 22 21.2002 21.7761 21.2002 21.5V2.5Z" stroke="white" stroke-width="0.8" stroke-miterlimit="10" stroke-linecap="round"/>
-<path d="M21.2002 20.4098C21.2002 20.7187 20.9228 20.9538 20.618 20.903L9.618 19.0696C9.3769 19.0295 9.2002 18.8209 9.2002 18.5764V5.42356C9.2002 5.17914 9.3769 4.97055 9.618 4.93037L20.618 3.09703C20.9228 3.04624 21.2002 3.28126 21.2002 3.59023V20.4098Z" stroke="white" stroke-width="0.8" stroke-miterlimit="10" stroke-linecap="round"/>
-<path d="M11.2002 11.5V12.5" stroke="white" stroke-width="0.8" stroke-miterlimit="10" stroke-linecap="round"/>
+<path d="M21.2002 2.5C21.2002 2.22386 20.9763 2 20.7002 2H3.7002C3.42405 2 3.2002 2.22386 3.2002 2.5V21.5C3.2002 21.7761 3.42405 22 3.7002 22H20.7002C20.9763 22 21.2002 21.7761 21.2002 21.5V2.5Z" stroke="white" strokeWidth="0.8" stroke-miterlimit="10" strokeLinecap="round"/>
+<path d="M21.2002 20.4098C21.2002 20.7187 20.9228 20.9538 20.618 20.903L9.618 19.0696C9.3769 19.0295 9.2002 18.8209 9.2002 18.5764V5.42356C9.2002 5.17914 9.3769 4.97055 9.618 4.93037L20.618 3.09703C20.9228 3.04624 21.2002 3.28126 21.2002 3.59023V20.4098Z" stroke="white" strokeWidth="0.8" stroke-miterlimit="10" strokeLinecap="round"/>
+<path d="M11.2002 11.5V12.5" stroke="white" strokeWidth="0.8" stroke-miterlimit="10" strokeLinecap="round"/>
 </svg>
