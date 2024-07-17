@@ -13,6 +13,7 @@
         background-color: #659bf0;
         margin-bottom: -.5px;
         z-index: 1;
+        
 
         @media (min-width: 570px) {
             background-color: #5c8fed;
@@ -106,7 +107,7 @@
     margin-bottom: 2rem;
     margin-top: -5rem;
     width: 100vw;
-    background-image: url('../../assets/images/hero-rectangle.png');
+    background-image: url('../../assets/images/Hero-rectangle.png');
     height: 30vh;
     
     @media (max-width: 1200px) {

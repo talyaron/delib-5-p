@@ -9,6 +9,7 @@ import { keys } from "./configKey";
 import { isProduction } from "../general/helpers";
 
 
+
 const firebaseConfig = keys;
 
 // Initialize Firebase
@@ -21,7 +22,7 @@ const auth = getAuth();
 
 //development
 if (!isProduction()) {
-	console.warn("running on development mode");
+	console.warn("Running on development mode");
 
 	connectFirestoreEmulator(DB, "127.0.0.1", 8080);
 	connectAuthEmulator(auth, "http://127.0.0.1:9099");

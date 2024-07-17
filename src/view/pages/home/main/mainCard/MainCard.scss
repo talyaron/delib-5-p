@@ -6,10 +6,8 @@
     min-height: 296px;
     min-width: 340px;
     width: 400px;
-    background-color: var(--white);
     border-radius: 0.25rem;
-    padding: 1rem;
-    box-shadow: 0px 3px 6px rgba(159, 183, 195, 0.227);
+    padding: .5rem;
     left: 0.121rem;
     position: relative;
 
@@ -53,7 +51,7 @@
 
     // mobile
     @media (max-width: 768px) {
-        width: 90%;
+        width: 95%;
     }
 
     a {

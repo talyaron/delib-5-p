@@ -1,6 +1,6 @@
 import { Statement, NavObject, Screen, StatementSubscription } from "delib-npm";
 import { showNavElements } from "./components/nav/top/statementTopNavCont";
-import { allScreens } from "./components/nav/top/StatementTopNavModel";
+import { allScreens } from "./components/nav/top/StatementTopNavModel.tsx";
 
 export function availableScreen(
 	statement: Statement | undefined,

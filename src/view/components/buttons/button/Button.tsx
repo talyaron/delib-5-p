@@ -3,22 +3,21 @@ import "./Button.scss";
 import { useLanguage } from "../../../../controllers/hooks/useLanguages";
 
 interface Props {
-  text: string;
-  bckColor?: string;
-  color?: string;
-
-  iconOnRight?: boolean;
-  onClick: () => void;
-  Icon?: React.ReactNode;
+	text: string;
+	bckColor?: string;
+	color?: string;
+	className?: string;
+	iconOnRight?: boolean;
+	onClick: () => void;
+	icon?: React.ReactNode;
 }
 
 const Button: FC<Props> = ({
 	text,
-	Icon,
+	icon: Icon,
 	onClick,
 	iconOnRight = true,
-	color = "var(--green)",
-	bckColor = "var(--white)",
+	className = "",
 }) => {
 	let { dir } = useLanguage();
 	if (iconOnRight === false) {
@@ -29,20 +28,20 @@ const Button: FC<Props> = ({
 		}
 	}
 
+	const buttonClassName = `button ${iconOnRight ? "" : "button--right"} ${Icon ? "button--with-icon" : ""} ${className}`.trim();
+
 	return (
-		<button
-			className={iconOnRight ? "button" : "button button--right"}
-			onClick={onClick}
-		>
+		<button className={buttonClassName} onClick={onClick}>
 			<div className="button__text">{text}</div>
 			{Icon && (
-				<div
-					className={
-						dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
-					}
-					style={{ backgroundColor: bckColor, color: color}}
-				>
-					{Icon}
+				<div className="button__icon-wrapper">
+					<div
+						className={
+							dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
+						}
+					>
+						{Icon}
+					</div>
 				</div>
 			)}
 		</button>
