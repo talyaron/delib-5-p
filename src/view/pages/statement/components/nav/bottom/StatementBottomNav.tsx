@@ -1,11 +1,12 @@
 import React, { FC, useState } from "react";
 
 // Third party libraries
-import { Statement, Screen } from "delib-npm";
+import { Statement, Screen, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import BurgerIcon from "../../../../../../assets/icons/burgerIcon.svg?react";
+import LightIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
+import NavQuestionIcon from "../../../../../../assets/icons/questionIcon.svg?react";
 import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?react";
 import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
@@ -29,12 +30,14 @@ interface Props {
 
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	const { page } = useParams();
+	const MainIcon = page === Screen.QUESTIONS ? NavQuestionIcon : LightIcon;
 
 	const navItems = getNavigationScreens(page);
 
 	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
 	const statementColor = useStatementColor(statement.statementType || "");
+	
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
@@ -80,7 +83,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 					{isNavigationOpen && isAddOption ? (
 						<PlusIcon style={{ color: statementColor.color }} />
 					) : (
-						<BurgerIcon style={{ color: statementColor.color }} />
+						<MainIcon style={{ color: statementColor.color }} />
 					)}
 				</IconButton>
 

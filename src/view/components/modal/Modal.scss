@@ -23,5 +23,20 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        animation-name: rise;
+        animation-duration: 0.4s;
+        animation-timing-function: ease-in-out;
     }
+}
+
+@keyframes rise {
+    from{
+        transform: translateY(100%) scale(0.1);
+        opacity: .3;
+    }
+    to{
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    
 }
