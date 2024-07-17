@@ -65,9 +65,10 @@
 
         &__nav {
             display: flex;
-            width: 100vw;
+            width: 90%;
             max-width: 75ch;
             margin: 0 auto;
+            justify-content: center;
 
             &__button {
                 flex: 1;
@@ -76,7 +77,7 @@
                 align-items: center;
                 padding: 5px;
                 border-bottom: 2px solid rgba(0, 0, 0, 0);
-                letter-spacing: 0.5px;
+                letter-spacing: 0.3px;
                 opacity: 0.7;
 
                 &--selected {
