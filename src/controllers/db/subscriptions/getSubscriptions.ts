@@ -1,5 +1,6 @@
 import {
 	Collections,
+	Role,
 	Statement,
 	StatementSubscription,
 	StatementSubscriptionSchema,
@@ -10,6 +11,8 @@ import { DB } from "../config";
 import {
 	collection,
 	doc,
+	or,
+	and,
 	getDoc,
 	getDocs,
 	limit,
@@ -110,7 +113,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 
 					const unsubFunction = listenToStatement(statementSubscription.statementId);
-					
+
 					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
 					if (index === -1) {
 						listenedStatements.push({ unsubFunction, statementId: statementSubscription.statementId });
@@ -125,7 +128,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 				}
 
 				if (change.type === "removed") {
-					
+
 					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
 					if (index !== -1) {
 						listenedStatements[index].unsubFunction();
@@ -140,7 +143,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 	} catch (error) {
 		console.error(error);
-		
+
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		return () => { };
 	}
@@ -150,7 +153,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-	> {
+> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
@@ -369,5 +372,43 @@ export async function getTopParentSubscription(
 		if (!statement) throw new Error("Statement not found");
 
 		return statement;
+	}
+}
+
+
+export function getNewStatementsFromSubscriptions(): Unsubscribe {
+	try {
+		const dispatch = store.dispatch;
+		const user = store.getState().user.user;
+		if (!user) throw new Error("User not logged in");
+		if (!user.uid) throw new Error("User not logged in");
+
+		//get the latest created statements 
+		const subscriptionsRef = collection(DB, Collections.statementsSubscribe);
+		const q = query(subscriptionsRef, and(
+			where("userId", "==", user.uid),
+			or(where("role", "==", Role.admin), where("role", "==", Role.creator), where("role", "==", Role.member))
+		), orderBy("lastUpdate", "desc"), limit(40)
+		);
+
+		return onSnapshot(q, (subscriptionsDB) => {
+			subscriptionsDB.docChanges().forEach((change) => {
+				const statementSubscription = change.doc.data() as StatementSubscription;
+
+				if (change.type === "added" || change.type === "modified") {
+					dispatch(setStatementSubscription(statementSubscription));
+				}
+				if (change.type === "removed") {
+					dispatch(deleteSubscribedStatement(statementSubscription.statementId));
+				}
+			});
+
+		});
+	} catch (error) {
+		console.error(error);
+
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		return () => { };
+
 	}
 }
