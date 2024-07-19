@@ -42,7 +42,7 @@ const UpdateMainCard: FC<Props> = ({ subscription }) => {
 			<p>
 				{parentStatement ? <span>{truncateString(group)}: </span> : null}
 				<span>{truncateString(text,32)} </span>
-                <span className="time">{getTime(subscription.lastUpdate)}</span>
+				<span className="time">{getTime(subscription.lastUpdate)}</span>
 			</p>
 		</Link>
 	);
