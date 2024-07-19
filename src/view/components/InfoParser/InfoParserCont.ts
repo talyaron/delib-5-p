@@ -47,6 +47,7 @@ function getLevelTexts(text: string, level: number): { level: number, title: str
 export function getTitle(text: string): string {
 	try {
 		const texts = text.split('\n');
+
 		//remove * only if in the start of the lin
 		const title = texts[0].replace(/^\*/, "");
 

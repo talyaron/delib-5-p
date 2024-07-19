@@ -44,6 +44,7 @@ export default function Home() {
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		let unsubscribe: () => void = () => { };
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		let updatesUnsubscribe: () => void = () => { };
 		try {
 			if (user) {

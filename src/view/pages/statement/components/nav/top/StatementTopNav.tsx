@@ -26,12 +26,12 @@ const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }
 				<Link
 					key={screenInfo.id}
 					to={`/statement/${statement.statementId}/${screenInfo.link}${screenInfo.link === Screen.VOTE ? "/votes-voted" : ""
-						}`}
+					}`}
 					className={`page__header__nav__button ${screen === screenInfo.link
 						? "page__header__nav__button--selected"
 						: ""
-						}`}
-						style={{ "maxWidth":_navArray.length === 1 ? '90%':"none"}}
+					}`}
+					style={{ "maxWidth":_navArray.length === 1 ? '90%':"none"}}
 				>
 					<p className="page__header__nav__button__tabTxt">
 						{t(screenInfo.name)}
