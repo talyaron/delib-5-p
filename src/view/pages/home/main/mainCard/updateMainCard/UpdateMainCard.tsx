@@ -1,4 +1,4 @@
-import { StatementSubscription, StatementType } from "delib-npm";
+import { StatementSubscription } from "delib-npm";
 import { FC, useEffect } from "react";
 import {
 	useAppDispatch,
@@ -11,7 +11,8 @@ import {
 import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
 import { Link } from "react-router-dom";
 import { getTitle } from "../../../../../components/InfoParser/InfoParserCont";
-import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
+import { getTime, truncateString } from "../../../../../../controllers/general/helpers";
+
 
 interface Props {
   subscription: StatementSubscription;
@@ -31,16 +32,17 @@ const UpdateMainCard: FC<Props> = ({ subscription }) => {
 		}
 	}, [parentStatement]);
 
-	const color = useStatementColor(subscription.statement.statementType || StatementType.statement).backgroundColor;
+	
 
 	const group = parentStatement?getTitle(parentStatement.statement):"";
 	const text = getTitle(subscription.statement.statement);
 
 	return (
 		<Link to={`/statement/${subscription.statement.parentId}/chat`}>
-			<p style={{color:color}}>
-				{parentStatement ? <span>{group}: </span> : null}
-				<span>{text}</span>
+			<p>
+				{parentStatement ? <span>{truncateString(group)}: </span> : null}
+				<span>{truncateString(text,32)} </span>
+				<span className="time">{getTime(subscription.lastUpdate)}</span>
 			</p>
 		</Link>
 	);
