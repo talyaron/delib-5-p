@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 // Third party libraries
-import { Statement, Screen } from "delib-npm";
+import { Statement, Screen, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
@@ -36,7 +36,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
 	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
-	const statementColor = useStatementColor(statement.statementType || "");
+	const statementColor = useStatementColor(statement.statementType || StatementType.statement);
 	
 
 	//used to check if the user can add a new option in voting and in evaluation screens

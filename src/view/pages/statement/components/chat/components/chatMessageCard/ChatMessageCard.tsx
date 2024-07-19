@@ -62,7 +62,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 }) => {
 	// Hooks
 	const { statementType } = statement;
-	const statementColor = useStatementColor(statementType || "");
+	const statementColor = useStatementColor(statementType || StatementType.statement);
 	const { t, dir } = useLanguage();
 
 	// Redux store

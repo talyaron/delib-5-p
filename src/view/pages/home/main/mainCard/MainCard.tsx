@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { Statement } from "delib-npm";
+import { Statement, StatementSubscription } from "delib-npm";
 import { FC } from "react";
 import Text from "../../../../components/text/Text";
 
@@ -24,7 +24,7 @@ const MainCard: FC<Props> = ({ statement }) => {
   const _subscribedStatements = useAppSelector(
     subscriptionParentStatementSelector(statement.statementId)
   );
-  const subscribedStatements = getLastElements(_subscribedStatements, 5);
+  const subscribedStatements = getLastElements(_subscribedStatements, 5) as StatementSubscription[];
 
   return (
     <div className="main-card">
