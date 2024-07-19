@@ -325,3 +325,7 @@ export const handleCloseInviteModal = (setShowModal: (show: boolean) => void) =>
 		setShowModal(false);
 	}, 400);
 };
+
+export function getLastElements(array: Array<unknown>, number: number):Array<unknown> {
+	return array.slice(Math.max(array.length - number, 1));
+}

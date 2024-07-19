@@ -28,6 +28,12 @@
         width: 100%;
     }
 
+    &__updates{
+        padding: 1rem;
+        font-size: .95rem;
+        line-height: 1.58rem;
+    }
+
     &__notify {
         display: flex;
         flex-wrap: wrap;

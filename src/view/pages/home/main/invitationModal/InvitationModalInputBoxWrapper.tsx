@@ -6,19 +6,19 @@ type Props = {
 };
 
 function InvitationModalInputBoxWrapper({ maxInvitation }: Props) {
-  if (maxInvitation === undefined) {
-    return null;
-  }
+	if (maxInvitation === undefined) {
+		return null;
+	}
 
-  const inputBoxes = Array.from({ length: maxInvitation }, (_, i) => (
-    <InvitationModalInputBox key={i} id={`pin${i}`} />
-  ));
+	const inputBoxes = Array.from({ length: maxInvitation }, (_, i) => (
+		<InvitationModalInputBox key={i} id={`pin${i}`} />
+	));
 
-  return (
-    <div className={styles.invitation__form__inputBoxWrapper}>
-      {inputBoxes}
-    </div>
-  );
+	return (
+		<div className={styles.invitation__form__inputBoxWrapper}>
+			{inputBoxes}
+		</div>
+	);
 }
 
 export default InvitationModalInputBoxWrapper;
