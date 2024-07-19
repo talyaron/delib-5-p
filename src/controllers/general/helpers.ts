@@ -329,3 +329,31 @@ export const handleCloseInviteModal = (setShowModal: (show: boolean) => void) =>
 export function getLastElements(array: Array<unknown>, number: number):Array<unknown> {
 	return array.slice(Math.max(array.length - number, 1));
 }
+
+export function getTime(time: number): string {
+	const timeEvent = new Date(time);
+	const hours = timeEvent.getHours();
+	const minutes = timeEvent.getMinutes();
+
+	const dayTime = timeEvent.getDate();
+	const monthTime = timeEvent.getMonth() + 1;
+	const yearTime = timeEvent.getFullYear();
+
+	const currentTime = new Date();
+	const currentDay = currentTime.getDate();
+	const currentMonth = currentTime.getMonth() + 1;
+	const currentYear = currentTime.getFullYear();
+
+	if (currentDay === dayTime && currentMonth === monthTime && currentYear === yearTime) {
+		return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+	} else {
+		return `${dayTime}/${monthTime}/${yearTime} ${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+	}
+	
+
+	return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+}
+
+export function truncateString(text: string, maxLength: number = 20): string {
+	return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  }

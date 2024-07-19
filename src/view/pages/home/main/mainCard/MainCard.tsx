@@ -23,8 +23,8 @@ interface Props {
 const MainCard: FC<Props> = ({ statement }) => {
   const _subscribedStatements = useAppSelector(
     subscriptionParentStatementSelector(statement.statementId)
-  );
-  const subscribedStatements = getLastElements(_subscribedStatements, 5) as StatementSubscription[];
+  ).sort((a, b) => a.lastUpdate - b.lastUpdate);
+  const subscribedStatements = getLastElements(_subscribedStatements,5) as StatementSubscription[];
 
   return (
     <div className="main-card">
