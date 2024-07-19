@@ -147,7 +147,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
 			<div
 				className="message-box"
-				style={{ borderColor: statementColor.backgroundColor }}
+				style={{ borderColor: statementColor.backgroundColor, borderLeft:(!isOption && !isQuestion)?"none": `12px solid ${statementColor.backgroundColor}` }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}
 
