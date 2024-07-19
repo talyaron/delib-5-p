@@ -59,10 +59,7 @@ export async function sendNotificationsCB(e: any) {
                             data: {
                                 title,
                                 body: statement.statement,
-
-                                // url: `https://delib-5.web.app/statement/${parentId}/chat`,
-
-                                url: `https://delib-5.web.app/statement/${parentId}/chat`,
+                                url: `https://freedi.tech/statement/${parentId}/chat`,
                                 creatorId: statement.creatorId,
                             },
                             token,

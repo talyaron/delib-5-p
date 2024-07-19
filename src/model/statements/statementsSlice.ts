@@ -358,6 +358,12 @@ export const totalMessageBoxesSelector = (state: RootState) => state.statements.
 
 
 export const screenSelector = (state: RootState) => state.statements.screen;
+
+export const statementSelectorById = (statementId: string) => (state: RootState) => {
+	return state.statements.statements.find((statement) => statement.statementId === statementId);
+
+}
+
 export const statementsSelector = (state: RootState) =>
 	state.statements.statements;
 
@@ -465,5 +471,8 @@ export const hasTokenSelector =
 		return statement?.token?.includes(token) || false;
 	};
 
+	export const subscriptionParentStatementSelector = (parentId: string) => (state: RootState) => {
+		return state.statements.statementSubscription.filter((sub) => sub.statement.topParentId === parentId);
+	}
 
 export default statementsSlicer.reducer;

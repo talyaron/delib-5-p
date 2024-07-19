@@ -8,7 +8,7 @@ import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // Helpers
-import { listenToStatementSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
+import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
 
 // Custom Components
 import ScreenSlide from "../../components/animation/ScreenSlide";
@@ -44,9 +44,12 @@ export default function Home() {
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		let unsubscribe: () => void = () => { };
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let updatesUnsubscribe: () => void = () => { };
 		try {
 			if (user) {
 				unsubscribe = listenToStatementSubscriptions(30);
+				updatesUnsubscribe = getNewStatementsFromSubscriptions();
 			}
 		} catch (error) { }
 
@@ -56,6 +59,9 @@ export default function Home() {
 				listenedStatements.forEach((ls) => {
 					ls.unsubFunction();
 				});
+			}
+			if (updatesUnsubscribe) {
+				updatesUnsubscribe();
 			}
 		};
 	}, [user]);

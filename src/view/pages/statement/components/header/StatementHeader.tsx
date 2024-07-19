@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 
 // Third party imports
-import { Role, Screen, Statement, StatementSubscription } from 'delib-npm';
+import { Role, Screen, Statement, StatementSubscription, StatementType } from 'delib-npm';
 import { useLocation } from 'react-router-dom';
 
 // Helpers
@@ -62,7 +62,7 @@ const StatementHeader: FC<Props> = ({
 	const title = getTitle(statement);
 
 	const token = useToken();
-	const headerColor = useStatementColor(statement?.statementType || '');
+	const headerColor = useStatementColor(statement?.statementType || StatementType.statement);
 	const permission = useNotificationPermission(token);
 	const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 	const [showInvitationModal, setShowInvitationModal] = useState(false);
