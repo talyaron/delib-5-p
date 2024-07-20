@@ -1,27 +1,33 @@
 .splashPage {
-    background: #2244BF;
+    background: #F2F6FF;
     transition: all 0.3s;
     display: flex;
     flex-direction: column;
     align-items: center;
-   justify-content: space-between;
-    padding: 2rem 0;
+    justify-content: space-between;
     width: 100vw;
     height: 100svh;
 
+    &__freediIcon {
+        position: absolute;
+        margin-top: 5rem;
+    }
 
     &__title {
         font-size: 5rem;
     }
+
     &__subTitle {
         font-size: 3rem;
         opacity: 0.7;
     }
+
     &__loginButton {
         background: white !important;
         color: red !important;
         border-radius: 5px;
     }
+
     h1,
     h2 {
         color: #fff;
@@ -45,4 +51,9 @@
 //     max-width: var(--maxWidthOnPC);
 //     font-size: 3rem;
 //     word-wrap: break-word;
+// }
+
+// @media only screen and (max-width: 600px) {
+//     width: 200px;
+//     height: 200px;
 // }

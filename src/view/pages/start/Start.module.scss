@@ -21,14 +21,17 @@
 
 .language {
     border-radius: 5rem;
+    position: absolute;
+    margin-top: 16rem;
 }
 
 .anonymous {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: #739EE4;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.2rem;
+    width: 27rem;
+    height: 3.2rem;
     border-radius: 3rem;
     min-width: 30ch;
     color: white;
@@ -36,7 +39,45 @@
     font-size: 1.3rem;
     cursor: pointer;
     user-select: none;
+    position: absolute;
+    top: 22rem;
+    margin-right: 17rem;
+    
+    @media only screen and (max-width: 800px) {
+        top: 19rem;
+        position: absolute;
+        right: 0;
+        border-radius: 3rem 0rem 0rem 3rem;
+    }
 }
+
+// .googleSignIn{
+//     position: absolute;
+//     left: 55rem;
+//     border-radius: 3rem 0rem 0rem 3rem;
+
+//     @media only screen and (max-width: 800px) {
+//         position: absolute;
+//         left: 0;
+//         margin-top: 3rem;
+//     }
+// }
+.StratPageImage{
+    position: fixed;
+    bottom: 0;
+    // right: 0;
+    height: 35%;
+    width:30%;
+    max-height: 25rem;
+    // @media only screen and (max-width: 800px) {
+    //     position: fixed;
+    //     bottom: 0;
+    //     width: 100%;
+    //     max-height: 30rem;
+    // }
+}
+
+F
 
 .ddi {
     color: white;

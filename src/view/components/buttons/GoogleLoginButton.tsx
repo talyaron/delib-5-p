@@ -16,8 +16,8 @@ export default function GoogleLoginButton() {
 				src={direction === "row-reverse" ? moreRight : moreLeft}
 				alt="login-with-google"
 			/>
-			<img src={googleLogo} alt="login with google" />
 			{t("Connect with Google")}
+			<img src={googleLogo} alt="login with google" />
 		</button>
 	);
 }

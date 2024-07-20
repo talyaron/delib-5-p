@@ -11,9 +11,11 @@ import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // icons
-import Logo from "../../../assets/logo/512 px SVG.svg";
+// import Logo from "../../../assets/logo/512 px SVG.svg";
+import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
 import MoreRight from "../../../assets/icons/moreRight.svg?react";
 import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
+import StratPageImage from '../assets/StratPageImage.png'
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
@@ -53,17 +55,19 @@ const Start = () => {
 
 	return (
 		<div className="splashPage">
-			<div className={styles.h1}>
-				{t("Delib")} <span className={styles.number}>5</span>
-			</div>
-			<div className={styles.h2}>{t("Creating Agreements")}</div>
-			<img
+			{/* <div className={styles.h1}> */}
+			{/* {t("Delib")} <span className={styles.number}>5</span> */}
+			{/* </div> */}
+			{/* <img
 				className={styles.logo}
 				src={Logo}
 				alt="Delib logo"
 				width="10%"
 				style={{}}
-			/>
+			/> */}
+			{/* <div className={styles.h2}>{t("Creating Agreements")}</div> */}
+
+			<Logo />
 
 			<select
 				className={styles.language}
@@ -85,18 +89,21 @@ const Start = () => {
 					</option>
 				))}
 			</select>
-			<div
+			<button
 				style={{ flexDirection: direction }}
 				data-cy="anonymous-login"
 				className={styles.anonymous}
 				onClick={() => setShouldShowNameModal((prev) => !prev)}
 			>
-				{direction === "row" ? <MoreRight /> : <MoreLeft />}
 				{t("Login with a temporary name")}{" "}
-			</div>
+				{/* {direction === "row" ? <MoreRight /> : <MoreLeft/>} */}
+				{<MoreRight />}
+			</button>
 
+			{/* <div className={styles.googleSignIn}> */}
 			<GoogleLoginButton />
-
+			{/* </div> */}
+			<img src={StratPageImage} alt="" className={styles.StratPageImage}/>
 			<a href="http://delib.org" target="_blank">
 				<footer className={styles.ddi}>
 					{t("From the Institute for Deliberative Democracy")}
