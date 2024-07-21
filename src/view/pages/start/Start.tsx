@@ -92,18 +92,17 @@ const Start = () => {
 			<button
 				style={{ flexDirection: direction }}
 				data-cy="anonymous-login"
-				className={styles.anonymous}
+				className={`${styles.anonymous} ${direction === 'row' ? styles.row : styles.rowReverse}`}
 				onClick={() => setShouldShowNameModal((prev) => !prev)}
 			>
+				{direction === "row-reverse" ? <MoreLeft /> : null}
 				{t("Login with a temporary name")}{" "}
-				{/* {direction === "row" ? <MoreRight /> : <MoreLeft/>} */}
-				{<MoreRight />}
+				{direction === "row" ? <MoreRight /> : null}
+				{/* {direction === "row" ? style={{}}} */}
 			</button>
 
-			{/* <div className={styles.googleSignIn}> */}
 			<GoogleLoginButton />
-			{/* </div> */}
-			<img src={StratPageImage} alt="" className={styles.StratPageImage}/>
+			<img src={StratPageImage} alt="" className={styles.StratPageImage} />
 			<a href="http://delib.org" target="_blank">
 				<footer className={styles.ddi}>
 					{t("From the Institute for Deliberative Democracy")}

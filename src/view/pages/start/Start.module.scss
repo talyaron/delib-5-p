@@ -42,43 +42,35 @@
     position: absolute;
     top: 22rem;
     margin-right: 17rem;
-    
-    @media only screen and (max-width: 800px) {
-        top: 19rem;
-        position: absolute;
-        right: 0;
-        border-radius: 3rem 0rem 0rem 3rem;
+
+    &.rowReverse {
+        margin-left: 30rem;
     }
 }
 
-// .googleSignIn{
-//     position: absolute;
-//     left: 55rem;
-//     border-radius: 3rem 0rem 0rem 3rem;
-
-//     @media only screen and (max-width: 800px) {
-//         position: absolute;
-//         left: 0;
-//         margin-top: 3rem;
-//     }
-// }
-.StratPageImage{
-    position: fixed;
-    bottom: 0;
-    // right: 0;
-    height: 35%;
-    width:30%;
-    max-height: 25rem;
-    // @media only screen and (max-width: 800px) {
-    //     position: fixed;
-    //     bottom: 0;
-    //     width: 100%;
-    //     max-height: 30rem;
-    // }
+@media only screen and (max-width: 600px) {
+    .anonymous {
+        top: 19rem;
+        position: absolute;
+        right: 0;
+        border-radius: 0rem 3rem 3rem 0rem;
+    }
 }
 
-F
+.StratPageImage {
+    position: fixed;
+    bottom: 0;
+    height: 35%;
+    width: 30%;
+    max-height: 25rem;
 
-.ddi {
+    @media only screen and (max-width: 600px) {
+        bottom: 0;
+        width: 100%;
+        max-height: 30rem;
+    }
+}
+
+F .ddi {
     color: white;
 }

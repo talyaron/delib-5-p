@@ -11,7 +11,10 @@ export default function GoogleLoginButton() {
 	const { t } = useLanguage();
 
 	return (
-		<button className={styles.googleLogin} onClick={googleLogin}>
+		<button 
+		className={`${styles.googleLogin} ${direction === 'row' ? styles.row : styles.rowReverse}`}
+		onClick={googleLogin}>
+			
 			<img
 				src={direction === "row-reverse" ? moreRight : moreLeft}
 				alt="login-with-google"
