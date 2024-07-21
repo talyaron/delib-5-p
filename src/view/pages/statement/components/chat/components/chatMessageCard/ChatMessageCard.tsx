@@ -62,7 +62,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 }) => {
 	// Hooks
 	const { statementType } = statement;
-	const statementColor = useStatementColor(statementType || StatementType.statement);
+	const statementColor = useStatementColor(statementType || "");
 	const { t, dir } = useLanguage();
 
 	// Redux store
@@ -147,7 +147,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
 			<div
 				className="message-box"
-				style={{ borderColor: statementColor.backgroundColor, borderLeft:(!isOption && !isQuestion)?"none": `12px solid ${statementColor.backgroundColor}` }}
+				style={{ borderColor: statementColor.backgroundColor }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}
 
