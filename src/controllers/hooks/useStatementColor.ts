@@ -12,36 +12,32 @@ export default function useStatementColor(statementType?: StatementType): StyleP
 		backgroundColor: "transparent",
 		color: "transparent",
 	};
-	const [style, setstyle] = useState(initStyle);
+	const [style, setStyle] = useState(initStyle);
 
 	try {
-
-
-
-	
 
 		useEffect(() => {
 			switch (statementType) {
 				case StatementType.question:
-					setstyle({
+					setStyle({
 						backgroundColor: "var(--question-header)",
 						color: "var(--white)",
 					});
 					break;
 				case StatementType.option:
-					setstyle({
+					setStyle({
 						backgroundColor: "var(--option)",
 						color: "var(--header)",
 					});
 					break;
 				case StatementType.result:
-					setstyle({
+					setStyle({
 						backgroundColor: "var(--agree)",
 						color: "var(--white)",
 					});
 					break;
 				default:
-					setstyle(initStyle);
+					setStyle(initStyle);
 					break;
 			}
 		}, [statementType]);
