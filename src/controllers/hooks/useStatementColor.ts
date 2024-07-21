@@ -1,43 +1,50 @@
+import { StatementType } from "delib-npm";
 import { useEffect, useState } from "react";
 
 export interface StyleProps {
-    backgroundColor: string;
-    color: string;
+	backgroundColor: string;
+	color: string;
 }
 
-const initStyle = {
-	backgroundColor: "var(--white)",
-	color: "lightgray",
-};
 
-export default function useStatementColor(statementType: string): StyleProps {
-	const [style, setstyle] = useState(initStyle);
+export default function useStatementColor(statementType?: StatementType): StyleProps {
+	const initStyle = {
+		backgroundColor: "transparent",
+		color: "transparent",
+	};
+	const [style, setStyle] = useState(initStyle);
 
-	useEffect(() => {
-		switch (statementType) {
-		case "question":
-			setstyle({
-				backgroundColor: "var(--question-header)",
-				color: "var(--white)",
-			});
-			break;
-		case "option":
-			setstyle({
-				backgroundColor: "var(--option)",
-				color: "var(--header)",
-			});
-			break;
-		case "result":
-			setstyle({
-				backgroundColor: "var(--agree)",
-				color: "var(--white)",
-			});
-			break;
-		default:
-			setstyle(initStyle);
-			break;
-		}
-	}, [statementType]);
+	try {
 
-	return style;
+		useEffect(() => {
+			switch (statementType) {
+				case StatementType.question:
+					setStyle({
+						backgroundColor: "var(--question-header)",
+						color: "var(--white)",
+					});
+					break;
+				case StatementType.option:
+					setStyle({
+						backgroundColor: "var(--option)",
+						color: "var(--header)",
+					});
+					break;
+				case StatementType.result:
+					setStyle({
+						backgroundColor: "var(--agree)",
+						color: "var(--white)",
+					});
+					break;
+				default:
+					setStyle(initStyle);
+					break;
+			}
+		}, [statementType]);
+
+		return style;
+	} catch (error) {
+		console.error(error);
+		return style;
+	}
 }

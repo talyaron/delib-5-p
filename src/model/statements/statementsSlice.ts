@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -238,9 +239,9 @@ export const statementsSlicer = createSlice({
 				}
 
 				//clear all temp statements
-				// state.statements.forEach((statement) => {
-				// 	statement.isPartOfTempPresentation = false;
-				// });
+				state.statements.forEach((statement) => {
+					statement.isPartOfTempPresentation = false;
+				});
 
 				//set new temp statements
 				statements.forEach((statement) => {
@@ -353,7 +354,16 @@ export const {
 } = statementsSlicer.actions;
 
 // statements
+export const totalMessageBoxesSelector = (state: RootState) => state.statements.statements.length;
+
+
 export const screenSelector = (state: RootState) => state.statements.screen;
+
+export const statementSelectorById = (statementId: string) => (state: RootState) => {
+	return state.statements.statements.find((statement) => statement.statementId === statementId);
+
+}
+
 export const statementsSelector = (state: RootState) =>
 	state.statements.statements;
 
@@ -460,5 +470,9 @@ export const hasTokenSelector =
 
 		return statement?.token?.includes(token) || false;
 	};
+
+	export const subscriptionParentStatementSelector = (parentId: string) => (state: RootState) => {
+		return state.statements.statementSubscription.filter((sub) => sub.statement.topParentId === parentId);
+	}
 
 export default statementsSlicer.reducer;

@@ -11,9 +11,10 @@ export async function setStatementSubscriptionToDB(
 	userAskedForNotification = false,
 ) {
 	try {
-		const user = getUserFromFirebase();
+		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
+		
 
 		const results = StatementSchema.safeParse(statement);
 		if (!results.success) {

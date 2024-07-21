@@ -87,8 +87,8 @@ export default function SwitchScreens({
 				toggleAskNotifications={toggleAskNotifications}
 			/>
 		);
-		case Screen.INFO:
-			return(<Info statement={statement}/>)
+	case Screen.INFO:
+		return(<Info statement={statement}/>)
 
 	default:
 		return (

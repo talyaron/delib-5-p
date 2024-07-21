@@ -37,6 +37,11 @@ import {
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
+require('dotenv').config()
+
+
+const express = require('express');
+const app = express();
 
 initializeApp();
 export const db = getFirestore();
@@ -48,10 +53,7 @@ export const db = getFirestore();
 //     updateSubscribedListenersCB,
 // );
 
-exports.checkForSimilarStatements = onRequest(
-	{ cors: true },
-	findSimilarStatements
-);
+
 
 exports.updateParentWithNewMessage = onDocumentCreated(
 	`/${Collections.statements}/{statementId}`,
@@ -120,9 +122,21 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 );
 
 //http requests
-const isProduction = process.env.FUNCTION_REGION !== undefined;
+const isProduction = process.env.NODE_ENV === 'production';
 
-const cors = isProduction?{cors:["https//delib-5.web.app"]}:{cors:true};
+
+console.log('isProduction', isProduction);
+const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech"] }
+
+
+
 exports.getRandomStatements = onRequest(cors, getRandomStatements);
-exports.getTopStatements = onRequest(cors,getTopStatements);
-exports.getUserOptions = onRequest(cors,getUserOptions);
+exports.getTopStatements = onRequest(cors, getTopStatements);
+exports.getUserOptions = onRequest(cors, getUserOptions);
+
+exports.checkForSimilarStatements = onRequest(
+	cors,
+	findSimilarStatements
+);
+
+exports.app = onRequest(cors, app);

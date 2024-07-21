@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 
 // Icons
 import SendIcon from "../../../../../../components/icons/SendIcon";
@@ -24,7 +24,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
 	// Redux hooks
 	const user = useAppSelector(userSelector);
 
-	const statementColor = useStatementColor(statement.statementType || "");
+	const statementColor = useStatementColor(statement.statementType || StatementType.statement);
 
 	const direction = useDirection();
 	const [message, setMessage] = useState("");

@@ -1,11 +1,12 @@
 import { Collections } from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
-// const cors = require('cors')({ origin: 'http://localhost:5173' })
+
+
 
 
 export const getUserOptions = async (req: any, res: any) => {
-
+    // cors(req, res, async () => {
     try {
         const userId = req.query.userId;
         const parentId = req.query.parentId;
@@ -18,7 +19,7 @@ export const getUserOptions = async (req: any, res: any) => {
             return;
         }
 
-        const userOptionsRef = db.collection(Collections.statements).where("creatorId", "==", userId).where("parentId", "==", parentId);
+        const userOptionsRef = db.collection(Collections.statements).where("creatorId", "==", userId).where("parentId", "==", parentId).where("statementType", "in", ["result", "option"]);
         const userOptionsDB = await userOptionsRef.get();
         const statements = userOptionsDB.docs.map((doc) => doc.data());
 
@@ -29,16 +30,25 @@ export const getUserOptions = async (req: any, res: any) => {
         res.status(500).send({ error: error.message, ok: false });
         return;
     }
-
+ 
 }
 
 export const getRandomStatements = async (req: any, res: any) => {
+
+
 
     try {
 
         const parentId = req.query.parentId;
         let limit = Number(req.query.limit) || 10 as number;
         if (limit > 50) limit = 50;
+
+
+        if (!parentId) {
+            res.status(400).send({ error: "parentId is required", ok: false });
+            return;
+        }
+
 
         if (!parentId) {
             res.status(400).send({ error: "parentId is required", ok: false });
@@ -47,7 +57,7 @@ export const getRandomStatements = async (req: any, res: any) => {
 
 
         const allSolutionStatementsRef = db.collection(Collections.statements);
-        const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement");
+        const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "in", ["result", "option"]);
         const allSolutionStatementsDB = await q.get();
         const allSolutionStatements = allSolutionStatementsDB.docs.map((doc) => doc.data());
 
@@ -61,11 +71,11 @@ export const getRandomStatements = async (req: any, res: any) => {
         res.status(500).send({ error: error.message, ok: false });
         return;
     }
-
+    // })
 }
 
 export const getTopStatements = async (req: any, res: any) => {
-
+    // cors(req, res, async () => {
     try {
 
         const parentId = req.query.parentId;
@@ -78,7 +88,7 @@ export const getTopStatements = async (req: any, res: any) => {
         }
 
         const topSolutionsRef = db.collection(Collections.statements);
-        const q: Query = topSolutionsRef.where("parentId", "==", parentId).where("statementType", "!=", "statement").orderBy("consensus", "desc").limit(limit);
+        const q: Query = topSolutionsRef.where("parentId", "==", parentId).where("statementType", "in", ["result", "option"]).orderBy("consensus", "desc").limit(limit);
         const topSolutionsDB = await q.get();
         const topSolutions = topSolutionsDB.docs.map((doc) => doc.data());
 
@@ -89,5 +99,5 @@ export const getTopStatements = async (req: any, res: any) => {
         res.status(500).send({ error: error.message, ok: false });
         return;
     }
-
+    // })
 }

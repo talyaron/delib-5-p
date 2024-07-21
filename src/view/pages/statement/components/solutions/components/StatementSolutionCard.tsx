@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 
 // Third Party
-import { Statement, User, isOptionFn } from 'delib-npm';
+import { Statement, StatementType, User, isOptionFn } from 'delib-npm';
 
 // Redux Store
 import {
@@ -58,7 +58,7 @@ const StatementEvaluationCard: FC<Props> = ({
 	// Redux Store
 	const dispatch = useAppDispatch();
 	const statementColor: StyleProps = useStatementColor(
-		statement.statementType || ''
+		statement.statementType || StatementType.statement
 	);
 	const statementSubscription = useAppSelector(
 		statementSubscriptionSelector(statement.statementId)

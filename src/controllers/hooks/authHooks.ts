@@ -30,13 +30,13 @@ const useAuth = () => {
 export default useAuth;
 
 export function useIsAuthorized(statementId: string | undefined): {
-    isAuthorized: boolean;
-    loading: boolean;
-    statementSubscription: StatementSubscription | undefined;
-    statement: Statement | undefined;
-    topParentStatement: Statement | undefined;
-    role: Role | undefined;
-    error: boolean;
+	isAuthorized: boolean;
+	loading: boolean;
+	statementSubscription: StatementSubscription | undefined;
+	statement: Statement | undefined;
+	topParentStatement: Statement | undefined;
+	role: Role | undefined;
+	error: boolean;
 } {
 	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
 
@@ -49,8 +49,8 @@ export function useIsAuthorized(statementId: string | undefined): {
 	const statement = useAppSelector(statementSelector(statementId));
 	const user = store.getState().user.user;
 	const [topParentStatement, setTopParentStatement] = useState<
-        Statement | undefined
-    >(undefined);
+		Statement | undefined
+	>(undefined);
 	const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(false);
@@ -87,21 +87,17 @@ export function useIsAuthorized(statementId: string | undefined): {
 							//if group is open, subscribe to its top parent statement
 							if (
 								topParentStatement &&
-                                topParentStatement?.membership?.access ===
-                                    Access.open
+								topParentStatement?.membership?.access ===
+								Access.open
 							) {
 								//subscribe to top parent statement
 								if (!topParentStatement)
 									throw new Error(
 										"Top parent statement is not defined, cannot subscribe to it.",
 									);
-
-								setStatementSubscriptionToDB({
-									//@ts-ignore
-									statement: topParentStatement,
-									role: Role.member,
-									userAskedForNotification: false,
-								});
+								
+							
+								setStatementSubscriptionToDB(topParentStatement, Role.member, false	);
 
 								setIsAuthorized(true);
 								setLoading(false);

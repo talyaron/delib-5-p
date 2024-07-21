@@ -10,7 +10,6 @@ button {
   border: none;
   cursor: pointer;
   background-color: inherit;
-  margin-bottom: 2rem;
 }
 
 .btn {
@@ -20,6 +19,12 @@ button {
   border-radius: 20px;
   border: 1px solid var(--button-blue);
   text-align: center;
+  box-shadow:
+    0px 3px 6px 0px rgba(115, 138, 191, 0.1),
+    0px 11px 11px 0px rgba(115, 138, 191, 0.09),
+    0px 26px 16px 0px rgba(115, 138, 191, 0.05),
+    0px 46px 18px 0px rgba(115, 138, 191, 0.01),
+    0px 72px 20px 0px rgba(115, 138, 191, 0);
 
   &--icon {
     background-color: var(--button-blue);

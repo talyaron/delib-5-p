@@ -12,15 +12,11 @@ import {
 import { useParams, useNavigate } from 'react-router';
 
 // Utils & Helpers
-import {
-	getMultiStageOptions,
-	sortSubStatements,
-} from './statementSolutionsCont';
+import {sortSubStatements} from './statementSolutionsCont';
 
 // Custom Components
 import StatementEvaluationCard from './components/StatementSolutionCard';
 import StatementBottomNav from '../nav/bottom/StatementBottomNav';
-import { useAppDispatch } from '../../../../../controllers/hooks/reduxHooks';
 import Toast from '../../../../components/toast/Toast';
 import Modal from '../../../../components/modal/Modal';
 import StatementInfo from '../vote/components/info/StatementInfo';
@@ -31,6 +27,7 @@ import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
 import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
 import { getTitle } from '../../../../../controllers/general/helpers';
 import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
+import { getMultiStageOptions } from '../../../../../controllers/db/multiStageQuestion/getMultiStageStatements';
 
 interface StatementEvaluationPageProps {
 	statement: Statement;
@@ -52,7 +49,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		// Hooks
 		const { sort } = useParams();
 		const navigate = useNavigate();
-		const dispatch = useAppDispatch();
+
 		const { t } = useLanguage();
 
 		const isMuliStage =
@@ -102,8 +99,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 
 		useEffect(() => {
 			if (isMuliStage) {
-				alert("getMultiStageOptions", currentStage);
-				getMultiStageOptions(statement, dispatch);
+			
+				getMultiStageOptions(statement);
 			}
 		}, [currentStage]);
 

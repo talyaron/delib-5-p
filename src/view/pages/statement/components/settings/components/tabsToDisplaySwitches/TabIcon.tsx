@@ -34,8 +34,8 @@ const TabIcon: FC<TabIconProps> = ({ screenLink }) => {
 		return <RoomsIcon />;
 	case Screen.SETTINGS:
 		return <SettingsIcon />;
-		case Screen.INFO:
-			return <InfoIcon />;
+	case Screen.INFO:
+		return <InfoIcon />;
 	default:
 		return <QuestionIcon />;
 	}

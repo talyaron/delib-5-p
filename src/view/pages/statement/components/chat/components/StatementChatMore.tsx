@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { FC } from "react";
 import "./StatementChatMore.scss";
 
@@ -62,7 +63,6 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				<ChatIcon />
 			</div>
 			<div className="text">{messageToDisplay}</div>
-
 		</div>
 	);
 };

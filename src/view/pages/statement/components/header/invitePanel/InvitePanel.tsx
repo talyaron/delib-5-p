@@ -1,9 +1,12 @@
 import { FC, useEffect, useState } from "react";
-import Modal from "../../../../../components/modal/Modal";
 import { setInvitationToDB } from "../../../../../../controllers/db/invitations/setInvitation";
 import { Invitation } from "delib-npm";
 
 import styles from "./InvitePanel.module.scss";
+import XIcon from "../../../../../components/icons/XIcon";
+import InvitePanelBox from "./InvitePanelBox";
+import InviteModal from "../../../../../components/modal/InviteModal";
+import { handleCloseInviteModal } from "../../../../../../controllers/general/helpers";
 
 interface Props {
   setShowModal: (show: boolean) => void;
@@ -13,11 +16,10 @@ interface Props {
 
 const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
 	try {
+		if (!statementId) throw new Error("StatementId is missing");
 
-		if(!statementId) throw new Error("StatementId is missing");
-
-		const [invitationNumber, setInvitationNumber] = useState<number | null>(
-			null
+		const [invitationNumberArr, setInvitationNumberArr] = useState<number[]>(
+			[]
 		);
 
 		useEffect(() => {
@@ -25,23 +27,39 @@ const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
 				(invitation: Invitation | undefined) => {
 					try {
 						if (!invitation) throw new Error("No invitation found in DB");
-						
-						setInvitationNumber(invitation?.number);
+
+						invitationNumberToArray(invitation?.number);
 					} catch (error) {
 						console.error(error);
 					}
 				}
 			);
 		}, []);
-		
+
+		function invitationNumberToArray(invitationNumber: number) {
+			let number = invitationNumber;
+			const newNumber: number[] = [];
+			while (number > 0) {
+				newNumber.push(number % 10);
+				number = Math.floor(number / 10);
+			}
+
+			return setInvitationNumberArr(newNumber);
+		}
+
 		return (
-			<Modal>
+			<InviteModal>
 				<div className={styles.panel}>
-					<h3  className={styles.panel__title}>Invite using Number:</h3>
-					<h3 className={styles.panel__number}>{invitationNumber}</h3>
-					<button onClick={() => setShowModal(false)}>Close</button>
+					<div className={styles.panel__boxWrapper}>
+						{invitationNumberArr.map((number,i) => {
+							return <InvitePanelBox number={number} key={i}/>;
+						})}
+					</div>
+					<button onClick={() => handleCloseInviteModal(setShowModal)}>
+						<XIcon />
+					</button>
 				</div>
-			</Modal>
+			</InviteModal>
 		);
 	} catch (error) {
 		console.error(error);
@@ -49,5 +67,4 @@ const InvitePanel: FC<Props> = ({ setShowModal, statementId, pathname }) => {
 		return null;
 	}
 };
-
 export default InvitePanel;
