@@ -36,6 +36,12 @@ export default function useStatementColor(statementType?: StatementType): StyleP
 						color: "var(--white)",
 					});
 					break;
+				case StatementType.statement:
+					setStyle({
+						backgroundColor: "gray",
+						color: "white",
+					});
+					break;
 				default:
 					setStyle(initStyle);
 					break;

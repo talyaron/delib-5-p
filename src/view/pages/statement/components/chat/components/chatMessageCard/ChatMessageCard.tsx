@@ -88,6 +88,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isMe = userId === creatorId;
 	const isQuestion = statementType === StatementType.question;
 	const isOption = isOptionFn(statement);
+	const isStatement = statementType === StatementType.statement;
 	const isParentOption = isOptionFn(parentStatement);
 
 	const shouldLinkToChildStatements =
