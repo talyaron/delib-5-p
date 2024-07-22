@@ -17,12 +17,22 @@ $border: 3rem;
         border-radius: 50px;
         color: rgba(255, 255, 255, 1);
         background-color: rgba(232, 116, 158, 1);
-        margin: .3rem .3rem .3rem 0;
+        margin: .4rem .4rem .4rem 0;
+        box-shadow: 0px 0px 3px 0px rgba(66, 123, 158, 0.1);
+
+        .card__info__img {
+            height: 46px;
+            width: 46px;
+            border: none;
+        }
+
 
     }
 
     &__info {
         display: flex;
+
+
 
         &__img {
             position: relative;
@@ -38,7 +48,6 @@ $border: 3rem;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-
 
         }
 
@@ -90,8 +99,6 @@ $border: 3rem;
 
         }
 
-        .redIcon {
-            color: red;
-        }
+
     }
 }
