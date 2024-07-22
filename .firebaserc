@@ -1,8 +1,5 @@
 {
   "projects": {
-    "dev": "delib-v3-dev",
-    "prod": "synthesistalyaron"
-  },
-  "targets": {},
-  "etags": {}
+    "default": "real-time-chat-4a32b"
+  }
 }
