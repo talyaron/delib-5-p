@@ -34,7 +34,7 @@ export async function setImportanceToStatement(event: any) {
         let sumImportances = 0
         importances.forEach((imp) => {
             const impData = imp.data() as Importance;
-            sumImportances += impData.importance
+            sumImportances += impData.importance;
         });
 
 
@@ -47,7 +47,7 @@ export async function setImportanceToStatement(event: any) {
         //update statement importance
         const statementRef = db.collection(Collections.statements).doc(statementId);
        
-        await statementRef.set({ importanceData: { importance: FieldValue.increment(diffImportance), numberOfUsers: FieldValue.increment(diffNumberOfUsers) } }, { merge: true });
+        await statementRef.set({ importanceData: { sumImportance: FieldValue.increment(diffImportance), numberOfUsers: FieldValue.increment(diffNumberOfUsers) } }, { merge: true });
 
 
         return;

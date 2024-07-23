@@ -20,8 +20,8 @@ service cloud.firestore {
     }
 
     match /importance/{importanceId=**}{
-      allow read: if request.auth.uid == request.resource.data.userId;
-      allow write: if request.auth.uid == request.resource.data.userId;
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
     }
     match /invitations/{invitationId=**}{
        allow read: if request.auth.uid != null;
