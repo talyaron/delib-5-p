@@ -25,14 +25,10 @@ $border: 3rem;
             width: 48px;
             border: none;
         }
-
-
     }
 
     &__info {
         display: flex;
-
-
 
         &__img {
             position: relative;
@@ -64,8 +60,6 @@ $border: 3rem;
         padding: 0.3rem;
         align-items: center;
 
-
-
         &--member {
             border-radius: 3rem;
             padding: .5rem;
@@ -92,11 +86,7 @@ $border: 3rem;
             width: 2rem;
             cursor: pointer;
             user-select: none;
-
-
         }
-
-
     }
 
     .unBlockImg {
