@@ -8,6 +8,7 @@ import MemberRemove from "../../../../../../../../assets/icons/memberRemove.svg?
 import { updateMemberRole } from "../../../../../../../../controllers/db/subscriptions/setSubscriptions";
 import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../../../../../../model/users/userSlice";
+import unBlockImg from "../../../../../../../../assets/icons/Icon-base-46px.png";
 
 interface Props {
 	member: StatementSubscription;
@@ -60,18 +61,26 @@ const MembershipCard: FC<Props> = ({ member }) => {
 				<div className={styles.card__info__name}>{member.user.displayName}</div>
 			</div>
 			<div className={styles.card__membership}>
-				<div
-					onClick={handleSetRole}
-					className={`${styles["card__membership--admin"]} ${isAdmin ? styles.admin : ""}`}
-				>
-					<MemberAdmin />
-				</div>
-				<div
-					onClick={handleRemoveMember}
-					className={styles["card__membership--remove"]}
-				>
-					<MemberRemove className={isBanned ? styles.redIcon : ""} />
-				</div>
+				{isBanned ? (
+					<div onClick={handleRemoveMember}>
+						<img src={unBlockImg} alt="Unblock" className={styles.unBlockImg} />
+					</div>
+				) : (
+					<>
+						<div
+							onClick={handleSetRole}
+							className={`${styles["card__membership--admin"]} ${isAdmin ? styles.admin : ""}`}
+						>
+							<MemberAdmin />
+						</div>
+						<div
+							onClick={handleRemoveMember}
+							className={styles["card__membership--remove"]}
+						>
+							<MemberRemove />
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

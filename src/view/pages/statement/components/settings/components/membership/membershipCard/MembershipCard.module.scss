@@ -8,21 +8,21 @@ $border: 3rem;
     border-left: #3a7ae2 3px solid;
     direction: ltr;
 
+
     &.banned {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        width: 215px;
-        height: 46px;
+        justify-content: space-between;
+        width: fit-content;
+        height: 48px;
         border-radius: 50px;
         color: rgba(255, 255, 255, 1);
         background-color: rgba(232, 116, 158, 1);
-        margin: .4rem .4rem .4rem 0;
-        box-shadow: 0px 0px 3px 0px rgba(66, 123, 158, 0.1);
+        margin: 2px 5px 2px 0;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
         .card__info__img {
-            height: 46px;
-            width: 46px;
+            height: 48px;
+            width: 48px;
             border: none;
         }
 
@@ -61,7 +61,7 @@ $border: 3rem;
     &__membership {
         display: flex;
         justify-content: space-between;
-        padding: 0.5rem 1.5rem;
+        padding: 0.3rem;
         align-items: center;
 
 
@@ -69,9 +69,6 @@ $border: 3rem;
         &--member {
             border-radius: 3rem;
             padding: .5rem;
-
-
-
         }
 
         &--admin {
@@ -100,5 +97,14 @@ $border: 3rem;
         }
 
 
+    }
+
+    .unBlockImg {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        width: 46px;
+        height: 46px;
+        cursor: pointer;
     }
 }
