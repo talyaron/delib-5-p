@@ -53,12 +53,12 @@ const MembershipCard: FC<Props> = ({ member }) => {
 		<div className={`${styles.card} ${isBanned ? styles.banned : ""}`}>
 			<div className={styles.card__info}>
 				<div
-					className={styles.card__info__img}
+					className={`${styles.card__info__img} ${isBanned ? styles.bannedImg : ""}`}
 					style={{ backgroundImage: `url(${displayImg})` }}
 				>
 					{!displayImg && firstLetter}
 				</div>
-				<div className={styles.card__info__name}>{member.user.displayName}</div>
+				<div className={`${styles.card__info__name} ${isBanned ? styles.bannedText : ""}`}>{member.user.displayName}</div>
 			</div>
 			<div className={styles.card__membership}>
 				{isBanned ? (

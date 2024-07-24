@@ -9,11 +9,11 @@ $border: 3rem;
     border-left: #3a7ae2 3px solid;
     direction: ltr;
 
-
     &.banned {
         display: flex;
         justify-content: space-between;
         width: fit-content;
+        border: none;
         height: 48px;
         border-radius: 50px;
         color: rgba(255, 255, 255, 1);
@@ -25,6 +25,11 @@ $border: 3rem;
             height: 48px;
             width: 48px;
             border: none;
+        }
+
+        .bannedImg {
+            background-color: rgba(255, 255, 255, 1);
+            color: rgba(232, 116, 158, 1);
         }
     }
 
@@ -38,14 +43,13 @@ $border: 3rem;
             width: 3rem;
             height: 3rem;
             border-radius: 50%;
-            background-color: rgb(191, 191, 191);
+            background-color: rgba(66, 123, 158, 0.1843137255);
             display: flex;
             justify-content: center;
             align-items: center;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-
         }
 
         &__name {
