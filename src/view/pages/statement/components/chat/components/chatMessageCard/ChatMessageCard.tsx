@@ -135,7 +135,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		}
 	}
 
-	console.log("isStatement", isStatement);
 
 	return (
 		<div

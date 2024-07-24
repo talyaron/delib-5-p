@@ -20,9 +20,9 @@ const auth = getAuth();
 
 //development
 if (!isProduction()) {
-  console.warn("Running on development mode");
+	console.warn("Running on development mode");
 
-  connectFirestoreEmulator(DB, "127.0.0.1", 8080);
-  connectAuthEmulator(auth, "http://127.0.0.1:9099");
-  connectStorageEmulator(storage, "127.0.0.1", 9199);
+	connectFirestoreEmulator(DB, "127.0.0.1", 8080);
+	connectAuthEmulator(auth, "http://127.0.0.1:9099");
+	connectStorageEmulator(storage, "127.0.0.1", 9199);
 }
