@@ -16,8 +16,8 @@ import {
 } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { ParticipantInRoom } from "../../../view/pages/statement/components/rooms/components/adminArrange/AdminArrange";
-import { store } from "../../../model/store";
+import { ParticipantInRoom } from "@/view/pages/statement/components/rooms/components/adminArrange/AdminArrange";
+import { store } from "@/model/store";
 
 export function enterRoomsDB(parentStatement: Statement) {
 	try {

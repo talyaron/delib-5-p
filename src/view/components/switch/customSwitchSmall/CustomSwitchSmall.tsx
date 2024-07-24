@@ -2,9 +2,9 @@ import { FC } from "react";
 import "./CustomSwitchSmall.scss";
 import background from "./customSwitchSmallBackground.svg";
 
-import StepsNoIcon from "../../../../assets/icons/stepsNoIcon.svg?react";
-import StepsIcon from "../../../../assets/icons/stepsIcon.svg?react";
-import { useLanguage } from "../../../../controllers/hooks/useLanguages";
+import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
+import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
   label: string;

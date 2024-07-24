@@ -15,14 +15,14 @@ import { NavigateFunction } from "react-router-dom";
 import { setUserToDB } from "./users/setUsersDB";
 
 // Redux store imports
-import { AppDispatch } from "../../model/store";
-import { setFontSize, setUser } from "../../model/users/userSlice";
-import { resetStatements } from "../../model/statements/statementsSlice";
-import { resetEvaluations } from "../../model/evaluations/evaluationsSlice";
-import { resetVotes } from "../../model/vote/votesSlice";
-import { resetResults } from "../../model/results/resultsSlice";
-import { setInitLocation } from "../../model/location/locationSlice";
-import { defaultFontSize } from "../../model/fonts/fontsModel";
+import { AppDispatch } from "@/model/store";
+import { setFontSize, setUser } from "@/model/users/userSlice";
+import { resetStatements } from "@/model/statements/statementsSlice";
+import { resetEvaluations } from "@/model/evaluations/evaluationsSlice";
+import { resetVotes } from "@/model/vote/votesSlice";
+import { resetResults } from "@/model/results/resultsSlice";
+import { setInitLocation } from "@/model/location/locationSlice";
+import { defaultFontSize } from "@/model/fonts/fontsModel";
 
 const provider = new GoogleAuthProvider();
 

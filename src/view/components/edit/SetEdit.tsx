@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import EditIcon from "../../../assets/icons/editIcon.svg?react";
+import EditIcon from "@/assets/icons/editIcon.svg?react";
 
 interface Props {
     isAuthorized: boolean;

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./Button.scss";
-import { useLanguage } from "../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
 	text: string;

@@ -1,7 +1,7 @@
 import "./page401.scss";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { setInitLocation } from "../../../model/location/locationSlice";
+import { setInitLocation } from "@/model/location/locationSlice";
 
 const Page401 = () => {
 	const navigate = useNavigate();

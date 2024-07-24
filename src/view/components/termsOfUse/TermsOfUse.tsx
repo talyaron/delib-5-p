@@ -1,4 +1,4 @@
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button from "../buttons/button/Button";
 import Modal from "../modal/Modal";
 import "./TermsOfUse.scss";
