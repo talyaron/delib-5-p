@@ -9,8 +9,8 @@ export interface StyleProps {
 
 export default function useStatementColor(statementType?: StatementType): StyleProps {
 	const initStyle = {
-		backgroundColor: "transparent",
-		color: "transparent",
+		backgroundColor: "gray",
+		color: "white",
 	};
 	const [style, setStyle] = useState(initStyle);
 
