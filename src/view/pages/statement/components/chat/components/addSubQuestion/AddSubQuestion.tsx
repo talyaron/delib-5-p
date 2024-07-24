@@ -4,8 +4,8 @@ import React, { FC } from "react";
 import { Statement } from "delib-npm";
 
 // Icons
-import AddQuestionIcon from "../../../../../../../assets/icons/addQuestion.svg?react";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 // Styles
 

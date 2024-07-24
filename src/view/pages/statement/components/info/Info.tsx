@@ -1,6 +1,6 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
-import InfoParser from "../../../../components/InfoParser/InfoParser";
+import InfoParser from "@/view/components/InfoParser/InfoParser";
 
 
 interface Props {

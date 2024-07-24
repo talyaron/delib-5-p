@@ -4,16 +4,16 @@ import { FC, useEffect, useState } from "react";
 import { Statement } from "delib-npm";
 
 // Custom components
-import Thumb from "../../../../../../../components/thumb/Thumb";
+import Thumb from "@/view/components/thumb/Thumb";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Statement helpers
-import { evaluationSelector } from "../../../../../../../../model/evaluations/evaluationsSlice";
+import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
 
 // Custom Hooks
-import useDirection from "../../../../../../../../controllers/hooks/useDirection";
+import useDirection from "@/controllers/hooks/useDirection";
 
 //css
 import "./SimpleEvaluation.scss";

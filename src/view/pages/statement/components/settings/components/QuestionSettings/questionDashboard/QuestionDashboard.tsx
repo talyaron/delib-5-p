@@ -3,11 +3,11 @@ import { FC } from "react";
 import "./QuestionDashboard.scss";
 
 
-import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react";
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
+import UsersIcon from "@/assets/icons/users20px.svg?react";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";
 import { getStageInfo } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
-import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
   statement: Statement;

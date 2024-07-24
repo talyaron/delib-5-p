@@ -1,13 +1,13 @@
 import { Participant, Statement } from "delib-npm";
 import { FC } from "react";
-import Text from "../../../../../../../components/text/Text";
-import { setRoomJoinToDB } from "../../../../../../../../controllers/db/rooms/setRooms";
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { statementSelector } from "../../../../../../../../model/statements/statementsSlice";
+import Text from "@/view/components/text/Text";
+import { setRoomJoinToDB } from "@/controllers/db/rooms/setRooms";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementSelector } from "@/model/statements/statementsSlice";
 import {
 	topicParticipantsSelector,
 	userSelectedTopicSelector,
-} from "../../../../../../../../model/rooms/roomsSlice";
+} from "@/model/rooms/roomsSlice";
 import styles from "./RoomChoosingCard.module.scss";
 
 interface Props {

@@ -3,11 +3,11 @@ import { FC } from "react";
 import styles from "./MembershipCard.module.scss";
 
 //icons
-import MemberAdmin from "../../../../../../../../assets/icons/memberAdmin.svg?react";
-import MemberRemove from "../../../../../../../../assets/icons/memberRemove.svg?react";
-import { setRoleToDB } from "../../../../../../../../controllers/db/subscriptions/setSubscriptions";
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../../../../../../model/users/userSlice";
+import MemberAdmin from "@/assets/icons/memberAdmin.svg?react";
+import MemberRemove from "@/assets/icons/memberRemove.svg?react";
+import { setRoleToDB } from "@/controllers/db/subscriptions/setSubscriptions";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
 interface Props {
   member: StatementSubscription;

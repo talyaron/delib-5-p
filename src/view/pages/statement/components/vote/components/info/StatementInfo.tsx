@@ -4,21 +4,21 @@ import {
 	getDescription,
 	getTitle,
 	isAuthorized,
-} from "../../../../../../../controllers/general/helpers";
-import Text from "../../../../../../components/text/Text";
+} from "@/controllers/general/helpers";
+import Text from "@/view/components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
-import infoGraphic from "../../../../../../../assets/images/infoGraphic.png";
-import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
+import infoGraphic from "@/assets/images/infoGraphic.png";
+import EditIcon from "@/assets/icons/editIcon.svg?react";
 
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import {
 	statementSelector,
 	statementSubscriptionSelector,
-} from "../../../../../../../model/statements/statementsSlice";
+} from "@/model/statements/statementsSlice";
 import "./StatementInfo.scss";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
     statement: Statement | null;

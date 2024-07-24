@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 // Styles
-import "../../../../statement/components/createStatementModal/CreateStatementModal.scss";
+import "@/view/pages/statement/components/createStatementModal/CreateStatementModal.scss";
 
 // Third party imports
 import { Results } from "delib-npm";

@@ -7,8 +7,8 @@ import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
 // Helpers
 import { showNavElements } from "./statementTopNavCont";
 import { allScreens } from "./StatementTopNavModel.tsx";
-import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
-import useStatementColor from "../../../../../../controllers/hooks/useStatementColor.ts";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import useStatementColor from "@/controllers/hooks/useStatementColor.ts";
 
 interface Props {
 	statement: Statement;

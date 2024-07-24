@@ -5,16 +5,16 @@ import { useParams } from "react-router-dom";
 import { StatementSubscription, Statement } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Custom components
 import MembershipLine from "./membershipCard/MembershipCard";
-import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
+import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../../../../../../model/store";
+import { RootState } from "@/model/store";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
 
