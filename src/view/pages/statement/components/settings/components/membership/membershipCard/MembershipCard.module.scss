@@ -1,6 +1,7 @@
 $border: 3rem;
 
 .card {
+    margin-right: 20px;
     background-color: #427b9e2f;
     box-sizing: border-box;
     color: var(--body-dark);
@@ -50,7 +51,7 @@ $border: 3rem;
         &__name {
             font-size: 1.1rem;
             font-weight: 500;
-            padding: .7rem;
+            padding: .8rem;
         }
     }
 

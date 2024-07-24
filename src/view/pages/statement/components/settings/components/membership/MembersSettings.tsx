@@ -2,7 +2,7 @@ import { FC } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { StatementSubscription, Statement } from "delib-npm";
+import { StatementSubscription, Statement, Role } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
@@ -17,6 +17,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../../../../../model/store";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
+import MembersChipsList from './membersChipsList/MembersChipList';
+import TitleAndDescription from './../titleAndDescription/TitleAndDescription';
 
 const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 	// * Hooks * //
@@ -38,6 +40,9 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 	);
 
 	if (!members) return null;
+
+	const joinedMembers = members.filter(member => member.role !== Role.banned);
+	const bannedUser = members.filter(member => member.role === Role.banned);
 
 	function handleShare(statement: Statement | undefined) {
 		const baseUrl = window.location.origin;
@@ -61,10 +66,19 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 			</button>
 
 			<div className="title">
-				{t("Joined members")} ({members.length})
+				{t("Joined members")} ({joinedMembers.length})
 			</div>
 			<div className="members-box">
-				{members.map((member) => (
+				{joinedMembers.map((member) => (
+					<MembershipLine key={member.userId} member={member} />
+				))}
+			</div>
+
+			<div className="title">
+				{t("Banned users")} ({bannedUser.length})
+			</div>
+			<div className="members-box">
+				{bannedUser.map((member) => (
 					<MembershipLine key={member.userId} member={member} />
 				))}
 			</div>
