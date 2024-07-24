@@ -11,7 +11,6 @@ import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // icons
-// import Logo from "../../../assets/logo/512 px SVG.svg";
 import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
 import MoreRight from "../../../assets/icons/moreRight.svg?react";
 import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
@@ -54,21 +53,11 @@ const Start = () => {
 	}, [user]);
 
 	return (
-		<div className="splashPage">
-			{/* <div className={styles.h1}> */}
-			{/* {t("Delib")} <span className={styles.number}>5</span> */}
-			{/* </div> */}
-			{/* <img
-				className={styles.logo}
-				src={Logo}
-				alt="Delib logo"
-				width="10%"
-				style={{}}
-			/> */}
-			{/* <div className={styles.h2}>{t("Creating Agreements")}</div> */}
-
+		<div className={styles.splashPage}>
 			<Logo />
-
+			<div className={styles.slogan}>
+				{t("Fostering Collaborations")}
+			</div>
 			<select
 				className={styles.language}
 				defaultValue={savedLang || defaultLang}

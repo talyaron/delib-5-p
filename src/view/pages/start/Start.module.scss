@@ -1,3 +1,38 @@
+.splashPage {
+    background: #F2F6FF;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s;
+    justify-content: space-between;
+
+    &__freediIcon {
+        margin-top: 5rem;
+    }
+
+    &__title {
+        font-size: 5rem;
+    }
+
+    &__subTitle {
+        font-size: 3rem;
+        opacity: 0.7;
+    }
+
+    &__loginButton {
+        background: white !important;
+        color: red !important;
+        border-radius: 5px;
+    }
+
+    h1,
+    h2 {
+        color: #fff;
+    }
+
+}
 .number {
     color: #fadf57;
     position: relative;
@@ -17,6 +52,20 @@
 
 .logo {
     max-width: 150px;
+}
+
+.slogan {
+    position: absolute;
+    margin-top: 11.5rem;
+    font-size: 1.5vw;
+    font-weight: lighter;
+    // background-color: blue;
+    text-align: center;
+    min-width: 25rem;
+    max-width: 20rem;
+    // width: 20rem;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .language {
@@ -41,7 +90,7 @@
     user-select: none;
     position: absolute;
     top: 22rem;
-    margin-right: 17rem;
+    // margin-right: 17rem;
 
     &.rowReverse {
         margin-left: 30rem;
@@ -50,9 +99,12 @@
 
 @media only screen and (max-width: 600px) {
     .anonymous {
-        top: 19rem;
         position: absolute;
+        top: 19rem;
         right: 0;
+        width: 20rem;
+        float: left;
+        // left: 0;
         border-radius: 0rem 3rem 3rem 0rem;
     }
 }
@@ -63,12 +115,6 @@
     height: 35%;
     width: 30%;
     max-height: 25rem;
-
-    @media only screen and (max-width: 600px) {
-        bottom: 0;
-        width: 100%;
-        max-height: 30rem;
-    }
 }
 
 F .ddi {
