@@ -64,7 +64,7 @@ $border: 3rem;
     &__membership {
         display: flex;
         justify-content: space-between;
-        padding: 0.3rem;
+        padding: 0.6rem;
         align-items: center;
 
         &--member {
@@ -73,12 +73,13 @@ $border: 3rem;
         }
 
         &--admin {
-            border-radius: 3rem;
-            padding: .5rem;
+            border-radius: 100%;
+            padding: .3rem;
 
             &.admin {
                 background-color: #3a7ae22f;
                 color: white;
+                padding-left: .6rem;
             }
         }
 
