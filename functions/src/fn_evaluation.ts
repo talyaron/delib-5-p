@@ -23,11 +23,11 @@ export async function newEvaluation(event: any) {
         //add evaluator to statement
 
         const statementEvaluation = event.data.data() as Evaluation;
-        const { statementId } = statementEvaluation;
+        const { statementId, evaluation } = statementEvaluation;
         if (!statementId) throw new Error("statementId is not defined");
 
         //add one evaluator to statement, and add evaluation to statement
-        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1 });
+        const statement = await _updateStatementEvaluation({ statementId, evaluation, previousEvaluation: undefined, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1 });
         if (!statement) throw new Error("statement does not exist");
         updateParentStatementWithChildResults(statement.parentId);
 
@@ -65,7 +65,7 @@ export async function newEvaluation(event: any) {
         return update;
     }
 
-    async function getEvaluatorData(evaluator: User, statement: Statement) {
+    async function getEvaluatorData(evaluator: User, statement: Statement): Promise<Evaluator | undefined> {
         try {
             const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
             if (!evaluationId) throw new Error("evaluationId is not defined");
@@ -73,6 +73,7 @@ export async function newEvaluation(event: any) {
             const evaluatorDB = await evaluatorRef.get();
             const evaluatorData = evaluatorDB.data() as Evaluator;
             if (!evaluatorData) throw new Error("evaluatorData was not found");
+            return evaluatorData;
         } catch (error) {
             logger.error(error);
             return undefined;
@@ -188,9 +189,11 @@ interface UpdateStatementEvaluation {
     statementId: string;
     evaluationDiff: number;
     addEvaluator?: number;
+    evaluation: number;
+    previousEvaluation: number | undefined;
 }
 
-async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0 }: UpdateStatementEvaluation): Promise<Statement | undefined> {
+async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0, evaluation = 0, previousEvaluation = undefined }: UpdateStatementEvaluation): Promise<Statement | undefined> {
     try {
 
         if (!statementId) throw new Error("statementId is not defined");
@@ -220,12 +223,32 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
             statement.evaluation.agreement = agreement;
             statement.consensus = agreement;
 
-
-            await transaction.update(statementRef, {
+            const updateObj: any = {
                 totalEvaluators: FieldValue.increment(addEvaluator),
                 consensus: agreement,
                 evaluation: statement.evaluation
-            });
+            }
+
+
+            if (previousEvaluation !== undefined) { //in case of new evaluation
+                if (evaluation > 0) {
+                    updateObj.sumPro = FieldValue.increment(evaluation);
+                } else if (evaluation < 0) {
+                    updateObj.sumCon = FieldValue.increment(evaluation);
+                }
+            } else if (previousEvaluation && evaluation) { //in case of update evaluation
+                if (previousEvaluation > 0 && evaluation > 0) { //in case of change in positive evaluation
+                    updateObj.sumPro = FieldValue.increment(evaluation - previousEvaluation);
+                } else if (previousEvaluation < 0 && evaluation < 0) { //in case of change in negative evaluation
+                    updateObj.sumCon = FieldValue.increment(evaluation - previousEvaluation);
+                } else {
+                    updateObj.sumPro = FieldValue.increment(evaluation);
+                    updateObj.sumCon = FieldValue.increment(previousEvaluation);
+                }
+            }
+
+
+            await transaction.update(statementRef, updateObj);
 
             const _st = await statementRef.get();
             return _st.data() as Statement;
@@ -241,139 +264,7 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
 }
 
 
-//     function getEvaluationInfo() {
-//         try {
-//             const statementEvaluation = event.data.after.data() as Evaluation;
 
-//             const { evaluation, statementId, parentId } = statementEvaluation;
-
-//             const dataBefore = event.data.before.data();
-//             let previousEvaluation = 0;
-//             if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
-//             if (isNaN(previousEvaluation))
-//                 throw new Error("previousEvaluation is not a number");
-//             if (isNaN(evaluation))
-//                 throw new Error("evaluation is not a number");
-
-//             const evaluationDeference: number =
-//                 evaluation - previousEvaluation || 0;
-//             if (!evaluationDeference)
-//                 throw new Error("evaluationDeference is not defined");
-
-//             return {
-//                 parentId,
-//                 statementId,
-//                 evaluationDeference,
-//                 evaluation,
-//                 previousEvaluation,
-//             };
-//         } catch (error: any) {
-//             logger.error(error);
-
-//             return { error: error.message };
-//         }
-//     }
-
-//     async function setNewEvaluation(
-//         statementRef: any,
-//         evaluationDeference: number | undefined,
-//         evaluation = 0,
-//         previousEvaluation: number | undefined,
-//     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
-//         const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
-//         await db.runTransaction(async (t: any) => {
-//             try {
-//                 if (!evaluationDeference)
-//                     throw new Error("evaluationDeference is not defined");
-//                 if (evaluation === undefined)
-//                     throw new Error("evaluation is not defined");
-//                 if (previousEvaluation === undefined)
-//                     throw new Error("previousEvaluation is not defined error");
-
-//                 const statementDB = await t.get(statementRef);
-
-//                 if (!statementDB.exists) {
-//                     throw new Error("statement does not exist");
-//                 }
-
-//                 const oldPro = statementDB.data().pro || 0;
-//                 const oldCon = statementDB.data().con || 0;
-
-//                 const { newCon, newPro, totalEvaluators } = updateProCon(
-//                     oldPro,
-//                     oldCon,
-//                     evaluation,
-//                     previousEvaluation,
-//                 );
-//                 results.newCon = newCon;
-//                 results.newPro = newPro;
-//                 results.totalEvaluators = totalEvaluators;
-
-//                 t.update(statementRef, {
-//                     totalEvaluations: newCon + newPro,
-//                     con: newCon,
-//                     pro: newPro,
-//                 });
-
-//                 return results;
-//             } catch (error) {
-//                 logger.error(error);
-
-//                 return results;
-//             }
-//         });
-
-//         return results;
-
-//         function updateProCon(
-//             oldPro: number,
-//             oldCon: number,
-//             evaluation: number,
-//             previousEvaluation: number,
-//         ): { newPro: number; newCon: number; totalEvaluators: number } {
-//             try {
-//                 let newPro = oldPro;
-//                 let newCon = oldCon;
-
-//                 const { pro, con } = clacProCon(previousEvaluation, evaluation);
-
-//                 newPro += pro;
-//                 newCon += con;
-//                 const totalEvaluators: number = newPro + newCon;
-
-//                 return { newPro, newCon, totalEvaluators };
-//             } catch (error) {
-//                 logger.error(error);
-
-//                 return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
-//             }
-//         }
-//     }
-// }
-
-// function clacProCon(prev: number, curr: number): { pro: number; con: number } {
-//     try {
-//         let pro = 0,
-//             con = 0;
-//         if (prev > 0) {
-//             pro = -prev;
-//         } else if (prev < 0) {
-//             con = prev;
-//         }
-
-//         if (curr > 0) {
-//             pro += curr;
-//         } else if (curr < 0) {
-//             con -= curr;
-//         }
-
-//         return { pro, con };
-//     } catch (error) {
-//         console.error(error);
-
-//         return { pro: 0, con: 0 };
-//     }
-// }
 
 interface ResultsSettings {
     resultsBy: ResultsBy;
@@ -406,8 +297,10 @@ async function updateParentStatementWithChildResults(
         //get parent statement
         const parentStatementRef = db.collection("statements").doc(parentId);
         const parentStatementDB = await parentStatementRef.get();
+
         if (!parentStatementDB.exists)
             throw new Error("parentStatement does not exist");
+
         const parentStatement = parentStatementDB.data() as Statement;
 
         //get results settings
