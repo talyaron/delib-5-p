@@ -3,6 +3,7 @@ $border: 3rem;
 .card {
     margin-right: 20px;
     background-color: rgba(235, 234, 255, 1);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px;
     box-sizing: border-box;
     min-width: 200px;
     color: var(--body-dark);
