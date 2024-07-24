@@ -2,11 +2,12 @@ $border: 3rem;
 
 .card {
     margin-right: 20px;
-    background-color: #427b9e2f;
+    background-color: rgba(235, 234, 255, 1);
     box-sizing: border-box;
+    min-width: 200px;
     color: var(--body-dark);
     border-radius: calc($border / 2) 4px;
-    border-left: #3a7ae2 3px solid;
+    border-left: rgba(115, 158, 228, 1) 3px solid;
     direction: ltr;
 
     &.banned {
@@ -38,12 +39,12 @@ $border: 3rem;
 
         &__img {
             position: relative;
-            border: #3a7ae2 3px solid;
+            border: rgba(115, 158, 228, 1) 3px solid;
             left: -3px;
             width: 3rem;
             height: 3rem;
             border-radius: 50%;
-            background-color: rgba(66, 123, 158, 0.1843137255);
+            background-color: rgba(255, 255, 255, 1);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -89,6 +90,7 @@ $border: 3rem;
             font-size: 1.7rem;
             height: 2rem;
             width: 2rem;
+            margin-right: .5rem;
             cursor: pointer;
             user-select: none;
         }
