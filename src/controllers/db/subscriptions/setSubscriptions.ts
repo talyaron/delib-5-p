@@ -2,19 +2,21 @@ import { Statement, Role, StatementSchema, Collections, User } from "delib-npm";
 import { doc, updateDoc, setDoc, Timestamp, getDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { getStatementSubscriptionId, writeZodError } from "../../general/helpers";
+import {
+	getStatementSubscriptionId,
+	writeZodError,
+} from "../../general/helpers";
 import { store } from "../../../model/store";
 
 export async function setStatementSubscriptionToDB(
 	statement: Statement,
 	role: Role = Role.member,
-	userAskedForNotification = false,
+	userAskedForNotification = false
 ) {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
-		
 
 		const results = StatementSchema.safeParse(statement);
 		if (!results.success) {
@@ -24,17 +26,14 @@ export async function setStatementSubscriptionToDB(
 
 		const { statementId } = statement;
 
-		const statementsSubscribeId = getStatementSubscriptionId(
-			statementId,
-			user,
-		);
+		const statementsSubscribeId = getStatementSubscriptionId(statementId, user);
 		if (!statementsSubscribeId)
 			throw new Error("Error in getting statementsSubscribeId");
 
 		const statementsSubscribeRef = doc(
 			DB,
 			Collections.statementsSubscribe,
-			statementsSubscribeId,
+			statementsSubscribeId
 		);
 
 		if (userAskedForNotification) {
@@ -55,7 +54,7 @@ export async function setStatementSubscriptionToDB(
 				lastUpdate: Timestamp.now().toMillis(),
 				createdAt: Timestamp.now().toMillis(),
 			},
-			{ merge: true },
+			{ merge: true }
 		);
 	} catch (error) {
 		console.error(error);
@@ -63,7 +62,7 @@ export async function setStatementSubscriptionToDB(
 }
 
 export async function updateSubscriberForStatementSubStatements(
-	statement: Statement,
+	statement: Statement
 ) {
 	try {
 		const user = getUserFromFirebase();
@@ -75,7 +74,7 @@ export async function updateSubscriberForStatementSubStatements(
 		const statementsSubscribeRef = doc(
 			DB,
 			Collections.statementsSubscribe,
-			statementsSubscribeId,
+			statementsSubscribeId
 		);
 		const newSubStatmentsRead = {
 			totalSubStatementsRead: statement.totalSubStatements || 0,
@@ -90,29 +89,70 @@ export async function updateSubscriberForStatementSubStatements(
 export async function setRoleToDB(
 	statement: Statement,
 	role: Role,
-	user: User,
+	user: User
 ): Promise<void> {
 	try {
-
 		//getting current user role in statement
 		const currentUser = store.getState().user.user;
 		if (!currentUser) throw new Error("User not logged in");
-		const currentUserStatementSubscriptionId = getStatementSubscriptionId(statement.statementId, currentUser);
-		if (!currentUserStatementSubscriptionId) throw new Error("Error in getting statementSubscriptionId");
-		const currentUserStatementSubscriptionRef = doc(DB, Collections.statementsSubscribe, currentUserStatementSubscriptionId);
-		const currentUserStatementSubscription = await getDoc(currentUserStatementSubscriptionRef);
+		const currentUserStatementSubscriptionId = getStatementSubscriptionId(
+			statement.statementId,
+			currentUser
+		);
+		if (!currentUserStatementSubscriptionId)
+			throw new Error("Error in getting statementSubscriptionId");
+		const currentUserStatementSubscriptionRef = doc(
+			DB,
+			Collections.statementsSubscribe,
+			currentUserStatementSubscriptionId
+		);
+		const currentUserStatementSubscription = await getDoc(
+			currentUserStatementSubscriptionRef
+		);
 		const currentUserRole = currentUserStatementSubscription.data()?.role;
 		if (!currentUserRole) throw new Error("Error in getting currentUserRole");
-		if (currentUserRole !== Role.admin || statement.creator.uid === user.uid) return;
+		if (currentUserRole !== Role.admin || statement.creator.uid === user.uid)
+			return;
 
 		//setting user role in statement
-		const statementSubscriptionId = getStatementSubscriptionId(statement.statementId, user);
-		if (!statementSubscriptionId) throw new Error("Error in getting statementSubscriptionId");
-		const statementSubscriptionRef = doc(DB, Collections.statementsSubscribe, statementSubscriptionId);
-		
+		const statementSubscriptionId = getStatementSubscriptionId(
+			statement.statementId,
+			user
+		);
+		if (!statementSubscriptionId)
+			throw new Error("Error in getting statementSubscriptionId");
+		const statementSubscriptionRef = doc(
+			DB,
+			Collections.statementsSubscribe,
+			statementSubscriptionId
+		);
+
 		return setDoc(statementSubscriptionRef, { role }, { merge: true });
 	} catch (error) {
 		console.error(error);
+	}
+}
 
+export async function updateMemberRole(
+	statementId: string,
+	userId: string,
+	newRole: Role
+): Promise<void> {
+	try {
+		const statementSubscriptionId = getStatementSubscriptionId(statementId, {
+			uid: userId,
+			displayName: "",
+		});
+		if (!statementSubscriptionId)
+			throw new Error("Error in getting statementSubscriptionId");
+
+		const statementSubscriptionRef = doc(
+			DB,
+			Collections.statementsSubscribe,
+			statementSubscriptionId
+		);
+		await updateDoc(statementSubscriptionRef, { role: newRole });
+	} catch (error) {
+		console.error("Error updating member role:", error);
 	}
 }

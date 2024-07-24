@@ -14,6 +14,10 @@ import { subscriptionParentStatementSelector } from "../../../../../model/statem
 import { getLastElements } from "../../../../../controllers/general/helpers";
 import UpdateMainCard from "./updateMainCard/UpdateMainCard";
 
+
+//img
+import ImgThumb from '../../../../../assets/images/ImgThumb.png';
+
 // import MessageBoxCounter from '../../../statement/components/chat/components/messageBoxCounter/MessageBoxCounter';
 
 interface Props {
