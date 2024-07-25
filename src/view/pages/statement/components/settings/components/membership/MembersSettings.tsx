@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { StatementSubscription, Statement } from "delib-npm";
+import { StatementSubscription, Statement, Collections } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
@@ -18,11 +18,15 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../../../../../../model/store";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
+import { collection, getDocs } from "firebase/firestore";
+import { DB } from "../../../../../../../controllers/db/config";
 
 const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 	// * Hooks * //
 	const { statementId } = useParams();
 	const { t } = useLanguage();
+	const [userCount, setUserCount] = useState<number>(0);
+
 
 	const statementMembershipSelector = (statementId: string | undefined) =>
 		createSelector(
@@ -51,6 +55,21 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 		navigator.share(shareData);
 	}
 
+	const fetchAwaitingUsers = async (): Promise<number> => {
+		const usersCollection = collection(DB, Collections.awaitingUsers);
+		const usersSnapshot = await getDocs(usersCollection);
+		return usersSnapshot.docs.length
+	}
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const count = await fetchAwaitingUsers();
+			setUserCount(count);
+		};
+
+		fetchData();
+	}, []);
+
 	return (
 		<div className="members-settings">
 			<button
@@ -61,10 +80,10 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 				<ShareIcon />
 			</button>
 			<div className="upload-waiting-list">
-				<SetWaitingList />
+				<SetWaitingList statement={statement} />
 			</div>
 			<div className="title">
-				{t("Joined members")} ({members.length})
+				{t("Joined members")} ({`${userCount}`})
 			</div>
 			<div className="members-box">
 				{members.map((member) => (
