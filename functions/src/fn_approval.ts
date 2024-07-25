@@ -50,11 +50,11 @@ export async function updateApprovalResults(event: any) {
             if (documentApproval) {
                 const newApproved = documentApproval.approved + approvedDiff;
                 const totalVoters = documentApproval.totalVoters + approvingUserDiff;
-                console.log("Pervious Approve", documentApproval.approved, "newApproved", newApproved, "Pervious Reject", documentApproval.rejected, "newRejected", newRejected);
+                console.log("Pervious Approve", documentApproval.approved, "newApproved", newApproved);
 
                 newApprovalResults = {
                     approved: newApproved,
-                    totalVoters: totalVoters,
+                    totalVoters,
                     averageApproval: newApproved  / totalVoters
                 };
             } else {
@@ -79,9 +79,8 @@ export async function updateApprovalResults(event: any) {
              */
             let newApprovalResults: DocumentApproval = {
                 approved: approvedDiff,
-                rejected: rejectedDiff,
-                totalUsersAppRej: addUser,
-                averageApproval: approvedDiff || rejectedDiff
+                totalVoters: addUser,
+                averageApproval: approvedDiff
             };
 
             console.log("newApprovalResults", newApprovalResults);
@@ -89,14 +88,13 @@ export async function updateApprovalResults(event: any) {
             if (documentApproval) {
 
                 const newApproved = documentApproval.approved + approvedDiff;
-                const newRejected = documentApproval.rejected + rejectedDiff;
+              const newTotalVoters =documentApproval.totalVoters + addUser;
 
 
                 newApprovalResults = {
-                    approved: newApproved,
-                    rejected: newRejected,
-                    totalUsersAppRej: documentApproval.totalUsersAppRej + addUser,
-                    averageApproval: (newApproved - newRejected) / (documentApproval.totalUsersAppRej + approvingUserDiff)
+                    approved: newApproved,                  
+                    totalVoters: newTotalVoters,
+                    averageApproval: newApproved / newTotalVoters
                 };
             }
 
