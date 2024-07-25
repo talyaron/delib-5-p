@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import * as XLSX from "xlsx";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 import Button from "../../../view/components/buttons/button/Button";
 import UploadFileIcon from "../../../view/components/icons/UploadFileIcon";
+
+//styles
+import styles from "./setWaitingList.module.scss"
 
 interface User {
   Name: string;
@@ -12,18 +15,16 @@ interface User {
 }
 
 const UploadExcel: React.FC = () => {
-	const [file, setFile] = useState<File | null>(null);
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files;
 		if (files && files.length > 0) {
-			setFile(files[0]);
+			handleFileUpload(files[0]);
 		}
 	};
 
-	const handleFileUpload = async () => {
-		if (!file) return alert("No file has been selected");
-
+	const handleFileUpload = async (file: File) => {
 		const reader = new FileReader();
 
 		reader.onload = async (e) => {
@@ -39,7 +40,6 @@ const UploadExcel: React.FC = () => {
 				const { Name, Email, Phone } = row;
 
 				if (Name && Email && Phone) {
-
 					const newDocRef = doc(collection(DB, "awaitingUsers"));
 					await setDoc(newDocRef, {
 						name: Name,
@@ -48,17 +48,29 @@ const UploadExcel: React.FC = () => {
 					});
 				}
 			}
+			alert("File has successfully uploaded");
 		};
 		reader.readAsArrayBuffer(file);
 	};
 
+	const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		fileInputRef.current?.click();
+	};
+
 	return (
 		<div>
-			<input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
+			<input
+				className={styles.uploadInput}
+				type="file"
+				accept=".xlsx, .xls"
+				onChange={handleFileChange}
+				ref={fileInputRef}
+			/>
 			<Button
 				icon={<UploadFileIcon />}
-				text={'Upload members list'}
-				onClick={() => handleFileUpload()}
+				text={"Upload members list"}
+				onClick={handleButtonClick}
 				className={"btn btn--affirmation"}
 			/>
 		</div>

@@ -10,6 +10,8 @@ import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHook
 // Custom components
 import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 import MembershipLine from "./membershipCard/MembershipCard";
+import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
+import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 
 // Hooks & Helpers
 import { createSelector } from "@reduxjs/toolkit";
@@ -62,7 +64,9 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 				{t("Send a link to anonymous users")}
 				<ShareIcon />
 			</button>
-
+			<div className="upload-waiting-list">
+				<SetWaitingList />
+			</div>
 			<div className="title">
 				{t("Joined members")} ({joinedMembers.length})
 			</div>
