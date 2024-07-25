@@ -37,6 +37,7 @@ import {
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
+import { updateApprovalResults } from './fn_approval';
 require('dotenv').config()
 
 
@@ -120,6 +121,9 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 	`/${Collections.statements}/{statementId}`,
 	setAdminsToNewStatement
 );
+
+//approval
+exports.updateDocumentApproval = onDocumentWritten(`/${Collections.approval}/{approvalId}`, updateApprovalResults);
 
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
