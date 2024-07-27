@@ -37,6 +37,7 @@ body {
     }
 
 }
+
 .number {
     color: #fadf57;
     position: relative;
@@ -59,15 +60,17 @@ body {
 }
 
 .slogan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    margin-top: 11.5rem;
-    font-size: 1.5vw;
-    font-weight: lighter;
-    text-align: center;
-    min-width: 25rem;
+    margin-top: 11rem;
+    height: 2rem;
+    font-size: 150%;
     max-width: 20rem;
-    white-space: nowrap;
+    min-width: 20rem;
     text-align: center;
+    white-space: nowrap;
 }
 
 .language {
@@ -92,11 +95,48 @@ body {
     user-select: none;
     position: absolute;
     top: 22rem;
-    // margin-right: 17rem;
 
     &.rowReverse {
         margin-left: 30rem;
     }
+}
+
+
+.anonymous.ltr {
+    margin-right: 17rem;
+
+}
+
+.anonymous.rtl {
+    margin-left: 20rem;
+}
+
+.StratPageImage {
+    position: fixed;
+    bottom: 0;
+    height: 40%;
+    max-height: 25rem;
+
+    @media only screen and (max-width: 600px) {
+        display: none;
+    }
+}
+
+.StratPageImageMobile {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-height: 25rem;
+    display: none;
+    height: 40%;
+ 
+    @media only screen and (max-width: 600px) {
+        display: block;
+    }
+}
+
+F .ddi {
+    color: white;
 }
 
 @media only screen and (max-width: 600px) {
@@ -104,9 +144,10 @@ body {
         position: absolute;
         top: 19rem;
         left: 0;
-        width: 20rem;
+        width: 25rem;
         border-radius: 0rem 3rem 3rem 0rem;
     }
+
     .anonymous.rtl {
         position: absolute;
         top: 19rem;
@@ -114,21 +155,8 @@ body {
         width: 20rem;
         border-radius: 3rem 0rem 0rem 3rem;
     }
+
     .language {
-        // border-radius: 5rem;
-        // position: absolute;
         margin-top: 14rem;
     }
-}
-
-.StratPageImage {
-    position: fixed;
-    bottom: 0;
-    height: 35%;
-    width: 30%;
-    max-height: 25rem;
-}
-
-F .ddi {
-    color: white;
 }

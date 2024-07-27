@@ -15,6 +15,7 @@ import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
 import MoreRight from "../../../assets/icons/moreRight.svg?react";
 import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
 import StratPageImage from '../assets/StratPageImage.png'
+import StratPageImageMobile from '../assets/StratPageImageMobile.png'
 
 // Constants
 import { LANGUAGES } from "../../../constants/Languages";
@@ -91,7 +92,9 @@ const Start = () => {
 			</button>
 
 			<GoogleLoginButton/>
-			{/* <img src={StratPageImage} alt="" className={styles.StratPageImage} /> */}
+			
+			<img src={StratPageImage} alt="" className={styles.StratPageImage}/>
+			<img src={StratPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
 			<a href="http://delib.org" target="_blank">
 				<footer className={styles.ddi}>
 					{t("From the Institute for Deliberative Democracy")}

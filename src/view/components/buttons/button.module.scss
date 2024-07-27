@@ -6,7 +6,7 @@
     padding: 1rem 2rem;
     border-radius: 3rem;
     width: fit-content;
-    width: 18rem;
+    width: 17rem;
     height: 2.7rem;
     color: white;
     gap: 1rem;
@@ -26,20 +26,24 @@
     }
 }
 
+.googleLogin.rtl{
+    margin-right: 35rem;
+}
 
 @media only screen and (max-width: 600px) {
     .googleLogin {
         position: absolute;
         margin-top: 25rem;
+        width: 18rem;
     }
     .googleLogin.ltr {
         border-radius: 3rem 0rem 0rem 3rem;
-        right: 0;
+        right: -1rem;
     }
     .googleLogin.rtl {
         border-radius: 0rem 3rem 3rem 0rem;
         left: 0;
-        margin-left: 0;
+        margin-left: 0rem;
 
     }
 }
