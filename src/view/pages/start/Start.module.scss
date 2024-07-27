@@ -1,3 +1,7 @@
+body {
+    background: #F2F6FF;
+}
+
 .splashPage {
     background: #F2F6FF;
     min-height: 100vh;
@@ -59,11 +63,9 @@
     margin-top: 11.5rem;
     font-size: 1.5vw;
     font-weight: lighter;
-    // background-color: blue;
     text-align: center;
     min-width: 25rem;
     max-width: 20rem;
-    // width: 20rem;
     white-space: nowrap;
     text-align: center;
 }
@@ -98,14 +100,24 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .anonymous {
+    .anonymous.ltr {
+        position: absolute;
+        top: 19rem;
+        left: 0;
+        width: 20rem;
+        border-radius: 0rem 3rem 3rem 0rem;
+    }
+    .anonymous.rtl {
         position: absolute;
         top: 19rem;
         right: 0;
         width: 20rem;
-        float: left;
-        // left: 0;
-        border-radius: 0rem 3rem 3rem 0rem;
+        border-radius: 3rem 0rem 0rem 3rem;
+    }
+    .language {
+        // border-radius: 5rem;
+        // position: absolute;
+        margin-top: 14rem;
     }
 }
 

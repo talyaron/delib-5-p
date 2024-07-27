@@ -5,8 +5,8 @@
     justify-content: center;
     padding: 1rem 2rem;
     border-radius: 3rem;
-    // width: fit-content;
-    width: 22rem;
+    width: fit-content;
+    width: 18rem;
     height: 2.7rem;
     color: white;
     gap: 1rem;
@@ -19,11 +19,6 @@
 
     &.rowReverse {
         margin-right: 33rem;
-        //     @media only screen and (max-width: 800px) {
-        //         border-radius: 0rem 3rem 3rem 0rem;
-        //         left: 0;
-        //         margin-top: 25rem;
-        //     }
     }
 
     img {
@@ -31,10 +26,20 @@
     }
 }
 
+
 @media only screen and (max-width: 600px) {
     .googleLogin {
-        border-radius: 3rem 0rem 0rem 3rem;
-        left: -14rem;
+        position: absolute;
         margin-top: 25rem;
+    }
+    .googleLogin.ltr {
+        border-radius: 3rem 0rem 0rem 3rem;
+        right: 0;
+    }
+    .googleLogin.rtl {
+        border-radius: 0rem 3rem 3rem 0rem;
+        left: 0;
+        margin-left: 0;
+
     }
 }
