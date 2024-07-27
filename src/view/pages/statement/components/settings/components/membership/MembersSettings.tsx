@@ -1,8 +1,8 @@
 import { FC } from "react";
 
 // Third party imports
+import { Role, Statement, StatementSubscription } from "delib-npm";
 import { useParams } from "react-router-dom";
-import { StatementSubscription, Statement } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
@@ -15,6 +15,7 @@ import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/model/store";
+import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
 
@@ -39,6 +40,9 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 
 	if (!members) return null;
 
+	const joinedMembers = members.filter(member => member.role !== Role.banned);
+	const bannedUser = members.filter(member => member.role === Role.banned);
+
 	function handleShare(statement: Statement | undefined) {
 		const baseUrl = window.location.origin;
 
@@ -59,12 +63,23 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 				{t("Send a link to anonymous users")}
 				<ShareIcon />
 			</button>
-
+			<div className="upload-waiting-list">
+				<SetWaitingList />
+			</div>
 			<div className="title">
-				{t("Joined members")} ({members.length})
+				{t("Joined members")} ({joinedMembers.length})
 			</div>
 			<div className="members-box">
-				{members.map((member) => (
+				{joinedMembers.map((member) => (
+					<MembershipLine key={member.userId} member={member} />
+				))}
+			</div>
+
+			<div className="title">
+				{t("Banned users")} ({bannedUser.length})
+			</div>
+			<div className="members-box">
+				{bannedUser.map((member) => (
 					<MembershipLine key={member.userId} member={member} />
 				))}
 			</div>

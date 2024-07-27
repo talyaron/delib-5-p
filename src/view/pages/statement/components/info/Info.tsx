@@ -9,11 +9,10 @@ interface Props {
 
 const Info: FC<Props> = ({ statement }) => {
 
-//detect if local or production
-const isLocal = process.env.NODE_ENV === "development";
-console.log(isLocal);
+	//detect if local or production
+	const isLocal = process.env.NODE_ENV === "development";
 
-const url = isLocal ? `http://localhost:5174/doc/${statement.statementId}` : `https://freedis.web.app/doc/${statement.statementId}`;
+	const url = isLocal ? `http://localhost:5174/doc/${statement.statementId}` : `https://freedis.web.app/doc/${statement.statementId}`;
 
 	return (
 		<div>

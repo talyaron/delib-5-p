@@ -1,73 +1,109 @@
-$border:3rem;
+$border: 3rem;
 
 .card {
-    background-color: #427b9e2f;
+    margin-right: 20px;
+    background-color: rgba(235, 234, 255, 1);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px;
     box-sizing: border-box;
+    min-width: 200px;
     color: var(--body-dark);
     border-radius: calc($border / 2) 4px;
-    border-left: #3a7ae2 3px solid;
+    border-left: rgba(115, 158, 228, 1) 3px solid;
     direction: ltr;
+
+    &.banned {
+        display: flex;
+        justify-content: space-between;
+        width: fit-content;
+        border: none;
+        height: 48px;
+        border-radius: 50px;
+        color: rgba(255, 255, 255, 1);
+        background-color: rgba(232, 116, 158, 1);
+        margin: 2px 5px 2px 0;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+        .card__info__img {
+            height: 48px;
+            width: 48px;
+            border: none;
+        }
+
+        .bannedImg {
+            background-color: rgba(255, 255, 255, 1);
+            color: rgba(232, 116, 158, 1);
+        }
+    }
 
     &__info {
         display: flex;
 
-
         &__img {
             position: relative;
-            border: #3a7ae2 3px solid;
+            border: rgba(115, 158, 228, 1) 3px solid;
             left: -3px;
             width: 3rem;
             height: 3rem;
             border-radius: 50%;
-            background-color: rgb(191, 191, 191);
+            background-color: rgba(255, 255, 255, 1);
             display: flex;
             justify-content: center;
             align-items: center;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-
         }
 
         &__name {
             font-size: 1.1rem;
             font-weight: 500;
-            padding: .5rem;
+            padding: .8rem;
         }
     }
 
     &__membership {
         display: flex;
         justify-content: space-between;
-        
-        padding: 0.5rem 1.5rem;
+        padding: 0.6rem;
+        align-items: center;
 
         &--member {
-
             border-radius: 3rem;
             padding: .5rem;
         }
 
         &--admin {
-            background-color: #3a7ae22f;
-            color: white;
-            border-radius: 3rem;
-            padding: .5rem;
+            border-radius: 100%;
+            padding: .3rem;
+
+            &.admin {
+                background-color: #3a7ae22f;
+                color: white;
+                padding-left: .6rem;
+            }
         }
 
         &__svg {
-           padding: .5rem;
-           color: var(--crimson);
+            padding: .5rem;
+            color: var(--crimson);
         }
 
         svg {
             font-size: 1.7rem;
             height: 2rem;
             width: 2rem;
-            
+            margin-right: .5rem;
             cursor: pointer;
             user-select: none;
         }
+    }
 
+    .unBlockImg {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        width: 46px;
+        height: 46px;
+        cursor: pointer;
     }
 }

@@ -8,7 +8,7 @@ interface Props {
 	color?: string;
 	className?: string;
 	iconOnRight?: boolean;
-	onClick: () => void;
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	icon?: React.ReactNode;
 }
 
