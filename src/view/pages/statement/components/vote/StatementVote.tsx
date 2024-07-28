@@ -89,7 +89,7 @@ const StatementVote: FC<Props> = ({
 							<Button
 								text={t('Got it')}
 								iconOnRight={true}
-								Icon={<X />}
+								icon={<X />}
 								bckColor='var(--crimson)'
 								color='var(--white)'
 								onClick={() => setShowMultiStageMessage(false)}

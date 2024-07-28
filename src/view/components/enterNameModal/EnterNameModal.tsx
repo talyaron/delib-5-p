@@ -9,9 +9,10 @@ import Modal from "../modal/Modal";
 // Functions
 import { signAnonymously } from "../../../controllers/db/auth";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import Button from "../buttons/button/Button";
 
 interface Props {
-    closeModal: VoidFunction;
+	closeModal: VoidFunction;
 }
 
 const EnterNameModal: FC<Props> = ({ closeModal }) => {
@@ -51,27 +52,26 @@ const EnterNameModal: FC<Props> = ({ closeModal }) => {
 					autoComplete="off"
 				/>
 				<div className="btns">
-					<button
+
+					<Button
 						data-cy="anonymous-start-btn"
+						text={t('Start')}
 						onClick={handleStart}
 						className={
 							showeStartBtn
-								? "btn btn--agree"
+								? "btn btn--affirmation"
 								: "btn btn--inactive"
 						}
-					>
-						{t("Start")}
-					</button>
-					<div
+					/>
+					<Button
 						data-cy="anonymous-cancel-btn"
-						className="btn btn--cancel"
+						text={t('Cancel')}
 						onClick={closeModal}
-					>
-						{t("Cancel")}
-					</div>
+						className="btn"
+					/>
 				</div>
 			</div>
-		</Modal>
+		</Modal >
 	);
 };
 

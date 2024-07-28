@@ -299,7 +299,7 @@ export function writeZodError(error: ZodError, object: unknown): void {
 			console.error(`Error at ${issue.path.join('.')}: ${issue.message} (${issue.code})`);
 
 
-			console.info("Object sent:",object)
+			console.info("Object sent:", object)
 		});
 
 	} catch (error) {
@@ -309,7 +309,7 @@ export function writeZodError(error: ZodError, object: unknown): void {
 
 export function getNumberDigits(number: number): number {
 	const _number = Math.floor(number);
-	
+
 	return _number.toString().length;
 }
 
@@ -325,3 +325,38 @@ export const handleCloseInviteModal = (setShowModal: (show: boolean) => void) =>
 		setShowModal(false);
 	}, 400);
 };
+
+export function getLastElements(array: Array<unknown>, number: number): Array<unknown> {
+	return array.slice(Math.max(array.length - number, 1));
+}
+
+export function getTime(time: number): string {
+	const timeEvent = new Date(time);
+	const hours = timeEvent.getHours();
+	const minutes = timeEvent.getMinutes();
+
+	const timeDay = timeEvent.getDate();
+	const timeMonth = timeEvent.getMonth() + 1;
+	const timeYear = timeEvent.getFullYear();
+
+	const currentTime = new Date();
+	const currentDay = currentTime.getDate();
+	const currentMonth = currentTime.getMonth() + 1;
+	const currentYear = currentTime.getFullYear();
+
+	if (currentYear !== timeYear) {
+		return `${timeDay}/${timeMonth}/${timeYear} ${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+	} else if (currentDay !== timeDay && currentMonth === timeMonth && currentYear === timeYear) {
+		return `${timeDay}/${timeMonth} ${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+		
+	} else if (currentDay === timeDay && currentMonth === timeMonth && currentYear === timeYear) {
+		return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+	}
+
+
+	return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
+}
+
+export function truncateString(text: string, maxLength = 20): string {
+	return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+}

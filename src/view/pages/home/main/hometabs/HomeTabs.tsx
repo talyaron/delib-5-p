@@ -1,6 +1,14 @@
 /* eslint-disable indent */
 import React, { useState } from "react";
 import "./home-tabs.scss";
+import GroupActive from "../../../../../assets/icons/group-filled-ac.png"
+import ClockActive from "../../../../../assets/icons/clock-filled-ac.png"
+import StarActive from "../../../../../assets/icons/star-filled-ac.png"
+import Group from "../../../../../assets/icons/group-filled-in.png";
+import Clock from "../../../../../assets/icons/clock-filled-in.png";
+import Star from "../../../../../assets/icons/star-filled-in.png";
+
+
 
 interface Tab {
     name: string;
@@ -9,9 +17,9 @@ interface Tab {
 }
 
 const tabs: Tab[] = [
-    { name: "Group", activeIcon: "/src/assets/icons/group-filled-ac.png", inactiveIcon: "/src/assets/icons/group-filled-in.png" },
-    { name: "Last", activeIcon: "/src/assets/icons/clock-filled-ac.png", inactiveIcon: "/src/assets/icons/clock-filled-in.png" },
-    { name: "Favorites", activeIcon: "/src/assets/icons/star-filled-ac.png", inactiveIcon: "/src/assets/icons/star-filled-in.png" },
+    { name: "Group", activeIcon: GroupActive, inactiveIcon: Group },
+    { name: "Last", activeIcon: ClockActive, inactiveIcon:Clock },
+    { name: "Favorites", activeIcon: StarActive, inactiveIcon: Star },
 ];
 
 const HomeTabs: React.FC = () => {

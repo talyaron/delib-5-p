@@ -15,7 +15,6 @@ import Text from "../text/Text";
 import { getDescription, getTitle } from "../../../controllers/general/helpers";
 import { useLanguage } from "../../../controllers/hooks/useLanguages";
 
-
 interface Props {
 	statement: Statement | undefined;
 	isEdit: boolean;

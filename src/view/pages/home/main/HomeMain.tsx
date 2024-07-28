@@ -15,9 +15,7 @@ import ScreenSlide from "../../../components/animation/ScreenSlide";
 import PeopleLoader from "../../../components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
-//images
 import bike from "../../../../assets/images/bike.png";
-import HomeTabs from "./hometabs/HomeTabs";
 
 const HomeMain = () => {
 	// Hooks
@@ -48,16 +46,13 @@ const HomeMain = () => {
 		<ScreenSlide className="home-page__main slide-in">
 			<div className="heroImg"></div>
 			<img className="bikeImg" src={bike} />
-
-
+			
 			<div
 				className="wrapper main-wrap"
 				style={{
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
 			>
-				<HomeTabs />
-
 				{!loading ? (
 					statements.map((statement) => (
 						<MainCard key={statement.statementId} statement={statement} />
@@ -68,7 +63,7 @@ const HomeMain = () => {
 			</div>
 			<Footer onclick={handleAddStatement} />
 
-		</ScreenSlide>
+		</ScreenSlide >
 	);
 };
 
