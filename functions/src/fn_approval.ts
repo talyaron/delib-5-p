@@ -7,33 +7,33 @@ export async function updateApprovalResults(event: any) {
     try {
         const action = getAction(event);
         const eventData = event.data.after.data() as Approval || event.data.before.data() as Approval;
-        const { statementId, documentId, userId} = eventData;
+        const { statementId, documentId, userId } = eventData;
         const approveAfterData = event.data.after.data() as Approval;
         const approveBeforeData = event.data.before.data() as Approval;
-        const { approval: approveAfter } = approveAfterData;
-        const { approval: approveBefore } = approveBeforeData;
 
+        console.log("approveAfterData.approval", approveAfterData.approval ? "Approved" : "Rejected");
 
-       
         let approvedDiff = 0;
-        let rejectedDiff = 0;
         let approvingUserDiff = 0;
 
         if (action === "create") {
             //  await newApproval(eventData);
-      
+            const { approval } = approveAfterData;
             approvingUserDiff = 1;
-            approvedDiff = approveAfter ? 1 : 0;
-            rejectedDiff = approveAfter ? 0 : 1;
+            approvedDiff = approval ? 1 : 0;
+          
         } else if (action === "delete") {
-      
+            const { approval } = approveBeforeData;
             approvingUserDiff = -1;
-            approvedDiff = approveBefore ? -1 : 0;
-            rejectedDiff = approveBefore ? 0 : -1;
+            approvedDiff = approval ? -1 : 0;
+          
         } else if (action === "update") {
-            approvedDiff = approveAfter ? 1 : -1;
-            rejectedDiff = approveAfter ? -1 : 1;
+            const { approval } = approveAfterData;
+            approvedDiff = approval ? 1 : -1;
+          
         }
+
+        console.log("approvedDiff", approvedDiff, "approvingUserDiff", approvingUserDiff);
 
         //update paragraph
         db.runTransaction(async (transaction) => {
@@ -43,23 +43,26 @@ export async function updateApprovalResults(event: any) {
 
             let newApprovalResults: DocumentApproval = {
                 approved: approvedDiff,
-                rejected: rejectedDiff,
-                totalUsersAppRej: approvingUserDiff,
-                averageApproval: approvedDiff || rejectedDiff
+                totalVoters: approvingUserDiff,
+                averageApproval: approvedDiff 
             };
 
             if (documentApproval) {
-
+                const newApproved = documentApproval.approved + approvedDiff;
+                const totalVoters = documentApproval.totalVoters + approvingUserDiff;
+                console.log("Pervious Approve", documentApproval.approved, "newApproved", newApproved);
 
                 newApprovalResults = {
-                    approved: documentApproval.approved + approvedDiff,
-                    rejected: documentApproval.rejected + rejectedDiff,
-                    totalUsersAppRej: documentApproval.totalUsersAppRej + approvingUserDiff,
-                    averageApproval: (documentApproval.approved + approvedDiff) / (documentApproval.totalUsersAppRej + approvingUserDiff)
+                    approved: newApproved,
+                    totalVoters,
+                    averageApproval: newApproved  / totalVoters
                 };
+            } else {
+                console.log("No documentApproval on", statementId);
             }
 
-            transaction.update(statementRef, { approvalResults: newApprovalResults });
+            
+            transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
         });
 
         //update document
@@ -70,29 +73,35 @@ export async function updateApprovalResults(event: any) {
 
             const userApprovalsDB = await db.collection(Collections.approval).where("documentId", "==", documentId).where("userId", "==", userId).get();
             const numberOfUserApprovals = userApprovalsDB.size;
-            const addUser = (numberOfUserApprovals === 1 && action === "create")? 1 : 0;
+            const addUser = (numberOfUserApprovals === 1 && action === "create") ? 1 : 0;
 
+            /**
+             * Represents the results of a document approval.
+             */
             let newApprovalResults: DocumentApproval = {
                 approved: approvedDiff,
-                rejected: rejectedDiff,
-                totalUsersAppRej: addUser,
-                averageApproval: approvedDiff || rejectedDiff
+                totalVoters: addUser,
+                averageApproval: approvedDiff
             };
+
+            console.log("newApprovalResults", newApprovalResults);
 
             if (documentApproval) {
 
+                const newApproved = documentApproval.approved + approvedDiff;
+              const newTotalVoters =documentApproval.totalVoters + addUser;
+
 
                 newApprovalResults = {
-                    approved: documentApproval.approved + approvedDiff,
-                    rejected: documentApproval.rejected + rejectedDiff,
-                    totalUsersAppRej: documentApproval.totalUsersAppRej + addUser,
-                    averageApproval: (documentApproval.approved + approvedDiff) / (documentApproval.totalUsersAppRej + approvingUserDiff)
+                    approved: newApproved,                  
+                    totalVoters: newTotalVoters,
+                    averageApproval: newApproved / newTotalVoters
                 };
             }
 
-            transaction.update(statementRef, { approvalResults: newApprovalResults });
+            transaction.update(statementRef, { documentApproval: newApprovalResults });
         });
-        
+
 
     } catch (error) {
         logger.error(error);
