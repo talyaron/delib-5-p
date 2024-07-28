@@ -61,6 +61,7 @@ export async function updateApprovalResults(event: any) {
                 console.log("No documentApproval on", statementId);
             }
 
+            
             transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
         });
 
