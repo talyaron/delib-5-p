@@ -10,7 +10,7 @@ import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHook
 // Custom components
 import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 import MembershipLine from "./membershipCard/MembershipCard";
-import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
+// import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 
 // Hooks & Helpers
