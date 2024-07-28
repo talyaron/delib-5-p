@@ -135,6 +135,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		}
 	}
 
+
 	return (
 		<div
 			className={`chat-message-card ${isAlignedLeft && "aligned-left"} ${dir}`}
@@ -147,7 +148,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			)}
 
 			<div
-				className="message-box"
+				className={isStatement?"message-box message-box--statement":"message-box"}
 				style={{ borderColor: statementColor.backgroundColor }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}

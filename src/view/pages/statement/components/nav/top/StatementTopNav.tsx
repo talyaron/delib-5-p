@@ -8,6 +8,7 @@ import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
 import { showNavElements } from "./statementTopNavCont";
 import { allScreens } from "./StatementTopNavModel.tsx";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor.ts";
 
 interface Props {
 	statement: Statement;
@@ -17,7 +18,8 @@ interface Props {
 
 const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }) => {
 	const { t } = useLanguage();
-
+	const headerStyle = useStatementColor(statement.statementType);
+	
 	const _navArray = showNavElements({ statement, statementSubscription, navArray: allScreens });
 
 	return (
@@ -33,10 +35,10 @@ const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }
 					}`}
 					style={{ "maxWidth":_navArray.length === 1 ? '90%':"none"}}
 				>
-					<p className="page__header__nav__button__tabTxt">
+					<p className="page__header__nav__button__tabTxt" style={{color: headerStyle.backgroundColor}}>
 						{t(screenInfo.name)}
 					</p>					
-					<screenInfo.icon fill={screen === screenInfo.link ? 'var(--question)' : 'none'} />
+					<screenInfo.icon fill={screen === screenInfo.link ? headerStyle.backgroundColor : 'none'} />
 				</Link>
 			))}
 			

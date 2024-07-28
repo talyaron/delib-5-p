@@ -37,6 +37,8 @@ import {
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
+import { updateApprovalResults } from './fn_approval';
+import { setImportanceToStatement } from './fn_importance';
 require('dotenv').config()
 
 
@@ -121,6 +123,9 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 	setAdminsToNewStatement
 );
 
+//approval
+exports.updateDocumentApproval = onDocumentWritten(`/${Collections.approval}/{approvalId}`, updateApprovalResults);
+
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -140,3 +145,6 @@ exports.checkForSimilarStatements = onRequest(
 );
 
 exports.app = onRequest(cors, app);
+
+//importance
+exports.setImportanceToStatement = onDocumentWritten(`/${Collections.importance}/{importanceId}`, setImportanceToStatement);
