@@ -46,7 +46,7 @@ interface Props {
 	top: number;
 }
 
-const StatementEvaluationCard: FC<Props> = ({
+const StatementSolutionCard: FC<Props> = ({
 	parentStatement,
 	statement,
 	top,
@@ -219,4 +219,4 @@ const StatementEvaluationCard: FC<Props> = ({
 	);
 };
 
-export default StatementEvaluationCard;
+export default StatementSolutionCard;
