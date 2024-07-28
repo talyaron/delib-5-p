@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { Role,StatementSubscription, Statement, Collections } from "delib-npm";
+import { Role, StatementSubscription, Statement, Collections } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
@@ -58,19 +58,15 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 		navigator.share(shareData);
 	}
 
-	const fetchAwaitingUsers = async (): Promise<number> => {
+	const fetchAwaitingUsers = async (): Promise<void> => {
 		const usersCollection = collection(DB, Collections.awaitingUsers);
 		const usersSnapshot = await getDocs(usersCollection);
-		return usersSnapshot.docs.length
+		const count = usersSnapshot.docs.length
+		return setUserCount(count)
 	}
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const count = await fetchAwaitingUsers();
-			setUserCount(count);
-		};
-
-		fetchData();
+		fetchAwaitingUsers();
 	}, []);
 
 	return (
