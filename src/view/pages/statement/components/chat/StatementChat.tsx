@@ -53,7 +53,6 @@ const StatementChat: FC<Props> = ({
 		}
 	};
 	
-
 	//effects
 	useEffect(() => {
 		firstTime = true;

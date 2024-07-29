@@ -472,7 +472,7 @@ export const hasTokenSelector =
 	};
 
 	export const subscriptionParentStatementSelector = (parentId: string) => (state: RootState) => {
-		return state.statements.statementSubscription.filter((sub) => sub.statement.topParentId === parentId).filter((statement) => statement.statement.statementType !== "document");
+		return state.statements.statementSubscription.filter((sub) => sub.statement.topParentId === parentId);
 	}
 
 export default statementsSlicer.reducer;

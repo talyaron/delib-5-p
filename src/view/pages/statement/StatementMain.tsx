@@ -48,7 +48,6 @@ export const subStatementsSelector = createSelector(
 	(statements, statementId) =>
 		statements
 			.filter((st) => st.parentId === statementId)
-			.filter((a) => a.statementType !== "document")
 			.sort((a, b) => a.createdAt - b.createdAt)
 );
 

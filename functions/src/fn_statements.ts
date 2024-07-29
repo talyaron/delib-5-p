@@ -54,7 +54,7 @@ export async function updateParentWithNewMessageCB(e: any) {
 		parentRef.update({
 			lastMessage,
 			lastUpdate,
-			totalSubStatements: statement.statementType !== "document" ? FieldValue.increment(1) : FieldValue,
+			totalSubStatements: FieldValue.increment(1),
 		});
 
 		//update topParent

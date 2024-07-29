@@ -137,6 +137,7 @@ export const listenToSubStatements = (
 		const q = query(
 			statementsRef,
 			where("parentId", "==", statementId),
+			where("statementType", "!=", StatementType.document),
 			orderBy("createdAt", "desc"),
 			limit(20),
 		);

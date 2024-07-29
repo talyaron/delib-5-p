@@ -14,7 +14,6 @@ import { subscriptionParentStatementSelector } from "../../../../../model/statem
 import { getLastElements } from "../../../../../controllers/general/helpers";
 import UpdateMainCard from "./updateMainCard/UpdateMainCard";
 
-
 // import MessageBoxCounter from '../../../statement/components/chat/components/messageBoxCounter/MessageBoxCounter';
 
 interface Props {
@@ -25,7 +24,6 @@ const MainCard: FC<Props> = ({ statement }) => {
   const _subscribedStatements = useAppSelector(
     subscriptionParentStatementSelector(statement.statementId)
   ).sort((a, b) => a.lastUpdate - b.lastUpdate);
-
   const subscribedStatements = getLastElements(_subscribedStatements,5) as StatementSubscription[];
 
   return (
