@@ -60,9 +60,6 @@ const StatementChat: FC<Props> = ({
 		scrollToBottom();
 	}, []);
 
-	subStatements = subStatements.filter((statement) => statement.statementType !== "document")
-	//^^^ subStatements without document type
-
 	useEffect(() => {
 		//if new substament was not created by the user, then set newMessages to the number of new subStatements
 		const lastMessage = subStatements[subStatements.length - 1];

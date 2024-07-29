@@ -24,8 +24,8 @@ interface Props {
 const MainCard: FC<Props> = ({ statement }) => {
   const _subscribedStatements = useAppSelector(
     subscriptionParentStatementSelector(statement.statementId)
-  ).filter((statement) => statement.statement.statementType !== "document" ).sort((a, b) => a.lastUpdate - b.lastUpdate);
-  //^^^ i think its better to make an funtion to it on helpers.
+  ).sort((a, b) => a.lastUpdate - b.lastUpdate);
+
   const subscribedStatements = getLastElements(_subscribedStatements,5) as StatementSubscription[];
 
   return (
