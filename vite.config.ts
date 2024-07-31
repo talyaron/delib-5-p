@@ -15,9 +15,9 @@ const manifestPlugin: Partial<VitePWAOptions> = {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
     },
     manifest: {
-        name: "The Councils of Deliberation",
-        short_name: "The Councils",
-        description: "Delib: Building Consensus",
+        name: "FreeDi App",
+        short_name: "FreeDi",
+        description: "FreeDi: Fostering collaboration",
         theme_color: "#4E88C7",
         background_color: "#4E88C7",
         display: "standalone",
