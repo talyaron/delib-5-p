@@ -38,7 +38,7 @@ const CustomSwitchSmall: FC<Props> = ({
 				className={dir==="rtl"?"background":"background background--ltr"}
 				style={{ backgroundImage: `url(${background})` }}
 			>
-				<div className="ball ball-background" style={{left:dir === 'rtl'?"0rem":"4.15rem"}}>
+				<div className="ball ball-background" style={{left:"4.15rem"}}>
 					<StepsNoIcon /> 
 				</div>
 				<div className="ball ball-background ball-background-off">
