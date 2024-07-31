@@ -7,6 +7,7 @@ import { Statement, User } from "delib-npm";
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import StatementInput from "./components/input/StatementInput";
 import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
+import PasswordUi from "../../../../components/passwordUi/PasswordUi";
 
 import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
@@ -14,11 +15,11 @@ import { userSelector } from "../../../../../model/users/userSlice";
 import "./StatementChat.scss";
 
 interface Props {
-    statement: Statement;
-    subStatements: Statement[];
-    handleShowTalker: (statement: User | null) => void;
-    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
-    toggleAskNotifications: () => void;
+	statement: Statement;
+	subStatements: Statement[];
+	handleShowTalker: (statement: User | null) => void;
+	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+	toggleAskNotifications: () => void;
 }
 
 let firstTime = true;
@@ -64,7 +65,7 @@ const StatementChat: FC<Props> = ({
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
 			const isNewMessages =
-                subStatements.length - numberOfSubStatements > 0 ? true : false;
+				subStatements.length - numberOfSubStatements > 0 ? true : false;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
 				setNewMessages((nmbr) => nmbr + 1);
@@ -90,6 +91,8 @@ const StatementChat: FC<Props> = ({
 						/>
 					</div>
 				))}
+				<PasswordUi />
+
 				<div ref={messagesEndRef} />
 			</div>
 			<div className="page__footer">
