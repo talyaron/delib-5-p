@@ -1,0 +1,36 @@
+.wrapper {
+    padding-left: 2rem;
+    &__header {
+        margin-top: 1rem;
+        text-align: left;
+    }
+
+    &__main {
+        margin-inline: auto;
+        position: relative;
+        width: 12.58rem;
+        height: 24.70rem;
+        margin-top: 4rem;
+
+        &__agreement{
+            position: absolute;
+            top: 0;
+            right: 4.5rem;
+        }
+        &__disinterest{
+            position: absolute;
+            top: 40%;
+            left: -6.5rem;
+        }
+        &__disputes{
+            position: absolute;
+            right: -3rem;
+            top: 50%;
+        }
+        &__taboo{
+            position: absolute;
+            bottom: -1rem;
+            right: 4.5rem;
+        }
+}
+}
