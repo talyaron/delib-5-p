@@ -24,7 +24,8 @@ const MainCard: FC<Props> = ({ statement }) => {
   const _subscribedStatements = useAppSelector(
     subscriptionParentStatementSelector(statement.statementId)
   ).sort((a, b) => a.lastUpdate - b.lastUpdate);
-  const subscribedStatements = getLastElements(_subscribedStatements,5) as StatementSubscription[];
+  const subscribedStatements = getLastElements(_subscribedStatements, 5) as StatementSubscription[];
+  const statementImgUrl = statement.imagesURL?.main
 
   return (
     <div className="main-card">
@@ -33,7 +34,7 @@ const MainCard: FC<Props> = ({ statement }) => {
         className="main-card__link"
       >
         <div className="main-card__content">
-          <img src={ImgThumb} className="main-card__img"></img>
+          <div style={{backgroundImage: `url(${statementImgUrl ? statementImgUrl : ImgThumb})`}} className="main-card__img"></div>
           <StatementChatMore statement={statement} />
         </div>
 

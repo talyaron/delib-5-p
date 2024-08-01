@@ -22,6 +22,7 @@ export const defaultStatementSubScreens: Screen[] = [
 ] as const;
 
 export const defaultEmptyStatement: Statement = {
+	topParentId: '',
 	statement: '',
 	statementId: '',
 	parentId: '',
