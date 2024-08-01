@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // icons
-import AddIcon from "../../../assets/icons/plusIcon.svg?react";
+import AddIcon from "@/assets/icons/plusIcon.svg?react";
 
 import "./Footer.scss";
 import IconButton from "../iconButton/IconButton";

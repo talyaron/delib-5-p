@@ -1,10 +1,10 @@
-import googleLogo from "../../../assets/icons/googleSimpleLogo.svg";
+import googleLogo from "@/assets/icons/googleSimpleLogo.svg";
 import styles from "./button.module.scss";
-import moreRight from "../../../assets/icons/moreRight.svg";
-import moreLeft from "../../../assets/icons/moreLeft.svg";
-import { googleLogin } from "../../../controllers/db/auth";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
-import useDirection from "../../../controllers/hooks/useDirection";
+import moreRight from "@/assets/icons/moreRight.svg";
+import moreLeft from "@/assets/icons/moreLeft.svg";
+import { googleLogin } from "@/controllers/db/auth";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import useDirection from "@/controllers/hooks/useDirection";
 
 export default function GoogleLoginButton() {
 	const direction = useDirection();

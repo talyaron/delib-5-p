@@ -17,17 +17,17 @@ import {sortSubStatements} from './statementSolutionsCont';
 // Custom Components
 import StatementEvaluationCard from './components/StatementSolutionCard';
 import StatementBottomNav from '../nav/bottom/StatementBottomNav';
-import Toast from '../../../../components/toast/Toast';
-import Modal from '../../../../components/modal/Modal';
+import Toast from '@/view/components/toast/Toast';
+import Modal from '@/view/components/modal/Modal';
 import StatementInfo from '../vote/components/info/StatementInfo';
-import Button from '../../../../components/buttons/button/Button';
-import LightBulbIcon from '../../../../../assets/icons/lightBulbIcon.svg?react';
-import X from '../../../../../assets/icons/x.svg?react';
-import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
+import Button from '@/view/components/buttons/button/Button';
+import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
+import X from '@/assets/icons/x.svg?react';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
-import { getTitle } from '../../../../../controllers/general/helpers';
+import { getTitle } from '@/controllers/general/helpers';
 import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
-import { getMultiStageOptions } from '../../../../../controllers/db/multiStageQuestion/getMultiStageStatements';
+import { getMultiStageOptions } from '@/controllers/db/multiStageQuestion/getMultiStageStatements';
 
 interface StatementEvaluationPageProps {
 	statement: Statement;

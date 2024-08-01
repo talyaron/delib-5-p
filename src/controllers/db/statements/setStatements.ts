@@ -15,15 +15,15 @@ import {
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 import { setStatementSubscriptionNotificationToDB } from "../notifications/notifications";
 import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
-import { getRandomColor } from "../../../view/pages/statement/components/vote/votingColors";
+import { getRandomColor } from "@/view/pages/statement/components/vote/votingColors";
 import {
 	getExistingOptionColors,
 	getSiblingOptionsByParentId,
-} from "../../../view/pages/statement/components/vote/statementVoteCont";
-import { allowedScreens } from "../../general/screens";
+} from "@/view/pages/statement/components/vote/statementVoteCont";
+import { allowedScreens } from "@/controllers/general/screens";
 
 
 

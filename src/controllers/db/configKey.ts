@@ -6,11 +6,10 @@ export const keys = {
 	storageBucket: "synthesistalyaron.appspot.com",
 	messagingSenderId: "799655218679",
 	appId: "1:799655218679:web:1409dd5e3b4154ecb9b2f2",
-	measurementId: "G-XSGFFBXM9X",
+	measurementId: "G-XSGFFBXM9X"
 };
 
-export const vapidKey =
-    "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
+export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
 
 // export const keys = {
 // 	apiKey: 'AIzaSyBk_koXPde8Aheeyf8xUGbeoPT71S-qHpM',

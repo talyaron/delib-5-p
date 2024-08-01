@@ -1,4 +1,4 @@
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 import { User } from "delib-npm";
 
 export function getUserFromFirebase(): User | null {

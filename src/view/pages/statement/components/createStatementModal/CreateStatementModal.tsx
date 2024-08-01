@@ -6,14 +6,14 @@ import { Statement, StatementType, isAllowedStatementType } from "delib-npm";
 // Statements Helpers
 
 // Custom Components
-import Loader from "../../../../components/loaders/Loader";
+import Loader from "@/view/components/loaders/Loader";
 
 // Images
-import newQuestionGraphic from "../../../../../assets/images/newQuestionGraphic.png";
-import newOptionGraphic from "../../../../../assets/images/newOptionGraphic.png";
-import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
+import newQuestionGraphic from "@/assets/images/newQuestionGraphic.png";
+import newOptionGraphic from "@/assets/images/newOptionGraphic.png";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { createStatementFromModal } from "../settings/statementSettingsCont";
-import Modal from "../../../../components/modal/Modal";
+import Modal from "@/view/components/modal/Modal";
 import "./CreateStatementModal.scss";
 
 interface CreateStatementModalProps {

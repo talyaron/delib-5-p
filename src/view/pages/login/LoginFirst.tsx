@@ -1,5 +1,5 @@
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
-import image from "../../../assets/images/loginFirstImage.png";
+import image from "@/assets/images/loginFirstImage.png";
 import "./LoginFirst.scss";
 
 export default function LoginPage() {

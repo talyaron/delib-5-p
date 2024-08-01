@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
 import { Statement, Collections } from "delib-npm";
 import { DB } from "../config";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 
 export async function setEvaluationToDB(
 	statement: Statement,

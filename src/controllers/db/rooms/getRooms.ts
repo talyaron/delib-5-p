@@ -14,9 +14,9 @@ import {
 	where,
 } from 'firebase/firestore';
 import { DB } from '../config';
-import { setRoomRequests } from '../../../model/rooms/roomsSlice';
+import { setRoomRequests } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
-import { AppDispatch } from '../../../model/store';
+import { AppDispatch } from '@/model/store';
 
 export function listenToAllRoomsRequest(
 	statement: Statement,

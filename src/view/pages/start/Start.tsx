@@ -7,8 +7,8 @@ import styles from "./Start.module.scss";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
 // icons
 import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
@@ -18,15 +18,15 @@ import StratPageImage from '../assets/StratPageImage.png'
 import StratPageImageMobile from '../assets/StratPageImageMobile.png'
 
 // Constants
-import { LANGUAGES } from "../../../constants/Languages";
+import { LANGUAGES } from "@/constants/Languages";
 import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
-import useDirection from "../../../controllers/hooks/useDirection";
+import useDirection from "@/controllers/hooks/useDirection";
 import {
 	LanguagesEnum,
 	useLanguage,
-} from "../../../controllers/hooks/useLanguages";
+} from "@/controllers/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
-import { selectInitLocation } from "../../../model/location/locationSlice";
+import { selectInitLocation } from "@/model/location/locationSlice";
 
 const Start = () => {
 	const navigate = useNavigate();

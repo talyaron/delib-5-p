@@ -8,21 +8,21 @@ import {
 } from 'delib-npm';
 
 // Helpers
-import { getVoters } from '../../../../../controllers/db/vote/getVotes';
-import { getEvaluations } from '../../../../../controllers/db/evaluation/getEvaluation';
-import { navigateToStatementTab } from '../../../../../controllers/general/helpers';
+import { getVoters } from '@/controllers/db/vote/getVotes';
+import { getEvaluations } from '@/controllers/db/evaluation/getEvaluation';
+import { navigateToStatementTab } from '@/controllers/general/helpers';
 import {
 	createStatement,
 	setStatementToDB,
 	updateStatement,
-} from '../../../../../controllers/db/statements/setStatements';
+} from '@/controllers/db/statements/setStatements';
 import {
 	defaultResultsSettings,
 	defaultStatementSettings,
 } from './emptyStatementModel';
 import { NavigateFunction } from 'react-router-dom';
-import { store } from '../../../../../model/store';
-import { setTempStatementsForPresentation } from '../../../../../model/statements/statementsSlice';
+import { store } from '@/model/store';
+import { setTempStatementsForPresentation } from '@/model/statements/statementsSlice';
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(

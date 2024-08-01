@@ -1,7 +1,7 @@
 import { User, Vote } from "delib-npm";
 import React, { FC } from "react";
 import { handleGetVoters } from "../statementSettingsCont";
-import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import MembersChipsList from "./membership/membersChipsList/MembersChipList";
 
 interface GetVotersProps {

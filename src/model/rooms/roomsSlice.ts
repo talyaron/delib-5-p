@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LobbyRooms, Participant, Statement } from "delib-npm";
-import { updateArray } from "../../controllers/general/helpers";
+import { updateArray } from "@/controllers/general/helpers";
 import { z } from "zod";
 import { RootState } from "../store";
 

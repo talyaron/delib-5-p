@@ -1,8 +1,8 @@
 // custom components
-import Checkbox from '../../../../../../components/checkbox/Checkbox';
+import Checkbox from '@/view/components/checkbox/Checkbox';
 
 // HELPERS
-import { useLanguage } from '../../../../../../../controllers/hooks/useLanguages';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { FC } from 'react';
 import { StatementSettingsProps } from '../../settingsTypeHelpers';
 import { getStatementSettings } from '../../statementSettingsCont';

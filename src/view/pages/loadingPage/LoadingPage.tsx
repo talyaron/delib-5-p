@@ -1,7 +1,7 @@
 import styles from "./loadingPage.module.scss";
 
 import LoaderGlass from "../../components/loaders/LoaderGlass";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 const LoadingPage = () => {
 	const { t } = useLanguage();

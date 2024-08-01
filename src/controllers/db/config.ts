@@ -5,10 +5,8 @@ import { getMessaging, isSupported } from "firebase/messaging";
 import { getAnalytics } from "firebase/analytics";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
-import { keys } from "./configKey";
 import { isProduction } from "../general/helpers";
-
-
+import { keys } from "./configKey";
 
 const firebaseConfig = keys;
 

@@ -25,6 +25,10 @@
     border-radius: 10px;
     box-shadow: 3px 3px 3px var(--shadow);
     position: relative;
+    
+    &--statement{
+      border-left: 0rem solid !important;
+    }
 
     .triangle {
       position: absolute;
@@ -71,10 +75,16 @@
       margin-left: 4rem;
       margin-right: 1rem;
 
+      &--statement{
+        border-right: 0rem solid !important;
+      }
+
       .triangle {
         clip-path: polygon(30% 0, 100% 100%, 100% 0);
         left: -1.2rem;
       }
+
+     
     }
   }
 

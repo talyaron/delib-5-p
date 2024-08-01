@@ -1,9 +1,9 @@
 // icons
-import GroupCommunicationOne from "../../../assets/icons/groupCommunicationOneIcon.svg?react";
-import GroupCommunicationTwo from "../../../assets/icons/groupCommunicationTwoIcon.svg?react";
-import GroupCommunicationThree from "../../../assets/icons/groupCommunicationThreeIcon.svg?react";
-import GroupCommunicationFour from "../../../assets/icons/groupCommunicationFourIcon.svg?react";
-import GroupCommunicationFive from "../../../assets/icons/groupCommunicationFiveIcon.svg?react";
+import GroupCommunicationOne from "@/assets/icons/groupCommunicationOneIcon.svg?react";
+import GroupCommunicationTwo from "@/assets/icons/groupCommunicationTwoIcon.svg?react";
+import GroupCommunicationThree from "@/assets/icons/groupCommunicationThreeIcon.svg?react";
+import GroupCommunicationFour from "@/assets/icons/groupCommunicationFourIcon.svg?react";
+import GroupCommunicationFive from "@/assets/icons/groupCommunicationFiveIcon.svg?react";
 import { ReactNode } from "react";
 
 interface PricePlan {

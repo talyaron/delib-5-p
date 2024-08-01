@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
-import TwoColorButton from '../../../../components/buttons/TwoColorButton';
-import Loader from '../../../../components/loaders/Loader';
-import { findSimilarStatements } from '../../../../../controllers/db/statements/getSimilarstatements';
-import { useAppSelector } from '../../../../../controllers/hooks/reduxHooks';
+import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
+import TwoColorButton from '@/view/components/buttons/TwoColorButton';
+import Loader from '@/view/components/loaders/Loader';
+import { findSimilarStatements } from '@/controllers/db/statements/getSimilarstatements';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { subStatementsSelector } from '../../StatementMain';
-import { RootState } from '../../../../../model/store';
+import { RootState } from '@/model/store';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
