@@ -24,8 +24,8 @@ import {
 	setStatement,
 	setStatementSubscription,
 	setStatements,
-} from "../../../model/statements/statementsSlice";
-import { AppDispatch, store } from "../../../model/store";
+} from "@/model/statements/statementsSlice";
+import { AppDispatch, store } from "@/model/store";
 import { DB } from "../config";
 
 // Helpers
@@ -137,6 +137,7 @@ export const listenToSubStatements = (
 		const q = query(
 			statementsRef,
 			where("parentId", "==", statementId),
+			where("statementType", "!=", StatementType.document),
 			orderBy("createdAt", "desc"),
 			limit(20),
 		);

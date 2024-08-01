@@ -1,5 +1,5 @@
 import { Statement } from "delib-npm";
-import { updateStatementText } from "../../../../../../../controllers/db/statements/setStatements";
+import { updateStatementText } from "@/controllers/db/statements/setStatements";
 
 export function handleSubmitInfo(
 	e: React.FormEvent<HTMLFormElement>,

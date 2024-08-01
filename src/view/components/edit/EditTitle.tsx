@@ -4,16 +4,16 @@ import { FC, useState } from "react";
 import { Statement } from "delib-npm";
 
 // Statements Helpers
-import { updateStatementText } from "../../../controllers/db/statements/setStatements";
+import { updateStatementText } from "@/controllers/db/statements/setStatements";
 
 // Styles
 import styles from "./EditTitle.module.scss";
-import Save from "../../../assets/icons/saveIcon.svg?react";
+import Save from "@/assets/icons/saveIcon.svg?react";
 
 // Custom components
 import Text from "../text/Text";
-import { getDescription, getTitle } from "../../../controllers/general/helpers";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { getDescription, getTitle } from "@/controllers/general/helpers";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
 	statement: Statement | undefined;

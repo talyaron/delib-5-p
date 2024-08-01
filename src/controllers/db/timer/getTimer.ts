@@ -7,13 +7,13 @@ import {
 } from "@firebase/firestore";
 import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
 import { DB } from "../config";
-import { initialTimerArray } from "../../../view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
+import { initialTimerArray } from "@/view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
 import { Unsubscribe } from "@firebase/util";
 import { updateTimerSettingDB } from "./setTimer";
 import { z } from "zod";
-import { getSetTimerId } from "../../general/helpers";
-import { setRoomTimers, setSetTimer } from "../../../model/timers/timersSlice";
-import { AppDispatch } from "../../../model/store";
+import { getSetTimerId } from "@/controllers/general/helpers";
+import { setRoomTimers, setSetTimer } from "@/model/timers/timersSlice";
+import { AppDispatch } from "@/model/store";
 
 export async function getSetTimersDB(
 	statementId: string,

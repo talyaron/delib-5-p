@@ -1,9 +1,9 @@
 import "./enableNotifications.scss";
-import NotificationsGraphic from "../../../assets/svg-graphics/notifications.svg?react";
+import NotificationsGraphic from "@/assets/svg-graphics/notifications.svg?react";
 import Modal from "../modal/Modal";
-import { setStatementSubscriptionToDB } from "../../../controllers/db/subscriptions/setSubscriptions";
+import { setStatementSubscriptionToDB } from "@/controllers/db/subscriptions/setSubscriptions";
 import { Role, Statement } from "delib-npm";
-import { setStatementSubscriptionNotificationToDB } from "../../../controllers/db/notifications/notifications";
+import { setStatementSubscriptionNotificationToDB } from "@/controllers/db/notifications/notifications";
 
 interface Props {
     setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;

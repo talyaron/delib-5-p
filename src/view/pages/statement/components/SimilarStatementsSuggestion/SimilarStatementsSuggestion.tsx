@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import FullScreenModal from '../../../../components/fullScreenModal/FullScreenModal';
+import FullScreenModal from '@/view/components/fullScreenModal/FullScreenModal';
 
 import './similarStatementsSuggestion.scss';
 
-import AddQuestionIcon from '../../../../../assets/icons/questionPlus.svg?react';
-import LightBulbPlusIcon from '../../../../../assets/icons/lightBulbPlus.svg?react';
-import CloseIcon from '../../../../../assets/icons/close.svg?react';
-import ArrowLeftIcon from '../../../../../assets/icons/arrow-left.svg?react';
-import illustration from '../../../../../assets/images/similarities-Illustration.png';
-import illustration02 from '../../../../../assets/images/view-similar-statement.png';
+import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
+import LightBulbPlusIcon from '@/assets/icons/lightBulbPlus.svg?react';
+import CloseIcon from '@/assets/icons/close.svg?react';
+import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
+import illustration from '@/assets/images/similarities-Illustration.png';
+import illustration02 from '@/assets/images/view-similar-statement.png';
 import StepOneStatementInput from './StepOneStatementInput';
 import StepTwoShowSimilarStatements from './StepTwoShowSimilarStatements';
 import StepThreeViewSimilarStatement from './StepThreeViewSimilarStatement';
 import StepFourContinueWithOwnInput from './StepFourContinueWithOwnInput';
 import { createStatementFromModal } from '../settings/statementSettingsCont';
 import { Statement } from 'delib-npm';
-import Loader from '../../../../components/loaders/Loader';
+import Loader from '@/view/components/loaders/Loader';
 
 interface SimilarStatementsSuggestionProps {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;

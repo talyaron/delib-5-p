@@ -22,7 +22,7 @@ import {
 	TimerStatusSchema,
 } from "delib-npm";
 import { z } from "zod";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 import { getRoomTimerId, getSetTimerId } from "../../general/helpers";
 
 interface setParentTimersProps {

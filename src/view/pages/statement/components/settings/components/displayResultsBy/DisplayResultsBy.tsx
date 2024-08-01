@@ -4,8 +4,8 @@ import { FC, useState } from "react";
 
 // Third party imports
 import { ResultsBy } from "delib-npm";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import RadioButtonWithLabel from "../../../../../../components/radioButtonWithLabel/RadioButtonWithLabel";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import RadioButtonWithLabel from "@/view/components/radioButtonWithLabel/RadioButtonWithLabel";
 import "./DisplayResultsBy.scss";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import { defaultResultsSettings } from "../../emptyStatementModel";

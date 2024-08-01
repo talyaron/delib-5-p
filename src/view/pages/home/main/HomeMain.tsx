@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import "../../../style/homePage.scss"
+import "@/view/style/homePage.scss"
 
 // Third party libraries
 import { useNavigate } from "react-router-dom";
 import { Statement } from "delib-npm";
 
 // Redux store
-import { useAppSelector } from "../../../../controllers/hooks/reduxHooks";
-import { statementsSelector } from "../../../../model/statements/statementsSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementsSelector } from "@/model/statements/statementsSlice";
 
 // Custom components
-import Footer from "../../../components/footer/Footer";
-import ScreenSlide from "../../../components/animation/ScreenSlide";
-import PeopleLoader from "../../../components/loaders/PeopleLoader";
+import Footer from "@/view/components/footer/Footer";
+import ScreenSlide from "@/view/components/animation/ScreenSlide";
+import PeopleLoader from "@/view/components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
-//images
-import bike from "../../../../assets/images/bike.png";
+import bike from "@/assets/images/bike.png";
 
 const HomeMain = () => {
 	// Hooks

@@ -5,17 +5,17 @@ import { Handle, NodeProps } from "reactflow";
 import { useNavigate } from "react-router-dom";
 
 // Hooks
-import { useMapContext } from "../../../../../../controllers/hooks/useMap";
+import { useMapContext } from "@/controllers/hooks/useMap";
 
 // Icons
-import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
+import PlusIcon from "@/assets/icons/plusIcon.svg?react";
 
 // Statements functions
 import {
 	calculateFontSize,
 	statementTitleToDisplay,
-} from "../../../../../../controllers/general/helpers";
-import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
+} from "@/controllers/general/helpers";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 import { Statement } from "delib-npm";
 
 

@@ -10,8 +10,8 @@ import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAn
 import PasswordUi from "../../../../components/passwordUi/PasswordUi";
 
 import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
 
 interface Props {
@@ -53,7 +53,7 @@ const StatementChat: FC<Props> = ({
 			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
-
+	
 	//effects
 	useEffect(() => {
 		firstTime = true;

@@ -6,7 +6,7 @@ import {
 	StatementSubscriptionSchema,
 	User,
 } from "delib-npm";
-import { AppDispatch, store } from "../../../model/store";
+import { AppDispatch, store } from "@/model/store";
 import { DB } from "../config";
 import {
 	collection,
@@ -25,10 +25,10 @@ import {
 	deleteSubscribedStatement,
 	setStatementSubscription,
 	setStatementsSubscription,
-} from "../../../model/statements/statementsSlice";
-import { listenedStatements } from "../../../view/pages/home/Home";
+} from "@/model/statements/statementsSlice";
+import { listenedStatements } from "@/view/pages/home/Home";
 import { Unsubscribe } from "@firebase/util";
-import { getStatementSubscriptionId } from "../../general/helpers";
+import { getStatementSubscriptionId } from "@/controllers/general/helpers";
 import { getStatementFromDB } from "../statements/getStatement";
 import { listenToStatement } from "../statements/listenToStatements";
 
@@ -387,6 +387,7 @@ export function getNewStatementsFromSubscriptions(): Unsubscribe {
 		const subscriptionsRef = collection(DB, Collections.statementsSubscribe);
 		const q = query(subscriptionsRef, and(
 			where("userId", "==", user.uid),
+			where("statement.statementType", "!=", "document"),
 			or(where("role", "==", Role.admin), where("role", "==", Role.creator), where("role", "==", Role.member))
 		), orderBy("lastUpdate", "desc"), limit(40)
 		);

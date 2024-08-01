@@ -1,6 +1,6 @@
 // CustomSwitch.js
 import { FC } from "react";
-import { useLanguage } from "../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./CustomSwitch.scss";
 
 interface Props {

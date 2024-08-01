@@ -3,13 +3,13 @@ import styles from "./InvitationModal.module.scss";
 import {
 	getInvitationPathName,
 	getMaxInvitationDigits,
-} from "../../../../../controllers/db/invitations/getInvitations";
+} from "@/controllers/db/invitations/getInvitations";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import XIcon from "../../../../components/icons/XIcon";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import XIcon from "@/view/components/icons/XIcon";
 import InvitationModalInputBoxWrapper from "./InvitationModalInputBoxWrapper";
-import InviteModal from "../../../../components/modal/InviteModal";
-import { handleCloseInviteModal } from "../../../../../controllers/general/helpers";
+import InviteModal from "@/view/components/modal/InviteModal";
+import { handleCloseInviteModal } from "@/controllers/general/helpers";
 
 interface Props {
   setShowModal: (show: boolean) => void;

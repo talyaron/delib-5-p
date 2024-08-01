@@ -1,5 +1,5 @@
-import RadioButtonCheckedIcon from "../../../assets/icons/radioButtonChecked.svg?react";
-import RadioButtonEmptyIcon from "../../../assets/icons/radioButtonEmpty.svg?react";
+import RadioButtonCheckedIcon from "@/assets/icons/radioButtonChecked.svg?react";
+import RadioButtonEmptyIcon from "@/assets/icons/radioButtonEmpty.svg?react";
 import "./RadioBox.scss";
 
 interface Props {

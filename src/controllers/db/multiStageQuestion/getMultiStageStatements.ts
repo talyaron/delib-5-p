@@ -1,8 +1,8 @@
 import { QuestionStage, Statement } from "delib-npm";
 import { Dispatch } from "react";
-import { isProduction } from "../../general/helpers";
-import { setTempStatementsForPresentation } from "../../../model/statements/statementsSlice";
-import { store } from "../../../model/store";
+import { isProduction } from "@/controllers/general/helpers";
+import { setTempStatementsForPresentation } from "@/model/statements/statementsSlice";
+import { store } from "@/model/store";
 
 export async function getMultiStageOptions(
 	statement: Statement,

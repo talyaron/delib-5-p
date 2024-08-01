@@ -4,26 +4,26 @@ import { useState, FC, useEffect } from "react";
 import { Results, Role, Statement } from "delib-npm";
 
 // Custom Components
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
+import ScreenFadeIn from "@/view/components/animation/ScreenFadeIn";
 import TreeChart from "./components/TreeChart";
-import Modal from "../../../../components/modal/Modal";
+import Modal from "@/view/components/modal/Modal";
 
 // Helpers
 import {
 	FilterType,
 	filterByStatementType,
 	sortStatementsByHirarrchy,
-} from "../../../../../controllers/general/sorting";
-import { getChildStatements } from "../../../../../controllers/db/statements/getStatement";
+} from "@/controllers/general/sorting";
+import { getChildStatements } from "@/controllers/db/statements/getStatement";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 
 // Hooks
-import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import { useMapContext } from "../../../../../controllers/hooks/useMap";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { useMapContext } from "@/controllers/hooks/useMap";
 import { ReactFlowProvider } from "reactflow";
-import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
-import { statementSubscriptionSelector } from "../../../../../model/statements/statementsSlice";
-import { isAdmin } from "../../../../../controllers/general/helpers";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
+import { isAdmin } from "@/controllers/general/helpers";
 
 interface Props {
   statement: Statement;

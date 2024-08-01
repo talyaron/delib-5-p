@@ -1,7 +1,7 @@
-import Modal from "../../../../../components/modal/Modal";
+import Modal from "@/view/components/modal/Modal";
 
 // Images
-import moveStatementIllustration from "../../../../../../assets/images/moveStatementIllustration.png";
+import moveStatementIllustration from "@/assets/images/moveStatementIllustration.png";
 
 export default function MoveStatementModal({
 	handleMoveStatement,

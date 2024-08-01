@@ -1,7 +1,7 @@
 import React from 'react';
-import SendIcon from '../../../../../assets/icons/send-icon-pointing-up-and-right.svg?react';
-import TwoColorButton from '../../../../components/buttons/TwoColorButton';
-import BackIcon from '../../../../../assets/icons/chevronLeftIcon.svg?react';
+import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
+import TwoColorButton from '@/view/components/buttons/TwoColorButton';
+import BackIcon from '@/assets/icons/chevronLeftIcon.svg?react';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;

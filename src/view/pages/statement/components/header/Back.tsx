@@ -1,13 +1,13 @@
 import { Screen, Statement } from 'delib-npm';
 import { logEvent } from 'firebase/analytics';
-import { analytics } from '../../../../../controllers/db/config';
+import { analytics } from '@/controllers/db/config';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import BackArrowIcon from '../../../../../assets/icons/chevronLeftIcon.svg?react';
-import { getFirstScreen } from '../../../../../controllers/general/helpers';
-import { StyleProps } from '../../../../../controllers/hooks/useStatementColor';
-import { historySelect } from '../../../../../model/history/HistorySlice';
-import { useAppSelector } from '../../../../../controllers/hooks/reduxHooks';
+import BackArrowIcon from '@/assets/icons/chevronLeftIcon.svg?react';
+import { getFirstScreen } from '@/controllers/general/helpers';
+import { StyleProps } from '@/controllers/hooks/useStatementColor';
+import { historySelect } from '@/model/history/HistorySlice';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 interface Props {
 	parentStatement: Statement | undefined;

@@ -3,7 +3,7 @@ import { Statement, User } from "delib-npm";
 import { Collections } from "delib-npm";
 import { DB } from "../config";
 import { Vote, getVoteId, VoteSchema } from "delib-npm";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 
 export async function setVote(option: Statement) {
 	try {

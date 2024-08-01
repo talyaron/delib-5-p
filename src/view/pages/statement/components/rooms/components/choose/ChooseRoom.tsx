@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 
 // Custom components
 import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 import styles from "./ChooseRoom.module.scss";
 
