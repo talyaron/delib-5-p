@@ -52,7 +52,7 @@ const StatementChat: FC<Props> = ({
 			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
-
+	
 	//effects
 	useEffect(() => {
 		firstTime = true;

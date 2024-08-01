@@ -148,7 +148,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			)}
 
 			<div
-				className={isStatement?"message-box message-box--statement":"message-box"}
+				className={isStatement ? "message-box message-box--statement":"message-box"}
 				style={{ borderColor: statementColor.backgroundColor }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}

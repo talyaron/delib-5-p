@@ -387,6 +387,7 @@ export function getNewStatementsFromSubscriptions(): Unsubscribe {
 		const subscriptionsRef = collection(DB, Collections.statementsSubscribe);
 		const q = query(subscriptionsRef, and(
 			where("userId", "==", user.uid),
+			where("statement.statementType", "!=", "document"),
 			or(where("role", "==", Role.admin), where("role", "==", Role.creator), where("role", "==", Role.member))
 		), orderBy("lastUpdate", "desc"), limit(40)
 		);

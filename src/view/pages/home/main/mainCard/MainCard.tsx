@@ -14,7 +14,6 @@ import { subscriptionParentStatementSelector } from "@/model/statements/statemen
 import { getLastElements } from "@/controllers/general/helpers";
 import UpdateMainCard from "./updateMainCard/UpdateMainCard";
 
-
 // import MessageBoxCounter from '../../../statement/components/chat/components/messageBoxCounter/MessageBoxCounter';
 
 interface Props {
