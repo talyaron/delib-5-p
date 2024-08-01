@@ -35,7 +35,7 @@ const MainCard: FC<Props> = ({ statement }) => {
         className="main-card__link"
       >
         <div className="main-card__content">
-          <img src={statementImgUrl ? statementImgUrl : ImgThumb} className="main-card__img"></img>
+          <div style={{backgroundImage: `url(${statementImgUrl ? statementImgUrl : ImgThumb})`}} className="main-card__img"></div>
           <StatementChatMore statement={statement} />
         </div>
 
