@@ -11,11 +11,11 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 
 // icons
-import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
-import MoreRight from "../../../assets/icons/moreRight.svg?react";
-import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
-import StratPageImage from '../assets/StratPageImage.png'
-import StratPageImageMobile from '../assets/StratPageImageMobile.png'
+import Logo from "@/assets/logo/106 x 89 SVG.svg?react";
+import MoreRight from "@/assets/icons/moreRight.svg?react";
+import MoreLeft from "@/assets/icons/moreLeft.svg?react";
+import StartPageImage from '@/assets/images/StartPageImage.png'
+import StartPageImageMobile from '@/assets/images/StartPageImageMobile.png'
 
 // Constants
 import { LANGUAGES } from "@/constants/Languages";
@@ -93,8 +93,8 @@ const Start = () => {
 
 			<GoogleLoginButton/>
 			
-			<img src={StratPageImage} alt="" className={styles.StratPageImage}/>
-			<img src={StratPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
+			<img src={StartPageImage} alt="" className={styles.StratPageImage}/>
+			<img src={StartPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
 			<a href="http://delib.org" target="_blank">
 				<footer className={styles.ddi}>
 					{t("From the Institute for Deliberative Democracy")}
