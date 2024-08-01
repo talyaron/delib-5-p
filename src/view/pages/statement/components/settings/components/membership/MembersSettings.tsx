@@ -62,6 +62,7 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 		const usersCollection = collection(DB, Collections.awaitingUsers);
 		const usersSnapshot = await getDocs(usersCollection);
 		const count = usersSnapshot.docs.length
+		
 		return setUserCount(count)
 	}
 
