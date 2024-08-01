@@ -5,17 +5,17 @@ import { Role, Statement, StatementSubscription } from "delib-npm";
 import { useParams } from "react-router-dom";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Custom components
-import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 import MembershipLine from "./membershipCard/MembershipCard";
-import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
+import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import { RootState } from "../../../../../../../model/store";
+import { RootState } from "@/model/store";
+import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
 

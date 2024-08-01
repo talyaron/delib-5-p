@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { getMaxInvitationDigits } from "../../../../../controllers/db/invitations/getInvitations";
+import { getMaxInvitationDigits } from "@/controllers/db/invitations/getInvitations";
 
 //search for max digits on invitations
 

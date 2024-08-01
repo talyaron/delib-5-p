@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { prompStore } from "./main/HomeMainCont";
 
 // icons
-import InstallIcon from "../../../assets/icons/installIcon.svg?react";
-import InvitationIcon from "../../../assets/icons/invitation.svg?react";
+import InstallIcon from "@/assets/icons/installIcon.svg?react";
+import InvitationIcon from "@/assets/icons/invitation.svg?react";
 
 // Components
 import { useDispatch } from "react-redux";
-import { install } from "../../../App";
-import DisconnectIcon from "../../../assets/icons/disconnectIcon.svg?react";
-import { handleLogout } from "../../../controllers/general/helpers";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { install } from "@/App";
+import DisconnectIcon from "@/assets/icons/disconnectIcon.svg?react";
+import { handleLogout } from "@/controllers/general/helpers";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";

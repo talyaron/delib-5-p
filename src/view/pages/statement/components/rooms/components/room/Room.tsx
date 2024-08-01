@@ -2,9 +2,9 @@ import { FC } from "react";
 import Text from "../../../../../../components/text/Text";
 import { Participant, RoomDivied } from "delib-npm";
 import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
-import { setRoomJoinToDB } from "../../../../../../../controllers/db/rooms/setRooms";
-import { store } from "../../../../../../../model/store";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { setRoomJoinToDB } from "@/controllers/db/rooms/setRooms";
+import { store } from "@/model/store";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./Room.scss";
 
 interface Props {

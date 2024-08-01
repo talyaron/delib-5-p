@@ -5,21 +5,21 @@ import { Statement, Screen, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import LightIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
-import NavQuestionIcon from "../../../../../../assets/icons/questionIcon.svg?react";
-import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
-import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?react";
-import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
-import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
-import NewestIcon from "../../../../../../assets/icons/newIcon.svg?react";
-import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
+import LightIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import NavQuestionIcon from "@/assets/icons/questionIcon.svg?react";
+import PlusIcon from "@/assets/icons/plusIcon.svg?react";
+import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
+import RandomIcon from "@/assets/icons/randomIcon.svg?react";
+import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
+import NewestIcon from "@/assets/icons/newIcon.svg?react";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 import {
 	NavItem,
 	optionsArray,
 	questionsArray,
 	votesArray,
 } from "./StatementBottomNavModal";
-import IconButton from "../../../../../components/iconButton/IconButton";
+import IconButton from "@/view/components/iconButton/IconButton";
 import "./StatementBottomNav.scss";
 
 interface Props {

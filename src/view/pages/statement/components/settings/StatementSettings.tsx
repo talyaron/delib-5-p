@@ -8,23 +8,23 @@ import { Statement } from 'delib-npm';
 import {
 	useAppDispatch,
 	useAppSelector,
-} from '../../../../../controllers/hooks/reduxHooks';
+} from '@/controllers/hooks/reduxHooks';
 import {
 	setStatement,
 	statementSelector,
-} from '../../../../../model/statements/statementsSlice';
+} from '@/model/statements/statementsSlice';
 
 // Custom components
-import Loader from '../../../../components/loaders/Loader';
-import ScreenFadeIn from '../../../../components/animation/ScreenFadeIn';
+import Loader from '@/view/components/loaders/Loader';
+import ScreenFadeIn from '@/view/components/animation/ScreenFadeIn';
 
 // Hooks & Helpers
-import { useLanguage } from '../../../../../controllers/hooks/useLanguages';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import StatementSettingsForm from './components/statementSettingsForm/StatementSettingsForm';
-import { listenToMembers } from '../../../../../controllers/db/statements/listenToStatements';
-import { getStatementFromDB } from '../../../../../controllers/db/statements/getStatement';
+import { listenToMembers } from '@/controllers/db/statements/listenToStatements';
+import { getStatementFromDB } from '@/controllers/db/statements/getStatement';
 import { defaultEmptyStatement } from './emptyStatementModel';
-import { listenToStatementMetaData } from '../../../../../controllers/db/statements/statementMetaData/listenToStatementMeta';
+import { listenToStatementMetaData } from '@/controllers/db/statements/statementMetaData/listenToStatementMeta';
 
 const StatementSettings: FC = () => {
 	try {

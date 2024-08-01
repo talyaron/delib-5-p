@@ -1,17 +1,17 @@
 /* eslint-disable indent */
 import { Statement, StatementSubscription } from "delib-npm";
 import { FC } from "react";
-import Text from "../../../../components/text/Text";
+import Text from "@/view/components/text/Text";
 
-import StatementChatMore from "../../../statement/components/chat/components/StatementChatMore";
+import StatementChatMore from "@/view/pages/statement/components/chat/components/StatementChatMore";
 import { Link } from "react-router-dom";
 import "./MainCard.scss";
 
 //img
-import ImgThumb from "../../../../../assets/images/ImgThumb.png";
-import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
-import { subscriptionParentStatementSelector } from "../../../../../model/statements/statementsSlice";
-import { getLastElements } from "../../../../../controllers/general/helpers";
+import ImgThumb from "@/assets/images/ImgThumb.png";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { subscriptionParentStatementSelector } from "@/model/statements/statementsSlice";
+import { getLastElements } from "@/controllers/general/helpers";
 import UpdateMainCard from "./updateMainCard/UpdateMainCard";
 
 

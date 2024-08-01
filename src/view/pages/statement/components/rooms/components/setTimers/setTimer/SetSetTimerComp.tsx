@@ -7,13 +7,13 @@ import {
 } from "./SetTimerCont";
 
 //images
-import deleteIcon from "../../../../../../../../assets/icons/delete.svg";
-import { deleteTimerSettingDB } from "../../../../../../../../controllers/db/timer/setTimer";
-import { useAppDispatch } from "../../../../../../../../controllers/hooks/reduxHooks";
+import deleteIcon from "@/assets/icons/delete.svg";
+import { deleteTimerSettingDB } from "@/controllers/db/timer/setTimer";
+import { useAppDispatch } from "@/controllers/hooks/reduxHooks";
 import {
 	setSetTimerTime,
 	setSetTimerTitle,
-} from "../../../../../../../../model/timers/timersSlice";
+} from "@/model/timers/timersSlice";
 
 interface TimerProps {
     setTimer: SetTimer;

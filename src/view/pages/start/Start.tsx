@@ -7,24 +7,24 @@ import styles from "./Start.module.scss";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
 // icons
-import Logo from "../../../assets/logo/512 px SVG.svg";
-import MoreRight from "../../../assets/icons/moreRight.svg?react";
-import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
+import Logo from "@/assets/logo/512 px SVG.svg";
+import MoreRight from "@/assets/icons/moreRight.svg?react";
+import MoreLeft from "@/assets/icons/moreLeft.svg?react";
 
 // Constants
-import { LANGUAGES } from "../../../constants/Languages";
+import { LANGUAGES } from "@/constants/Languages";
 import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
-import useDirection from "../../../controllers/hooks/useDirection";
+import useDirection from "@/controllers/hooks/useDirection";
 import {
 	LanguagesEnum,
 	useLanguage,
-} from "../../../controllers/hooks/useLanguages";
+} from "@/controllers/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
-import { selectInitLocation } from "../../../model/location/locationSlice";
+import { selectInitLocation } from "@/model/location/locationSlice";
 
 const Start = () => {
 	const navigate = useNavigate();

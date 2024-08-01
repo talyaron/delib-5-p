@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import * as XLSX from "xlsx";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
-import Button from "../../../view/components/buttons/button/Button";
-import UploadFileIcon from "../../../view/components/icons/UploadFileIcon";
+import Button from "@/view/components/buttons/button/Button";
+import UploadFileIcon from "@/view/components/icons/UploadFileIcon";
 
 //styles
 import styles from "./setWaitingList.module.scss"
