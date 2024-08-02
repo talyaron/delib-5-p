@@ -1,119 +1,137 @@
 .similarities {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	max-width: 70ch;
-	overflow-y: auto;
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-	padding: 1rem;
-	background-color: #f2f6ff;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 70ch;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+    background-color: #f2f6ff;
 
-	&__header {
-		display: flex;
-		flex-direction: column;
+    &__header {
+        display: flex;
+        flex-direction: column;
 
-		&__top {
-			display: flex;
-			justify-content: space-between;
-			gap: 1rem;
+        &__top {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
 
-			&__closeButton {
-				width: 2rem;
-				height: 2rem;
-			}
-		}
+            &__closeButton {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
 
-		&__types {
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			width: 80%;
-			margin: 0 auto;
-			.type {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
+        &__types {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 80%;
+            margin: 0 auto;
 
-				.marked {
-					font-size: 1.2rem;
-					font-weight: 700;
-				}
+            .type {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
 
-				.unmarked {
-					font-size: 1.2rem;
-					color: #00000050;
-				}
-			}
-		}
-	}
+                .marked {
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                }
 
-	&__title {
-		color: var(--h2Color);
+                .unmarked {
+                    font-size: 1.2rem;
+                    color: #00000050;
+                }
+            }
+        }
+    }
+
+    &__title {
+        color: var(--h2Color);
+        font-size: 1rem;
+    }
+
+	label {
+		position: absolute;
+		left: 2rem;
+		margin-top: -0.6rem;
+		background: #f2f6ff; 
+		padding: 0 0.60rem;
 		font-size: 1rem;
+		display: inline-block;
+		z-index: 1; 
 	}
 
-	&__titleInput {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+    &__titleInput {
+        display: flex;
+        flex-direction: column;
+        color: var(--similarities-titleInput);
+        gap: 1rem;
+		
 
-		textarea::placeholder {
-			font-size: 0.8rem;
-			line-height: 1.2rem;
-		}
+        textarea::placeholder {
+            font-size: 0.8rem;
+            line-height: 1.2rem;
+        }
 
-		input,
-		textarea {
-			padding: 1rem;
-			font-size: 1rem;
-		}
-		input::placeholder {
-			font-size: 0.8rem;
-		}
-	}
+        input,
+        textarea {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid var(--similarities-textarea-border);
+            background: #f2f6ff; /* Background color to match the wrapper */
+            position: relative;
+        }
 
-	&__statementsBox {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		overflow-y: auto;
-		flex: 1;
+        input::placeholder {
+            font-size: 0.8rem;
+        }
+    }
 
-		&__similarStatement {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-			padding: 1rem;
-		}
+    &__statementsBox {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow-y: auto;
+        flex: 1;
 
-		&__similarStatement:hover {
-			background-color: #e9f0ff;
-			cursor: pointer;
-		}
-	}
+        &__similarStatement {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+        }
 
-	&__buttonBox {
-		display: flex;
-		justify-content: center;
-		width: fit-content;
-		margin: 0 auto;
-		border-radius: 5px;
-		padding: none;
-		width: 100%;
-		margin-top: auto;
-	}
+        &__similarStatement:hover {
+            background-color: #e9f0ff;
+            cursor: pointer;
+        }
+    }
 
-	.twoButtonBox {
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
-		margin-top: auto;
-	}
+    &__buttonBox {
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        margin: 0 auto;
+        padding: none;
+        width: 100%;
+        margin-top: auto;
+    }
 
-	.alertText {
-		color: var(--settings-voting);
-		text-align: center;
-	}
+    .twoButtonBox {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .alertText {
+        color: var(--settings-voting);
+        text-align: center;
+    }
 }
