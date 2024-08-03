@@ -1,0 +1,170 @@
+.addingStatementWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6rem;
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 27rem;
+        text-align: center;
+        color: var(--h2Color);
+        word-spacing: .3rem;
+        gap: 3rem;
+
+        .title {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .titleSpan {
+            color: #668FD1;
+            font-weight: 700;
+            font-size: 1.6rem;
+        }
+    }
+
+    .ideaImage {
+        width: 14rem;
+        height: 25rem;
+    }
+}
+
+.sortSuggestionActive {
+    background: linear-gradient(180deg, #F2F6FF 76.47%, rgba(242, 246, 255, 0) 100%);
+    position: absolute;
+    width: clamp(20rem, 55.41rem, 100%);
+    top: 8.2rem;
+    padding: 2rem;
+    z-index: 100;
+    border-top: 3px solid rgba(0, 0, 0, 0.01);
+    border-radius: 8px;
+}
+
+
+.plusButton {
+    width: 13.47rem;
+    height: 2.77rem;
+    background-color: #739EE4;
+    border-radius: 26px;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: .5rem;
+    box-shadow: 0px 3.33px 6.67px 0px rgba(50, 90, 134, 0.1),
+        0px 11.67px 11.67px 0px rgba(50, 90, 134, 0.09),
+        0px 26.67px 16.67px 0px rgba(50, 90, 134, 0.05),
+        0px 46.67px 18.33px 0px rgba(50, 90, 134, 0.01),
+        0px 73.33px 20px 0px rgba(50, 90, 134, 0);
+    p{
+        color: white;
+        font-size:1.17rem ;
+        font-weight: 400;
+    }
+}
+
+.wrapper {
+    width: 100vw;
+    overflow-y: auto;
+
+    .main {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-inline: 1.5rem;
+        gap: 2rem;
+        width: clamp(20rem, 55.41rem, 100%);
+        margin-inline: auto;
+    }
+}
+
+
+
+@media screen and (max-width: 1024px) {
+    .addingStatementWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5rem;
+        background: linear-gradient(180deg, rgba(242, 246, 255, 0) 5.91%, #F2F6FF 31.82%);
+        bottom: 0;
+        padding-bottom: 1rem;
+        top: auto;
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 20rem;
+            text-align: center;
+            color: var(--h2Color);
+            word-spacing: .3rem;
+            gap: 3rem;
+
+            .title {
+                font-weight: 500;
+                font-size: .8rem;
+            }
+
+            .titleSpan {
+                color: #668FD1;
+                font-weight: 500;
+                font-size: 2.5rem;
+            }
+        }
+
+        .ideaImage {
+            width: 8rem;
+            height: 14rem;
+        }
+    }
+
+
+    .plusButton {
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: #739EE4;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0px 3.33px 6.67px 0px rgba(50, 90, 134, 0.1),
+            0px 11.67px 11.67px 0px rgba(50, 90, 134, 0.09),
+            0px 26.67px 16.67px 0px rgba(50, 90, 134, 0.05),
+            0px 46.67px 18.33px 0px rgba(50, 90, 134, 0.01),
+            0px 73.33px 20px 0px rgba(50, 90, 134, 0);
+    }
+
+    .sortSuggestionActive {
+        background: linear-gradient(180deg, #F2F6FF 76.47%, rgba(242, 246, 255, 0) 100%);
+        position: absolute;
+        width: clamp(20rem, 55.41rem, 100%);
+        top: 8.2rem;
+        padding: 2rem;
+        z-index: 100;
+        border-top: 3px solid rgba(0, 0, 0, 0.01);
+        border-radius: 8px;
+    }
+    
+
+    .wrapper {
+        .main {
+            padding-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-inline: 1.5rem;
+            gap: 2rem;
+            padding-bottom: 5rem;
+        }
+    }
+}

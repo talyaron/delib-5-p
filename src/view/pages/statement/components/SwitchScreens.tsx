@@ -54,6 +54,7 @@ export default function SwitchScreens({
 				subStatements={subStatements}
 				handleShowTalker={handleShowTalker}
 				toggleAskNotifications={toggleAskNotifications}
+				currentPage="suggestion"
 			/>
 		);
 	case Screen.VOTE:
@@ -85,6 +86,7 @@ export default function SwitchScreens({
 				handleShowTalker={handleShowTalker}
 				questions={true}
 				toggleAskNotifications={toggleAskNotifications}
+				currentPage="questions"
 			/>
 		);
 	case Screen.INFO:

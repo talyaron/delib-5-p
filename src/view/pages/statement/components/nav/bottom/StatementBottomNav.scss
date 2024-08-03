@@ -3,6 +3,30 @@
     position: relative;
     z-index: 5;
 
+    &__sortButton {
+        width: 13.47rem;
+        height: 2.77rem;
+        background-color: #739EE4;
+        border-radius: 26px;
+        padding: 8px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        gap: .5rem;
+        box-shadow: 0px 3.33px 6.67px 0px rgba(50, 90, 134, 0.1),
+            0px 11.67px 11.67px 0px rgba(50, 90, 134, 0.09),
+            0px 26.67px 16.67px 0px rgba(50, 90, 134, 0.05),
+            0px 46.67px 18.33px 0px rgba(50, 90, 134, 0.01),
+            0px 73.33px 20px 0px rgba(50, 90, 134, 0);
+
+        p {
+            color: white;
+            font-size: 1.17rem;
+            font-weight: 400;
+        }
+    }
+
     .open-nav-icon {
         width: 3rem;
         height: 3rem;
@@ -16,7 +40,8 @@
         transition: all 1s ease;
         position: absolute;
         left: calc(50% - 1.5rem);
-        top: -1.5rem;
+        top: 0;
+        visibility: hidden;
 
         svg {
             width: 26px;
@@ -25,29 +50,70 @@
         &.burger {
             background-color: var(--question-header);
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        &.active:nth-child(2) {
+
+        &.navActive {
             z-index: 20;
-            transform: rotate(-360deg);
-            left: calc(50% - 1.5rem - 8rem);
+            visibility: visible !important;
+
+            &:nth-child(2) {
+                transform: rotate(-360deg);
+                left: calc(50% - 1.5rem + 4rem);
+            }
+
+            &:nth-child(3) {
+                transform: rotate(360deg);
+                left: calc(50% - 1.5rem + 8rem);
+            }
+
+            &:nth-child(4) {
+                transform: rotate(-360deg);
+                left: calc(50% - 1.5rem + 12rem);
+            }
+
+            &:nth-child(5) {
+                transform: rotate(360deg);
+                left: calc(50% - 1.5rem + 16rem);
+            }
         }
-        &.active:nth-child(3) {
-            z-index: 20;
-            transform: rotate(360deg);
-            left: calc(50% - 1.5rem - 4rem);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .statement-bottom-nav {
+        width: 100%;
+        position: relative;
+        z-index: 5;
+
+        &__sortButton {
+            width: 2.7rem;
+            height: 2.7rem;
+            border-radius: 50%;
+            padding: 0;
+
+            p {
+                font-size: 0.9rem;
+            }
         }
-        &.active:nth-child(4) {
-            z-index: 20;
-            transform: rotate(-360deg);
-            left: calc(50% - 1.5rem + 4rem);
-        }
-        &.active:nth-child(5) {
-            z-index: 20;
-            transform: rotate(360deg);
-            left: calc(50% - 1.5rem + 8rem);
+
+        .open-nav-icon {
+            &.navActive {
+                &:nth-child(2) {
+                    left: calc(50% - 1.5rem + 1rem);
+                }
+
+                &:nth-child(3) {
+                    left: calc(50% - 1.5rem + 6rem);
+                }
+
+                &:nth-child(4) {
+                    left: calc(50% - 1.5rem + 11rem);
+                }
+
+                &:nth-child(5) {
+                    left: calc(50% - 1.5rem + 16rem);
+                }
+            }
         }
     }
 }

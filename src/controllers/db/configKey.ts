@@ -1,12 +1,12 @@
 export const keys = {
-	apiKey: "AIzaSyBEumZUTCL3Jc9pt7_CjiSVTxmz9aMqSvo",
-	authDomain: "synthesistalyaron.firebaseapp.com",
+	apiKey: "AIzaSyC2CqDSvD1johT6DS_jwPmpc9LlNgarBKU",
+	authDomain: "todo-d6f5c.firebaseapp.com",
 	databaseURL: "https://synthesistalyaron.firebaseio.com",
-	projectId: "synthesistalyaron",
-	storageBucket: "synthesistalyaron.appspot.com",
-	messagingSenderId: "799655218679",
-	appId: "1:799655218679:web:1409dd5e3b4154ecb9b2f2",
-	measurementId: "G-XSGFFBXM9X"
+	projectId: "todo-d6f5c",
+	storageBucket: "todo-d6f5c.appspot.com",
+	messagingSenderId: "1043125173769",
+	appId: "1:1043125173769:web:d6677f4c3fe791a37002d8",
+	measurementId: "G-XSGFFBXM9X",
 };
 
 export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
@@ -28,7 +28,7 @@ export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tV
 // export const keys = {
 // 	apiKey: "AIzaSyD-117AZU4nEdFo1Z2XRvVZO-_Dj8QQCf4",
 // 	authDomain: "delib-v3-dev.firebaseapp.com",
-// 	databaseURL: "https://delib-v3-dev.firebaseio.com",
+// databaseURL: "https://delib-v3-dev.firebaseio.com",
 // 	projectId: "delib-v3-dev",
 // 	storageBucket: "delib-v3-dev.appspot.com",
 // 	messagingSenderId: "78129543863",
