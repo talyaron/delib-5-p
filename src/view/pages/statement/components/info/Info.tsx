@@ -22,12 +22,12 @@ const Info: FC<Props> = ({ statement }) => {
         <InfoParser statement={statement} />
       </div>
       <div className={styles.wrapper__main}>
-		<Rectangle/>
-		<p className={styles.wrapper__main__agreement}>Agreement</p>
-		<p className={styles.wrapper__main__disinterest}>Disinterest</p>
-		<p className={styles.wrapper__main__disputes}>Disputes</p>
-		<p className={styles.wrapper__main__taboo}>Taboo</p>
-	  </div>
+        <Rectangle />
+        <p className={styles.wrapper__main__agreement}>Agreement</p>
+        <p className={styles.wrapper__main__disinterest}>Disinterest</p>
+        <p className={styles.wrapper__main__disputes}>Disputes</p>
+        <p className={styles.wrapper__main__taboo}>Boo</p>
+      </div>
       {/* <div className="wrapper">
 				<InfoParser statement={statement} />
 				<a href={url} target="_blank">To Document</a>
