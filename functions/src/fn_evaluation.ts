@@ -17,6 +17,13 @@ import {
 } from "delib-npm";
 import { z } from "zod";
 
+enum ActionTypes {
+    new = "new",
+    update = "update",
+    delete = "delete",
+}
+
+
 
 export async function newEvaluation(event: any) {
     try {
@@ -27,7 +34,7 @@ export async function newEvaluation(event: any) {
         if (!statementId) throw new Error("statementId is not defined");
 
         //add one evaluator to statement, and add evaluation to statement
-        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1 });
+        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1, action: ActionTypes.new, newEvaluation: statementEvaluation.evaluation, oldEvaluation: 0 });
         if (!statement) throw new Error("statement does not exist");
         updateParentStatementWithChildResults(statement.parentId);
 
@@ -125,7 +132,7 @@ export async function deleteEvaluation(event: any) {
 
 
         //add one evaluator to statement
-        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: (-1 * evaluation), addEvaluator: -1 });
+        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: (-1 * evaluation), addEvaluator: -1, action: ActionTypes.delete, newEvaluation: 0, oldEvaluation: evaluation });
         if (!statement) throw new Error("statement does not exist");
         updateParentStatementWithChildResults(statement.parentId);
 
@@ -148,7 +155,7 @@ export async function updateEvaluation(event: any) {
         if (!statementId) throw new Error("statementId is not defined");
 
         //get statement
-        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff });
+        const statement = await _updateStatementEvaluation({ statementId, evaluationDiff, action: ActionTypes.update, newEvaluation: evaluationAfter, oldEvaluation: evaluationBefore });
         if (!statement) throw new Error("statement does not exist");
 
         //update parent statement?
@@ -188,14 +195,19 @@ interface UpdateStatementEvaluation {
     statementId: string;
     evaluationDiff: number;
     addEvaluator?: number;
+    action: ActionTypes;
+    newEvaluation: number;
+    oldEvaluation: number;
 }
 
-async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0 }: UpdateStatementEvaluation): Promise<Statement | undefined> {
+async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0, action, newEvaluation, oldEvaluation }: UpdateStatementEvaluation): Promise<Statement | undefined> {
     try {
 
         if (!statementId) throw new Error("statementId is not defined");
         const { success } = z.number().safeParse(evaluationDiff);
         if (!success) throw new Error("evaluation is not a number, or evaluation is missing");
+
+        const proConDiff = calcDiffEvaluation({ newEvaluation, oldEvaluation, action });
 
         const _statement: Statement = await db.runTransaction(async (transaction) => {
             const statementRef = db.collection(Collections.statements).doc(statementId);
@@ -205,11 +217,20 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
             //for legacy peruses, we need to parse the statement to the new schema
             if (!statement.evaluation) {
 
-                statement.evaluation = { agreement: statement.consensus || 0, sumEvaluations: evaluationDiff, numberOfEvaluators: statement.totalEvaluators || 1 };
+                statement.evaluation = {
+                    agreement: statement.consensus || 0,
+                    sumEvaluations: evaluationDiff,
+                    numberOfEvaluators: statement.totalEvaluators || 1,
+                    sumPro: proConDiff.proDiff,
+                    sumCon: proConDiff.conDiff
+
+                };
                 await transaction.update(statementRef, { evaluation: statement.evaluation });
             } else {
                 statement.evaluation.sumEvaluations += evaluationDiff;
                 statement.evaluation.numberOfEvaluators += addEvaluator;
+                statement.evaluation.sumPro ? statement.evaluation.sumPro += proConDiff.proDiff : statement.evaluation.sumPro = proConDiff.proDiff;
+                statement.evaluation.sumCon ? statement.evaluation.sumCon += proConDiff.conDiff : statement.evaluation.sumCon = proConDiff.conDiff;
             }
 
             StatementSchema.parse(statement);
@@ -221,10 +242,12 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
             statement.consensus = agreement;
 
 
-            await transaction.update(statementRef, {
+            transaction.update(statementRef, {
                 totalEvaluators: FieldValue.increment(addEvaluator),
                 consensus: agreement,
-                evaluation: statement.evaluation
+                evaluation: statement.evaluation,
+                proSum: FieldValue.increment(proConDiff.proDiff),
+                conSum: FieldValue.increment(proConDiff.conDiff),
             });
 
             const _st = await statementRef.get();
@@ -241,140 +264,29 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
 }
 
 
-//     function getEvaluationInfo() {
-//         try {
-//             const statementEvaluation = event.data.after.data() as Evaluation;
+interface CalcDiff { proDiff: number, conDiff: number }
 
-//             const { evaluation, statementId, parentId } = statementEvaluation;
 
-//             const dataBefore = event.data.before.data();
-//             let previousEvaluation = 0;
-//             if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
-//             if (isNaN(previousEvaluation))
-//                 throw new Error("previousEvaluation is not a number");
-//             if (isNaN(evaluation))
-//                 throw new Error("evaluation is not a number");
+function calcDiffEvaluation({ action, newEvaluation, oldEvaluation }: { action: ActionTypes, newEvaluation: number, oldEvaluation: number }): CalcDiff {
+    try {
+        const positiveDiff = Math.max(newEvaluation, 0) - Math.max(oldEvaluation, 0);
+        const negativeDiff = Math.min(newEvaluation, 0) - Math.min(oldEvaluation, 0);
 
-//             const evaluationDeference: number =
-//                 evaluation - previousEvaluation || 0;
-//             if (!evaluationDeference)
-//                 throw new Error("evaluationDeference is not defined");
-
-//             return {
-//                 parentId,
-//                 statementId,
-//                 evaluationDeference,
-//                 evaluation,
-//                 previousEvaluation,
-//             };
-//         } catch (error: any) {
-//             logger.error(error);
-
-//             return { error: error.message };
-//         }
-//     }
-
-//     async function setNewEvaluation(
-//         statementRef: any,
-//         evaluationDeference: number | undefined,
-//         evaluation = 0,
-//         previousEvaluation: number | undefined,
-//     ): Promise<{ newCon: number; newPro: number; totalEvaluators: number }> {
-//         const results = { newCon: 0, newPro: 0, totalEvaluators: 0 };
-//         await db.runTransaction(async (t: any) => {
-//             try {
-//                 if (!evaluationDeference)
-//                     throw new Error("evaluationDeference is not defined");
-//                 if (evaluation === undefined)
-//                     throw new Error("evaluation is not defined");
-//                 if (previousEvaluation === undefined)
-//                     throw new Error("previousEvaluation is not defined error");
-
-//                 const statementDB = await t.get(statementRef);
-
-//                 if (!statementDB.exists) {
-//                     throw new Error("statement does not exist");
-//                 }
-
-//                 const oldPro = statementDB.data().pro || 0;
-//                 const oldCon = statementDB.data().con || 0;
-
-//                 const { newCon, newPro, totalEvaluators } = updateProCon(
-//                     oldPro,
-//                     oldCon,
-//                     evaluation,
-//                     previousEvaluation,
-//                 );
-//                 results.newCon = newCon;
-//                 results.newPro = newPro;
-//                 results.totalEvaluators = totalEvaluators;
-
-//                 t.update(statementRef, {
-//                     totalEvaluations: newCon + newPro,
-//                     con: newCon,
-//                     pro: newPro,
-//                 });
-
-//                 return results;
-//             } catch (error) {
-//                 logger.error(error);
-
-//                 return results;
-//             }
-//         });
-
-//         return results;
-
-//         function updateProCon(
-//             oldPro: number,
-//             oldCon: number,
-//             evaluation: number,
-//             previousEvaluation: number,
-//         ): { newPro: number; newCon: number; totalEvaluators: number } {
-//             try {
-//                 let newPro = oldPro;
-//                 let newCon = oldCon;
-
-//                 const { pro, con } = clacProCon(previousEvaluation, evaluation);
-
-//                 newPro += pro;
-//                 newCon += con;
-//                 const totalEvaluators: number = newPro + newCon;
-
-//                 return { newPro, newCon, totalEvaluators };
-//             } catch (error) {
-//                 logger.error(error);
-
-//                 return { newPro: oldPro, newCon: oldCon, totalEvaluators: 0 };
-//             }
-//         }
-//     }
-// }
-
-// function clacProCon(prev: number, curr: number): { pro: number; con: number } {
-//     try {
-//         let pro = 0,
-//             con = 0;
-//         if (prev > 0) {
-//             pro = -prev;
-//         } else if (prev < 0) {
-//             con = prev;
-//         }
-
-//         if (curr > 0) {
-//             pro += curr;
-//         } else if (curr < 0) {
-//             con -= curr;
-//         }
-
-//         return { pro, con };
-//     } catch (error) {
-//         console.error(error);
-
-//         return { pro: 0, con: 0 };
-//     }
-// }
-
+        switch (action) {
+            case ActionTypes.new:
+                return { proDiff: Math.max(newEvaluation, 0), conDiff: Math.max(-newEvaluation, 0) };
+            case ActionTypes.delete:
+                return { proDiff: Math.min(-oldEvaluation, 0), conDiff: Math.max(oldEvaluation, 0) };
+            case ActionTypes.update:
+                return { proDiff: positiveDiff, conDiff: -negativeDiff };
+            default:
+                throw new Error("Action is not defined correctly");
+        }
+    } catch (error) {
+        logger.error(error);
+        return { proDiff: 0, conDiff: 0 };
+    }
+}
 interface ResultsSettings {
     resultsBy: ResultsBy;
     numberOfResults?: number;

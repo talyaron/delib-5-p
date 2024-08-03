@@ -3,7 +3,7 @@ import { Statement, StatementType, User } from "delib-npm";
 import {
 	createStatement,
 	setStatementToDB,
-} from "../../../../../../../controllers/db/statements/setStatements";
+} from "@/controllers/db/statements/setStatements";
 
 export function handleAddStatement(
 	message: string,

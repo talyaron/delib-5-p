@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
-import CheckboxCheckedIcon from "../../../assets/icons/checkboxCheckedIcon.svg?react";
-import CheckboxEmptyIcon from "../../../assets/icons/checkboxEmptyIcon.svg?react";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import CheckboxCheckedIcon from "@/assets/icons/checkboxCheckedIcon.svg?react";
+import CheckboxEmptyIcon from "@/assets/icons/checkboxEmptyIcon.svg?react";
 import "./Checkbox.scss";
 
 interface CheckboxProps {

@@ -1,6 +1,6 @@
 import { User } from "delib-npm";
 import { FC } from "react";
-import Chip from "../../../../../../../components/chip/Chip";
+import Chip from "@/view/components/chip/Chip";
 import "./MembersChipList.scss";
 
 interface MembersChipsListProps {

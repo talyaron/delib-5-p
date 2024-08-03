@@ -1,9 +1,9 @@
 
-import LightBulbIcon from "../../assets/icons/lightBulbIcon.svg?react";
-import ArrowUp from "../../assets/icons/arrowUpIcon.svg?react";
-import EvaluationsIcon from "../../assets/icons/evaluations2Icon.svg?react";
-import HandIcon from "../../assets/icons/handIcon.svg?react";
-import FlagIcon from "../../assets/icons/flagIcon.svg?react";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import ArrowUp from "@/assets/icons/arrowUpIcon.svg?react";
+import EvaluationsIcon from "@/assets/icons/evaluations2Icon.svg?react";
+import HandIcon from "@/assets/icons/handIcon.svg?react";
+import FlagIcon from "@/assets/icons/flagIcon.svg?react";
 import { QuestionStage } from "delib-npm";
 
 export const questionStages = {

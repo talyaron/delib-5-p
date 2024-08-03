@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import styles from './unAuthorizedPage.module.scss'
-import unAuthImage from '../../../assets/images/secure-private-by-design.svg';
+import unAuthImage from '@/assets/images/secure-private-by-design.svg';
 
 const UnAuthorizedPage = () => {
 	return (

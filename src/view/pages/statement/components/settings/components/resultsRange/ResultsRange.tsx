@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import { defaultResultsSettings } from "../../emptyStatementModel";
 import "./ResultsRange.scss";

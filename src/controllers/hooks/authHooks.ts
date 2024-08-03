@@ -1,6 +1,6 @@
 // import { onAuthStateChanged } from 'firebase/auth';
 import { useState, useEffect } from "react";
-import { store } from "../../model/store";
+import { store } from "@/model/store";
 import {
 	Access,
 	Role,
@@ -12,7 +12,7 @@ import { useAppSelector } from "./reduxHooks";
 import {
 	statementSelector,
 	statementSubscriptionSelector,
-} from "../../model/statements/statementsSlice";
+} from "@/model/statements/statementsSlice";
 import { getTopParentSubscription } from "../db/subscriptions/getSubscriptions";
 import { setStatementSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
 

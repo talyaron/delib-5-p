@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
-import RadioButtonCheckedIcon from "../../../assets/icons/radioButtonChecked.svg?react";
-import RadioButtonEmptyIcon from "../../../assets/icons/radioButtonEmpty.svg?react";
+import RadioButtonCheckedIcon from "@/assets/icons/radioButtonChecked.svg?react";
+import RadioButtonEmptyIcon from "@/assets/icons/radioButtonEmpty.svg?react";
 import "./RadioButtonWithLabel.scss";
 
 interface RadioButtonWithLabelProps extends ComponentProps<"input"> {

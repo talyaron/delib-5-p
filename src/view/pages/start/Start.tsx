@@ -7,24 +7,26 @@ import styles from "./Start.module.scss";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
 // icons
-import Logo from "../../../assets/logo/512 px SVG.svg";
-import MoreRight from "../../../assets/icons/moreRight.svg?react";
-import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
+import Logo from "@/assets/logo/106 x 89 SVG.svg?react";
+import MoreRight from "@/assets/icons/moreRight.svg?react";
+import MoreLeft from "@/assets/icons/moreLeft.svg?react";
+import StartPageImage from '@/assets/images/StartPageImage.png'
+import StartPageImageMobile from '@/assets/images/StartPageImageMobile.png'
 
 // Constants
-import { LANGUAGES } from "../../../constants/Languages";
+import { LANGUAGES } from "@/constants/Languages";
 import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
-import useDirection from "../../../controllers/hooks/useDirection";
+import useDirection from "@/controllers/hooks/useDirection";
 import {
 	LanguagesEnum,
 	useLanguage,
-} from "../../../controllers/hooks/useLanguages";
+} from "@/controllers/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
-import { selectInitLocation } from "../../../model/location/locationSlice";
+import { selectInitLocation } from "@/model/location/locationSlice";
 
 const Start = () => {
 	const navigate = useNavigate();
@@ -52,19 +54,11 @@ const Start = () => {
 	}, [user]);
 
 	return (
-		<div className="splashPage">
-			<div className={styles.h1}>
-				{t("Delib")} <span className={styles.number}>5</span>
+		<div className={styles.splashPage}>
+			<Logo />
+			<div className={styles.slogan}>
+				{t("Fostering Collaborations")}
 			</div>
-			<div className={styles.h2}>{t("Creating Agreements")}</div>
-			<img
-				className={styles.logo}
-				src={Logo}
-				alt="Delib logo"
-				width="10%"
-				style={{}}
-			/>
-
 			<select
 				className={styles.language}
 				defaultValue={savedLang || defaultLang}
@@ -85,18 +79,22 @@ const Start = () => {
 					</option>
 				))}
 			</select>
-			<div
+			<button
 				style={{ flexDirection: direction }}
 				data-cy="anonymous-login"
-				className={styles.anonymous}
+				className={`${styles.anonymous} ${direction === 'row' ? styles.ltr : styles.rtl}`}
 				onClick={() => setShouldShowNameModal((prev) => !prev)}
 			>
-				{direction === "row" ? <MoreRight /> : <MoreLeft />}
+				{direction === "row-reverse" ? <MoreLeft /> : null}
 				{t("Login with a temporary name")}{" "}
-			</div>
+				{direction === "row" ? <MoreRight /> : null}
+				
+			</button>
 
-			<GoogleLoginButton />
-
+			<GoogleLoginButton/>
+			
+			<img src={StartPageImage} alt="" className={styles.StratPageImage}/>
+			<img src={StartPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
 			<a href="http://delib.org" target="_blank">
 				<footer className={styles.ddi}>
 					{t("From the Institute for Deliberative Democracy")}

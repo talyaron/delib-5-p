@@ -10,7 +10,7 @@ import { Collections, Statement, StatementSchema, Vote } from "delib-npm";
 import { DB } from "../config";
 import { VoteSchema, getVoteId } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 
 // Why get user from firebase when we can pass it as a parameter?
 export async function getToVoteOnParent(

@@ -24,8 +24,8 @@ import {
 	setStatement,
 	setStatementSubscription,
 	setStatements,
-} from "../../../model/statements/statementsSlice";
-import { AppDispatch, store } from "../../../model/store";
+} from "@/model/statements/statementsSlice";
+import { AppDispatch, store } from "@/model/store";
 import { DB } from "../config";
 
 // Helpers

@@ -2,7 +2,7 @@ import { Statement } from "delib-npm";
 import { FC, useState } from "react";
 import AdminArrange from "../adminArrange/AdminArrange";
 import SetTimers from "../setTimers/SetTimers";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./RoomsAdmin.scss";
 
 interface Props {
