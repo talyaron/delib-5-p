@@ -6,19 +6,19 @@
     padding: 1rem 2rem;
     border-radius: 3rem;
     width: fit-content;
-    width: 17rem;
-    height: 2.7rem;
+    width: 22rem;
+    height: 2.5rem;
     color: white;
     gap: 1rem;
-    font-size: 1.3rem;
+    font-size: 1rem;
     cursor: pointer;
     user-select: none;
     position: absolute;
-    margin-top: 28rem;
-    margin-left: 17rem;
+    margin-top: 27rem;
+    margin-left: 13rem;
 
     &.rowReverse {
-        margin-right: 33rem;
+        margin-right: 30rem;
     }
 
     img {
@@ -27,7 +27,7 @@
 }
 
 .googleLogin.rtl{
-    margin-right: 35rem;
+    margin-right: 30rem;
 }
 
 @media only screen and (max-width: 600px) {

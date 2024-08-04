@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
 
+// @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap');
+
+
 // firestore functions
 
 // Third Party Libraries
@@ -11,6 +14,7 @@ import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
 import { userSelector } from "../../../model/users/userSlice";
 
 // icons
+// import Logo from "../../../assets/logo/106 x 89 SVG.svg";
 import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
 import MoreRight from "../../../assets/icons/moreRight.svg?react";
 import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
@@ -55,9 +59,17 @@ const Start = () => {
 
 	return (
 		<div className={styles.splashPage}>
-			<Logo />
-			<div className={styles.slogan}>
-				{t("Fostering Collaborations")}
+			<div className={styles.mainlogo}>
+				<Logo />
+				<div className={styles.mainlogo__title}>
+					<span className={styles.mainlogo__Free}>Free</span>
+					<span className={styles.mainlogo__Di}>Di</span>
+				</div>
+				{/* <div className={styles.slogan}> */}
+				<span className={styles.mainlogo__slogan}>
+					{t("Fostering Collaborations")}
+				</span>
+				{/* </div> */}
 			</div>
 			<select
 				className={styles.language}
@@ -88,13 +100,13 @@ const Start = () => {
 				{direction === "row-reverse" ? <MoreLeft /> : null}
 				{t("Login with a temporary name")}{" "}
 				{direction === "row" ? <MoreRight /> : null}
-				
+
 			</button>
 
-			<GoogleLoginButton/>
-			
-			<img src={StratPageImage} alt="" className={styles.StratPageImage}/>
-			<img src={StratPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
+			<GoogleLoginButton />
+
+			<img src={StratPageImage} alt="" className={styles.StratPageImage} />
+			<img src={StratPageImageMobile} alt="" className={styles.StratPageImageMobile} />
 			<a href="http://delib.org" target="_blank">
 				<footer className={styles.ddi}>
 					{t("From the Institute for Deliberative Democracy")}

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap');
+@import url('https://fonts.cdnfonts.com/css/overused-grotesk');
+
 body {
     background: #F2F6FF;
 }
@@ -14,10 +17,6 @@ body {
 
     &__freediIcon {
         margin-top: 5rem;
-    }
-
-    &__title {
-        font-size: 5rem;
     }
 
     &__subTitle {
@@ -55,28 +54,59 @@ body {
     opacity: 0.7;
 }
 
-.logo {
-    max-width: 150px;
-}
-
-.slogan {
-    display: flex;
+.mainlogo {
+    // width: fit-content;
+    width: 18.5rem;
+    height: fit-content;
+    // height: 30rem;
     align-items: center;
-    justify-content: center;
-    position: absolute;
-    margin-top: 11rem;
-    height: 2rem;
-    font-size: 150%;
-    max-width: 20rem;
-    min-width: 20rem;
-    text-align: center;
-    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        font-size: 4rem;
+        font-weight: 400;
+        font-style: normal;
+        position: absolute;
+        margin-top: 4rem;
+    }
+    &__Free{
+        color: #5D8FE1;
+        font-family: "Bruno Ace", sans-serif;
+    
+    }
+    &__Di{
+        color: #5BBBA9;
+        font-family: "Bruno Ace", sans-serif;
+    }
+    &__slogan {
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        // position: absolute;
+        font-family: 'Overused Grotesk', sans-serif;
+        margin-top: 2.5rem;
+        // height: 2rem;
+        width: 100%;
+        font-size: 1.5rem;
+        text-align: center;
+        font-stretch: expanded;
+
+        // max-width: 20rem;
+        // min-width: 20rem;
+        white-space: nowrap;
+        // background-color: blue;
+    }
 }
 
 .language {
     border-radius: 5rem;
     position: absolute;
-    margin-top: 16rem;
+    margin-top: 17rem;
+    color: #668FD1;
+    height: 2.5rem;
+    text-align: center;
+    font-size: 1rem;
 }
 
 .anonymous {
@@ -84,13 +114,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 27rem;
-    height: 3.2rem;
+    width: 22rem;
+    height: 2.5rem;
     border-radius: 3rem;
     min-width: 30ch;
     color: white;
     gap: 1rem;
-    font-size: 1.3rem;
+    font-size: 1rem;
     cursor: pointer;
     user-select: none;
     position: absolute;
@@ -103,12 +133,12 @@ body {
 
 
 .anonymous.ltr {
-    margin-right: 17rem;
+    margin-right: 13rem;
 
 }
 
 .anonymous.rtl {
-    margin-left: 20rem;
+    margin-left: 13rem;
 }
 
 .StratPageImage {
@@ -129,7 +159,7 @@ body {
     max-height: 25rem;
     display: none;
     height: 40%;
- 
+
     @media only screen and (max-width: 600px) {
         display: block;
     }
