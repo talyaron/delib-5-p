@@ -3,6 +3,7 @@ import { FC } from "react";
 import InfoParser from "../../../../components/InfoParser/InfoParser";
 import styles from "./info.module.scss";
 import Rectangle from "../../../../components/icons/InfoMap";
+import InfoDots from "./InfoDots";
 
 interface Props {
   statement: Statement;
@@ -27,6 +28,7 @@ const Info: FC<Props> = ({ statement }) => {
         <p className={styles.wrapper__main__disinterest}>Disinterest</p>
         <p className={styles.wrapper__main__disputes}>Disputes</p>
         <p className={styles.wrapper__main__taboo}>Boo</p>
+        <InfoDots statement={statement}/>
       </div>
       {/* <div className="wrapper">
 				<InfoParser statement={statement} />
