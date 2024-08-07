@@ -3,7 +3,7 @@ import FullScreenModal from '@/view/components/fullScreenModal/FullScreenModal';
 
 import './similarStatementsSuggestion.scss';
 
-import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
+// import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
 import LightBulbPlusIcon from '@/assets/icons/lightBulbPlus.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
@@ -140,10 +140,10 @@ export default function SimilarStatementsSuggestion({
 							</div>
 						)}
 						<div className='similarities__header__types'>
-							<div className='type'>
+							{/* <div className='type'>
 								<AddQuestionIcon />
 								<h2 className={isQuestion ? 'marked' : 'unmarked'}>Question</h2>
-							</div>
+							</div> */}
 							<div className='type'>
 								<LightBulbPlusIcon />
 								<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>

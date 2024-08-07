@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import TwoColorButton from '@/view/components/buttons/TwoColorButton';
 import Loader from '@/view/components/loaders/Loader';
 import { findSimilarStatements } from '@/controllers/db/statements/getSimilarstatements';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { subStatementsSelector } from '../../StatementMain';
 import { RootState } from '@/model/store';
+import SubmitStatementButton from './SubmitStatementButton';
+import TwoColorButton from '@/view/components/buttons/TwoColorButton';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -80,7 +81,7 @@ export default function StepOneStatementInput({
 
 	return (
 		<>
-			<h4 className='similarities__title'>Compose your question</h4>
+			<h4 className='similarities__title'>Compose your solution</h4>
 			<div className='similarities__titleInput'>
 				<label htmlFor='titleInput'>Your statement title</label>
 				<input
@@ -121,14 +122,29 @@ export default function StepOneStatementInput({
 							}
 						/>
 					</div>
-
-					<div className='similarities__buttonBox'>
+					{/* <div className='similarities__buttonBox'>
 						<TwoColorButton
 							icon={SendIcon}
 							text='Submit Statement'
 							textBackgroundColor='#fff'
 							textColor='var(--dark-text)'
 							iconBackgroundColor='var(--dark-blue)'
+							onClick={handleSubmit}
+						/>
+					</div> */}
+					<div className='similarities__buttonBox'>
+						<SubmitStatementButton
+							icon={SendIcon}
+							text='Submit Statement'
+							buttonRadius="2rem 0px 0px 2rem"
+							buttonBackground="var(--button-blue)"
+							buttonWidth="10rem"
+							circlePos="relative"
+							circleRight="1rem"
+							circleBorder="2px solid var(--white)"
+							circleRadius="2rem"
+							circleBackground="var(--button-blue)"
+							textColor='var(--white)'
 							onClick={handleSubmit}
 						/>
 					</div>
