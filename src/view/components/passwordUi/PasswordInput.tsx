@@ -2,9 +2,9 @@ import { useRef, Dispatch, SetStateAction } from 'react';
 import styles from "./passwordUi.module.scss"
 
 interface PasswordProps {
-    passwordLength: 4;
-    values: string[],
-    setValues: Dispatch<SetStateAction<string[]>>
+	passwordLength: 4;
+	values: string[],
+	setValues: Dispatch<SetStateAction<string[]>>
 }
 
 const PasswordInput = ({ passwordLength: length, values, setValues }: PasswordProps) => {

@@ -144,5 +144,9 @@
     "Welcome to room": "Welcome to room",
     "single-step": "Single step",
     "multiple-steps": "Multiple steps",
-    "There are no rooms yet": "There are no rooms yet"
+    "There are no rooms yet": "There are no rooms yet",
+    "defaultMessage": "Enter your 4-digit passcode to unlock group access",
+    "successMessage": "Bravo! Your passcode is correct. Welcome aboard!",
+    "errorMessage": "Something went wrong. Please try again!",
+    "submitButton": "Submit"
 }
