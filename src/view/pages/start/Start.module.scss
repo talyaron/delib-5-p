@@ -83,20 +83,18 @@ body {
         display: flex; 
         align-items: center;
         justify-content: center;
-        // position: absolute;
         font-family: 'Overused Grotesk', sans-serif;
         margin-top: 2.5rem;
-        // height: 2rem;
-        width: 100%;
+        // width:420px;
+        // min-width: 420px;
+        // max-width: 420px;
         font-size: 1.5rem;
         text-align: center;
         font-stretch: expanded;
-
-        // max-width: 20rem;
-        // min-width: 20rem;
         white-space: nowrap;
         // background-color: blue;
     }
+    // background-color: red;
 }
 
 .language {
@@ -108,6 +106,12 @@ body {
     text-align: center;
     font-size: 1rem;
 }
+.language option:nth-child(even){
+    background-color: white;
+}   
+.language:first-child{
+    color: black;
+}   
 
 .anonymous {
     background-color: #739EE4;
