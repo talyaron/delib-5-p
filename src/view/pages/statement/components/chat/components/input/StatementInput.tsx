@@ -4,14 +4,14 @@ import { FC, useState } from "react";
 import { Statement, StatementType } from "delib-npm";
 
 // Icons
-import SendIcon from "../../../../../../components/icons/SendIcon";
+import SendIcon from "@/view/components/icons/SendIcon";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../../../../../model/users/userSlice";
-import useDirection from "../../../../../../../controllers/hooks/useDirection";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
+import useDirection from "@/controllers/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
-import useStatementColor from "../../../../../../../controllers/hooks/useStatementColor";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;

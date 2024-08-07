@@ -4,7 +4,7 @@ import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
-import logo from "../.././../assets/logo/logo-96px.png";
+import logo from "@/assets/logo/logo-96px.png";
 
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string,

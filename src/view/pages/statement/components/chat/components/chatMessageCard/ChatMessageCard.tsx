@@ -4,39 +4,39 @@ import { FC, useState } from "react";
 import { Statement, StatementType, User, isOptionFn } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
-import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
-import { store } from "../../../../../../../model/store";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
+import { store } from "@/model/store";
 
 // Helper functions
 import {
 	isAuthorized,
 	linkToChildren,
-} from "../../../../../../../controllers/general/helpers";
+} from "@/controllers/general/helpers";
 
 // Hooks
-import useStatementColor from "../../../../../../../controllers/hooks/useStatementColor";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 
 // Custom Components
-import EditTitle from "../../../../../../components/edit/EditTitle"; // Import EditTitle component
+import EditTitle from "@/view/components/edit/EditTitle"; // Import EditTitle component
 import UserAvatar from "../userAvatar/UserAvatar";
 import StatementChatMore from "../StatementChatMore";
 
 // import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
-import AddQuestionIcon from "../../../../../../../assets/icons/addQuestion.svg?react";
-import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
-import LightBulbIcon from "../../../../../../../assets/icons/lightBulbIcon.svg?react";
-import QuestionMarkIcon from "../../../../../../../assets/icons/questionIcon.svg?react";
+import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
+import EditIcon from "@/assets/icons/editIcon.svg?react";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import QuestionMarkIcon from "@/assets/icons/questionIcon.svg?react";
 import {
 	setStatementIsOption,
 	updateIsQuestion,
 	updateStatementText,
-} from "../../../../../../../controllers/db/statements/setStatements";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import Menu from "../../../../../../components/menu/Menu";
-import MenuOption from "../../../../../../components/menu/MenuOption";
-import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
-import SaveTextIcon from "../../../../../../../assets/icons/SaveTextIcon.svg"; 
+} from "@/controllers/db/statements/setStatements";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Menu from "@/view/components/menu/Menu";
+import MenuOption from "@/view/components/menu/MenuOption";
+import CreateStatementModal from "@/view/pages/statement/components/createStatementModal/CreateStatementModal";
+import SaveTextIcon from "@/assets/icons/SaveTextIcon.svg"; 
 
 import "./ChatMessageCard.scss";
 
@@ -62,7 +62,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 }) => {
 	// Hooks
 	const { statementType } = statement;
-	const statementColor = useStatementColor(statementType || StatementType.statement);
+	const statementColor = useStatementColor(statementType);
 	const { t, dir } = useLanguage();
 
 	// Redux store
@@ -88,6 +88,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isMe = userId === creatorId;
 	const isQuestion = statementType === StatementType.question;
 	const isOption = isOptionFn(statement);
+	const isStatement = statementType === StatementType.statement;
 	const isParentOption = isOptionFn(parentStatement);
 
 	const shouldLinkToChildStatements =
@@ -134,6 +135,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		}
 	}
 
+
 	return (
 		<div
 			className={`chat-message-card ${isAlignedLeft && "aligned-left"} ${dir}`}
@@ -146,7 +148,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			)}
 
 			<div
-				className="message-box"
+				className={isStatement ? "message-box message-box--statement":"message-box"}
 				style={{ borderColor: statementColor.backgroundColor }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}

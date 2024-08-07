@@ -4,9 +4,9 @@ import {
 	fromFourDigitsToMilliseconds,
 	fromMillisecondsToFourDigits,
 } from "../../setTimers/setTimer/SetTimerCont";
-import { setTimersInitTimeDB } from "../../../../../../../../controllers/db/timer/setTimer";
+import { setTimersInitTimeDB } from "@/controllers/db/timer/setTimer";
 import { RoomTimer } from "delib-npm";
-import { getRoomTimerId } from "../../../../../../../../controllers/general/helpers";
+import { getRoomTimerId } from "@/controllers/general/helpers";
 
 interface TimerProps {
     roomTimer: RoomTimer;

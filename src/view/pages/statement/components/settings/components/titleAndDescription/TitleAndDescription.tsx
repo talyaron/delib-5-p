@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // Hooks & Helpers
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./TitleAndDescription.scss";
 

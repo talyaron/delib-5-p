@@ -3,6 +3,7 @@ import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
 import svgr from "vite-plugin-svgr";
+import path from "path"; 
 
 const manifestPlugin: Partial<VitePWAOptions> = {
     registerType: "autoUpdate",
@@ -15,9 +16,9 @@ const manifestPlugin: Partial<VitePWAOptions> = {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
     },
     manifest: {
-        name: "The Councils of Deliberation",
-        short_name: "The Councils",
-        description: "Delib: Building Consensus",
+        name: "FreeDi App",
+        short_name: "FreeDi",
+        description: "FreeDi: Fostering collaboration",
         theme_color: "#4E88C7",
         background_color: "#4E88C7",
         display: "standalone",
@@ -67,4 +68,9 @@ export default defineConfig({
         splitVendorChunkPlugin(),
         svgr({ include: "**/*.svg?react" }),
     ],
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'), 
+        },
+    },
 });

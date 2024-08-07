@@ -7,34 +7,34 @@ import { Statement, StatementType, User, isOptionFn } from 'delib-npm';
 import {
 	useAppDispatch,
 	useAppSelector,
-} from '../../../../../../controllers/hooks/reduxHooks';
+} from '@/controllers/hooks/reduxHooks';
 import {
 	setStatementElementHight,
 	statementSubscriptionSelector,
-} from '../../../../../../model/statements/statementsSlice';
+} from '@/model/statements/statementsSlice';
 
 // Helpers
 import {
 	isAuthorized,
 	linkToChildren,
-} from '../../../../../../controllers/general/helpers';
+} from '@/controllers/general/helpers';
 
 // Hooks
 import useStatementColor, {
 	StyleProps,
-} from '../../../../../../controllers/hooks/useStatementColor';
+} from '@/controllers/hooks/useStatementColor';
 
 // Custom Components
-import EditIcon from '../../../../../../assets/icons/editIcon.svg?react';
-import LightBulbIcon from '../../../../../../assets/icons/lightBulbIcon.svg?react';
-import { setStatementIsOption } from '../../../../../../controllers/db/statements/setStatements';
-import { useLanguage } from '../../../../../../controllers/hooks/useLanguages';
-import EditTitle from '../../../../../components/edit/EditTitle';
-import Menu from '../../../../../components/menu/Menu';
-import MenuOption from '../../../../../components/menu/MenuOption';
-import IconButton from '../../../../../components/iconButton/IconButton';
+import EditIcon from '@/assets/icons/editIcon.svg?react';
+import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
+import { setStatementIsOption } from '@/controllers/db/statements/setStatements';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import EditTitle from '@/view/components/edit/EditTitle';
+import Menu from '@/view/components/menu/Menu';
+import MenuOption from '@/view/components/menu/MenuOption';
+import IconButton from '@/view/components/iconButton/IconButton';
 import StatementChatMore from '../../chat/components/StatementChatMore';
-import AddQuestionIcon from '../../../../../../assets/icons/addQuestion.svg?react';
+import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
 import CreateStatementModal from '../../createStatementModal/CreateStatementModal';
 import Evaluation from './evaluation/Evaluation';
 import './StatementSolutionCard.scss';
@@ -46,7 +46,7 @@ interface Props {
 	top: number;
 }
 
-const StatementEvaluationCard: FC<Props> = ({
+const StatementSolutionCard: FC<Props> = ({
 	parentStatement,
 	statement,
 	top,
@@ -219,4 +219,4 @@ const StatementEvaluationCard: FC<Props> = ({
 	);
 };
 
-export default StatementEvaluationCard;
+export default StatementSolutionCard;

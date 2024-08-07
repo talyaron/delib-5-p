@@ -1,14 +1,14 @@
 import { FC, useState, useEffect } from "react";
 import SectionTitle from "../sectionTitle/SectionTitle";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
-import CustomSwitchSmall from "../../../../../../components/switch/customSwitchSmall/CustomSwitchSmall";
+import CustomSwitchSmall from "@/view/components/switch/customSwitchSmall/CustomSwitchSmall";
 import { QuestionStage, QuestionType, StatementType } from "delib-npm";
 import QuestionDashboard from "./questionDashboard/QuestionDashboard";
 import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 import "./QuestionSettings.scss";
-import { setQuestionType } from "../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
+import { setQuestionType } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
 	statement,

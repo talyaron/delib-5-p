@@ -7,20 +7,20 @@ import { Participant, RoomTimer, Statement } from "delib-npm";
 import {
 	useAppDispatch,
 	useAppSelector,
-} from "../../../../../../../controllers/hooks/reduxHooks";
-import { participantsInRoomSelector, userSelectedTopicSelector } from "../../../../../../../model/rooms/roomsSlice";
+} from "@/controllers/hooks/reduxHooks";
+import { participantsInRoomSelector, userSelectedTopicSelector } from "@/model/rooms/roomsSlice";
 
 // Styles
 import "./InRoom.scss";
-import participantsIcon from '../../../../../../../assets/icons/participants.svg'
+import participantsIcon from '@/assets/icons/participants.svg'
 
 // Custom Components
 import RoomTimers from "../roomTimer/Timers";
-import { listenToRoomTimers } from "../../../../../../../controllers/db/timer/getTimer";
+import { listenToRoomTimers } from "@/controllers/db/timer/getTimer";
 import { Unsubscribe } from "firebase/firestore";
-import { selectRoomTimers } from "../../../../../../../model/timers/timersSlice";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import { getFirstName, getTitle } from "../../../../../../../controllers/general/helpers";
+import { selectRoomTimers } from "@/model/timers/timersSlice";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { getFirstName, getTitle } from "@/controllers/general/helpers";
 
 interface Props {
   statement: Statement;

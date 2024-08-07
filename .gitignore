@@ -1,3 +1,6 @@
+congifKey.ts
+
+
 # Logs
 logs
 *.log
@@ -8,7 +11,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 firebase.json
-package-lock.json
 
 node_modules
 dist

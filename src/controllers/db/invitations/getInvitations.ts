@@ -1,7 +1,7 @@
 import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { DB } from "../config";
 import { Collections } from "delib-npm";
-import { getNumberDigits } from "../../general/helpers";
+import { getNumberDigits } from "@/controllers/general/helpers";
 
 export async function getMaxInvitationDigits():Promise<number | undefined>{
 	try {

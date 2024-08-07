@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { StatementMetaData, StatementMetaDataSchema } from "delib-npm";
-import { updateArray, writeZodError } from "../../controllers/general/helpers";
+import { updateArray, writeZodError } from "@/controllers/general/helpers";
 
 
 

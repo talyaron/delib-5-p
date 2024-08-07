@@ -2,15 +2,15 @@ import { FC } from "react";
 import "./QuestionStageRadioBtn.scss";
 import { QuestionStage, Statement } from "delib-npm";
 
-import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.svg?react";
-import ArrowUp from "../../../../../../../../assets/icons/arrowUpIcon.svg?react";
-import EvaluationsIcon from "../../../../../../../../assets/icons/evaluations2Icon.svg?react";
-import HandIcon from "../../../../../../../../assets/icons/handIcon.svg?react";
-import FlagIcon from "../../../../../../../../assets/icons/flagIcon.svg?react";
-import { setQuestionStage } from "../../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
-import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import ArrowUp from "@/assets/icons/arrowUpIcon.svg?react";
+import EvaluationsIcon from "@/assets/icons/evaluations2Icon.svg?react";
+import HandIcon from "@/assets/icons/handIcon.svg?react";
+import FlagIcon from "@/assets/icons/flagIcon.svg?react";
+import { setQuestionStage } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";
 
 interface Props {
   stage: QuestionStage;

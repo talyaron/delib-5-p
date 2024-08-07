@@ -1,8 +1,5 @@
 {
   "projects": {
-    "dev": "delib-v3-dev",
-    "prod": "synthesistalyaron"
-  },
-  "targets": {},
-  "etags": {}
+    "default": "synthesistalyaron"
+  }
 }

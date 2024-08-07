@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./Button.scss";
-import { useLanguage } from "../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
 	text: string;
@@ -8,7 +8,7 @@ interface Props {
 	color?: string;
 	className?: string;
 	iconOnRight?: boolean;
-	onClick: () => void;
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	icon?: React.ReactNode;
 }
 

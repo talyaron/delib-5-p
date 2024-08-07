@@ -6,22 +6,22 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { User, Role, Screen } from 'delib-npm';
 
 // firestore
-import { getIsSubscribed } from '../../../controllers/db/subscriptions/getSubscriptions';
-import { listenToSubStatements } from '../../../controllers/db/statements/listenToStatements';
-import { listenToStatement } from '../../../controllers/db/statements/listenToStatements';
-import { listenToStatementSubscription } from '../../../controllers/db/statements/listenToStatements';
-import { updateSubscriberForStatementSubStatements } from '../../../controllers/db/subscriptions/setSubscriptions';
-import { setStatementSubscriptionToDB } from '../../../controllers/db/subscriptions/setSubscriptions';
-import { listenToEvaluations } from '../../../controllers/db/evaluation/getEvaluation';
+import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
+import { listenToSubStatements } from '@/controllers/db/statements/listenToStatements';
+import { listenToStatement } from '@/controllers/db/statements/listenToStatements';
+import { listenToStatementSubscription } from '@/controllers/db/statements/listenToStatements';
+import { updateSubscriberForStatementSubStatements } from '@/controllers/db/subscriptions/setSubscriptions';
+import { setStatementSubscriptionToDB } from '@/controllers/db/subscriptions/setSubscriptions';
+import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
 
 // Redux Store
 import {
 	useAppDispatch,
 	useAppSelector,
-} from '../../../controllers/hooks/reduxHooks';
-import { statementNotificationSelector } from '../../../model/statements/statementsSlice';
-import { RootState } from '../../../model/store';
-import { userSelector } from '../../../model/users/userSlice';
+} from '@/controllers/hooks/reduxHooks';
+import { statementNotificationSelector } from '@/model/statements/statementsSlice';
+import { RootState } from '@/model/store';
+import { userSelector } from '@/model/users/userSlice';
 import { useSelector } from 'react-redux';
 
 // Custom components
@@ -32,10 +32,10 @@ import SwitchScreens from './components/SwitchScreens';
 import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
 
 // Hooks & Helpers
-import { MapProvider } from '../../../controllers/hooks/useMap';
-import { statementTitleToDisplay } from '../../../controllers/general/helpers';
+import { MapProvider } from '@/controllers/hooks/useMap';
+import { statementTitleToDisplay } from '@/controllers/general/helpers';
 import { availableScreen } from './StatementCont';
-import { useIsAuthorized } from '../../../controllers/hooks/authHooks';
+import { useIsAuthorized } from '@/controllers/hooks/authHooks';
 import LoadingPage from '../loadingPage/LoadingPage';
 import UnAuthorizedPage from '../unAuthorizedPage/UnAuthorizedPage';
 import Page404 from '../page404/Page404';

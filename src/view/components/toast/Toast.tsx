@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./Toast.scss";
-import X from "../../../assets/icons/x.svg?react";
+import X from "@/assets/icons/x.svg?react";
 
 
 interface Props {

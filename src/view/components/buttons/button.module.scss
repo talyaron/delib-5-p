@@ -1,17 +1,49 @@
 .googleLogin {
-    background-color: var(--light-blue);
+    background-color: #85D2C1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem 2rem;
     border-radius: 3rem;
     width: fit-content;
+    width: 17rem;
+    height: 2.7rem;
     color: white;
     gap: 1rem;
     font-size: 1.3rem;
     cursor: pointer;
     user-select: none;
+    position: absolute;
+    margin-top: 28rem;
+    margin-left: 17rem;
+
+    &.rowReverse {
+        margin-right: 33rem;
+    }
+
     img {
         width: 1.4rem;
+    }
+}
+
+.googleLogin.rtl{
+    margin-right: 35rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .googleLogin {
+        position: absolute;
+        margin-top: 25rem;
+        width: 18rem;
+    }
+    .googleLogin.ltr {
+        border-radius: 3rem 0rem 0rem 3rem;
+        right: -1rem;
+    }
+    .googleLogin.rtl {
+        border-radius: 0rem 3rem 3rem 0rem;
+        left: 0;
+        margin-left: 0rem;
+
     }
 }
