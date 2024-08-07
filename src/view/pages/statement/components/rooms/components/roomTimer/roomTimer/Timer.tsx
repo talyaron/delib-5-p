@@ -4,20 +4,20 @@ import { RoomTimer, TimerStatus } from "delib-npm";
 import {
 	setTimersStatusDB,
 	startNextTimer,
-} from "../../../../../../../../controllers/db/timer/setTimer";
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { selectTimerByTimerId } from "../../../../../../../../model/timers/timersSlice";
+} from "@/controllers/db/timer/setTimer";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { selectTimerByTimerId } from "@/model/timers/timersSlice";
 import "./Timer.scss";
 
 // icons
 
 import TimerIcon from "../timerIcon/TimerIcon";
-import PlayIcon from "../../../../../../../components/icons/PlayIcon";
-import PauseIcon from "../../../../../../../components/icons/PauseIcon";
-import StopIcon from "../../../../../../../components/icons/StopIcon";
+import PlayIcon from "@/view/components/icons/PlayIcon";
+import PauseIcon from "@/view/components/icons/PauseIcon";
+import StopIcon from "@/view/components/icons/StopIcon";
 
 //sound
-import bell from "../../../../../../../../assets/sounds/bell.mp3";
+import bell from "@/assets/sounds/bell.mp3";
 
 
 

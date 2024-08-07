@@ -1,8 +1,8 @@
 import { useState } from "react";
-import pricingImg from "../../../assets/images/pricing.png";
+import pricingImg from "@/assets/images/pricing.png";
 
-import { useAppSelector } from "../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 import { useNavigate } from "react-router-dom";
 
 import RadioBox from "../../components/radioBox/RadioBox";

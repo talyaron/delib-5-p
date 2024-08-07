@@ -1,10 +1,11 @@
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Button from "../buttons/button/Button";
 import Modal from "../modal/Modal";
 import "./TermsOfUse.scss";
 
 interface Props {
-    handleAgreement: (agree: boolean, agreement: string) => void;
-    agreement: string;
+	handleAgreement: (agree: boolean, agreement: string) => void;
+	agreement: string;
 }
 
 export default function TermsOfUse({ handleAgreement, agreement }: Props) {
@@ -16,19 +17,17 @@ export default function TermsOfUse({ handleAgreement, agreement }: Props) {
 				<h1 className="terms-of-use-title">{t("terms of use")}</h1>
 				<p>{agreement}</p>
 				<div className="btns">
-					<button
-						className="btn btn--agree"
+					<Button
+						text={t('Agree')}
 						onClick={() => handleAgreement(true, agreement)}
-					>
-						{t("Agree")}
-					</button>
-					<button
+						className="btn btn--affirmation"
+					/>
+					<Button
 						data-cy="agree-btn"
-						className="btn btn--disagree"
+						text={t('Dont agree')}
 						onClick={() => handleAgreement(false, agreement)}
-					>
-						{t("Dont agree")}
-					</button>
+						className="btn "
+					/>
 				</div>
 			</div>
 		</Modal>

@@ -1,9 +1,9 @@
 // custom components
-import CustomSwitch from "../../../../../../components/switch/customSwitch/CustomSwitch";
+import CustomSwitch from "@/view/components/switch/customSwitch/CustomSwitch";
 
 // HELPERS
-import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel.tsx";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { FC } from "react";
 import TabIcon from "./TabIcon";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";

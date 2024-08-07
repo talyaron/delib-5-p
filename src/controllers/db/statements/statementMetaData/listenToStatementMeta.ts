@@ -1,12 +1,14 @@
 import { Collections, StatementMetaData, StatementMetaDataSchema } from "delib-npm";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
-import { DB } from "../../config";
+import { DB } from "@/controllers/db/config";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setStatementMetaData } from "../../../../model/statements/statementsMetaSlice";
-import { writeZodError } from "../../../general/helpers";
+import { setStatementMetaData } from "@/model/statements/statementsMetaSlice";
+import { writeZodError } from "@/controllers/general/helpers";
+import { store } from "@/model/store";
 
-export function listenToStatementMetaData(statementId: string, dispatch: Dispatch): Unsubscribe {
+export function listenToStatementMetaData(statementId: string): Unsubscribe {
 	try {
+		const dispatch = store.dispatch as Dispatch;
 		if (!statementId) {
 			throw new Error("Statement ID is missing");
 		}

@@ -1,5 +1,5 @@
 import { Statement, ResultsBy, Results, isOptionFn } from "delib-npm";
-import { getResultsDB } from "../../../../../controllers/db/results/getResults";
+import { getResultsDB } from "@/controllers/db/results/getResults";
 
 export async function getResults(
 	statement: Statement,

@@ -1,22 +1,23 @@
+/* eslint-disable indent */
 import { FC } from "react";
 import "./StatementChatMore.scss";
 
 // Icons
-import ChatIcon from "../../../../../../assets/icons/roundedChatDotIcon.svg?react";
+import ChatIcon from "@/assets/icons/roundedChatDotIcon.svg?react";
 
 // Statements functions
-import { statementSubscriptionSelector } from "../../../../../../model/statements/statementsSlice";
+import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
 
 // Third party
 import { Statement, StatementSubscription, StatementType } from "delib-npm";
 import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Helpers
-import { statementTitleToDisplay } from "../../../../../../controllers/general/helpers";
-import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
+import { statementTitleToDisplay } from "@/controllers/general/helpers";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
 	statement: Statement;
@@ -62,7 +63,6 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				<ChatIcon />
 			</div>
 			<div className="text">{messageToDisplay}</div>
-
 		</div>
 	);
 };

@@ -2,7 +2,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { RoomTimer, SetTimer } from "delib-npm";
-import { updateArray } from "../../controllers/general/helpers";
+import { updateArray } from "@/controllers/general/helpers";
 
 export enum Status {
     idle = "idle",

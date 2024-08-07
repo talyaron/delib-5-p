@@ -4,51 +4,54 @@ import { FC, useState } from "react";
 import { Statement, StatementType, User, isOptionFn } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
-import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
-import { store } from "../../../../../../../model/store";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
+import { store } from "@/model/store";
 
 // Helper functions
 import {
 	isAuthorized,
 	linkToChildren,
-} from "../../../../../../../controllers/general/helpers";
+} from "@/controllers/general/helpers";
 
 // Hooks
-import useStatementColor from "../../../../../../../controllers/hooks/useStatementColor";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 
 // Custom Components
-import EditTitle from "../../../../../../components/edit/EditTitle"; // Import EditTitle component
+import EditTitle from "@/view/components/edit/EditTitle"; // Import EditTitle component
 import UserAvatar from "../userAvatar/UserAvatar";
 import StatementChatMore from "../StatementChatMore";
 
 // import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
-import AddQuestionIcon from "../../../../../../../assets/icons/addQuestion.svg?react";
-import EditIcon from "../../../../../../../assets/icons/editIcon.svg?react";
-import LightBulbIcon from "../../../../../../../assets/icons/lightBulbIcon.svg?react";
-import QuestionMarkIcon from "../../../../../../../assets/icons/questionIcon.svg?react";
+import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
+import EditIcon from "@/assets/icons/editIcon.svg?react";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import QuestionMarkIcon from "@/assets/icons/questionIcon.svg?react";
 import {
 	setStatementIsOption,
 	updateIsQuestion,
-} from "../../../../../../../controllers/db/statements/setStatements";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import Menu from "../../../../../../components/menu/Menu";
-import MenuOption from "../../../../../../components/menu/MenuOption";
-import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
+	updateStatementText,
+} from "@/controllers/db/statements/setStatements";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Menu from "@/view/components/menu/Menu";
+import MenuOption from "@/view/components/menu/MenuOption";
+import CreateStatementModal from "@/view/pages/statement/components/createStatementModal/CreateStatementModal";
+import SaveTextIcon from "@/assets/icons/SaveTextIcon.svg"; 
+
 import "./ChatMessageCard.scss";
 
 export interface NewQuestion {
-  statement: Statement;
-  isOption: boolean;
-  showModal: boolean;
+	statement: Statement;
+	isOption: boolean;
+	showModal: boolean;
 }
 
 interface ChatMessageCardProps {
-  parentStatement: Statement;
-  statement: Statement;
-  showImage: (statement: User | null) => void;
-  index: number;
-  previousStatement: Statement | undefined;
+	parentStatement: Statement;
+	statement: Statement;
+	showImage: (statement: User | null) => void;
+	index: number;
+	previousStatement: Statement | undefined;
 }
 
 const ChatMessageCard: FC<ChatMessageCardProps> = ({
@@ -59,7 +62,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 }) => {
 	// Hooks
 	const { statementType } = statement;
-	const statementColor = useStatementColor(statementType || "");
+	const statementColor = useStatementColor(statementType);
 	const { t, dir } = useLanguage();
 
 	// Redux store
@@ -72,6 +75,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const [isEdit, setIsEdit] = useState(false);
 	const [isNewStatementModalOpen, setIsNewStatementModalOpen] = useState(false);
 	const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
+	const [text, setText] = useState(statement?.statement || "");
 
 	// Variables
 	const creatorId = statement.creatorId;
@@ -84,14 +88,17 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isMe = userId === creatorId;
 	const isQuestion = statementType === StatementType.question;
 	const isOption = isOptionFn(statement);
+	const isStatement = statementType === StatementType.statement;
 	const isParentOption = isOptionFn(parentStatement);
 
 	const shouldLinkToChildStatements =
-    (isQuestion || isOption) && parentStatement.hasChildren;
+		(isQuestion || isOption) && parentStatement.hasChildren;
 
 	const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
 
 	const isAlignedLeft = (isMe && dir === "ltr") || (!isMe && dir === "rtl");
+
+	const shouldLinkToChildren = linkToChildren(statement, parentStatement);
 
 	function handleSetOption() {
 		try {
@@ -110,7 +117,24 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		}
 	}
 
-	const shouldLinkToChildren = linkToChildren(statement, parentStatement);
+	function handleTextChange(
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+	) {
+		setText(e.target.value);
+	}
+
+	function handleSave() {
+		try {
+			if (!text.trim()) return;
+			if (!statement) throw new Error("Statement is undefined");
+
+			updateStatementText(statement, text.trim());
+			setIsEdit(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 
 	return (
 		<div
@@ -124,19 +148,37 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			)}
 
 			<div
-				className="message-box"
+				className={isStatement ? "message-box message-box--statement":"message-box"}
 				style={{ borderColor: statementColor.backgroundColor }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}
 
 				<div className="info">
 					<div className="info-text">
-						<EditTitle
-							statement={statement}
-							isEdit={isEdit}
-							setEdit={setIsEdit}
-							isTextArea={true}
-						/>
+						{isEdit ? (
+							<div className="input-wrapper">
+								<textarea
+									className="edit-input"
+									value={text}
+									onChange={handleTextChange}
+									autoFocus={true}
+									style={{ direction: dir }}
+								/>
+								<img
+									src={SaveTextIcon}
+									onClick={handleSave}
+									className="save-icon"
+									alt="Save Icon"
+								/>
+							</div>
+						) : (
+							<EditTitle
+								statement={statement}
+								isEdit={isEdit}
+								setEdit={setIsEdit}
+								isTextArea={true}
+							/>
+						)}
 					</div>
 
 					<Menu

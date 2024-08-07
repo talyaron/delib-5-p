@@ -4,22 +4,27 @@ import { useEffect, useState } from "react";
 import { prompStore } from "./main/HomeMainCont";
 
 // icons
-import InstallIcon from "../../../assets/icons/installIcon.svg?react";
+import InstallIcon from "@/assets/icons/installIcon.svg?react";
+import InvitationIcon from "@/assets/icons/invitation.svg?react";
 
 // Components
 import { useDispatch } from "react-redux";
-import DisconnectIcon from "../../../assets/icons/disconnectIcon.svg?react";
-import { handleLogout } from "../../../controllers/general/helpers";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { install } from "@/App";
+import DisconnectIcon from "@/assets/icons/disconnectIcon.svg?react";
+import { handleLogout } from "@/controllers/general/helpers";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
-import { install } from "../../../App";
+import InvitationModal from "./main/invitationModal/InvitationModal";
+
 
 export default function HomeHeader() {
 	// Use State
 	const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
 	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
+	const [showInvitationModal, setShowInvitationModal] = useState(false);
+
 	const dispatch = useDispatch();
 
 	const { t, dir } = useLanguage();
@@ -32,6 +37,16 @@ export default function HomeHeader() {
 	function handleInstallApp() {
 		try {
 			prompStore(setDeferredPrompt);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	function handleInvitationPanel() {
+		try {
+			setShowInvitationModal(true);
+			setIsHomeMenuOpen(false);
+   
 		} catch (error) {
 			console.error(error);
 		}
@@ -57,15 +72,19 @@ export default function HomeHeader() {
 						iconColor="white"
 					>
 						<MenuOption
-							icon={
-								<DisconnectIcon style={{ color: "#4E88C7" }} />
-							}
+							icon={<DisconnectIcon style={{ color: "#4E88C7" }} />}
 							label={t("Disconnect")}
 							onOptionClick={() => handleLogout(dispatch)}
+						/>
+						<MenuOption
+							icon={<InvitationIcon style={{ color: "#4E88C7" }}/>}
+							label={t("Join with PIN number")}
+							onOptionClick={handleInvitationPanel}
 						/>
 					</Menu>
 				</div>
 			</div>
+			{showInvitationModal && <InvitationModal setShowModal={setShowInvitationModal} />}
 		</div>
 	);
 }

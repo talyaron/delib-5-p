@@ -1,31 +1,30 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { useParams } from "react-router-dom";
-import {Statement } from "delib-npm";
+import { useParams } from 'react-router-dom';
+import { Statement } from 'delib-npm';
 
 // Redux Store
 import {
 	useAppDispatch,
 	useAppSelector,
-} from "../../../../../controllers/hooks/reduxHooks";
+} from '@/controllers/hooks/reduxHooks';
 import {
 	setStatement,
 	statementSelector,
-} from "../../../../../model/statements/statementsSlice";
+} from '@/model/statements/statementsSlice';
 
 // Custom components
-import Loader from "../../../../components/loaders/Loader";
-import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
+import Loader from '@/view/components/loaders/Loader';
+import ScreenFadeIn from '@/view/components/animation/ScreenFadeIn';
 
 // Hooks & Helpers
-import { useLanguage } from "../../../../../controllers/hooks/useLanguages";
-import StatementSettingsForm from "./components/statementSettingsForm/StatementSettingsForm";
-import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
-import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
-import { defaultEmptyStatement } from "./emptyStatementModel";
-import { listenToStatementMetaData } from "../../../../../controllers/db/statements/statementMetaData/listenToStatementMeta";
-
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import StatementSettingsForm from './components/statementSettingsForm/StatementSettingsForm';
+import { listenToMembers } from '@/controllers/db/statements/listenToStatements';
+import { getStatementFromDB } from '@/controllers/db/statements/getStatement';
+import { defaultEmptyStatement } from './emptyStatementModel';
+import { listenToStatementMetaData } from '@/controllers/db/statements/statementMetaData/listenToStatementMeta';
 
 const StatementSettings: FC = () => {
 	try {
@@ -33,12 +32,12 @@ const StatementSettings: FC = () => {
 		const { statementId } = useParams();
 		const { t } = useLanguage();
 		const [parentStatement, setParentStatement] = useState<
-      Statement | undefined | "top"
-    >(undefined);
+			Statement | undefined | 'top'
+		>(undefined);
 		const [isLoading, setIsLoading] = useState(false);
 		const [statementToEdit, setStatementToEdit] = useState<
-      Statement | undefined
-    >();
+			Statement | undefined
+		>();
 
 		const dispatch = useAppDispatch();
 
@@ -51,8 +50,8 @@ const StatementSettings: FC = () => {
 				if (statement) {
 					setStatementToEdit(statement);
 
-					if (statement.parentId === "top") {
-						setParentStatement("top");
+					if (statement.parentId === 'top') {
+						setParentStatement('top');
 
 						return;
 					}
@@ -61,7 +60,7 @@ const StatementSettings: FC = () => {
 					getStatementFromDB(statement.parentId)
 						.then((parentStatement) => {
 							try {
-								if (!parentStatement) throw new Error("no parent statement");
+								if (!parentStatement) throw new Error('no parent statement');
 
 								setParentStatement(parentStatement);
 							} catch (error) {
@@ -85,7 +84,7 @@ const StatementSettings: FC = () => {
 
 				if (statementId) {
 					unsubscribe = listenToMembers(dispatch)(statementId);
-					unsubMeta = listenToStatementMetaData(statementId, dispatch);
+					unsubMeta = listenToStatementMetaData(statementId);
 
 					if (statement) {
 						setStatementToEdit(statement);
@@ -112,10 +111,10 @@ const StatementSettings: FC = () => {
 		}, [statementId]);
 
 		return (
-			<ScreenFadeIn className="page__main">
+			<ScreenFadeIn className='page__main'>
 				{isLoading || !statementToEdit ? (
-					<div className="center">
-						<h2>{t("Updating")}</h2>
+					<div className='center'>
+						<h2>{t('Updating')}</h2>
 						<Loader />
 					</div>
 				) : (
@@ -130,7 +129,7 @@ const StatementSettings: FC = () => {
 		);
 	} catch (error) {
 		console.error(error);
-		
+
 		return null;
 	}
 };

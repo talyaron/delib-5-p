@@ -7,7 +7,7 @@ import {
 } from "delib-npm";
 import { DB } from "../config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 
 export async function setUserToDB(user: User) {
 	try {

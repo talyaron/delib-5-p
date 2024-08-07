@@ -6,11 +6,11 @@ import { Statement, User } from "delib-npm";
 // Custom Components
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import StatementInput from "./components/input/StatementInput";
-import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
+import useSlideAndSubStatement from "@/controllers/hooks/useSlideAndSubStatement";
 
 import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "../../../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
 
 interface Props {
@@ -52,7 +52,7 @@ const StatementChat: FC<Props> = ({
 			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
-
+	
 	//effects
 	useEffect(() => {
 		firstTime = true;

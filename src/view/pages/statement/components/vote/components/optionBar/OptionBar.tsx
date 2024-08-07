@@ -4,22 +4,22 @@ import { FC } from "react";
 import {
 	useAppDispatch,
 	useAppSelector,
-} from "../../../../../../../controllers/hooks/reduxHooks";
+} from "@/controllers/hooks/reduxHooks";
 import {
 	parentVoteSelector,
 	setVoteToStore,
-} from "../../../../../../../model/vote/votesSlice";
+} from "@/model/vote/votesSlice";
 
 // Statements helpers
-import { setVote } from "../../../../../../../controllers/db/vote/setVote";
+import { setVote } from "@/controllers/db/vote/setVote";
 import { getSelections } from "../../statementVoteCont";
-import { statementTitleToDisplay } from "../../../../../../../controllers/general/helpers";
-import InfoIcon from "../../../../../../../assets/icons/infoCircleIcon.svg?react";
-import HandIcon from "../../../../../../../assets/icons/handIcon.svg?react";
-import LikeIcon from "../../../../../../../assets/icons/likeIcon.svg?react";
+import { statementTitleToDisplay } from "@/controllers/general/helpers";
+import InfoIcon from "@/assets/icons/infoCircleIcon.svg?react";
+import HandIcon from "@/assets/icons/handIcon.svg?react";
+import LikeIcon from "@/assets/icons/likeIcon.svg?react";
 import { OptionBarProps } from "../../voteTypesHelper";
 import "./OptionBar.scss";
-import { getStatementFromDB } from "../../../../../../../controllers/db/statements/getStatement";
+import { getStatementFromDB } from "@/controllers/db/statements/getStatement";
 import { getBarWidth } from "./OptionBarCont";
 
 

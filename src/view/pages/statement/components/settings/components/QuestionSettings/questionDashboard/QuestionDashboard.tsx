@@ -1,13 +1,13 @@
-import { QuestionStage, QuestionType, Statement } from "delib-npm";
+import { QuestionStage, QuestionType, Statement, StatementMetaData } from "delib-npm";
 import { FC } from "react";
 import "./QuestionDashboard.scss";
 
 
-import UsersIcon from "../../../../../../../../assets/icons/users20px.svg?react";
-import { useAppSelector } from "../../../../../../../../controllers/hooks/reduxHooks";
-import { statementMetaDataSelector } from "../../../../../../../../model/statements/statementsMetaSlice";
+import UsersIcon from "@/assets/icons/users20px.svg?react";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";
 import { getStageInfo } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
-import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
   statement: Statement;
@@ -17,7 +17,10 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
 	try {
 
 		const { t } = useLanguage();
-		const numberOfMembers:number = useAppSelector(statementMetaDataSelector(statement.statementId))?.question?.numberOfMembers || 0;
+		
+		const metaData:StatementMetaData|undefined = useAppSelector(statementMetaDataSelector(statement.statementId))
+		const numberOfMembers = metaData?.numberOfMembers || 0;
+		const numberOfEvaluators = metaData?.numberOfEvaluators || 0;
 		const currentStage = statement.questionSettings?.currentStage || QuestionStage.suggestion;
 		const questionType = statement.questionSettings?.questionType || QuestionType.singleStep;
 
@@ -32,6 +35,13 @@ const QuestionDashboard: FC<Props> = ({ statement }) => {
 						</div>
 						<div className="joined__text">{t("Joined members")}</div>
 						<div className="joined__number">{numberOfMembers}</div>
+					</div>
+					<div className="joined">
+						<div className="joined__icon" >
+							<UsersIcon />
+						</div>
+						<div className="joined__text">{t("Number of Evaluators")}</div>
+						<div className="joined__number">{numberOfEvaluators}</div>
 					</div>
 					{questionType === QuestionType.multipleSteps && <div className="current-stage">
 						<div className="current-stage__title">{t("Current stage") } </div>

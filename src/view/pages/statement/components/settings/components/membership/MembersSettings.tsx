@@ -1,27 +1,32 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { StatementSubscription, Statement } from "delib-npm";
+import { Role, StatementSubscription, Statement, Collections } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Custom components
 import MembershipLine from "./membershipCard/MembershipCard";
-import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
+import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../../../../../../model/store";
+import { RootState } from "@/model/store";
+import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
+import { collection, getDocs } from "firebase/firestore";
+import { DB } from "../../../../../../../controllers/db/config";
 
 const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 	// * Hooks * //
 	const { statementId } = useParams();
 	const { t } = useLanguage();
+	const [userCount, setUserCount] = useState<number>(0);
+
 
 	const statementMembershipSelector = (statementId: string | undefined) =>
 		createSelector(
@@ -39,6 +44,9 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 
 	if (!members) return null;
 
+	const joinedMembers = members.filter(member => member.role !== Role.banned);
+	const bannedUser = members.filter(member => member.role === Role.banned);
+
 	function handleShare(statement: Statement | undefined) {
 		const baseUrl = window.location.origin;
 
@@ -50,6 +58,18 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 		navigator.share(shareData);
 	}
 
+	const fetchAwaitingUsers = async (): Promise<void> => {
+		const usersCollection = collection(DB, Collections.awaitingUsers);
+		const usersSnapshot = await getDocs(usersCollection);
+		const count = usersSnapshot.docs.length
+		
+		return setUserCount(count)
+	}
+
+	useEffect(() => {
+		fetchAwaitingUsers();
+	}, []);
+
 	return (
 		<div className="members-settings">
 			<button
@@ -59,12 +79,23 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 				{t("Send a link to anonymous users")}
 				<ShareIcon />
 			</button>
-
+			<div className="upload-waiting-list">
+				<SetWaitingList statement={statement} />
+			</div>
 			<div className="title">
-				{t("Joined members")} ({members.length})
+				{t("Joined members")} ({`${userCount}`})
 			</div>
 			<div className="members-box">
-				{members.map((member) => (
+				{joinedMembers.map((member) => (
+					<MembershipLine key={member.userId} member={member} />
+				))}
+			</div>
+
+			<div className="title">
+				{t("Banned users")} ({bannedUser.length})
+			</div>
+			<div className="members-box">
+				{bannedUser.map((member) => (
 					<MembershipLine key={member.userId} member={member} />
 				))}
 			</div>

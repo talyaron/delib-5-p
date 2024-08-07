@@ -1,34 +1,37 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom";
-import { Statement } from "delib-npm";
+import { useNavigate, useParams } from 'react-router-dom';
+import { Statement } from 'delib-npm';
 
 // Firestore functions
 
 // Custom components
-import UploadImage from "../../../../../../components/uploadImage/UploadImage";
-import DisplayResultsBy from "./../../components/displayResultsBy/DisplayResultsBy";
-import ResultsRange from "./../../components/resultsRange/ResultsRange";
-import GetVoters from "./../../components/GetVoters";
-import GetEvaluators from "./../../components/GetEvaluators";
-import SubScreensToDisplay from "../tabsToDisplaySwitches/SubScreensToDisplay";
+import UploadImage from '@/view/components/uploadImage/UploadImage';
+import DisplayResultsBy from './../../components/displayResultsBy/DisplayResultsBy';
+import ResultsRange from './../../components/resultsRange/ResultsRange';
+import GetVoters from './../../components/GetVoters';
+import GetEvaluators from './../../components/GetEvaluators';
+import SubScreensToDisplay from '../tabsToDisplaySwitches/SubScreensToDisplay';
 
 // Hooks & Helpers
-import { handleSetStatement } from "./../../statementSettingsCont";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import TitleAndDescription from "./../../components/titleAndDescription/TitleAndDescription";
-import AdvancedSettings from "./../../components/advancedSettings/AdvancedSettings";
-import MembersSettings from "./../../components/membership/MembersSettings";
-import SectionTitle from "./../../components/sectionTitle/SectionTitle";
-import "./StatementSettingsForm.scss";
-import QuestionSettings from "../QuestionSettings/QuestionSettings";
+import { handleSetStatement } from './../../statementSettingsCont';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import TitleAndDescription from './../../components/titleAndDescription/TitleAndDescription';
+import AdvancedSettings from './../../components/advancedSettings/AdvancedSettings';
+import MembersSettings from './../../components/membership/MembersSettings';
+import SectionTitle from './../../components/sectionTitle/SectionTitle';
+import './StatementSettingsForm.scss';
+
+// icons
+import SaveIcon from '@/assets/icons/save.svg?react';
+import QuestionSettings from '../QuestionSettings/QuestionSettings';
 
 interface StatementSettingsFormProps {
-  setIsLoading: (isLoading: boolean) => void;
-  statement: Statement;
-  parentStatement?: Statement | "top";
-  setStatementToEdit: (statement: Statement) => void;
+	setIsLoading: (isLoading: boolean) => void;
+	statement: Statement;
+	parentStatement?: Statement | 'top';
+	setStatementToEdit: (statement: Statement) => void;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
@@ -67,15 +70,15 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		return (
 			<form
 				onSubmit={handleSubmit}
-				className="statement-settings-form"
-				data-cy="statement-settings-form"
+				className='statement-settings-form'
+				data-cy='statement-settings-form'
 			>
 				<TitleAndDescription
 					statement={statement}
 					setStatementToEdit={setStatementToEdit}
 				/>
-				<SectionTitle title={t("General Settings")} />
-				<section className="switches-area">
+				<SectionTitle title={t('General Settings')} />
+				<section className='switches-area'>
 					<SubScreensToDisplay {...statementSettingsProps} />
 					<AdvancedSettings {...statementSettingsProps} />
 				</section>
@@ -84,25 +87,25 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
 				{!isNewStatement && (
 					<>
-						<QuestionSettings {...statementSettingsProps} />
 						<UploadImage {...statementSettingsProps} />
-						<SectionTitle title={t("Members")} />
+						<QuestionSettings {...statementSettingsProps} />
+						<SectionTitle title={t('Members')} />
 						<MembersSettings {...statementSettingsProps} />
-						<section className="get-members-area">
+						<section className='get-members-area'>
 							<GetVoters statementId={statementId} />
 						</section>
-						<section className="get-members-area">
+						<section className='get-members-area'>
 							<GetEvaluators statementId={statementId} />
 						</section>
 					</>
 				)}
 
 				<button
-					type="submit"
-					className="submit-button"
-					data-cy="settings-statement-submit-btn"
+					type='submit'
+					className='submit-button'
+					data-cy='settings-statement-submit-btn'
 				>
-					{t(isNewStatement ? "Add" : "Update")}
+					<SaveIcon />
 				</button>
 			</form>
 		);

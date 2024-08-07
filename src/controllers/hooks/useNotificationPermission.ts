@@ -3,7 +3,7 @@ import { useAppSelector } from "./reduxHooks";
 import {
 	hasTokenSelector,
 	statementNotificationSelector,
-} from "../../model/statements/statementsSlice";
+} from "@/model/statements/statementsSlice";
 import { useParams } from "react-router-dom";
 
 const useNotificationPermission = (token: string) => {

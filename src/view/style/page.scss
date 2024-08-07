@@ -40,7 +40,6 @@
             width: 100%;
             padding: 1rem;
 
-            //only not on mobile
             @media screen and (min-width: 600px) {
                 max-width: 75ch;
                 margin: auto;
@@ -66,9 +65,10 @@
 
         &__nav {
             display: flex;
-            width: 100vw;
+            width: 90%;
             max-width: 75ch;
             margin: 0 auto;
+            justify-content: center;
 
             &__button {
                 flex: 1;
@@ -77,13 +77,55 @@
                 align-items: center;
                 padding: 5px;
                 border-bottom: 2px solid rgba(0, 0, 0, 0);
-                letter-spacing: 0.5px;
+                letter-spacing: 0.3px;
                 opacity: 0.7;
 
                 &--selected {
                     font-size: 1.1rem;
                     opacity: 1;
+                    background-color: white;
+                    border-radius: 2rem;
+                    padding: 0.5rem 1rem;
+                    min-width: fit-content;
+                    color: var(--question);
+                    display: block flex;
+                    height: 2.5rem;
+                    margin-top: 0.5rem;
+
+                    @media only screen and (max-width: 600px) {
+                        height: 5rem;
+                    }}
+
+                &__tabTxt {
+                    display: none;
+                    font-weight: 600;
+                    margin-left: 4px;
                 }
+
+                &--selected &__tabTxt {
+                    display: inline;
+                    color: var(--question);
+                }
+
+                &__navIcon {
+                    height: 2rem;
+
+                    @media only screen and (max-width: 600px) {
+                        height: 1.3rem;
+                    }
+                }
+
+                &--selected {
+                    font-size: 1rem;
+                    padding: 0.5rem 0.5rem;
+                    margin: 0rem;
+                    min-width: fit-content;
+                    color: var(--question);
+                    display: block flex;
+                    height: 2.5rem;
+                    margin-top: 0.5rem;
+                }
+
             }
         }
     }

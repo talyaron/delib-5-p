@@ -1,12 +1,12 @@
 .toast {
     position: absolute;
     left: 50%;
-    top: 1rem;
+    top: 4rem;
     transform: translateX(-50%);
     box-shadow: 0 3px 6px #4162862b;
     font-size: 1rem;
     width: max-content;
-
+    max-width: 95%;
     background-color: var(--tooltip);
     color: white;
 
@@ -19,6 +19,7 @@
         padding: var(--padding);
         font-size: 1.3rem;
         max-width: 50ch;
+        line-height: 2.2rem;
     }
 
     &__children {
@@ -32,12 +33,12 @@
 
     @keyframes jumpIn {
         0% {
-            top:12rem;
+            top:16rem;
             opacity: 0.3;
             transform: translateX(-50%) scale(0.5);
         }
         100% {
-            top:1rem;
+            top:4rem;
             opacity: 1;
             transform: translateX(-50%) scale(1);
         }

@@ -5,29 +5,28 @@ import { Handle, NodeProps } from "reactflow";
 import { useNavigate } from "react-router-dom";
 
 // Hooks
-import { useMapContext } from "../../../../../../controllers/hooks/useMap";
+import { useMapContext } from "@/controllers/hooks/useMap";
 
 // Icons
-import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
+import PlusIcon from "@/assets/icons/plusIcon.svg?react";
 
 // Statements functions
 import {
 	calculateFontSize,
 	statementTitleToDisplay,
-} from "../../../../../../controllers/general/helpers";
-import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
+} from "@/controllers/general/helpers";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 import { Statement } from "delib-npm";
+
 
 const nodeStyle = (
 	parentStatement: Statement | "top",
 	statementColor: { backgroundColor: string; color: string },
-	nodeTitle: string,
+	nodeTitle: string
 ) => {
 	const style = {
 		backgroundColor:
-            parentStatement === "top"
-            	? "darkblue"
-            	: statementColor.backgroundColor,
+      parentStatement === "top" ? "darkblue" : statementColor.backgroundColor,
 		color: statementColor.color,
 		height: 40,
 		width: 70,
@@ -45,6 +44,7 @@ const nodeStyle = (
 
 export default function CustomNode({ data }: NodeProps) {
 	const navigate = useNavigate();
+ 
 
 	const { result, parentStatement } = data;
 
@@ -114,10 +114,8 @@ export default function CustomNode({ data }: NodeProps) {
 						style={{
 							position: "absolute",
 							cursor: "pointer",
-							right:
-                                mapContext.direction === "TB" ? 0 : "-1.8rem",
-							bottom:
-                                mapContext.direction === "TB" ? "-1.8rem" : 0,
+							right: mapContext.direction === "TB" ? 0 : "-1.8rem",
+							bottom: mapContext.direction === "TB" ? "-1.8rem" : 0,
 						}}
 					>
 						<PlusIcon />

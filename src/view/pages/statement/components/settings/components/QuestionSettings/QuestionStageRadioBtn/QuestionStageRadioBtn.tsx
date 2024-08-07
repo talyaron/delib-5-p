@@ -2,13 +2,15 @@ import { FC } from "react";
 import "./QuestionStageRadioBtn.scss";
 import { QuestionStage, Statement } from "delib-npm";
 
-import LightBulbIcon from "../../../../../../../../assets/icons/lightBulbIcon.svg?react";
-import ArrowUp from "../../../../../../../../assets/icons/arrowUpIcon.svg?react";
-import EvaluationsIcon from "../../../../../../../../assets/icons/evaluations2Icon.svg?react";
-import HandIcon from "../../../../../../../../assets/icons/handIcon.svg?react";
-import FlagIcon from "../../../../../../../../assets/icons/flagIcon.svg?react";
-import { setQuestionStage } from "../../../../../../../../controllers/db/statements/statementMetaData/setStatementMetaData";
-import { useLanguage } from "../../../../../../../../controllers/hooks/useLanguages";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import ArrowUp from "@/assets/icons/arrowUpIcon.svg?react";
+import EvaluationsIcon from "@/assets/icons/evaluations2Icon.svg?react";
+import HandIcon from "@/assets/icons/handIcon.svg?react";
+import FlagIcon from "@/assets/icons/flagIcon.svg?react";
+import { setQuestionStage } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";
 
 interface Props {
   stage: QuestionStage;
@@ -23,6 +25,7 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 		isSelected
 	);
 	const stageInfo = getStagesInfo(stage);
+	const numberOfEvaluators = useAppSelector(statementMetaDataSelector(statement.statementId))?.numberOfEvaluators || 0;
 	
 	return (
 		<div
@@ -37,7 +40,7 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 				}}
 			>
 				{stageInfo ? stageInfo.icon : <LightBulbIcon className="img" />}
-				<div className="number">324</div>
+				{stage === QuestionStage.suggestion &&<div className="number">{numberOfEvaluators}</div>}
 			</div>
 			<div
 				className="question-stage-radio-btn__radio"

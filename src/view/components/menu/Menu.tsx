@@ -1,13 +1,13 @@
-import { ComponentProps, FC, useEffect } from "react";
+import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
-import EllipsisIcon from "../../../assets/icons/ellipsisIcon.svg?react";
+import EllipsisIcon from "@/assets/icons/ellipsisIcon.svg?react";
 import "./Menu.scss";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface MenuProps extends ComponentProps<"div"> {
-  iconColor: string;
-  isMenuOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+	iconColor: string;
+	isMenuOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
 }
 
 const Menu: FC<MenuProps> = ({
@@ -18,20 +18,11 @@ const Menu: FC<MenuProps> = ({
 }) => {
 	const { dir } = useLanguage();
 
-	useEffect(() => {
-		if (isMenuOpen) {
-			const timer = setTimeout(() => {
-				setIsOpen(false);
-			}, 2000);
-
-			return () => clearTimeout(timer); // Cleanup the timer if the component unmounts or isMenuOpen changes
-		}
-	}, [isMenuOpen, setIsOpen]);
 
 	if (!children) {
 		return null;
 	}
-
+   
 	return (
 		<div className="menu">
 			<IconButton onClick={() => setIsOpen(!isMenuOpen)}>

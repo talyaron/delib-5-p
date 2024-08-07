@@ -15,15 +15,15 @@ import {
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
-import { store } from "../../../model/store";
+import { store } from "@/model/store";
 import { setStatementSubscriptionNotificationToDB } from "../notifications/notifications";
 import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
-import { getRandomColor } from "../../../view/pages/statement/components/vote/votingColors";
+import { getRandomColor } from "@/view/pages/statement/components/vote/votingColors";
 import {
 	getExistingOptionColors,
 	getSiblingOptionsByParentId,
-} from "../../../view/pages/statement/components/vote/statementVoteCont";
-import { allowedScreens } from "../../general/screens";
+} from "@/view/pages/statement/components/vote/statementVoteCont";
+import { allowedScreens } from "@/controllers/general/screens";
 
 
 
@@ -442,6 +442,11 @@ export async function updateStatementText(
 	try {
 		if (!newText) throw new Error("New text is undefined");
 		if (!statement) throw new Error("Statement is undefined");
+
+		// console.log(statement.statement);
+		// console.log(newText);
+		
+		
 		if (statement.statement === newText) return;
 
 		StatementSchema.parse(statement);
@@ -450,6 +455,7 @@ export async function updateStatementText(
 			Collections.statements,
 			statement.statementId,
 		);
+		
 		const newStatement = {
 			statement: newText,
 			lastUpdate: Timestamp.now().toMillis(),

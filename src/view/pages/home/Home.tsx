@@ -4,24 +4,22 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
-import {
-	useAppSelector,
-} from "../../../controllers/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
 // Helpers
-import { listenToStatementSubscriptions } from "../../../controllers/db/subscriptions/getSubscriptions";
+import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "@/controllers/db/subscriptions/getSubscriptions";
 
 // Custom Components
-import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
+import HomeHeader from "./HomeHeader";
 
-interface ListenedStatements{
-	unsubFunction:()=>void;
-	statementId:string;
+interface ListenedStatements {
+	unsubFunction: () => void;
+	statementId: string;
 }
 
-export const listenedStatements:Array<ListenedStatements> = [];
+export const listenedStatements: Array<ListenedStatements> = [];
 
 export default function Home() {
 	// Hooks
@@ -43,28 +41,36 @@ export default function Home() {
 	}, [location]);
 
 	useEffect(() => {
-		
+
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		let unsubscribe: () => void = () => {};
+		let unsubscribe: () => void = () => { };
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let updatesUnsubscribe: () => void = () => { };
 		try {
 			if (user) {
 				unsubscribe = listenToStatementSubscriptions(30);
+				updatesUnsubscribe = getNewStatementsFromSubscriptions();
 			}
-		} catch (error) {}
+		} catch (error) { }
 
 		return () => {
 			if (unsubscribe) {
 				unsubscribe();
-				listenedStatements.forEach((ls)=>{
+				listenedStatements.forEach((ls) => {
 					ls.unsubFunction();
 				});
+			}
+			if (updatesUnsubscribe) {
+				updatesUnsubscribe();
 			}
 		};
 	}, [user]);
 
+
+
 	return (
 		<ScreenSlide className="page slide-in">
-			{displayHeader && <HomeHeader />}
+			{displayHeader && <HomeHeader />}     
 			<Outlet />
 		</ScreenSlide>
 	);
