@@ -2,12 +2,12 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import {
-  QuestionStage,
-  QuestionType,
-  Statement,
-  StatementType,
-  User,
-  isOptionFn,
+	QuestionStage,
+	QuestionType,
+	Statement,
+	StatementType,
+	User,
+	isOptionFn,
 } from "delib-npm";
 import { useParams, useNavigate } from "react-router";
 
@@ -37,494 +37,502 @@ interface StatementEvaluationPageProps {
   statement: Statement;
   subStatements: Statement[];
   handleShowTalker: (talker: User | null) => void;
-  currentPage?:string;
+  currentPage?: string;
   showNav?: boolean;
   questions?: boolean;
   toggleAskNotifications: () => void;
 }
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
-  statement,
-  subStatements,
-  handleShowTalker,
-  questions = false,
-  toggleAskNotifications,
-  currentPage,
+	statement,
+	subStatements,
+	handleShowTalker,
+	questions = false,
+	toggleAskNotifications,
+	currentPage = "suggestion",
 }) => {
-  try {
-    // Hooks
-    const { sort } = useParams();
-    const navigate = useNavigate();
+	try {
+		// Hooks
+		const { sort } = useParams();
+		const navigate = useNavigate();
 
-    const { t } = useLanguage();
+		const { t } = useLanguage();
 
-    const isMuliStage =
+		const isMuliStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
-    const currentStage = statement.questionSettings?.currentStage;
-    const stageInfo = getStagesInfo(currentStage);
-    const useSearchForSimilarStatements =
+		const currentStage = statement.questionSettings?.currentStage;
+		const stageInfo = getStagesInfo(currentStage);
+		const useSearchForSimilarStatements =
       statement.statementSettings?.enableSimilaritiesSearch || false;
 
-    // Use States
-    const [showModal, setShowModal] = useState(false);
-    const [showToast, setShowToast] = useState(false);
-    const [showExplanation, setShowExplanation] = useState(
-      currentStage === QuestionStage.explanation && isMuliStage && !questions
-    );
-    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
-      [...subStatements]
-    );
-    const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+		// Use States
+		const [showModal, setShowModal] = useState(false);
+		const [showToast, setShowToast] = useState(false);
+		const [showExplanation, setShowExplanation] = useState(
+			currentStage === QuestionStage.explanation && isMuliStage && !questions
+		);
+		const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
+			[...subStatements]
+		);
+		const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
-    useEffect(() => {
-      const _sortedSubStatements = sortSubStatements(
-        subStatements,
-        sort
-      ).filter((subStatement) => {
-        //if questions is true, only show questions
-        if (questions) {
-          return subStatement.statementType === StatementType.question;
-        }
+		useEffect(() => {
+			const _sortedSubStatements = sortSubStatements(
+				subStatements,
+				sort
+			).filter((subStatement) => {
+				//if questions is true, only show questions
+				if (questions) {
+					return subStatement.statementType === StatementType.question;
+				}
 
-        if (isMuliStage) {
-          //filter the temp presentation designed for this stage
-          return subStatement.isPartOfTempPresentation;
-        }
+				if (isMuliStage) {
+					//filter the temp presentation designed for this stage
+					return subStatement.isPartOfTempPresentation;
+				}
 
-        //if options is true, only show options
-        return isOptionFn(subStatement);
-      });
+				//if options is true, only show options
+				return isOptionFn(subStatement);
+			});
 
-      setSortedSubStatements(_sortedSubStatements);
-    }, [sort, subStatements, questions]);
+			setSortedSubStatements(_sortedSubStatements);
+		}, [sort, subStatements, questions]);
 
-    useEffect(() => {
-      if (questions) {
-        setShowToast(false);
-      }
-    }, [questions]);
+		useEffect(() => {
+			if (questions) {
+				setShowToast(false);
+			}
+		}, [questions]);
 
-    useEffect(() => {
-      if (isMuliStage) {
-        getMultiStageOptions(statement);
-      }
-    }, [currentStage]);
+		useEffect(() => {
+			if (isMuliStage) {
+				getMultiStageOptions(statement);
+			}
+		}, [currentStage]);
 
-    useEffect(() => {
-      if (!showToast && !questions) {
-        setShowToast(true);
-      }
-      if (
-        currentStage === QuestionStage.explanation &&
+		useEffect(() => {
+			if (!showToast && !questions) {
+				setShowToast(true);
+			}
+			if (
+				currentStage === QuestionStage.explanation &&
         isMuliStage &&
         !questions
-      ) {
-        setShowExplanation(true);
-      }
-      if (currentStage === QuestionStage.voting && !questions) {
-        //redirect us react router dom to voting page
-        navigate(`/statement/${statement.statementId}/vote`);
-      }
-    }, [statement.questionSettings?.currentStage, questions]);
+			) {
+				setShowExplanation(true);
+			}
+			if (currentStage === QuestionStage.voting && !questions) {
+				//redirect us react router dom to voting page
+				navigate(`/statement/${statement.statementId}/vote`);
+			}
+		}, [statement.questionSettings?.currentStage, questions]);
 
-    // Variables
-    let topSum = 30;
-    const tops: number[] = [topSum];
-    const message = stageInfo ? stageInfo.message : false;
+		// Variables
+		const topSum = 30;
+		const tops: number[] = [topSum];
+		const message = stageInfo ? stageInfo.message : false;
 
-    const handlePlusIconClick = () => {
-      setShowModal(true);
-    };
+		const handlePlusIconClick = () => {
+			setShowModal(true);
+		};
 
-    const { width } = useWindowDimensions();
-    const smallScreen = width < 1024;
+		const { width } = useWindowDimensions();
+		const smallScreen = width < 1024;
 
+		//empty screen with small screen
+		if (sortedSubStatements.length === 0) {
+			if (smallScreen) {
+				return (
+					<>
+						<div
+							className={styles.addingStatementWrapper}
+							style={{ paddingTop: "2rem" }}
+						>
+							<div className={styles.header}>
+								<div className={styles.title}>
+									<h1>
+										{t(`Click on`)}{" "}
+										<span className={styles.titleSpan}>
+											{t(`Add ${currentPage} button`)}
+										</span>{" "}
+										{t(`to add your ${currentPage}`)}
+									</h1>
+								</div>
+								<div
+									className={styles.plusButton}
+									onClick={handlePlusIconClick}
+									style={{ width: "4.70rem", height: "4.70rem" }}
+								>
+									<WhitePlusIcon />
+								</div>
+							</div>
+							<img src={ideaImage} alt="" className={styles.ideaImage} />
+						</div>
+						{isMuliStage && message && (
+							<Toast
+								text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}"` : ""}`}
+								type="message"
+								show={showToast}
+								setShow={setShowToast}
+							>
+								{getToastButtons(currentStage)}
+							</Toast>
+						)}
+						{sortedSubStatements?.map((statementSub: Statement, i: number) => {
+							return (
+								<StatementEvaluationCard
+									key={statementSub.statementId}
+									parentStatement={statement}
+									statement={statementSub}
+									showImage={handleShowTalker}
+									top={tops[i]}
+								/>
+							);
+						})}
+						{showExplanation && (
+							<Modal>
+								<StatementInfo
+									statement={statement}
+									setShowInfo={setShowExplanation}
+								/>
+							</Modal>
+						)}
+						{showModal && (
+							<CreateStatementModalSwitch
+								toggleAskNotifications={toggleAskNotifications}
+								parentStatement={statement}
+								isQuestion={questions}
+								isMuliStage={isMuliStage}
+								setShowModal={setShowModal}
+								useSimilarStatements={useSearchForSimilarStatements}
+							/>
+						)}
+					</>
+				);
+			} else {
+				//empty screen with large screen
+				return (
+					<>
+						<div
+							className={styles.addingStatementWrapper}
+							style={{ paddingTop: "2rem" }}
+						>
+							<div className={styles.header}>
+								<div className={styles.title}>
+									<h1>
+										{t(`Click on`)}{" "}
+										<span className={styles.titleSpan}>
+											{t(`Add ${currentPage} button`)}
+										</span>{" "}
+										{t(`to add your ${currentPage}`)}
+									</h1>
+								</div>
+								<div
+									className={styles.plusButton}
+									onClick={handlePlusIconClick}
+								>
+									<WhitePlusIcon />
+									<p>{t(`Add ${currentPage}`)}</p>
+								</div>
+							</div>
+							<img src={ideaImage} alt="" className={styles.ideaImage} />
+						</div>
+						{isMuliStage && message && (
+							<Toast
+								text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}"` : ""}`}
+								type="message"
+								show={showToast}
+								setShow={setShowToast}
+							>
+								{getToastButtons(currentStage)}
+							</Toast>
+						)}
+						{sortedSubStatements?.map((statementSub: Statement, i: number) => {
+							return (
+								<StatementEvaluationCard
+									key={statementSub.statementId}
+									parentStatement={statement}
+									statement={statementSub}
+									showImage={handleShowTalker}
+									top={tops[i]}
+								/>
+							);
+						})}
+						{showExplanation && (
+							<Modal>
+								<StatementInfo
+									statement={statement}
+									setShowInfo={setShowExplanation}
+								/>
+							</Modal>
+						)}
+						{showModal && (
+							<CreateStatementModalSwitch
+								toggleAskNotifications={toggleAskNotifications}
+								parentStatement={statement}
+								isQuestion={questions}
+								isMuliStage={isMuliStage}
+								setShowModal={setShowModal}
+								useSimilarStatements={useSearchForSimilarStatements}
+							/>
+						)}
+					</>
+				);
+			}
+		}
 
-    //empty screen with small screen
-    if (sortedSubStatements.length === 0) {
-      if (smallScreen) {
-        return (
-          <>
-            <div
-              className={styles.addingStatementWrapper}
-              style={{ paddingTop: "2rem" }}
-            >
-              <div className={styles.header}>
-                <div className={styles.title}>
-                  <h1>
-                    Click on <span className={styles.titleSpan}>"+"</span> to
-                    add your {currentPage}
-                  </h1>
-                </div>
-                <div
-                  className={styles.plusButton}
-                  onClick={handlePlusIconClick}
-                  style={{ width: "4.70rem", height: "4.70rem" }}
-                >
-                  <WhitePlusIcon />
-                </div>
-              </div>
-              <img src={ideaImage} alt="" className={styles.ideaImage} />
-            </div>
-            {isMuliStage && message && (
-              <Toast
-                text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}"` : ""}`}
-                type="message"
-                show={showToast}
-                setShow={setShowToast}
-              >
-                {getToastButtons(currentStage)}
-              </Toast>
-            )}
-            {sortedSubStatements?.map((statementSub: Statement, i: number) => {
+		return (
+			<>
+				{smallScreen ? (
 
-              return (
-                <StatementEvaluationCard
-                  key={statementSub.statementId}
-                  parentStatement={statement}
-                  statement={statementSub}
-                  showImage={handleShowTalker}
-                  top={tops[i]}
-                />
-              );
-            })}
-            {showExplanation && (
-              <Modal>
-                <StatementInfo
-                  statement={statement}
-                  setShowInfo={setShowExplanation}
-                />
-              </Modal>
-            )}
-            {showModal && (
-              <CreateStatementModalSwitch
-                toggleAskNotifications={toggleAskNotifications}
-                parentStatement={statement}
-                isQuestion={questions}
-                isMuliStage={isMuliStage}
-                setShowModal={setShowModal}
-                useSimilarStatements={useSearchForSimilarStatements}
-              />
-            )}
-          </>
-        );
-      } else {
-            //empty screen with large screen
-        return (
-          <>
-            <div
-              className={styles.addingStatementWrapper}
-              style={{paddingTop:"2rem"}}
-            >
-              <div className={styles.header}>
-                <div className={styles.title}>
-                  <h1>
-                    Click on{" "}
-                    <span className={styles.titleSpan}>
-                      "Add {currentPage} button"
-                    </span>{" "}
-                    to add your {currentPage}
-                  </h1>
-                </div>
-                <div
-                  className={styles.plusButton}
-                  onClick={handlePlusIconClick}
-                >
-                  <WhitePlusIcon />
-                  <p>Add {currentPage}</p>
-                </div>
-              </div>
-              <img src={ideaImage} alt="" className={styles.ideaImage} />
-            </div>
-            {isMuliStage && message && (
-              <Toast
-                text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}"` : ""}`}
-                type="message"
-                show={showToast}
-                setShow={setShowToast}
-              >
-                {getToastButtons(currentStage)}
-              </Toast>
-            )}
-            {sortedSubStatements?.map((statementSub: Statement, i: number) => {
+				//1 + in screen with small screen
+					<div className={styles.wrapper}>
+						<div className={styles.main}>
+							{isMuliStage && message && (
+								<Toast
+									text={`${t(message)}${
+										currentStage === QuestionStage.suggestion
+											? `: "${getTitle(statement)}"`
+											: ""
+									}`}
+									type="message"
+									show={showToast}
+									setShow={setShowToast}
+								>
+									{getToastButtons(currentStage)}
+								</Toast>
+							)}
+							{sortedSubStatements?.map(
+								(statementSub: Statement, i: number) => {
+									return (
+										<StatementEvaluationCard
+											key={statementSub.statementId}
+											parentStatement={statement}
+											statement={statementSub}
+											showImage={handleShowTalker}
+											top={tops[i]}
+										/>
+									);
+								}
+							)}
+						</div>
+						<div
+							className={styles.addingStatementWrapper}
+							style={{
+								flexDirection: "row",
+								justifyContent: "space-between",
+								alignItems: "baseline",
+								paddingInline: "2.5rem",
+								position: "absolute",
+								width: "100%",
+							}}
+						>
+							<div
+								className={styles.plusButton}
+								onClick={handlePlusIconClick}
+								style={{ visibility: isNavigationOpen ? "hidden" : "visible" }}
+							>
+								<WhitePlusIcon />
+							</div>
+							{sortedSubStatements.length > 1 && (
+								<div className={styles.bottomNav}>
+									<StatementBottomNav
+										setShowModal={setShowModal}
+										statement={statement}
+										setIsNavigationOpen={setIsNavigationOpen}
+										isNavigationOpen={isNavigationOpen}
+										currentPage={currentPage}
+									/>
+								</div>
+							)}
+						</div>
 
-              return (
-                <StatementEvaluationCard
-                  key={statementSub.statementId}
-                  parentStatement={statement}
-                  statement={statementSub}
-                  showImage={handleShowTalker}
-                  top={tops[i]}
-                />
-              );
-            })}
-            {showExplanation && (
-              <Modal>
-                <StatementInfo
-                  statement={statement}
-                  setShowInfo={setShowExplanation}
-                />
-              </Modal>
-            )}
-            {showModal && (
-              <CreateStatementModalSwitch
-                toggleAskNotifications={toggleAskNotifications}
-                parentStatement={statement}
-                isQuestion={questions}
-                isMuliStage={isMuliStage}
-                setShowModal={setShowModal}
-                useSimilarStatements={useSearchForSimilarStatements}
-              />
-            )}
-          </>
-        );
-      }
-    }
+						{showExplanation && (
+							<Modal>
+								<StatementInfo
+									statement={statement}
+									setShowInfo={setShowExplanation}
+								/>
+							</Modal>
+						)}
 
-    return (
-      <>
-        {smallScreen ? (
-              //1 + in screen with small screen
-          <div className={styles.wrapper}>
-            <div className={styles.main}>
-              {isMuliStage && message && (
-                <Toast
-                  text={`${t(message)}${
-                    currentStage === QuestionStage.suggestion
-                      ? `: "${getTitle(statement)}"`
-                      : ""
-                  }`}
-                  type="message"
-                  show={showToast}
-                  setShow={setShowToast}
-                >
-                  {getToastButtons(currentStage)}
-                </Toast>
-              )}
-              {sortedSubStatements?.map(
-                (statementSub: Statement, i: number) => {
+						{showModal && (
+							<CreateStatementModalSwitch
+								toggleAskNotifications={toggleAskNotifications}
+								parentStatement={statement}
+								isQuestion={questions}
+								isMuliStage={isMuliStage}
+								setShowModal={setShowModal}
+								useSimilarStatements={useSearchForSimilarStatements}
+							/>
+						)}
+					</div>
+				) : (
 
-                  return (
-                    <StatementEvaluationCard
-                      key={statementSub.statementId}
-                      parentStatement={statement}
-                      statement={statementSub}
-                      showImage={handleShowTalker}
-                      top={tops[i]}
-                    />
-                  );
-                }
-              )}
-            </div>
-            <div
-              className={styles.addingStatementWrapper}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "baseline",
-                paddingInline: "2.5rem",
-                position: "absolute",
-                width: "100%",
-              }}
-            >
-              <div
-                className={styles.plusButton}
-                onClick={handlePlusIconClick}
-                style={{ visibility: isNavigationOpen ? "hidden" : "visible" }}
-              >
-                <WhitePlusIcon />
-              </div>
-              {sortedSubStatements.length > 1 && (
-                <div className={styles.bottomNav}>
-                  <StatementBottomNav
-                    setShowModal={setShowModal}
-                    statement={statement}
-                    setIsNavigationOpen={setIsNavigationOpen}
-                    isNavigationOpen={isNavigationOpen}
-                    currentPage={currentPage}
-                  />
-                </div>
-              )}
-            </div>
+				//1 + in screen with large screen
+					<div className={styles.wrapper}>
+						<div
+							className={styles.main}
+							style={
+								sortedSubStatements.length >= 2 ? { marginTop: "5rem" } : {}
+							}
+						>
+							<div
+								className={
+									sortedSubStatements.length < 2
+										? styles.addingStatementWrapper
+										: `${styles.addingStatementWrapper} ${styles.sortSuggestionActive}`
+								}
+								style={{
+									flexDirection: "row",
+									justifyContent: "space-between",
+									alignItems: "baseline",
+								}}
+							>
+								<div
+									className={styles.plusButton}
+									onClick={handlePlusIconClick}
+								>
+									<WhitePlusIcon />
+									<p>{t(`Add ${currentPage}`)}</p>
+								</div>
+								{sortedSubStatements.length > 1 && (
+									<div className={styles.bottomNav}>
+										<StatementBottomNav
+											setShowModal={setShowModal}
+											statement={statement}
+											setIsNavigationOpen={setIsNavigationOpen}
+											isNavigationOpen={isNavigationOpen}
+											currentPage={currentPage}
+										/>
+									</div>
+								)}
+							</div>
+							{isMuliStage && message && (
+								<Toast
+									text={`${t(message)}${
+										currentStage === QuestionStage.suggestion
+											? `: "${getTitle(statement)}"`
+											: ""
+									}`}
+									type="message"
+									show={showToast}
+									setShow={setShowToast}
+								>
+									{getToastButtons(currentStage)}
+								</Toast>
+							)}
+							{sortedSubStatements?.map(
+								(statementSub: Statement, i: number) => {
+									return (
+										<StatementEvaluationCard
+											key={statementSub.statementId}
+											parentStatement={statement}
+											statement={statementSub}
+											showImage={handleShowTalker}
+											top={tops[i]}
+										/>
+									);
+								}
+							)}
+						</div>
 
-            {showExplanation && (
-              <Modal>
-                <StatementInfo
-                  statement={statement}
-                  setShowInfo={setShowExplanation}
-                />
-              </Modal>
-            )}
+						{showExplanation && (
+							<Modal>
+								<StatementInfo
+									statement={statement}
+									setShowInfo={setShowExplanation}
+								/>
+							</Modal>
+						)}
 
-            {showModal && (
-              <CreateStatementModalSwitch
-                toggleAskNotifications={toggleAskNotifications}
-                parentStatement={statement}
-                isQuestion={questions}
-                isMuliStage={isMuliStage}
-                setShowModal={setShowModal}
-                useSimilarStatements={useSearchForSimilarStatements}
-              />
-            )}
-          </div>
-        ) : (
-                        //1 + in screen with large screen
-          <div className={styles.wrapper}>
-            <div className={styles.main}
-            style={sortedSubStatements.length >= 2 ? {marginTop:"5rem"} : {}}>
-              <div
-                className={sortedSubStatements.length < 2 ? styles.addingStatementWrapper : `${styles.addingStatementWrapper} ${styles.sortSuggestionActive}`}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                }}
-              >
-                <div
-                  className={styles.plusButton}
-                  onClick={handlePlusIconClick}
-                >
-                  <WhitePlusIcon />
-                  <p>Add {currentPage}</p>
-                </div>
-                {sortedSubStatements.length > 1 && (
-                  <div className={styles.bottomNav}>
-                    <StatementBottomNav
-                      setShowModal={setShowModal}
-                      statement={statement}
-                      setIsNavigationOpen={setIsNavigationOpen}
-                      isNavigationOpen={isNavigationOpen}
-                      currentPage={currentPage}
-                    />
-                  </div>
-                )}
-              </div>
-              {isMuliStage && message && (
-                <Toast
-                  text={`${t(message)}${
-                    currentStage === QuestionStage.suggestion
-                      ? `: "${getTitle(statement)}"`
-                      : ""
-                  }`}
-                  type="message"
-                  show={showToast}
-                  setShow={setShowToast}
-                >
-                  {getToastButtons(currentStage)}
-                </Toast>
-              )}
-              {sortedSubStatements?.map(
-                (statementSub: Statement, i: number) => {
-                  
-                  return (
-                    <StatementEvaluationCard
-                      key={statementSub.statementId}
-                      parentStatement={statement}
-                      statement={statementSub}
-                      showImage={handleShowTalker}
-                      top={tops[i]}
-                    />
-                  );
-                }
-              )}
-            </div>
+						{showModal && (
+							<CreateStatementModalSwitch
+								toggleAskNotifications={toggleAskNotifications}
+								parentStatement={statement}
+								isQuestion={questions}
+								isMuliStage={isMuliStage}
+								setShowModal={setShowModal}
+								useSimilarStatements={useSearchForSimilarStatements}
+							/>
+						)}
+					</div>
+				)}
+			</>
+		);
 
-            {showExplanation && (
-              <Modal>
-                <StatementInfo
-                  statement={statement}
-                  setShowInfo={setShowExplanation}
-                />
-              </Modal>
-            )}
+		function getToastButtons(questionStage: QuestionStage | undefined) {
+			try {
+				switch (questionStage) {
+				case QuestionStage.voting:
+				case QuestionStage.firstEvaluation:
+				case QuestionStage.secondEvaluation:
+				case QuestionStage.finished:
+				case QuestionStage.explanation:
+					return (
+						<Button
+							text={t("Close")}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							icon={<X />}
+							color="white"
+							bckColor="var(--crimson)"
+						/>
+					);
+				case QuestionStage.suggestion:
+					return (
+						<>
+							<Button
+								text={t("Close")}
+								iconOnRight={false}
+								onClick={() => {
+									setShowToast(false);
+								}}
+								icon={<X />}
+								color="white"
+								bckColor="var(--crimson)"
+							/>
+							<Button
+								text={t("Add a solution")}
+								iconOnRight={true}
+								onClick={() => {
+									setShowToast(false);
+									setShowModal(true);
+								}}
+								icon={<LightBulbIcon />}
+								color="white"
+								bckColor="var(--green)"
+							/>
+						</>
+					);
 
-            {showModal && (
-              <CreateStatementModalSwitch
-                toggleAskNotifications={toggleAskNotifications}
-                parentStatement={statement}
-                isQuestion={questions}
-                isMuliStage={isMuliStage}
-                setShowModal={setShowModal}
-                useSimilarStatements={useSearchForSimilarStatements}
-              />
-            )}
-          </div>
-        )}
-      </>
-    );
+				default:
+					return (
+						<Button
+							text={t("Close")}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							icon={<X />}
+							color="white"
+							bckColor="var(--crimson)"
+						/>
+					);
+				}
+			} catch (error) {
+				console.error(error);
 
-    function getToastButtons(questionStage: QuestionStage | undefined) {
-      try {
-        switch (questionStage) {
-          case QuestionStage.voting:
-          case QuestionStage.firstEvaluation:
-          case QuestionStage.secondEvaluation:
-          case QuestionStage.finished:
-          case QuestionStage.explanation:
-            return (
-              <Button
-                text={t("Close")}
-                iconOnRight={false}
-                onClick={() => {
-                  setShowToast(false);
-                }}
-                icon={<X />}
-                color="white"
-                bckColor="var(--crimson)"
-              />
-            );
-          case QuestionStage.suggestion:
-            return (
-              <>
-                <Button
-                  text={t("Close")}
-                  iconOnRight={false}
-                  onClick={() => {
-                    setShowToast(false);
-                  }}
-                  icon={<X />}
-                  color="white"
-                  bckColor="var(--crimson)"
-                />
-                <Button
-                  text={t("Add a solution")}
-                  iconOnRight={true}
-                  onClick={() => {
-                    setShowToast(false);
-                    setShowModal(true);
-                  }}
-                  icon={<LightBulbIcon />}
-                  color="white"
-                  bckColor="var(--green)"
-                />
-              </>
-            );
+				return null;
+			}
+		}
+	} catch (error) {
+		console.error(error);
 
-          default:
-            return (
-              <Button
-                text={t("Close")}
-                iconOnRight={false}
-                onClick={() => {
-                  setShowToast(false);
-                }}
-                icon={<X />}
-                color="white"
-                bckColor="var(--crimson)"
-              />
-            );
-        }
-      } catch (error) {
-        console.error(error);
-
-        return null;
-      }
-    }
-  } catch (error) {
-    console.error(error);
-
-    return null;
-  }
+		return null;
+	}
 };
 
 export default StatementEvaluationPage;

@@ -134,5 +134,14 @@
     "Finished": "Voltooid",
     "single-step": "Enkele stap",
     "multiple-steps": "Meerdere stappen",
-    "There are no rooms yet":"Er zijn nog geen kamers"
+    "There are no rooms yet":"Er zijn nog geen kamers",
+    "Click on": "Klik op",
+    "Add suggestion button": "Suggestieknop toevoegen",
+    "to add your suggestion": "om uw suggestie toe te voegen",
+    "Add suggestion":"Suggestie toevoegen",
+    "Add question button": "Vraagknop toevoegen",
+    "to add your question": "om uw vraag toe te voegen",
+    "Add question":"Vraag toevoegen",
+    "Sort questions": "Sorteer vragen",
+    "Sort suggestions": "Suggesties sorteren"
 }

@@ -1,13 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 // Third party libraries
 import { Statement, Screen, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-// import LightIcon from "../../../../../../assets/icons/lightBulbIcon.svg?react";
-// import NavQuestionIcon from "../../../../../../assets/icons/questionIcon.svg?react";
-// import PlusIcon from "../../../../../../assets/icons/plusIcon.svg?react";
 import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?react";
 import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
 import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
@@ -19,11 +16,10 @@ import {
   questionsArray,
   votesArray,
 } from "./StatementBottomNavModal";
-// import IconButton from "../../../../../components/iconButton/IconButton";
 import "./StatementBottomNav.scss";
-// import NewIconButton from "../../../../../components/iconButton/NewIconButton";
 import SortIcon from "../../../../../components/icons/SortIcon";
 import useWindowDimensions from "../../../../../../controllers/hooks/useWindowDimentions";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
   statement: Statement;
@@ -35,16 +31,18 @@ interface Props {
 }
 
 const StatementBottomNav: FC<Props> = ({
-  // setShowModal,
   statement,
   setIsNavigationOpen,
   isNavigationOpen,
   currentPage,
 }) => {
   const { page } = useParams();
-  // const MainIcon = page === Screen.QUESTIONS ? NavQuestionIcon : LightIcon;
+
+  const { t } = useLanguage();
 
   const navItems = getNavigationScreens(page);
+  const [isMainButtonVisible, setIsMainButtonVisible] = useState(true);
+  const [isSmallIcon, setIsSmallIcon] = useState(false);
 
   const statementColor = useStatementColor(
     statement.statementType || StatementType.statement
@@ -60,21 +58,27 @@ const StatementBottomNav: FC<Props> = ({
   const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
   const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
   const showAddQuestion = page === Screen.QUESTIONS;
-  // const isAddOption =
   showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
   if (!setIsNavigationOpen) {
     return null;
   }
 
+  //nav button handler
   const handleMidIconClick = () => {
-    if (!isNavigationOpen) return setIsNavigationOpen(true);
-    setIsNavigationOpen(false);
-  };
+    if (!isNavigationOpen) {
+      setIsNavigationOpen(true);
+      setIsSmallIcon(true);
+    } else {
+      setIsNavigationOpen(false);
+      setIsMainButtonVisible(false);
+      setIsSmallIcon(true);
 
-  // const navStyle = {
-  //   bottom: page === "vote" ? "unset" : "3rem",
-  //   height: page === "vote" ? "4rem" : "unset",
-  // };
+      setTimeout(() => {
+        setIsMainButtonVisible(true);
+        setIsSmallIcon(false);
+      }, 1000);
+    }
+  };
 
   const { width } = useWindowDimensions();
   const smallScreen = width < 1024;
@@ -82,26 +86,19 @@ const StatementBottomNav: FC<Props> = ({
   return (
     <>
       {isNavigationOpen && (
-        <div
-          className="invisibleBackground"
-          onClick={() => setIsNavigationOpen(false)}
-        />
+        <div className="invisibleBackground" onClick={handleMidIconClick} />
       )}
       <div className="statement-bottom-nav">
-        {/* <IconButton
-          className="open-nav-icon burger"
-          style={statementColor}
-          onClick={handleMidIconClick}
-          data-cy="bottom-nav-mid-icon"
-        >
-          {isNavigationOpen && isAddOption ? (
-            <PlusIcon style={{ color: statementColor.color }} />
-          ) : (
-            <MainIcon style={{ color: statementColor.color }} />
-          )} */}
-        {/* </IconButton> */}
         {smallScreen ? (
-          <div style={{ visibility: isNavigationOpen ? "hidden" : "visible" }}>
+          <div
+            style={{
+              visibility: isNavigationOpen
+                ? "hidden"
+                : isMainButtonVisible
+                  ? "visible"
+                  : "hidden",
+            }}
+          >
             <div
               className="statement-bottom-nav__sortButton"
               onClick={handleMidIconClick}
@@ -112,6 +109,32 @@ const StatementBottomNav: FC<Props> = ({
         ) : (
           <div>
             {isNavigationOpen ? (
+              <>
+                {isSmallIcon ? (
+                  <div
+                    className="statement-bottom-nav__sortButton"
+                    onClick={handleMidIconClick}
+                    style={{
+                      width: "3rem",
+                      height: "3rem",
+                      borderRadius: "50%",
+                      padding: "0",
+                    }}
+                  >
+                    <SortIcon />
+                  </div>
+                ) : (
+                  <div
+                    className="statement-bottom-nav__sortButton"
+                    onClick={handleMidIconClick}
+                    style={{}}
+                  >
+                    <SortIcon />
+                    <p>{t(`Sort ${currentPage}s`)}</p>
+                  </div>
+                )}
+              </>
+            ) : isSmallIcon ? (
               <div
                 className="statement-bottom-nav__sortButton"
                 onClick={handleMidIconClick}
@@ -128,31 +151,31 @@ const StatementBottomNav: FC<Props> = ({
               <div
                 className="statement-bottom-nav__sortButton"
                 onClick={handleMidIconClick}
+                style={{}}
               >
                 <SortIcon />
-                <p>Sort {currentPage}</p>
+                <p>{t(`Sort ${currentPage}s`)}</p>
               </div>
             )}
           </div>
         )}
 
-        {navItems.map((navItem) => (
-          <>
-            <div
-              className={`open-nav-icon ${isNavigationOpen ? "navActive" : ""}`}
+        {navItems.map((navItem, index) => (
+          <div
+            className={`open-nav-icon ${isNavigationOpen ? "navActive" : ""}`}
+            key={index}
+          >
+            <Link
+              to={navItem.link}
+              key={navItem.id}
+              onClick={() => handleMidIconClick()}
             >
-              <Link
-                to={navItem.link}
-                key={navItem.id}
-                onClick={() => setIsNavigationOpen(false)}
-              >
-                <NavIcon
-                  name={navItem.name}
-                  color={statementColor.backgroundColor}
-                />
-              </Link>
-            </div>
-          </>
+              <NavIcon
+                name={navItem.name}
+                color={statementColor.backgroundColor}
+              />
+            </Link>
+          </div>
         ))}
       </div>
     </>

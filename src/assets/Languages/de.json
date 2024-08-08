@@ -131,5 +131,14 @@
     "Welcome to room": "Willkommen im Raum",
     "single-step": "Einzelner Schritt",
     "multiple-steps": "Mehrere Schritte",
-    "There are no rooms yet": "Es gibt noch keine Zimmer"
+    "There are no rooms yet": "Es gibt noch keine Zimmer",
+    "Click on": "Klicke auf",
+    "Add suggestion button": "Schaltfläche „Vorschlag hinzufügen“",
+    "to add your suggestion": "um Ihren Vorschlag hinzuzufügen",
+    "Add suggestion":"Vorschlag hinzufügen",
+    "Add question button": "Schaltfläche „Frage hinzufügen“.",
+    "to add your question": "um Ihre Frage hinzuzufügen",
+    "Add question":"Frage hinzufügen",
+    "Sort questions": "Fragen sortieren",
+    "Sort suggestions": "Vorschläge sortieren"
 }
