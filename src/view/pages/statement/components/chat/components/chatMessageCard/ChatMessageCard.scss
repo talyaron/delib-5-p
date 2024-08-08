@@ -6,21 +6,21 @@
   margin: auto;
   padding: 0.3rem;
   padding-inline: 1rem;
-
+  
   .user {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding-top: 0.5rem;
   }
-
+  
   .message-box {
     height: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 0.5rem;
-    background-color: var(--white);
+    background-color: var(--inputBackground);
     padding: 1rem;
     border-radius: 10px;
     box-shadow: 3px 3px 3px var(--shadow);
@@ -42,9 +42,10 @@
       display: flex;
       position: relative;
       .info-text {
-        word-break: break-all;
         flex: 1;
         // display: flex;
+        padding: 15px;
+        background-color: var(--white);
       }
     }
     .actions {
@@ -141,13 +142,14 @@
 }
 
 .edit-input {
-  width: 100%;
-  padding-right: 40px; 
+  // width: 100%;
+  // padding-right: 40px; 
   direction: rtl; 
+  overflow: hidden;
 }
 
 .save-icon {
-  position: absolute;
-  right: 1px;
+  // position: absolute;
+  // right: 1px;
   cursor: pointer;
 }
