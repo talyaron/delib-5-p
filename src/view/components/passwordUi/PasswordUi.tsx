@@ -1,5 +1,5 @@
 "use client"
-import { MouseEvent, useState } from "react"
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 //styles
@@ -16,7 +16,12 @@ import PasswordInput from "./PasswordInput.tsx"
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 
-function PasswordUi() {
+interface PasswordProps {
+	setPasswordCheck: Dispatch<SetStateAction<boolean>>,
+}
+
+function PasswordUi({ setPasswordCheck }: PasswordProps) {
+
 	const navigate = useNavigate();
 	const { t } = useLanguage()
 
@@ -35,33 +40,32 @@ function PasswordUi() {
 	function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
 		event.preventDefault();
 
-		try {
-			if (triesCounter >= MAX_TRIES - 1) {
-				return navigate("/401");
-			}
+		const enteredCode = Number(values.join(""));
 
-			const enteredCode = Number(values.join(""));
+		if (enteredCode === PASSWORD_CODE) {
+			setPasswordCheck(true);
+			setPasswordState({
+				img: passwordUiImgGreen,
+				text: t(`Bravo! Your passcode is correct. Welcome aboard!`),
+				textStyle: styles.passwordUi__statusSection__passwordTextCorrect
+			});
+		} else {
+			setPasswordState({
+				img: passwordUiImgRed,
+				text: t(`Something went wrong. Please try again!`),
+				textStyle: styles.passwordUi__statusSection__passwordTextIncorrect
+			});
 
-			if (enteredCode === PASSWORD_CODE) {
-				setPasswordState({
-					img: passwordUiImgGreen,
-					text: t(`Bravo! Your passcode is correct. Welcome aboard!`),
-					textStyle: styles.passwordUi__statusSection__passwordTextCorrect
-				});
-			} else {
-				setPasswordState({
-					img: passwordUiImgRed,
-					text: t(`Something went wrong. Please try again!`),
-					textStyle: styles.passwordUi__statusSection__passwordTextIncorrect
-				});
-			}
-
-			setTriesCounter(prev => prev + 1);
-		}
-		catch (err) {
-			console.error(err)
+			setTriesCounter(prev => {
+				const newTriesCounter = prev + 1;
+				if (newTriesCounter >= MAX_TRIES) {
+					navigate("/401");
+				}
+				return newTriesCounter;
+			});
 		}
 	}
+
 
 	return (
 		<div className={styles.passwordUi}>

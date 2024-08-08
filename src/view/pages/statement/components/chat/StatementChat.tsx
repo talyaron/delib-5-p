@@ -40,6 +40,8 @@ const StatementChat: FC<Props> = ({
 		statement.parentId,
 	);
 
+	const [passwordCheck, setPasswordCheck] = useState(false)
+
 	//scroll to bottom
 	const scrollToBottom = () => {
 		if (!messagesEndRef) return;
@@ -53,7 +55,7 @@ const StatementChat: FC<Props> = ({
 			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
-	
+
 	//effects
 	useEffect(() => {
 		firstTime = true;
@@ -77,39 +79,46 @@ const StatementChat: FC<Props> = ({
 
 	return (
 		<>
-			<div
-				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
-			>
-				{subStatements?.map((statementSub: Statement, index) => (
-					<div key={statementSub.statementId}>
-						<ChatMessageCard
-							parentStatement={statement}
-							statement={statementSub}
-							showImage={handleShowTalker}
-							index={index}
-							previousStatement={subStatements[index - 1]}
-						/>
+			{passwordCheck ? (
+				<>
+					<div
+						className={`page__main statement-chat ${toSlide && slideInOrOut}`}
+					>
+						{subStatements?.map((statementSub: Statement, index) => (
+							<div key={statementSub.statementId}>
+								<ChatMessageCard
+									parentStatement={statement}
+									statement={statementSub}
+									showImage={handleShowTalker}
+									index={index}
+									previousStatement={subStatements[index - 1]}
+								/>
+							</div>
+						))}
+						<div ref={messagesEndRef} />
 					</div>
-				))}
-				<PasswordUi />
-
-				<div ref={messagesEndRef} />
-			</div>
-			<div className="page__footer">
-				<NewMessages
-					newMessages={newMessages}
-					setNewMessages={setNewMessages}
-					scrollToBottom={scrollToBottom}
-				/>
-				{statement && (
-					<StatementInput
-						toggleAskNotifications={toggleAskNotifications}
-						statement={statement}
-					/>
-				)}
-			</div>
+					<div className="page__footer">
+						<NewMessages
+							newMessages={newMessages}
+							setNewMessages={setNewMessages}
+							scrollToBottom={scrollToBottom}
+						/>
+						{statement && (
+							<StatementInput
+								toggleAskNotifications={toggleAskNotifications}
+								statement={statement}
+							/>
+						)}
+					</div>
+				</>
+			) : (
+				<div className="passwordUiComponent">
+					<PasswordUi setPasswordCheck={setPasswordCheck} />
+				</div>
+			)}
 		</>
 	);
+
 };
 
 export default StatementChat;
