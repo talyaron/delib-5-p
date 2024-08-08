@@ -89,7 +89,7 @@ export default function SwitchScreens({
 			/>
 		);
 	case Screen.INFO:
-		return(<Info statement={statement}/>)
+		return(<Info statement={statement} 	subStatements={subStatements}/>)
 
 	default:
 		return (
