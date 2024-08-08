@@ -61,16 +61,16 @@
 .triangle {
     width: 350px;
     height: 350px;
-    clip-path: polygon(100% 0, 0 0, 0 100%);
+    clip-path: polygon(100% 100%, 0 0, 100% 0);
     box-shadow:
         0px 5px 12px 0px rgba(143, 161, 188, 0.1),
         0px 21px 21px 0px rgba(143, 161, 188, 0.09),
         0px 48px 29px 0px rgba(143, 161, 188, 0.05),
         0px 84px 34px 0px rgba(143, 161, 188, 0.02),
         0px 132px 37px 0px rgba(143, 161, 188, 0);
-    background-color: black;
+    background-color: white;
     border: none;
-    transform: rotate(315deg);
+    transform: rotate(225deg);
     position: absolute;
     right: 0;
     bottom: 0;

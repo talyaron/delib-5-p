@@ -13,16 +13,16 @@ const InfoDots = ({ statement }: Props) => {
   // const avg = (213 + 350 / 2) / 2;
   const total = evaliuation?.numberOfEvaluators;
   const sum = evaliuation?.sumEvaluations;
-  const conPer = (evaliuation?.sumCon! * 350) / total!;
-  const sumPer = (evaliuation?.sumPro! * 350) / total!;
+  const conPer = (evaliuation?.sumCon! * 350) / total! * 0.93;
+  const proPer = (evaliuation?.sumPro! * 350) / total! * 0.93;
   const color = `rgb(${(evaliuation?.sumCon! / total!) * 255},${(evaliuation?.sumPro! / total!) * 255},0)`;
   return (
     <div
       className={styles.infoDots}
       // style={{ top: xAxis, left: yAxis, backgroundColor: color }}
       style={{
-        top: conPer,
-        left: sumPer,
+        top: proPer,
+        right: conPer,
         background: color,
       }}
     ></div>
