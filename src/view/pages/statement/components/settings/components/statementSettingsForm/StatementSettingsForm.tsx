@@ -7,7 +7,7 @@ import { Statement } from 'delib-npm';
 // Firestore functions
 
 // Custom components
-import UploadImage from '../../../../../../components/uploadImage/UploadImage';
+import UploadImage from '@/view/components/uploadImage/UploadImage';
 import DisplayResultsBy from './../../components/displayResultsBy/DisplayResultsBy';
 import ResultsRange from './../../components/resultsRange/ResultsRange';
 import GetVoters from './../../components/GetVoters';
@@ -16,7 +16,7 @@ import SubScreensToDisplay from '../tabsToDisplaySwitches/SubScreensToDisplay';
 
 // Hooks & Helpers
 import { handleSetStatement } from './../../statementSettingsCont';
-import { useLanguage } from '../../../../../../../controllers/hooks/useLanguages';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import TitleAndDescription from './../../components/titleAndDescription/TitleAndDescription';
 import AdvancedSettings from './../../components/advancedSettings/AdvancedSettings';
 import MembersSettings from './../../components/membership/MembersSettings';
@@ -24,7 +24,7 @@ import SectionTitle from './../../components/sectionTitle/SectionTitle';
 import './StatementSettingsForm.scss';
 
 // icons
-import SaveIcon from '../../../../../../../assets/icons/save.svg?react';
+import SaveIcon from '@/assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
 
 interface StatementSettingsFormProps {

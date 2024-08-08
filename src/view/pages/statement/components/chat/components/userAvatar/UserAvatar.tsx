@@ -7,7 +7,7 @@ import { User } from "delib-npm";
 import {
 	generateRandomLightColor,
 	getInitials,
-} from "../../../../../../../controllers/general/helpers";
+} from "@/controllers/general/helpers";
 import "./UserAvatar.scss";
 
 interface UserAvatarProps {

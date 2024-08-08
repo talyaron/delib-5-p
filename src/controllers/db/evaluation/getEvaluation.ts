@@ -9,9 +9,9 @@ import {
 } from "@firebase/firestore";
 import { DB } from "../config";
 import { Collections, Evaluation, User } from "delib-npm";
-import { EvaluationSchema } from "../../../model/evaluations/evaluationModel";
-import { AppDispatch } from "../../../model/store";
-import { setEvaluationToStore } from "../../../model/evaluations/evaluationsSlice";
+import { EvaluationSchema } from "@/model/evaluations/evaluationModel";
+import { AppDispatch } from "@/model/store";
+import { setEvaluationToStore } from "@/model/evaluations/evaluationsSlice";
 import { Unsubscribe } from "firebase/auth";
 
 export const listenToEvaluations = (

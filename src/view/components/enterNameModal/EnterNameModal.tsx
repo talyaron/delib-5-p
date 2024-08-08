@@ -7,8 +7,8 @@ import styles from "./enterNameModal.module.scss";
 import Modal from "../modal/Modal";
 
 // Functions
-import { signAnonymously } from "../../../controllers/db/auth";
-import { useLanguage } from "../../../controllers/hooks/useLanguages";
+import { signAnonymously } from "@/controllers/db/auth";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button from "../buttons/button/Button";
 
 interface Props {

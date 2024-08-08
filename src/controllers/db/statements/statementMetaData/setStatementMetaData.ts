@@ -1,6 +1,6 @@
 import { Collections, QuestionSettings, QuestionStage, QuestionType } from "delib-npm";
 import { doc, updateDoc } from "firebase/firestore";
-import { DB } from "../../config";
+import { DB } from "@/controllers/db/config";
 
 interface SetStatementStageParams {
 	statementId: string;

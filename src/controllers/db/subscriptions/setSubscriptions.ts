@@ -2,11 +2,8 @@ import { Statement, Role, StatementSchema, Collections, User } from "delib-npm";
 import { doc, updateDoc, setDoc, Timestamp, getDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import {
-	getStatementSubscriptionId,
-	writeZodError,
-} from "../../general/helpers";
-import { store } from "../../../model/store";
+import { getStatementSubscriptionId, writeZodError } from "@/controllers/general/helpers";
+import { store } from "@/model/store";
 
 export async function setStatementSubscriptionToDB(
 	statement: Statement,

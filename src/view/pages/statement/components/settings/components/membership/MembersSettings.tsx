@@ -1,28 +1,32 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { Role, Statement, StatementSubscription } from "delib-npm";
 import { useParams } from "react-router-dom";
+import { Role, StatementSubscription, Statement, Collections } from "delib-npm";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Custom components
-import ShareIcon from "../../../../../../../assets/icons/shareIcon.svg?react";
 import MembershipLine from "./membershipCard/MembershipCard";
-import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
+import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { createSelector } from "@reduxjs/toolkit";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
-import { RootState } from "../../../../../../../model/store";
+import { RootState } from "@/model/store";
+import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./MembersSettings.scss";
+import { collection, getDocs } from "firebase/firestore";
+import { DB } from "../../../../../../../controllers/db/config";
 
 const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 	// * Hooks * //
 	const { statementId } = useParams();
 	const { t } = useLanguage();
+	const [userCount, setUserCount] = useState<number>(0);
+
 
 	const statementMembershipSelector = (statementId: string | undefined) =>
 		createSelector(
@@ -54,6 +58,18 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 		navigator.share(shareData);
 	}
 
+	const fetchAwaitingUsers = async (): Promise<void> => {
+		const usersCollection = collection(DB, Collections.awaitingUsers);
+		const usersSnapshot = await getDocs(usersCollection);
+		const count = usersSnapshot.docs.length
+		
+		return setUserCount(count)
+	}
+
+	useEffect(() => {
+		fetchAwaitingUsers();
+	}, []);
+
 	return (
 		<div className="members-settings">
 			<button
@@ -64,10 +80,10 @@ const MembersSettings: FC<StatementSettingsProps> = ({ statement }) => {
 				<ShareIcon />
 			</button>
 			<div className="upload-waiting-list">
-				<SetWaitingList />
+				<SetWaitingList statement={statement} />
 			</div>
 			<div className="title">
-				{t("Joined members")} ({joinedMembers.length})
+				{t("Joined members")} ({`${userCount}`})
 			</div>
 			<div className="members-box">
 				{joinedMembers.map((member) => (
