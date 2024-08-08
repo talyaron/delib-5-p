@@ -7,9 +7,10 @@ import InfoDots from "./InfoDots";
 
 interface Props {
   statement: Statement;
+  subStatements: Statement[];
 }
 
-const Info: FC<Props> = ({ statement }) => {
+const Info: FC<Props> = ({ statement, subStatements }) => {
   //detect if local or production
   const isLocal = process.env.NODE_ENV === "development";
 
@@ -28,7 +29,9 @@ const Info: FC<Props> = ({ statement }) => {
         <p className={styles.wrapper__main__disinterest}>Disinterest</p>
         <p className={styles.wrapper__main__disputes}>Disputes</p>
         <p className={styles.wrapper__main__taboo}>Boo</p>
-        <InfoDots statement={statement}/>
+        {subStatements.map((currStatement) => (
+      <InfoDots key={currStatement.statementId} statement={currStatement} />
+    ))}
       </div>
       {/* <div className="wrapper">
 				<InfoParser statement={statement} />
