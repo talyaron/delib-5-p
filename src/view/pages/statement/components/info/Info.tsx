@@ -24,14 +24,18 @@ const Info: FC<Props> = ({ statement, subStatements }) => {
         <InfoParser statement={statement} />
       </div>
       <div className={styles.wrapper__main}>
-        <Rectangle />
         <p className={styles.wrapper__main__agreement}>Agreement</p>
         <p className={styles.wrapper__main__disinterest}>Disinterest</p>
         <p className={styles.wrapper__main__disputes}>Disputes</p>
         <p className={styles.wrapper__main__taboo}>Boo</p>
-        {subStatements.map((currStatement) => (
-      <InfoDots key={currStatement.statementId} statement={currStatement} />
-    ))}
+        <div className={styles.triangle}>
+          {subStatements.map((currStatement) => (
+            <InfoDots
+              key={currStatement.statementId}
+              statement={currStatement}
+            />
+          ))}
+        </div>
       </div>
       {/* <div className="wrapper">
 				<InfoParser statement={statement} />

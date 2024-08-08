@@ -9,39 +9,69 @@
     &__main {
         margin-inline: auto;
         position: relative;
-        width: 15.2rem;
-        height: 24.8rem;
+        width: 470px;
+        height: 470px;
         margin-top: 4rem;
-        
+
         &__agreement {
             position: absolute;
-            top: 0;
-            right: 4.5rem;
+            top: 2rem;
+            right: 13rem;
+            color: #3BB0B0;
+            font-weight: 500;
+            font-size: 0.94rem;
         }
 
         &__disinterest {
             position: absolute;
-            top: 40%;
-            left: -6.5rem;
+            top: 50%;
+            left: .5rem;
+            color: #818FAD;
+            font-weight: 500;
+            font-size: 0.94rem;
         }
 
         &__disputes {
             position: absolute;
-            right: -3rem;
-            top: 50%;
+            right: 6rem;
+            top: 60%;
+            color: #EA8222;
+            font-weight: 500;
+            font-size: 0.94rem;
         }
 
         &__taboo {
             position: absolute;
-            bottom: -1rem;
-            right: 4.5rem;
+            bottom: -5rem;
+            right: 13rem;
+            color: #99250E;
+            font-weight: 500;
+            font-size: 0.94rem;
         }
     }
 }
 
-.infoDots{
+.infoDots {
     width: 15px;
     height: 15px;
     border-radius: 50%;
     position: absolute;
+}
+
+.triangle {
+    width: 350px;
+    height: 350px;
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+    box-shadow:
+        0px 5px 12px 0px rgba(143, 161, 188, 0.1),
+        0px 21px 21px 0px rgba(143, 161, 188, 0.09),
+        0px 48px 29px 0px rgba(143, 161, 188, 0.05),
+        0px 84px 34px 0px rgba(143, 161, 188, 0.02),
+        0px 132px 37px 0px rgba(143, 161, 188, 0);
+    background-color: black;
+    border: none;
+    transform: rotate(315deg);
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
