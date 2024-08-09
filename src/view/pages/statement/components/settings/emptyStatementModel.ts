@@ -8,6 +8,7 @@ export const defaultStatementSettings = {
 	subScreens: undefined,
 	inVotingGetOnlyResults: false,
 	enableSimilaritiesSearch: false,
+	enableNavigationalElements: false,
 } as const;
 
 export const defaultResultsSettings = {
