@@ -6,7 +6,6 @@ import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { subStatementsSelector } from '../../StatementMain';
 import { RootState } from '@/model/store';
 import SubmitStatementButton from './SubmitStatementButton';
-import TwoColorButton from '@/view/components/buttons/TwoColorButton';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
