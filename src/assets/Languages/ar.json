@@ -136,5 +136,14 @@
     "Welcome to room": "مرحباً بك في الغرفة",
     "single-step": "خطوة واحدة",
     "multiple-steps": "عدة خطوات",
-    "There are no rooms yet": "لا توجد غرف بعد"
+    "There are no rooms yet": "لا توجد غرف بعد",
+    "Click on": "انقر فوق",
+    "Add suggestion button": "إضافة زر الاقتراح",
+    "to add your suggestion": "لإضافة اقتراحك",
+    "Add suggestion":"إضافة اقتراح",
+    "Add question button": "إضافة زر السؤال",
+    "to add your question": "لإضافة سؤالك",
+    "Add question":"أضف سؤالا",
+    "Sort questions": "فرز الأسئلة",
+    "Sort suggestions": "فرز الاقتراحات"
 }

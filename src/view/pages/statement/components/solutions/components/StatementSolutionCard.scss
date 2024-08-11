@@ -5,8 +5,7 @@
   background-color: var(--inputBackground);
   box-shadow: 2px 2px 4px var(--shadow);
   transition: all 1s ease-in-out;
-  position: absolute;
-  width: calc(100% - 2rem);
+  width: 100%;
   box-sizing: border-box;
   gap: 0.4rem;
 
