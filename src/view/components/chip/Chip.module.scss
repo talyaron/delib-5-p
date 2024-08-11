@@ -1,0 +1,17 @@
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    background-color: var(--white);
+    border: 1px solid var(--shadow);
+    border-radius: 20px;
+    padding: 0.3rem 0.5rem;
+
+    img,
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+    }
+}
