@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import React, { FC, useState } from "react";
 
 // Third party libraries
 import { Statement, Screen, StatementType } from "delib-npm";
@@ -23,8 +23,8 @@ import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
   statement: Statement;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
-  setIsNavigationOpen?: Dispatch<SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNavigationOpen?: (statement: Statement) => void;
   isNavigationOpen?: boolean;
   showNav?: boolean;
   currentPage?: string;
