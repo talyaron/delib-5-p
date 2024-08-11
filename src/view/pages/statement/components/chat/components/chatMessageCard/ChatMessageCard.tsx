@@ -1,0 +1,251 @@
+import { FC, useState } from "react";
+
+// Third Party Imports
+import { Statement, StatementType, User, isOptionFn } from "delib-npm";
+
+// Redux Store
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
+import { store } from "@/model/store";
+
+// Helper functions
+import {
+	isAuthorized,
+	linkToChildren,
+} from "@/controllers/general/helpers";
+
+// Hooks
+import useStatementColor from "@/controllers/hooks/useStatementColor";
+
+// Custom Components
+import EditTitle from "@/view/components/edit/EditTitle"; // Import EditTitle component
+import UserAvatar from "../userAvatar/UserAvatar";
+import StatementChatMore from "../StatementChatMore";
+
+// import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
+import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
+import EditIcon from "@/assets/icons/editIcon.svg?react";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import QuestionMarkIcon from "@/assets/icons/questionIcon.svg?react";
+import {
+	setStatementIsOption,
+	updateIsQuestion,
+	updateStatementText,
+} from "@/controllers/db/statements/setStatements";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Menu from "@/view/components/menu/Menu";
+import MenuOption from "@/view/components/menu/MenuOption";
+import CreateStatementModal from "@/view/pages/statement/components/createStatementModal/CreateStatementModal";
+import SaveTextIcon from "@/assets/icons/SaveTextIcon.svg"; 
+
+import "./ChatMessageCard.scss";
+
+export interface NewQuestion {
+	statement: Statement;
+	isOption: boolean;
+	showModal: boolean;
+}
+
+interface ChatMessageCardProps {
+	parentStatement: Statement;
+	statement: Statement;
+	showImage: (statement: User | null) => void;
+	index: number;
+	previousStatement: Statement | undefined;
+}
+
+const ChatMessageCard: FC<ChatMessageCardProps> = ({
+	parentStatement,
+	statement,
+	showImage,
+	previousStatement,
+}) => {
+	// Hooks
+	const { statementType } = statement;
+	const statementColor = useStatementColor(statementType);
+	const { t, dir } = useLanguage();
+
+	// Redux store
+	const userId = store.getState().user.user?.uid;
+	const statementSubscription = useAppSelector(
+		statementSubscriptionSelector(statement.parentId)
+	);
+
+	// Use States
+	const [isEdit, setIsEdit] = useState(false);
+	const [isNewStatementModalOpen, setIsNewStatementModalOpen] = useState(false);
+	const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
+	const [text, setText] = useState(statement?.statement || "");
+
+	// Variables
+	const creatorId = statement.creatorId;
+	const _isAuthorized = isAuthorized(
+		statement,
+		statementSubscription,
+		parentStatement.creatorId
+	);
+
+	const isMe = userId === creatorId;
+	const isQuestion = statementType === StatementType.question;
+	const isOption = isOptionFn(statement);
+	const isStatement = statementType === StatementType.statement;
+	const isParentOption = isOptionFn(parentStatement);
+
+	const shouldLinkToChildStatements =
+		(isQuestion || isOption) && parentStatement.hasChildren;
+
+	const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
+
+	const isAlignedLeft = (isMe && dir === "ltr") || (!isMe && dir === "rtl");
+
+	const shouldLinkToChildren = linkToChildren(statement, parentStatement);
+
+	function handleSetOption() {
+		try {
+			if (statement.statementType === "option") {
+				const cancelOption = window.confirm(
+					"Are you sure you want to cancel this option?"
+				);
+				if (cancelOption) {
+					setStatementIsOption(statement);
+				}
+			} else {
+				setStatementIsOption(statement);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	function handleTextChange(
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+	) {
+		setText(e.target.value);
+	}
+
+	function handleSave() {
+		try {
+			if (!text.trim()) return;
+			if (!statement) throw new Error("Statement is undefined");
+
+			updateStatementText(statement, text.trim());
+			setIsEdit(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+
+	return (
+		<div
+			className={`chat-message-card ${isAlignedLeft && "aligned-left"} ${dir}`}
+		>
+			{!isPreviousFromSameAuthor && (
+				<div className="user">
+					<UserAvatar user={statement.creator} showImage={showImage} />
+					<span>{statement.creator.displayName}</span>
+				</div>
+			)}
+
+			<div
+				className={isStatement ? "message-box message-box--statement":"message-box"}
+				style={{ borderColor: statementColor.backgroundColor }}
+			>
+				{!isPreviousFromSameAuthor && <div className="triangle" />}
+
+				<div className="info">
+					<div className="info-text">
+						{isEdit ? (
+							<div className="input-wrapper">
+								<textarea
+									className="edit-input"
+									value={text}
+									onChange={handleTextChange}
+									autoFocus={true}
+									style={{ direction: dir }}
+								/>
+								<img
+									src={SaveTextIcon}
+									onClick={handleSave}
+									className="save-icon"
+									alt="Save Icon"
+								/>
+							</div>
+						) : (
+							<EditTitle
+								statement={statement}
+								isEdit={isEdit}
+								setEdit={setIsEdit}
+								isTextArea={true}
+							/>
+						)}
+					</div>
+
+					<Menu
+						setIsOpen={setIsCardMenuOpen}
+						isMenuOpen={isCardMenuOpen}
+						iconColor="#5899E0"
+					>
+						{_isAuthorized && (
+							<MenuOption
+								label={t("Edit Text")}
+								icon={<EditIcon />}
+								onOptionClick={() => {
+									setIsEdit(!isEdit);
+									setIsCardMenuOpen(false);
+								}}
+							/>
+						)}
+						{_isAuthorized && !isQuestion && !isParentOption && (
+							<MenuOption
+								isOptionSelected={isOptionFn(statement)}
+								icon={<LightBulbIcon />}
+								label={
+									isOptionFn(statement)
+										? t("Unmark as a Solution")
+										: t("Mark as a Solution")
+								}
+								onOptionClick={handleSetOption}
+							/>
+						)}
+
+						{!isOption && (
+							<MenuOption
+								isOptionSelected={isQuestion}
+								label={
+									isQuestion
+										? t("Unmark as a Question")
+										: t("Mark as a Question")
+								}
+								icon={<QuestionMarkIcon />}
+								onOptionClick={() => updateIsQuestion(statement)}
+							/>
+						)}
+					</Menu>
+				</div>
+				<div className="bottom-icons">
+					{shouldLinkToChildStatements && (
+						<StatementChatMore statement={statement} />
+					)}
+					{shouldLinkToChildren && (
+						<button
+							className="add-question-btn"
+							onClick={() => setIsNewStatementModalOpen(true)}
+						>
+							<AddQuestionIcon />
+						</button>
+					)}
+				</div>
+				{isNewStatementModalOpen && (
+					<CreateStatementModal
+						parentStatement={statement}
+						isOption={false}
+						setShowModal={setIsNewStatementModalOpen}
+					/>
+				)}
+			</div>
+		</div>
+	);
+};
+
+export default ChatMessageCard;
