@@ -3,7 +3,7 @@ import { Statement, StatementType } from "delib-npm";
 import { useParams } from "react-router-dom";
 import OptionBar from "../optionBar/OptionBar";
 import "./VotingArea.scss";
-import useWindowDimensions from "@/controllers/hooks/useWindowDimentions";
+import useWindowDimensions from "@/controllers/hooks/useWindowDimensions";
 import { getSortedVotingOptions, isVerticalOptionBar } from "./VotingAreaCont";
 
 interface VotingAreaProps {

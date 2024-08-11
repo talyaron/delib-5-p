@@ -18,7 +18,7 @@ import {
 } from "./StatementBottomNavModal";
 import "./StatementBottomNav.scss";
 import SortIcon from "../../../../../components/icons/SortIcon";
-import useWindowDimensions from "../../../../../../controllers/hooks/useWindowDimentions";
+import useWindowDimensions from "../../../../../../controllers/hooks/useWindowDimensions";
 import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
