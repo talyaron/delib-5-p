@@ -77,6 +77,7 @@ const StatementChat: FC<Props> = ({
 		}
 	}, [subStatements]);
 
+
 	return (
 		<>
 			{passwordCheck ? (

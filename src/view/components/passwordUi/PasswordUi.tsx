@@ -42,30 +42,36 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 
 		const enteredCode = Number(values.join(""));
 
-		if (enteredCode === PASSWORD_CODE) {
-			setPasswordCheck(true);
-			setPasswordState({
-				img: passwordUiImgGreen,
-				text: t(`Bravo! Your passcode is correct. Welcome aboard!`),
-				textStyle: styles.passwordUi__statusSection__passwordTextCorrect
-			});
-		} else {
-			setPasswordState({
-				img: passwordUiImgRed,
-				text: t(`Something went wrong. Please try again!`),
-				textStyle: styles.passwordUi__statusSection__passwordTextIncorrect
-			});
+		try {
+			if (enteredCode === PASSWORD_CODE) {
+				setPasswordCheck(true);
+				setPasswordState({
+					img: passwordUiImgGreen,
+					text: t(`Bravo! Your password is correct. Welcome aboard!`),
+					textStyle: styles.passwordUi__statusSection__passwordTextCorrect
+				});
 
-			setTriesCounter(prev => {
-				const newTriesCounter = prev + 1;
-				if (newTriesCounter >= MAX_TRIES) {
-					navigate("/401");
-				}
-				return newTriesCounter;
-			});
+			} else {
+				setPasswordState({
+					img: passwordUiImgRed,
+					text: t(`Something went wrong. Please try again!`),
+					textStyle: styles.passwordUi__statusSection__passwordTextIncorrect
+				});
+
+				setTriesCounter(prev => {
+					const newTriesCounter = prev + 1;
+					if (newTriesCounter >= MAX_TRIES) {
+						navigate("/401");
+					}
+
+					return newTriesCounter;
+				});
+			}
+		}
+		catch (err) {
+			console.error(err)
 		}
 	}
-
 
 	return (
 		<div className={styles.passwordUi}>
