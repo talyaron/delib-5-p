@@ -156,7 +156,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
         <div className="info">
           <div className="info-text">
             {isEdit ? (
-              <div className="input-wrapper" style={{flexDirection: isAlignedLeft ? 'row' : 'row-reverse'}}>
+              <div
+                className="input-wrapper"
+                style={{ flexDirection: isAlignedLeft ? "row" : "row-reverse" }}
+              >
                 <textarea
                   ref={textareaRef}
                   className="edit-input"
@@ -165,12 +168,14 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
                   autoFocus={true}
                   style={{ direction: dir }}
                 />
-				<img
-                  src={SaveTextIcon}
-                  onClick={handleSave}
-                  className="save-icon"
-                  alt="Save Icon"
-                />
+                <button>
+                  <img
+                    src={SaveTextIcon}
+                    onClick={handleSave}
+                    className="save-icon"
+                    alt="Save Icon"
+                  />
+                </button>
               </div>
             ) : (
               <EditTitle

@@ -40,8 +40,8 @@
         margin-bottom: 1rem;
         flex: 1;
         width: 100%;
-        background-color: white;
-        padding: 15px;
+        background-color:var(--background-color-info-text);
+        padding: var(--info-text-padding);
       }
     }
 
