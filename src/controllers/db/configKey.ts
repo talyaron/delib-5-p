@@ -12,16 +12,21 @@
 // export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
 
 
+// export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
+
+
 export const keys = {
-	apiKey: "AIzaSyC2CqDSvD1johT6DS_jwPmpc9LlNgarBKU",
-	authDomain: "todo-d6f5c.firebaseapp.com",
-	databaseURL: "https://synthesistalyaron.firebaseio.com",
-	projectId: "todo-d6f5c",
-	storageBucket: "todo-d6f5c.appspot.com",
-	messagingSenderId: "1043125173769",
-	appId: "1:1043125173769:web:d6677f4c3fe791a37002d8",
-	measurementId: "G-XSGFFBXM9X",
+	apiKey: "AIzaSyC-aeTb9EbexatZSiMGsWGowtMEiyeSDsA",
+	authDomain: "danieltovbin-efb2a.firebaseapp.com",
+	projectId: "danieltovbin-efb2a",
+	storageBucket: "danieltovbin-efb2a.appspot.com",
+	messagingSenderId: "328421755018",
+	appId: "1:328421755018:web:16e45391a24ff3ce070573",
+	measurementId: "G-MFG8Z0FKKW",
 };
+  
+export const vapidKey = "";
+  
 
 // export const keys = {
 // 	apiKey: 'AIzaSyBk_koXPde8Aheeyf8xUGbeoPT71S-qHpM',
