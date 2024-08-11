@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useState
-} from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
@@ -39,7 +33,7 @@ const EditTitle: FC<Props> = ({
 }) => {
   const [text, setText] = useState(statement?.statement || "");
   const [title, setTitle] = useState(getTitle(statement) || "");
-  const textareaRef = useAutoFocus(isEdit) 
+  const textareaRef = useAutoFocus(isEdit);
 
   if (!statement) return null;
 

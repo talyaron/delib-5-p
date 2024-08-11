@@ -24,7 +24,7 @@ import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 interface Props {
   statement: Statement;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsNavigationOpen?: (statement: any) => void;
+  setIsNavigationOpen?: (statement: Statement) => void;
   isNavigationOpen?: boolean;
   showNav?: boolean;
   currentPage?: string;
