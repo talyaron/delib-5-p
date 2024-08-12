@@ -1,5 +1,5 @@
 import googleLogo from "@/assets/icons/googleSimpleLogo.svg";
-import styles from "./button.module.scss";
+import styles from "./GoogleLogin.module.scss";
 import moreRight from "@/assets/icons/moreRight.svg";
 import moreLeft from "@/assets/icons/moreLeft.svg";
 import { googleLogin } from "@/controllers/db/auth";

@@ -144,5 +144,14 @@
     "Welcome to room": "Welcome to room",
     "single-step": "Single step",
     "multiple-steps": "Multiple steps",
-    "There are no rooms yet": "There are no rooms yet"
+    "There are no rooms yet": "There are no rooms yet",
+    "Click on": "Click on",
+    "Add suggestion button": "Add suggestion button",
+    "to add your suggestion": "to add your suggestion",
+    "Add suggestion":"Add suggestion",
+    "Add question button": "Add question button",
+    "to add your question": "to add your question",
+    "Add question":"Add question",
+    "Sort questions": "Sort questions",
+    "Sort suggestions": "Sort suggetsions"
 }
