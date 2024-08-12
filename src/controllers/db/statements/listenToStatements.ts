@@ -199,9 +199,9 @@ export async function listenToUserAnswer(questionId: string, cb: (statement: Sta
   }
 }
 
-export async function listenToChildStatements(statementId: string) {
+export async function listenToChildStatements(dispatch: AppDispatch,statementId: string, callback: (childStatements: Statement[]) => void
+): Promise<Unsubscribe | null> {
   try {
-    const dispatch = store.dispatch;
     const statementsRef = collection(DB, Collections.statements);
     const q = query(
       statementsRef,
@@ -209,18 +209,24 @@ export async function listenToChildStatements(statementId: string) {
       where("parents", "array-contains", statementId)
     );
 
-    return onSnapshot(q, (statementsDB) => {
+    const unsubscribe = onSnapshot(q, (statementsDB) => {
+      const childStatements: Statement[] = [];
+
       statementsDB.docChanges().forEach((change) => {
         const childStatement = change.doc.data() as Statement;
 
         if (change.type === "added" || change.type === "modified") {
+          childStatements.push(childStatement);
           dispatch(setStatement(childStatement));
         }
       });
+
+      callback(childStatements);
     });
+
+    return unsubscribe;
   } catch (error) {
     console.error(error);
-
-    return [];
+    return null;
   }
 }

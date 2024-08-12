@@ -25,11 +25,8 @@ import { ReactFlowProvider } from "reactflow";
 import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
 import { isAdmin } from "@/controllers/general/helpers";
-import { listenToStatement, listenToStatementSubscription, listenToSubStatements } from "@/controllers/db/statements/listenToStatements";
-import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
-import { useSelector } from "react-redux";
-import { userSelector } from "@/model/users/userSlice";
-
+import { listenToChildStatements } from "@/controllers/db/statements/listenToStatements";
+import { Unsubscribe } from "firebase/auth";
 
 interface Props {
 	statement: Statement;
@@ -83,40 +80,35 @@ const StatementMap: FC<Props> = ({ statement }) => {
 	};
 
 	const dispatch = useAppDispatch();
-	const user = useSelector(userSelector);
 
 	useEffect(() => {
-		getSubStatements();
+		let unsubscribe: Unsubscribe | null = null;
 
-		let unsubListenToStatement: () => void = () => { };
-		let unsubSubStatements: () => void = () => { };
-		let unsubStatementSubscription: () => void = () => { };
-		let unsubEvaluations: () => void = () => { };
-		let unsubSubSubscribedStatements: () => void = () => { };
+		const fetchInitialData = async () => {
+			try {
+				unsubscribe = await listenToChildStatements(dispatch, statement.statementId, (childStatements) => {
+					setSubStatements(childStatements);
 
-		if (user && statement.statementId) {
-			unsubListenToStatement = listenToStatement(
-				statement.statementId,
-			);
+					const topResult = sortStatementsByHirarrchy([
+						statement,
+						...childStatements.filter((state) => isOptionFn(state) || state.statementType === StatementType.question),
+					])[0];
 
-			unsubSubStatements = listenToSubStatements(statement.statementId, dispatch);
-			unsubEvaluations = listenToEvaluations(dispatch, statement.statementId, user?.uid);
+					setResults(topResult);
+				});
+			} catch (error) {
+				console.error('Error fetching initial data:', error);
+			}
+		};
 
-			unsubStatementSubscription = listenToStatementSubscription(
-				statement.statementId,
-				user,
-				dispatch
-			);
-		}
+		fetchInitialData();
 
 		return () => {
-			unsubListenToStatement();
-			unsubSubStatements();
-			unsubStatementSubscription();
-			unsubSubSubscribedStatements();
-			unsubEvaluations();
+			if (unsubscribe) {
+				unsubscribe();
+			}
 		};
-	}, [user, statement.statementId, dispatch]);
+	}, [statement.statementId, dispatch]);
 
 	const toggleModal = (show: boolean) => {
 		setMapContext((prev) => ({
