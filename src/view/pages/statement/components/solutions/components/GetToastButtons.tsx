@@ -3,8 +3,8 @@ import React from 'react';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import Button from '@/view/components/buttons/button/Button';
 import { QuestionStage } from 'delib-npm';
-import X from '../../../../../assets/icons/x.svg?react';
-import LightBulbIcon from '../../../../../assets/icons/lightBulbIcon.svg?react';
+import X from '@/assets/icons/x.svg?react';
+import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
 
 interface GetToastButtonsProps {
 	questionStage: QuestionStage | undefined;
@@ -16,28 +16,10 @@ export default function GetToastButtons({
 	questionStage,
 	setShowToast,
 	setShowModal,
-}: GetToastButtonsProps) {
+}: Readonly<GetToastButtonsProps>) {
 	const { t } = useLanguage();
 
-	switch (questionStage) {
-	case QuestionStage.voting:
-	case QuestionStage.firstEvaluation:
-	case QuestionStage.secondEvaluation:
-	case QuestionStage.finished:
-	case QuestionStage.explanation:
-		return (
-			<Button
-				text={t('Close')}
-				iconOnRight={false}
-				onClick={() => {
-					setShowToast(false);
-				}}
-				icon={<X />}
-				color='white'
-				bckColor='var(--crimson)'
-			/>
-		);
-	case QuestionStage.suggestion:
+	if (questionStage === QuestionStage.suggestion)
 		return (
 			<>
 				<Button
@@ -64,18 +46,16 @@ export default function GetToastButtons({
 			</>
 		);
 
-	default:
-		return (
-			<Button
-				text={t('Close')}
-				iconOnRight={false}
-				onClick={() => {
-					setShowToast(false);
-				}}
-				icon={<X />}
-				color='white'
-				bckColor='var(--crimson)'
-			/>
-		);
-	}
+	return (
+		<Button
+			text={t('Close')}
+			iconOnRight={false}
+			onClick={() => {
+				setShowToast(false);
+			}}
+			icon={<X />}
+			color='white'
+			bckColor='var(--crimson)'
+		/>
+	);
 }

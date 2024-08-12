@@ -33,14 +33,13 @@ import ideaImage from '../../../../../assets/images/manWithIdeaLamp.png';
 
 // Icons
 import WhitePlusIcon from '../../../../components/icons/WhitePlusIcon';
-import GetToastButtons from './GetToastButtons';
+import GetToastButtons from './components/GetToastButtons';
 
 interface StatementEvaluationPageProps {
 	statement: Statement;
 	subStatements: Statement[];
 	handleShowTalker: (talker: User | null) => void;
 	currentPage?: string;
-	showNav?: boolean;
 	questions?: boolean;
 	toggleAskNotifications: () => void;
 }
