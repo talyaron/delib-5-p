@@ -1,7 +1,8 @@
+
 import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { Results, Role, Statement } from "delib-npm";
+import { isOptionFn, Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "@/view/components/animation/ScreenFadeIn";
@@ -21,22 +22,27 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { useMapContext } from "@/controllers/hooks/useMap";
 import { ReactFlowProvider } from "reactflow";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
 import { isAdmin } from "@/controllers/general/helpers";
+import { listenToStatement, listenToStatementSubscription, listenToSubStatements } from "@/controllers/db/statements/listenToStatements";
+import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
+import { useSelector } from "react-redux";
+import { userSelector } from "@/model/users/userSlice";
+
 
 interface Props {
-  statement: Statement;
+	statement: Statement;
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
 	const userSubscription = useAppSelector(
 		statementSubscriptionSelector(statement.statementId)
 	);
-	
+
 	const role = userSubscription ? userSubscription.role : Role.member;
 	const _isAdmin = isAdmin(role);
-	
+
 
 	const { t } = useLanguage();
 	const { mapContext, setMapContext } = useMapContext();
@@ -70,15 +76,47 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
 		const topResult = sortStatementsByHirarrchy([
 			statement,
-			...childStatements.filter((state) => state.statementType !== "statement"),
+			...childStatements.filter((state) => isOptionFn(state) || state.statementType === StatementType.question),
 		])[0];
 
 		setResults(topResult);
 	};
 
+	const dispatch = useAppDispatch();
+	const user = useSelector(userSelector);
+
 	useEffect(() => {
 		getSubStatements();
-	}, []);
+
+		let unsubListenToStatement: () => void = () => { };
+		let unsubSubStatements: () => void = () => { };
+		let unsubStatementSubscription: () => void = () => { };
+		let unsubEvaluations: () => void = () => { };
+		let unsubSubSubscribedStatements: () => void = () => { };
+
+		if (user && statement.statementId) {
+			unsubListenToStatement = listenToStatement(
+				statement.statementId,
+			);
+
+			unsubSubStatements = listenToSubStatements(statement.statementId, dispatch);
+			unsubEvaluations = listenToEvaluations(dispatch, statement.statementId, user?.uid);
+
+			unsubStatementSubscription = listenToStatementSubscription(
+				statement.statementId,
+				user,
+				dispatch
+			);
+		}
+
+		return () => {
+			unsubListenToStatement();
+			unsubSubStatements();
+			unsubStatementSubscription();
+			unsubSubSubscribedStatements();
+			unsubEvaluations();
+		};
+	}, [user, statement.statementId, dispatch]);
 
 	const toggleModal = (show: boolean) => {
 		setMapContext((prev) => ({
