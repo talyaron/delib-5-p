@@ -2,9 +2,9 @@ import { FC, useEffect, useState } from "react";
 import styles from "./components/StatementSettings.module.scss";
 
 // Third party imports
+import { Statement, StatementSubscription } from "delib-npm";
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { StatementSubscription, Statement } from "delib-npm";
 
 // Redux Store
 import {
@@ -22,16 +22,16 @@ import { getStatementFromDB } from "../../../../../functions/db/statements/getSt
 import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
 
 // Custom components
-import Loader from "../../../../components/loaders/Loader";
-import MembershipLine from "./components/membership/MembershipLine";
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import UploadImage from "../../../../components/uploadImage/UploadImage";
-import DisplayResultsBy from "./components/DisplayResultsBy";
-import ResultsRange from "./components/ResultsRange";
-import GetVoters from "./components/GetVoters";
-import GetEvaluators from "./components/GetEvaluators";
-import CheckBoxeArea from "./components/CheckBoxeArea";
 import ShareIcon from "../../../../components/icons/ShareIcon";
+import Loader from "../../../../components/loaders/Loader";
+import UploadImage from "../../../../components/uploadImage/UploadImage";
+import CheckBoxeArea from "./components/CheckBoxeArea";
+import DisplayResultsBy from "./components/DisplayResultsBy";
+import GetEvaluators from "./components/GetEvaluators";
+import GetVoters from "./components/GetVoters";
+import MembershipLine from "./components/membership/MembershipLine";
+import ResultsRange from "./components/ResultsRange";
 import { handleSetStatment, handleShare } from "./statementSettingsCont";
 
 interface Props {
@@ -58,7 +58,7 @@ const StatementSettings: FC<Props> = () => {
         statementMembershipSelector(statementId),
     );
     const arrayOfStatementParagrphs = statement?.statement.split("\n") || [];
-    
+
     //get all elements of the array except the first one
     const description = arrayOfStatementParagrphs?.slice(1).join("\n");
 
@@ -148,9 +148,9 @@ const StatementSettings: FC<Props> = () => {
                         </>
                     )}
 
-                    <GetVoters statementId={statementId} />
-
+                    <GetVoters statementId={statementId} showNonVoters={true} membership={membership} />
                     <GetEvaluators statementId={statementId} />
+
                 </form>
             ) : (
                 <div className="center">
