@@ -231,33 +231,33 @@ export default function TreeChart({
 			>
 				<Controls />
 				<Panel position="bottom-right" className="btnsPanel">
-            {!isButtonVisible && (
-                <div className="mainButton">
-                    <button onClick={handleHamburgerClick}>
-                        <img src={MapHamburgerIcon} alt="Hamburger" />
-                    </button>
-                </div>
-            )}
-            {isButtonVisible && (
-                <div className={`arc-buttons ${isButtonVisible ? "open" : ""}`}>
-                    <button onClick={handleCancelClick}>
-                        <img src={MapCancelIcon} alt="Cancel" />
-                    </button>
-                    <button onClick={() => onLayout("TB")}>
-                        <img src={MapVerticalLayoutIcon} alt="vertical layout" />
-                    </button>
-                    <button onClick={() => onLayout("LR")}>
-                        <img src={MapHorizontalLayoutIcon} alt="horizontal layout" />
-                    </button>
-                    <button onClick={onRestore}>
-                        <img src={MapRestoreIcon} alt="Restore" />
-                    </button>
-                    <button onClick={onSave}>
-                        <img src={MapSaveIcon} alt="Save" />
-                    </button>
-                </div>
-            )}
-        </Panel>
+					{!isButtonVisible && (
+						<div className="mainButton">
+							<button onClick={handleHamburgerClick}>
+								<img src={MapHamburgerIcon} alt="Hamburger" />
+							</button>
+						</div>
+					)}
+					{isButtonVisible && (
+						<div className={`arc-buttons ${isButtonVisible ? "open" : ""}`}>
+							<button onClick={handleCancelClick}>
+								<img src={MapCancelIcon} alt="Cancel" />
+							</button>
+							<button onClick={() => onLayout("TB")}>
+								<img src={MapVerticalLayoutIcon} alt="vertical layout" />
+							</button>
+							<button onClick={() => onLayout("LR")}>
+								<img src={MapHorizontalLayoutIcon} alt="horizontal layout" />
+							</button>
+							<button onClick={onRestore}>
+								<img src={MapRestoreIcon} alt="Restore" />
+							</button>
+							<button onClick={onSave}>
+								<img src={MapSaveIcon} alt="Save" />
+							</button>
+						</div>
+					)}
+				</Panel>
 			</ReactFlow>
 			{mapContext.moveStatementModal && (
 				<Modal>

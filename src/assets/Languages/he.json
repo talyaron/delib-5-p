@@ -71,7 +71,7 @@
     "Mass Questions": "שאלות המונים",
     "Member": "חבר",
     "Members in Group": "חברים בקבוצה",
-    "Management board": "לוח ניהול",
+    "Management board": "לוח ניהול", 
     "Maximum number of participants in the room": "מספר מקסימלי של משתתפים בחדר",
     "New": "חדש",
     "New message": "הודעה חדשה",
@@ -153,5 +153,14 @@
     "Enter your 4-digit passcode to unlock group access": "הזן את קוד הסיסמה בן 4 הספרות שלך כדי לבטל את נעילת הגישה לקבוצה",
     "Bravo! Your passcode is correct. Welcome aboard!": "בראבו! קוד הגישה שלך נכון. ברוכים הבאים!",
     "Something went wrong. Please try again!": "משהו השתבש. בבקשה נסה שוב!",
-    "Submit": "שלח"
+    "Submit": "שלח",
+    "Click on": "תלחץ על",
+    "Add suggestion button": "הוסף פתרון",
+    "to add your suggestion": "כדי להוסיף את הפתרון שלך",
+    "Add suggestion":"הוסף פתרון",
+    "Add question button": "הוסף שאלה",
+    "to add your question": "כדי להוסיף את השאלה שלך",
+    "Add question":"הוסף שאלה",
+    "Sort questions": "מיין שאלות",
+    "Sort suggestions": "מיין פתרונות"
 }
