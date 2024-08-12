@@ -1,29 +1,39 @@
 import { StatementSubscription, Vote } from "delib-npm";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getVoters } from "../../../../../../functions/db/vote/getVotes";
 import Chip from "../../../../../components/chip/Chip";
 import { handleGetVoters } from "../statementSettingsCont";
-import { votesArray } from './../../nav/bottom/StatementBottomNavModal';
+import { t } from "i18next";
 
 interface GetVotersProps {
     statementId: string | undefined;
     showNonVoters: boolean;
-    membership: StatementSubscription[]; // Add this line
+    membership: StatementSubscription[];
 }
 
 export default function GetVoters({
     statementId,
     showNonVoters,
-    membership, // Add this line
+    membership,
 }: GetVotersProps) {
     const [voters, setVoters] = React.useState<Vote[]>([]);
-    const [clicked, setClicked] = React.useState(false);
+    const [clickedVoters, setClickedVoters] = useState(false);
+    const [clickedNonVoters, setClickedNonVoters] = useState(false);
     const [nonVoters, setNonVoters] = React.useState<StatementSubscription[]>([]);
-    const [showNonVotersState, setShowNonVoters] = React.useState(showNonVoters);
+    const [showNonVotersState, setShowNonVotersState] = React.useState(showNonVoters);
+    const [showVoters, setShowVoters] = useState(false);
+
+    useEffect(() => {
+        setShowNonVotersState(showNonVoters);
+    }, [showNonVoters]);
 
     const fetchVoters = async () => {
         if (!statementId) return;
-        await handleGetVoters(statementId, setVoters, setClicked);
+        await handleGetVoters(statementId, setVoters, setClickedVoters);
+        setClickedNonVoters(false);
+        setShowVoters(true);
+        setShowNonVotersState(false);
+
     };
 
     const fetchNonVoters = async () => {
@@ -42,8 +52,9 @@ export default function GetVoters({
         );
 
         setNonVoters(nonVotersList);
-        setClicked(true);
-        setShowNonVoters(true);
+        setClickedNonVoters(true);
+        setShowVoters(true);
+        setShowNonVotersState(true);
     };
 
     return (
@@ -59,16 +70,14 @@ export default function GetVoters({
 
                 <div className="settings__getUsers__chipBox">
                     {voters.length > 0
-                        ? voters.map((voter) => {
-                            return (
-                                <Chip key={voter.voteId} user={voter.voter} />
-                            );
-                        })
-                        : clicked && !showNonVotersState && (
+                        ? voters.map((voter) => (
+                            <Chip key={voter.voteId} user={voter.voter} />
+                        ))
+                        : clickedVoters && !showNonVotersState && (
                             <p style={{ marginTop: 20 }}>No voters found</p>
                         )}
                 </div>
-                {clicked && !showNonVotersState && <b>{voters.length} Voted</b>}
+                {showVoters && clickedVoters && !showNonVotersState && <b>{voters.length} Voted</b>}
 
                 <button
                     type="button"
@@ -81,21 +90,17 @@ export default function GetVoters({
                 {showNonVotersState && (
                     <div className="settings__getUsers__chipBox">
                         {nonVoters.length > 0
-                            ? nonVoters.map((nonVoter) => {
-                                if (nonVoter.userId) {
-                                    return (
-                                        <Chip key={nonVoter.user.uid} user={nonVoter.user} />
-                                    );
-                                }
-
-                                return null;
-                            })
-                            : clicked && (
+                            ? nonVoters.map((nonVoter) => (
+                                nonVoter.userId ? (
+                                    <Chip key={nonVoter.user.uid} user={nonVoter.user} />
+                                ) : null
+                            ))
+                            : clickedNonVoters && (
                                 <p style={{ marginTop: 20 }}>No non-voters found</p>
                             )}
                     </div>
                 )}
-                {clicked && showNonVotersState && <b>{nonVoters.length} Didn't Vote</b>}
+                {showNonVotersState && clickedNonVoters && <b>{nonVoters.length} Didn't Vote</b>}
             </section>
         )
     );
