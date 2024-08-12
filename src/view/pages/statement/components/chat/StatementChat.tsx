@@ -77,6 +77,15 @@ const StatementChat: FC<Props> = ({
 		}
 	}, [subStatements]);
 
+	useEffect(() => {
+		if (user?.uid === statement.creatorId) {
+			setPasswordCheck(true)
+		}
+		else{
+			setPasswordCheck(false)
+		}
+	}, [])
+
 
 	return (
 		<>
