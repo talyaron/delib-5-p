@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { getVoters } from "../../../../../../functions/db/vote/getVotes";
 import Chip from "../../../../../components/chip/Chip";
 import { handleGetVoters } from "../statementSettingsCont";
-import { t } from "i18next";
 
 interface GetVotersProps {
     statementId: string | undefined;
@@ -17,11 +16,11 @@ export default function GetVoters({
     membership,
 }: GetVotersProps) {
     const [voters, setVoters] = React.useState<Vote[]>([]);
+    const [nonVoters, setNonVoters] = React.useState<StatementSubscription[]>([]);
     const [clickedVoters, setClickedVoters] = useState(false);
     const [clickedNonVoters, setClickedNonVoters] = useState(false);
-    const [nonVoters, setNonVoters] = React.useState<StatementSubscription[]>([]);
-    const [showNonVotersState, setShowNonVotersState] = React.useState(showNonVoters);
     const [showVoters, setShowVoters] = useState(false);
+    const [showNonVotersState, setShowNonVotersState] = React.useState(showNonVoters);
 
     useEffect(() => {
         setShowNonVotersState(showNonVoters);
@@ -32,7 +31,6 @@ export default function GetVoters({
         await handleGetVoters(statementId, setVoters, setClickedVoters);
         setClickedNonVoters(false);
         setShowVoters(true);
-        setShowNonVotersState(false);
 
     };
 
@@ -53,7 +51,6 @@ export default function GetVoters({
 
         setNonVoters(nonVotersList);
         setClickedNonVoters(true);
-        setShowVoters(true);
         setShowNonVotersState(true);
     };
 
@@ -68,6 +65,8 @@ export default function GetVoters({
                     Get Voters
                 </button>
 
+
+
                 <div className="settings__getUsers__chipBox">
                     {voters.length > 0
                         ? voters.map((voter) => (
@@ -77,7 +76,8 @@ export default function GetVoters({
                             <p style={{ marginTop: 20 }}>No voters found</p>
                         )}
                 </div>
-                {showVoters && clickedVoters && !showNonVotersState && <b>{voters.length} Voted</b>}
+
+                <b>{voters.length} Voted</b>
 
                 <button
                     type="button"
@@ -86,21 +86,19 @@ export default function GetVoters({
                 >
                     Get Non-Voters
                 </button>
+                <div className="settings__getUsers__chipBox">
+                    {nonVoters.length > 0
+                        ? nonVoters.map((nonVoter) => (
+                            nonVoter.userId ? (
+                                <Chip key={nonVoter.user.uid} user={nonVoter.user} />
+                            ) : null
+                        ))
+                        : clickedNonVoters && (
+                            <p style={{ marginTop: 20 }}>No non-voters found</p>
+                        )}
+                </div>
 
-                {showNonVotersState && (
-                    <div className="settings__getUsers__chipBox">
-                        {nonVoters.length > 0
-                            ? nonVoters.map((nonVoter) => (
-                                nonVoter.userId ? (
-                                    <Chip key={nonVoter.user.uid} user={nonVoter.user} />
-                                ) : null
-                            ))
-                            : clickedNonVoters && (
-                                <p style={{ marginTop: 20 }}>No non-voters found</p>
-                            )}
-                    </div>
-                )}
-                {showNonVotersState && clickedNonVoters && <b>{nonVoters.length} Didn't Vote</b>}
+                <b>{nonVoters.length} Didn't Vote</b>
             </section>
         )
     );
