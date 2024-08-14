@@ -4,66 +4,74 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
-import {
-    useAppDispatch,
-    useAppSelector,
-} from "../../../functions/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
 // Helpers
-import { listenToStatementSubscriptions } from "../../../functions/db/statements/listenToStatements";
+import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "@/controllers/db/subscriptions/getSubscriptions";
 
 // Custom Components
-import HomeHeader from "./HomeHeader";
 import ScreenSlide from "../../components/animation/ScreenSlide";
+import HomeHeader from "./HomeHeader";
 
-export const listenedStatements = new Set<string>();
+interface ListenedStatements {
+	unsubFunction: () => void;
+	statementId: string;
+}
+
+export const listenedStatements: Array<ListenedStatements> = [];
 
 export default function Home() {
-    // Hooks
-    const { statementId } = useParams();
-    const location = useLocation();
+	// Hooks
+	const { statementId } = useParams();
+	const location = useLocation();
 
-    // Redux Store
-    const dispatch = useAppDispatch();
-    const user = useAppSelector(userSelector);
+	// Redux Store
+	const user = useAppSelector(userSelector);
 
-    // Use States
-    const [displayHeader, setDisplayHeader] = useState(true);
+	// Use States
+	const [displayHeader, setDisplayHeader] = useState(true);
 
-    useEffect(() => {
-        if (location.pathname.includes("addStatment") || statementId) {
-            setDisplayHeader(false);
-        } else {
-            setDisplayHeader(true);
-        }
-    }, [location]);
+	useEffect(() => {
+		if (location.pathname.includes("addStatement") || statementId) {
+			setDisplayHeader(false);
+		} else {
+			setDisplayHeader(true);
+		}
+	}, [location]);
 
-    useEffect(() => {
-        let unsubscribe: Promise<void> | undefined;
-        try {
-            if (user) {
-                unsubscribe = listenToStatementSubscriptions(dispatch)(
-                    user,
-                    30,
-                    true,
-                );
-            }
-        } catch (error) {}
+	useEffect(() => {
 
-        return () => {
-            if (unsubscribe) {
-                unsubscribe.then((unsub) => {
-                    unsub;
-                });
-            }
-        };
-    }, [user]);
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let unsubscribe: () => void = () => { };
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		let updatesUnsubscribe: () => void = () => { };
+		try {
+			if (user) {
+				unsubscribe = listenToStatementSubscriptions(30);
+				updatesUnsubscribe = getNewStatementsFromSubscriptions();
+			}
+		} catch (error) { }
 
-    return (
-        <ScreenSlide className="page slide-in">
-            {displayHeader && <HomeHeader />}
-            <Outlet />
-        </ScreenSlide>
-    );
+		return () => {
+			if (unsubscribe) {
+				unsubscribe();
+				listenedStatements.forEach((ls) => {
+					ls.unsubFunction();
+				});
+			}
+			if (updatesUnsubscribe) {
+				updatesUnsubscribe();
+			}
+		};
+	}, [user]);
+
+
+
+	return (
+		<ScreenSlide className="page slide-in">
+			{displayHeader && <HomeHeader />}     
+			<Outlet />
+		</ScreenSlide>
+	);
 }

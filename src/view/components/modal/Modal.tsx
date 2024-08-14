@@ -1,15 +1,14 @@
-import { FC } from "react";
+import { ComponentProps, FC } from "react";
+import "./Modal.scss";
 
-type Props = {
-    children: string | JSX.Element | JSX.Element[];
-};
+type ModalProps = ComponentProps<"div">;
 
-const Modal: FC<Props> = ({ children }) => {
-    return (
-        <div className="modal">
-            <div className="modal__box">{children}</div>
-        </div>
-    );
+const Modal: FC<ModalProps> = ({ children, className = "" }) => {
+	return (
+		<div className={`modal ${className}`}>
+			<div className="modal-content">{children}</div>
+		</div>
+	);
 };
 
 export default Modal;

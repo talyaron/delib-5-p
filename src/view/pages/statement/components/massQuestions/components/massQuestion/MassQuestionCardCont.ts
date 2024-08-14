@@ -1,10 +1,11 @@
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { Statement, StatementType, User } from "delib-npm";
 import { store } from "../../../../../../../model/store";
 import {
-    createStatement,
-    setStatmentToDB,
-    updateStatementText,
-} from "../../../../../../../functions/db/statements/setStatments";
+	createStatement,
+	setStatementToDB,
+	updateStatementText,
+} from "../../../../../../../controllers/db/statements/setStatements";
 
 interface handleSetQuestionFromMassCardProps {
     question: Statement;
@@ -13,38 +14,40 @@ interface handleSetQuestionFromMassCardProps {
 }
 
 export const handleSetQuestionFromMassCard = ({
-    question,
-    answer,
-    text,
+	question,
+	answer,
+	text,
 }: handleSetQuestionFromMassCardProps) => {
-    try {
-        const user: User | null = store.getState().user.user;
-        if (!user) throw new Error("user not found");
-        if (!text) return;
+	try {
+		const user: User | null = store.getState().user.user;
+		if (!user) throw new Error("user not found");
+		if (!text) return;
 
-        if (answer) {
-            //update statement
-            updateStatementText(answer, text);
+		if (answer) {
+			//update statement
+			updateStatementText(answer, text);
 
-            return undefined;
-        } else {
-            //create new statement
-            const statement: Statement | undefined = createStatement({
-                text,
-                parentStatement: question,
-                statementType: StatementType.option,
-            });
-            if (!statement) throw new Error("statement not created");
+			return undefined;
+		} else {
+			//create new statement
+			const statement: Statement | undefined = createStatement({
+				...defaultStatementSettings,
+				hasChildren: true,
+				text,
+				parentStatement: question,
+				statementType: StatementType.option,
+			});
+			if (!statement) throw new Error("statement not created");
 
-            setStatmentToDB({
-                statement,
-                parentStatement: question,
-                addSubscription: false,
-            });
-        }
-    } catch (error) {
-        console.error(error);
+			setStatementToDB({
+				statement,
+				parentStatement: question,
+				addSubscription: false,
+			});
+		}
+	} catch (error) {
+		console.error(error);
 
-        return undefined;
-    }
+		return undefined;
+	}
 };

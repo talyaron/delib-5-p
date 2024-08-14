@@ -4,18 +4,25 @@ import { userSlicer } from "./users/userSlice";
 import { evaluationsSlicer } from "./evaluations/evaluationsSlice";
 import { votesSlicer } from "./vote/votesSlice";
 import { resultsSlice } from "./results/resultsSlice";
-import {roomsSlice} from "./rooms/roomsSlice";
-
+import { roomsSlice } from "./rooms/roomsSlice";
+import { timersSlice } from "./timers/timersSlice";
+import { initLocationSlice } from "./location/locationSlice";
+import { historySlice } from "./history/HistorySlice";
+import { statementMetaData } from "./statements/statementsMetaSlice";
 
 export const store = configureStore({
-    reducer: {
-        statements: statementsSlicer.reducer,
-        evaluations: evaluationsSlicer.reducer,
-        user: userSlicer.reducer,
-        votes: votesSlicer.reducer,
-        results: resultsSlice.reducer,
-        rooms: roomsSlice.reducer,
-    },
+	reducer: {
+		statements: statementsSlicer.reducer,
+		statementMetaData: statementMetaData.reducer,
+		evaluations: evaluationsSlicer.reducer,
+		user: userSlicer.reducer,
+		votes: votesSlicer.reducer,
+		results: resultsSlice.reducer,
+		rooms: roomsSlice.reducer,
+		timers: timersSlice.reducer,
+		initLocation: initLocationSlice.reducer,
+		history: historySlice.reducer,
+	},
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

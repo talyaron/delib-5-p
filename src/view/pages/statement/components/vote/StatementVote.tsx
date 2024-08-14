@@ -1,133 +1,140 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { Statement } from "delib-npm";
-import { useParams } from "react-router-dom";
-
-// Statements components
-import StatementOptionsNav from "../evaluations/components/StatementEvaluationNav";
+import { QuestionStage, QuestionType, Statement } from 'delib-npm';
 
 // Redux
-import { useAppDispatch } from "../../../../../functions/hooks/reduxHooks";
+import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
 
 // Statements helpers
-import { getToVoteOnParent } from "../../../../../functions/db/vote/getVotes";
-import { setVoteToStore } from "../../../../../model/vote/votesSlice";
-import NewSetStatementSimple from "../set/NewStatementSimple";
-import { setSelectionsToOptions } from "./setSelectionsToOptions";
-import { getTotalVoters } from "./getTotalVoters";
-import { sortOptionsIndex } from "./sortOptionsIndex";
+import { getToVoteOnParent } from '@/controllers/db/vote/getVotes';
+import { setVoteToStore } from '@/model/vote/votesSlice';
+import { getTotalVoters } from './statementVoteCont';
 
 // Custom components
-import Modal from "../../../../components/modal/Modal";
-import { OptionBar } from "./OptionBar";
-import { isOptionFn } from "../../../../../functions/general/helpers";
-import HandsIcon from "../../../../components/icons/HandsIcon";
-import StatementInfo from "./info/StatementInfo";
+import Modal from '@/view/components/modal/Modal';
+import HandIcon from '@/assets/icons/handIcon.svg?react';
+import StatementInfo from './components/info/StatementInfo';
+import StatementBottomNav from '../nav/bottom/StatementBottomNav';
+import './StatementVote.scss';
+import X from '@/assets/icons/x.svg?react';
+
+// Helpers
+import VotingArea from './components/votingArea/VotingArea';
+import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
+import Toast from '@/view/components/toast/Toast';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button from '@/view/components/buttons/button/Button';
+import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
 
 interface Props {
-    statement: Statement;
-    subStatements: Statement[];
-    toggleAskNotifications: () => void;
+	statement: Statement;
+	subStatements: Statement[];
+	toggleAskNotifications: () => void;
 }
 let getVoteFromDB = false;
 
 const StatementVote: FC<Props> = ({
-    statement,
-    subStatements,
-    toggleAskNotifications,
+	statement,
+	subStatements,
+	toggleAskNotifications,
 }) => {
-    const dispatch = useAppDispatch();
-    const { sort } = useParams();
+	// * Hooks * //
+	const dispatch = useAppDispatch();
+	const { t } = useLanguage();
 
-    const [showModal, setShowModal] = useState(false);
-    const [showInfo, setShowInfo] = useState(false);
-    const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
+	const currentStage = statement.questionSettings?.currentStage;
+	const isCurrentStageVoting = currentStage === QuestionStage.voting;
+	const stageInfo = getStagesInfo(currentStage);
+	const toastMessage = stageInfo ? stageInfo.message : '';
+	const useSearchForSimilarStatements =
+		statement.statementSettings?.enableSimilaritiesSearch || false;
 
-    const __options = subStatements.filter((subStatement: Statement) =>
-        isOptionFn(subStatement),
-    );
-    const _options = setSelectionsToOptions(statement, __options);
-    const options = sortOptionsIndex(_options, sort);
-    const totalVotes = getTotalVoters(statement);
+	// * Use State * //
+	const [showMultiStageMessage, setShowMultiStageMessage] =
+		useState(isCurrentStageVoting);
+	const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
+		useState(false);
+	const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
+		useState(false);
+	const [statementInfo, setStatementInfo] = useState<Statement | null>(null);
 
-    useEffect(() => {
-        if (!getVoteFromDB) {
-            getToVoteOnParent(statement.statementId, updateStoreWitehVoteCB);
-            getVoteFromDB = true;
-        }
-    }, []);
+	// * Variables * //
+	const totalVotes = getTotalVoters(statement);
+	const isMuliStage =
+		statement.questionSettings?.questionType === QuestionType.multipleSteps;
 
-    function updateStoreWitehVoteCB(option: Statement) {
-        dispatch(setVoteToStore(option));
-    }
+	useEffect(() => {
+		if (!getVoteFromDB) {
+			getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
+			getVoteFromDB = true;
+		}
+	}, []);
 
-    return (
-        <>
-            <div className="page__main">
-                <div className="statement">
-                    <div>
-                        <p
-                            style={{
-                                maxWidth: "50vw",
-                                margin: "0 auto",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                            className="hand"
-                        >
-                            <HandsIcon
-                                color1="#6BBDED"
-                                color2="#ead55f"
-                                color3="#F76E9F"
-                            />{" "}
-                            {totalVotes}
-                        </p>
-                    </div>
-                    <div className="vote">
-                        {options.map((option: Statement, i: number) => {
-                            return (
-                                <OptionBar
-                                    key={option.statementId}
-                                    order={i}
-                                    option={option}
-                                    totalVotes={totalVotes}
-                                    statement={statement}
-                                    setShowInfo={setShowInfo}
-                                    setStatementInfo={setStatementInfo}
-                                />
-                            );
-                        })}
-                    </div>
-                </div>
+	function updateStoreWithVoteCB(option: Statement) {
+		dispatch(setVoteToStore(option));
+	}
 
-                {showModal && (
-                    <Modal>
-                        <NewSetStatementSimple
-                            parentStatement={statement}
-                            isOption={true}
-                            setShowModal={setShowModal}
-                            toggleAskNotifications={toggleAskNotifications}
-                        />
-                    </Modal>
-                )}
-                {showInfo && (
-                    <Modal>
-                        <StatementInfo
-                            statement={statementInfo}
-                            setShowInfo={setShowInfo}
-                        />
-                    </Modal>
-                )}
-            </div>
-            <div className="page__footer">
-                <StatementOptionsNav
-                    setShowModal={setShowModal}
-                    statement={statement}
-                />
-            </div>
-        </>
-    );
+	return (
+		<>
+			<div className='page__main'>
+				<div className='statement-vote'>
+					{showMultiStageMessage && (
+						<Toast
+							text={t(`${toastMessage}`)}
+							type='message'
+							show={showMultiStageMessage}
+							setShow={setShowMultiStageMessage}
+						>
+							<Button
+								text={t('Got it')}
+								iconOnRight={true}
+								icon={<X />}
+								bckColor='var(--crimson)'
+								color='var(--white)'
+								onClick={() => setShowMultiStageMessage(false)}
+							/>
+						</Toast>
+					)}
+					<div className='number-of-votes-mark'>
+						<HandIcon /> {totalVotes}
+					</div>
+					<VotingArea
+						totalVotes={totalVotes}
+						setShowInfo={setIsStatementInfoModalOpen}
+						statement={statement}
+						subStatements={subStatements}
+						setStatementInfo={setStatementInfo}
+					/>
+				</div>
+
+				{isCreateStatementModalOpen && (
+					<CreateStatementModalSwitch
+						isMuliStage={isMuliStage}
+						useSimilarStatements={useSearchForSimilarStatements}
+						parentStatement={statement}
+						isQuestion={false}
+						setShowModal={setIsCreateStatementModalOpen}
+						toggleAskNotifications={toggleAskNotifications}
+					/>
+				)}
+				{isStatementInfoModalOpen && (
+					<Modal>
+						<StatementInfo
+							statement={statementInfo}
+							setShowInfo={setIsStatementInfoModalOpen}
+						/>
+					</Modal>
+				)}
+			</div>
+			<div className='page__footer'>
+				<StatementBottomNav
+					setShowModal={setIsCreateStatementModalOpen}
+					statement={statement}
+				/>
+			</div>
+		</>
+	);
 };
 
 export default StatementVote;

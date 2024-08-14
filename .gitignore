@@ -1,3 +1,6 @@
+congifKey.ts
+
+
 # Logs
 logs
 *.log
@@ -6,6 +9,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+firebase.json
 
 node_modules
 dist
@@ -22,6 +27,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.env*
 
 .firebaserc
 dev_dist
@@ -32,3 +38,8 @@ dev-dist/
 *.cache
 
 .firebase/
+firebase.json
+firebase-debug.log
+firebase-debug.log*
+./firestore.indexes.json
+firestore.rules

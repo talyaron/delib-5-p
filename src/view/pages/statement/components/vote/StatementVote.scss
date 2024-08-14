@@ -1,0 +1,35 @@
+.statement-vote {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: auto;
+
+    .number-of-votes-mark {
+        color: #41a1da;
+        font-family: "Patrick Hand", cursive;
+        width: 100%;
+        max-width: 75ch;
+        margin: 0 auto;
+        display: flex;
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 1rem;
+
+        svg {
+            width: 17px;
+            height: 19px;
+        }
+    }
+}
+
+vote::-webkit-scrollbar {
+    width: 1.5rem;
+}
+
+vote::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, var(--accent), var(--halfPrimary));
+    border-radius: 1rem;
+}

@@ -1,108 +1,133 @@
-import { FC } from "react";
+import {
+	ChangeEvent,
+	Dispatch,
+	FC,
+	SetStateAction,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 
 // Third party
 import { Statement } from "delib-npm";
 
 // Statements Helpers
-import { updateStatementText } from "../../../functions/db/statements/setStatments";
+import { updateStatementText } from "@/controllers/db/statements/setStatements";
 
 // Styles
 import styles from "./EditTitle.module.scss";
+import Save from "@/assets/icons/saveIcon.svg?react";
 
 // Custom components
 import Text from "../text/Text";
-
-// import { statementTitleToDisplay } from "../../../functions/general/helpers";
+import { getDescription, getTitle } from "@/controllers/general/helpers";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
-    statement: Statement | undefined;
-    isEdit: boolean;
-    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-    isTextArea?: boolean;
-    onlyTitle?: boolean;
+  statement: Statement | undefined;
+  isEdit: boolean;
+  setEdit: Dispatch<SetStateAction<boolean>>;
+  isTextArea?: boolean;
+  onlyTitle?: boolean;
 }
 
 const EditTitle: FC<Props> = ({
-    statement,
-    isEdit,
-    setEdit,
-    isTextArea,
-    onlyTitle,
+	statement,
+	isEdit,
+	setEdit,
+	isTextArea,
+	onlyTitle,
 }) => {
-    try {
-        if (!statement) return null;
+	const [text, setText] = useState(statement?.statement || "");
+	const [title, setTitle] = useState(getTitle(statement) || "");
+	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-        const direction = document.body.style.direction as "ltr" | "rtl";
-        const align = direction === "ltr" ? "left" : "right";
+	if (!statement) return null;
 
-        const title = statement.statement.split("\n")[0];
-        const description = statement.statement.split("\n").slice(1).join("\n");
+	const { dir: direction } = useLanguage();
 
-        function handleSetTitle(e: any) {
-            try {
-                if (
-                    e.type === "blur" ||
-                    (e.key === "Enter" && e.shiftKey === false)
-                ) {
-                    const inputString = e.target.value;
+	const align = direction === "ltr" ? "left" : "right";
 
-                    if (inputString === title) return setEdit(false);
-                    if (!inputString) return;
+	useEffect(() => {
+		if (isEdit && textareaRef.current) {
+			const length = textareaRef.current.value.length;
+			textareaRef.current.focus();
+			textareaRef.current.setSelectionRange(length, length);
+		}
+	}, [isEdit]);
 
-                    if (!statement) throw new Error("statement is undefined");
+	function handleChange(
+		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+		setState: Dispatch<SetStateAction<string>>
+	) {
+		setState(e.target.value);
+	}
 
-                    if (isTextArea) {
-                        updateStatementText(statement, e.target.value);
-                    } else {
-                        const statementTitle = inputString + "\n" + description;
+	function handleSave() {
+		try {
+			if (!text.trim()) return; // Do not save if the text is empty
 
-                        //update title in db
-                        updateStatementText(statement, statementTitle);
-                    }
+			if (!statement) throw new Error("Statement is undefined");
 
-                    setEdit(false);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
+			const description = getDescription(statement);
 
-        if (!isEdit)
-            return (
-                <div style={{ direction: direction, textAlign: align }}>
-                    <Text text={statement.statement} onlyTitle={onlyTitle} />
-                </div>
-            );
+			const updatedText = isTextArea
+				? text.trim()
+				: title + "\n" + description.trim();
 
-        if (isTextArea) {
-            return (
-                <textarea
-                    style={{ direction: direction, textAlign: align }}
-                    className={styles.textarea}
-                    defaultValue={statement.statement}
-                    onBlur={handleSetTitle}
-                    onKeyUp={handleSetTitle}
-                    autoFocus={true}
-                />
-            );
-        } else {
-            return (
-                <input
-                    style={{ direction: direction, textAlign: align }}
-                    className={styles.input}
-                    type="text"
-                    defaultValue={title}
-                    onBlur={handleSetTitle}
-                    onKeyUp={handleSetTitle}
-                    autoFocus={true}
-                />
-            );
-        }
-    } catch (error) {
-        console.error(error);
+			updateStatementText(statement, updatedText);
+			setEdit(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-        return null;
-    }
+	if (!isEdit)
+		return (
+			<div style={{ direction: direction, textAlign: align }}>
+				<Text text={statement.statement} onlyTitle={onlyTitle} />
+			</div>
+		);
+
+	return (
+		<div className={styles.container}>
+			{isTextArea ? (
+				<>
+					<textarea
+						ref={textareaRef}
+						style={{ direction: direction, textAlign: align }}
+						className={styles.textarea}
+						value={text}
+						onChange={(e) => handleChange(e, setText)}
+						autoFocus={true}
+						placeholder="Add text"
+					></textarea>
+					<button className={styles.save} onClick={handleSave}>
+						<Save />
+					</button>
+				</>
+			) : (
+				<>
+					<input
+						style={{ direction: direction, textAlign: align }}
+						className={styles.input}
+						type="text"
+						value={title}
+						onChange={(e) => handleChange(e, setTitle)}
+						autoFocus={true}
+						data-cy="edit-title-input"
+					></input>
+					<button
+						className={styles.save}
+						onClick={handleSave}
+						style={{ left: direction === "rtl" ? "-1.4rem" : "none" }}
+					>
+						<Save />
+					</button>
+				</>
+			)}
+		</div>
+	);
 };
 
 export default EditTitle;

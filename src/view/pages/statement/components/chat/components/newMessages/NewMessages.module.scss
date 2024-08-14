@@ -1,13 +1,50 @@
-.newMessages{
+.newMessages {
     width: fit-content;
-    padding: .5rem 1rem;
+    padding: .5rem .9rem;
     position: fixed;
-    bottom: 5rem;
-    left:50vw;
-    transform: translateX(-50%);
-    background-color: wheat;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 2rem;
+    bottom: 8rem;
+    right: 2vw;
+    background-color: #787fff;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0px 2px 6px -1px rgba(112, 115, 168, 0.8);
+    border-radius: 5rem;
     user-select: none;
     cursor: pointer;
+
+    @media only screen and (max-device-width: 400px) {
+        right: 2vw;
+    }
+
+    @media only screen and (min-width: 700px) {
+        right: 9vw;
+    }
+
+    @media only screen and (min-width: 800px) {
+        right: 17vw;
+    }
+
+    @media only screen and (min-width: 960px) {
+        right: 19vw;
+    }
+
+    @media only screen and (min-width: 1100px) {
+        right: 24vw;
+    }
+
+    @media only screen and (min-width: 1200px) {
+        right: 25vw;
+    }
+
+    @media only screen and (min-width: 1300px) {
+        right: 28vw;
+    }
+
+    @media only screen and (min-width: 1440px) {
+        right: 33vw;
+    }
+
+    @media only screen and (min-width: 2000px) {
+        right: 34vw;
+    }
 }
