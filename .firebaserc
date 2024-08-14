@@ -1,9 +1,0 @@
-{
-  "projects": {
-    "dev": "delib-v3-dev",
-    "prod": "synthesistalyaron",
-    "default": "danieltovbin-efb2a"
-  },
-  "targets": {},
-  "etags": {}
-}

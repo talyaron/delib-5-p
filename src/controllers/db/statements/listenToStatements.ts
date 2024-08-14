@@ -199,7 +199,10 @@ export async function listenToUserAnswer(questionId: string, cb: (statement: Sta
   }
 }
 
-export async function listenToChildStatements(dispatch: AppDispatch,statementId: string, callback: (childStatements: Statement[]) => void
+export async function listenToChildStatements(
+  dispatch: AppDispatch,
+  statementId: string,
+  callback: (childStatements: Statement[]) => void
 ): Promise<Unsubscribe | null> {
   try {
     const statementsRef = collection(DB, Collections.statements);
@@ -212,13 +215,10 @@ export async function listenToChildStatements(dispatch: AppDispatch,statementId:
     const unsubscribe = onSnapshot(q, (statementsDB) => {
       const childStatements: Statement[] = [];
 
-      statementsDB.docChanges().forEach((change) => {
-        const childStatement = change.doc.data() as Statement;
-
-        if (change.type === "added" || change.type === "modified") {
-          childStatements.push(childStatement);
-          dispatch(setStatement(childStatement));
-        }
+      statementsDB.forEach((doc) => {
+        const childStatement = doc.data() as Statement;
+        childStatements.push(childStatement);
+        dispatch(setStatement(childStatement));
       });
 
       callback(childStatements);

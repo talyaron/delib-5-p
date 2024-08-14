@@ -73,7 +73,10 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
 		const topResult = sortStatementsByHirarrchy([
 			statement,
-			...childStatements.filter((state) => isOptionFn(state) || state.statementType === StatementType.question),
+			...childStatements.filter(
+				(state) =>
+					isOptionFn(state) || state.statementType === StatementType.question
+			),
 		])[0];
 
 		setResults(topResult);
@@ -86,18 +89,32 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
 		const fetchInitialData = async () => {
 			try {
-				unsubscribe = await listenToChildStatements(dispatch, statement.statementId, (childStatements) => {
-					setSubStatements(childStatements);
+				unsubscribe = await listenToChildStatements(
+					dispatch,
+					statement.statementId,
+					(childStatements) => {
+						setSubStatements((prevStatements) => {
+							const updatedStatements = [
+								...prevStatements,
+								...childStatements.filter(
+									(stmt) => !prevStatements.some((prev) => prev.statementId === stmt.statementId)
+								),
+							];
 
-					const topResult = sortStatementsByHirarrchy([
-						statement,
-						...childStatements.filter((state) => isOptionFn(state) || state.statementType === StatementType.question),
-					])[0];
+							const topResult = sortStatementsByHirarrchy([
+								statement,
+								...updatedStatements.filter(
+									(state) => isOptionFn(state) || state.statementType === StatementType.question
+								),
+							])[0];
 
-					setResults(topResult);
-				});
+							setResults(topResult);
+							return updatedStatements;
+						});
+					}
+				);
 			} catch (error) {
-				console.error('Error fetching initial data:', error);
+				console.error("Error fetching initial data:", error);
 			}
 		};
 
