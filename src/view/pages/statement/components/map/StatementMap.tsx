@@ -94,22 +94,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 					statement.statementId,
 					(childStatements) => {
 						setSubStatements((prevStatements) => {
-							const updatedStatements = [
-								...prevStatements,
-								...childStatements.filter(
-									(stmt) => !prevStatements.some((prev) => prev.statementId === stmt.statementId)
-								),
-							];
-
-							const topResult = sortStatementsByHirarrchy([
-								statement,
-								...updatedStatements.filter(
-									(state) => isOptionFn(state) || state.statementType === StatementType.question
-								),
-							])[0];
-
-							setResults(topResult);
-							return updatedStatements;
+							return updateStatementsAndResults(prevStatements, childStatements, statement);
 						});
 					}
 				);
@@ -126,6 +111,30 @@ const StatementMap: FC<Props> = ({ statement }) => {
 			}
 		};
 	}, [statement.statementId, dispatch]);
+
+	function updateStatementsAndResults(
+		prevStatements: Statement[],
+		childStatements: Statement[],
+		statement: Statement,
+	): Statement[] {
+		const updatedStatements = [
+			...prevStatements,
+			...childStatements.filter(
+				(stmt) => !prevStatements.some((prev) => prev.statementId === stmt.statementId)
+			),
+		];
+
+		const topResult = sortStatementsByHirarrchy([
+			statement,
+			...updatedStatements.filter(
+				(state) => isOptionFn(state) || state.statementType === StatementType.question
+			),
+		])[0];
+
+		setResults(topResult);
+
+		return updatedStatements;
+	}
 
 	const toggleModal = (show: boolean) => {
 		setMapContext((prev) => ({
