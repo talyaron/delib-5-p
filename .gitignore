@@ -27,7 +27,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env
+.env*
 
 .firebaserc
 dev_dist
@@ -41,4 +41,5 @@ dev-dist/
 firebase.json
 firebase-debug.log
 firebase-debug.log*
-configKey.ts
+./firestore.indexes.json
+firestore.rules
