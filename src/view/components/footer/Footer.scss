@@ -2,7 +2,7 @@
     position: fixed;
     bottom: 0;
     width: 95%;
-    height: 150px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,8 +10,8 @@
 
     .add-statement-button {
         background: #5899e0;
-        width: 6.125rem;
-        height: 6.125rem;
+        width: 3.125rem;
+        height: 3.125rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -25,8 +25,8 @@
 
         svg {
             color: white;
-            width: 36px;
-            height: 35px;
+            width: 26px;
+            height: 25px;
         }
 
         &:active {

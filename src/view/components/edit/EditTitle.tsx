@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
@@ -7,20 +7,21 @@ import { Statement } from "delib-npm";
 import { updateStatementText } from "@/controllers/db/statements/setStatements";
 
 // Styles
-import styles from "./EditTitle.module.scss";
 import Save from "@/assets/icons/saveIcon.svg?react";
+import styles from "./EditTitle.module.scss";
 
 // Custom components
-import Text from "../text/Text";
 import { getDescription, getTitle } from "@/controllers/general/helpers";
+import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Text from "../text/Text";
 
 interface Props {
-	statement: Statement | undefined;
-	isEdit: boolean;
-	setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-	isTextArea?: boolean;
-	onlyTitle?: boolean;
+  statement: Statement | undefined;
+  isEdit: boolean;
+  setEdit: Dispatch<SetStateAction<boolean>>;
+  isTextArea?: boolean;
+  onlyTitle?: boolean;
 }
 
 const EditTitle: FC<Props> = ({
@@ -32,16 +33,17 @@ const EditTitle: FC<Props> = ({
 }) => {
 	const [text, setText] = useState(statement?.statement || "");
 	const [title, setTitle] = useState(getTitle(statement) || "");
+	const textareaRef = useAutoFocus(isEdit);
 
 	if (!statement) return null;
 
-	const {dir:direction } = useLanguage();
- 
+	const { dir: direction } = useLanguage();
+
 	const align = direction === "ltr" ? "left" : "right";
 
 	function handleChange(
-		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-		setState: React.Dispatch<React.SetStateAction<string>>
+		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+		setState: Dispatch<SetStateAction<string>>
 	) {
 		setState(e.target.value);
 	}
@@ -77,6 +79,7 @@ const EditTitle: FC<Props> = ({
 			{isTextArea ? (
 				<>
 					<textarea
+						ref={textareaRef}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.textarea}
 						value={text}
@@ -99,7 +102,11 @@ const EditTitle: FC<Props> = ({
 						autoFocus={true}
 						data-cy="edit-title-input"
 					></input>
-					<button className={styles.save} onClick={handleSave} style={{left:direction === 'rtl'?"-1.4rem":"none"}}>
+					<button
+						className={styles.save}
+						onClick={handleSave}
+						style={{ left: direction === "rtl" ? "-1.4rem" : "none" }}
+					>
 						<Save />
 					</button>
 				</>

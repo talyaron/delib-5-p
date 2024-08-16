@@ -85,6 +85,7 @@ export default function SwitchScreens({
 				handleShowTalker={handleShowTalker}
 				questions={true}
 				toggleAskNotifications={toggleAskNotifications}
+				currentPage="question"
 			/>
 		);
 	case Screen.INFO:
