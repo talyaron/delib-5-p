@@ -1,4 +1,4 @@
-import { ResultsBy, Screen, Statement } from 'delib-npm';
+import { ResultsBy, Screen, Statement } from "delib-npm";
 
 export const defaultStatementSettings = {
 	enhancedEvaluation: true,
@@ -22,14 +22,14 @@ export const defaultStatementSubScreens: Screen[] = [
 ] as const;
 
 export const defaultEmptyStatement: Statement = {
-	topParentId: '',
-	statement: '',
-	statementId: '',
-	parentId: '',
-	creatorId: '',
+	topParentId: "",
+	statement: "",
+	statementId: "",
+	parentId: "",
+	creatorId: "",
 	creator: {
-		displayName: '',
-		uid: '',
+		displayName: "",
+		uid: "",
 		defaultLanguage: undefined,
 		email: undefined,
 		photoURL: undefined,
