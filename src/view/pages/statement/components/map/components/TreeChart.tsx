@@ -28,7 +28,6 @@ import MapHorizontalLayoutIcon from "@/assets/icons/MapHorizontalLayoutIcon.svg"
 import MapCancelIcon from "@/assets/icons/MapCancelIcon.svg";
 import MapHamburgerIcon from "@/assets/icons/MapHamburgerIcon.svg";
 
-
 // Helper functions
 import {
 	createInitialNodesAndEdges,
@@ -49,9 +48,9 @@ const nodeTypes = {
 };
 
 interface Props {
-	topResult: Results;
-	isAdmin: boolean;
-	getSubStatements: () => Promise<void>;
+  topResult: Results;
+  isAdmin: boolean;
+  getSubStatements: () => Promise<void>;
 }
 
 export default function TreeChart({
@@ -64,9 +63,9 @@ export default function TreeChart({
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const [tempEdges, setTempEdges] = useState(edges);
 	const [rfInstance, setRfInstance] = useState<null | ReactFlowInstance<
-		unknown,
-		unknown
-	>>(null);
+    unknown,
+    unknown
+  >>(null);
 
 	const [intersectedNodeId, setIntersectedNodeId] = useState("");
 	const [draggedNodeId, setDraggedNodeId] = useState("");
@@ -83,19 +82,17 @@ export default function TreeChart({
 		setIsButtonVisible(false);
 	};
 
-
 	useEffect(() => {
 		const { nodes: createdNodes, edges: createdEdges } =
-			createInitialNodesAndEdges(topResult);
+      createInitialNodesAndEdges(topResult);
 
-		const { nodes: layoutedNodes, edges: layoutedEdges } =
-			getLayoutedElements(
-				createdNodes,
-				createdEdges,
-				mapContext.nodeHeight,
-				mapContext.nodeWidth,
-				mapContext.direction,
-			);
+		const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+			createdNodes,
+			createdEdges,
+			mapContext.nodeHeight,
+			mapContext.nodeWidth,
+			mapContext.direction
+		);
 
 		setNodes(layoutedNodes);
 		setEdges(layoutedEdges);
@@ -113,29 +110,26 @@ export default function TreeChart({
 
 			setMapContext((prev) => ({
 				...prev,
-				targetPosition:
-					direction === "TB" ? Position.Top : Position.Left,
-				sourcePosition:
-					direction === "TB" ? Position.Bottom : Position.Right,
+				targetPosition: direction === "TB" ? Position.Top : Position.Left,
+				sourcePosition: direction === "TB" ? Position.Bottom : Position.Right,
 				nodeWidth: width,
 				nodeHeight: height,
 				direction,
 			}));
 
 			const { nodes: layoutedNodes, edges: layoutedEdges } =
-				getLayoutedElements(nodes, edges, height, width, direction);
+        getLayoutedElements(nodes, edges, height, width, direction);
 
 			setNodes([...layoutedNodes]);
 			setEdges([...layoutedEdges]);
 		},
-		[nodes, edges],
+		[nodes, edges]
 	);
 
 	const onNodeDragStop = async (
 		_: React.MouseEvent<Element, MouseEvent>,
-		node: Node,
+		node: Node
 	) => {
-
 		const intersections = getIntersectingNodes(node).map((n) => n.id);
 
 		if (intersections.length === 0) return setEdges(tempEdges);
@@ -159,10 +153,10 @@ export default function TreeChart({
 				ns.map((n) => ({
 					...n,
 					className: intersections?.id === n.id ? "highlight" : "",
-				})),
+				}))
 			);
 		},
-		[],
+		[]
 	);
 
 	const onSave = useCallback(() => {
@@ -190,16 +184,12 @@ export default function TreeChart({
 
 	const handleMoveStatement = async (move: boolean) => {
 		if (move) {
-			const [draggedStatement, newDraggedStatementParent] =
-				await Promise.all([
-					getStatementFromDB(draggedNodeId),
-					getStatementFromDB(intersectedNodeId),
-				]);
+			const [draggedStatement, newDraggedStatementParent] = await Promise.all([
+				getStatementFromDB(draggedNodeId),
+				getStatementFromDB(intersectedNodeId),
+			]);
 			if (!draggedStatement || !newDraggedStatementParent) return;
-			await updateStatementParents(
-				draggedStatement,
-				newDraggedStatementParent,
-			);
+			await updateStatementParents(draggedStatement, newDraggedStatementParent);
 			await getSubStatements();
 		} else {
 			onRestore();
@@ -231,33 +221,33 @@ export default function TreeChart({
 			>
 				<Controls />
 				<Panel position="bottom-right" className="btnsPanel">
-            {!isButtonVisible && (
-                <div className="mainButton">
-                    <button onClick={handleHamburgerClick}>
-                        <img src={MapHamburgerIcon} alt="Hamburger" />
-                    </button>
-                </div>
-            )}
-            {isButtonVisible && (
-                <div className={`arc-buttons ${isButtonVisible ? "open" : ""}`}>
-                    <button onClick={handleCancelClick}>
-                        <img src={MapCancelIcon} alt="Cancel" />
-                    </button>
-                    <button onClick={() => onLayout("TB")}>
-                        <img src={MapVerticalLayoutIcon} alt="vertical layout" />
-                    </button>
-                    <button onClick={() => onLayout("LR")}>
-                        <img src={MapHorizontalLayoutIcon} alt="horizontal layout" />
-                    </button>
-                    <button onClick={onRestore}>
-                        <img src={MapRestoreIcon} alt="Restore" />
-                    </button>
-                    <button onClick={onSave}>
-                        <img src={MapSaveIcon} alt="Save" />
-                    </button>
-                </div>
-            )}
-        </Panel>
+					{!isButtonVisible && (
+						<div className="mainButton">
+							<button onClick={handleHamburgerClick}>
+								<img src={MapHamburgerIcon} alt="Hamburger" />
+							</button>
+						</div>
+					)}
+					{isButtonVisible && (
+						<div className={`arc-buttons ${isButtonVisible ? "open" : ""}`}>
+							<button onClick={handleCancelClick}>
+								<img src={MapCancelIcon} alt="Cancel" />
+							</button>
+							<button onClick={() => onLayout("TB")}>
+								<img src={MapVerticalLayoutIcon} alt="vertical layout" />
+							</button>
+							<button onClick={() => onLayout("LR")}>
+								<img src={MapHorizontalLayoutIcon} alt="horizontal layout" />
+							</button>
+							<button onClick={onRestore}>
+								<img src={MapRestoreIcon} alt="Restore" />
+							</button>
+							<button onClick={onSave}>
+								<img src={MapSaveIcon} alt="Save" />
+							</button>
+						</div>
+					)}
+				</Panel>
 			</ReactFlow>
 			{mapContext.moveStatementModal && (
 				<Modal>
@@ -269,13 +259,13 @@ export default function TreeChart({
 								onClick={() => handleMoveStatement(true)}
 								className="btn btn--large btn--add"
 							>
-								Yes
+                Yes
 							</button>
 							<button
 								onClick={() => handleMoveStatement(false)}
 								className="btn btn--large btn--disagree"
 							>
-								No
+                No
 							</button>
 						</div>
 					</div>

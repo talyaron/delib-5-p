@@ -3,6 +3,8 @@
   min-height: 4rem;
   height: 100%;
   flex: 1;
+  overflow: hidden;
+  background-color: white;
 }
 
 .editTitle-btn {
@@ -14,7 +16,7 @@
   display: flex;
   background-color: white;
   border-radius: 5px;
-  width: fit-content;
+  width: auto;
 }
 
 .input {

@@ -5,18 +5,11 @@ import { useParams } from 'react-router-dom';
 import { Statement } from 'delib-npm';
 
 // Redux Store
-import {
-	useAppDispatch,
-	useAppSelector,
-} from '@/controllers/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
 import {
 	setStatement,
 	statementSelector,
 } from '@/model/statements/statementsSlice';
-
-// Custom components
-import Loader from '@/view/components/loaders/Loader';
-import ScreenFadeIn from '@/view/components/animation/ScreenFadeIn';
 
 // Hooks & Helpers
 import { useLanguage } from '@/controllers/hooks/useLanguages';
@@ -26,112 +19,112 @@ import { getStatementFromDB } from '@/controllers/db/statements/getStatement';
 import { defaultEmptyStatement } from './emptyStatementModel';
 import { listenToStatementMetaData } from '@/controllers/db/statements/statementMetaData/listenToStatementMeta';
 
+// Custom components
+import Loader from '@/view/components/loaders/Loader';
+import ScreenFadeIn from '@/view/components/animation/ScreenFadeIn';
+
 const StatementSettings: FC = () => {
-	try {
-		// * Hooks * //
-		const { statementId } = useParams();
-		const { t } = useLanguage();
-		const [parentStatement, setParentStatement] = useState<
-			Statement | undefined | 'top'
-		>(undefined);
-		const [isLoading, setIsLoading] = useState(false);
-		const [statementToEdit, setStatementToEdit] = useState<
-			Statement | undefined
-		>();
+	// * Hooks * //
+	const { statementId } = useParams();
+	const { t } = useLanguage();
 
-		const dispatch = useAppDispatch();
+	// * State * //
+	const [parentStatement, setParentStatement] = useState<
+		Statement | undefined | 'top'
+	>(undefined);
+	const [isLoading, setIsLoading] = useState(false);
+	const [statementToEdit, setStatementToEdit] = useState<
+		Statement | undefined
+	>();
 
-		const statement: Statement | undefined = useAppSelector(
-			statementSelector(statementId)
-		);
+	// * Redux * //
+	const dispatch = useAppDispatch();
+	const statement: Statement | undefined = useAppSelector(
+		statementSelector(statementId)
+	);
 
-		useEffect(() => {
-			try {
+	// * Use Effect * //
+	useEffect(() => {
+		try {
+			if (statement) {
+				setStatementToEdit(statement);
+
+				if (statement.parentId === 'top') {
+					setParentStatement('top');
+
+					return;
+				}
+
+				//get parent statement
+				getStatementFromDB(statement.parentId)
+					.then((parentStatement) => {
+						try {
+							if (!parentStatement) throw new Error('no parent statement');
+
+							setParentStatement(parentStatement);
+						} catch (error) {
+							console.error(error);
+						}
+					})
+					.catch((error) => {
+						console.error(error);
+					});
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}, [statement]);
+
+	useEffect(() => {
+		try {
+			let unsubscribe: undefined | (() => void);
+			let unSubMeta: undefined | (() => void);
+
+			if (statementId) {
+				unsubscribe = listenToMembers(dispatch)(statementId);
+				unSubMeta = listenToStatementMetaData(statementId);
+
 				if (statement) {
 					setStatementToEdit(statement);
-
-					if (statement.parentId === 'top') {
-						setParentStatement('top');
-
-						return;
-					}
-
-					//get parent statement
-					getStatementFromDB(statement.parentId)
-						.then((parentStatement) => {
-							try {
-								if (!parentStatement) throw new Error('no parent statement');
-
-								setParentStatement(parentStatement);
-							} catch (error) {
-								console.error(error);
-							}
-						})
-						.catch((error) => {
-							console.error(error);
-						});
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		}, [statement]);
-
-		// * Use Effect * //
-		useEffect(() => {
-			try {
-				let unsubscribe: undefined | (() => void);
-				let unsubMeta: undefined | (() => void);
-
-				if (statementId) {
-					unsubscribe = listenToMembers(dispatch)(statementId);
-					unsubMeta = listenToStatementMetaData(statementId);
-
-					if (statement) {
-						setStatementToEdit(statement);
-					} else {
-						(async () => {
-							const statementDB = await getStatementFromDB(statementId);
-							if (statementDB) {
-								dispatch(setStatement(statementDB));
-								setStatementToEdit(statementDB);
-							}
-						})();
-					}
 				} else {
-					setStatementToEdit(defaultEmptyStatement);
+					(async () => {
+						const statementDB = await getStatementFromDB(statementId);
+						if (statementDB) {
+							dispatch(setStatement(statementDB));
+							setStatementToEdit(statementDB);
+						}
+					})();
 				}
-
-				return () => {
-					if (unsubscribe) unsubscribe();
-					if (unsubMeta) unsubMeta();
-				};
-			} catch (error) {
-				console.error(error);
+			} else {
+				setStatementToEdit(defaultEmptyStatement);
 			}
-		}, [statementId]);
 
-		return (
-			<ScreenFadeIn className='page__main'>
-				{isLoading || !statementToEdit ? (
-					<div className='center'>
-						<h2>{t('Updating')}</h2>
-						<Loader />
-					</div>
-				) : (
-					<StatementSettingsForm
-						setIsLoading={setIsLoading}
-						statement={statementToEdit}
-						parentStatement={parentStatement}
-						setStatementToEdit={setStatementToEdit}
-					/>
-				)}
-			</ScreenFadeIn>
-		);
-	} catch (error) {
-		console.error(error);
+			return () => {
+				if (unsubscribe) unsubscribe();
+				if (unSubMeta) unSubMeta();
+			};
+		} catch (error) {
+			console.error(error);
+		}
+	}, [statementId]);
 
-		return null;
-	}
+	return (
+		<ScreenFadeIn className='page__main'>
+			{isLoading || !statementToEdit ? (
+				<div className='center'>
+					<h2>{t('Updating')}</h2>
+					<Loader />
+				</div>
+			) : (
+				<StatementSettingsForm
+					setIsLoading={setIsLoading}
+					statement={statementToEdit}
+					parentStatement={parentStatement}
+					setStatementToEdit={setStatementToEdit}
+				/>
+			)}
+		</ScreenFadeIn>
+	);
 };
 
 export default StatementSettings;

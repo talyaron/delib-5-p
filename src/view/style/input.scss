@@ -5,7 +5,9 @@ textarea {
     padding: 0.5rem;
     border: none;
     outline: none;
+    word-break: keep-all;
     background-color: var(--inputBackground);
+    background-color: var(--white);
     border-radius: 3px;
     font-family: 'Open Sans', sans-serif;
 }

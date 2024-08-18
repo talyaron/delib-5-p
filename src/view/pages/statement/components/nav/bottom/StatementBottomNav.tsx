@@ -5,100 +5,177 @@ import { Statement, Screen, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import LightIcon from "@/assets/icons/lightBulbIcon.svg?react";
-import NavQuestionIcon from "@/assets/icons/questionIcon.svg?react";
-import PlusIcon from "@/assets/icons/plusIcon.svg?react";
-import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
-import RandomIcon from "@/assets/icons/randomIcon.svg?react";
-import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
-import NewestIcon from "@/assets/icons/newIcon.svg?react";
-import useStatementColor from "@/controllers/hooks/useStatementColor";
+import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?react";
+import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
+import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
+import NewestIcon from "../../../../../../assets/icons/newIcon.svg?react";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 import {
 	NavItem,
 	optionsArray,
 	questionsArray,
 	votesArray,
 } from "./StatementBottomNavModal";
-import IconButton from "@/view/components/iconButton/IconButton";
 import "./StatementBottomNav.scss";
+import SortIcon from "../../../../../components/icons/SortIcon";
+import useWindowDimensions from "../../../../../../controllers/hooks/useWindowDimentions";
+import { useLanguage } from "../../../../../../controllers/hooks/useLanguages";
 
 interface Props {
-    statement: Statement;
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-    showNav?: boolean;
+  statement: Statement;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNavigationOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  isNavigationOpen?: boolean;
+  showNav?: boolean;
+  currentPage?: string;
 }
 
-const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
+const StatementBottomNav: FC<Props> = ({
+	statement,
+	setIsNavigationOpen,
+	isNavigationOpen,
+	currentPage,
+}) => {
 	const { page } = useParams();
-	const MainIcon = page === Screen.QUESTIONS ? NavQuestionIcon : LightIcon;
+
+	const { t } = useLanguage();
 
 	const navItems = getNavigationScreens(page);
+	const [isMainButtonVisible, setIsMainButtonVisible] = useState(true);
+	const [isSmallIcon, setIsSmallIcon] = useState(false);
 
-	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-
-	const statementColor = useStatementColor(statement.statementType || StatementType.statement);
-	
+	const statementColor = useStatementColor(
+		statement.statementType || StatementType.statement
+	);
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
-        statement.statementSettings?.enableAddEvaluationOption;
+    statement.statementSettings?.enableAddEvaluationOption;
 
 	const addVotingOption: boolean | undefined =
-        statement.statementSettings?.enableAddVotingOption;
+    statement.statementSettings?.enableAddVotingOption;
 
 	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
 	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
 	const showAddQuestion = page === Screen.QUESTIONS;
-	const isAddOption =
-        showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
+	showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
+	if (!setIsNavigationOpen) {
+		return null;
+	}
 
+	//nav button handler
 	const handleMidIconClick = () => {
-		if (!isNavigationOpen) return setIsNavigationOpen(true);
-		if (isAddOption) {
-			setShowModal(true);
+		if (!isNavigationOpen) {
+			setIsNavigationOpen(true);
+			setIsSmallIcon(true);
+		} else {
+			setIsNavigationOpen(false);
+			setIsMainButtonVisible(false);
+			setIsSmallIcon(true);
+
+			setTimeout(() => {
+				setIsMainButtonVisible(true);
+				setIsSmallIcon(false);
+			}, 1000);
 		}
-		setIsNavigationOpen(false);
 	};
 
-	const navStyle = {
-		bottom: page === "vote" ? "unset" : "3rem",
-		height: page === "vote" ? "4rem" : "unset",
-	};
+	const { width } = useWindowDimensions();
+	const smallScreen = width < 1024;
 
 	return (
 		<>
 			{isNavigationOpen && (
-				<div
-					className="invisibleBackground"
-					onClick={() => setIsNavigationOpen(false)}
-				/>
+				<div className="invisibleBackground" onClick={handleMidIconClick} />
 			)}
-			<div className="statement-bottom-nav" style={navStyle}>
-				<IconButton
-					className="open-nav-icon burger"
-					style={statementColor}
-					onClick={handleMidIconClick}
-					data-cy="bottom-nav-mid-icon"
-				>
-					{isNavigationOpen && isAddOption ? (
-						<PlusIcon style={{ color: statementColor.color }} />
-					) : (
-						<MainIcon style={{ color: statementColor.color }} />
-					)}
-				</IconButton>
-
-				{navItems.map((navItem) => (
-					<Link
-						className={`open-nav-icon ${isNavigationOpen ? "active" : ""}`}
-						to={navItem.link}
-						key={navItem.id}
-						onClick={() => setIsNavigationOpen(false)}
+			<div className="statement-bottom-nav">
+				{smallScreen ? (
+					<div
+						style={{
+							visibility: isNavigationOpen
+								? "hidden"
+								: isMainButtonVisible
+									? "visible"
+									: "hidden",
+						}}
 					>
-						<NavIcon
-							name={navItem.name}
-							color={statementColor.backgroundColor}
-						/>
-					</Link>
+						<div
+							className="statement-bottom-nav__sortButton"
+							onClick={handleMidIconClick}
+						>
+							<SortIcon />
+						</div>
+					</div>
+				) : (
+					<div>
+						{isNavigationOpen ? (
+							<>
+								{isSmallIcon ? (
+									<div
+										className="statement-bottom-nav__sortButton"
+										onClick={handleMidIconClick}
+										style={{
+											width: "3rem",
+											height: "3rem",
+											borderRadius: "50%",
+											padding: "0",
+										}}
+									>
+										<SortIcon />
+									</div>
+								) : (
+									<div
+										className="statement-bottom-nav__sortButton"
+										onClick={handleMidIconClick}
+										style={{}}
+									>
+										<SortIcon />
+										<p>{t(`Sort ${currentPage}s`)}</p>
+									</div>
+								)}
+							</>
+						) : isSmallIcon ? (
+							<div
+								className="statement-bottom-nav__sortButton"
+								onClick={handleMidIconClick}
+								style={{
+									width: "3rem",
+									height: "3rem",
+									borderRadius: "50%",
+									padding: "0",
+								}}
+							>
+								<SortIcon />
+							</div>
+						) : (
+							<div
+								className="statement-bottom-nav__sortButton"
+								onClick={handleMidIconClick}
+								style={{}}
+							>
+								<SortIcon />
+								<p>{t(`Sort ${currentPage}s`)}</p>
+							</div>
+						)}
+					</div>
+				)}
+
+				{navItems.map((navItem, index) => (
+					<div
+						className={`open-nav-icon ${isNavigationOpen ? "navActive" : ""}`}
+						key={index}
+					>
+						<Link
+							to={navItem.link}
+							key={navItem.id}
+							onClick={() => handleMidIconClick()}
+						>
+							<NavIcon
+								name={navItem.name}
+								color={statementColor.backgroundColor}
+							/>
+						</Link>
+					</div>
 				))}
 			</div>
 		</>
@@ -123,8 +200,8 @@ function getNavigationScreens(page: string | undefined): NavItem[] {
 }
 
 interface NavIconProps {
-    name: string;
-    color: string;
+  name: string;
+  color: string;
 }
 
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {
