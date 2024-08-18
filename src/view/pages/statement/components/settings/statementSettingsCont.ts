@@ -101,6 +101,7 @@ export async function handleSetStatement({
 			enhancedEvaluation,
 			showEvaluation,
 			subScreens,
+			 membership,
 		} = getSetStatementData(statement);
 
 		// If no statementId, user is on AddStatement page
@@ -117,6 +118,7 @@ export async function handleSetStatement({
 				enableAddVotingOption,
 				enhancedEvaluation,
 				showEvaluation,
+				membership,
 			});
 			if (!newStatement) throw new Error('newStatement had error in creating');
 
@@ -147,6 +149,7 @@ export async function handleSetStatement({
 				enableAddVotingOption,
 				enhancedEvaluation,
 				showEvaluation,
+				membership,
 			});
 			if (!newStatement) throw new Error('newStatement had not been updated');
 
@@ -242,6 +245,7 @@ const getSetStatementData = (statement: Statement) => {
 		enableAddVotingOption,
 		enhancedEvaluation,
 		showEvaluation,
+		membership: statement.membership,
 	};
 };
 

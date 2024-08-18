@@ -4,11 +4,13 @@ import CheckboxCheckedIcon from "@/assets/icons/checkboxCheckedIcon.svg?react";
 import CheckboxEmptyIcon from "@/assets/icons/checkboxEmptyIcon.svg?react";
 import "./Checkbox.scss";
 
+import { ChangeEventHandler } from "react";
+
 interface CheckboxProps {
-    name?: string;
-    label: string;
-    isChecked: boolean;
-    toggleSelection: VoidFunction;
+	name?: string;
+	label: string;
+	isChecked: boolean;
+	toggleSelection: ChangeEventHandler<HTMLInputElement>;
 }
 
 const Checkbox: FC<CheckboxProps> = ({

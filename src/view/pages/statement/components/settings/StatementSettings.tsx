@@ -39,6 +39,10 @@ const StatementSettings: FC = () => {
 			Statement | undefined
 		>();
 
+		useEffect(() => {
+			console.log(statementToEdit?.membership);
+		}, [statementToEdit]);
+
 		const dispatch = useAppDispatch();
 
 		const statement: Statement | undefined = useAppSelector(
