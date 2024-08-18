@@ -1,12 +1,4 @@
-import {
-	ChangeEvent,
-	Dispatch,
-	FC,
-	SetStateAction,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
@@ -15,13 +7,14 @@ import { Statement } from "delib-npm";
 import { updateStatementText } from "@/controllers/db/statements/setStatements";
 
 // Styles
-import styles from "./EditTitle.module.scss";
 import Save from "@/assets/icons/saveIcon.svg?react";
+import styles from "./EditTitle.module.scss";
 
 // Custom components
-import Text from "../text/Text";
 import { getDescription, getTitle } from "@/controllers/general/helpers";
+import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Text from "../text/Text";
 
 interface Props {
   statement: Statement | undefined;
@@ -40,21 +33,13 @@ const EditTitle: FC<Props> = ({
 }) => {
 	const [text, setText] = useState(statement?.statement || "");
 	const [title, setTitle] = useState(getTitle(statement) || "");
-	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+	const textareaRef = useAutoFocus(isEdit);
 
 	if (!statement) return null;
 
 	const { dir: direction } = useLanguage();
 
 	const align = direction === "ltr" ? "left" : "right";
-
-	useEffect(() => {
-		if (isEdit && textareaRef.current) {
-			const length = textareaRef.current.value.length;
-			textareaRef.current.focus();
-			textareaRef.current.setSelectionRange(length, length);
-		}
-	}, [isEdit]);
 
 	function handleChange(
 		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,

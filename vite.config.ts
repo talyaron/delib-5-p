@@ -1,4 +1,4 @@
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -65,7 +65,6 @@ export default defineConfig({
 		react(),
 		VitePWA(manifestPlugin),
 		visualizer({ open: true, gzipSize: true, brotliSize: true }),
-		splitVendorChunkPlugin(),
 		svgr({ include: '**/*.svg?react' }),
 	],
 	resolve: {

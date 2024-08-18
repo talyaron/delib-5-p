@@ -1,15 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState } from "react";
 
 // Third party libraries
-import { Statement, Screen, StatementType } from 'delib-npm';
-import { Link, useParams } from 'react-router-dom';
+import { Statement, Screen, StatementType } from "delib-npm";
+import { Link, useParams } from "react-router-dom";
 
 // Icons
-import AgreementIcon from '../../../../../../assets/icons/agreementIcon.svg?react';
-import RandomIcon from '../../../../../../assets/icons/randomIcon.svg?react';
-import UpdateIcon from '../../../../../../assets/icons/updateIcon.svg?react';
-import NewestIcon from '../../../../../../assets/icons/newIcon.svg?react';
-import useStatementColor from '../../../../../../controllers/hooks/useStatementColor';
+import AgreementIcon from "../../../../../../assets/icons/agreementIcon.svg?react";
+import RandomIcon from "../../../../../../assets/icons/randomIcon.svg?react";
+import UpdateIcon from "../../../../../../assets/icons/updateIcon.svg?react";
+import NewestIcon from "../../../../../../assets/icons/newIcon.svg?react";
+import useStatementColor from "../../../../../../controllers/hooks/useStatementColor";
 import {
 	NavItem,
 	optionsArray,
@@ -22,12 +22,12 @@ import useWindowDimensions from '../../../../../../controllers/hooks/useWindowDi
 import { useLanguage } from '../../../../../../controllers/hooks/useLanguages';
 
 interface Props {
-	statement: Statement;
-	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-	setIsNavigationOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-	isNavigationOpen?: boolean;
-	showNav?: boolean;
-	currentPage?: string;
+  statement: Statement;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNavigationOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  isNavigationOpen?: boolean;
+  showNav?: boolean;
+  currentPage?: string;
 }
 
 const StatementBottomNav: FC<Props> = ({
@@ -50,10 +50,10 @@ const StatementBottomNav: FC<Props> = ({
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
-		statement.statementSettings?.enableAddEvaluationOption;
+    statement.statementSettings?.enableAddEvaluationOption;
 
 	const addVotingOption: boolean | undefined =
-		statement.statementSettings?.enableAddVotingOption;
+    statement.statementSettings?.enableAddVotingOption;
 
 	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
 	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
@@ -86,21 +86,21 @@ const StatementBottomNav: FC<Props> = ({
 	return (
 		<>
 			{isNavigationOpen && (
-				<div className='invisibleBackground' onClick={handleMidIconClick} />
+				<div className="invisibleBackground" onClick={handleMidIconClick} />
 			)}
-			<div className='statement-bottom-nav'>
+			<div className="statement-bottom-nav">
 				{smallScreen ? (
 					<div
 						style={{
 							visibility: isNavigationOpen
-								? 'hidden'
+								? "hidden"
 								: isMainButtonVisible
-									? 'visible'
-									: 'hidden',
+									? "visible"
+									: "hidden",
 						}}
 					>
 						<div
-							className='statement-bottom-nav__sortButton'
+							className="statement-bottom-nav__sortButton"
 							onClick={handleMidIconClick}
 						>
 							<SortIcon />
@@ -112,20 +112,20 @@ const StatementBottomNav: FC<Props> = ({
 							<>
 								{isSmallIcon ? (
 									<div
-										className='statement-bottom-nav__sortButton'
+										className="statement-bottom-nav__sortButton"
 										onClick={handleMidIconClick}
 										style={{
-											width: '3rem',
-											height: '3rem',
-											borderRadius: '50%',
-											padding: '0',
+											width: "3rem",
+											height: "3rem",
+											borderRadius: "50%",
+											padding: "0",
 										}}
 									>
 										<SortIcon />
 									</div>
 								) : (
 									<div
-										className='statement-bottom-nav__sortButton'
+										className="statement-bottom-nav__sortButton"
 										onClick={handleMidIconClick}
 										style={{}}
 									>
@@ -136,20 +136,20 @@ const StatementBottomNav: FC<Props> = ({
 							</>
 						) : isSmallIcon ? (
 							<div
-								className='statement-bottom-nav__sortButton'
+								className="statement-bottom-nav__sortButton"
 								onClick={handleMidIconClick}
 								style={{
-									width: '3rem',
-									height: '3rem',
-									borderRadius: '50%',
-									padding: '0',
+									width: "3rem",
+									height: "3rem",
+									borderRadius: "50%",
+									padding: "0",
 								}}
 							>
 								<SortIcon />
 							</div>
 						) : (
 							<div
-								className='statement-bottom-nav__sortButton'
+								className="statement-bottom-nav__sortButton"
 								onClick={handleMidIconClick}
 								style={{}}
 							>
@@ -162,7 +162,7 @@ const StatementBottomNav: FC<Props> = ({
 
 				{navItems.map((navItem, index) => (
 					<div
-						className={`open-nav-icon ${isNavigationOpen ? 'navActive' : ''}`}
+						className={`open-nav-icon ${isNavigationOpen ? "navActive" : ""}`}
 						key={index}
 					>
 						<Link
@@ -200,20 +200,20 @@ function getNavigationScreens(page: string | undefined): NavItem[] {
 }
 
 interface NavIconProps {
-	name: string;
-	color: string;
+  name: string;
+  color: string;
 }
 
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {
 	const props = { style: { color } };
 	switch (name) {
-	case 'New':
+	case "New":
 		return <NewestIcon {...props} />;
-	case 'Update':
+	case "Update":
 		return <UpdateIcon {...props} />;
-	case 'Random':
+	case "Random":
 		return <RandomIcon {...props} />;
-	case 'Agreement':
+	case "Agreement":
 		return <AgreementIcon {...props} />;
 	default:
 		return null;
