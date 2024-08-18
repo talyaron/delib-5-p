@@ -16,7 +16,7 @@ const Info: FC<Props> = ({ statement }) => {
 
 	return (
 		<div>
-			<div className="wrapper">
+			<div className="mainWrapper">
 				<InfoParser statement={statement} />
 				<a href={url} target="_blank">To Document</a>
 			</div>

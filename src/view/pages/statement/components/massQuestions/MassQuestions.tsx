@@ -31,7 +31,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
 	return (
 		<>
 			<div className="page__main">
-				<div className="wrapper">
+				<div className="mainWrapper">
 					{!showThankYou ? (
 						<>
 							{statement.imagesURL?.main ? (

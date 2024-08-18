@@ -1,6 +1,5 @@
 .statement-evaluation-card {
   display: flex;
-  flex-direction: row-reverse;
   border-radius: 4px;
   background-color: var(--inputBackground);
   box-shadow: 2px 2px 4px var(--shadow);
@@ -34,8 +33,6 @@
       width: 100%;
 
       .text {
-        // display: flex;
-        // justify-content: space-between;
         margin-bottom: 1rem;
         flex: 1;
         width: 100%;

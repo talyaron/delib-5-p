@@ -48,7 +48,7 @@ const HomeMain = () => {
 			<img className="bikeImg" src={bike} />
 
 			<div
-				className="wrapper main-wrap"
+				className="mainWrapper main-wrap"
 				style={{
 					justifyContent: statements.length > 0 ? "start" : "center",
 				}}
