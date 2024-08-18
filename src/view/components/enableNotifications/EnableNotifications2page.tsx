@@ -1,9 +1,10 @@
 import "./enableNotifications.scss";
-import pointer from "@/assets/images/poiner 1.png";
+import pointer from "@/assets/images/woman.png";
 import Modal from "../modal/Modal";
 import { setStatementSubscriptionToDB } from "@/controllers/db/subscriptions/setSubscriptions";
 import { Role, Statement } from "delib-npm";
 import { setStatementSubscriptionNotificationToDB } from "@/controllers/db/notifications/notifications";
+import woman from "@/assets/images/woman.png";
 
 interface Props {
   setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,7 +12,7 @@ interface Props {
   setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function EnableNotifications({
+export default function EnableNotifications2page({
   setAskNotifications,
   statement,
   setShowAskPermission,
@@ -65,6 +66,9 @@ export default function EnableNotifications({
         <p className="enableNotifications__subtext">
           We'll send you notifications when someone responds to your messages
         </p>
+        <div className="enableNotifications__image">
+          <img src={woman} alt="Woman" />
+        </div>
         <div className="enableNotifications__btnBox">
           <button
             onClick={handleCancelClick}
