@@ -1,62 +1,68 @@
 {
-    "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
-    "plugins": ["import", "react", "@typescript-eslint", "prettier"],
-    "rules": {
-        "react/display-name": "off",
-        "react/no-unescaped-entities": "off",
-        "import/no-anonymous-default-export": "off",
-        "@typescript-eslint/no-unused-vars": "error",
-        "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        // add new line above comment
-        "lines-around-comment": [
-            "error",
-            {
-                "beforeLineComment": true,
-                "beforeBlockComment": true,
-                "allowBlockStart": true,
-                "allowClassStart": true,
-                "allowObjectStart": true,
-                "allowArrayStart": true
-            }
-        ],
-        // add new line above return
-        "newline-before-return": "error",
-        // add new line below import
-        "import/newline-after-import": [
-            "error",
-            {
-                "count": 1
-            }
-        ],
-        "@typescript-eslint/ban-types": [
-            "error",
-            {
-                "extendDefaults": true,
-                "types": {
-                    "{}": false
-                }
-            }
-        ]
-    },
-    "settings": {
-        "import/parsers": {
-            "@typescript-eslint/parser": [".ts", ".tsx"]
-        },
-        "import/resolver": {
-            "typescript": {
-                "alwaysTryTypes": true,
-                "project": ["./tsconfig.json"]
-            }
+  "plugins": ["import", "react", "@typescript-eslint", "prettier", "sonarjs"],
+  "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+  "rules": {
+    "react/display-name": "error",
+    "react/no-unescaped-entities": "off",
+    "import/no-anonymous-default-export": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    // add new line above comment
+    "no-duplicate-case": "error",
+    "lines-around-comment": [
+      "error",
+      {
+        "beforeLineComment": true,
+        "beforeBlockComment": true,
+        "allowBlockStart": true,
+        "allowClassStart": true,
+        "allowObjectStart": true,
+        "allowArrayStart": true
+      }
+    ],
+    // add new line above return
+    "newline-before-return": "error",
+    // add new line below import
+    "import/newline-after-import": [
+      "error",
+      {
+        "count": 1
+      }
+    ],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
         }
+      }
+    ],
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+    "indent": ["error", "tab"],
+    // SonarJS rules
+    "sonarjs/no-identical-expressions": "error",
+    "no-useless-catch": "error"
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     },
-    "overrides": [
-        {
-            "files": ["src/iconify-bundle/*"],
-            "rules": {
-                "@typescript-eslint/no-var-requires": "off"
-            }
-        }
-    ]
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": ["./tsconfig.json"]
+      }
+    }
+  },
+  "overrides": [
+    {
+      "files": ["src/iconify-bundle/*"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
 }

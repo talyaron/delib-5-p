@@ -2,124 +2,112 @@ import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
 
 // firestore functions
-import { googleLogin } from "../../../functions/db/auth";
-import { getIntialLocationSessionStorage } from "../../../functions/general/helpers";
 
 // Third Party Libraries
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // Redux
-import { useAppSelector } from "../../../functions/hooks/reduxHooks";
-import { userSelector } from "../../../model/users/userSlice";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
 
-//img
-import Logo from "../../../assets/logo/512 px SVG.svg";
-import googleLogo from "../../../assets/icons/googleSimpleLogo.svg"
-import moreRight from "../../../assets/icons/moreRight.svg";
-import moreLeft from "../../../assets/icons/moreLeft.svg";
+// icons
+import Logo from "@/assets/logo/106 x 89 SVG.svg?react";
+import MoreRight from "@/assets/icons/moreRight.svg?react";
+import MoreLeft from "@/assets/icons/moreLeft.svg?react";
+import StartPageImage from '@/assets/images/StartPageImage.png'
+import StartPageImageMobile from '@/assets/images/StartPageImageMobile.png'
 
 // Constants
-import { LANGUAGES } from "../../../constants/Languages";
-import EnterName from "../../components/enterName/EnterName";
-import useDirection from "../../../functions/hooks/useDirection";
-
-// import EnterName from './EnterName';
+import { LANGUAGES } from "@/constants/Languages";
+import EnterNameModal from "../../components/enterNameModal/EnterNameModal";
+import useDirection from "@/controllers/hooks/useDirection";
+import {
+	LanguagesEnum,
+	useLanguage,
+} from "@/controllers/hooks/useLanguages";
+import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
+import { selectInitLocation } from "@/model/location/locationSlice";
 
 const Start = () => {
-    const navigate = useNavigate();
-    const { i18n, t } = useTranslation();
-    const user = useAppSelector(userSelector);
-    const [showNameModul, setShowNameModul] = useState(false);
-    const savedLang = localStorage.getItem("lang");
-    const direction = (useDirection() === "row") ? "row" : "row-reverse";
+	const navigate = useNavigate();
+	const user = useAppSelector(userSelector);
+	const initLocation = useAppSelector(selectInitLocation);
+	const [shouldShowNameModal, setShouldShowNameModal] = useState(false);
+	const savedLang = localStorage.getItem("lang");
+	const direction = useDirection();
 
-    useEffect(() => {
-        if (user) {
-            navigate(getIntialLocationSessionStorage() || "/home", {
-                state: { from: window.location.pathname },
-            });
-        } else {
-            // console.info("not logged")
-        }
-    }, [user]);
+	const { t, changeLanguage } = useLanguage();
+	const defaultLang = "he";
 
-    return (
-        <div className="splashPage">
-            <div className={styles.h1}>
-                {t("Delib")} <span className={styles.number}>5</span>
-            </div>
-            <div className={styles.h2}>{t("Creating Agreements")}</div>
-            <img
-                className={styles.logo}
-                src={Logo}
-                alt="Delib logo"
-                width="10%"
-                style={{}}
-            />
+	useEffect(() => {
+		if (!savedLang) {
+			localStorage.setItem("lang", defaultLang);
+		}
+	}, []);
 
-            <select
-                className={styles.language}
-                defaultValue={savedLang || "he"}
-                onChange={(e) => {
-                    const lang = e.target.value;
-                    i18n.changeLanguage(lang);
-                    if (lang === "he" || lang === "ar") {
-                        document.body.style.direction = "rtl";
-                    } else {
-                        document.body.style.direction = "ltr";
-                    }
-                    localStorage.setItem("lang", lang);
-                }}
-            >
-                {LANGUAGES.map(({ code, label }) => (
-                    <option key={code} value={code}>
-                        {label}
-                    </option>
-                ))}
-            </select>
-            <div
-                className={styles.anonymous}
-                onClick={() => setShowNameModul(true)}
+	useEffect(() => {
+		if (user) {
+			navigate(initLocation || "/home", {
+				state: { from: window.location.pathname },
+			});
+		}
+	}, [user]);
 
-                //@ts-ignore
-                style={{ direction }}
-            >
-                {t("Login with a temporary name")}{" "}
-                <img
-                    src={direction === "row" ? moreRight : moreLeft}
-                    alt="login anonymously"
-                />
-            </div>
-            <button
-                className={styles.googleLogin}
-                onClick={googleLogin}
-            >
-                <img
-                    src={direction === "row-reverse" ? moreRight : moreLeft}
-                    alt="login anonymously"
-                />
-                <img src={googleLogo} alt="login with google" />
-                {t("Connect with Google")}
-                
-            </button>
+	return (
+		<div className={styles.splashPage}>
+			<Logo />
+			<div className={styles.slogan}>
+				{t("Fostering Collaborations")}
+			</div>
+			<select
+				className={styles.language}
+				defaultValue={savedLang || defaultLang}
+				onChange={(e) => {
+					const lang = e.target.value as LanguagesEnum;
+					changeLanguage(lang);
+					if (lang === "he" || lang === "ar") {
+						document.body.style.direction = "rtl";
+					} else {
+						document.body.style.direction = "ltr";
+					}
+					localStorage.setItem("lang", lang);
+				}}
+			>
+				{LANGUAGES.map(({ code, label }) => (
+					<option key={code} value={code}>
+						{label}
+					</option>
+				))}
+			</select>
+			<button
+				style={{ flexDirection: direction }}
+				data-cy="anonymous-login"
+				className={`${styles.anonymous} ${direction === 'row' ? styles.ltr : styles.rtl}`}
+				onClick={() => setShouldShowNameModal((prev) => !prev)}
+			>
+				{direction === "row-reverse" ? <MoreLeft /> : null}
+				{t("Login with a temporary name")}{" "}
+				{direction === "row" ? <MoreRight /> : null}
+				
+			</button>
 
-            <a
-                href="http://delib.org"
-                target="_blank"
-                style={{
-                    marginTop: "30px",
-                    textDecoration: "none",
-                }}
-            >
-                <footer className={styles.ddi}>{t("From the Institute for Deliberative Democracy")}</footer>
-            </a>
+			<GoogleLoginButton/>
+			
+			<img src={StartPageImage} alt="" className={styles.StratPageImage}/>
+			<img src={StartPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
+			<a href="http://delib.org" target="_blank">
+				<footer className={styles.ddi}>
+					{t("From the Institute for Deliberative Democracy")}
+				</footer>
+			</a>
 
-            {showNameModul ? (
-                <EnterName setShowNameModul={setShowNameModul} />
-            ) : null}
-        </div>
-    );
+			{shouldShowNameModal && (
+				<EnterNameModal
+					closeModal={() => setShouldShowNameModal(false)}
+				/>
+			)}
+		</div>
+	);
 };
 
 export default Start;

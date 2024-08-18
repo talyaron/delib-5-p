@@ -1,0 +1,67 @@
+.question-stage-radio-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+
+    >div {
+        width: 100%;
+    }
+
+    &__top {
+        color: white;
+        background-color: var(--green);
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+
+        .img {
+            width: 1.9rem;
+        }
+
+        .number {
+            font-size: 1.3rem;
+            font-weight: 700;
+
+        }
+    }
+
+    &__radio {
+        color: var(--dark-text);
+        display: flex;
+        padding: 20px;
+        justify-content: space-between;
+
+        $button-size: 2.5rem;
+
+        .radio-button {
+            background-color: var(--green);
+            height: $button-size;
+            width: $button-size;
+            border-radius: $button-size;
+            position:relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;  
+            cursor: pointer;
+        
+            input{
+                display: none;
+            
+            }
+
+            &__inner {
+                background-color: white;
+                position: absolute;
+                border-radius: 50%;
+                height: calc($button-size/2);
+                width: calc($button-size/2);
+            }
+        }
+    }
+
+
+}

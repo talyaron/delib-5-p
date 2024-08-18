@@ -1,17 +1,17 @@
 import { FC, useState } from "react";
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 
 // Icons
-import SendIcon from "../../../../../../components/icons/SendIcon";
+import SendIcon from "@/view/components/icons/SendIcon";
 
 // Redux Store
-import { useAppSelector } from "../../../../../../../functions/hooks/reduxHooks";
-import { userSelector } from "../../../../../../../model/users/userSlice";
-import useDirection from "../../../../../../../functions/hooks/useDirection";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { userSelector } from "@/model/users/userSlice";
+import useDirection from "@/controllers/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
-import useStatementColor from "../../../../../../../functions/hooks/useStatementColor";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;
@@ -19,68 +19,72 @@ interface Props {
 }
 
 const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
-    if (!statement) throw new Error("No statement");
+	if (!statement) throw new Error("No statement");
 
-    // Redux hooks
-    const user = useAppSelector(userSelector);
+	// Redux hooks
+	const user = useAppSelector(userSelector);
 
-    const statementColor = useStatementColor(statement.statementType || "");
+	const statementColor = useStatementColor(statement.statementType || StatementType.statement);
 
-    const direction = useDirection();
-    const [message, setMessage] = useState("");
+	const direction = useDirection();
+	const [message, setMessage] = useState("");
 
-    function handleKeyUp(e: any) {
-        try {
-            const _isMobile =
-                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                    navigator.userAgent,
-                )
-                    ? true
-                    : false;
+	function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+		try {
+			const _isMobile =
+                !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                	navigator.userAgent,
+                );
 
-            if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
-                handleSubmitInput(e);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
+			if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
+				handleSubmitInput(e);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-    const handleSubmitInput = (e: any) => {
-        e.preventDefault();
+	const handleSubmitInput = (
+		e:
+            | React.FormEvent<HTMLFormElement>
+            | React.KeyboardEvent<HTMLTextAreaElement>,
+	) => {
+		e.preventDefault();
 
-        // Create statement
-        handleAddStatement(message, statement, user, toggleAskNotifications);
+		// Create statement
+		handleAddStatement(message, statement, user, toggleAskNotifications);
 
-        setMessage(""); // Clear input
-    };
+		setMessage(""); // Clear input
+	};
 
-    return (
-        <form
-            onSubmit={handleSubmitInput}
-            name="theForm"
-            className="statement__form"
-            style={{ flexDirection: direction }}
-        >
-            <button
-                type="submit"
-                className="statement__form__sendBtnBox"
-                style={statementColor}
-            >
-                <SendIcon color={statementColor.color} />
-            </button>
-            <textarea
-                style={{ height: "4rem" }}
-                className="statement__form__input"
-                name="newStatement"
-                onKeyUp={handleKeyUp}
-                autoFocus={false}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-            />
-        </form>
-    );
+	return (
+		<form
+			onSubmit={(e) => handleSubmitInput(e)}
+			name="theForm"
+			className="page__footer__form"
+			style={{ flexDirection: direction }}
+		>
+			<button
+				type="submit"
+				className="page__footer__form__sendBtnBox"
+				style={statementColor}
+				data-cy="statement-chat-send-btn"
+			>
+				<SendIcon color={statementColor.color} />
+			</button>
+			<textarea
+				data-cy="statement-chat-input"
+				style={{ height: "4rem" }}
+				className="page__footer__form__input"
+				name="newStatement"
+				onKeyUp={(e) => handleKeyUp(e)}
+				autoFocus={false}
+				value={message}
+				onChange={(e) => setMessage(e.target.value)}
+				required
+			/>
+		</form>
+	);
 };
 
 export default StatementInput;

@@ -40,10 +40,6 @@ async function transpileResults(
                 logger.info("topOption");
 
                 return await resultsByTopOptions(statementId);
-            case ResultsBy.topVote:
-                logger.info("topVote");
-
-                return await resultsByTopVotes(statementId);
             default:
                 return await resultsByTopOptions(statementId);
         }
@@ -81,33 +77,33 @@ async function resultsByTopOptions(statementId: string): Promise<Statement[]> {
     }
 }
 
-async function resultsByTopVotes(statementId: string): Promise<Statement[]> {
-    try {
-        //get top options
-        // statementRef
-        const statementRef = db
-            .collection(Collections.statements)
-            .doc(statementId);
-        const statementDB = await statementRef.get();
-        const statement = statementDB.data() as Statement;
+// async function resultsByTopVotes(statementId: string): Promise<Statement[]> {
+//     try {
+//         //get top options
+//         // statementRef
+//         const statementRef = db
+//             .collection(Collections.statements)
+//             .doc(statementId);
+//         const statementDB = await statementRef.get();
+//         const statement = statementDB.data() as Statement;
 
-        //get top selection
-        const { selections } = statement;
-        if (!selections) throw new Error("selections is required");
+//         //get top selection
+//         const { selections } = statement;
+//         if (!selections) throw new Error("selections is required");
 
-        const topStatementId = Object.keys(selections).reduce((a, b) =>
-            selections[a] > selections[b] ? a : b,
-        );
-        const topStatementRef = db
-            .collection(Collections.statements)
-            .doc(topStatementId);
-        const topStatementDB = await topStatementRef.get();
-        const topStatement = topStatementDB.data() as Statement;
+//         const topStatementId = Object.keys(selections).reduce((a, b) =>
+//             selections[a] > selections[b] ? a : b,
+//         );
+//         const topStatementRef = db
+//             .collection(Collections.statements)
+//             .doc(topStatementId);
+//         const topStatementDB = await topStatementRef.get();
+//         const topStatement = topStatementDB.data() as Statement;
 
-        return [topStatement];
-    } catch (error) {
-        logger.error(error);
+//         return [topStatement];
+//     } catch (error) {
+//         logger.error(error);
 
-        return [];
-    }
-}
+//         return [];
+//     }
+// }

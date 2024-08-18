@@ -1,9 +1,9 @@
 import "./enableNotifications.scss";
-import BellWithDots from "../icons/BellWithDots";
+import NotificationsGraphic from "@/assets/svg-graphics/notifications.svg?react";
 import Modal from "../modal/Modal";
-import { setStatmentSubscriptionToDB } from "../../../functions/db/subscriptions/setSubscriptions";
+import { setStatementSubscriptionToDB } from "@/controllers/db/subscriptions/setSubscriptions";
 import { Role, Statement } from "delib-npm";
-import { setStatmentSubscriptionNotificationToDB } from "../../../functions/db/notifications/notifications";
+import { setStatementSubscriptionNotificationToDB } from "@/controllers/db/notifications/notifications";
 
 interface Props {
     setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,66 +12,70 @@ interface Props {
 }
 
 export default function EnableNotifications({
-    setAskNotifications,
-    statement,
-    setShowAskPermission,
+	setAskNotifications,
+	statement,
+	setShowAskPermission,
 }: Props) {
-    if (!statement) throw new Error("No statement");
+	if (!statement) throw new Error("No statement");
 
-    const userAskedForNotification = true;
-    const getNotifications = true;
+	const userAskedForNotification = true;
+	const getNotifications = true;
 
-    const handleCancelClick = async () => {
-        await setStatmentSubscriptionToDB(
-            statement,
-            Role.statementCreator,
-            userAskedForNotification,
-        );
-        setAskNotifications(false);
-    };
+	const handleCancelClick = async () => {
+		await setStatementSubscriptionToDB(
+			statement,
+			Role.admin,
+			userAskedForNotification,
+		);
+		setAskNotifications(false);
+	};
 
-    const handleEnableNotificationsClick = async () => {
-        const permission = await Notification.requestPermission();
+	const handleEnableNotificationsClick = async () => {
+		const permission = await Notification.requestPermission();
 
-        if (permission === "granted")
-            await setStatmentSubscriptionNotificationToDB(
-                statement,
-                getNotifications,
-            );
-        else setShowAskPermission(true);
+		if (permission === "granted")
+			await setStatementSubscriptionNotificationToDB(
+				statement,
+				getNotifications,
+			);
+		else setShowAskPermission(true);
 
-        await setStatmentSubscriptionToDB(
-            statement,
-            Role.statementCreator,
-            userAskedForNotification,
-        );
+		await setStatementSubscriptionToDB(
+			statement,
+			Role.admin,
+			userAskedForNotification,
+		);
 
-        setAskNotifications(false);
-    };
+		setAskNotifications(false);
+	};
 
-    return (
-        <Modal>
-            <div className="enableNotifications">
-                <BellWithDots />
-                <p className="enableNotifications__title">Don'T Miss Out!</p>
-                <p className="enableNotifications__text">
+	return (
+		<Modal>
+			<div
+				className="enableNotifications"
+				data-cy="enable-notifications-popup"
+			>
+				<NotificationsGraphic />
+				<p className="enableNotifications__title">Don'T Miss Out!</p>
+				<p className="enableNotifications__text">
                     Enable push notifications to stay updated on messages
-                </p>
-                <div className="enableNotifications__btnBox">
-                    <button
-                        onClick={handleCancelClick}
-                        className="enableNotifications__btnBox__cancel"
-                    >
+				</p>
+				<div className="enableNotifications__btnBox">
+					<button
+						onClick={handleCancelClick}
+						className="enableNotifications__btnBox__cancel"
+					>
                         Not now
-                    </button>
-                    <button
-                        onClick={handleEnableNotificationsClick}
-                        className="enableNotifications__btnBox__enable"
-                    >
+					</button>
+					<button
+						onClick={handleEnableNotificationsClick}
+						className="enableNotifications__btnBox__enable"
+						data-cy="enable-notifications-popup-enable"
+					>
                         Enable notifications
-                    </button>
-                </div>
-            </div>
-        </Modal>
-    );
+					</button>
+				</div>
+			</div>
+		</Modal>
+	);
 }

@@ -2,10 +2,10 @@ import React, { FC } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
-import { t } from "i18next";
 
 // Icons
-import addQuestion from "../../../../../../../assets/icons/addQuestion.svg";
+import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 // Styles
 
@@ -16,22 +16,26 @@ interface Props {
 }
 
 const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
-    function handleShwQuestionModal() {
-        setShowModal(true);
-    }
+	const { t } = useLanguage();
 
-    return (
-        <>
-            {text && (
-                <span className="clickable" onClick={handleShwQuestionModal}>
-                    {text}
-                </span>
-            )}
-            <div className="clickable" onClick={handleShwQuestionModal}>
-                <img src={addQuestion} alt={t("Add question")} />
-            </div>
-        </>
-    );
+	function handleShwQuestionModal() {
+		setShowModal(true);
+	}
+
+	return (
+		<>
+			{text && (
+				<span className="clickable" onClick={handleShwQuestionModal}>
+					{t(text)}
+				</span>
+			)}
+			<div className="clickable" onClick={handleShwQuestionModal}>
+				<AddQuestionIcon
+					style={{ height: "24px", width: "24px", color: "#4E88C7" }}
+				/>
+			</div>
+		</>
+	);
 };
 
 export default AddSubQuestion;
