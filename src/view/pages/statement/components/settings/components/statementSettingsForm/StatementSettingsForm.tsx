@@ -51,8 +51,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 			e.preventDefault();
 			setIsLoading(true);
 
-			console.log("update statement", statement.membership);
-			debugger;
+	
 			await handleSetStatement({
 				navigate,
 				statementId,

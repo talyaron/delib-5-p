@@ -40,7 +40,7 @@ const StatementSettings: FC = () => {
 		>();
 
 		useEffect(() => {
-			console.log(statementToEdit?.membership);
+			
 		}, [statementToEdit]);
 
 		const dispatch = useAppDispatch();
