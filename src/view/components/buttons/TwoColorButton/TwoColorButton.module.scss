@@ -23,4 +23,5 @@
 .wrapperWithoutBoxShadow {
 	@extend .wrapper;
 	box-shadow: none;
+	display: flex;
 }

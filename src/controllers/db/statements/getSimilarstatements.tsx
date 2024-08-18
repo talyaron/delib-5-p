@@ -13,7 +13,7 @@ export const findSimilarStatements = async (
 		const isProd = false;
 
 		if (isProd) {
-			return prodEndPoint;
+			return localEndPoint;
 		}
 
 		if (location.hostname !== 'localhost') {
@@ -36,3 +36,4 @@ export const findSimilarStatements = async (
 		return console.error(error);
 	}
 };
+

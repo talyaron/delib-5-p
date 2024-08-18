@@ -108,7 +108,7 @@ export default function StepOneStatementInput({
 				<>
 					<div className='similarities__titleInput'>
 						<label htmlFor='descriptionInput'>Your statement description</label>
-						<textarea
+						<textarea className='similarities__titleInput'
 							rows={5}
 							id='descriptionInput'
 							placeholder='Formulate here the statement description. Add as much detail as you can to help others understand your statement.'
@@ -121,28 +121,11 @@ export default function StepOneStatementInput({
 							}
 						/>
 					</div>
-					{/* <div className='similarities__buttonBox'>
-						<TwoColorButton
-							icon={SendIcon}
-							text='Submit Statement'
-							textBackgroundColor='#fff'
-							textColor='var(--dark-text)'
-							iconBackgroundColor='var(--dark-blue)'
-							onClick={handleSubmit}
-						/>
-					</div> */}
 					<div className='similarities__buttonBox'>
 						<SubmitStatementButton
 							icon={SendIcon}
 							text='Submit Statement'
-							buttonRadius="2rem 0px 0px 2rem"
-							buttonBackground="var(--button-blue)"
-							buttonWidth="10rem"
-							circlePos="relative"
-							circleRight="1rem"
-							circleBorder="2px solid var(--white)"
-							circleRadius="2rem"
-							circleBackground="var(--button-blue)"
+							buttonMaxWidth="10rem"
 							textColor='var(--white)'
 							onClick={handleSubmit}
 						/>
@@ -156,3 +139,4 @@ export default function StepOneStatementInput({
 function removeNonAlphabeticalCharacters(input: string) {
 	return input.replace(/[^a-zA-Z ]/g, '');
 }
+

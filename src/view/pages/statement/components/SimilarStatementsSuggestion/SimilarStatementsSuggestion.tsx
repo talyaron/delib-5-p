@@ -8,7 +8,8 @@ import LightBulbPlusIcon from '@/assets/icons/lightBulbPlus.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
 import illustration from '@/assets/images/similarities-Illustration.png';
-import illustration02 from '@/assets/images/view-similar-statement.png';
+import illustration01 from '@/assets/images/view-similar-statement.png';
+import illustration02 from '@/assets/images/view-similar-statement-step2.png';
 import StepOneStatementInput from './StepOneStatementInput';
 import StepTwoShowSimilarStatements from './StepTwoShowSimilarStatements';
 import StepThreeViewSimilarStatement from './StepThreeViewSimilarStatement';
@@ -114,34 +115,51 @@ export default function SimilarStatementsSuggestion({
 			) : (
 				<main className='similarities'>
 					<header className='similarities__header'>
-						{currentStep === 2 ? (
-							<div className='similarities__header__top'>
+						{currentStep === 1 ? (
+							<div className='similarities__header__top__stepTwo'>
 								<button
-									className='similarities__header__top__closeButton'
+									className='similarities__header__top__stepTwo__closeButtonStepTwo'
 									onClick={() => setShowModal(false)}
 								>
-									<ArrowLeftIcon />
+									<CloseIcon />
 								</button>
-								<img src={illustration02} alt='Similarities illustration' />
+								<img src={illustration01}
+									alt='Similarities illustration'
+									style={{ width: '8rem' }} />
 							</div>
-						) : (
-							<div className='similarities__header__top'>
+						) : (currentStep === 0 || currentStep === 3? (
+							<div className='similarities__header__top__stepOne'>
 								<img
 									src={illustration}
 									alt='Similarities illustration'
-									style={{ width: '40%' }}
+									style={{ width: '19.5rem' }}
 								/>
 								<button
-									className='similarities__header__top__closeButton'
+									className='similarities__header__top__stepOne__closeButtonStepOne'
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
 								</button>
 							</div>
-						)}
-						<div className='similarities__header__types'>
+						) : (currentStep === 2 ? (
+							<div className='similarities__header__top__stepThree'>
+								<img
+									src={illustration02}
+									alt='Another illustration'
+									style={{ width: '19rem' }}
+								/>
+								<button
+									className='similarities__header__top__stepThree__arrowButtonStepThree'
+									onClick={() => setShowModal(false)}
+								>
+									<ArrowLeftIcon />
+								</button>
+							</div>
+						) : null))
+					}
+						<div className={`similarities__header__types  ${currentStep === 2 ? 'hidden' : ''}`}>
 							{/* <div className='type'>
-								<AddQuestionIcon />
+							    <AddQuestionIcon />
 								<h2 className={isQuestion ? 'marked' : 'unmarked'}>Question</h2>
 							</div> */}
 							<div className='type'>
