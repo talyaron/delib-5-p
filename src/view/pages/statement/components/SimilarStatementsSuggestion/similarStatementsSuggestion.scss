@@ -27,8 +27,8 @@
 
                 &__closeButtonStepOne {
                     position: relative;
-                    bottom: 9.5rem;
-                    left: 19.5rem;
+                    bottom: 8.5rem;
+                    left: 1.5rem;
                 }
             }
 
@@ -47,7 +47,7 @@
                 &__closeButtonStepTwo {
                     position: relative;
                     bottom: 8rem;
-                    left: 13.5rem;
+                    left: 14.5rem;
                 }
             }
 
@@ -57,16 +57,13 @@
                 display: flex;
                 bottom: 3rem;
                 margin-bottom: -4rem;
-                flex-direction: row;
                 justify-content: flex-end;
 
 
                 &__arrowButtonStepThree {
-                    display: flex;
-                    justify-content: flex-start;
                     position: relative;
-                    bottom: 11rem;
-                    right: 2.5rem;
+                    right: 22rem;
+                    bottom: 4.5rem;
                     color: var(--button-blue);
                 }
             }
@@ -204,7 +201,7 @@
 
         &__similarEyeIcon {
             width: 2.2rem;
-            margin-left: 16.5rem;
+            margin-left: 18.5rem;
         }
 
     }
@@ -242,5 +239,21 @@
         margin-top: -1rem;
         font-weight: 500;
         line-height: 150%;
+    }
+}
+
+
+@media screen and (min-width: 576px) {
+    .similarities__header__top__stepOne__closeButtonStepOne {
+        left: 19.5rem;
+    }
+    .similarities__header__top__stepTwo__closeButtonStepTwo {
+        left: 23.5rem;
+    }
+    .similarities__header__top__stepThree__arrowButtonStepThree {
+        right: 41rem;
+    }
+    .similarities__statementsBox__similarEyeIcon {
+        margin-left: 36.5rem;
     }
 }
