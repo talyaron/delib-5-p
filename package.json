@@ -12,11 +12,12 @@
 		"lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
 		"typecheck": "tsc",
 		"preview": "vite preview",
-		"deploy:h": "npm run build && firebase deploy --only hosting",
-		"deploy:f": "cd functions && npm run build && firebase deploy --only functions",
-		"deploy": "npm run deploy:h && npm run deploy:f",
 		"test:unit": "vitest",
-		"check-all": "npm run lint && npm run typecheck && npm run build"
+		"check-all": "npm run lint && tsc && vite build --mode development",
+		"deploy:host-prod": "tsc && vite build --mode production && firebase deploy --only hosting",
+		"deploy:host-dev": "tsc && vite build --mode development && firebase deploy --only hosting",
+		"deploy:f": "cd functions && npm run build && firebase deploy --only functions",
+		"deploy": "npm run deploy:host-prod && npm run deploy:f"
 	},
 	"dependencies": {
 		"@dagrejs/dagre": "^1.0.4",
