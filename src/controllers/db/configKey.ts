@@ -1,27 +1,27 @@
-// export const keys = {
-// 	apiKey: "AIzaSyBEumZUTCL3Jc9pt7_CjiSVTxmz9aMqSvo",
-// 	authDomain: "synthesistalyaron.firebaseapp.com",
-// 	databaseURL: "https://synthesistalyaron.firebaseio.com",
-// 	projectId: "synthesistalyaron",
-// 	storageBucket: "synthesistalyaron.appspot.com",
-// 	messagingSenderId: "799655218679",
-// 	appId: "1:799655218679:web:1409dd5e3b4154ecb9b2f2",
-// 	measurementId: "G-XSGFFBXM9X"
-// };
-
-// export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
-
-
 export const keys = {
-	apiKey: "AIzaSyC2CqDSvD1johT6DS_jwPmpc9LlNgarBKU",
-	authDomain: "todo-d6f5c.firebaseapp.com",
+	apiKey: "AIzaSyBEumZUTCL3Jc9pt7_CjiSVTxmz9aMqSvo",
+	authDomain: "synthesistalyaron.firebaseapp.com",
 	databaseURL: "https://synthesistalyaron.firebaseio.com",
-	projectId: "todo-d6f5c",
-	storageBucket: "todo-d6f5c.appspot.com",
-	messagingSenderId: "1043125173769",
-	appId: "1:1043125173769:web:d6677f4c3fe791a37002d8",
-	measurementId: "G-XSGFFBXM9X",
+	projectId: "synthesistalyaron",
+	storageBucket: "synthesistalyaron.appspot.com",
+	messagingSenderId: "799655218679",
+	appId: "1:799655218679:web:1409dd5e3b4154ecb9b2f2",
+	measurementId: "G-XSGFFBXM9X"
 };
+
+export const vapidKey = "BDPJqTToQGWTXonXbOHfh7EMC4VtkTU69jzFCAv3yo-jDs3BtDxC1tVSjxRrAabetOl7WNuc5YnyS26iYQOMdSQ";
+
+
+// export const keys = {
+// 	apiKey: "AIzaSyC2CqDSvD1johT6DS_jwPmpc9LlNgarBKU",
+// 	authDomain: "todo-d6f5c.firebaseapp.com",
+// 	databaseURL: "https://synthesistalyaron.firebaseio.com",
+// 	projectId: "todo-d6f5c",
+// 	storageBucket: "todo-d6f5c.appspot.com",
+// 	messagingSenderId: "1043125173769",
+// 	appId: "1:1043125173769:web:d6677f4c3fe791a37002d8",
+// 	measurementId: "G-XSGFFBXM9X",
+// };
 
 // export const keys = {
 // 	apiKey: 'AIzaSyBk_koXPde8Aheeyf8xUGbeoPT71S-qHpM',

@@ -135,9 +135,9 @@ const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech"] }
 
 
 
-exports.getRandomStatements = onRequest(cors, getRandomStatements);
-exports.getTopStatements = onRequest(cors, getTopStatements);
-exports.getUserOptions = onRequest(cors, getUserOptions);
+exports.getRandomStatements = onRequest(cors, getRandomStatements); //first evaluation
+exports.getTopStatements = onRequest(cors, getTopStatements); //second evaluation
+exports.getUserOptions = onRequest(cors, getUserOptions); //suggestions
 
 exports.checkForSimilarStatements = onRequest(
 	cors,

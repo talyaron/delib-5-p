@@ -68,9 +68,10 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		// Use States
 		const [showModal, setShowModal] = useState(false);
 		const [showToast, setShowToast] = useState(false);
-		const [showExplanation, setShowExplanation] = useState(
+		const [showExplanation, setShowExplanation] = useState<boolean>(
 			currentStage === QuestionStage.explanation && isMuliStage && !questions
 		);
+
 		const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
 			[...subStatements]
 		);
