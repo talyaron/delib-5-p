@@ -42,3 +42,7 @@ firebase.json
 firebase-debug.log
 firebase-debug.log*
 configKey.ts
+
+.env.development
+
+.env.production
