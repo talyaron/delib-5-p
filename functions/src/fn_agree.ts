@@ -2,7 +2,7 @@ import { AgreeDisagree, AgreeDisagreeEnum, Collections } from "delib-npm";
 import { logger } from "firebase-functions/v1";
 import { db } from ".";
 import { getAction } from "./fn_approval";
-import { FieldValue } from "firebase-admin/firestore";
+
 
 export async function updateAgrees(event: any) {
     try {
@@ -12,17 +12,18 @@ export async function updateAgrees(event: any) {
         if (!combinedAgreement) throw new Error("No agreement data found");
 
         const action = getAction(event);
+        let results: AgreeProps = { agree: 0, disagree: 0 };
 
         if (action === "create") {
             if (!agreeAfterData) throw new Error("No agreement data found");
             const { agree } = agreeAfterData;
 
-            onCreateAgree(combinedAgreement.statementId, agree);
+            results = getUpdateCreateAgree(combinedAgreement.statementId, agree);
         } else if (action === "delete") {
             if (!agreeBeforeData) throw new Error("No agreement data found");
             const { agree } = agreeBeforeData;
 
-            onDeleteAgree(combinedAgreement.statementId, agree);
+            results = getUpdateDeleteAgree(combinedAgreement.statementId, agree);
         } else if (action === "update") {
             if (!agreeAfterData) throw new Error("No agreement data found");
             const { agree: agreeAfter } = agreeAfterData;
@@ -31,61 +32,78 @@ export async function updateAgrees(event: any) {
             if (agreeBefore === undefined) throw new Error("No agreement data found");
             if (agreeAfter === agreeBefore) return;
 
-            onUpdateAgree(combinedAgreement.statementId, agreeAfter, agreeBefore);
+            results = getUpdateUpdateAgree(combinedAgreement.statementId, agreeAfter, agreeBefore);
 
         }
+
+        const statementRef = db.collection(Collections.statements).doc(combinedAgreement.statementId);
+        await db.runTransaction(async (t) => {
+            const statement = await t.get(statementRef);
+            if (!statement.exists) throw new Error("Statement not found");
+
+            const { agree, disagree } = statement.data()?.documentAgree || {agree:0, disagree:0 }as AgreeProps;
+            const { agree: updateAgree, disagree: updateDisagree } = results;
+
+            const updateAgrees:AgreeProps = {
+                agree: agree + updateAgree,
+                disagree: disagree + updateDisagree,
+            }
+           
+
+            t.update(statementRef, {documentAgree:updateAgrees} );
+        });
 
     } catch (error) {
         logger.error(error);
     }
 }
 
-function onCreateAgree(statementId: string, agree: AgreeDisagreeEnum) {
-    console.log("create agree", agree);
-    const statementRef = db.collection(Collections.statements).doc(statementId);
+interface AgreeProps { agree: number, disagree: number }
+
+function getUpdateCreateAgree(statementId: string, agree: AgreeDisagreeEnum): AgreeProps {
+   
+
     if (agree === AgreeDisagreeEnum.Agree) {
-        statementRef.update({ documentAgree: { agree: FieldValue.increment(1), disagree:0 } });
+        return { agree: 1, disagree: 0 };
     } else if (agree === AgreeDisagreeEnum.Disagree) {
-        statementRef.update({ documentAgree: { disagree: FieldValue.increment(1),agree:0 } });
+        return { agree: 0, disagree: 1 };
     }
+    return { agree: 0, disagree: 0 };
 }
 
-function onDeleteAgree(statementId: string, agree: AgreeDisagreeEnum) {
-    console.log("delete agree", agree);
-    const statementRef = db.collection(Collections.statements).doc(statementId);
+function getUpdateDeleteAgree(statementId: string, agree: AgreeDisagreeEnum): AgreeProps {
+
     if (agree === AgreeDisagreeEnum.Agree) {
-        statementRef.update({ documentAgree: { agree: FieldValue.increment(-1) } });
+        return { agree: -1, disagree: 0 };
     } else if (agree === AgreeDisagreeEnum.Disagree) {
-        statementRef.update({ documentAgree: { disagree: FieldValue.increment(-1) } });
+        return { agree: 0, disagree: -1 };
     }
+    return { agree: 0, disagree: 0 };
 }
 
-function onUpdateAgree(statementId: string, agreeAfter: AgreeDisagreeEnum, agreeBefore: AgreeDisagreeEnum) {
+function getUpdateUpdateAgree(statementId: string, agreeAfter: AgreeDisagreeEnum, agreeBefore: AgreeDisagreeEnum): AgreeProps {
     try {
-        console.log("update agree", agreeBefore, agreeAfter);
+        console.log("update agree", statementId, agreeBefore, agreeAfter);
         const { Agree, Disagree, NoOpinion } = AgreeDisagreeEnum;
-        const statementRef = db.collection(Collections.statements).doc(statementId);
-        let agree = 0;
-        let disagree = 0;
+
+
 
         if (agreeBefore === Disagree && agreeAfter === Agree) {
-            agree = 1;
-            disagree = -1;
+            return { agree: 1, disagree: -1 };
         } else if (agreeBefore === Agree && agreeAfter === Disagree) {
-            agree = -1;
-            disagree = 1;
+            return { agree: -1, disagree: 1 };
         } else if (agreeBefore === NoOpinion) {
             if (agreeAfter === Agree) {
-                agree = 1;
+                return { agree: 1, disagree: 0 };
             } else if (agreeAfter === Disagree) {
-                disagree = 1;
+                return { agree: 0, disagree: 1 };
             }
         }
+        return { agree: 0, disagree: 0 };
 
-        console.log("agree", agree, "disagree", disagree);
 
-        statementRef.update({ documentAgree: { agree: FieldValue.increment(agree), disagree: FieldValue.increment(disagree) } });
     } catch (error) {
         logger.error(error);
+        return { agree: 0, disagree: 0 };
     }
 }
