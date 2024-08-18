@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType, User, isOptionFn } from "delib-npm";
@@ -9,24 +9,22 @@ import { statementSubscriptionSelector } from "@/model/statements/statementsSlic
 import { store } from "@/model/store";
 
 // Helper functions
-import {
-	isAuthorized,
-	linkToChildren,
-} from "@/controllers/general/helpers";
+import { isAuthorized, linkToChildren } from "@/controllers/general/helpers";
 
 // Hooks
 import useStatementColor from "@/controllers/hooks/useStatementColor";
 
 // Custom Components
 import EditTitle from "@/view/components/edit/EditTitle"; // Import EditTitle component
-import UserAvatar from "../userAvatar/UserAvatar";
 import StatementChatMore from "../StatementChatMore";
+import UserAvatar from "../userAvatar/UserAvatar";
 
 // import Evaluation from "../../../../../components/evaluation/simpleEvaluation/SimplEvaluation";
 import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
 import EditIcon from "@/assets/icons/editIcon.svg?react";
 import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
 import QuestionMarkIcon from "@/assets/icons/questionIcon.svg?react";
+import SaveTextIcon from "@/assets/icons/SaveTextIcon.svg";
 import {
 	setStatementIsOption,
 	updateIsQuestion,
@@ -36,22 +34,22 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Menu from "@/view/components/menu/Menu";
 import MenuOption from "@/view/components/menu/MenuOption";
 import CreateStatementModal from "@/view/pages/statement/components/createStatementModal/CreateStatementModal";
-import SaveTextIcon from "@/assets/icons/SaveTextIcon.svg"; 
 
+import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import "./ChatMessageCard.scss";
 
 export interface NewQuestion {
-	statement: Statement;
-	isOption: boolean;
-	showModal: boolean;
+  statement: Statement;
+  isOption: boolean;
+  showModal: boolean;
 }
 
 interface ChatMessageCardProps {
-	parentStatement: Statement;
-	statement: Statement;
-	showImage: (statement: User | null) => void;
-	index: number;
-	previousStatement: Statement | undefined;
+  parentStatement: Statement;
+  statement: Statement;
+  showImage: (statement: User | null) => void;
+  index: number;
+  previousStatement: Statement | undefined;
 }
 
 const ChatMessageCard: FC<ChatMessageCardProps> = ({
@@ -90,9 +88,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isOption = isOptionFn(statement);
 	const isStatement = statementType === StatementType.statement;
 	const isParentOption = isOptionFn(parentStatement);
+	const textareaRef = useAutoFocus(isEdit);
 
 	const shouldLinkToChildStatements =
-		(isQuestion || isOption) && parentStatement.hasChildren;
+    (isQuestion || isOption) && parentStatement.hasChildren;
 
 	const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
 
@@ -118,7 +117,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	}
 
 	function handleTextChange(
-		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
 		setText(e.target.value);
 	}
@@ -135,7 +134,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		}
 	}
 
-
 	return (
 		<div
 			className={`chat-message-card ${isAlignedLeft && "aligned-left"} ${dir}`}
@@ -148,7 +146,9 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			)}
 
 			<div
-				className={isStatement ? "message-box message-box--statement":"message-box"}
+				className={
+					isStatement ? "message-box message-box--statement" : "message-box"
+				}
 				style={{ borderColor: statementColor.backgroundColor }}
 			>
 				{!isPreviousFromSameAuthor && <div className="triangle" />}
@@ -156,20 +156,26 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 				<div className="info">
 					<div className="info-text">
 						{isEdit ? (
-							<div className="input-wrapper">
+							<div
+								className="input-wrapper"
+								style={{ flexDirection: isAlignedLeft ? "row" : "row-reverse" }}
+							>
 								<textarea
+									ref={textareaRef}
 									className="edit-input"
 									value={text}
 									onChange={handleTextChange}
 									autoFocus={true}
 									style={{ direction: dir }}
 								/>
-								<img
-									src={SaveTextIcon}
-									onClick={handleSave}
-									className="save-icon"
-									alt="Save Icon"
-								/>
+								<button>
+									<img
+										src={SaveTextIcon}
+										onClick={handleSave}
+										className="save-icon"
+										alt="Save Icon"
+									/>
+								</button>
 							</div>
 						) : (
 							<EditTitle
