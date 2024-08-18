@@ -2,67 +2,75 @@ import { AgreeDisagree, AgreeDisagreeEnum, Collections } from "delib-npm";
 import { logger } from "firebase-functions/v1";
 import { db } from ".";
 import { getAction } from "./fn_approval";
-import { FieldValue } from "firebase-admin/firestore";
+import { firestore } from "firebase-admin";
+import { Change } from "firebase-functions";
 
-export async function updateAgreement(event: any) {
+export async function updateAgreement(event: Change<firestore.DocumentSnapshot>) {
     try {
-        const agreeAfterData = event.data.after.data() as AgreeDisagree | undefined;
-        const agreeBeforeData = event.data.before.data() as AgreeDisagree | undefined;
-        const combinedAgreement = { ...agreeAfterData, ...agreeBeforeData } as AgreeDisagree;
-        if (!combinedAgreement) throw new Error("No agreement data found");
-
-        const statementRef = db.collection(Collections.statements).doc(combinedAgreement.statementId);
-        const action = getAction(event);
-
-        if (action === "create") {
-            if (!agreeAfterData) throw new Error("No agreement data found");
-            const { agree } = agreeAfterData;
-
-            if (agree === AgreeDisagreeEnum.Agree) {
-                await statementRef.update({ documentAgree: { agree: FieldValue.increment(1) } });
-            } else if (agree === AgreeDisagreeEnum.Disagree) {
-                await statementRef.update({ documentDisagree: { disagree: FieldValue.increment(1) } });
-            }
-        } else if (action === "delete") {
-            if (!agreeBeforeData) throw new Error("No agreement data found");
-            const { agree } = agreeBeforeData;
-
-            if (agree === AgreeDisagreeEnum.Agree) {
-                await statementRef.update({ documentAgree: { agree: FieldValue.increment(-1) } });
-            } else if (agree === AgreeDisagreeEnum.Disagree) {
-                await statementRef.update({ documentDisagree: { disagree: FieldValue.increment(-1) } });
-            }
-        } else if (action === "update") {
-            if (!agreeAfterData) throw new Error("No agreement data found");
-            const { agree: agreeAfter } = agreeAfterData;
-            const { agree: agreeBefore } = agreeBeforeData || { agree: undefined };
-            if (agreeAfter === agreeBefore) return;
-
-            if (agreeAfter === AgreeDisagreeEnum.Agree && agreeBefore === AgreeDisagreeEnum.Disagree) {
-                await statementRef.update({ documentAgree: { agree: FieldValue.increment(1) } });
-                await statementRef.update({ documentDisagree: { disagree: FieldValue.increment(-1) } });
-            } else if (agreeAfter === AgreeDisagreeEnum.Disagree && agreeBefore === AgreeDisagreeEnum.Agree) {
-                await statementRef.update({ documentAgree: { agree: FieldValue.increment(-1) } });
-                await statementRef.update({ documentDisagree: { disagree: FieldValue.increment(1) } });
-            } else if (agreeBefore === AgreeDisagreeEnum.NoOpinion) {
-                if (agreeAfter === AgreeDisagreeEnum.Agree) {
-                    await statementRef.update({ documentAgree: { agree: FieldValue.increment(1) } });
-                } else if (agreeAfter === AgreeDisagreeEnum.Disagree) {
-                    await statementRef.update({ documentDisagree: { disagree: FieldValue.increment(1) } });
-                }
-            } else if (agreeAfter === AgreeDisagreeEnum.NoOpinion) {
-                if (agreeBefore === AgreeDisagreeEnum.Agree) {
-                    await statementRef.update({ documentAgree: { agree: FieldValue.increment(-1) } });
-                } else if (agreeBefore === AgreeDisagreeEnum.Disagree) {
-                    await statementRef.update({ documentDisagree: { disagree: FieldValue.increment(-1) } });
-                }
-            }
-
-
-        }
-
-
+      const agreeAfterData = event.after.data() as AgreeDisagree | undefined;
+      const agreeBeforeData = event.before.data() as AgreeDisagree | undefined;
+  
+      if (!agreeAfterData && !agreeBeforeData) {
+        throw new Error("No agreement data found");
+      }
+  
+      const statementId = agreeAfterData?.statementId || agreeBeforeData?.statementId;
+      if (!statementId) {
+        throw new Error("Statement ID not found");
+      }
+  
+      const statementRef = db.collection(Collections.statements).doc(statementId);
+      const action = getAction(event);
+  
+      await updateStatementCounts(action, agreeBeforeData?.agree, agreeAfterData?.agree, statementRef);
+  
     } catch (error) {
-        logger.error(error);
+      logger.error('Error in updateAgreement:', error);
     }
-}
+  }
+  
+  
+  
+  async function updateStatementCounts(
+    action: 'create' | 'delete' | 'update',
+    agreeBefore: AgreeDisagreeEnum | undefined,
+    agreeAfter: AgreeDisagreeEnum | undefined,
+    statementRef: firestore.DocumentReference
+  ) {
+    const updates: { [key: string]: firestore.FieldValue } = {};
+  
+    switch (action) {
+      case 'create':
+        updateCountForAgreement(updates, agreeAfter, 1);
+        break;
+      case 'delete':
+        updateCountForAgreement(updates, agreeBefore, -1);
+        break;
+      case 'update':
+        if (agreeAfter !== agreeBefore) {
+          if (agreeBefore !== AgreeDisagreeEnum.NoOpinion) {
+            updateCountForAgreement(updates, agreeBefore, -1);
+          }
+          if (agreeAfter !== AgreeDisagreeEnum.NoOpinion) {
+            updateCountForAgreement(updates, agreeAfter, 1);
+          }
+        }
+        break;
+    }
+  
+    if (Object.keys(updates).length > 0) {
+      await statementRef.update(updates);
+    }
+  }
+  
+  function updateCountForAgreement(
+    updates: { [key: string]: firestore.FieldValue },
+    agreement: AgreeDisagreeEnum | undefined,
+    increment: number
+  ) {
+    if (agreement === AgreeDisagreeEnum.Agree) {
+      updates.documentAgree = firestore.FieldValue.increment(increment);
+    } else if (agreement === AgreeDisagreeEnum.Disagree) {
+      updates.documentDisagree = firestore.FieldValue.increment(increment);
+    }
+  }
