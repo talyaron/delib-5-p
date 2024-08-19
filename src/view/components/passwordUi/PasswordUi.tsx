@@ -1,5 +1,5 @@
 "use client"
-import { Dispatch, MouseEvent, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 //styles
@@ -29,7 +29,7 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 	const PASSWORD_LENGTH = 4
 	const MAX_TRIES = 3;
 
-	const [triesCounter, setTriesCounter] = useState(0)
+	const [triesCounter, setTriesCounter] = useState(MAX_TRIES)
 	const [values, setValues] = useState(Array(PASSWORD_LENGTH).fill(''));
 	const [passwordState, setPasswordState] = useState({
 		img: "",
@@ -37,19 +37,21 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 		textStyle: ""
 	});
 
-	function handleSubmit(event: MouseEvent<HTMLButtonElement>) {
-		event.preventDefault();
+	function handleSubmit() {
 
 		const enteredCode = Number(values.join(""));
 
 		try {
 			if (enteredCode === PASSWORD_CODE) {
-				setPasswordCheck(true);
 				setPasswordState({
 					img: passwordUiImgGreen,
 					text: t(`Bravo! Your password is correct. Welcome aboard!`),
 					textStyle: styles.passwordUi__statusSection__passwordTextCorrect
 				});
+
+				setTimeout(() => {
+					setPasswordCheck(true);
+				}, 1000);
 
 			} else {
 				setPasswordState({
@@ -59,8 +61,8 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 				});
 
 				setTriesCounter(prev => {
-					const newTriesCounter = prev + 1;
-					if (newTriesCounter >= MAX_TRIES) {
+					const newTriesCounter = prev - 1;
+					if (newTriesCounter <= 0) {
 						navigate("/401");
 					}
 
@@ -76,22 +78,30 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 	return (
 		<div className={styles.passwordUi}>
 			<div className={styles.passwordUi__imageSection}>
-				<img src={triesCounter === 0 ? passwordUiImgBlue : passwordState.img} />
+				<img src={triesCounter === 3 ? passwordUiImgBlue : passwordState.img} />
 			</div>
+
 			<div className={styles.passwordUi__statusSection}>
-				<p className={triesCounter === 0 ? styles.passwordUi__statusSection__passwordTextDefault : passwordState.textStyle}>{triesCounter === 0 ? t("Enter your 4-digit passcode to unlock group access") : passwordState.text}
+				<p className={triesCounter === 3 ? styles.passwordUi__statusSection__passwordTextDefault : passwordState.textStyle}>{triesCounter === 3 ? t("Enter your 4-digit passcode to unlock group access") : passwordState.text}
 				</p>
 			</div>
+
 			<div className={styles.passwordUi__inputSection}>
-				<PasswordInput passwordLength={PASSWORD_LENGTH} values={values} setValues={setValues} />
+				<PasswordInput handleSubmit={handleSubmit} passwordLength={PASSWORD_LENGTH} values={values} setValues={setValues} />
 			</div>
+
+			<div className={styles.passwordUi__triesLeft}>
+				<p>Tries Left = {triesCounter}</p>
+			</div>
+
 			<div className={styles.passwordUi__buttonSection}>
 				<Button
 					text={t('Submit')}
-					onClick={(event) => handleSubmit(event)}
+					onClick={() => handleSubmit()}
 					className="btn btn--affirmation"
 				/>
 			</div>
+
 		</div>
 	)
 }

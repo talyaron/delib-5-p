@@ -1,29 +1,26 @@
-import { useRef, Dispatch, SetStateAction } from 'react';
-import styles from "./passwordUi.module.scss"
+import { useRef, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import styles from "./passwordUi.module.scss";
 
 interface PasswordProps {
 	passwordLength: 4;
 	values: string[],
+	handleSubmit: () => void
 	setValues: Dispatch<SetStateAction<string[]>>
 }
 
-const PasswordInput = ({ passwordLength: length, values, setValues }: PasswordProps) => {
+const PasswordInput = ({ handleSubmit, passwordLength: length, values, setValues }: PasswordProps) => {
 	const inputs = useRef<(HTMLInputElement | null)[]>([]);
+	const [isSubmitted, setIsSubmitted] = useState(false)
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-		try {
-			const val = event.target.value;
-			if (/^[0-9]$/.test(val) || val === '') {
-				const newValues = [...values];
-				newValues[index] = val;
-				setValues(newValues);
-				if (val && index < length - 1) {
-					inputs.current[index + 1]?.focus();
-				}
+		const val = event.target.value;
+		if (/^[0-9]$/.test(val) || val === '') {
+			const newValues = [...values];
+			newValues[index] = val;
+			setValues(newValues);
+			if (val && index < length - 1) {
+				inputs.current[index + 1]?.focus();
 			}
-		}
-		catch (err) {
-			console.error(err)
 		}
 	}
 
@@ -32,6 +29,16 @@ const PasswordInput = ({ passwordLength: length, values, setValues }: PasswordPr
 			inputs.current[index - 1]?.focus();
 		}
 	}
+
+	useEffect(() => {
+		if (values.every((val => val !== '')) && (!isSubmitted)) {
+			setIsSubmitted(true)
+			handleSubmit();
+		}
+		else {
+			setIsSubmitted(false)
+		}
+	}, [values, handleSubmit]);
 
 	return (
 		<div className={styles.passwordUi__inputSection} >
