@@ -29,6 +29,17 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
     
+    match /documentsSigns/{documentsSignId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    
+    match /signatures/{signaturesId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+    
      match /agrees/{agreeId=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
