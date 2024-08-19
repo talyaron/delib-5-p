@@ -141,5 +141,7 @@
     "to add your question": "um Ihre Frage hinzuzufügen",
     "Add question":"Frage hinzufügen",
     "Sort questions": "Fragen sortieren",
-    "Sort suggestions": "Vorschläge sortieren"
+    "Sort suggestions": "Vorschläge sortieren",
+    "Allow similarity search": "Ähnlichkeitssuche erlauben",
+    "Allow removal of navigational elements": "Entfernen von Navigationselementen erlauben"
 }
