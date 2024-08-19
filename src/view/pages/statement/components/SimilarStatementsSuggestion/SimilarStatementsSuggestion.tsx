@@ -118,9 +118,9 @@ export default function SimilarStatementsSuggestion({
 				<main className='similarities'>
 					<header className='similarities__header'>
 						{currentStep === 1 ? (
-							<div className={`similarities__header__top__stepTwo ${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl' : ''}`}>
+							<div className={`${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl' : 'similarities__header__top__stepTwo'}`}>
 								<button
-									className={`similarities__header__top__stepTwo__closeButtonStepTwo  ${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl__closeButtonStepTwo' : ''}`}
+									className={`${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl__closeButtonStepTwo' : 'similarities__header__top__stepTwo__closeButtonStepTwo'}`}
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
@@ -131,7 +131,7 @@ export default function SimilarStatementsSuggestion({
 							</div>
 						) : (currentStep === 0 || currentStep === 3 ? (
 							<div
-								className={`similarities__header__top__stepOne ${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl' : ''}`}
+								className={`${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl' : 'similarities__header__top__stepOne'}`}
 							>
 								<img
 									src={illustration}
@@ -139,7 +139,7 @@ export default function SimilarStatementsSuggestion({
 									style={{ width: '19.5rem' }}
 								/>
 								<button
-									className={`similarities__header__top__stepOne__closeButtonStepOne ${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl__closeButtonStepOne' : ''}`}
+									className={`${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl__closeButtonStepOne' : 'similarities__header__top__stepOne__closeButtonStepOne'}`}
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
@@ -154,7 +154,7 @@ export default function SimilarStatementsSuggestion({
 								/>
 								<button
 									className={`${dir === 'rtl' ? 'similarities__header__top__stepThree__rtl__arrowButtonStepThree' : 'similarities__header__top__stepThree__arrowButtonStepThree'}`}
-									onClick={() => setShowModal(false)}
+									onClick={() => setCurrentStep(currentStep - 1)}
 								>
 									<ArrowLeftIcon />
 								</button>
