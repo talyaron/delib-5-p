@@ -47,3 +47,5 @@ firestore.rules
 .env.development
 
 .env.production
+
+src/controllers/db/configKey.ts
