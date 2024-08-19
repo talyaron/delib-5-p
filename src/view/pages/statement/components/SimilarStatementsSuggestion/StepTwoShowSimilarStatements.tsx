@@ -2,6 +2,7 @@ import React from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import SubmitStatementButton from './SubmitStatementButton';
 import similarEyeIcon from '@/assets/icons/similarEyeIcon.svg';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -21,7 +22,7 @@ export default function StepTwoShowSimilarStatements({
 	similarStatements,
 	setViewSimilarStatement
 }: SimilarStatementsSuggestionProps) {
-
+	const { dir } = useLanguage();
 	const handleViewSimilarStatement = (statement: {
 		title: string;
 		description: string;
@@ -60,7 +61,7 @@ export default function StepTwoShowSimilarStatements({
 					>
 						<p className='similarities__statementsBox__statementTitle'>{statement.title}</p>
 						<p className='similarities__statementsBox__statementDescription'>{statement.description}</p>
-						<img className='similarities__statementsBox__similarEyeIcon' src={similarEyeIcon}  alt="Similar Eye Icon" />
+						<img className={`${dir === 'rtl' ? 'similarities__statementsBox__rtl__similarEyeIcon' : 'similarities__statementsBox__similarEyeIcon'}`} src={similarEyeIcon}  alt="Similar Eye Icon" />
 						<hr />
 					</div>
 				))}

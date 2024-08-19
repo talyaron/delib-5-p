@@ -22,13 +22,24 @@
 
             &__stepOne {
                 position: relative;
-                right: 1rem;
                 bottom: 3rem;
 
                 &__closeButtonStepOne {
                     position: relative;
                     bottom: 8.5rem;
-                    left: 1.5rem;
+                }
+
+                &__rtl {
+                    position: relative;
+                    display: flex;
+                    justify-content: flex-end;
+                    right: 2.5rem;
+
+                    &__closeButtonStepOne {
+                        position: relative;
+                        bottom: 3.5rem;
+                        left: 21rem;
+                    }
                 }
             }
 
@@ -47,7 +58,18 @@
                 &__closeButtonStepTwo {
                     position: relative;
                     bottom: 8rem;
-                    left: 14.5rem;
+                    left: 60%;
+                }
+
+                &__rtl {
+                    position: relative;
+                    display: flex;
+                    left: 2rem;
+
+                    &__closeButtonStepTwo {
+                        position: relative;
+                        left: 17%;
+                    }
                 }
             }
 
@@ -59,10 +81,22 @@
                 margin-bottom: -4rem;
                 justify-content: flex-end;
 
+                &__rtl {
+                    position: relative;
+                    left: 1rem;
+                    bottom: 3rem;
+
+                    &__arrowButtonStepThree {
+                        position: relative;
+                        right: 2rem;
+                        bottom: 9.5rem;
+                        color: var(--button-blue);
+                    }
+                }
 
                 &__arrowButtonStepThree {
                     position: relative;
-                    right: 22rem;
+                    right: 100%;
                     bottom: 4.5rem;
                     color: var(--button-blue);
                 }
@@ -199,9 +233,18 @@
             cursor: pointer;
         }
 
+        &__rtl {
+            &__similarEyeIcon {
+                width: 2.2rem;
+                position: relative;
+                right: 90%;
+            }
+        }
+
         &__similarEyeIcon {
             width: 2.2rem;
-            margin-left: 18.5rem;
+            position: relative;
+            left: 90%;
         }
 
     }
@@ -245,15 +288,14 @@
 
 @media screen and (min-width: 576px) {
     .similarities__header__top__stepOne__closeButtonStepOne {
-        left: 19.5rem;
+        left: 19rem;
     }
-    .similarities__header__top__stepTwo__closeButtonStepTwo {
-        left: 23.5rem;
+
+    .similarities__header__top__stepOne__rtl__closeButtonStepOne {
+        left: 41rem;
     }
-    .similarities__header__top__stepThree__arrowButtonStepThree {
-        right: 41rem;
-    }
-    .similarities__statementsBox__similarEyeIcon {
-        margin-left: 36.5rem;
+
+    .similarities__header__top__stepThree__rtl__arrowButtonStepThree {
+        right: 18rem;
     }
 }

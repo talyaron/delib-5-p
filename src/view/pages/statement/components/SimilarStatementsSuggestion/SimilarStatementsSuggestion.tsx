@@ -17,6 +17,7 @@ import StepFourContinueWithOwnInput from './StepFourContinueWithOwnInput';
 import { createStatementFromModal } from '../settings/statementSettingsCont';
 import { Statement } from 'delib-npm';
 import Loader from '@/view/components/loaders/Loader';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SimilarStatementsSuggestionProps {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,6 +46,7 @@ export default function SimilarStatementsSuggestion({
 	toggleAskNotifications,
 	getSubStatements,
 }: Readonly<SimilarStatementsSuggestionProps>) {
+	const { dir } = useLanguage();
 	const [currentStep, setCurrentStep] = useState(0);
 	const [newStatementInput, setNewStatementInput] =
 		useState(initDisplayStatement);
@@ -116,9 +118,9 @@ export default function SimilarStatementsSuggestion({
 				<main className='similarities'>
 					<header className='similarities__header'>
 						{currentStep === 1 ? (
-							<div className='similarities__header__top__stepTwo'>
+							<div className={`similarities__header__top__stepTwo ${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl' : ''}`}>
 								<button
-									className='similarities__header__top__stepTwo__closeButtonStepTwo'
+									className={`similarities__header__top__stepTwo__closeButtonStepTwo  ${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl__closeButtonStepTwo' : ''}`}
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
@@ -127,29 +129,31 @@ export default function SimilarStatementsSuggestion({
 									alt='Similarities illustration'
 									style={{ width: '8rem' }} />
 							</div>
-						) : (currentStep === 0 || currentStep === 3? (
-							<div className='similarities__header__top__stepOne'>
+						) : (currentStep === 0 || currentStep === 3 ? (
+							<div
+								className={`similarities__header__top__stepOne ${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl' : ''}`}
+							>
 								<img
 									src={illustration}
 									alt='Similarities illustration'
 									style={{ width: '19.5rem' }}
 								/>
 								<button
-									className='similarities__header__top__stepOne__closeButtonStepOne'
+									className={`similarities__header__top__stepOne__closeButtonStepOne ${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl__closeButtonStepOne' : ''}`}
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
 								</button>
 							</div>
 						) : (currentStep === 2 ? (
-							<div className='similarities__header__top__stepThree'>
+							<div className={`${dir === 'rtl' ? 'similarities__header__top__stepThree__rtl' : 'similarities__header__top__stepThree'}`}>
 								<img
 									src={illustration02}
 									alt='Another illustration'
 									style={{ width: '19rem' }}
 								/>
 								<button
-									className='similarities__header__top__stepThree__arrowButtonStepThree'
+									className={`${dir === 'rtl' ? 'similarities__header__top__stepThree__rtl__arrowButtonStepThree' : 'similarities__header__top__stepThree__arrowButtonStepThree'}`}
 									onClick={() => setShowModal(false)}
 								>
 									<ArrowLeftIcon />
