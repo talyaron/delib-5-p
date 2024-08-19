@@ -155,6 +155,7 @@ b {
 .wrapper {
   flex: auto;
   width: 100%;
+  height: fit-content;
   max-width: 75ch;
   gap: 1rem;
   position: relative;

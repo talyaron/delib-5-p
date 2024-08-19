@@ -107,8 +107,3 @@ export const getEvaluationThumbsToDisplay = ({
 
 	return [selectedThumb || defaultThumb];
 };
-
-
-
-
-
