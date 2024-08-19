@@ -28,6 +28,7 @@ import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionS
 import { getTitle } from '@/controllers/general/helpers';
 import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
 import { getMultiStageOptions } from '@/controllers/db/multiStageQuestion/getMultiStageStatements';
+import styles from './StatementSolutionsPage.module.scss';
 
 interface StatementEvaluationPageProps {
 	statement: Statement;
@@ -62,6 +63,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		// Use States
 		const [showModal, setShowModal] = useState(false);
 		const [showToast, setShowToast] = useState(false);
+		
 		const [showExplanation, setShowExplanation] = useState(
 			currentStage === QuestionStage.explanation && isMuliStage && !questions
 		);
@@ -125,11 +127,12 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		let topSum = 30;
 		const tops: number[] = [topSum];
 		const message = stageInfo ? stageInfo.message : false;
+		
 
 		return (
 			<>
 				<div className='page__main'>
-					<div className='wrapper'>
+					<div className={`wrapper ${styles.wrapper}`} >
 						{isMuliStage && message && (
 							<Toast
 								text={`${t(message)}${currentStage === QuestionStage.suggestion?`: "${getTitle(statement)}`:""}`}
@@ -145,6 +148,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							if (statementSub.elementHight) {
 								topSum += statementSub.elementHight + 30;
 								tops.push(topSum);
+								
 							}
 
 							return (
