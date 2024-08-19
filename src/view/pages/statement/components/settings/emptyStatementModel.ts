@@ -42,6 +42,7 @@ export const defaultEmptyStatement: Statement = {
 	lastUpdate: 0,
 	createdAt: 0,
 	consensus: 0,
+
 	// default values
 	subScreens: defaultStatementSubScreens,
 	resultsSettings: defaultResultsSettings,

@@ -12,8 +12,8 @@ export default function GoogleLoginButton() {
 
 	return (
 		<button 
-		className={`${styles.googleLogin} ${direction === 'row' ? styles.ltr : styles.rtl}`}
-		onClick={googleLogin}>
+			className={`${styles.googleLogin} ${direction === 'row' ? styles.ltr : styles.rtl}`}
+			onClick={googleLogin}>
 			
 			<img
 				src={direction === "row-reverse" ? moreRight : moreLeft}

@@ -39,10 +39,6 @@ const StatementSettings: FC = () => {
 			Statement | undefined
 		>();
 
-		useEffect(() => {
-			
-		}, [statementToEdit]);
-
 		const dispatch = useAppDispatch();
 
 		const statement: Statement | undefined = useAppSelector(
