@@ -49,10 +49,12 @@ export async function removeSignature(event: any) {
 
 export function updateDocumentSignatures(ev: any) {
     try {
+
         const action = getAction(ev);
         const signatureAfterData = ev.data.after.data() as Signature;
         const signatureBeforeData = ev.data.before.data() as Signature;
         const signatureData = signatureAfterData || signatureBeforeData;
+
 
         switch (action) {
             case "create":
@@ -62,7 +64,7 @@ export function updateDocumentSignatures(ev: any) {
                 onDeleteSignature(signatureData);
                 break;
             case "update":
-                onUpdateSignature(signatureAfterData, signatureBeforeData);
+                onUpdateSignature(signatureBeforeData, signatureAfterData);
                 break;
             default:
                 break;
@@ -87,7 +89,8 @@ async function onCreateSignature(signature: Signature) {
                     documentId, viewed: 1,
                     signed: signed ? 1 : 0,
                     rejected: signed ? 0 : 1,
-                    avgSignatures: signed ? levelOfSignature : 0
+                    avgSignatures: signed ? levelOfSignature : 0,
+                    totalSignaturesLevel:signed ? levelOfSignature : 0
                 };
                 transaction.set(documentSignatureRef, documentSignature);
             } else {
@@ -95,9 +98,10 @@ async function onCreateSignature(signature: Signature) {
                 documentSignature.viewed += 1;
                 documentSignature.signed += signed ? 1 : 0;
                 documentSignature.rejected += signed ? 0 : 1;
-                documentSignature.avgSignatures += signed ? levelOfSignature : 0;
+                documentSignature.totalSignaturesLevel += signed ? levelOfSignature : 0;
+                documentSignature.avgSignatures = documentSignature.totalSignaturesLevel/documentSignature.viewed;
                 transaction.update(documentSignatureRef, documentSignature);
-               
+
             }
         });
 
@@ -120,7 +124,8 @@ async function onDeleteSignature(signature: Signature) {
                 documentSignature.viewed -= 1;
                 documentSignature.signed -= signed ? 1 : 0;
                 documentSignature.rejected -= signed ? 0 : 1;
-                documentSignature.avgSignatures -= signed ? levelOfSignature : 0;
+                documentSignature.totalSignaturesLevel -= signed ? levelOfSignature : 0;
+                documentSignature.avgSignatures = documentSignature.totalSignaturesLevel/documentSignature.viewed;
                 transaction.update(documentSignatureRef, documentSignature);
             }
         });
@@ -130,9 +135,12 @@ async function onDeleteSignature(signature: Signature) {
     }
 }
 
-async function onUpdateSignature(signatureAfterData: Signature, signatureBeforeData: Signature) {
+async function onUpdateSignature(signatureBeforeData: Signature, signatureAfterData: Signature) {
     try {
-        const { documentId, signed, levelOfSignature } = signatureAfterData;
+        const { levelOfSignature: levelOfSignatureBefore } = signatureBeforeData;
+        const { documentId, signed, levelOfSignature: levelOfSignatureAfter } = signatureAfterData;
+     
+
 
         await db.runTransaction(async (transaction) => {
             const documentSignatureRef = db.collection(Collections.documentsSigns)
@@ -141,10 +149,21 @@ async function onUpdateSignature(signatureAfterData: Signature, signatureBeforeD
             const documentSignatureDB = await transaction.get(documentSignatureRef);
             if (documentSignatureDB.exists) {
                 const documentSignature = documentSignatureDB.data() as DocumentSigns;
-                documentSignature.signed += signed ? 1 : 0;
-                documentSignature.rejected += signed ? 0 : 1;
-                documentSignature.avgSignatures += signed ? levelOfSignature : 0;
+                documentSignature.signed += signed ? 1 : -1;
+                documentSignature.rejected += signed ? -1 : 1;
+                documentSignature.totalSignaturesLevel += signed ? levelOfSignatureAfter : -levelOfSignatureBefore;
+                documentSignature.avgSignatures = documentSignature.totalSignaturesLevel/documentSignature.viewed;
                 transaction.update(documentSignatureRef, documentSignature);
+            } else {
+
+                const documentSignature: DocumentSigns = {
+                    documentId, viewed: 1,
+                    signed: signed ? 1 : 0,
+                    rejected: signed ? 0 : 1,
+                    avgSignatures: signed ? levelOfSignatureAfter : 0,
+                    totalSignaturesLevel:signed ? levelOfSignatureAfter : 0
+                };
+                transaction.set(documentSignatureRef, documentSignature);
             }
         });
 

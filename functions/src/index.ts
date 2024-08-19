@@ -6,7 +6,7 @@ import {
 } from './fn_evaluation';
 import { updateResultsSettings } from './fn_results';
 import { countRoomJoiners } from './fn_rooms';
-import { addSignature, removeSignature } from './fn_signatures';
+import { addSignature, removeSignature, updateDocumentSignatures } from './fn_signatures';
 import {
 	updateParentWithNewMessageCB,
 
@@ -132,6 +132,9 @@ exports.setImportanceToStatement = onDocumentWritten(`/${Collections.importance}
 
 //agree/disagree
 exports.updateAgrees = onDocumentWritten(`/${Collections.agrees}/{agreeId}`, updateAgrees);
+
+//signatures
+exports.updateDocumentSignatures = onDocumentWritten(`/${Collections.signatures}/{signatureId}`, updateDocumentSignatures);
 
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
