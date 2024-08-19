@@ -120,14 +120,14 @@ export default function SimilarStatementsSuggestion({
 						{currentStep === 1 ? (
 							<div className={`${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl' : 'similarities__header__top__stepTwo'}`}>
 								<button
-									className={`${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl__closeButtonStepTwo' : 'similarities__header__top__stepTwo__closeButtonStepTwo'}`}
+									className="similarities__header__top__stepTwo__closeButtonStepTwo"
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
 								</button>
 								<img src={illustration01}
 									alt='Similarities illustration'
-									style={{ width: '8rem' }} />
+									style={{ width: '40%' }} />
 							</div>
 						) : (currentStep === 0 || currentStep === 3 ? (
 							<div
@@ -136,10 +136,10 @@ export default function SimilarStatementsSuggestion({
 								<img
 									src={illustration}
 									alt='Similarities illustration'
-									style={{ width: '19.5rem' }}
+									style={{ width: '89%' }}
 								/>
 								<button
-									className={`${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl__closeButtonStepOne' : 'similarities__header__top__stepOne__closeButtonStepOne'}`}
+									className='similarities__header__top__stepOne__closeButtonStepOne'
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
@@ -150,7 +150,7 @@ export default function SimilarStatementsSuggestion({
 								<img
 									src={illustration02}
 									alt='Another illustration'
-									style={{ width: '19rem' }}
+									style={{ width: '76%' }}
 								/>
 								<button
 									className={`${dir === 'rtl' ? 'similarities__header__top__stepThree__rtl__arrowButtonStepThree' : 'similarities__header__top__stepThree__arrowButtonStepThree'}`}

@@ -23,10 +23,12 @@
             &__stepOne {
                 position: relative;
                 bottom: 3rem;
+                right: 1rem;
 
                 &__closeButtonStepOne {
-                    position: relative;
-                    bottom: 8.5rem;
+                    position: sticky;
+                    bottom: 95%;
+                    left: 84%;
                 }
 
                 &__rtl {
@@ -34,12 +36,8 @@
                     display: flex;
                     justify-content: flex-end;
                     right: 2.5rem;
-
-                    &__closeButtonStepOne {
-                        position: relative;
-                        bottom: 3.5rem;
-                        left: 21rem;
-                    }
+                    bottom: 3rem;
+                    align-items: center;
                 }
             }
 
@@ -56,20 +54,18 @@
                 }
 
                 &__closeButtonStepTwo {
-                    position: relative;
-                    bottom: 8rem;
-                    left: 60%;
+                    position: sticky;
+                    bottom: 98%;
+                    left: 95%;
                 }
 
                 &__rtl {
                     position: relative;
                     display: flex;
                     left: 2rem;
-
-                    &__closeButtonStepTwo {
-                        position: relative;
-                        left: 17%;
-                    }
+                    bottom: 2rem;
+                    justify-content: center;
+                    align-items: flex-start;
                 }
             }
 
@@ -80,6 +76,7 @@
                 bottom: 3rem;
                 margin-bottom: -4rem;
                 justify-content: flex-end;
+                align-items: flex-start;
 
                 &__rtl {
                     position: relative;
@@ -87,17 +84,17 @@
                     bottom: 3rem;
 
                     &__arrowButtonStepThree {
-                        position: relative;
-                        right: 2rem;
-                        bottom: 9.5rem;
+                        position: sticky;
+                        right: 74%;
+                        bottom: 37rem;
                         color: var(--button-blue);
                     }
                 }
 
                 &__arrowButtonStepThree {
-                    position: relative;
-                    right: 100%;
-                    bottom: 4.5rem;
+                    position: sticky;
+                    right: 75%;
+                    top: 0;
                     color: var(--button-blue);
                 }
             }
@@ -282,20 +279,5 @@
         margin-top: -1rem;
         font-weight: 500;
         line-height: 150%;
-    }
-}
-
-
-@media screen and (min-width: 576px) {
-    .similarities__header__top__stepOne__closeButtonStepOne {
-        left: 19rem;
-    }
-
-    .similarities__header__top__stepOne__rtl__closeButtonStepOne {
-        left: 41rem;
-    }
-
-    .similarities__header__top__stepThree__rtl__arrowButtonStepThree {
-        right: 18rem;
     }
 }
