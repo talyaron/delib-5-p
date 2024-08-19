@@ -7,7 +7,6 @@ import { Statement, User } from "delib-npm";
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import StatementInput from "./components/input/StatementInput";
 import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
-import PasswordUi from "../../../../components/passwordUi/PasswordUi";
 
 import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
@@ -40,7 +39,6 @@ const StatementChat: FC<Props> = ({
 		statement.parentId,
 	);
 
-	const [passwordCheck, setPasswordCheck] = useState(false)
 
 	//scroll to bottom
 	const scrollToBottom = () => {
@@ -77,57 +75,40 @@ const StatementChat: FC<Props> = ({
 		}
 	}, [subStatements]);
 
-	useEffect(() => {
-		if (user?.uid === statement.creatorId) {
-			setPasswordCheck(true)
-		}
-		else{
-			setPasswordCheck(false)
-		}
-	}, [])
-
 
 	return (
 		<>
-			{passwordCheck ? (
-				<>
-					<div
-						className={`page__main statement-chat ${toSlide && slideInOrOut}`}
-					>
-						{subStatements?.map((statementSub: Statement, index) => (
-							<div key={statementSub.statementId}>
-								<ChatMessageCard
-									parentStatement={statement}
-									statement={statementSub}
-									showImage={handleShowTalker}
-									index={index}
-									previousStatement={subStatements[index - 1]}
-								/>
-							</div>
-						))}
-						<div ref={messagesEndRef} />
-					</div>
-					<div className="page__footer">
-						<NewMessages
-							newMessages={newMessages}
-							setNewMessages={setNewMessages}
-							scrollToBottom={scrollToBottom}
+			<div
+				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
+			>
+				{subStatements?.map((statementSub: Statement, index) => (
+					<div key={statementSub.statementId}>
+						<ChatMessageCard
+							parentStatement={statement}
+							statement={statementSub}
+							showImage={handleShowTalker}
+							index={index}
+							previousStatement={subStatements[index - 1]}
 						/>
-						{statement && (
-							<StatementInput
-								toggleAskNotifications={toggleAskNotifications}
-								statement={statement}
-							/>
-						)}
 					</div>
-				</>
-			) : (
-				<div className="passwordUiComponent">
-					<PasswordUi setPasswordCheck={setPasswordCheck} />
-				</div>
-			)}
+				))}
+				<div ref={messagesEndRef} />
+			</div>
+			<div className="page__footer">
+				<NewMessages
+					newMessages={newMessages}
+					setNewMessages={setNewMessages}
+					scrollToBottom={scrollToBottom}
+				/>
+				{statement && (
+					<StatementInput
+						toggleAskNotifications={toggleAskNotifications}
+						statement={statement}
+					/>
+				)}
+			</div>
 		</>
-	);
+	)
 
 };
 

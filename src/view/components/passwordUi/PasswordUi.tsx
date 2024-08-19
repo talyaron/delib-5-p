@@ -32,9 +32,9 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 	const [triesCounter, setTriesCounter] = useState(MAX_TRIES)
 	const [values, setValues] = useState(Array(PASSWORD_LENGTH).fill(''));
 	const [passwordState, setPasswordState] = useState({
-		img: "",
-		text: "",
-		textStyle: ""
+		img: passwordUiImgBlue,
+		text: t("Enter your 4-digit passcode to unlock group access"),
+		textStyle: styles.passwordUi__statusSection__passwordTextDefault
 	});
 
 	function handleSubmit() {
@@ -75,14 +75,15 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 		}
 	}
 
+
 	return (
 		<div className={styles.passwordUi}>
 			<div className={styles.passwordUi__imageSection}>
-				<img src={triesCounter === 3 ? passwordUiImgBlue : passwordState.img} />
+				<img src={passwordState.img} />
 			</div>
 
 			<div className={styles.passwordUi__statusSection}>
-				<p className={triesCounter === 3 ? styles.passwordUi__statusSection__passwordTextDefault : passwordState.textStyle}>{triesCounter === 3 ? t("Enter your 4-digit passcode to unlock group access") : passwordState.text}
+				<p className={passwordState.textStyle}>{passwordState.text}
 				</p>
 			</div>
 
@@ -101,7 +102,6 @@ function PasswordUi({ setPasswordCheck }: PasswordProps) {
 					className="btn btn--affirmation"
 				/>
 			</div>
-
 		</div>
 	)
 }
