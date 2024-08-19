@@ -1,0 +1,221 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    match /awaitingUsers/{document=**} {
+      allow read, write: if request.auth != null;
+    }
+
+     match /councils/{councilId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+      match /statements/{statementId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+
+     match /statementsMeta/{statementId=**}{
+        allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /importance/{importanceId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+      match /approval/{approvalId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    
+    match /documentsSigns/{documentsSignId=**}{
+      allow read: if request.auth.uid != null;
+    }
+
+    
+    match /signatures/{signaturesId=**}{
+     allow read: if request.auth.uid == resource.data.userId;
+      allow write: if request.auth.uid == resource.data.userId;
+    }
+    
+     match /agrees/{agreeId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+    
+    match /invitations/{invitationId=**}{
+       allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+      match /admins/{adminStatementId=**}{
+     
+      allow write: if request.auth.uid == request.resource.data.user.uid;
+    }
+    match /statementsSubscribe/{statementSubId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    
+    match /statementsSignatures/{signatureId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /statementRoomsAsked/{requestId=**}{
+    	allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+      match /resultsTriggers/{statementId=**}{
+    
+      allow write: if request.auth.uid != null;
+    }
+
+    match /statementLobbyRooms/{statementId=**}{
+    	allow read: if request.auth.uid != null;
+
+    }
+
+     match /timers-settings/{timerIdx=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+    
+    match /timers-rooms/{timerIdx=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+     match /evaluations/{evluationId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /approval/{approvalId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+     match /statementEvaluators/{statementEvaluatorsId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /votes/{voteId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+    
+    match /posts/{postId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    match /chatMessages/{chatMessageId}{
+     	allow read;
+      allow write: if request.auth.uid != null;
+    }
+    match /posts/{group=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    match /groups/{group=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    match /chats/{chatId}{
+    	allow read:if request.auth.uid != null;
+    	allow write: if request.auth.uid == resource.data.creator.uid
+    }
+
+      match /usersV2/{userId=**}{
+        allow read: if request.auth.uid != null;
+        allow write: if request.auth.uid == request.resource.data.uid;
+      }
+
+    match /users/{user}{
+      allow read;
+      allow write: if request.auth.uid != null;
+      
+      match /chat/{chat=**}{
+       allow read;
+      	allow write: if request.auth.uid != null;
+      }
+       match /chatLastEnterence/{ chatLastEnterence=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+      
+      match /feed/{ feed=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+      
+      match /feedLastEntrence/{ feedLastEntrence=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+      
+       match /feeds/{feeds=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+      
+        match /groups/{groups=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+      
+        match /groupsOwned/{groupsOwned=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+        match /messages/{messages=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+        match /messagesCounter/{messagesCounter=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+       match /optionsRead/{optionsRead=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+       match /registerGroups/{registerGroups=**}{
+       	allow read;
+      	allow write: if request.auth.uid != null;
+      }
+     
+      
+      match /memberships/{membership}{
+      	allow read: if request.auth.uid != null;
+        allow write:if request.auth.uid != null;
+      }
+    }
+    match /messages/{message=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+      match /tokens/{token=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+      
+    match /consultations/{consultationId}{
+    	allow read: if resource.data.groupType == 'public'|| get(/databases/$(database)/documents/users/$(request.auth.uid)/memberships/$(consultationId)).data.role != null
+  		allow write: if request.auth.uid == request.resource.data.creator.uid;
+      
+      match /meta/{metaId}{
+      		allow read:if request.auth.uid != null;
+          allow write: if get(/databases/$(database)/documents/consultations/$(consultationId)).data.creator.uid == request.auth.uid;
+      }
+      
+    }
+    
+    match /news/{new}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid == request.resource.data.creator.uid
+    }
+  }
+}

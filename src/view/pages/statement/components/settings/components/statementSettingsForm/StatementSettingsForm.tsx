@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { Dispatch, FC } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
@@ -31,7 +31,7 @@ interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
 	statement: Statement;
 	parentStatement?: Statement | 'top';
-	setStatementToEdit: (statement: Statement) => void;
+	setStatementToEdit: Dispatch<Statement>;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
@@ -50,6 +50,8 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 			setIsLoading(true);
+
+	
 			await handleSetStatement({
 				navigate,
 				statementId,
@@ -76,6 +78,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				<TitleAndDescription
 					statement={statement}
 					setStatementToEdit={setStatementToEdit}
+				
 				/>
 				<SectionTitle title={t('General Settings')} />
 				<section className='switches-area'>
@@ -90,7 +93,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						<UploadImage {...statementSettingsProps} />
 						<QuestionSettings {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
-						<MembersSettings {...statementSettingsProps} />
+						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement}/>
 						<section className='get-members-area'>
 							<GetVoters statementId={statementId} />
 						</section>

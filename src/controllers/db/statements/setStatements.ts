@@ -5,6 +5,7 @@ import {Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import {
 	Access,
+	Membership,
 	ResultsBy,
 	Screen,
 	Statement,
@@ -24,6 +25,7 @@ import {
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { allowedScreens } from "@/controllers/general/screens";
+
 
 
 
@@ -130,7 +132,7 @@ export const setStatementToDB = async ({
 		statement.lastUpdate = new Date().getTime();
 		statement.createdAt = statement?.createdAt || new Date().getTime();
 
-		statement.membership = { access: Access.open };
+		statement.membership = statement.membership || { access: Access.open };
 
 		//statement settings
 		if (!statement.statementSettings)
@@ -195,6 +197,7 @@ interface CreateStatementProps {
 	resultsBy?: ResultsBy;
 	numberOfResults?: number;
 	hasChildren: boolean;
+	membership?: Membership;
 	toggleAskNotifications?: () => void;
 }
 export function createStatement({
@@ -210,6 +213,7 @@ export function createStatement({
 	numberOfResults = 1,
 	hasChildren = true,
 	toggleAskNotifications,
+	membership
 }: CreateStatementProps): Statement | undefined {
 	try {
 		if (parentStatement !== "top")
@@ -257,6 +261,7 @@ export function createStatement({
 			topParentId,
 			creator: user,
 			creatorId: user.uid,
+			membership: membership || { access: Access.open },
 			statementSettings: {
 				enhancedEvaluation,
 				showEvaluation,
@@ -308,6 +313,7 @@ interface UpdateStatementProps {
 	resultsBy?: ResultsBy;
 	numberOfResults?: number;
 	hasChildren: boolean;
+	membership?: Membership;
 }
 export function updateStatement({
 	text,
@@ -321,6 +327,7 @@ export function updateStatement({
 	resultsBy,
 	numberOfResults,
 	hasChildren,
+	membership,
 }: UpdateStatementProps): Statement | undefined {
 	try {
 		const newStatement: Statement = JSON.parse(JSON.stringify(statement));
@@ -359,6 +366,7 @@ export function updateStatement({
 		});
 
 		newStatement.hasChildren = hasChildren;
+		newStatement.membership = membership || statement.membership ||{access: Access.open};
 
 		if (statementType !== undefined)
 			newStatement.statementType =
@@ -398,6 +406,7 @@ interface UpdateStatementSettingsParams {
 	enhancedEvaluation: boolean;
 	showEvaluation: boolean;
 	subScreens: Screen[] | undefined;
+
 }
 
 function updateStatementSettings({
@@ -407,6 +416,7 @@ function updateStatementSettings({
 	enhancedEvaluation,
 	showEvaluation,
 	subScreens,
+	
 }: UpdateStatementSettingsParams): UpdateStatementSettingsReturnType {
 	try {
 		if (!statement) throw new Error("Statement is undefined");
@@ -421,7 +431,7 @@ function updateStatementSettings({
 			showEvaluation,
 			enableAddEvaluationOption,
 			enableAddVotingOption,
-			subScreens
+			subScreens,
 		};
 	} catch (error) {
 		console.error(error);
