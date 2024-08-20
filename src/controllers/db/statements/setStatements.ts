@@ -1,5 +1,5 @@
 // Firestore
-import {Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // Third Party Imports
 import { z } from "zod";
@@ -257,7 +257,7 @@ export function createStatement({
 
 		const newStatement: Statement = {
 			statement: text,
-			description:description || "",
+			description: description || "",
 			statementId,
 			parentId,
 			parents,
@@ -372,7 +372,7 @@ export function updateStatement({
 		});
 
 		newStatement.hasChildren = hasChildren;
-		newStatement.membership = membership || statement.membership ||{access: Access.open};
+		newStatement.membership = membership || statement.membership || { access: Access.open };
 
 		if (statementType !== undefined)
 			newStatement.statementType =
@@ -422,7 +422,7 @@ function updateStatementSettings({
 	enhancedEvaluation,
 	showEvaluation,
 	subScreens,
-	
+
 }: UpdateStatementSettingsParams): UpdateStatementSettingsReturnType {
 	try {
 		if (!statement) throw new Error("Statement is undefined");
@@ -453,18 +453,19 @@ function updateStatementSettings({
 
 export async function updateStatementText(
 	statement: Statement | undefined,
-	newText: string,
+	title: string,
+	description?: string,
 ) {
 	try {
-		if (!newText) throw new Error("New text is undefined");
+		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
 
 		// console.log(statement.statement);
 		// console.log(newText);
-		const _statement = newText.split("\n")[0].trim();
-		const _description = newText.split("\n").slice(1).join("\n").trim();
-		
-		if (statement.statement === newText) return;
+		const _statement = title;
+		const _description = description ? description.split("\n").slice(1).join("\n").trim() : "";
+
+		if (statement.statement === title && statement.description === description) return;
 
 		StatementSchema.parse(statement);
 		const statementRef = doc(
@@ -472,7 +473,7 @@ export async function updateStatementText(
 			Collections.statements,
 			statement.statementId,
 		);
-		
+
 		const newStatement = {
 			statement: _statement,
 			description: _description,

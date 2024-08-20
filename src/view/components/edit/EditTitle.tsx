@@ -31,7 +31,7 @@ const EditTitle: FC<Props> = ({
 	isTextArea,
 
 }) => {
-	const [text, setText] = useState(statement?.description || "");
+	const [description, setText] = useState(statement?.description || "");
 	const [title, setTitle] = useState(statement?.statement || "");
 	const textareaRef = useAutoFocus(isEdit);
 
@@ -50,17 +50,11 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return; // Do not save if the text is empty
-
+			if (!title.trim()) return; // Do not save if the text is empty
 			if (!statement) throw new Error("Statement is undefined");
 
-			const description = getDescription(statement);
 
-			const updatedText = isTextArea
-				? text.trim()
-				: title + "\n" + description.trim();
-
-			updateStatementText(statement, updatedText);
+			updateStatementText(statement, title.trim(), description.trim());
 			setEdit(false);
 		} catch (error) {
 			console.error(error);
@@ -82,7 +76,7 @@ const EditTitle: FC<Props> = ({
 						ref={textareaRef}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.textarea}
-						value={text}
+						defaultValue={`${title}\n${description}`}
 						onChange={(e) => handleChange(e, setText)}
 						autoFocus={true}
 						placeholder="Add text"
