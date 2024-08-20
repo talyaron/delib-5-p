@@ -29,7 +29,7 @@ const EditTitle: FC<Props> = ({
 	isEdit,
 	setEdit,
 	isTextArea,
-	onlyTitle,
+
 }) => {
 	const [text, setText] = useState(statement?.statement || "");
 	const [title, setTitle] = useState(getTitle(statement) || "");
