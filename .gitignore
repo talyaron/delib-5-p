@@ -43,3 +43,9 @@ firebase-debug.log
 firebase-debug.log*
 ./firestore.indexes.json
 firestore.rules
+
+.env.development
+
+.env.production
+
+src/controllers/db/configKey.ts

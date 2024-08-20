@@ -63,7 +63,7 @@ const Room: FC<Props> = ({ room, maxParticipantsPerRoom }) => {
 		>
 			<h4>
 				{(t("Room"), room.roomNumber)} -{" "}
-				<Text text={room.statement.statement} onlyTitle={true} />
+				<Text statement={room.statement.statement}  />
 			</h4>
 			<div className="room-badges">
 				{room.participants.map((participant: Participant) => (

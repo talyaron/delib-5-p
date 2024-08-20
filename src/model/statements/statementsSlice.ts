@@ -160,7 +160,7 @@ export const statementsSlicer = createSlice({
 					state.statementSubscriptionLastUpdate
 				) {
 					state.statementSubscriptionLastUpdate =
-					newStatementSubscription.lastUpdate;
+						newStatementSubscription.lastUpdate;
 				}
 			} catch (error) {
 				console.error(error);
@@ -408,7 +408,7 @@ export const statementOptionsSelector =
 			.map((statement) => ({ ...statement }));
 
 		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
-		
+
 		return sortedSubStatements;
 	};
 
@@ -470,9 +470,12 @@ export const hasTokenSelector =
 
 		return statement?.token?.includes(token) || false;
 	};
-
-	export const subscriptionParentStatementSelector = (parentId: string) => (state: RootState) => {
-		return state.statements.statementSubscription.filter((sub) => sub.statement.topParentId === parentId);
-	}
+	
+export const subscriptionParentStatementSelector = (parentId: string) =>
+	createSelector(
+		(state: RootState) => state.statements.statementSubscription,
+		(statementSubscription) =>
+			statementSubscription.filter((sub) => sub.statement.topParentId === parentId)
+	);
 
 export default statementsSlicer.reducer;
