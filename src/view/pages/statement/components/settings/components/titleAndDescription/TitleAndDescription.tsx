@@ -50,7 +50,7 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 						const newDescription = e.target.value;
 						setStatementToEdit({
 							...statement,
-							statement: `${title}\n${newDescription}`,
+							description: newDescription,
 						});
 					}}
 				/>

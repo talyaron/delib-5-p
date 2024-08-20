@@ -87,6 +87,7 @@ export async function handleSetStatement({
 	parentStatement,
 }: HandleSetStatementParams) {
 	try {
+		debugger;
 		const _statement = getStatementText(statement);
 
 		// If statement title is empty, don't save
@@ -101,7 +102,7 @@ export async function handleSetStatement({
 			enhancedEvaluation,
 			showEvaluation,
 			subScreens,
-			 membership,
+			membership,
 		} = getSetStatementData(statement);
 
 		// If no statementId, user is on AddStatement page
