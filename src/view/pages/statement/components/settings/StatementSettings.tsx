@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
 	useAppDispatch,
 	useAppSelector,
-} from "../../../../../functions/hooks/reduxHooks";
+} from "../../../../../controllers/hooks/reduxHooks";
 import {
 	setStatement,
 	statementMembershipSelector,
@@ -18,25 +18,25 @@ import {
 } from "../../../../../model/statements/statementsSlice";
 
 // Firestore functions
-import { getStatementFromDB } from "../../../../../functions/db/statements/getStatement";
-import { listenToMembers } from "../../../../../functions/db/statements/listenToStatements";
+import { getStatementFromDB } from "../../../../../controllers/db/statements/getStatement";
+import { listenToMembers } from "../../../../../controllers/db/statements/listenToStatements";
 
 // Custom components
 import ScreenFadeIn from "../../../../components/animation/ScreenFadeIn";
-import ShareIcon from "../../../../components/icons/ShareIcon";
 import Loader from "../../../../components/loaders/Loader";
 import UploadImage from "../../../../components/uploadImage/UploadImage";
-import CheckBoxeArea from "./components/CheckBoxeArea";
+import CheckBoxeArea from "./componentscomponents/CheckBoxeArea";
 import DisplayResultsBy from "./components/DisplayResultsBy";
 import GetEvaluators from "./components/GetEvaluators";
 import GetVoters from "./components/GetVoters";
-import MembershipLine from "./components/membership/MembershipLine";
 import ResultsRange from "./components/ResultsRange";
-import { handleSetStatment, handleShare } from "./statementSettingsCont";
+import MembershipLine from "./components/membership/membershipCard/MembershipCard";
+import { handleSetStatment, handleShare } from "../../../../pages/statement/StatementCont";
+import ShareIcon from '@/assets/icons/shareIcon.svg?react';
 
 interface Props {
-    simple?: boolean;
-    new?: boolean;
+	simple?: boolean;
+	new?: boolean;
 }
 
 const StatementSettings: FC<Props> = () => {
@@ -121,7 +121,7 @@ const StatementSettings: FC<Props> = () => {
 						{!statementId ? t("Add") : t("Update")}
 					</button>
 
-					{statementId && <UploadImage statement={statement} />}
+					{statementId && statement && <UploadImage statement={statement} />}
 
 					{membership && statementId && (
 						<>

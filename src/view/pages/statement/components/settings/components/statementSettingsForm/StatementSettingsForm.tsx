@@ -77,7 +77,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				<TitleAndDescription
 					statement={statement}
 					setStatementToEdit={setStatementToEdit}
-				
+
 				/>
 				<SectionTitle title={t('General Settings')} />
 				<section className='switches-area'>
@@ -92,9 +92,9 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						<UploadImage {...statementSettingsProps} />
 						<QuestionSettings {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
-						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement}/>
+						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement} />
 						<section className='get-members-area'>
-							<GetVoters statementId={statementId} />
+							<GetVoters statementId={statementId} showNonVoters={false} membership={[]} />
 						</section>
 						<section className='get-members-area'>
 							<GetEvaluators statementId={statementId} />

@@ -6,11 +6,12 @@ import { updateStatementMainImage } from "../../../controllers/db/statements/set
 import { compressImage } from "./compressImage";
 
 interface Props {
-	statement: Statement;
+	statement: Statement | null;
 }
 
 const UploadImage: FC<Props> = ({ statement }) => {
-	const imageUrl = statement.imagesURL?.main ?? null;
+	const imageUrl = statement?.imagesURL?.main ?? null;
+	if (!statement) return null;
 
 	// currently changing image is not possible, when we fix it we can remove this
 	if (imageUrl) {

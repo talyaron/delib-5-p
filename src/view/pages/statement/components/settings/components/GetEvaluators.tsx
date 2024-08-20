@@ -5,10 +5,12 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import MembersChipsList from "./membership/membersChipsList/MembersChipList";
 
 interface GetEvaluatorsProps {
-    statementId: string;
+	statementId: string | undefined;
 }
 
+
 const GetEvaluators: FC<GetEvaluatorsProps> = ({ statementId }) => {
+	if (!statementId) return null;
 	const { t } = useLanguage();
 
 	const [evaluators, setEvaluators] = React.useState<Evaluation[]>([]);

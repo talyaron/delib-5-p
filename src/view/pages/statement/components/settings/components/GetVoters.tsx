@@ -1,13 +1,13 @@
 import { StatementSubscription, Vote } from "delib-npm";
 import { useState } from "react";
-import { getVoters } from "../../../../../../functions/db/vote/getVotes";
 import Chip from "../../../../../components/chip/Chip";
 import { handleGetVoters } from "../statementSettingsCont";
+import { getVoters } from "@/controllers/db/vote/getVotes";
 
 interface GetVotersProps {
-    statementId: string | undefined;
-    showNonVoters: boolean;
-    membership: StatementSubscription[];
+	statementId: string | undefined;
+	showNonVoters: boolean;
+	membership: StatementSubscription[];
 }
 
 export default function GetVoters({
@@ -50,7 +50,7 @@ export default function GetVoters({
 					type="button"
 					className="settings__getUsers__votersBtn formBtn"
 					onClick={fetchVoters}>
-                    Get Voters
+					Get Voters
 				</button>
 				<div className="settings__getUsers__chipBox">
 					{voters.length > 0
@@ -67,7 +67,7 @@ export default function GetVoters({
 					type="button"
 					className="settings__getUsers__votersBtn formBtn"
 					onClick={fetchNonVoters}>
-                    Get Non-Voters
+					Get Non-Voters
 				</button>
 				<div className="settings__getUsers__chipBox">
 					{nonVoters.length > 0

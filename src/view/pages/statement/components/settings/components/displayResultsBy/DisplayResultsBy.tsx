@@ -15,7 +15,7 @@ const DisplayResultsBy: FC<StatementSettingsProps> = ({
 	setStatementToEdit,
 }) => {
 	const { t } = useLanguage();
-	const resultsSettings = statement.resultsSettings ?? defaultResultsSettings;
+	const resultsSettings = statement?.resultsSettings ?? defaultResultsSettings;
 
 	const [selectedOption, setSelectedOption] = useState(
 		resultsSettings.resultsBy,
