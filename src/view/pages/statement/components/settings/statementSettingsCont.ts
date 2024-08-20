@@ -171,37 +171,9 @@ export async function handleSetStatement({
 	}
 }
 
-const prefixTitle = (title: string): string => {
-	if (title && !title.startsWith('*')) {
-		return `*${title}`;
-	}
 
-	return title;
-};
 
-const getStatementText = (statement: Statement): string | null => {
-	try {
-		const titleAndDescription = statement.statement;
-		const endOfTitle = titleAndDescription.indexOf('\n');
-		const _title =
-			endOfTitle === -1
-				? titleAndDescription
-				: titleAndDescription.substring(0, endOfTitle);
 
-		// TODO: add validation for title in UI
-		if (!_title || _title.length < 2) return null;
-
-		const startOfDescription = endOfTitle + 1;
-		const description = titleAndDescription.substring(startOfDescription);
-		const title = prefixTitle(_title);
-
-		return `${title}\n${description}`;
-	} catch (error) {
-		console.error(error);
-
-		return null;
-	}
-};
 
 export const getStatementSettings = (statement: Statement) => {
 	const statementSettings =
