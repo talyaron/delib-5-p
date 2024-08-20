@@ -187,6 +187,7 @@ export const setStatementToDB = async ({
 
 interface CreateStatementProps {
 	text: string;
+	description?: string;
 	parentStatement: Statement | "top";
 	subScreens?: Screen[];
 	statementType?: StatementType;
@@ -202,6 +203,7 @@ interface CreateStatementProps {
 }
 export function createStatement({
 	text,
+	description,
 	parentStatement,
 	subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
 	statementType = StatementType.statement,
@@ -255,6 +257,7 @@ export function createStatement({
 
 		const newStatement: Statement = {
 			statement: text,
+			description:description || "",
 			statementId,
 			parentId,
 			parents,
@@ -303,6 +306,7 @@ export function createStatement({
 
 interface UpdateStatementProps {
 	text: string;
+	description?: string;
 	statement: Statement;
 	subScreens?: Screen[];
 	statementType?: StatementType;
@@ -317,6 +321,7 @@ interface UpdateStatementProps {
 }
 export function updateStatement({
 	text,
+	description,
 	statement,
 	subScreens = [Screen.CHAT],
 	statementType = StatementType.statement,
@@ -333,6 +338,7 @@ export function updateStatement({
 		const newStatement: Statement = JSON.parse(JSON.stringify(statement));
 
 		if (text) newStatement.statement = text;
+		if (description) newStatement.description = description;
 
 		newStatement.lastUpdate = Timestamp.now().toMillis();
 

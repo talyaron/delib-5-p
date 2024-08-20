@@ -70,7 +70,7 @@ const EditTitle: FC<Props> = ({
 	if (!isEdit)
 		return (
 			<div style={{ direction: direction, textAlign: align }}>
-				<Text text={statement.statement} onlyTitle={onlyTitle} />
+				<Text statement={statement.statement} description={statement.description} />
 			</div>
 		);
 

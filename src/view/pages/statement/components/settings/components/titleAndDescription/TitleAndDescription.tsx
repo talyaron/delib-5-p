@@ -45,7 +45,7 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 					name="description"
 					placeholder={t("Group Description")}
 					rows={3}
-					value={description}
+					defaultValue={statement.description}
 					onChange={(e) => {
 						const newDescription = e.target.value;
 						setStatementToEdit({

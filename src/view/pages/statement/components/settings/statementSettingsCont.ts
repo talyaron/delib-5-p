@@ -87,11 +87,12 @@ export async function handleSetStatement({
 	parentStatement,
 }: HandleSetStatementParams) {
 	try {
-		debugger;
-		const _statement = getStatementText(statement);
+		
+		
+
 
 		// If statement title is empty, don't save
-		if (!_statement) return;
+		if(!statement.statement) return;
 
 		const {
 			hasChildren,
@@ -108,7 +109,8 @@ export async function handleSetStatement({
 		// If no statementId, user is on AddStatement page
 		if (!statementId) {
 			const newStatement = createStatement({
-				text: _statement,
+				text: statement.statement,
+				description: statement.description,
 				subScreens,
 				statementType: StatementType.question,
 				parentStatement: 'top',
@@ -140,7 +142,8 @@ export async function handleSetStatement({
 
 			const newStatement = updateStatement({
 				statement,
-				text: _statement,
+				text: statement.statement,
+				description: statement.description||'',
 				subScreens: subScreens,
 				statementType: StatementType.question,
 				resultsBy,
