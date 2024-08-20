@@ -11,7 +11,6 @@ import Save from "@/assets/icons/saveIcon.svg?react";
 import styles from "./EditTitle.module.scss";
 
 // Custom components
-import { getDescription } from "@/controllers/general/helpers";
 import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Text from "../text/Text";
