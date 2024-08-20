@@ -42,8 +42,8 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 	// Use State
 	const [isInEditMode, setIsInEditMode] = useState(false);
 	const [formData, setFormData] = useState({
-		title: getTitle(statement),
-		description: getDescription(statement),
+		title:statement.statement || '',
+		description: statement.description || '',
 	});
 
 	const _isAuthorized = isAuthorized(
@@ -121,7 +121,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 							)}
 						</h3>
 						<div className="text">
-							<Text text={formData.description} />
+							<Text description={formData.description||''} />
 						</div>
 					</div>
 					<div className="form-buttons">

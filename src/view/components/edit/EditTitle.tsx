@@ -31,8 +31,8 @@ const EditTitle: FC<Props> = ({
 	isTextArea,
 
 }) => {
-	const [text, setText] = useState(statement?.statement || "");
-	const [title, setTitle] = useState(getTitle(statement) || "");
+	const [text, setText] = useState(statement?.description || "");
+	const [title, setTitle] = useState(statement?.statement || "");
 	const textareaRef = useAutoFocus(isEdit);
 
 	if (!statement) return null;

@@ -295,14 +295,14 @@ export async function createStatementFromModal({
 	try {
 		if (!title) throw new Error('title is undefined');
 
-		const _title = prefixTitle(title);
-		const text = `${_title}\n${description}`;
+		
 
 		const newStatement = createStatement({
 			...defaultStatementSettings,
 			hasChildren: true,
 			toggleAskNotifications,
-			text,
+			text:title,
+			description,
 			parentStatement,
 			statementType: isOptionSelected
 				? StatementType.option
