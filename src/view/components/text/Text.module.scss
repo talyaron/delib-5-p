@@ -1,14 +1,20 @@
 .p {
     display: block;
+    font-size: 1rem;
     margin-block-start: 0.3rem;
     margin-block-end: 0.3rem;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     user-select: text;
+    font-weight: 300;
+
+    &--bold {
+        font-weight: 400;
+    }
 }
 
 .title {
-       font-size: 1.1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     line-height: 1.25rem;
     user-select: text;

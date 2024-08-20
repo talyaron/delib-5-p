@@ -18,12 +18,7 @@ const Text: FC<Props> = ({ statement, description }) => {
           .split("\n")
           .filter((p) => p)
           .map((paragraph: string, i: number) => {
-            if (paragraph.startsWith("*"))
-              return (
-                <p className={styles.title} key={`${textId}--${i}`}>
-                  <b>{paragraph.replace("*", "")}</b>
-                </p>
-              );
+            
 
             //if paragraph has * at some point and has some * at some other point make the string between the * bold
             if (paragraph.includes("*")) {
@@ -34,7 +29,7 @@ const Text: FC<Props> = ({ statement, description }) => {
               });
 
               return (
-                <p className={styles.title} key={`${textId}--${i}`}>
+                <p className={`${styles["p--bold"]} ${styles.p}`} key={`${textId}--${i}`}>
                   {boldedParagraph}
                 </p>
               );
