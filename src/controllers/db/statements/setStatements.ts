@@ -461,7 +461,8 @@ export async function updateStatementText(
 
 		// console.log(statement.statement);
 		// console.log(newText);
-		
+		const _statement = newText.split("\n")[0].trim();
+		const _description = newText.split("\n").slice(1).join("\n").trim();
 		
 		if (statement.statement === newText) return;
 
@@ -473,7 +474,8 @@ export async function updateStatementText(
 		);
 		
 		const newStatement = {
-			statement: newText,
+			statement: _statement,
+			description: _description,
 			lastUpdate: Timestamp.now().toMillis(),
 		};
 		await updateDoc(statementRef, newStatement);
