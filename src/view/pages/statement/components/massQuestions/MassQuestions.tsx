@@ -14,76 +14,76 @@ interface Props {
 }
 
 const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
-  const statementSubscriptions = useAppSelector(
-    statementSubscriptionSelector(statement.statementId)
-  );
+	const statementSubscriptions = useAppSelector(
+		statementSubscriptionSelector(statement.statementId)
+	);
 
-  const [showThankYou, setShowThankYou] = useState<boolean>(false);
-  const [answerd, setAnswer] = useState<boolean[]>([]);
-  const [showModal, setShowModal] = useState(false);
+	const [showThankYou, setShowThankYou] = useState<boolean>(false);
+	const [answerd, setAnswer] = useState<boolean[]>([]);
+	const [showModal, setShowModal] = useState(false);
 
-  const questions = subStatements.filter(
-    (sub) => sub.statementType === StatementType.question
-  );
+	const questions = subStatements.filter(
+		(sub) => sub.statementType === StatementType.question
+	);
 
-  const _isAutorized = isAuthorized(statement, statementSubscriptions);
+	const _isAutorized = isAuthorized(statement, statementSubscriptions);
 
-  return (
-    <>
-      <div className="page__main">
-        <div className="wrapper">
-          {!showThankYou ? (
-            <>
-              {statement.imagesURL?.main ? (
-                <div
-                  className={styles.image}
-                  style={{
-                    backgroundImage: `url(${statement.imagesURL.main})`,
-                  }}
+	return (
+		<>
+			<div className="page__main">
+				<div className="wrapper">
+					{!showThankYou ? (
+						<>
+							{statement.imagesURL?.main ? (
+								<div
+									className={styles.image}
+									style={{
+										backgroundImage: `url(${statement.imagesURL.main})`,
+									}}
 
-                  // style={{backgroundColor: 'red'}}
-                ></div>
-              ) : null}
-              <Text description={statement.description} />
-              {questions.map((question, index: number) => (
-                <MassQuestionCard
-                  key={question.statementId}
-                  statement={question}
-                  index={index}
-                  setAnswered={setAnswer}
-                />
-              ))}
-              <div className="btns">
-                {answerd.filter((a) => a).length === questions.length && (
-                  <div className="btn" onClick={() => setShowThankYou(true)}>
-                    <span>שליחה</span>
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className={styles.thankyou}>
-              <h2>תודה על התשובות</h2>
-              <div className="btn" onClick={() => setShowThankYou(false)}>
-                <span>עריכה חדשה</span>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      {!showThankYou && _isAutorized ? (
-        <div className="page__main__bottom">
-          {showModal && (
-            <CreateStatementModal
-              parentStatement={statement}
-              isOption={false}
-              setShowModal={setShowModal}
-            />
-          )}
-        </div>
-      ) : null}
-    </>
-  );
+									// style={{backgroundColor: 'red'}}
+								></div>
+							) : null}
+							<Text description={statement.description} />
+							{questions.map((question, index: number) => (
+								<MassQuestionCard
+									key={question.statementId}
+									statement={question}
+									index={index}
+									setAnswered={setAnswer}
+								/>
+							))}
+							<div className="btns">
+								{answerd.filter((a) => a).length === questions.length && (
+									<div className="btn" onClick={() => setShowThankYou(true)}>
+										<span>שליחה</span>
+									</div>
+								)}
+							</div>
+						</>
+					) : (
+						<div className={styles.thankyou}>
+							<h2>תודה על התשובות</h2>
+							<div className="btn" onClick={() => setShowThankYou(false)}>
+								<span>עריכה חדשה</span>
+							</div>
+						</div>
+					)}
+				</div>
+			</div>
+			{!showThankYou && _isAutorized ? (
+				<div className="page__main__bottom">
+					{showModal && (
+						<CreateStatementModal
+							parentStatement={statement}
+							isOption={false}
+							setShowModal={setShowModal}
+						/>
+					)}
+				</div>
+			) : null}
+		</>
+	);
 };
 
 export default MassQuestions;
