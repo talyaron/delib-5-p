@@ -14,7 +14,7 @@
     cursor: pointer;
     user-select: none;
     position: absolute;
-    margin-top: 27rem;
+    margin-top: 26rem;
     margin-left: 13rem;
 
     &.rowReverse {
@@ -26,24 +26,31 @@
     }
 }
 
-.googleLogin.rtl{
+.googleLogin.rtl {
     margin-right: 30rem;
 }
 
 @media only screen and (max-width: 600px) {
     .googleLogin {
         position: absolute;
-        margin-top: 25rem;
-        width: 18rem;
+        margin-top: 26rem;
+        width: 16rem;
     }
+
     .googleLogin.ltr {
         border-radius: 3rem 0rem 0rem 3rem;
-        right: -1rem;
+        right: 0rem;
     }
+
     .googleLogin.rtl {
         border-radius: 0rem 3rem 3rem 0rem;
         left: 0;
         margin-left: 0rem;
+    }
+}
 
+@media only screen and (max-height: 750px) {
+    .googleLogin {
+        margin-top: 23rem;
     }
 }
