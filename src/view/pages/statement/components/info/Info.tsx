@@ -1,6 +1,6 @@
 import { membersAllowed, Statement } from "delib-npm";
 import { FC } from "react";
-import InfoParser from "@/view/components/InfoParser/InfoParser";
+import Text from "@/view/components/text/Text";
 
 interface Props {
   statement: Statement;
@@ -23,8 +23,12 @@ const Info: FC<Props> = ({ statement }) => {
 	return (
 		<div>
 			<div className="wrapper">
-				<InfoParser statement={statement} />
-				<h2>To Document</h2>
+				{statement.description && (
+					<>
+						<h2>Description</h2>
+						<Text description={statement.description} />
+					</>
+				)}
 				<ul>
 					{isAnonymous && (
 						<li>

@@ -51,7 +51,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 			e.preventDefault();
 			setIsLoading(true);
 
-	
 			await handleSetStatement({
 				navigate,
 				statementId,

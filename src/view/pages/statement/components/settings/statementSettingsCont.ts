@@ -87,10 +87,12 @@ export async function handleSetStatement({
 	parentStatement,
 }: HandleSetStatementParams) {
 	try {
-		const _statement = getStatementText(statement);
+		
+		
+
 
 		// If statement title is empty, don't save
-		if (!_statement) return;
+		if(!statement.statement) return;
 
 		const {
 			hasChildren,
@@ -101,13 +103,14 @@ export async function handleSetStatement({
 			enhancedEvaluation,
 			showEvaluation,
 			subScreens,
-			 membership,
+			membership,
 		} = getSetStatementData(statement);
 
 		// If no statementId, user is on AddStatement page
 		if (!statementId) {
 			const newStatement = createStatement({
-				text: _statement,
+				text: statement.statement,
+				description: statement.description,
 				subScreens,
 				statementType: StatementType.question,
 				parentStatement: 'top',
@@ -139,7 +142,8 @@ export async function handleSetStatement({
 
 			const newStatement = updateStatement({
 				statement,
-				text: _statement,
+				text: statement.statement,
+				description: statement.description||'',
 				subScreens: subScreens,
 				statementType: StatementType.question,
 				resultsBy,
@@ -167,37 +171,9 @@ export async function handleSetStatement({
 	}
 }
 
-const prefixTitle = (title: string): string => {
-	if (title && !title.startsWith('*')) {
-		return `*${title}`;
-	}
 
-	return title;
-};
 
-const getStatementText = (statement: Statement): string | null => {
-	try {
-		const titleAndDescription = statement.statement;
-		const endOfTitle = titleAndDescription.indexOf('\n');
-		const _title =
-			endOfTitle === -1
-				? titleAndDescription
-				: titleAndDescription.substring(0, endOfTitle);
 
-		// TODO: add validation for title in UI
-		if (!_title || _title.length < 2) return null;
-
-		const startOfDescription = endOfTitle + 1;
-		const description = titleAndDescription.substring(startOfDescription);
-		const title = prefixTitle(_title);
-
-		return `${title}\n${description}`;
-	} catch (error) {
-		console.error(error);
-
-		return null;
-	}
-};
 
 export const getStatementSettings = (statement: Statement) => {
 	const statementSettings =
@@ -291,14 +267,14 @@ export async function createStatementFromModal({
 	try {
 		if (!title) throw new Error('title is undefined');
 
-		const _title = prefixTitle(title);
-		const text = `${_title}\n${description}`;
+		
 
 		const newStatement = createStatement({
 			...defaultStatementSettings,
 			hasChildren: true,
 			toggleAskNotifications,
-			text,
+			text:title,
+			description,
 			parentStatement,
 			statementType: isOptionSelected
 				? StatementType.option

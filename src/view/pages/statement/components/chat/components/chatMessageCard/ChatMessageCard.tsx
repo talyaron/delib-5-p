@@ -73,7 +73,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const [isEdit, setIsEdit] = useState(false);
 	const [isNewStatementModalOpen, setIsNewStatementModalOpen] = useState(false);
 	const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
-	const [text, setText] = useState(statement?.statement || "");
+	const [text, setText] = useState(`${statement?.statement}\n${statement.description}`);
 
 	// Variables
 	const creatorId = statement.creatorId;
