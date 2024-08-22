@@ -5,7 +5,6 @@ import { useLanguage } from '@/controllers/hooks/useLanguages';
 interface SubmitStatementButtonProps {
 	icon: React.FC<React.SVGProps<SVGSVGElement>>;
 	text: string;
-	buttonMaxWidth: string;
 	textColor: string;
 	onClick: () => void;
 	reverse?: boolean;
@@ -14,7 +13,6 @@ interface SubmitStatementButtonProps {
 export default function SubmitStatementButton({
 	icon: Icon,
 	text,
-	buttonMaxWidth,
 	textColor,
 	onClick,
 	reverse = false,
@@ -23,7 +21,7 @@ export default function SubmitStatementButton({
 	return (
 		<button
 			onClick={onClick}
-			className={style.wrapperWithoutBoxShadow}
+			className={style.similaritiesWrapper}
 			style={{ 
 				direction: dir,
 				flexDirection: dir === "ltr" ? "row" : "row-reverse",
@@ -45,11 +43,10 @@ export default function SubmitStatementButton({
 						backgroundColor: "var(--button-blue)", 
 						color: textColor, 
 						justifyContent: dir === 'rtl' ? "flex-end": "flex-start",
-						width: buttonMaxWidth}}>
+						width: "100%"}}>
 						{text}
 					</p>
 					<div style={{position: "relative", 
-						right: dir === "rtl" ? "1rem" : "1rem",
 						border: "2px solid var(--white)" ,
 						borderRadius: "2rem",
 						backgroundColor: "var(--button-blue)" }}>

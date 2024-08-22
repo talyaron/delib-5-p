@@ -32,7 +32,6 @@ export default function StepThreeViewSimilarStatement({
 				<SubmitStatementButton
 					icon={SendIcon}
 					text='Choose this solution'
-					buttonMaxWidth="11.2rem"
 					textColor='var(--white)'
 					onClick={handleSimilarStatementChosen}
 				/>

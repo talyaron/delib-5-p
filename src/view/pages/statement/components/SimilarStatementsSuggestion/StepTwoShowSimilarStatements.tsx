@@ -71,7 +71,6 @@ export default function StepTwoShowSimilarStatements({
 				<SubmitStatementButton
 					icon={SendIcon}
 					text='Continue compose solution'
-					buttonMaxWidth="14.5rem"
 					textColor='var(--white)'
 					onClick={handleSubmit}
 				/>

@@ -125,7 +125,6 @@ export default function StepOneStatementInput({
 						<SubmitStatementButton
 							icon={SendIcon}
 							text='Submit Statement'
-							buttonMaxWidth="10rem"
 							textColor='var(--white)'
 							onClick={handleSubmit}
 						/>

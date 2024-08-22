@@ -20,8 +20,8 @@
 	}
 }
 
-.wrapperWithoutBoxShadow {
+.similaritiesWrapper {
 	@extend .wrapper;
-	box-shadow: none;
-	display: flex;
+	border-radius: 20px;
+	background-color: var(--button-blue);
 }

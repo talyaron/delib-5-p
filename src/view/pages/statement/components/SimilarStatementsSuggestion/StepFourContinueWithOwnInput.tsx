@@ -39,7 +39,6 @@ export default function StepFourContinueWithOwnInput({
 				<SubmitStatementButton
 					icon={SendIcon}
 					text='Submit my Statement'
-					buttonMaxWidth="11.5rem"
 					textColor='var(--white)'
 					onClick={onFormSubmit}
 				/>
