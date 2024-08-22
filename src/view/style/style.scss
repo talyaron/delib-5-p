@@ -128,7 +128,7 @@
 
   //base
   --bg-screen: #f2f6ff;
-  --bg-overlay: #rgba(44, 46, 80, 0.8);
+  --bg-overlay: rgba(44, 46, 80, 0.8);
   //base-contrast
   --bg-screen-contrast: ##021832;
 
@@ -342,8 +342,9 @@ body {
   height: 100svh;
   margin: 0px;
   font-family: "Open Sans", sans-serif;
-  font-size: 17px;
-  background: var(--pageBackground);
+  font-size: 1.0625rem;
+  line-height: 150%;
+  background: var(--bg-screen);
   overflow: hidden;
 }
 
