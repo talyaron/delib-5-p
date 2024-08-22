@@ -1,11 +1,12 @@
 .checkbox {
-    --text-color-empty: #6e8aa6;
-    --text-color-checked: #3b4f7d;
+    --text-disabled-paragraph: #a1b0d1;
+    --text-paragraph: #57688f;
 
-    --icon-color-empty: #6e8aa6;
-    --icon-color-checked: #226cbc;
+    --icon-disabled-filled: #a9d2ff;
+    --icon-blue: #5f88e5;
 
     font-family: "Roboto", sans-serif;
+    line-height: 150%;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -19,7 +20,7 @@
         min-width: 24px;
 
         svg {
-            color: var(--icon-color-empty);
+            color: var(--icon-disabled-filled);
             width: 24px;
             height: 24px;
         }
@@ -27,16 +28,16 @@
 
     .checkbox-label {
         flex: 1;
-        color: var(--text-color-empty);
+        color: var(--text-disabled-paragraph);
     }
 
     &.checked {
         .checkbox-label {
-            color: var(--text-color-checked);
+            color: var(--text-paragraph);
         }
 
         .checkbox-icon svg {
-            color: var(--icon-color-checked);
+            color: var(--icon-blue);
         }
     }
 }
