@@ -21,16 +21,16 @@ export async function updateApprovalResults(event: any) {
             const { approval } = approveAfterData;
             approvingUserDiff = 1;
             approvedDiff = approval ? 1 : 0;
-          
+
         } else if (action === "delete") {
             const { approval } = approveBeforeData;
             approvingUserDiff = -1;
             approvedDiff = approval ? -1 : 0;
-          
+
         } else if (action === "update") {
             const { approval } = approveAfterData;
             approvedDiff = approval ? 1 : -1;
-          
+
         }
 
         console.log("approvedDiff", approvedDiff, "approvingUserDiff", approvingUserDiff);
@@ -44,7 +44,7 @@ export async function updateApprovalResults(event: any) {
             let newApprovalResults: DocumentApproval = {
                 approved: approvedDiff,
                 totalVoters: approvingUserDiff,
-                averageApproval: approvedDiff 
+                averageApproval: approvedDiff
             };
 
             if (documentApproval) {
@@ -55,13 +55,13 @@ export async function updateApprovalResults(event: any) {
                 newApprovalResults = {
                     approved: newApproved,
                     totalVoters,
-                    averageApproval: newApproved  / totalVoters
+                    averageApproval: newApproved / totalVoters
                 };
             } else {
                 console.log("No documentApproval on", statementId);
             }
 
-            
+
             transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
         });
 
@@ -84,16 +84,16 @@ export async function updateApprovalResults(event: any) {
                 averageApproval: approvedDiff
             };
 
-            console.log("newApprovalResults", newApprovalResults);
+
 
             if (documentApproval) {
 
                 const newApproved = documentApproval.approved + approvedDiff;
-              const newTotalVoters =documentApproval.totalVoters + addUser;
+                const newTotalVoters = documentApproval.totalVoters + addUser;
 
 
                 newApprovalResults = {
-                    approved: newApproved,                  
+                    approved: newApproved,
                     totalVoters: newTotalVoters,
                     averageApproval: newApproved / newTotalVoters
                 };

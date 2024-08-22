@@ -31,6 +31,7 @@
     //question
     --question: #62beeb;
 
+
   //evaluation
   --agree: #57c6b2;
   --disagree: #fe6ba2;
@@ -86,9 +87,11 @@
   --textOnDark: white;
   --placeHolder: #93b6da;
 
-  //Card Ellips Menu/Card
+  --incorrectText: #ff3a46;
+  --correctText: #3bb0b0;
   --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
+
 }
 
 * {
@@ -154,6 +157,7 @@ b {
 .wrapper {
   flex: auto;
   width: 100%;
+  height: fit-content;
   max-width: 75ch;
   gap: 1rem;
   position: relative;

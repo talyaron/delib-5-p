@@ -1,5 +1,3 @@
-const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID_DEV;
-
 export const findSimilarStatements = async (
 	statementId: string,
 	userInput: string
@@ -8,9 +6,10 @@ export const findSimilarStatements = async (
 		'https://checkforsimilarstatements-qeesi7aziq-uc.a.run.app';
 	const devEndPoint =
 		'https://checkforsimilarstatements-oeqnq63ina-uc.a.run.app';
-	const localEndPoint = `http://localhost:5001/${projectId}/us-central1/checkForSimilarStatements`;
+	const localEndPoint =
+		'http://localhost:5001/synthesistalyaron/us-central1/checkForSimilarStatements';
 	const url = () => {
-		const isProd = false;
+		const isProd = true;
 
 		if (isProd) {
 			return prodEndPoint;
