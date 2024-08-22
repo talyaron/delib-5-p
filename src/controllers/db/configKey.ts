@@ -1,4 +1,5 @@
 const mode = import.meta.env.VITE_APP_ENV as 'development' | 'production';
+console.log(mode)
 
 const firebaseConfig = {
 	development: {
@@ -22,6 +23,7 @@ const firebaseConfig = {
 		measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID_PROD,
 	},
 };
+console.log(firebaseConfig)
 
 const vapidKeys = {
 	development: import.meta.env.VITE_FIREBASE_VAPID_KEY_DEV,
