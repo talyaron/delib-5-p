@@ -85,16 +85,16 @@
 
                     &__arrowButtonStepThree {
                         position: sticky;
-                        right: 74%;
+                        right: 100%;
                         bottom: 37rem;
                         color: var(--button-blue);
                     }
                 }
 
                 &__arrowButtonStepThree {
-                    position: sticky;
-                    right: 75%;
-                    top: 0;
+                    position: relative;
+                    right: 103%;
+                    top: 1rem;
                     color: var(--button-blue);
                 }
             }
@@ -258,9 +258,10 @@
 
     .twoButtonBox {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         margin-bottom: 2rem;
         margin-left: 1rem;
+        padding-inline: 1rem;
         width: 100%;
         margin-top: auto;
 
@@ -269,7 +270,6 @@
             color: var(--button-blue);
             width: 4.2rem;
             border-radius: 1.5rem;
-            margin-right: 2rem;
         }
     }
 

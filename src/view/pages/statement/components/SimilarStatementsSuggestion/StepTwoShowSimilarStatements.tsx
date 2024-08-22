@@ -67,7 +67,7 @@ export default function StepTwoShowSimilarStatements({
 				))}
 			</section>
 
-			<div className='twoButtonBox'>
+			<div className='similarities__buttonBox'>
 				<SubmitStatementButton
 					icon={SendIcon}
 					text='Continue compose solution'
