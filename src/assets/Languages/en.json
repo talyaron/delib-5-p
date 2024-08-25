@@ -157,5 +157,7 @@
     "to add your question": "to add your question",
     "Add question":"Add question",
     "Sort questions": "Sort questions",
-    "Sort suggestions": "Sort suggetsions"
+    "Sort suggestions": "Sort suggetsions",
+    "Allow similarity search": "Allow similarity search",
+    "Allow removal of navigational elements": "Allow removal of navigational elements"
 }

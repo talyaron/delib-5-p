@@ -188,9 +188,8 @@ export const getStatementSettings = (statement: Statement) => {
 		showEvaluation: Boolean(statementSettings.showEvaluation),
 		subScreens: statementSettings.subScreens ?? [],
 		inVotingGetOnlyResults: Boolean(statementSettings.inVotingGetOnlyResults),
-		enableSimilaritiesSearch: Boolean(
-			statementSettings.enableSimilaritiesSearch
-		),
+		enableSimilaritiesSearch: Boolean(statementSettings.enableSimilaritiesSearch),
+		enableNavigationalElements: Boolean(statementSettings.enableNavigationalElements),
 	};
 };
 
