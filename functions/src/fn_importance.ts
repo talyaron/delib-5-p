@@ -22,7 +22,7 @@ export async function setImportanceToStatement(event: any) {
         let importanceAfter = 0;
         if (importanceBeforeData) importanceBefore = importanceBeforeData.importance;
         if (importanceAfterData) importanceAfter = importanceAfterData.importance;
-        console.log('diffNumberOfUsers', diffNumberOfUsers, 'importanceBefore', importanceBefore, 'importanceAfter', importanceAfter);
+       
 
         //get section id
         const sectionId = importanceBeforeData?.parentId || importanceAfterData?.parentId;
@@ -40,7 +40,7 @@ export async function setImportanceToStatement(event: any) {
         });
 
         const diffImportance = importanceAfter - importanceBefore;
-        console.log('diffImportance', diffImportance);
+      
         
 
 

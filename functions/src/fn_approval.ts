@@ -11,7 +11,7 @@ export async function updateApprovalResults(event: any) {
         const approveAfterData = event.data.after.data() as Approval;
         const approveBeforeData = event.data.before.data() as Approval;
 
-        console.log("approveAfterData.approval", approveAfterData.approval ? "Approved" : "Rejected");
+        
 
         let approvedDiff = 0;
         let approvingUserDiff = 0;
@@ -33,7 +33,7 @@ export async function updateApprovalResults(event: any) {
 
         }
 
-        console.log("approvedDiff", approvedDiff, "approvingUserDiff", approvingUserDiff);
+    
 
         //update paragraph
         db.runTransaction(async (transaction) => {
@@ -50,7 +50,7 @@ export async function updateApprovalResults(event: any) {
             if (documentApproval) {
                 const newApproved = documentApproval.approved + approvedDiff;
                 const totalVoters = documentApproval.totalVoters + approvingUserDiff;
-                console.log("Pervious Approve", documentApproval.approved, "newApproved", newApproved);
+                
 
                 newApprovalResults = {
                     approved: newApproved,
@@ -58,7 +58,7 @@ export async function updateApprovalResults(event: any) {
                     averageApproval: newApproved / totalVoters
                 };
             } else {
-                console.log("No documentApproval on", statementId);
+               
             }
 
 

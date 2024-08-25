@@ -9,7 +9,7 @@ const MessageBoxCounter = () => {
 
     // Disable eslint rule for the next line
     // eslint-disable-next-line no-console
-    console.log('Total Message Boxes:', totalMessageBoxes);
+    
 
     return (
         <div>

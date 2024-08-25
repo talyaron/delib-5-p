@@ -1,9 +1,11 @@
 // Helpers
 import { useEffect, useState } from "react";
 import { prompStore } from "./main/HomeMainCont";
+
 // icons
 import InstallIcon from "@/assets/icons/installIcon.svg?react";
 import InvitationIcon from "@/assets/icons/invitation.svg?react";
+
 // Components
 import { useDispatch } from "react-redux";
 import { install } from "@/App";
@@ -17,65 +19,66 @@ import InvitationModal from "./main/invitationModal/InvitationModal";
 
 
 export default function HomeHeader() {
-    // Use State
-    const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
-    const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
-    const [showInvitationModal, setShowInvitationModal] = useState(false);
-    const dispatch = useDispatch();
-    const { t, dir } = useLanguage();
-    useEffect(() => {
-        // for deferred app install
-        setDeferredPrompt(install.deferredPrompt);
-    }, []);
-    function handleInstallApp() {
-        try {
-            prompStore(setDeferredPrompt);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    function handleInvitationPanel() {
-        try {
-            setShowInvitationModal(true);
-            setIsHomeMenuOpen(false);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    return (
-        <div className={`homePage__header ${dir}`}>
-            <div className="homePage__header__wrapper">
-                <div
-                    className="homePage__header__wrapper__title"
-                    children={t("Delib")}
-                />
-                <div className="homePage__header__wrapper__icons">
-                    {deferredPrompt && (
-                        <IconButton onClick={handleInstallApp}>
-                            <InstallIcon />
-                        </IconButton>
-                    )}
-                    <Menu
-                        isMenuOpen={isHomeMenuOpen}
-                        setIsOpen={setIsHomeMenuOpen}
-                        iconColor="white"
-                    >
-                        <MenuOption
-                            icon={<DisconnectIcon style={{ color: "#4E88C7" }} />}
-                            label={t("Disconnect")}
-                            onOptionClick={() => handleLogout(dispatch)}
-                        />
-                        <MenuOption
-                            icon={<InvitationIcon style={{ color: "#4E88C7" }}/>}
-                            label={t("Join with PIN number")}
-                            onOptionClick={handleInvitationPanel}
-                        />
-                    </Menu>
-                </div>
-            </div>
-            {showInvitationModal && <InvitationModal setShowModal={setShowInvitationModal} />}
-        </div>
-    );
+	// Use State
+	const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
+	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
+	const [showInvitationModal, setShowInvitationModal] = useState(false);
+	const dispatch = useDispatch();
+	const { t, dir } = useLanguage();
+	useEffect(() => {
+		// for deferred app install
+		setDeferredPrompt(install.deferredPrompt);
+	}, []);
+	function handleInstallApp() {
+		try {
+			prompStore(setDeferredPrompt);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	function handleInvitationPanel() {
+		try {
+			setShowInvitationModal(true);
+			setIsHomeMenuOpen(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	
+	return (
+		<div className={`homePage__header ${dir}`}>
+			<div className="homePage__header__wrapper">
+				<div
+					className="homePage__header__wrapper__title"
+					children={t("Delib")}
+				/>
+				<div className="homePage__header__wrapper__icons">
+					{deferredPrompt && (
+						<IconButton onClick={handleInstallApp}>
+							<InstallIcon />
+						</IconButton>
+					)}
+					<Menu
+						isMenuOpen={isHomeMenuOpen}
+						setIsOpen={setIsHomeMenuOpen}
+						iconColor="white"
+					>
+						<MenuOption
+							icon={<DisconnectIcon style={{ color: "#4E88C7" }} />}
+							label={t("Disconnect")}
+							onOptionClick={() => handleLogout(dispatch)}
+						/>
+						<MenuOption
+							icon={<InvitationIcon style={{ color: "#4E88C7" }}/>}
+							label={t("Join with PIN number")}
+							onOptionClick={handleInvitationPanel}
+						/>
+					</Menu>
+				</div>
+			</div>
+			{showInvitationModal && <InvitationModal setShowModal={setShowInvitationModal} />}
+		</div>
+	);
 }
 
 
