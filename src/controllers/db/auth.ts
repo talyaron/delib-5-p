@@ -61,6 +61,10 @@ export const listenToAuth =
 								`Anonymous ${Math.floor(Math.random() * 10000)}`;
 						const _user = parseUserFromFirebase(user);
 
+						if(_user?.isAnonymous){
+							_user.displayName = localStorage.getItem("displayName") || `Anonymous ${Math.floor(Math.random() * 10000)}`;
+						}
+
 						// console.info("User is signed in")
 						if (!_user) throw new Error("user is undefined");
 

@@ -30,7 +30,7 @@ const EnterNameModal: FC<Props> = ({ closeModal }) => {
 		try {
 			if (isReadyToStart(displayName)) {
 				signAnonymously();
-				const _displayName = displayName || "unonimous";
+				const _displayName = displayName || "Anonymous";
 				localStorage.setItem("displayName", _displayName);
 				closeModal();
 			}
