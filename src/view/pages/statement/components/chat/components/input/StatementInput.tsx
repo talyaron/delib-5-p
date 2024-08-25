@@ -67,6 +67,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
 			<button
 				type="submit"
 				className="page__footer__form__sendBtnBox"
+				aria-label="Submit Button"
 				style={statementColor}
 				data-cy="statement-chat-send-btn"
 			>
@@ -76,6 +77,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
 				data-cy="statement-chat-input"
 				style={{ height: "4rem" }}
 				className="page__footer__form__input"
+				aria-label="Form Input"
 				name="newStatement"
 				onKeyUp={(e) => handleKeyUp(e)}
 				autoFocus={false}
