@@ -18,6 +18,7 @@ export default function SubmitStatementButton({
 	reverse = false,
 }: SubmitStatementButtonProps) {
 	const { dir } = useLanguage();
+	
 	return (
 		<button
 			onClick={onClick}

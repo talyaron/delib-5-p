@@ -160,7 +160,7 @@ export default function SimilarStatementsSuggestion({
 								</button>
 							</div>
 						) : null))
-					}
+						}
 						<div className={`similarities__header__types  ${currentStep === 2 ? 'hidden' : ''}`}>
 							<div className='type'>
 								<LightBulbPlusIcon />

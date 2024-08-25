@@ -37,7 +37,7 @@ export default function StepTwoShowSimilarStatements({
 
 	return (
 		<>
-					<h4 className='similarities__title'>Compose your solution</h4>
+			<h4 className='similarities__title'>Compose your solution</h4>
 			<div className='similarities__titleInput activeTitle'>
 				<label
 					htmlFor='titleInput'
