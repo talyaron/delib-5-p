@@ -5,35 +5,34 @@ import { db } from ".";
 
 export async function updateApprovalResults(event: any) {
     try {
-        const action = getAction(event);
+        const action:Action = getAction(event);
         const eventData = event.data.after.data() as Approval || event.data.before.data() as Approval;
         const { statementId, documentId, userId } = eventData;
         const approveAfterData = event.data.after.data() as Approval;
         const approveBeforeData = event.data.before.data() as Approval;
 
-        
+
 
         let approvedDiff = 0;
         let approvingUserDiff = 0;
 
-        if (action === "create") {
+        if (action === Action.create) {
             //  await newApproval(eventData);
             const { approval } = approveAfterData;
             approvingUserDiff = 1;
             approvedDiff = approval ? 1 : 0;
 
-        } else if (action === "delete") {
+        } else if (action === Action.delete) {
             const { approval } = approveBeforeData;
             approvingUserDiff = -1;
             approvedDiff = approval ? -1 : 0;
 
-        } else if (action === "update") {
+        } else if (action === Action.update) { 
             const { approval } = approveAfterData;
             approvedDiff = approval ? 1 : -1;
 
         }
 
-    
 
         //update paragraph
         db.runTransaction(async (transaction) => {
@@ -50,16 +49,14 @@ export async function updateApprovalResults(event: any) {
             if (documentApproval) {
                 const newApproved = documentApproval.approved + approvedDiff;
                 const totalVoters = documentApproval.totalVoters + approvingUserDiff;
-                
+
 
                 newApprovalResults = {
                     approved: newApproved,
                     totalVoters,
                     averageApproval: newApproved / totalVoters
                 };
-            } else {
-               
-            }
+            } 
 
 
             transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
@@ -108,16 +105,24 @@ export async function updateApprovalResults(event: any) {
     }
 }
 
-export function getAction(event: any): "create" | "delete" | "update" {
+
+export enum Action {
+    create = "create",
+    delete = "delete",
+    update = "update",
+}
+
+
+export function getAction(event: any): Action {
 
     if (event.data.after.data() && event.data.before.data()) {
-        return "update";
+        return Action.update;
     } else if (event.data.after.data() && event.data.before.data() === undefined) {
-        return "create";
+        return Action.create;
     } else if (event.data.after.data() === undefined && event.data.before.data()) {
-        return "delete";
+        return Action.delete;
     }
 
-    return "update";
+    return Action.update;
 }
 
