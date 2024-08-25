@@ -62,7 +62,7 @@ export const listenToAuth =
 						const _user = parseUserFromFirebase(user);
 
 						if(_user?.isAnonymous){
-							_user.displayName = localStorage.getItem("displayName") || `Anonymous ${Math.floor(Math.random() * 10000)}`;
+							_user.displayName = sessionStorage.getItem("displayName") || `Anonymous ${Math.floor(Math.random() * 10000)}`;
 						}
 
 						// console.info("User is signed in")
