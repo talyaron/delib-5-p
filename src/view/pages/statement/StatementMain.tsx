@@ -210,8 +210,8 @@ const StatementMain: FC = () => {
 	if (isAuthorized)
 		return (
 			<>
-				{passwordCheck ?
-					(
+				{/* {passwordCheck ?
+					( */}
 						<div className='page'>
 							{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 							{talker && (
@@ -253,12 +253,12 @@ const StatementMain: FC = () => {
 								/>
 							</MapProvider>
 						</div>
-					)
+					{/* )
 					:
 					<div className="passwordUiComponent">
 						<PasswordUi setPasswordCheck={setPasswordCheck} />
 					</div>
-				}
+				} */}
 			</>
 		);
 
