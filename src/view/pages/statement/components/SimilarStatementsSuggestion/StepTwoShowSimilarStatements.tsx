@@ -1,7 +1,8 @@
 import React from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import TwoColorButton from '@/view/components/buttons/TwoColorButton';
-import BackIcon from '@/assets/icons/chevronLeftIcon.svg?react';
+import SubmitStatementButton from './SubmitStatementButton';
+import similarEyeIcon from '@/assets/icons/similarEyeIcon.svg';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -21,7 +22,7 @@ export default function StepTwoShowSimilarStatements({
 	similarStatements,
 	setViewSimilarStatement
 }: SimilarStatementsSuggestionProps) {
-
+	const { dir } = useLanguage();
 	const handleViewSimilarStatement = (statement: {
 		title: string;
 		description: string;
@@ -36,17 +37,21 @@ export default function StepTwoShowSimilarStatements({
 
 	return (
 		<>
-			<h4 className='alertText'>Similar statements already exist. Click to view.</h4>
-			<div className='similarities__titleInput'>
-				<label htmlFor='titleInput'>Your statement title</label>
+			<h4 className='similarities__title'>Compose your solution</h4>
+			<div className='similarities__titleInput activeTitle'>
+				<label
+					htmlFor='titleInput'
+				>Your statement title</label>
 				<input
 					type='text'
 					id='titleInput'
+					className={newStatementInput.title ? 'active' : ''}
 					placeholder='Statement title. What people would see at first sight.'
 					value={newStatementInput.title}
 					disabled
 				/>
 			</div>
+			<h4 className='alertText'>Here are several results that were found in the following topic:</h4>
 			<section className='similarities__statementsBox'>
 				{similarStatements.map((statement, index) => (
 					<div
@@ -54,31 +59,23 @@ export default function StepTwoShowSimilarStatements({
 						className='similarities__statementsBox__similarStatement'
 						onClick={() => handleViewSimilarStatement(statement)}
 					>
-						<h4>{statement.title}</h4>
-						<p>{statement.description}</p>
+						<p className='similarities__statementsBox__statementTitle'>{statement.title}</p>
+						<p className='similarities__statementsBox__statementDescription'>{statement.description}</p>
+						<img className={`${dir === 'rtl' ? 'similarities__statementsBox__rtl__similarEyeIcon' : 'similarities__statementsBox__similarEyeIcon'}`} src={similarEyeIcon}  alt="Similar Eye Icon" />
+						<hr />
 					</div>
 				))}
 			</section>
 
-			<div className='twoButtonBox'>
-				<TwoColorButton
-					reverse={true}
-					icon={BackIcon}
-					text='back'
-					textBackgroundColor='#fff'
-					textColor='var(--dark-text)'
-					iconBackgroundColor='var(--dark-blue)'
-					onClick={() => setCurrentStep((prev) => prev - 1)}
-				/>
-				<TwoColorButton
+			<div className='similarities__buttonBox'>
+				<SubmitStatementButton
 					icon={SendIcon}
-					text='Continue with your statement'
-					textBackgroundColor='#fff'
-					textColor='var(--dark-text)'
-					iconBackgroundColor='var(--dark-blue)'
+					text='Continue compose solution'
+					textColor='var(--white)'
 					onClick={handleSubmit}
 				/>
 			</div>
 		</>
 	);
 }
+

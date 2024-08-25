@@ -1,6 +1,5 @@
-import TwoColorButton from '@/view/components/buttons/TwoColorButton';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import BackIcon from '@/assets/icons/chevronLeftIcon.svg?react';
+import SubmitStatementButton from './SubmitStatementButton';
 
 interface StepFourContinueWithOwnInput {
 	newStatementInput: { title: string; description: string };
@@ -11,7 +10,6 @@ interface StepFourContinueWithOwnInput {
 export default function StepFourContinueWithOwnInput({
 	newStatementInput,
 	onFormSubmit,
-	setCurrentStep
 }: Readonly<StepFourContinueWithOwnInput>) {
 	return (
 		<>
@@ -37,23 +35,11 @@ export default function StepFourContinueWithOwnInput({
 					}
 				/>
 			</div>
-
 			<div className='twoButtonBox'>
-				<TwoColorButton
-					reverse={true}
-					icon={BackIcon}
-					text='back'
-					textBackgroundColor='#fff'
-					textColor='var(--dark-text)'
-					iconBackgroundColor='var(--dark-blue)'
-					onClick={() => setCurrentStep(1)}
-				/>
-				<TwoColorButton
+				<SubmitStatementButton
 					icon={SendIcon}
 					text='Submit my Statement'
-					textBackgroundColor='#fff'
-					textColor='var(--dark-text)'
-					iconBackgroundColor='var(--dark-blue)'
+					textColor='var(--white)'
 					onClick={onFormSubmit}
 				/>
 			</div>

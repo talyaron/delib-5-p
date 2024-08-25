@@ -19,3 +19,9 @@
 		height: 100%;
 	}
 }
+
+.similaritiesWrapper {
+	@extend .wrapper;
+	border-radius: 20px;
+	background-color: var(--button-blue);
+}
