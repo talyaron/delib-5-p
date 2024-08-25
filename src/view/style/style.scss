@@ -8,6 +8,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap&family=Roboto");
 
+
 :root {
   // --- MAIN COLORS ---
   --mainBackground: #1f5895;
@@ -30,6 +31,7 @@
 
     //question
     --question: #62beeb;
+
 
   //evaluation
   --agree: #57c6b2;
@@ -68,14 +70,21 @@
   --purple: #b1a4fc;
   --light-purple: #b1a4fc;
   --body-dark: #57688f;
-  --button-blue: #739ee4;
+  --button-blue: #739EE4;
+
 
   //settings colors
   --settings-suggestions: #68b4d4;
   --settings-first-evaluation: #d4abf7;
   --settings-second-evaluation: #f38ec2;
-  --settings-voting: #fba669;
+  --settings-voting: #EA8222;
   --settings-finished: #e8749e;
+
+  //similarties colors
+  --similarities-textarea-border: #C3D0EA;
+  --similarities-titleInput: #818FAD;
+  --types-color: #668FD1;
+  --solution-Title: #3BB0B0;
 
   //texts
   --header: #3b4f7d;
@@ -86,9 +95,11 @@
   --textOnDark: white;
   --placeHolder: #93b6da;
 
-  //Card Ellips Menu/Card
+  --incorrectText: #ff3a46;
+  --correctText: #3bb0b0;
   --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
+
 }
 
 * {
@@ -154,6 +165,7 @@ b {
 .wrapper {
   flex: auto;
   width: 100%;
+  height: fit-content;
   max-width: 75ch;
   gap: 1rem;
   position: relative;

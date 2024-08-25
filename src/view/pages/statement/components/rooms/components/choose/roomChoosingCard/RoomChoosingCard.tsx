@@ -43,7 +43,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 			onClick={handleAskToJoinRoom}
 		>
 			<div className={styles.roomCard__title}>
-				<Text text={statement.statement} />
+				<Text statement={statement.statement} />
 			</div>
 			<div className={styles.roomCard__count}>
 				<span>{topicJoiners ? topicJoiners.length : 0}</span>/

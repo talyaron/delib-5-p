@@ -56,6 +56,7 @@ const StatementHeader: FC<Props> = ({
 	statementSubscription,
 	topParentStatement,
 	setShowAskPermission,
+	role
 }) => {
 	// Hooks
 	const { pathname } = useLocation();
@@ -74,13 +75,17 @@ const StatementHeader: FC<Props> = ({
 
 	// Redux Store
 	const user = store.getState().user.user;
+	const isAdmin = statement?.creatorId === user?.uid || role === Role.admin;
 
 	// Use States
 	const [editHeader, setEditHeader] = useState<boolean>(false);
 
 	// Variables
 	const titleFontSize = calculateFontSize(title, 16, 25);
-	const isAdmin = statement?.creatorId === user?.uid;
+
+
+	// Checks if enableNavigationalElements is allowed
+	const enableNavigationalElements = statement?.statementSettings?.enableNavigationalElements;
 
 	function handleShare() {
 		const baseUrl = window.location.origin;
@@ -120,6 +125,7 @@ const StatementHeader: FC<Props> = ({
 		color: headerColor.backgroundColor,
 		width: '24px',
 	};
+	console.log("role", role)
 
 	return (
 		<div
@@ -127,14 +133,17 @@ const StatementHeader: FC<Props> = ({
 			style={{ ...headerColor, direction: dir }}
 		>
 			<div className='page__header__wrapper'>
-				<div className='page__header__wrapper__actions'>
-					<Back
-						parentStatement={parentStatement}
-						statement={statement}
-						headerColor={headerColor}
-					/>
-					<HomeButton headerColor={headerColor} />
-				</div>
+			{!enableNavigationalElements || isAdmin && (
+					<div className='page__header__wrapper__actions'>
+						<Back
+							parentStatement={parentStatement}
+							statement={statement}
+							headerColor={headerColor}
+						/>
+						<HomeButton headerColor={headerColor} />
+					</div>
+				)}
+
 
 				{!editHeader ? (
 					<h1

@@ -150,6 +150,10 @@
     "single-step": "שלב אחד",
     "multiple-steps": "מספר שלבים",
     "There are no rooms yet": "אין עדיין חדרים",
+    "Enter your 4-digit passcode to unlock group access": "הזן את קוד הסיסמה בן 4 הספרות שלך כדי לבטל את נעילת הגישה לקבוצה",
+    "Bravo! Your passcode is correct. Welcome aboard!": "בראבו! קוד הגישה שלך נכון. ברוכים הבאים!",
+    "Something went wrong. Please try again!": "משהו השתבש. בבקשה נסה שוב!",
+    "Submit": "שלח",
     "Click on": "תלחץ על",
     "Add suggestion button": "הוסף פתרון",
     "to add your suggestion": "כדי להוסיף את הפתרון שלך",
@@ -158,5 +162,7 @@
     "to add your question": "כדי להוסיף את השאלה שלך",
     "Add question":"הוסף שאלה",
     "Sort questions": "מיין שאלות",
-    "Sort suggestions": "מיין פתרונות"
+    "Sort suggestions": "מיין פתרונות",
+    "Allow similarity search": "אפשר חיפוש דמיון",
+    "Allow removal of navigational elements": "אפשר הסרת רכיבי ניווט"
 }

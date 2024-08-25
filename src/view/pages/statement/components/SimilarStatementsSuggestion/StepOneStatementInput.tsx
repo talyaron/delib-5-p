@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import TwoColorButton from '@/view/components/buttons/TwoColorButton';
 import Loader from '@/view/components/loaders/Loader';
 import { findSimilarStatements } from '@/controllers/db/statements/getSimilarstatements';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { subStatementsSelector } from '../../StatementMain';
 import { RootState } from '@/model/store';
+import SubmitStatementButton from './SubmitStatementButton';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -80,7 +80,7 @@ export default function StepOneStatementInput({
 
 	return (
 		<>
-			<h4 className='similarities__title'>Compose your question</h4>
+			<h4 className='similarities__title'>Compose your solution</h4>
 			<div className='similarities__titleInput'>
 				<label htmlFor='titleInput'>Your statement title</label>
 				<input
@@ -108,7 +108,7 @@ export default function StepOneStatementInput({
 				<>
 					<div className='similarities__titleInput'>
 						<label htmlFor='descriptionInput'>Your statement description</label>
-						<textarea
+						<textarea className='similarities__titleInput'
 							rows={5}
 							id='descriptionInput'
 							placeholder='Formulate here the statement description. Add as much detail as you can to help others understand your statement.'
@@ -121,14 +121,11 @@ export default function StepOneStatementInput({
 							}
 						/>
 					</div>
-
 					<div className='similarities__buttonBox'>
-						<TwoColorButton
+						<SubmitStatementButton
 							icon={SendIcon}
 							text='Submit Statement'
-							textBackgroundColor='#fff'
-							textColor='var(--dark-text)'
-							iconBackgroundColor='var(--dark-blue)'
+							textColor='var(--white)'
 							onClick={handleSubmit}
 						/>
 					</div>
@@ -141,3 +138,4 @@ export default function StepOneStatementInput({
 function removeNonAlphabeticalCharacters(input: string) {
 	return input.replace(/[^a-zA-Z ]/g, '');
 }
+

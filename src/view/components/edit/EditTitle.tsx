@@ -11,7 +11,6 @@ import Save from "@/assets/icons/saveIcon.svg?react";
 import styles from "./EditTitle.module.scss";
 
 // Custom components
-import { getDescription, getTitle } from "@/controllers/general/helpers";
 import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Text from "../text/Text";
@@ -29,10 +28,10 @@ const EditTitle: FC<Props> = ({
 	isEdit,
 	setEdit,
 	isTextArea,
-	onlyTitle,
+
 }) => {
-	const [text, setText] = useState(statement?.statement || "");
-	const [title, setTitle] = useState(getTitle(statement) || "");
+	const [description, setText] = useState(statement?.description || "");
+	const [title, setTitle] = useState(statement?.statement || "");
 	const textareaRef = useAutoFocus(isEdit);
 
 	if (!statement) return null;
@@ -50,17 +49,11 @@ const EditTitle: FC<Props> = ({
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return; // Do not save if the text is empty
-
+			if (!title.trim()) return; // Do not save if the text is empty
 			if (!statement) throw new Error("Statement is undefined");
 
-			const description = getDescription(statement);
 
-			const updatedText = isTextArea
-				? text.trim()
-				: title + "\n" + description.trim();
-
-			updateStatementText(statement, updatedText);
+			updateStatementText(statement, title.trim(), description.trim());
 			setEdit(false);
 		} catch (error) {
 			console.error(error);
@@ -70,7 +63,7 @@ const EditTitle: FC<Props> = ({
 	if (!isEdit)
 		return (
 			<div style={{ direction: direction, textAlign: align }}>
-				<Text text={statement.statement} onlyTitle={onlyTitle} />
+				<Text statement={statement.statement} description={statement.description} />
 			</div>
 		);
 
@@ -82,7 +75,7 @@ const EditTitle: FC<Props> = ({
 						ref={textareaRef}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.textarea}
-						value={text}
+						defaultValue={`${title}\n${description}`}
 						onChange={(e) => handleChange(e, setText)}
 						autoFocus={true}
 						placeholder="Add text"
