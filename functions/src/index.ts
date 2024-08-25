@@ -141,8 +141,7 @@ exports.updateDocumentSignatures = onDocumentWritten(`/${Collections.signatures}
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
 
-
-console.log('isProduction', isProduction);
+console.info('isProduction', isProduction);
 const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech"] }
 
 

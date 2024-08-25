@@ -90,7 +90,7 @@ function getUpdateDeleteAgree(statementId: string, agree: AgreeDisagreeEnum): Ag
 
 function getUpdateUpdateAgree(statementId: string, agreeAfter: AgreeDisagreeEnum, agreeBefore: AgreeDisagreeEnum): AgreeDocument {
     try {
-        console.log("update agree", statementId, agreeBefore, agreeAfter);
+    
         const { Agree, Disagree, NoOpinion } = AgreeDisagreeEnum;
 
 

@@ -7,7 +7,7 @@
     cursor: pointer;
 
     &:not(.checked) {
-        color: #6e8aa6;
+        color: var(--icon-disabled-filled);
     }
 
     svg {
@@ -17,6 +17,6 @@
 
     input[type="radio"] {
         display: none;
-        background: var(--light-blue);
+        background: var(--icon-blue);
     }
 }

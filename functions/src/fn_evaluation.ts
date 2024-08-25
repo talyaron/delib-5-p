@@ -67,8 +67,7 @@ export async function newEvaluation(event: any) {
         if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation && !evaluator?.firstEvaluation) update.numberOfFirstEvaluators = FieldValue.increment(1);
         //@ts-ignore
         if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation && !evaluator?.secondEvaluation) update.numberOfSecondEvaluators = FieldValue.increment(1);
-        console.log(evaluator)
-        console.log(update)
+    
         return update;
     }
 
@@ -93,14 +92,14 @@ export async function newEvaluation(event: any) {
             const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
 
             if (!evaluatorData) {
-                console.log("evaluator does not exist")
+               
                 await evaluatorRef.set({ statementId: statement.parentId, evaluated: true, evaluatorId: evaluator.uid });
 
                 const update = getUpdatedFields(statement, true);
                 await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
             } else {
 
-                console.log("evaluator exists")
+              
                 const update = getUpdatedFields(statement, false, evaluatorData);
                 await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
             }

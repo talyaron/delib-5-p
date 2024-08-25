@@ -29,7 +29,7 @@
     }
 
     &__radio {
-        color: var(--dark-text);
+        color: var(--text-headline);
         display: flex;
         padding: 20px;
         justify-content: space-between;
@@ -54,7 +54,7 @@
             }
 
             &__inner {
-                background-color: white;
+                background-color: var(--icon-white);
                 position: absolute;
                 border-radius: 50%;
                 height: calc($button-size/2);
