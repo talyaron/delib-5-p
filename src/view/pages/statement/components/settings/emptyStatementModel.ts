@@ -1,4 +1,4 @@
-import { ResultsBy, Screen, Statement } from "delib-npm";
+import { ResultsBy, Screen, Statement } from 'delib-npm';
 
 export const defaultStatementSettings = {
 	enhancedEvaluation: true,
@@ -8,6 +8,7 @@ export const defaultStatementSettings = {
 	subScreens: undefined,
 	inVotingGetOnlyResults: false,
 	enableSimilaritiesSearch: false,
+	enableNavigationalElements: false,
 } as const;
 
 export const defaultResultsSettings = {
@@ -22,14 +23,14 @@ export const defaultStatementSubScreens: Screen[] = [
 ] as const;
 
 export const defaultEmptyStatement: Statement = {
-	topParentId: "",
-	statement: "",
-	statementId: "",
-	parentId: "",
-	creatorId: "",
+	topParentId: '',
+	statement: '',
+	statementId: '',
+	parentId: '',
+	creatorId: '',
 	creator: {
-		displayName: "",
-		uid: "",
+		displayName: '',
+		uid: '',
 		defaultLanguage: undefined,
 		email: undefined,
 		photoURL: undefined,
@@ -42,7 +43,6 @@ export const defaultEmptyStatement: Statement = {
 	lastUpdate: 0,
 	createdAt: 0,
 	consensus: 0,
-
 	// default values
 	subScreens: defaultStatementSubScreens,
 	resultsSettings: defaultResultsSettings,

@@ -1,119 +1,283 @@
 .similarities {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	max-width: 70ch;
-	overflow-y: auto;
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-	padding: 1rem;
-	background-color: #f2f6ff;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 70ch;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+    background-color: #f2f6ff;
 
-	&__header {
-		display: flex;
-		flex-direction: column;
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-top: 2rem;
 
-		&__top {
-			display: flex;
-			justify-content: space-between;
-			gap: 1rem;
+        &__top {
+            display: flex;
+            justify-content: space-between;
+            justify-content: center;
 
-			&__closeButton {
-				width: 2rem;
-				height: 2rem;
-			}
-		}
+            &__stepOne {
+                position: relative;
+                bottom: 3rem;
+                right: 1rem;
 
-		&__types {
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			width: 80%;
-			margin: 0 auto;
-			.type {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
+                &__closeButtonStepOne {
+                    position: sticky;
+                    bottom: 95%;
+                    left: 84%;
+                }
 
-				.marked {
-					font-size: 1.2rem;
-					font-weight: 700;
-				}
+                &__rtl {
+                    position: relative;
+                    display: flex;
+                    justify-content: flex-end;
+                    right: 2.5rem;
+                    bottom: 3rem;
+                    align-items: center;
+                }
+            }
 
-				.unmarked {
-					font-size: 1.2rem;
-					color: #00000050;
-				}
-			}
-		}
-	}
+            &__stepTwo {
+                position: relative;
+                display: flex;
+                bottom: 1rem;
+                margin-bottom: 2.8rem;
+                justify-content: center;
+                align-items: flex-end;
 
-	&__title {
-		color: var(--h2Color);
-		font-size: 1rem;
-	}
+                .types {
+                    margin-top: -5rem;
+                }
 
-	&__titleInput {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+                &__closeButtonStepTwo {
+                    position: sticky;
+                    bottom: 98%;
+                    left: 95%;
+                }
 
-		textarea::placeholder {
-			font-size: 0.8rem;
-			line-height: 1.2rem;
-		}
+                &__rtl {
+                    position: relative;
+                    display: flex;
+                    left: 2rem;
+                    bottom: 2rem;
+                    justify-content: center;
+                    align-items: flex-start;
+                }
+            }
 
-		input,
-		textarea {
-			padding: 1rem;
-			font-size: 1rem;
-		}
-		input::placeholder {
-			font-size: 0.8rem;
-		}
-	}
+            &__stepThree {
+                position: relative;
+                left: 2.5rem;
+                display: flex;
+                bottom: 3rem;
+                margin-bottom: -4rem;
+                justify-content: flex-end;
+                align-items: flex-start;
 
-	&__statementsBox {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		overflow-y: auto;
-		flex: 1;
+                &__rtl {
+                    position: relative;
+                    left: 1rem;
+                    bottom: 3rem;
 
-		&__similarStatement {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-			padding: 1rem;
-		}
+                    &__arrowButtonStepThree {
+                        position: sticky;
+                        right: 100%;
+                        bottom: 37rem;
+                        color: var(--button-blue);
+                    }
+                }
 
-		&__similarStatement:hover {
-			background-color: #e9f0ff;
-			cursor: pointer;
-		}
-	}
+                &__arrowButtonStepThree {
+                    position: relative;
+                    right: 103%;
+                    top: 1rem;
+                    color: var(--button-blue);
+                }
+            }
+        }
 
-	&__buttonBox {
-		display: flex;
-		justify-content: center;
-		width: fit-content;
-		margin: 0 auto;
-		border-radius: 5px;
-		padding: none;
-		width: 100%;
-		margin-top: auto;
-	}
+        &__types {
+            display: flex;
+            justify-content: center;
+            width: 90%;
 
-	.twoButtonBox {
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
-		margin-top: auto;
-	}
+            .type {
+                display: flex;
+                gap: 0.5rem;
+                margin-top: -2rem;
 
-	.alertText {
-		color: var(--settings-voting);
-		text-align: center;
-	}
+                .marked {
+                    font-size: 1.1rem;
+                    font-weight: 500;
+                    color: var(--solution-Title);
+                }
+
+                .unmarked {
+                    font-size: 1.1rem;
+                    color: var(--types-color);
+                    opacity: 0.5;
+                }
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+    }
+
+    &__title {
+        color: var(--h2Color);
+        font-size: 1rem;
+        margin-top: -0.5rem;
+    }
+
+    label {
+        position: absolute;
+        left: 2rem;
+        margin-top: -0.6rem;
+        background: #f2f6ff;
+        padding: 0 0.60rem;
+        font-size: 1rem;
+        display: inline-block;
+        z-index: 1;
+    }
+
+    &__titleInput {
+        display: flex;
+        flex-direction: column;
+        color: var(--similarities-titleInput);
+        gap: 1rem;
+        margin-bottom: -0.5rem;
+
+        &.activeTitle {
+            color: var(--settings-voting);
+        }
+
+        textarea::placeholder {
+            font-size: 0.8rem;
+            line-height: 1.2rem;
+
+        }
+
+        input,
+        textarea {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid var(--similarities-textarea-border);
+            background: #f2f6ff;
+            position: relative;
+            font-style: italic;
+
+            &::placeholder {
+                opacity: 0.6;
+            }
+
+            &.active {
+                border: 1px solid var(--settings-voting);
+                border-radius: 0.3rem;
+                font-style: normal;
+                color: var(-body-dark);
+                letter-spacing: 0.01rem;
+            }
+
+        }
+
+        input::placeholder {
+            font-size: 0.8rem;
+        }
+
+    }
+
+
+    &__statementsBox {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        flex: 1;
+
+        &__statementTitle {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.01rem;
+        }
+
+        &__statementDescription {
+            font-size: 1rem;
+            color: var(--body-dark);
+            letter-spacing: 0.01rem;
+        }
+
+        &__similarStatement {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0.5rem;
+
+            hr {
+                height: 1px;
+                opacity: 0.1;
+                border: 0.01px var(--button-blue) solid;
+            }
+
+        }
+
+        &__similarStatement:hover {
+            cursor: pointer;
+        }
+
+        &__rtl {
+            &__similarEyeIcon {
+                width: 2.2rem;
+                position: relative;
+                right: 90%;
+            }
+        }
+
+        &__similarEyeIcon {
+            width: 2.2rem;
+            position: relative;
+            left: 90%;
+        }
+
+    }
+
+    &__buttonBox {
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        margin: 0 auto;
+        padding: none;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .twoButtonBox {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        margin-left: 1rem;
+        padding-inline: 1rem;
+        width: 100%;
+        margin-top: auto;
+
+        &__backButton {
+            border: 1px var(--button-blue) solid;
+            color: var(--button-blue);
+            width: 4.2rem;
+            border-radius: 1.5rem;
+        }
+    }
+
+    .alertText {
+        color: var(--settings-voting);
+        font-size: 1rem;
+        margin-top: -1rem;
+        font-weight: 500;
+        line-height: 150%;
+    }
 }

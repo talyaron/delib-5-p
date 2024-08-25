@@ -1,7 +1,6 @@
 import React from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import BackIcon from '@/assets/icons/chevronLeftIcon.svg?react';
-import TwoColorButton from '@/view/components/buttons/TwoColorButton';
+import SubmitStatementButton from './SubmitStatementButton';
 
 interface StepThreeViewSimilarStatementProps {
 	viewSimilarStatement: { title: string; description: string };
@@ -23,26 +22,17 @@ export default function StepThreeViewSimilarStatement({
 			<h4 className='alertText'>
 				One of the relevant statements from the given topic:
 			</h4>
-
-			<h4>{viewSimilarStatement.title}</h4>
-			<p>{viewSimilarStatement.description}</p>
-
+			<p className='similarities__statementsBox__statementTitle'>{viewSimilarStatement.title}</p>
+			<p className='similarities__statementsBox__statementDescription'>{viewSimilarStatement.description}</p>
 			<div className='twoButtonBox'>
-				<TwoColorButton
-					reverse={true}
-					icon={BackIcon}
-					text='back'
-					textBackgroundColor='#fff'
-					textColor='var(--dark-text)'
-					iconBackgroundColor='var(--dark-blue)'
+				<button
+					className='twoButtonBox__backButton'
 					onClick={() => setCurrentStep((prev) => prev - 1)}
-				/>
-				<TwoColorButton
+				>Back</button>
+				<SubmitStatementButton
 					icon={SendIcon}
-					text='Go vote on this statement'
-					textBackgroundColor='#fff'
-					textColor='var(--dark-text)'
-					iconBackgroundColor='var(--dark-blue)'
+					text='Choose this solution'
+					textColor='var(--white)'
 					onClick={handleSimilarStatementChosen}
 				/>
 			</div>
