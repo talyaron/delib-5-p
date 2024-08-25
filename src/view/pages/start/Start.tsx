@@ -14,7 +14,7 @@ import { userSelector } from "@/model/users/userSlice";
 import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
 import MoreRight from "../../../assets/icons/moreRight.svg?react";
 import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
-import StratPageImage from '../assets/StratPageImage.png'
+import StartPageImage from '@/assets/images/StartPageImage.png';
 
 // Constants
 import { LANGUAGES } from "@/constants/Languages";
@@ -100,7 +100,7 @@ const Start = () => {
 
 			<GoogleLoginButton />
 
-			<img src={StratPageImage} alt="" className={styles.StratPageImage} />
+			<img src={StartPageImage} alt="" className={styles.StratPageImage} />
 			<a href="http://delib.org" target="_blank" className={styles.ddi}>
 				<footer >
 					{t("From the Institute for Deliberative Democracy")}
