@@ -20,7 +20,7 @@
     "terms of use": "شروط الاستخدام",
     "Dont agree": "لا أوافق",
     "Blocked": "محظور",
-    "Couldn't find the invitation. Please check the PIN and try again." : "لم يتم العثور على الدعوة. يرجى التحقق من رقم الدخول والمحاولة مرة أخرى.",
+    "Couldn't find the invitation. Please check the PIN and try again.": "لم يتم العثور على الدعوة. يرجى التحقق من رقم الدخول والمحاولة مرة أخرى.",
     "Cancel": "إلغاء",
     "Cancellation of division": "إلغاء القسمة",
     "Chat": "دردشة",
@@ -140,10 +140,12 @@
     "Click on": "انقر فوق",
     "Add suggestion button": "إضافة زر الاقتراح",
     "to add your suggestion": "لإضافة اقتراحك",
-    "Add suggestion":"إضافة اقتراح",
+    "Add suggestion": "إضافة اقتراح",
     "Add question button": "إضافة زر السؤال",
     "to add your question": "لإضافة سؤالك",
-    "Add question":"أضف سؤالا",
+    "Add question": "أضف سؤالا",
     "Sort questions": "فرز الأسئلة",
-    "Sort suggestions": "فرز الاقتراحات"
+    "Sort suggestions": "فرز الاقتراحات",
+    "Allow similarity search": "السماح بالبحث عن التشابه",
+    "Allow removal of navigational elements": "السماح بإزالة عناصر التنقل"
 }

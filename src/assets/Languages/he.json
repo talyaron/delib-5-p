@@ -162,5 +162,7 @@
     "to add your question": "כדי להוסיף את השאלה שלך",
     "Add question":"הוסף שאלה",
     "Sort questions": "מיין שאלות",
-    "Sort suggestions": "מיין פתרונות"
+    "Sort suggestions": "מיין פתרונות",
+    "Allow similarity search": "אפשר חיפוש דמיון",
+    "Allow removal of navigational elements": "אפשר הסרת רכיבי ניווט"
 }

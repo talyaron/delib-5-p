@@ -3,12 +3,13 @@ import FullScreenModal from '@/view/components/fullScreenModal/FullScreenModal';
 
 import './similarStatementsSuggestion.scss';
 
-import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
+// import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
 import LightBulbPlusIcon from '@/assets/icons/lightBulbPlus.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
 import illustration from '@/assets/images/similarities-Illustration.png';
-import illustration02 from '@/assets/images/view-similar-statement.png';
+import illustration01 from '@/assets/images/view-similar-statement.png';
+import illustration02 from '@/assets/images/view-similar-statement-step2.png';
 import StepOneStatementInput from './StepOneStatementInput';
 import StepTwoShowSimilarStatements from './StepTwoShowSimilarStatements';
 import StepThreeViewSimilarStatement from './StepThreeViewSimilarStatement';
@@ -16,6 +17,7 @@ import StepFourContinueWithOwnInput from './StepFourContinueWithOwnInput';
 import { createStatementFromModal } from '../settings/statementSettingsCont';
 import { Statement } from 'delib-npm';
 import Loader from '@/view/components/loaders/Loader';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SimilarStatementsSuggestionProps {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,6 +46,7 @@ export default function SimilarStatementsSuggestion({
 	toggleAskNotifications,
 	getSubStatements,
 }: Readonly<SimilarStatementsSuggestionProps>) {
+	const { dir } = useLanguage();
 	const [currentStep, setCurrentStep] = useState(0);
 	const [newStatementInput, setNewStatementInput] =
 		useState(initDisplayStatement);
@@ -114,36 +117,51 @@ export default function SimilarStatementsSuggestion({
 			) : (
 				<main className='similarities'>
 					<header className='similarities__header'>
-						{currentStep === 2 ? (
-							<div className='similarities__header__top'>
+						{currentStep === 1 ? (
+							<div className={`${dir === 'rtl' ? 'similarities__header__top__stepTwo__rtl' : 'similarities__header__top__stepTwo'}`}>
 								<button
-									className='similarities__header__top__closeButton'
+									className="similarities__header__top__stepTwo__closeButtonStepTwo"
 									onClick={() => setShowModal(false)}
 								>
-									<ArrowLeftIcon />
+									<CloseIcon />
 								</button>
-								<img src={illustration02} alt='Similarities illustration' />
+								<img src={illustration01}
+									alt='Similarities illustration'
+									style={{ width: '40%' }} />
 							</div>
-						) : (
-							<div className='similarities__header__top'>
+						) : (currentStep === 0 || currentStep === 3 ? (
+							<div
+								className={`${dir === 'rtl' ? 'similarities__header__top__stepOne__rtl' : 'similarities__header__top__stepOne'}`}
+							>
 								<img
 									src={illustration}
 									alt='Similarities illustration'
-									style={{ width: '40%' }}
+									style={{ width: '89%' }}
 								/>
 								<button
-									className='similarities__header__top__closeButton'
+									className='similarities__header__top__stepOne__closeButtonStepOne'
 									onClick={() => setShowModal(false)}
 								>
 									<CloseIcon />
 								</button>
 							</div>
-						)}
-						<div className='similarities__header__types'>
-							<div className='type'>
-								<AddQuestionIcon />
-								<h2 className={isQuestion ? 'marked' : 'unmarked'}>Question</h2>
+						) : (currentStep === 2 ? (
+							<div className={`${dir === 'rtl' ? 'similarities__header__top__stepThree__rtl' : 'similarities__header__top__stepThree'}`}>
+								<img
+									src={illustration02}
+									alt='Another illustration'
+									style={{ width: '76%' }}
+								/>
+								<button
+									className={`${dir === 'rtl' ? 'similarities__header__top__stepThree__rtl__arrowButtonStepThree' : 'similarities__header__top__stepThree__arrowButtonStepThree'}`}
+									onClick={() => setCurrentStep(currentStep - 1)}
+								>
+									<ArrowLeftIcon />
+								</button>
 							</div>
+						) : null))
+					}
+						<div className={`similarities__header__types  ${currentStep === 2 ? 'hidden' : ''}`}>
 							<div className='type'>
 								<LightBulbPlusIcon />
 								<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>
