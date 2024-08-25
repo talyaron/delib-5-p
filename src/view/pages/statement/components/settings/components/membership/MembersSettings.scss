@@ -10,14 +10,15 @@
         justify-content: center;
         align-items: center;
         gap: 1.5rem;
-        color: #3b4f7d;
+        color: var(--text-headline);
         background: none;
         font-size: 1rem;
+        line-height: 150%;
         margin-bottom: 2rem;
         font-family: "Roboto", "Open Sans", sans-serif;
 
         svg {
-            color: #5899e0;
+            color: var(--icon-blue);
         }
     }
 

@@ -14,10 +14,10 @@ button {
 
 .btn {
   padding: 0.4rem 1rem 0.4rem 1rem;
-  color: var(--button-blue);
+  color: var(--btn-primary);
   cursor: pointer;
   border-radius: 20px;
-  border: 1px solid var(--button-blue);
+  border: 1px solid var(--btn-primary);
   text-align: center;
   box-shadow:
     0px 3px 6px 0px rgba(115, 138, 191, 0.1),
@@ -27,7 +27,7 @@ button {
     0px 72px 20px 0px rgba(115, 138, 191, 0);
 
   &--icon {
-    background-color: var(--button-blue);
+    background-color: var(--icon-blue);
     color: var(--white);
   }
 
@@ -119,7 +119,7 @@ button {
 }
 
 .fav {
-  background: var(--halfPrimary);
+  background: var(--btn-fab);
   width: 4rem;
   height: 4rem;
   display: flex;

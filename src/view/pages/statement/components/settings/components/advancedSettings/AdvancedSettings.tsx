@@ -104,7 +104,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 					);
 				}}
 			/>
-						<Checkbox
+			<Checkbox
 				label='Allow removal of navigational elements'
 				isChecked={enableNavigationalElements}
 				toggleSelection={() => {
