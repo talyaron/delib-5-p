@@ -6,7 +6,7 @@ import {
 } from './fn_evaluation';
 import { updateResultsSettings } from './fn_results';
 import { countRoomJoiners } from './fn_rooms';
-import { addSignature, removeSignature, updateDocumentSignatures } from './fn_signatures';
+import { updateDocumentSignatures } from './fn_signatures';
 import {
 	updateParentWithNewMessageCB,
 
@@ -101,15 +101,8 @@ exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);
 
 // exports.removeVote = onDocumentDeleted('/votes/{voteId}', removeVote);
 
-//signatures (part of delib-signatures)
-exports.changeSignature = onDocumentCreated(
-	'/statementsSignatures/{signatureId}',
-	addSignature
-);
-exports.deleteSignature = onDocumentDeleted(
-	'/statementsSignatures/{signatureId}',
-	removeSignature
-);
+
+
 
 //rooms
 exports.countRoomJoiners = onDocumentWritten(

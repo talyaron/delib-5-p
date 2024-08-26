@@ -1,7 +1,7 @@
 import { AgreeDisagree, AgreeDisagreeEnum, AgreeDocument, Collections } from "delib-npm";
 import { logger } from "firebase-functions/v1";
 import { db } from ".";
-import { getAction } from "./fn_approval";
+import { Action, getAction } from "./fn_approval";
 
 
 export async function updateAgrees(event: any) {
@@ -14,17 +14,17 @@ export async function updateAgrees(event: any) {
         const action = getAction(event);
         let results: AgreeDocument = { agree: 0, disagree: 0 };
 
-        if (action === "create") {
+        if (action === Action.create) {
             if (!agreeAfterData) throw new Error("No agreement data found");
             const { agree } = agreeAfterData;
 
             results = getUpdateCreateAgree(combinedAgreement.statementId, agree);
-        } else if (action === "delete") {
+        } else if (action === Action.delete) {
             if (!agreeBeforeData) throw new Error("No agreement data found");
             const { agree } = agreeBeforeData;
 
             results = getUpdateDeleteAgree(combinedAgreement.statementId, agree);
-        } else if (action === "update") {
+        } else if (action === Action.update) {
             if (!agreeAfterData) throw new Error("No agreement data found");
             const { agree: agreeAfter } = agreeAfterData;
             const { agree: agreeBefore } = agreeBeforeData || { agree: undefined };
@@ -44,7 +44,7 @@ export async function updateAgrees(event: any) {
             const { agree, disagree } = statement.data()?.documentAgree || { agree: 0, disagree: 0 } as AgreeDocument;
             const { agree: updateAgree, disagree: updateDisagree } = results;
 
-            
+
 
             const newAgree = agree + updateAgree;
             const newDisagree = disagree + updateDisagree;
@@ -52,7 +52,7 @@ export async function updateAgrees(event: any) {
 
             const updateAgrees: AgreeDocument = {
                 agree: newAgree,
-                disagree:newDisagree,
+                disagree: newDisagree,
                 avgAgree: totalAgree !== 0 ? (newAgree - newDisagree) / totalAgree : 0,
             }
 
@@ -90,7 +90,7 @@ function getUpdateDeleteAgree(statementId: string, agree: AgreeDisagreeEnum): Ag
 
 function getUpdateUpdateAgree(statementId: string, agreeAfter: AgreeDisagreeEnum, agreeBefore: AgreeDisagreeEnum): AgreeDocument {
     try {
-    
+
         const { Agree, Disagree, NoOpinion } = AgreeDisagreeEnum;
 
 

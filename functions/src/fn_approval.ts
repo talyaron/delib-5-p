@@ -5,101 +5,124 @@ import { db } from ".";
 
 export async function updateApprovalResults(event: any) {
     try {
-        const action = getAction(event);
+        const action: Action = getAction(event);
         const eventData = event.data.after.data() as Approval || event.data.before.data() as Approval;
         const { statementId, documentId, userId } = eventData;
         const approveAfterData = event.data.after.data() as Approval;
         const approveBeforeData = event.data.before.data() as Approval;
 
-        
+
 
         let approvedDiff = 0;
         let approvingUserDiff = 0;
 
-        if (action === "create") {
-            //  await newApproval(eventData);
+        if (action === Action.create) {
+           
             const { approval } = approveAfterData;
             approvingUserDiff = 1;
             approvedDiff = approval ? 1 : 0;
 
-        } else if (action === "delete") {
+        } else if (action === Action.delete) {
             const { approval } = approveBeforeData;
             approvingUserDiff = -1;
             approvedDiff = approval ? -1 : 0;
 
-        } else if (action === "update") {
-            const { approval } = approveAfterData;
-            approvedDiff = approval ? 1 : -1;
+        } else if (action === Action.update) {
+            const { approval: approvalAfter } = approveAfterData;
+            const { approval: approvalBefore } = approveBeforeData;
+            approvedDiff = (() => {
+                if (approvalAfter && !approvalBefore) {
+                    return 1;
+                } else if (approvalBefore && !approvalAfter) {
+                    return -1;
+                }
+                return 0;
+
+            })()
 
         }
 
-    
 
         //update paragraph
         db.runTransaction(async (transaction) => {
-            const statementRef = db.collection(Collections.statements).doc(statementId);
-            const statementDB = await transaction.get(statementRef);
-            const { documentApproval } = statementDB.data() as Statement;
+            try {
+                const statementRef = db.collection(Collections.statements).doc(statementId);
+                const statementDB = await transaction.get(statementRef);
+                const { documentApproval } = statementDB.data() as Statement;
 
-            let newApprovalResults: DocumentApproval = {
-                approved: approvedDiff,
-                totalVoters: approvingUserDiff,
-                averageApproval: approvedDiff
-            };
 
-            if (documentApproval) {
+
+                if (!documentApproval) {
+                    const newApprovalResults = {
+                        approved: approvedDiff,
+                        totalVoters: approvingUserDiff,
+                        averageApproval: approvingUserDiff !== 0 ? approvedDiff / approvingUserDiff : 0
+                    };
+
+                    transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
+                    return;
+                }
+
                 const newApproved = documentApproval.approved + approvedDiff;
-                const totalVoters = documentApproval.totalVoters + approvingUserDiff;
+                const totalVoters = documentApproval.totalVoters + approvingUserDiff;               
                 
 
-                newApprovalResults = {
+                const newApprovalResults = {
                     approved: newApproved,
                     totalVoters,
                     averageApproval: newApproved / totalVoters
                 };
-            } else {
-               
+
+                transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
+                return;
+            } catch (error) {
+                logger.error(error);
+                return;
             }
 
 
-            transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
         });
 
         //update document
         db.runTransaction(async (transaction) => {
-            const statementRef = db.collection(Collections.statements).doc(documentId);
-            const statementDB = await transaction.get(statementRef);
-            const { documentApproval } = statementDB.data() as Statement;
+            try {
+                const statementRef = db.collection(Collections.statements).doc(documentId);
+                const statementDB = await transaction.get(statementRef);
+                const { documentApproval } = statementDB.data() as Statement;
 
-            const userApprovalsDB = await db.collection(Collections.approval).where("documentId", "==", documentId).where("userId", "==", userId).get();
-            const numberOfUserApprovals = userApprovalsDB.size;
-            const addUser = (numberOfUserApprovals === 1 && action === "create") ? 1 : 0;
+                const userApprovalsDB = await db.collection(Collections.approval).where("documentId", "==", documentId).where("userId", "==", userId).get();
+                const numberOfUserApprovals = userApprovalsDB.size;
+                const addUser = (numberOfUserApprovals === 1 && action === "create") ? 1 : 0;
 
-            /**
-             * Represents the results of a document approval.
-             */
-            let newApprovalResults: DocumentApproval = {
-                approved: approvedDiff,
-                totalVoters: addUser,
-                averageApproval: approvedDiff
-            };
-
-
-
-            if (documentApproval) {
-
-                const newApproved = documentApproval.approved + approvedDiff;
-                const newTotalVoters = documentApproval.totalVoters + addUser;
-
-
-                newApprovalResults = {
-                    approved: newApproved,
-                    totalVoters: newTotalVoters,
-                    averageApproval: newApproved / newTotalVoters
+                /**
+                 * Represents the results of a document approval.
+                 */
+                let newApprovalResults: DocumentApproval = {
+                    approved: approvedDiff,
+                    totalVoters: addUser,
+                    averageApproval: approvedDiff
                 };
-            }
 
-            transaction.update(statementRef, { documentApproval: newApprovalResults });
+
+
+                if (documentApproval) {
+
+                    const newApproved = documentApproval.approved + approvedDiff;
+                    const newTotalVoters = documentApproval.totalVoters + addUser;
+
+
+                    newApprovalResults = {
+                        approved: newApproved,
+                        totalVoters: newTotalVoters,
+                        averageApproval: newApproved / newTotalVoters
+                    };
+                }
+
+                transaction.update(statementRef, { documentApproval: newApprovalResults });
+                return;
+            } catch (error) {
+                logger.error(error);
+            }
         });
 
 
@@ -108,16 +131,24 @@ export async function updateApprovalResults(event: any) {
     }
 }
 
-export function getAction(event: any): "create" | "delete" | "update" {
+
+export enum Action {
+    create = "create",
+    delete = "delete",
+    update = "update",
+}
+
+
+export function getAction(event: any): Action {
 
     if (event.data.after.data() && event.data.before.data()) {
-        return "update";
+        return Action.update;
     } else if (event.data.after.data() && event.data.before.data() === undefined) {
-        return "create";
+        return Action.create;
     } else if (event.data.after.data() === undefined && event.data.before.data()) {
-        return "delete";
+        return Action.delete;
     }
 
-    return "update";
+    return Action.update;
 }
 
