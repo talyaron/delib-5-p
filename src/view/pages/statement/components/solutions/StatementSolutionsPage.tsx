@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 // Third party imports
 import {
   QuestionStage,
   QuestionType,
+  Screen,
   Statement,
   StatementType,
   User,
@@ -52,6 +53,10 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const navigate = useNavigate();
 
     const { t } = useLanguage();
+    const prevSortRef = useRef<Screen>(sort as Screen);
+    const randomSortedRef = useRef<Map<string, Statement>>(new Map());
+    const isRandomSort =
+      sort === Screen.OPTIONS_RANDOM || sort === Screen.QUESTIONS_RANDOM;
 
     const isMuliStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
@@ -70,13 +75,24 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
       [...subStatements]
     );
-    console.log(sort);
+
     useEffect(() => {
       console.log("sort", sort);
-      const _sortedSubStatements = sortSubStatements(
+
+      const isRandomAgain = prevSortRef.current === sort && isRandomSort?true: false;
+     
+
+      prevSortRef.current = sort as Screen;
+
+      let { subStatements: _sortedSubStatements, subStMap } = sortSubStatements(
         subStatements,
-        sort
-      ).filter((subStatement) => {
+        sort,
+        isRandomAgain,
+        randomSortedRef.current
+      );
+      randomSortedRef.current = subStMap;
+
+      _sortedSubStatements = _sortedSubStatements.filter((subStatement) => {
         //if questions is true, only show questions
         if (questions) {
           return subStatement.statementType === StatementType.question;
