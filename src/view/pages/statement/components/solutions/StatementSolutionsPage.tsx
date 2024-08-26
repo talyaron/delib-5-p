@@ -2,13 +2,13 @@ import { FC, useEffect, useRef, useState } from "react";
 
 // Third party imports
 import {
-  QuestionStage,
-  QuestionType,
-  Screen,
-  Statement,
-  StatementType,
-  User,
-  isOptionFn,
+	QuestionStage,
+	QuestionType,
+	Screen,
+	Statement,
+	StatementType,
+	User,
+	isOptionFn,
 } from "delib-npm";
 import { useParams, useNavigate } from "react-router";
 
@@ -41,266 +41,265 @@ interface StatementEvaluationPageProps {
 }
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
-  statement,
-  subStatements,
-  handleShowTalker,
-  questions = false,
-  toggleAskNotifications,
+	statement,
+	subStatements,
+	handleShowTalker,
+	questions = false,
+	toggleAskNotifications,
 }) => {
-  try {
-    // Hooks
-    const { sort } = useParams();
-    const navigate = useNavigate();
+	try {
+		// Hooks
+		const { sort } = useParams();
+		const navigate = useNavigate();
 
-    const { t } = useLanguage();
-    const prevSortRef = useRef<Screen>(sort as Screen);
-    const randomSortedRef = useRef<Map<string, Statement>>(new Map());
-    const isRandomSort =
+		const { t } = useLanguage();
+		const prevSortRef = useRef<Screen>(sort as Screen);
+		const randomSortedRef = useRef<Map<string, Statement>>(new Map());
+		const isRandomSort =
       sort === Screen.OPTIONS_RANDOM || sort === Screen.QUESTIONS_RANDOM;
 
-    const isMuliStage =
+		const isMuliStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
-    const currentStage = statement.questionSettings?.currentStage;
-    const stageInfo = getStagesInfo(currentStage);
-    const useSearchForSimilarStatements =
+		const currentStage = statement.questionSettings?.currentStage;
+		const stageInfo = getStagesInfo(currentStage);
+		const useSearchForSimilarStatements =
       statement.statementSettings?.enableSimilaritiesSearch || false;
 
-    // Use States
-    const [showModal, setShowModal] = useState(false);
-    const [showToast, setShowToast] = useState(false);
+		// Use States
+		const [showModal, setShowModal] = useState(false);
+		const [showToast, setShowToast] = useState(false);
 
-    const [showExplanation, setShowExplanation] = useState(
-      currentStage === QuestionStage.explanation && isMuliStage && !questions
-    );
-    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
-      [...subStatements]
-    );
+		const [showExplanation, setShowExplanation] = useState(
+			currentStage === QuestionStage.explanation && isMuliStage && !questions
+		);
+		const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
+			[...subStatements]
+		);
 
-    useEffect(() => {
-      console.log("sort", sort);
-
-      const isRandomAgain = prevSortRef.current === sort && isRandomSort?true: false;
+		useEffect(() => {
+		
+			const isRandomAgain = prevSortRef.current === sort && isRandomSort?true: false;
      
 
-      prevSortRef.current = sort as Screen;
+			prevSortRef.current = sort as Screen;
 
-      let { subStatements: _sortedSubStatements, subStMap } = sortSubStatements(
-        subStatements,
-        sort,
-        isRandomAgain,
-        randomSortedRef.current
-      );
-      randomSortedRef.current = subStMap;
+			let { subStatements: _sortedSubStatements, subStMap } = sortSubStatements(
+				subStatements,
+				sort,
+				isRandomAgain,
+				randomSortedRef.current
+			);
+			randomSortedRef.current = subStMap;
 
-      _sortedSubStatements = _sortedSubStatements.filter((subStatement) => {
-        //if questions is true, only show questions
-        if (questions) {
-          return subStatement.statementType === StatementType.question;
-        }
+			_sortedSubStatements = _sortedSubStatements.filter((subStatement) => {
+				//if questions is true, only show questions
+				if (questions) {
+					return subStatement.statementType === StatementType.question;
+				}
 
-        if (isMuliStage) {
-          //filter the temp presentation designed for this stage
-          return subStatement.isPartOfTempPresentation;
-        }
+				if (isMuliStage) {
+					//filter the temp presentation designed for this stage
+					return subStatement.isPartOfTempPresentation;
+				}
 
-        //if options is true, only show options
-        return isOptionFn(subStatement);
-      });
+				//if options is true, only show options
+				return isOptionFn(subStatement);
+			});
 
-      setSortedSubStatements(_sortedSubStatements);
-    }, [sort]);
+			setSortedSubStatements(_sortedSubStatements);
+		}, [sort]);
 
-    useEffect(() => {
-      const _sortedSubStatements = subStatements.filter((subStatement) => {
-        //if questions is true, only show questions
-        if (questions) {
-          return subStatement.statementType === StatementType.question;
-        }
+		useEffect(() => {
+			const _sortedSubStatements = subStatements.filter((subStatement) => {
+				//if questions is true, only show questions
+				if (questions) {
+					return subStatement.statementType === StatementType.question;
+				}
 
-        if (isMuliStage) {
-          //filter the temp presentation designed for this stage
-          return subStatement.isPartOfTempPresentation;
-        }
+				if (isMuliStage) {
+					//filter the temp presentation designed for this stage
+					return subStatement.isPartOfTempPresentation;
+				}
 
-        //if options is true, only show options
-        return isOptionFn(subStatement);
-      });
+				//if options is true, only show options
+				return isOptionFn(subStatement);
+			});
 
-      setSortedSubStatements(_sortedSubStatements);
-    }, [subStatements, questions]);
+			setSortedSubStatements(_sortedSubStatements);
+		}, [subStatements, questions]);
 
-    useEffect(() => {
-      if (questions) {
-        setShowToast(false);
-      }
-    }, [questions]);
+		useEffect(() => {
+			if (questions) {
+				setShowToast(false);
+			}
+		}, [questions]);
 
-    useEffect(() => {
-      if (isMuliStage) {
-        getMultiStageOptions(statement);
-      }
-    }, [currentStage]);
+		useEffect(() => {
+			if (isMuliStage) {
+				getMultiStageOptions(statement);
+			}
+		}, [currentStage]);
 
-    useEffect(() => {
-      if (!showToast && !questions) {
-        setShowToast(true);
-      }
-      if (
-        currentStage === QuestionStage.explanation &&
+		useEffect(() => {
+			if (!showToast && !questions) {
+				setShowToast(true);
+			}
+			if (
+				currentStage === QuestionStage.explanation &&
         isMuliStage &&
         !questions
-      ) {
-        setShowExplanation(true);
-      }
-      if (currentStage === QuestionStage.voting && !questions) {
-        //redirect us react router dom to voting page
-        navigate(`/statement/${statement.statementId}/vote`);
-      }
-    }, [statement.questionSettings?.currentStage, questions]);
+			) {
+				setShowExplanation(true);
+			}
+			if (currentStage === QuestionStage.voting && !questions) {
+				//redirect us react router dom to voting page
+				navigate(`/statement/${statement.statementId}/vote`);
+			}
+		}, [statement.questionSettings?.currentStage, questions]);
 
-    // Variables
-    let topSum = 30;
-    const tops: number[] = [topSum];
-    const message = stageInfo ? stageInfo.message : false;
+		// Variables
+		let topSum = 30;
+		const tops: number[] = [topSum];
+		const message = stageInfo ? stageInfo.message : false;
 
-    return (
-      <>
-        <div className="page__main">
-          <div className={`wrapper ${styles.wrapper}`}>
-            {isMuliStage && message && (
-              <Toast
-                text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
-                type="message"
-                show={showToast}
-                setShow={setShowToast}
-              >
-                {getToastButtons(currentStage)}
-              </Toast>
-            )}
-            {sortedSubStatements?.map((statementSub: Statement, i: number) => {
-              //get the top of the element
-              if (statementSub.elementHight) {
-                topSum += statementSub.elementHight + 30;
-                tops.push(topSum);
-              }
+		return (
+			<>
+				<div className="page__main">
+					<div className={`wrapper ${styles.wrapper}`}>
+						{isMuliStage && message && (
+							<Toast
+								text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
+								type="message"
+								show={showToast}
+								setShow={setShowToast}
+							>
+								{getToastButtons(currentStage)}
+							</Toast>
+						)}
+						{sortedSubStatements?.map((statementSub: Statement, i: number) => {
+							//get the top of the element
+							if (statementSub.elementHight) {
+								topSum += statementSub.elementHight + 30;
+								tops.push(topSum);
+							}
 
-              return (
-                <StatementEvaluationCard
-                  key={statementSub.statementId}
-                  parentStatement={statement}
-                  statement={statementSub}
-                  showImage={handleShowTalker}
-                  top={tops[i]}
-                />
-              );
-            })}
-            <div
-              className="options__bottom"
-              style={{ height: `${topSum + 70}px` }}
-            ></div>
-          </div>
-        </div>
+							return (
+								<StatementEvaluationCard
+									key={statementSub.statementId}
+									parentStatement={statement}
+									statement={statementSub}
+									showImage={handleShowTalker}
+									top={tops[i]}
+								/>
+							);
+						})}
+						<div
+							className="options__bottom"
+							style={{ height: `${topSum + 70}px` }}
+						></div>
+					</div>
+				</div>
 
-        <div className="page__footer">
-          <StatementBottomNav
-            setShowModal={setShowModal}
-            statement={statement}
-          />
-        </div>
-        {showExplanation && (
-          <Modal>
-            <StatementInfo
-              statement={statement}
-              setShowInfo={setShowExplanation}
-            />
-          </Modal>
-        )}
+				<div className="page__footer">
+					<StatementBottomNav
+						setShowModal={setShowModal}
+						statement={statement}
+					/>
+				</div>
+				{showExplanation && (
+					<Modal>
+						<StatementInfo
+							statement={statement}
+							setShowInfo={setShowExplanation}
+						/>
+					</Modal>
+				)}
 
-        {showModal && (
-          <CreateStatementModalSwitch
-            toggleAskNotifications={toggleAskNotifications}
-            parentStatement={statement}
-            isQuestion={questions}
-            isMuliStage={isMuliStage}
-            setShowModal={setShowModal}
-            useSimilarStatements={useSearchForSimilarStatements}
-          />
-        )}
-      </>
-    );
+				{showModal && (
+					<CreateStatementModalSwitch
+						toggleAskNotifications={toggleAskNotifications}
+						parentStatement={statement}
+						isQuestion={questions}
+						isMuliStage={isMuliStage}
+						setShowModal={setShowModal}
+						useSimilarStatements={useSearchForSimilarStatements}
+					/>
+				)}
+			</>
+		);
 
-    function getToastButtons(questionStage: QuestionStage | undefined) {
-      try {
-        switch (questionStage) {
-          case QuestionStage.voting:
-          case QuestionStage.firstEvaluation:
-          case QuestionStage.secondEvaluation:
-          case QuestionStage.finished:
-          case QuestionStage.explanation:
-            return (
-              <Button
-                text={t("Close")}
-                iconOnRight={false}
-                onClick={() => {
-                  setShowToast(false);
-                }}
-                icon={<X />}
-                color="white"
-                bckColor="var(--crimson)"
-              />
-            );
-          case QuestionStage.suggestion:
-            return (
-              <>
-                <Button
-                  text={t("Close")}
-                  iconOnRight={false}
-                  onClick={() => {
-                    setShowToast(false);
-                  }}
-                  icon={<X />}
-                  color="white"
-                  bckColor="var(--crimson)"
-                />
-                <Button
-                  text={t("Add a solution")}
-                  iconOnRight={true}
-                  onClick={() => {
-                    setShowToast(false);
-                    setShowModal(true);
-                  }}
-                  icon={<LightBulbIcon />}
-                  color="white"
-                  bckColor="var(--green)"
-                />
-              </>
-            );
+		function getToastButtons(questionStage: QuestionStage | undefined) {
+			try {
+				switch (questionStage) {
+				case QuestionStage.voting:
+				case QuestionStage.firstEvaluation:
+				case QuestionStage.secondEvaluation:
+				case QuestionStage.finished:
+				case QuestionStage.explanation:
+					return (
+						<Button
+							text={t("Close")}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							icon={<X />}
+							color="white"
+							bckColor="var(--crimson)"
+						/>
+					);
+				case QuestionStage.suggestion:
+					return (
+						<>
+							<Button
+								text={t("Close")}
+								iconOnRight={false}
+								onClick={() => {
+									setShowToast(false);
+								}}
+								icon={<X />}
+								color="white"
+								bckColor="var(--crimson)"
+							/>
+							<Button
+								text={t("Add a solution")}
+								iconOnRight={true}
+								onClick={() => {
+									setShowToast(false);
+									setShowModal(true);
+								}}
+								icon={<LightBulbIcon />}
+								color="white"
+								bckColor="var(--green)"
+							/>
+						</>
+					);
 
-          default:
-            return (
-              <Button
-                text={t("Close")}
-                iconOnRight={false}
-                onClick={() => {
-                  setShowToast(false);
-                }}
-                icon={<X />}
-                color="white"
-                bckColor="var(--crimson)"
-              />
-            );
-        }
-      } catch (error) {
-        console.error(error);
+				default:
+					return (
+						<Button
+							text={t("Close")}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							icon={<X />}
+							color="white"
+							bckColor="var(--crimson)"
+						/>
+					);
+				}
+			} catch (error) {
+				console.error(error);
 
-        return null;
-      }
-    }
-  } catch (error) {
-    console.error(error);
+				return null;
+			}
+		}
+	} catch (error) {
+		console.error(error);
 
-    return null;
-  }
+		return null;
+	}
 };
 
 export default StatementEvaluationPage;

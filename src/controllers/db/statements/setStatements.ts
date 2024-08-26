@@ -461,11 +461,6 @@ export async function updateStatementText(
 		if (!statement) throw new Error("Statement is undefined");
 		
 
-		// 
-		// 
-		
-		
-
 		if (statement.statement === title && statement.description === description) return;
 
 		StatementSchema.parse(statement);

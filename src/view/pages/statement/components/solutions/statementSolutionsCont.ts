@@ -10,7 +10,7 @@ import {
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
-	randomAgain: boolean = true,
+	randomAgain = true,
 	subStMap: Map<string, Statement> = new Map<string, Statement>(),
 ): { subStatements: Statement[], subStMap: Map<string, Statement> } {
 	try {
@@ -18,32 +18,32 @@ export function sortSubStatements(
 			(statement: Statement) => statement,
 		);
 		switch (sort) {
-			case Screen.OPTIONS_CONSENSUS:
-			case Screen.QUESTIONS_CONSENSUS:
-				_subStatements = subStatements.sort(
-					(a: Statement, b: Statement) => b.consensus - a.consensus,
-				);
-				break;
-			case Screen.OPTIONS_NEW:
-			case Screen.QUESTIONS_NEW:
-				_subStatements = subStatements.sort(
-					(a: Statement, b: Statement) => b.createdAt - a.createdAt,
-				);
-				break;
-			case Screen.OPTIONS_RANDOM:
-			case Screen.QUESTIONS_RANDOM:
-				_subStatements = subStatements.sort(() => Math.random() - 0.5);
-				break;
-			case Screen.OPTIONS_UPDATED:
-			case Screen.QUESTIONS_UPDATED:
-				_subStatements = subStatements.sort(
-					(a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
-				);
-				break;
+		case Screen.OPTIONS_CONSENSUS:
+		case Screen.QUESTIONS_CONSENSUS:
+			_subStatements = subStatements.sort(
+				(a: Statement, b: Statement) => b.consensus - a.consensus,
+			);
+			break;
+		case Screen.OPTIONS_NEW:
+		case Screen.QUESTIONS_NEW:
+			_subStatements = subStatements.sort(
+				(a: Statement, b: Statement) => b.createdAt - a.createdAt,
+			);
+			break;
+		case Screen.OPTIONS_RANDOM:
+		case Screen.QUESTIONS_RANDOM:
+			_subStatements = subStatements.sort(() => Math.random() - 0.5);
+			break;
+		case Screen.OPTIONS_UPDATED:
+		case Screen.QUESTIONS_UPDATED:
+			_subStatements = subStatements.sort(
+				(a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
+			);
+			break;
 		}
 
 		if(randomAgain){
-			let ___subStatements = [];
+			const ___subStatements = [];
 			const stIds = subStMap.keys();
 			for (const stId of stIds) {
 				const statement = subStatements.find((st) => st.statementId === stId);
@@ -51,6 +51,7 @@ export function sortSubStatements(
 					___subStatements.push(statement);
 				}
 			}
+			
 			return { subStatements: ___subStatements, subStMap };
 		}
 

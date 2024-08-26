@@ -19,48 +19,49 @@ interface Props {
 }
 
 const SolutionMenu:FC<Props> = ({
-    statement,
-    isAuthorized,
-    isCardMenuOpen,
-    setIsCardMenuOpen,
-    isEdit,
-    setIsEdit,
-    handleSetOption
+	statement,
+	isAuthorized,
+	isCardMenuOpen,
+	setIsCardMenuOpen,
+	isEdit,
+	setIsEdit,
+	handleSetOption
 }) => {
 
-    const {t} = useLanguage();
+	const {t} = useLanguage();
 
-    if(!isAuthorized) return null;
-  return (
-    <Menu
-        setIsOpen={setIsCardMenuOpen}
-        isMenuOpen={isCardMenuOpen}
-        iconColor='#5899E0'
-    >
-        {isAuthorized && (
-            <MenuOption
-                label={t('Edit Text')}
-                icon={<EditIcon />}
-                onOptionClick={() => {
-                    setIsEdit(!isEdit);
-                    setIsCardMenuOpen(false);
-                }}
-            />
-        )}
-        {isAuthorized && (
-            <MenuOption
-                isOptionSelected={isOptionFn(statement)}
-                icon={<LightBulbIcon />}
-                label={
-                    isOptionFn(statement)
-                        ? t('Unmark as a Solution')
-                        : t('Mark as a Solution')
-                }
-                onOptionClick={handleSetOption}
-            />
-        )}
-    </Menu>
-)};
+	if(!isAuthorized) return null;
+	
+	return (
+		<Menu
+			setIsOpen={setIsCardMenuOpen}
+			isMenuOpen={isCardMenuOpen}
+			iconColor='#5899E0'
+		>
+			{isAuthorized && (
+				<MenuOption
+					label={t('Edit Text')}
+					icon={<EditIcon />}
+					onOptionClick={() => {
+						setIsEdit(!isEdit);
+						setIsCardMenuOpen(false);
+					}}
+				/>
+			)}
+			{isAuthorized && (
+				<MenuOption
+					isOptionSelected={isOptionFn(statement)}
+					icon={<LightBulbIcon />}
+					label={
+						isOptionFn(statement)
+							? t('Unmark as a Solution')
+							: t('Mark as a Solution')
+					}
+					onOptionClick={handleSetOption}
+				/>
+			)}
+		</Menu>
+	)};
  
 
 export default SolutionMenu;
