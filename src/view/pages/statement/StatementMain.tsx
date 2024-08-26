@@ -87,7 +87,9 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
-	const [_, setPasswordCheck] = useState<boolean>(false)
+
+
+	// const [_, setPasswordCheck] = useState<boolean>(false)
 
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
@@ -196,10 +198,10 @@ const StatementMain: FC = () => {
 
 	useEffect(() => {
 		if (user?.uid === statement?.creatorId) {
-			setPasswordCheck(true);
+			// setPasswordCheck(true);
 		}
 		else {
-			setPasswordCheck(false);
+			// setPasswordCheck(false);
 		}
 	}, []);
 
