@@ -454,16 +454,17 @@ function updateStatementSettings({
 export async function updateStatementText(
 	statement: Statement | undefined,
 	title: string,
-	description?: string,
+	description: string,
 ) {
 	try {
 		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
+		console.log("saving title", title, "description", description);
 
 		// console.log(statement.statement);
 		// console.log(newText);
-		const _statement = title;
-		const _description = description ? description.split("\n").slice(1).join("\n").trim() : "";
+		
+		
 
 		if (statement.statement === title && statement.description === description) return;
 
@@ -475,8 +476,8 @@ export async function updateStatementText(
 		);
 
 		const newStatement = {
-			statement: _statement,
-			description: _description,
+			statement:title,
+			description,
 			lastUpdate: Timestamp.now().toMillis(),
 		};
 		await updateDoc(statementRef, newStatement);
