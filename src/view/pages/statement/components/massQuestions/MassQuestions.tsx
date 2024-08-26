@@ -9,21 +9,21 @@ import Text from "@/view/components/text/Text";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 
 interface Props {
-    statement: Statement;
-    subStatements: Statement[];
+  statement: Statement;
+  subStatements: Statement[];
 }
 
 const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
 	const statementSubscriptions = useAppSelector(
-		statementSubscriptionSelector(statement.statementId),
+		statementSubscriptionSelector(statement.statementId)
 	);
 
 	const [showThankYou, setShowThankYou] = useState<boolean>(false);
-	const [answerd, setAnswerd] = useState<boolean[]>([]);
+	const [answerd, setAnswer] = useState<boolean[]>([]);
 	const [showModal, setShowModal] = useState(false);
 
 	const questions = subStatements.filter(
-		(sub) => sub.statementType === StatementType.question,
+		(sub) => sub.statementType === StatementType.question
 	);
 
 	const _isAutorized = isAuthorized(statement, statementSubscriptions);
@@ -44,25 +44,18 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
 									// style={{backgroundColor: 'red'}}
 								></div>
 							) : null}
-							<Text
-								text={statement.statement}
-								onlyDescription={true}
-							/>
+							<Text description={statement.description} />
 							{questions.map((question, index: number) => (
 								<MassQuestionCard
 									key={question.statementId}
 									statement={question}
 									index={index}
-									setAnswered={setAnswerd}
+									setAnswered={setAnswer}
 								/>
 							))}
 							<div className="btns">
-								{answerd.filter((a) => a).length ===
-                                    questions.length && (
-									<div
-										className="btn"
-										onClick={() => setShowThankYou(true)}
-									>
+								{answerd.filter((a) => a).length === questions.length && (
+									<div className="btn" onClick={() => setShowThankYou(true)}>
 										<span>שליחה</span>
 									</div>
 								)}
@@ -71,10 +64,7 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
 					) : (
 						<div className={styles.thankyou}>
 							<h2>תודה על התשובות</h2>
-							<div
-								className="btn"
-								onClick={() => setShowThankYou(false)}
-							>
+							<div className="btn" onClick={() => setShowThankYou(false)}>
 								<span>עריכה חדשה</span>
 							</div>
 						</div>

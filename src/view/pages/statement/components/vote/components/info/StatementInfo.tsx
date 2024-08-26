@@ -1,10 +1,6 @@
 import { Statement } from "delib-npm";
 import { FC, useState } from "react";
-import {
-	getDescription,
-	getTitle,
-	isAuthorized,
-} from "@/controllers/general/helpers";
+import { isAuthorized } from "@/controllers/general/helpers";
 import Text from "@/view/components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
@@ -21,8 +17,8 @@ import "./StatementInfo.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
-    statement: Statement | null;
-    setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
+  statement: Statement | null;
+  setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
@@ -33,23 +29,21 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 
 	// Redux
 	const statementSubscription = useAppSelector(
-		statementSubscriptionSelector(statement.statementId),
+		statementSubscriptionSelector(statement.statementId)
 	);
-	const parentStatement = useAppSelector(
-		statementSelector(statement.parentId),
-	);
+	const parentStatement = useAppSelector(statementSelector(statement.parentId));
 
 	// Use State
 	const [isInEditMode, setIsInEditMode] = useState(false);
 	const [formData, setFormData] = useState({
-		title: getTitle(statement),
-		description: getDescription(statement),
+		title: statement.statement || "",
+		description: statement.description || "",
 	});
 
 	const _isAuthorized = isAuthorized(
 		statement,
 		statementSubscription,
-		parentStatement?.creatorId,
+		parentStatement?.creatorId
 	);
 
 	return (
@@ -67,7 +61,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 							formData,
 							statement,
 							setIsInEditMode,
-							setShowInfo,
+							setShowInfo
 						)
 					}
 				>
@@ -114,21 +108,16 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 							{formData.title}
 							{_isAuthorized && (
 								<div className="edit-icon">
-									<EditIcon
-										onClick={() => setIsInEditMode(true)}
-									/>
+									<EditIcon onClick={() => setIsInEditMode(true)} />
 								</div>
 							)}
 						</h3>
 						<div className="text">
-							<Text text={formData.description} />
+							<Text description={formData.description || ""} />
 						</div>
 					</div>
 					<div className="form-buttons">
-						<button
-							className="close-button"
-							onClick={() => setShowInfo(false)}
-						>
+						<button className="close-button" onClick={() => setShowInfo(false)}>
 							{t("Close")}
 						</button>
 					</div>
