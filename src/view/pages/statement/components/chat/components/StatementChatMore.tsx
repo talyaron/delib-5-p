@@ -44,8 +44,9 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 		: t("Conversations");
 
 	return (
-		<div
+		<button
 			className="statementChatMore"
+			aria-label="Chat more button"
 			onClick={() =>
 				navigate(`/statement/${statement.statementId}/chat`, {
 					state: { from: window.location.pathname },
@@ -63,7 +64,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 				<ChatIcon />
 			</div>
 			<div className="text">{messageToDisplay}</div>
-		</div>
+		</button>
 	);
 };
 

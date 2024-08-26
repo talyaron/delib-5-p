@@ -27,6 +27,7 @@ const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }
 			{_navArray.map((screenInfo: NavObject) => (
 				<Link
 					key={screenInfo.id}
+					aria-label={screenInfo.name}
 					to={`/statement/${statement.statementId}/${screenInfo.link}${screenInfo.link === Screen.VOTE ? "/votes-voted" : ""
 					}`}
 					className={`page__header__nav__button ${screen === screenInfo.link

@@ -43,7 +43,6 @@ import EnableNotifications from '../../components/enableNotifications/EnableNoti
 import AskPermission from '@/view/components/askPermission/AskPermission';
 import FollowMeToast from './components/followMeToast/FollowMeToast';
 
-// import PasswordUi from '@/view/components/passwordUi/PasswordUi';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -89,7 +88,8 @@ const StatementMain: FC = () => {
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
-	// const [passwordCheck, setPasswordCheck] = useState(false)
+
+	// const [_, setPasswordCheck] = useState<boolean>(false)
 
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
@@ -196,14 +196,14 @@ const StatementMain: FC = () => {
 		}
 	}, [statement]);
 
-	// useEffect(() => {
-	// 	if (user?.uid === statement?.creatorId) {
-	// 		setPasswordCheck(true)
-	// 	}
-	// 	else {
-	// 		setPasswordCheck(false)
-	// 	}
-	// }, [])
+	useEffect(() => {
+		if (user?.uid === statement?.creatorId) {
+			// setPasswordCheck(true);
+		}
+		else {
+			// setPasswordCheck(false);
+		}
+	}, []);
 
 	if (isStatementNotFound) return <Page404 />;
 	if (error) return <UnAuthorizedPage />;

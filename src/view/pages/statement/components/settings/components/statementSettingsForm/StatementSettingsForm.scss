@@ -15,7 +15,7 @@
         padding: 1rem;
         font-size: 1.2rem;
         width: 100%;
-        outline: none;
+        // outline: none;
         resize: none;
         background-color: #f5fcff;
         box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
@@ -44,12 +44,10 @@
         padding-block: 1rem;
 
         .evaluators-button {
-            background-color: var(--light-green);
-            color: var(--white);
+            color: var(--text-blue);
         }
         .voters-button {
-            background-color: var(--light-purple);
-            color: var(--white);
+            color: var(--text-blue);
         }
     }
 
@@ -69,13 +67,12 @@
     }
 
     .form-button {
-        height: 2rem;
-        padding: 0 1rem;
-        font-size: 1rem;
-        border: none;
-        outline: none;
-        border-radius: 3px;
-        cursor: pointer;
-        box-shadow: 0 10px 10px var(--shadow);
+        display: flex;
+        padding: 0.40625rem var(--Spacing-16, 1rem);
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+        border-radius: var(--Radius-Radius-L, 1.25rem);
+        border: var(--Spacing-0, 1px) solid var(--btn-tertiary);
     }
 }

@@ -9,14 +9,15 @@
 
     &.checked {
         .tag {
-            background-color: #4e88c7;
-            color: white;
+            background-color: var(--toggle-blue-active);
+            color: var(--text-white);
             left: 180px;
+            filter: drop-shadow(0px -2.049px 4.098px rgba(65, 112, 162, 0.30)) drop-shadow(0px 2.049px 4.098px rgba(65, 112, 162, 0.40));
         }
 
         .label {
-            background-color: #74adf0;
-            color: white;
+            background-color: var(--toggle-blue-active);
+            color: var(--text-white);
             margin-left: 0;
             margin-right: 20px;
         }
@@ -24,28 +25,27 @@
 
     .tag {
         position: absolute;
-        background-color: #c1d8f0;
+        background-color: var(--toggle-inactive);
+        filter: drop-shadow(0px -2px 4px rgba(161, 189, 218, 0.30)) drop-shadow(0px 2px 4px rgba(161, 189, 218, 0.80));
         border-radius: 100%;
         transition: all 0.15s linear;
         cursor: pointer;
         user-select: none;
         z-index: 4;
-        box-shadow: 0px -2px 6px -5px rgba(177, 170, 218, 0.5);
-        box-shadow: 0px 2px 6px 0px rgba(177, 170, 218, 0.5);
         block-size: 40px;
         inline-size: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #769cc2;
+        color: var(--text-paragraph-lightest);
         left: 0;
     }
 
     .label {
         width: 200px;
-        background-color: #e5f2ff;
+        background-color: var(--toggle-inactive);
         transition: all 0.25s linear;
-        color: #769cc2;
+        color: var(--text-paragraph-lightest);
         font-size: 13px;
         border-radius: 20px;
         display: flex;

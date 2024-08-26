@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-
 // Helpers
+import { useEffect, useState } from "react";
 import { prompStore } from "./main/HomeMainCont";
 
 // icons
@@ -24,16 +23,12 @@ export default function HomeHeader() {
 	const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
 	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
 	const [showInvitationModal, setShowInvitationModal] = useState(false);
-
 	const dispatch = useDispatch();
-
 	const { t, dir } = useLanguage();
-
 	useEffect(() => {
 		// for deferred app install
 		setDeferredPrompt(install.deferredPrompt);
 	}, []);
-
 	function handleInstallApp() {
 		try {
 			prompStore(setDeferredPrompt);
@@ -41,17 +36,15 @@ export default function HomeHeader() {
 			console.error(error);
 		}
 	}
-
 	function handleInvitationPanel() {
 		try {
 			setShowInvitationModal(true);
 			setIsHomeMenuOpen(false);
-   
 		} catch (error) {
 			console.error(error);
 		}
 	}
-
+	
 	return (
 		<div className={`homePage__header ${dir}`}>
 			<div className="homePage__header__wrapper">
@@ -65,7 +58,6 @@ export default function HomeHeader() {
 							<InstallIcon />
 						</IconButton>
 					)}
-
 					<Menu
 						isMenuOpen={isHomeMenuOpen}
 						setIsOpen={setIsHomeMenuOpen}
@@ -88,3 +80,15 @@ export default function HomeHeader() {
 		</div>
 	);
 }
+
+
+
+
+
+
+
+
+
+
+
+

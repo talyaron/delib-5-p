@@ -18,6 +18,7 @@ export const AddStatement = () => {
 					to={"/home"}
 					state={{ from: window.location.pathname }}
 					className="back-arrow-icon"
+					aria-label="Back to Home page"
 				>
 					<BackArrowIcon />
 				</Link>

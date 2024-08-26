@@ -12,6 +12,7 @@ const HomeButton: FC<Props> = ({ headerColor }) => {
 			className="page__header__wrapper__actions__iconButton"
 			state={{ from: window.location.pathname }}
 			to={"/home"}
+			aria-label="Back to Home page"
 			data-cy="home-link-icon"
 		>
 			<HomeIcon style={{ color: headerColor.color }} />
