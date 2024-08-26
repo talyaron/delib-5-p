@@ -1,42 +1,43 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from "react";
 
 // Third party imports
 import {
 	QuestionStage,
 	QuestionType,
+	Screen,
 	Statement,
 	StatementType,
 	User,
 	isOptionFn,
-} from 'delib-npm';
-import { useParams, useNavigate } from 'react-router';
+} from "delib-npm";
+import { useParams, useNavigate } from "react-router";
 
 // Utils & Helpers
-import {sortSubStatements} from './statementSolutionsCont';
+import { sortSubStatements } from "./statementSolutionsCont";
 
 // Custom Components
-import StatementEvaluationCard from './components/StatementSolutionCard';
-import StatementBottomNav from '../nav/bottom/StatementBottomNav';
-import Toast from '@/view/components/toast/Toast';
-import Modal from '@/view/components/modal/Modal';
-import StatementInfo from '../vote/components/info/StatementInfo';
-import Button from '@/view/components/buttons/button/Button';
-import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
-import X from '@/assets/icons/x.svg?react';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
-import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
-import { getTitle } from '@/controllers/general/helpers';
-import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
-import { getMultiStageOptions } from '@/controllers/db/multiStageQuestion/getMultiStageStatements';
-import styles from './StatementSolutionsPage.module.scss';
+import StatementEvaluationCard from "./components/StatementSolutionCard";
+import StatementBottomNav from "../nav/bottom/StatementBottomNav";
+import Toast from "@/view/components/toast/Toast";
+import Modal from "@/view/components/modal/Modal";
+import StatementInfo from "../vote/components/info/StatementInfo";
+import Button from "@/view/components/buttons/button/Button";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import X from "@/assets/icons/x.svg?react";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
+import { getTitle } from "@/controllers/general/helpers";
+import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
+import { getMultiStageOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
+import styles from "./StatementSolutionsPage.module.scss";
 
 interface StatementEvaluationPageProps {
-	statement: Statement;
-	subStatements: Statement[];
-	handleShowTalker: (talker: User | null) => void;
-	showNav?: boolean;
-	questions?: boolean;
-	toggleAskNotifications: () => void;
+  statement: Statement;
+  subStatements: Statement[];
+  handleShowTalker: (talker: User | null) => void;
+  showNav?: boolean;
+  questions?: boolean;
+  toggleAskNotifications: () => void;
 }
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
@@ -52,18 +53,22 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		const navigate = useNavigate();
 
 		const { t } = useLanguage();
+		const prevSortRef = useRef<Screen>(sort as Screen);
+		const randomSortedRef = useRef<Map<string, Statement>>(new Map());
+		const isRandomSort =
+      sort === Screen.OPTIONS_RANDOM || sort === Screen.QUESTIONS_RANDOM;
 
 		const isMuliStage =
-			statement.questionSettings?.questionType === QuestionType.multipleSteps;
+      statement.questionSettings?.questionType === QuestionType.multipleSteps;
 		const currentStage = statement.questionSettings?.currentStage;
 		const stageInfo = getStagesInfo(currentStage);
 		const useSearchForSimilarStatements =
-			statement.statementSettings?.enableSimilaritiesSearch || false;
+      statement.statementSettings?.enableSimilaritiesSearch || false;
 
 		// Use States
 		const [showModal, setShowModal] = useState(false);
 		const [showToast, setShowToast] = useState(false);
-		
+
 		const [showExplanation, setShowExplanation] = useState(
 			currentStage === QuestionStage.explanation && isMuliStage && !questions
 		);
@@ -72,10 +77,21 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		);
 
 		useEffect(() => {
-			const _sortedSubStatements = sortSubStatements(
+		
+			const isRandomAgain = prevSortRef.current === sort && isRandomSort?true: false;
+     
+
+			prevSortRef.current = sort as Screen;
+
+			let { subStatements: _sortedSubStatements, subStMap } = sortSubStatements(
 				subStatements,
-				sort
-			).filter((subStatement) => {
+				sort,
+				isRandomAgain,
+				randomSortedRef.current
+			);
+			randomSortedRef.current = subStMap;
+
+			_sortedSubStatements = _sortedSubStatements.filter((subStatement) => {
 				//if questions is true, only show questions
 				if (questions) {
 					return subStatement.statementType === StatementType.question;
@@ -91,7 +107,26 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			});
 
 			setSortedSubStatements(_sortedSubStatements);
-		}, [sort, subStatements, questions]);
+		}, [sort]);
+
+		useEffect(() => {
+			const _sortedSubStatements = subStatements.filter((subStatement) => {
+				//if questions is true, only show questions
+				if (questions) {
+					return subStatement.statementType === StatementType.question;
+				}
+
+				if (isMuliStage) {
+					//filter the temp presentation designed for this stage
+					return subStatement.isPartOfTempPresentation;
+				}
+
+				//if options is true, only show options
+				return isOptionFn(subStatement);
+			});
+
+			setSortedSubStatements(_sortedSubStatements);
+		}, [subStatements, questions]);
 
 		useEffect(() => {
 			if (questions) {
@@ -101,7 +136,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 
 		useEffect(() => {
 			if (isMuliStage) {
-			
 				getMultiStageOptions(statement);
 			}
 		}, [currentStage]);
@@ -112,8 +146,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			}
 			if (
 				currentStage === QuestionStage.explanation &&
-				isMuliStage &&
-				!questions
+        isMuliStage &&
+        !questions
 			) {
 				setShowExplanation(true);
 			}
@@ -127,15 +161,14 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		let topSum = 30;
 		const tops: number[] = [topSum];
 		const message = stageInfo ? stageInfo.message : false;
-		
 
 		return (
 			<>
-				<div className='page__main'>
-					<div className={`wrapper ${styles.wrapper}`} >
+				<div className="page__main">
+					<div className={`wrapper ${styles.wrapper}`}>
 						{isMuliStage && message && (
 							<Toast
-								text={`${t(message)}${currentStage === QuestionStage.suggestion?`: "${getTitle(statement)}`:""}`}
+								text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
 								type="message"
 								show={showToast}
 								setShow={setShowToast}
@@ -148,7 +181,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							if (statementSub.elementHight) {
 								topSum += statementSub.elementHight + 30;
 								tops.push(topSum);
-								
 							}
 
 							return (
@@ -162,13 +194,13 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							);
 						})}
 						<div
-							className='options__bottom'
+							className="options__bottom"
 							style={{ height: `${topSum + 70}px` }}
 						></div>
 					</div>
 				</div>
 
-				<div className='page__footer'>
+				<div className="page__footer">
 					<StatementBottomNav
 						setShowModal={setShowModal}
 						statement={statement}
@@ -206,39 +238,39 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				case QuestionStage.explanation:
 					return (
 						<Button
-							text={t('Close')}
+							text={t("Close")}
 							iconOnRight={false}
 							onClick={() => {
 								setShowToast(false);
 							}}
 							icon={<X />}
-							color='white'
-							bckColor='var(--crimson)'
+							color="white"
+							bckColor="var(--crimson)"
 						/>
 					);
 				case QuestionStage.suggestion:
 					return (
 						<>
 							<Button
-								text={t('Close')}
+								text={t("Close")}
 								iconOnRight={false}
 								onClick={() => {
 									setShowToast(false);
 								}}
 								icon={<X />}
-								color='white'
-								bckColor='var(--crimson)'
+								color="white"
+								bckColor="var(--crimson)"
 							/>
 							<Button
-								text={t('Add a solution')}
+								text={t("Add a solution")}
 								iconOnRight={true}
 								onClick={() => {
 									setShowToast(false);
 									setShowModal(true);
 								}}
 								icon={<LightBulbIcon />}
-								color='white'
-								bckColor='var(--green)'
+								color="white"
+								bckColor="var(--green)"
 							/>
 						</>
 					);
@@ -246,14 +278,14 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				default:
 					return (
 						<Button
-							text={t('Close')}
+							text={t("Close")}
 							iconOnRight={false}
 							onClick={() => {
 								setShowToast(false);
 							}}
 							icon={<X />}
-							color='white'
-							bckColor='var(--crimson)'
+							color="white"
+							bckColor="var(--crimson)"
 						/>
 					);
 				}
