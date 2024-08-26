@@ -30,6 +30,7 @@ const GetVoters: FC<GetVotersProps> = ({ statementId }) => {
 				type="button"
 				className="voters-button form-button"
 				onClick={getVoters}
+				tabIndex={0}
 			>
 				{t("Get Voters")}
 			</button>

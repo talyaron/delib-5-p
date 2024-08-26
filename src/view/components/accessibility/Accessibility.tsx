@@ -74,7 +74,7 @@ const Accessibility = () => {
 				>
                     +
 				</IconButton>
-				<div className="accessibility__fonts__size">
+				<div className="accessibility__fonts__size" role="status">
 					{user ? fontSize : _fontSize}px
 				</div>
 				<IconButton

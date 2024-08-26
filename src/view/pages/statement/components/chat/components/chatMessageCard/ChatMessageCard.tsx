@@ -168,10 +168,9 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 									autoFocus={true}
 									style={{ direction: dir }}
 								/>
-								<button>
+								<button onClick={handleSave}>
 									<img
 										src={SaveTextIcon}
-										onClick={handleSave}
 										className="save-icon"
 										alt="Save Icon"
 									/>
@@ -236,6 +235,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 					{shouldLinkToChildren && (
 						<button
 							className="add-question-btn"
+							aria-label="Add question button"
 							onClick={() => setIsNewStatementModalOpen(true)}
 						>
 							<AddQuestionIcon />
