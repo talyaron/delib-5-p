@@ -30,7 +30,7 @@ const EditTitle: FC<Props> = ({
 	isTextArea,
 
 }) => {
-	const [description, setText] = useState(statement?.description || "");
+	const [description, setDescription] = useState(statement?.description || "");
 	const [title, setTitle] = useState(statement?.statement || "");
 	const textareaRef = useAutoFocus(isEdit);
 
@@ -41,10 +41,12 @@ const EditTitle: FC<Props> = ({
 	const align = direction === "ltr" ? "left" : "right";
 
 	function handleChange(
-		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-		setState: Dispatch<SetStateAction<string>>
+		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
-		setState(e.target.value);
+		const _title = e.target.value.split("\n")[0].trim();
+		const _description = e.target.value.split("\n").slice(1).join("\n").trim();
+		setTitle(_title);
+		setDescription(_description);
 	}
 
 	function handleSave() {
@@ -53,7 +55,7 @@ const EditTitle: FC<Props> = ({
 			if (!statement) throw new Error("Statement is undefined");
 
 
-			updateStatementText(statement, title.trim(), description.trim());
+			updateStatementText(statement, title, description);
 			setEdit(false);
 		} catch (error) {
 			console.error(error);
@@ -76,7 +78,7 @@ const EditTitle: FC<Props> = ({
 						style={{ direction: direction, textAlign: align }}
 						className={styles.textarea}
 						defaultValue={`${title}\n${description}`}
-						onChange={(e) => handleChange(e, setText)}
+						onChange={handleChange}
 						autoFocus={true}
 						placeholder="Add text"
 					></textarea>
@@ -91,7 +93,7 @@ const EditTitle: FC<Props> = ({
 						className={styles.input}
 						type="text"
 						value={title}
-						onChange={(e) => handleChange(e, setTitle)}
+						onChange={handleChange}
 						autoFocus={true}
 						data-cy="edit-title-input"
 					></input>

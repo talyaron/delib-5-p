@@ -22,10 +22,13 @@ export const handleSetQuestionFromMassCard = ({
 		const user: User | null = store.getState().user.user;
 		if (!user) throw new Error("user not found");
 		if (!text) return;
+		const title = text.split("\n")[0];
+		const description = text.split("\n").slice(1).join("\n");
+
 
 		if (answer) {
 			//update statement
-			updateStatementText(answer, text);
+			updateStatementText(answer, title, description);
 
 			return undefined;
 		} else {
