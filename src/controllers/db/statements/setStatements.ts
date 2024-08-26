@@ -459,10 +459,10 @@ export async function updateStatementText(
 	try {
 		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
-		console.log("saving title", title, "description", description);
+		
 
-		// console.log(statement.statement);
-		// console.log(newText);
+		// 
+		// 
 		
 		
 
