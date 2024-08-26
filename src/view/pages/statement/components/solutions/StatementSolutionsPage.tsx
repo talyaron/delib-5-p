@@ -49,7 +49,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 	handleShowTalker,
 	questions = false,
 	toggleAskNotifications,
-	currentPage = "suggestion",
+	currentPage = `suggestion`,
 }) => {
 	try {
 		// Hooks
@@ -150,18 +150,18 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 						>
 							<div className={styles.header}>
 								<div className={styles.title}>
-									<h1>
+									<h1 className={styles.h1}>
 										{t(`Click on`)}{" "}
 										<span className={styles.titleSpan}>
-											{t(`Add ${currentPage} button`)}
+											{t(`”+”`)}
 										</span>{" "}
-										{t(`to add your ${currentPage}`)}
+										{t(`to add your suggestion`)}
 									</h1>
 								</div>
 								<div
 									className={styles.plusButton}
 									onClick={handlePlusIconClick}
-									style={{ width: "4.70rem", height: "4.70rem" }}
+									style={{ width: "4rem", height: "4rem" }}
 								>
 									<WhitePlusIcon />
 								</div>
@@ -220,19 +220,17 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							<div className={styles.header}>
 								<div className={styles.title}>
 									<h1>
-										{t(`Click on`)}{" "}
 										<span className={styles.titleSpan}>
-											{t(`Add ${currentPage} button`)}
+											{t(`” Add ${currentPage} button ”`)}
 										</span>{" "}
-										{t(`to add your ${currentPage}`)}
 									</h1>
 								</div>
 								<div
 									className={styles.plusButton}
 									onClick={handlePlusIconClick}
 								>
-									<WhitePlusIcon />
 									<p>{t(`Add ${currentPage}`)}</p>
+									<WhitePlusIcon />
 								</div>
 							</div>
 							<img src={ideaImage} alt="" className={styles.ideaImage} />
