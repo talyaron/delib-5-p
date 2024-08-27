@@ -7,7 +7,7 @@ import { Statement } from "delib-npm";
 import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
-import styles from "./ChooseRoom.module.scss";
+
 import Button from "@/view/components/buttons/button/Button";
 
 import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";

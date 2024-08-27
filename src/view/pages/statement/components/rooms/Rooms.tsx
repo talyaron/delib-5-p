@@ -1,11 +1,10 @@
 import {
-  RoomsStateSelection,
   Statement,
   StatementSubscription,
   isOptionFn,
 } from "delib-npm";
-import React, { FC, useState, useEffect } from "react";
-import CreateStatementModal from "../createStatementModal/CreateStatementModal";
+import  { FC, useEffect } from "react";
+
 
 // Custom components
 import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
@@ -20,7 +19,7 @@ import {
 import { isAdmin } from "@/controllers/general/helpers";
 import { useSelector } from "react-redux";
 import { roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
-import { is } from "node_modules/cypress/types/bluebird";
+
 
 interface RoomsProps {
   statement: Statement;
@@ -37,6 +36,7 @@ const Rooms: FC<RoomsProps> = ({
     roomSettingsByStatementId(statement.statementId)
   );
   const isEditingRoom = roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
+  
 
   useEffect(() => {
     const unsubscribe = listenToParticipants(statement);
@@ -70,7 +70,7 @@ function switchRoomScreens(
   topics: Statement[],
   statement: Statement
 ) {
-  console.log(isEditingRoom);
+
   if (isEditingRoom) {
     return <ChooseRoom topics={topics} statement={statement} />;
   } else {

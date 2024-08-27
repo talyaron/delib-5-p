@@ -1,0 +1,19 @@
+.participantsPerRoom{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    input{
+        width: 4rem;
+        text-align: center;
+    }
+
+    .add{
+        background-color: teal;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 2rem;
+        border-radius: (var(--radius));
+    }
+}

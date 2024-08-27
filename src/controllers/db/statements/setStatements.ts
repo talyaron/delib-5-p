@@ -26,6 +26,7 @@ import {
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { allowedScreens } from "@/controllers/general/screens";
+import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 
 
 
@@ -187,6 +188,9 @@ export const setStatementToDB = async ({
 		});
 
 		statementPromises.push(statementPromise);
+
+		//add roomSettings
+		setNewRoomSettingsToDB(statement.statementId);
 
 		//add subscription
 

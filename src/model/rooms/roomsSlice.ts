@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {  ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
+import {  ParticipantInRoom, RoomSettings } from "delib-npm";
 import { updateArray } from "@/controllers/general/helpers";
 import { RootState } from "../store";
 
