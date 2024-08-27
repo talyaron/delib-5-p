@@ -13,6 +13,7 @@ import {
 	StatementType,
 	UserSchema,
 	isAllowedStatementType,
+	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
@@ -294,7 +295,10 @@ export function createStatement({
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
 
-		StatementSchema.parse(newStatement);
+		const results = StatementSchema.safeParse(newStatement);
+		if(results.success === false) {
+			writeZodError(results.error, newStatement);
+		}
 
 		return newStatement;
 	} catch (error) {
@@ -387,7 +391,10 @@ export function updateStatement({
 					Screen.VOTE,
 				];
 
-		StatementSchema.parse(newStatement);
+		const results = StatementSchema.safeParse(newStatement);
+		if(results.success === false) {
+			writeZodError(results.error, newStatement);
+		}
 
 		return newStatement;
 	} catch (error) {

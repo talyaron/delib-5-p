@@ -70,7 +70,7 @@ export async function updateApprovalResults(event: any) {
                 const newApprovalResults = {
                     approved: newApproved,
                     totalVoters,
-                    averageApproval: newApproved / totalVoters
+                    averageApproval: totalVoters !== 0 ? newApproved / totalVoters:0
                 };
 
                 transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
@@ -114,7 +114,7 @@ export async function updateApprovalResults(event: any) {
                     newApprovalResults = {
                         approved: newApproved,
                         totalVoters: newTotalVoters,
-                        averageApproval: newApproved / newTotalVoters
+                        averageApproval: newTotalVoters !== 0 ?newApproved / newTotalVoters:0
                     };
                 }
 
