@@ -248,6 +248,7 @@ const StatementMain: FC = () => {
             <SwitchScreens
               screen={screen}
               statement={statement}
+              statementSubscription={statementSubscription}
               subStatements={subStatements}
               handleShowTalker={handleShowTalker}
               setShowAskPermission={setShowAskPermission}

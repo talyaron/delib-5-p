@@ -1,87 +1,84 @@
-import { RoomsStateSelection, Statement, isOptionFn } from "delib-npm";
+import { RoomsStateSelection, Statement, StatementSubscription, isOptionFn } from "delib-npm";
 import React, { FC, useState, useEffect } from "react";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
-import { listenToAllRoomsRequest } from "@/controllers/db/rooms/getRooms";
-import { useAppDispatch } from "@/controllers/hooks/reduxHooks";
 
+// Custom components
 import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
 import ChooseRoom from "./components/choose/ChooseRoom";
-
-// import InRoom from "./user/inRoom/InRoom";
-import { store } from "@/model/store";
-// import { enterRoomsDB } from "@/controllers/db/rooms/setRooms";
 import InRoom from "./components/inRoom/InRoom";
+
+import { store } from "@/model/store";
+
+// database
+import { listenToRooms } from "@/controllers/db/rooms/getRooms";
+import { isAdmin} from "@/controllers/general/helpers";
 
 interface RoomsProps {
   statement: Statement;
   subStatements: Statement[];
+  statementSubscription:StatementSubscription | undefined;
 }
 
-const Rooms: FC<RoomsProps> = ({
-	statement,
-	subStatements,
-}) => {
-	const dispatch = useAppDispatch();
+const Rooms: FC<RoomsProps> = ({ statement, subStatements,statementSubscription }) => {
+  
 
-	const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-	useEffect(() => {
-		
+  useEffect(() => {
+    const unsubscribe = listenToRooms(statement);
 
-		const unsubscribe = listenToAllRoomsRequest(statement, dispatch);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-		return unsubscribe;
-	}, []);
+  const options = subStatements.filter((subStatement: Statement) =>
+    isOptionFn(subStatement)
+  );
 
-	const __subStatements = subStatements.filter((subStatement: Statement) =>
-		isOptionFn(subStatement)
-	);
+  const _isAdmin = isAdmin(statementSubscription?.role);
 
-	const isAdmin = store.getState().user.user?.uid === statement.creatorId;
+  return (
+    <div className="page__main">
+      {switchRoomScreens(
+        statement.roomsState,
+        options,
+        statement,
+        setShowModal
+      )}
 
-	return (
-		<div className="page__main">
-      
-			{switchRoomScreens(
-				statement.roomsState,
-				__subStatements,
-				statement,
-				setShowModal
-			)}
+      {_isAdmin ? <RoomsAdmin statement={statement} /> : null}
 
-			{isAdmin ? <RoomsAdmin statement={statement} /> : null}
-
-			{showModal ? (
-				<CreateStatementModal
-					parentStatement={statement}
-					isOption={true}
-					setShowModal={setShowModal}
-				/>
-			) : null}
-   
-		</div>
-	);
+      {showModal ? (
+        <CreateStatementModal
+          parentStatement={statement}
+          isOption={true}
+          setShowModal={setShowModal}
+        />
+      ) : null}
+    </div>
+  );
 };
 
 export default Rooms;
 
 function switchRoomScreens(
-	roomState: RoomsStateSelection | undefined,
-	subStatements: Statement[],
-	statement: Statement,
-	setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  roomState: RoomsStateSelection | undefined,
+  topics: Statement[],
+  statement: Statement,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-	switch (roomState) {
-	case RoomsStateSelection.chooseRoom:
-		return (
-			<ChooseRoom subStatements={subStatements} setShowModal={setShowModal} />
-		);
-	case RoomsStateSelection.inRoom:
-		return <InRoom statement={statement} />;
+  switch (roomState) {
+    case RoomsStateSelection.chooseRoom:
+      return (
+        <ChooseRoom topics={topics} setShowModal={setShowModal} />
+      );
+    case RoomsStateSelection.inRoom:
+      return <InRoom topic={statement} />;
 
-	default:
-		return (
-			<ChooseRoom subStatements={subStatements} setShowModal={setShowModal} />
-		);
-	}
+    default:
+      return (
+        <ChooseRoom topics={topics} setShowModal={setShowModal} />
+      );
+  }
 }

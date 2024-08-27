@@ -10,18 +10,18 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import styles from "./ChooseRoom.module.scss";
 
 interface Props {
-  subStatements: Statement[];
+  topics: Statement[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ChooseRoom: FC<Props> = ({ subStatements, setShowModal }) => {
+const ChooseRoom: FC<Props> = ({ topics, setShowModal }) => {
 	const { t } = useLanguage();
 
 	return (
 		<>
 			<h2>{t("Division into rooms")}</h2>
 			<div className="roomsCards__wrapper">
-				{subStatements.map((subStatement: Statement) => {
+				{topics.map((subStatement: Statement) => {
 					return (
 						<RoomChoosingCard
 							key={subStatement.statementId}
