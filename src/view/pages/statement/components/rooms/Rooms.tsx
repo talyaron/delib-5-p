@@ -22,8 +22,6 @@ interface RoomsProps {
 const Rooms: FC<RoomsProps> = ({ statement, subStatements,statementSubscription }) => {
   
 
-  const [showModal, setShowModal] = useState(false);
-
   useEffect(() => {
     const unsubscribe = listenToRooms(statement);
 
@@ -43,19 +41,12 @@ const Rooms: FC<RoomsProps> = ({ statement, subStatements,statementSubscription 
       {switchRoomScreens(
         statement.roomsState,
         options,
-        statement,
-        setShowModal
+        statement      
       )}
 
       {_isAdmin ? <RoomsAdmin statement={statement} /> : null}
 
-      {showModal ? (
-        <CreateStatementModal
-          parentStatement={statement}
-          isOption={true}
-          setShowModal={setShowModal}
-        />
-      ) : null}
+      
     </div>
   );
 };
@@ -66,19 +57,19 @@ function switchRoomScreens(
   roomState: RoomsStateSelection | undefined,
   topics: Statement[],
   statement: Statement,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+
 ) {
   switch (roomState) {
     case RoomsStateSelection.chooseRoom:
       return (
-        <ChooseRoom topics={topics} setShowModal={setShowModal} />
+        <ChooseRoom topics={topics} statement={statement}/>
       );
     case RoomsStateSelection.inRoom:
       return <InRoom topic={statement} />;
 
     default:
       return (
-        <ChooseRoom topics={topics} setShowModal={setShowModal} />
+        <ChooseRoom topics={topics} statement={statement} />
       );
   }
 }
