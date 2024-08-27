@@ -1,26 +1,28 @@
 import {
 	Collections,
 	ParticipantInRoom,
+	RoomSettings,
 	Statement
 } from 'delib-npm';
 import {
 	collection,
+	doc,
 	onSnapshot,
 	query,
 	where,
 } from 'firebase/firestore';
 import { DB } from '../config';
-import {  deleteRoom, setRoom, setRooms } from '@/model/rooms/roomsSlice';
+import {  deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
 import { store } from '@/model/store';
 
 
-export function listenToRooms(
+export function listenToParticipants(
 	statement: Statement,
 ): Unsubscribe {
 	try {
 		const dispatch = store.dispatch;
-		const requestRef = collection(DB, Collections.rooms);
+		const requestRef = collection(DB, Collections.participants);
 		const q = query(requestRef, where('statement.parentId', '==', statement.statementId));
 
 		return onSnapshot(q, (roomsDB) => {
@@ -59,3 +61,17 @@ export function listenToRooms(
 
 // TODO: this function is not used. Delete it?
 
+
+export function listenToRoomsSettings(statementId:string):Unsubscribe{
+	try {
+		const roomSettingRef = doc(DB, Collections.roomsSettings, statementId);
+		return onSnapshot(roomSettingRef, (doc) => {
+			if (!doc.exists()) return;
+			const roomSettings = doc.data() as RoomSettings;
+			store.dispatch(setRoomSettings(roomSettings));
+		});
+	} catch (error) {
+		console.error(error);
+		return () => {};
+	}
+}

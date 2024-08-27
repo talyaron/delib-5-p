@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { participantsByTopicId } from "@/model/rooms/roomsSlice";
 import { userSelector } from "@/model/users/userSlice";
 import {
-  deleteRoomJoinFromDB,
-  setRoomJoinToDB,
+  deleteParticipantToDB,
+  setParticipantToDB,
 } from "@/controllers/db/rooms/setRooms";
 
 interface Props {
@@ -19,11 +19,11 @@ const RoomChoosingCard: FC<Props> = ({ topic }) => {
 
   function handleJoinRoom() {
     if (participant) {
-      console.log('deleteRoomJoinFromDB')
-      deleteRoomJoinFromDB(topic);
+      console.log('deleteParticipantToDB')
+      deleteParticipantToDB(topic);
     } else {
-      console.log('setRoomJoinToDB')
-      setRoomJoinToDB(topic);
+      console.log('setParticipantToDB')
+      setParticipantToDB(topic);
     }
   }
 

@@ -19,7 +19,9 @@ interface Props {
 
 const InRoom: FC<Props> = ({ topic }) => {
   try {
-    return <div className={styles.inRoom}>{topic.statement}</div>;
+    return <div className={styles.inRoom}>
+      <h1>In Room</h1>
+    </div>;
   
   } catch (error: any) {
     return null;

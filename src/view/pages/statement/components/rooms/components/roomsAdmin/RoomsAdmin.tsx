@@ -1,36 +1,34 @@
 import { Statement } from "delib-npm";
-import { FC, useState } from "react";
-import AdminArrange from "../adminArrange/AdminArrange";
-import SetTimers from "../setTimers/SetTimers";
+import { FC } from "react";
+
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./RoomsAdmin.scss";
+import Button from "@/view/components/buttons/button/Button";
+import { toggleRoomEditingInDB } from "@/controllers/db/rooms/setRooms";
 
 interface Props {
-    statement: Statement;
+  statement: Statement;
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
-	const { t } = useLanguage();
+  const { t } = useLanguage();
+  function handleToggleEdit() {
+	toggleRoomEditingInDB(statement.statementId);
+  }
 
-	const [setRooms, setSetRooms] = useState<boolean>(
-		statement.roomsState === "chooseRoom" ||
-            statement.roomsState === undefined
-			? false
-			: true,
-	);
+  return (
+    <div className="rooms-admin">
+      <p className="title">{t("Management board")}</p>
 
-	return (
-		<div className="rooms-admin">
-			<p className="title">{t("Management board")}</p>
-
-			<AdminArrange
-				statement={statement}
-				setRooms={setRooms}
-				setSetRooms={setSetRooms}
-			/>
-			{!setRooms && <SetTimers parentStatement={statement} />}
-		</div>
-	);
+      <Button
+        text={t("Set Into Rooms")}
+        onClick={handleToggleEdit}
+      />
+      <div>
+        <input type="number" defaultValue={7}/>
+      </div>
+    </div>
+  );
 };
 
 export default RoomsAdmin;

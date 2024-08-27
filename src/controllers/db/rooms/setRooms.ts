@@ -3,8 +3,9 @@ import {
 	Statement,
 	ParticipantInRoom,
 	getStatementSubscriptionId,
+	RoomSettings,
 } from "delib-npm";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, runTransaction, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 
 
@@ -12,7 +13,7 @@ import { store } from "@/model/store";
 
 
 
-export function setRoomJoinToDB(
+export function setParticipantToDB(
 	statement: Statement,
 	roomNumber?: number
 ): void {
@@ -29,8 +30,8 @@ export function setRoomJoinToDB(
 			participantInRoomId
 		};
 		if (roomNumber) participantInRoom.roomNumber = roomNumber;
-		
-		const roomRef = doc(DB, Collections.rooms, participantInRoomId);
+
+		const roomRef = doc(DB, Collections.participants, participantInRoomId);
 
 		setDoc(roomRef, participantInRoom, { merge: true });
 	} catch (error) {
@@ -38,7 +39,7 @@ export function setRoomJoinToDB(
 	}
 }
 
-export function deleteRoomJoinFromDB(
+export function deleteParticipantToDB(
 	statement: Statement
 ): void {
 	try {
@@ -48,7 +49,7 @@ export function deleteRoomJoinFromDB(
 		const roomId = getStatementSubscriptionId(statement.parentId, user);
 		if (!roomId) throw new Error("Room id is undefined");
 
-		const roomRef = doc(DB, Collections.rooms, roomId);
+		const roomRef = doc(DB, Collections.participants, roomId);
 
 		deleteDoc(roomRef);
 	} catch (error) {
@@ -56,3 +57,31 @@ export function deleteRoomJoinFromDB(
 	}
 }
 
+
+export async function toggleRoomEditingInDB(statementId: string): Promise<void> {
+	try {
+		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+		//use transaction
+		await runTransaction(DB, async (transaction) => {
+			try {
+				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
+				if (!roomSettings) {
+					transaction.set(roomSettingsRef, { 
+						statementId,
+						isEdit: false,
+						timers:[]
+
+					});
+				} else {
+				
+					transaction.update(roomSettingsRef, { isEdit: !roomSettings.isEdit });
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		});
+
+	} catch (error) {
+		console.error(error);
+	}
+}
