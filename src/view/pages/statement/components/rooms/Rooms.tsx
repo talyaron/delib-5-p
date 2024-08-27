@@ -7,11 +7,11 @@ import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
 import ChooseRoom from "./components/choose/ChooseRoom";
 import InRoom from "./components/inRoom/InRoom";
 
-import { store } from "@/model/store";
 
 // database
 import { listenToRooms } from "@/controllers/db/rooms/getRooms";
 import { isAdmin} from "@/controllers/general/helpers";
+
 
 interface RoomsProps {
   statement: Statement;
@@ -22,6 +22,7 @@ interface RoomsProps {
 const Rooms: FC<RoomsProps> = ({ statement, subStatements,statementSubscription }) => {
   
 
+
   useEffect(() => {
     const unsubscribe = listenToRooms(statement);
 
@@ -30,7 +31,7 @@ const Rooms: FC<RoomsProps> = ({ statement, subStatements,statementSubscription 
     };
   }, []);
 
-  const options = subStatements.filter((subStatement: Statement) =>
+  const topics = subStatements.filter((subStatement: Statement) =>
     isOptionFn(subStatement)
   );
 
@@ -40,7 +41,7 @@ const Rooms: FC<RoomsProps> = ({ statement, subStatements,statementSubscription 
     <div className="page__main">
       {switchRoomScreens(
         statement.roomsState,
-        options,
+        topics,
         statement      
       )}
 
