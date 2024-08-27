@@ -9,12 +9,9 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 import styles from "./ChooseRoom.module.scss";
 import Button from "@/view/components/buttons/button/Button";
-import {
-  setStatementToDB,
-  setSubStatementToDB,
-} from "@/controllers/db/statements/setStatements";
+
 import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
-import { set } from "node_modules/cypress/types/lodash";
+
 
 interface Props {
   statement: Statement;
@@ -35,13 +32,7 @@ const ChooseRoom: FC<Props> = ({ statement, topics }) => {
         {topics.map((topic: Statement) => {
           return <RoomChoosingCard key={topic.statementId} topic={topic} />;
         })}
-        <div
-          className={styles.fav}
-          style={{ height: "3rem" }}
-          onClick={() => setShowModal(true)}
-        >
-          +
-        </div>
+       
       </div>
       {showModal && (
         <CreateStatementModal

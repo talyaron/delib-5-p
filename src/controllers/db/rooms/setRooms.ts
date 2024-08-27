@@ -4,7 +4,7 @@ import {
 	ParticipantInRoom,
 	getStatementSubscriptionId,
 } from "delib-npm";
-import { doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 
 
@@ -20,14 +20,17 @@ export function setRoomJoinToDB(
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 
+		const participantInRoomId = getStatementSubscriptionId(statement.parentId, user);
+		if (!participantInRoomId) throw new Error("Participant in room id is undefined");
+
 		const participantInRoom: ParticipantInRoom = {
 			user: user,
-			statement
+			statement,
+			participantInRoomId
 		};
 		if (roomNumber) participantInRoom.roomNumber = roomNumber;
-		const roomId = getStatementSubscriptionId(statement.statementId, user)
-		if (!roomId) throw new Error("Room id is undefined");
-		const roomRef = doc(DB, Collections.rooms, roomId);
+		
+		const roomRef = doc(DB, Collections.rooms, participantInRoomId);
 
 		setDoc(roomRef, participantInRoom, { merge: true });
 	} catch (error) {
@@ -35,4 +38,21 @@ export function setRoomJoinToDB(
 	}
 }
 
+export function deleteRoomJoinFromDB(
+	statement: Statement
+): void {
+	try {
+		const user = store.getState().user.user;
+		if (!user) throw new Error("User not logged in");
+
+		const roomId = getStatementSubscriptionId(statement.parentId, user);
+		if (!roomId) throw new Error("Room id is undefined");
+
+		const roomRef = doc(DB, Collections.rooms, roomId);
+
+		deleteDoc(roomRef);
+	} catch (error) {
+		console.error(error);
+	}
+}
 

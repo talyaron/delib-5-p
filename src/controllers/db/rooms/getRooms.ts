@@ -10,7 +10,7 @@ import {
 	where,
 } from 'firebase/firestore';
 import { DB } from '../config';
-import {  setRooms } from '@/model/rooms/roomsSlice';
+import {  deleteRoom, setRoom, setRooms } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
 import { store } from '@/model/store';
 
@@ -21,15 +21,29 @@ export function listenToRooms(
 	try {
 		const dispatch = store.dispatch;
 		const requestRef = collection(DB, Collections.rooms);
-		const q = query(requestRef, where('parentId', '==', statement.statementId));
+		const q = query(requestRef, where('statement.parentId', '==', statement.statementId));
 
 		return onSnapshot(q, (roomsDB) => {
 			try {
-				const rooms = roomsDB.docs.map(
-					(requestDB) => requestDB.data() as ParticipantInRoom
-				);
+				roomsDB.docChanges().forEach((change) => {
 
-				dispatch(setRooms(rooms));
+					const room = change.doc.data() as ParticipantInRoom;
+
+					switch (change.type) {
+						case 'added':
+							dispatch(setRoom(room));
+							break;
+						case 'modified':
+							dispatch(setRoom(room));
+							break;
+						case 'removed':
+							dispatch(deleteRoom(room));
+							break;
+						default:
+							break;
+					}
+				});
+
 			} catch (error) {
 				console.error(error);
 				dispatch(setRooms([]));

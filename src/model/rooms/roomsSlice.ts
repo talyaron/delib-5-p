@@ -42,14 +42,26 @@ export const roomsSlice = createSlice({
 			} catch (error) {
 				console.error(error);
 			}
+		},
+		deleteRoom: (
+			state,
+			action: PayloadAction<ParticipantInRoom>,
+		) => {
+			try {
+				state.rooms = state.rooms.filter(
+					(room) => room.participantInRoomId !== action.payload.participantInRoomId,
+				);
+			} catch (error) {
+				console.error(error);
+			}
 		}
 	},
 });
 
-export const { setRoom,setRooms} =
+export const { setRoom,setRooms,deleteRoom} =
 	roomsSlice.actions;
 
-export const participantsByTopic =
+export const participantsByTopicId =
 	(topicId: string | undefined) => createSelector(
 		(state: RootState) => state.rooms.rooms,
 		(prt) => prt.filter(
