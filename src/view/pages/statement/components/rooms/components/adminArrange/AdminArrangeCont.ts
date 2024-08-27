@@ -47,10 +47,10 @@ export function divideIntoTopics(
 		//divide participents according to topics and rooms
 		// let rooms: Array<ParticipantInRoom> = [];
 		for (const topic in topicsParticipants) {
-			const patricipantsInTopic = topicsParticipants[topic].participants;
+			const participantsInTopic = topicsParticipants[topic].participants;
 			topicsParticipants[topic].rooms =
                 divideParticipantsIntoRoomsRandomly(
-                	patricipantsInTopic,
+                	participantsInTopic,
                 	maxPerRoom,
                 );
 		}

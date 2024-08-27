@@ -26,7 +26,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 		topicParticipantsSelector(statement.statementId),
 	) as Participant[];
 
-	function handleAskToJoinRoom() {
+	function handleJoinRoom() {
 		setRoomJoinToDB(statement);
 	}
 
@@ -40,7 +40,7 @@ const RoomChoosingCard: FC<Props> = ({ statement }) => {
 					? `${styles.roomCard} ${styles["roomCard--selected"]}`
 					: `${styles.roomCard}`
 			}
-			onClick={handleAskToJoinRoom}
+			onClick={handleJoinRoom}
 		>
 			<div className={styles.roomCard__title}>
 				<Text statement={statement.statement} />

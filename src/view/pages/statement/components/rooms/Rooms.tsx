@@ -9,15 +9,15 @@ import ChooseRoom from "./components/choose/ChooseRoom";
 
 // import InRoom from "./user/inRoom/InRoom";
 import { store } from "@/model/store";
-import { enterRoomsDB } from "@/controllers/db/rooms/setRooms";
+// import { enterRoomsDB } from "@/controllers/db/rooms/setRooms";
 import InRoom from "./components/inRoom/InRoom";
 
-interface StatementRoomsProps {
+interface RoomsProps {
   statement: Statement;
   subStatements: Statement[];
 }
 
-const StatementRooms: FC<StatementRoomsProps> = ({
+const Rooms: FC<RoomsProps> = ({
 	statement,
 	subStatements,
 }) => {
@@ -26,7 +26,7 @@ const StatementRooms: FC<StatementRoomsProps> = ({
 	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
-		enterRoomsDB(statement);
+		
 
 		const unsubscribe = listenToAllRoomsRequest(statement, dispatch);
 
@@ -63,7 +63,7 @@ const StatementRooms: FC<StatementRoomsProps> = ({
 	);
 };
 
-export default StatementRooms;
+export default Rooms;
 
 function switchRoomScreens(
 	roomState: RoomsStateSelection | undefined,

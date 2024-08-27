@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LobbyRooms, Participant, Statement } from "delib-npm";
+import { LobbyRooms, Participant, ParticipantInRoom, Statement } from "delib-npm";
 import { updateArray } from "@/controllers/general/helpers";
 import { z } from "zod";
 import { RootState } from "../store";
@@ -10,47 +10,24 @@ export interface RoomAdmin {
 	statement: Statement;
 }
 interface RoomsState {
-	rooms: Participant[];
-	askToJoinRooms: Participant[];
-	lobbyRooms: LobbyRooms[];
+	rooms: ParticipantInRoom[];
 }
 
 const initialState: RoomsState = {
 	rooms: [],
-	askToJoinRooms: [],
-	lobbyRooms: [],
 };
 
 export const roomsSlice = createSlice({
 	name: "rooms",
 	initialState,
 	reducers: {
-		setAskToJoinRooms: (
+		joinRoom: (
 			state,
-			action: PayloadAction<{
-				request: Participant | undefined;
-				parentId: string;
-			}>,
+			action: PayloadAction<ParticipantInRoom>,
 		) => {
 			try {
-				const { request, parentId } = action.payload;
 
-				if (!request) {
-					//remove previous room request
-
-					state.askToJoinRooms = state.askToJoinRooms.filter(
-						(room) => room.parentId !== parentId,
-					);
-
-					return;
-				}
-
-				//set request to join room
-				state.askToJoinRooms = updateArray(
-					state.askToJoinRooms,
-					request,
-					"requestId",
-				);
+				state.rooms = updateArray(state.rooms, action.payload, "participantInRoomId");
 			} catch (error) {
 				console.error(error);
 			}

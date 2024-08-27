@@ -7,13 +7,10 @@ import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Third party libraries
-import { RoomDivied, RoomsStateSelection, Statement } from "delib-npm";
+import {  RoomsStateSelection, Statement } from "delib-npm";
 
 // Statements functions
-import {
-	setParticipantInRoomToDB,
-	setRoomsStateToDB,
-} from "@/controllers/db/rooms/setRooms";
+
 import { setRoomSizeInStatementDB } from "@/controllers/db/statements/setStatements";
 
 import { divideIntoTopics } from "./AdminArrangeCont";
@@ -33,13 +30,7 @@ interface Props {
     setSetRooms: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface ParticipantInRoom {
-    uid: string;
-    room: number;
-    roomNumber?: number;
-    topic?: Statement;
-    statementId?: string;
-}
+
 
 const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 	const { t } = useLanguage();
@@ -69,14 +60,14 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 
 			rooms.forEach((room) => {
 				room.participants.forEach((participant) => {
-					const participantInRoom: ParticipantInRoom = {
-						uid: participant.participant.uid,
-						room: room.roomNumber,
-						roomNumber: room.roomNumber,
-						topic: room.statement,
-						statementId: room.statement.statementId,
-					};
-					setParticipantInRoomToDB(participantInRoom);
+					// const participantInRoom: ParticipantInRoom = {
+					// 	uid: participant.participant.uid,
+					// 	room: room.roomNumber,
+					// 	roomNumber: room.roomNumber,
+					// 	topic: room.statement,
+					// 	statementId: room.statement.statementId,
+					// };
+					// setParticipantInRoomToDB(participantInRoom);
 				});
 			});
 
@@ -89,12 +80,9 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 				rooms,
 			});
 
-			const roomsState = setRooms
-				? RoomsStateSelection.chooseRoom
-				: RoomsStateSelection.inRoom;
-			setSetRooms((state) => !state);
+			
 
-			setRoomsStateToDB(statement, roomsState);
+		
 		} catch (error) {
 			console.error(error);
 		}
@@ -175,7 +163,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 					<>
 						<h3>{t("Division into rooms")}</h3>
 						<div className="room-wrapper">
-							{roomsAdmin.map((room: RoomDivied) => {
+							{/* {roomsAdmin.map((room: RoomDivied) => {
 								return (
 									<Room
 										key={room.roomNumber}
@@ -185,7 +173,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement, setRooms, setSetRooms }) => {
 										}
 									/>
 								);
-							})}
+							})} */}
 						</div>
 					</>
 				)}

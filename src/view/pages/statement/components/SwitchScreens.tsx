@@ -11,7 +11,7 @@ import StatementEvaluationPage from "./solutions/StatementSolutionsPage";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
 import StatementSettings from "./settings/StatementSettings";
-import Rooms from "./rooms/StatementRooms";
+import Rooms from "./rooms/Rooms";
 import Info from "./info/Info";
 
 interface SwitchScreensProps {

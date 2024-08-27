@@ -16,19 +16,18 @@ import {
 import { DB } from '../config';
 import { setRoomRequests } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
-import { AppDispatch } from '@/model/store';
 
-export function listenToAllRoomsRequest(
+
+export function listenToRooms(
 	statement: Statement,
-	dispatch: AppDispatch
 ): Unsubscribe {
 	try {
-		const requestRef = collection(DB, Collections.statementRoomsAsked);
+		const requestRef = collection(DB, Collections.rooms);
 		const q = query(requestRef, where('parentId', '==', statement.statementId));
 
-		return onSnapshot(q, (requestsDB) => {
+		return onSnapshot(q, (roomsDB) => {
 			try {
-				const requests = requestsDB.docs.map(
+				const requests = roomsDB.docs.map(
 					(requestDB) => requestDB.data() as Participant
 				);
 
