@@ -17,6 +17,8 @@ import {
 } from "@/model/rooms/roomsSlice";
 import { useSelector } from "react-redux";
 import { statementSubsSelector } from "@/model/statements/statementsSlice";
+import RoomsDivision from "./roomsDivision/RoomsDivision";
+import RoomsView from "./roomsView/RoomsView";
 
 interface Props {
   statement: Statement;
@@ -42,31 +44,19 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
   const isEditingRoom =
     roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
 
-  function handleToggleEdit() {
-    toggleRoomEditingInDB(statement.statementId);
-    if (isEditingRoom) {
-      divideParticipantIntoRoomsToDB(
-        topics,
-        participants,
-        roomSettings?.participantsPerRoom || 7
-      );
-    } else {
-      clearRoomsToDB(participants);
-    }
-  }
-
-  function handleSetParticipantsPerRoom(add: number) {
-    setParticipantsPerRoom({ statementId: statement.statementId, add });
-  }
-
-  function handleSetParticipantsPerRoomNumber(number: number) {
-    setParticipantsPerRoom({ statementId: statement.statementId, number });
-  }
-
   return (
     <div className="rooms-admin">
       <p className="title">{t("Management board")}</p>
-      
+      {isEditingRoom ? (
+        <RoomsDivision
+          statement={statement}
+          roomSettings={roomSettings}
+          topics={topics}
+          participants={participants}
+        />
+      ) : (
+        <RoomsView statement={statement} participants={participants} />
+      )}
     </div>
   );
 };

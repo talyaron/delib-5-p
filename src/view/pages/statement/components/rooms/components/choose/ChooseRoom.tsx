@@ -6,7 +6,7 @@ import { Statement } from "delib-npm";
 // Custom components
 import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-
+import styles from "./ChooseRoom.module.scss";
 
 import Button from "@/view/components/buttons/button/Button";
 
@@ -23,8 +23,8 @@ const ChooseRoom: FC<Props> = ({ statement, topics }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <>
-      <h2>{t("Division into rooms")}</h2>
+    <div className={styles.wrapper}>
+    
       <div className="btns">
         <Button text={t("Create new room")} onClick={() => handleAddRoom()} />
       </div>
@@ -41,7 +41,7 @@ const ChooseRoom: FC<Props> = ({ statement, topics }) => {
           setShowModal={setShowModal}
         />
       )}
-    </>
+    </div>
   );
 
   function handleAddRoom() {

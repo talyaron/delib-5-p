@@ -1,7 +1,44 @@
-import React from 'react'
+import { FC } from 'react'
 import styles from '../RoomsAdmin.module.scss'
+import { clearRoomsToDB, divideParticipantIntoRoomsToDB, setParticipantsPerRoom, toggleRoomEditingInDB } from '@/controllers/db/rooms/setRooms';
+import { ParticipantInRoom, RoomSettings, Statement } from 'delib-npm';
+import Button from '@/view/components/buttons/button/Button';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
-const RoomsDivision = () => {
+interface Props{
+  statement: Statement;
+  roomSettings: RoomSettings | undefined;
+  topics: Statement[];
+  participants: ParticipantInRoom[];
+}
+
+const RoomsDivision:FC<Props> = ({
+  statement,
+  roomSettings,
+  topics,
+  participants
+}) => {
+
+  const {t} = useLanguage();
+
+  function handleToggleEdit() {
+    toggleRoomEditingInDB(statement.statementId);
+  
+      divideParticipantIntoRoomsToDB(
+        topics,
+        participants,
+        roomSettings?.participantsPerRoom || 7
+      );
+   
+  }
+
+  function handleSetParticipantsPerRoom(add: number) {
+    setParticipantsPerRoom({ statementId: statement.statementId, add });
+  }
+
+  function handleSetParticipantsPerRoomNumber(number: number) {
+    setParticipantsPerRoom({ statementId: statement.statementId, number });
+  }
   return (
     <>
     <div className={`btns ${styles.btns}`}>
