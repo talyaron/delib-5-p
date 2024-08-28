@@ -44,4 +44,3 @@ firebase-debug.log*
 ./firestore.indexes.json
 firestore.rules
 
-src/controllers/db/configKey.ts
