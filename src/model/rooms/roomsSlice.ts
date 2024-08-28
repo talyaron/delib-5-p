@@ -69,7 +69,7 @@ export const roomsSlice = createSlice({
 export const { setRoom, setRooms, deleteRoom, setRoomSettings } =
 	roomsSlice.actions;
 
-export const participantByIdSelector = (participantId: string|undefined) => createSelector(
+export const participantByIdSelector = (participantId: string | undefined) => createSelector(
 	(state: RootState) => state.rooms.participants,
 	(prt) => prt.find(
 		(prt) => prt.user.uid === participantId,
@@ -88,6 +88,14 @@ export const participantsByStatementId =
 		(state: RootState) => state.rooms.participants,
 		(prt) => prt.filter(
 			(prt) => prt.statement.parentId === statementId,
+		)
+	);
+
+export const participantsByStatementIdAndRoomNumber =
+	(statementId: string | undefined, roomNumber: number) => createSelector(
+		(state: RootState) => state.rooms.participants,
+		(prt) => prt.filter(
+			(prt) => prt.statement.parentId === statementId && prt.roomNumber === roomNumber,
 		)
 	);
 
