@@ -10,9 +10,7 @@ import {
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
-	randomAgain = true,
-	subStMap: Map<string, Statement> = new Map<string, Statement>(),
-): { subStatements: Statement[], subStMap: Map<string, Statement> } {
+): Statement[] {
 	try {
 		let _subStatements = subStatements.map(
 			(statement: Statement) => statement,
@@ -41,26 +39,6 @@ export function sortSubStatements(
 			);
 			break;
 		}
-
-		if(randomAgain){
-			const ___subStatements = [];
-			const stIds = subStMap.keys();
-			for (const stId of stIds) {
-				const statement = subStatements.find((st) => st.statementId === stId);
-				if (statement) {
-					___subStatements.push(statement);
-				}
-			}
-			
-			return { subStatements: ___subStatements, subStMap };
-		}
-
-		if (sort === Screen.OPTIONS_RANDOM || sort === Screen.QUESTIONS_RANDOM) {
-			_subStatements.forEach((statement) => {
-				subStMap.set(statement.statementId, statement);
-			});
-		}
-
 		const __subStatements = _subStatements.map(
 			(statement: Statement, i: number) => {
 				const updatedStatement = Object.assign({}, statement);
@@ -70,11 +48,11 @@ export function sortSubStatements(
 			},
 		);
 
-		return { subStatements: __subStatements, subStMap };
+		return __subStatements;
 	} catch (error) {
 		console.error(error);
 
-		return { subStatements: subStatements, subStMap };
+		return subStatements;
 	}
 }
 

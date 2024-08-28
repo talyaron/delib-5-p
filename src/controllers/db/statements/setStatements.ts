@@ -26,6 +26,7 @@ import {
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { allowedScreens } from "@/controllers/general/screens";
+import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 
 
 
@@ -64,6 +65,34 @@ export const updateStatementParents = async (
 };
 
 const TextSchema = z.string().min(2);
+
+export function setSubStatementToDB(statement: Statement, title: string, description?: string) {
+	try {
+		const newSubStatement = createStatement({
+			text: title,
+			description: description,
+			parentStatement: statement,
+			statementType: StatementType.option,
+			enableAddEvaluationOption: true,
+			enableAddVotingOption: true,
+			enhancedEvaluation: true,
+			showEvaluation: true,
+			resultsBy: ResultsBy.topOptions,
+			numberOfResults: 1,
+			hasChildren: true,
+			membership: statement.membership,
+		});
+
+		if(!newSubStatement) throw new Error("New newSubStatement is undefined");
+
+		const newSubStatementRef = doc(DB, Collections.statements, newSubStatement.statementId);
+		setDoc(newSubStatementRef, newSubStatement);
+	} catch (error) {
+		console.error(error);
+		
+	}
+}
+
 interface SetStatementToDBParams {
 	statement: Statement;
 	parentStatement?: Statement | "top";
@@ -159,6 +188,9 @@ export const setStatementToDB = async ({
 		});
 
 		statementPromises.push(statementPromise);
+
+		//add roomSettings
+		setNewRoomSettingsToDB(statement.statementId);
 
 		//add subscription
 

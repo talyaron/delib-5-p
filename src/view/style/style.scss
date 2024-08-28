@@ -39,6 +39,7 @@
 
   //shadow
   --shadow: rgba(181, 197, 232, 0.486);
+  --radius:5px;
 
   //buttons
   --inactive: rgb(207, 207, 207);
@@ -80,7 +81,7 @@
   --settings-voting: #EA8222;
   --settings-finished: #e8749e;
 
-  //similarties colors
+  //similarities colors
   --similarities-textarea-border: #C3D0EA;
   --similarities-titleInput: #818FAD;
   --types-color: #668FD1;
@@ -100,14 +101,16 @@
   --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
 
+//wights
+  --wight-medium: 400;
+
+
+  
 
 
 
 
-
-
-
-  //FIGMA LABRARY COLORS
+  //FIGMA LIBRARY COLORS
   //agreement-rang
   --range-positive-100: #46b4a0;
   --range-positive-60: ##78d2c2;
@@ -144,7 +147,7 @@
   //buttons
   --btn-primary: #739ee4;
   --btn-secondary: #739ee4;
-  --btn-tertiary: #739ee4;
+  --btn-tertiary: #a2c0f0;
   --btn-follow-me: #ec8aba;
   --btn-fab: #739ee4;
   //buttons-contrast
@@ -213,7 +216,7 @@
   --icon-disabled-filled-contrast: #2b4170;
   --icon-disabled-filled-secondary-contrast: #209eac;
   --icon-disabled-outline-contrast: #a1b0d1;
-  --icon-grenn-contrast: #00a89a;
+  --icon-green-contrast: #00a89a;
   --icon-red-contrast: #d1004b;
 
 

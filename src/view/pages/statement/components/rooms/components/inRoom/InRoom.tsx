@@ -1,89 +1,68 @@
-import { FC, useEffect } from "react";
-
-// // Third Party Libraries
-import { Participant, RoomTimer, Statement } from "delib-npm";
+import { FC } from "react";
+import { Statement } from "delib-npm";
+import {
+	participantByIdSelector,
+	participantsByStatementIdAndRoomNumber,
+} from "@/model/rooms/roomsSlice";
 
 // Redux
-import {
-	useAppDispatch,
-	useAppSelector,
-} from "@/controllers/hooks/reduxHooks";
-import { participantsInRoomSelector, userSelectedTopicSelector } from "@/model/rooms/roomsSlice";
+import { useSelector } from "react-redux";
+import { userSelector } from "@/model/users/userSlice";
 
 // Styles
-import "./InRoom.scss";
-import participantsIcon from '@/assets/icons/participants.svg'
+import styles from "./InRoom.module.scss";
+import RoomImage from "@/assets/images/roomImage.png";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
 
 // Custom Components
-import RoomTimers from "../roomTimer/Timers";
-import { listenToRoomTimers } from "@/controllers/db/timer/getTimer";
-import { Unsubscribe } from "firebase/firestore";
-import { selectRoomTimers } from "@/model/timers/timersSlice";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { getFirstName, getTitle } from "@/controllers/general/helpers";
 
 interface Props {
-  statement: Statement;
+  topic: Statement;
 }
 
-const InRoom: FC<Props> = ({ statement }) => {
-	const { t } = useLanguage();
-
-	const userTopic: Participant | undefined = useAppSelector(
-		userSelectedTopicSelector(statement.statementId)
-	);
-	const participants = useAppSelector(participantsInRoomSelector(userTopic?.roomNumber, statement.statementId)) as Participant[];
- 
-
-	const timers: RoomTimer[] = useAppSelector(selectRoomTimers);
-	
-	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		let unsubscribe: Unsubscribe = () => {};
-		if (userTopic?.roomNumber) {
-			unsubscribe = listenToRoomTimers(
-				statement.statementId,
-				userTopic?.roomNumber,
-				dispatch
-			);
-		}
-
-		return () => {
-			unsubscribe();
-		};
-	}, [userTopic?.roomNumber]);
-
+const InRoom: FC<Props> = ({ topic }) => {
 	try {
+		const user = useSelector(userSelector);
+		const {t} = useLanguage();
+
+		if (!user) return null;
+		const participantInRoom = useSelector(participantByIdSelector(user.uid));
+		const roomNumber = participantInRoom?.roomNumber || 0;
+		const participants = useSelector(
+			participantsByStatementIdAndRoomNumber(topic.statementId, roomNumber)
+		);
+
 		return (
-			<div className="in-room">
-				{userTopic && userTopic.statement ? (
-					<div className="welcome">
-						<h2>
-							{t("Welcome to room")} {userTopic?.roomNumber}
-						</h2>
-						<h3>{t("Room's Topic")}: {getTitle(userTopic?.statement)}</h3>
-						<div className="participants">
-							<img src={participantsIcon} alt="participants" />
-							<span>{participants.length} :</span>
-              
-							{participants.map((participant) => (
-								<span className="name" key={participant.participant.uid}>{getFirstName(participant.participant.displayName)}</span>
-							))}
-             
-						</div>
+			<div className={styles.inRoom}>
+				<div className={styles.wrapper}>
+					<div className={styles.room}>{t("Welcome to room")} {roomNumber}</div>
+					<div className={styles.topic}>
+						{t("Topic")}: {participantInRoom?.statement.statement}
 					</div>
-				) : (
-					<h2>{t("No Topic Chosen by You")}</h2>
-				)}
-				<div className="image"></div>
-				<RoomTimers roomNumber={userTopic?.roomNumber} timers={timers} />
+					<div
+						className={styles.image}
+						style={{ backgroundImage: `url(${RoomImage})` }}
+					></div>
+					<div>{t("Participants")}:</div>
+					<div className={styles.participants}>
+           
+						{participants.map((participant) => {
+							return (
+								<RoomParticipantBadge
+									key={participant.user.uid}
+									participant={participant}
+								/>
+							);
+						})}
+					</div>
+				</div>
 			</div>
 		);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	} catch (error: any) {
-		return <div>error: {error.message}</div>;
+	} catch (error) {
+		console.error(error);
+		
+		return null;
 	}
 };
 
