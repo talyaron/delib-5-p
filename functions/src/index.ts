@@ -5,7 +5,6 @@ import {
 	updateEvaluation,
 } from './fn_evaluation';
 import { updateResultsSettings } from './fn_results';
-import { countRoomJoiners } from './fn_rooms';
 import { updateDocumentSignatures } from './fn_signatures';
 import {
 	updateParentWithNewMessageCB,
@@ -104,11 +103,6 @@ exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);
 
 
 
-//rooms
-exports.countRoomJoiners = onDocumentWritten(
-	`${Collections.statementRoomsAsked}/{requestId}`,
-	countRoomJoiners
-);
 
 //timers
 exports.cleanTimers = onSchedule('every day 00:00', cleanOldTimers);
