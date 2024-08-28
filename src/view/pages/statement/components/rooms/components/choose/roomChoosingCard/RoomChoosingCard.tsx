@@ -21,10 +21,10 @@ const RoomChoosingCard: FC<Props> = ({ topic }) => {
 
   function handleJoinRoom() {
     if (participant) {
-      console.log('deleteParticipantToDB')
+      
       deleteParticipantToDB(topic);
     } else {
-      console.log('setParticipantToDB')
+      
       setParticipantToDB(topic);
     }
   }

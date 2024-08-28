@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {  ParticipantInRoom, RoomSettings } from "delib-npm";
+import { ParticipantInRoom, RoomSettings } from "delib-npm";
 import { updateArray } from "@/controllers/general/helpers";
 import { RootState } from "../store";
 
@@ -66,8 +66,15 @@ export const roomsSlice = createSlice({
 	},
 });
 
-export const { setRoom,setRooms,deleteRoom,setRoomSettings} =
+export const { setRoom, setRooms, deleteRoom, setRoomSettings } =
 	roomsSlice.actions;
+
+export const participantByIdSelector = (participantId: string|undefined) => createSelector(
+	(state: RootState) => state.rooms.participants,
+	(prt) => prt.find(
+		(prt) => prt.user.uid === participantId,
+	)
+);
 
 export const participantsByTopicId =
 	(topicId: string | undefined) => createSelector(
@@ -76,8 +83,15 @@ export const participantsByTopicId =
 			(prt) => prt.statement.statementId === topicId,
 		)
 	);
+export const participantsByStatementId =
+	(statementId: string | undefined) => createSelector(
+		(state: RootState) => state.rooms.participants,
+		(prt) => prt.filter(
+			(prt) => prt.statement.parentId === statementId,
+		)
+	);
 
-	export const roomSettingsByStatementId =
+export const roomSettingsByStatementId =
 	(statementId: string | undefined) => createSelector(
 		(state: RootState) => state.rooms.roomsSettings,
 		(roomsSettings) => roomsSettings.find(

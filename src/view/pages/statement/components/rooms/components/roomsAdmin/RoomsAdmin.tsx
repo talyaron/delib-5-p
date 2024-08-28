@@ -5,45 +5,73 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import styles from "./RoomsAdmin.module.scss";
 import Button from "@/view/components/buttons/button/Button";
 import {
+  clearRoomsToDB,
+  divideParticipantIntoRoomsToDB,
   setNewRoomSettingsToDB,
   setParticipantsPerRoom,
   toggleRoomEditingInDB,
 } from "@/controllers/db/rooms/setRooms";
-import { roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
+import {
+  participantsByStatementId,
+  roomSettingsByStatementId,
+} from "@/model/rooms/roomsSlice";
 import { useSelector } from "react-redux";
+import { statementSubsSelector } from "@/model/statements/statementsSlice";
 
 interface Props {
   statement: Statement;
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
+  const participants = useSelector(
+    participantsByStatementId(statement.statementId)
+  );
+
+  const topics = useSelector(statementSubsSelector(statement.statementId));
+
   const { t } = useLanguage();
 
   const roomSettings = useSelector(
     roomSettingsByStatementId(statement.statementId)
   );
-  console.log(roomSettings)
+
   if (!roomSettings) {
     setNewRoomSettingsToDB(statement.statementId);
   }
 
+  const isEditingRoom =
+    roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
+
   function handleToggleEdit() {
     toggleRoomEditingInDB(statement.statementId);
+    if (isEditingRoom) {
+      divideParticipantIntoRoomsToDB(
+        topics,
+        participants,
+        roomSettings?.participantsPerRoom || 7
+      );
+    } else {
+      clearRoomsToDB(participants);
+    }
   }
 
   function handleSetParticipantsPerRoom(add: number) {
-    setParticipantsPerRoom({statementId:statement.statementId, add});
+    setParticipantsPerRoom({ statementId: statement.statementId, add });
   }
 
   function handleSetParticipantsPerRoomNumber(number: number) {
-	setParticipantsPerRoom({statementId:statement.statementId, number});
+    setParticipantsPerRoom({ statementId: statement.statementId, number });
   }
 
   return (
     <div className="rooms-admin">
       <p className="title">{t("Management board")}</p>
-
-      <Button text={t("Set Into Rooms")} onClick={handleToggleEdit} />
+      <div className={`btns ${styles.btns}`}>
+        <Button
+          text={t("Divide participants into rooms")}
+          onClick={handleToggleEdit}
+        />
+      </div>
       <div className={styles.participantsPerRoom}>
         <div
           className={styles.add}
@@ -54,7 +82,9 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
         <input
           type="number"
           value={roomSettings?.participantsPerRoom || 7}
-		  onChange={(e)=>handleSetParticipantsPerRoomNumber(e.target.valueAsNumber)}
+          onChange={(e) =>
+            handleSetParticipantsPerRoomNumber(e.target.valueAsNumber)
+          }
         />
         <div
           className={styles.add}

@@ -4,16 +4,20 @@
     gap: 1rem;
 
     input{
-        width: 4rem;
+        width: 3rem;
         text-align: center;
     }
 
     .add{
-        background-color: teal;
+        background-color: var(--btn-tertiary);
         display: flex;
         justify-content: center;
         align-items: center;
         width: 2rem;
         border-radius: (var(--radius));
     }
+    
+}
+.btns{
+    margin: .6rem 0rem;
 }
