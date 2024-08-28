@@ -10,7 +10,6 @@ import { DB } from "../config";
 
 
 import { store } from "@/model/store";
-import { write } from "xlsx";
 
 
 
@@ -87,12 +86,12 @@ export async function toggleRoomEditingInDB(statementId: string): Promise<void> 
 	}
 }
 
-export async function setNewRoomSettingsToDB(statementId: string):Promise<void> {
+export async function setNewRoomSettingsToDB(statementId: string): Promise<void> {
 	try {
 		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
 
 		const roomSettingsDB = await getDoc(roomSettingsRef);
-		if(roomSettingsDB.exists()) return;
+		if (roomSettingsDB.exists()) return;
 
 		const roomSettings: RoomSettings = {
 			statementId,
@@ -106,26 +105,26 @@ export async function setNewRoomSettingsToDB(statementId: string):Promise<void> 
 	}
 }
 
-export async function setParticipantsPerRoom({statementId, add, number}:{statementId: string, add?: number, number?:number}): Promise<void> {
+export async function setParticipantsPerRoom({ statementId, add, number }: { statementId: string, add?: number, number?: number }): Promise<void> {
 	try {
-		if(!number && !add) throw new Error("number or add must be defined");
+		if (!number && !add) throw new Error("number or add must be defined");
 
 		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
 
-		if(number && number>=1){
+		if (number && number >= 1) {
 			updateDoc(roomSettingsRef, { participantsPerRoom: number });
 			return;
 		}
-		
+
 		if (typeof add !== "number") throw new Error("add is not a number");
-		
+
 		//use transaction
 		await runTransaction(DB, async (transaction) => {
 			try {
 				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
 				if (!roomSettings) throw new Error("Room settings not found");
 				const participantsPerRoom = roomSettings.participantsPerRoom || 7;
-				
+
 				if (participantsPerRoom + add < 1) return;
 
 				transaction.update(roomSettingsRef, { participantsPerRoom: participantsPerRoom + add });
@@ -140,7 +139,7 @@ export async function setParticipantsPerRoom({statementId, add, number}:{stateme
 	}
 }
 
-export async function divideParticipantIntoRoomsToDB(topics:Statement[],participants:ParticipantInRoom[], participantsPerRoom:number): void {
+export async function divideParticipantIntoRoomsToDB(topics: Statement[], participants: ParticipantInRoom[], participantsPerRoom: number): Promise<void> {
 	try {
 		const _topics = [...topics];
 		const _participants = [...participants];
@@ -152,17 +151,22 @@ export async function divideParticipantIntoRoomsToDB(topics:Statement[],particip
 			const participantsInTopic = _participants.filter((participant) => participant.statement.statementId === topic.statementId);
 			participantsInTopic.sort(() => Math.random() - 0.5);
 			const numberOfRooms = Math.ceil(participantsInTopic.length / participantsPerRoom);
-			const topRoomNumber = roomNumber + (numberOfRooms-1);
+			const topRoomNumber = roomNumber + (numberOfRooms - 1);
 			const initialRoomNumber = roomNumber;
-			console.log(`For topic ${topic.statement} there are ${numberOfRooms} rooms, and ${participantsInTopic.length} participants. initail room number is ${initialRoomNumber} and top room number is ${topRoomNumber}`);
+			let localRoomNumber = roomNumber;
+
+
 			participantsInTopic.forEach((participant) => {
-				
+
 				const participantRef = doc(DB, Collections.participants, participant.participantInRoomId);
-				console.log(roomNumber)
-				batch.update(participantRef, {roomNumber});
-				roomNumber++;
-				if (roomNumber > topRoomNumber) roomNumber = initialRoomNumber;
+
+				batch.update(participantRef, { roomNumber: localRoomNumber });
+
+				localRoomNumber++;
+
+				if (localRoomNumber > topRoomNumber) localRoomNumber = initialRoomNumber;
 			});
+			roomNumber = topRoomNumber + 1;
 
 		});
 
@@ -174,13 +178,13 @@ export async function divideParticipantIntoRoomsToDB(topics:Statement[],particip
 
 }
 
-export async function clearRoomsToDB( participants:ParticipantInRoom[]): Promise<void> {
+export async function clearRoomsToDB(participants: ParticipantInRoom[]): Promise<void> {
 	try {
-		
+
 		const batch = writeBatch(DB);
 		participants.forEach((participant) => {
 			const participantRef = doc(DB, Collections.participants, participant.participantInRoomId);
-			batch.update(participantRef, {roomNumber: 0});
+			batch.update(participantRef, { roomNumber: 0 });
 		});
 
 		await batch.commit();

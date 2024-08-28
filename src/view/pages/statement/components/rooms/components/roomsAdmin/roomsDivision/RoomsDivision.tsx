@@ -1,35 +1,37 @@
-import { FC } from 'react'
-import styles from '../RoomsAdmin.module.scss'
-import { clearRoomsToDB, divideParticipantIntoRoomsToDB, setParticipantsPerRoom, toggleRoomEditingInDB } from '@/controllers/db/rooms/setRooms';
-import { ParticipantInRoom, RoomSettings, Statement } from 'delib-npm';
-import Button from '@/view/components/buttons/button/Button';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { FC } from "react";
+import styles from "../RoomsAdmin.module.scss";
+import {
+  divideParticipantIntoRoomsToDB,
+  setParticipantsPerRoom,
+  toggleRoomEditingInDB,
+} from "@/controllers/db/rooms/setRooms";
+import { ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
+import Button from "@/view/components/buttons/button/Button";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
-interface Props{
+interface Props {
   statement: Statement;
   roomSettings: RoomSettings | undefined;
   topics: Statement[];
   participants: ParticipantInRoom[];
 }
 
-const RoomsDivision:FC<Props> = ({
+const RoomsDivision: FC<Props> = ({
   statement,
   roomSettings,
   topics,
-  participants
+  participants,
 }) => {
-
-  const {t} = useLanguage();
+  const { t } = useLanguage();
 
   function handleToggleEdit() {
     toggleRoomEditingInDB(statement.statementId);
-  
-      divideParticipantIntoRoomsToDB(
-        topics,
-        participants,
-        roomSettings?.participantsPerRoom || 7
-      );
-   
+
+    divideParticipantIntoRoomsToDB(
+      topics,
+      participants,
+      roomSettings?.participantsPerRoom || 7
+    );
   }
 
   function handleSetParticipantsPerRoom(add: number) {
@@ -41,7 +43,7 @@ const RoomsDivision:FC<Props> = ({
   }
   return (
     <>
-    <div className={`btns ${styles.btns}`}>
+      <div className={`btns ${styles.btns}`}>
         <Button
           text={t("Divide participants into rooms")}
           onClick={handleToggleEdit}
@@ -69,7 +71,7 @@ const RoomsDivision:FC<Props> = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RoomsDivision
+export default RoomsDivision;

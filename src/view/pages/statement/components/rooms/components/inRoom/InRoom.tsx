@@ -11,8 +11,8 @@ import { userSelector } from "@/model/users/userSlice";
 // Styles
 import styles from "./InRoom.module.scss";
 import RoomImage from "@/assets/images/roomImage.png";
-import ParticipantChip from "./participant/ParticipantChip";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
 
 // Custom Components
 
@@ -48,7 +48,7 @@ const InRoom: FC<Props> = ({ topic }) => {
            
             {participants.map((participant) => {
               return (
-                <ParticipantChip
+                <RoomParticipantBadge
                   key={participant.user.uid}
                   participant={participant}
                 />

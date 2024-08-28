@@ -45,6 +45,7 @@ function sortIntoRooms(
 ): ParticipantInRoom[][] {
   const rooms: ParticipantInRoom[][] = [];
   participants.forEach((participant) => {
+    
     if (!participant.roomNumber) return;
 
     const roomIndex = participant.roomNumber - 1;
@@ -53,5 +54,6 @@ function sortIntoRooms(
     }
     rooms[roomIndex].push(participant);
   });
+  
   return rooms;
 }

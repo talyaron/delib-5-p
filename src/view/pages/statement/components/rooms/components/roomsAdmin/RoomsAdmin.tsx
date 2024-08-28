@@ -2,15 +2,8 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import styles from "./RoomsAdmin.module.scss";
-import Button from "@/view/components/buttons/button/Button";
-import {
-  clearRoomsToDB,
-  divideParticipantIntoRoomsToDB,
-  setNewRoomSettingsToDB,
-  setParticipantsPerRoom,
-  toggleRoomEditingInDB,
-} from "@/controllers/db/rooms/setRooms";
+
+import { setNewRoomSettingsToDB } from "@/controllers/db/rooms/setRooms";
 import {
   participantsByStatementId,
   roomSettingsByStatementId,
@@ -45,8 +38,8 @@ const RoomsAdmin: FC<Props> = ({ statement }) => {
     roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
 
   return (
-    <div className="rooms-admin">
-      <p className="title">{t("Management board")}</p>
+    <div className="rooms-admin wrapper">
+      <h2 className="title">{t("Management board")}</h2>
       {isEditingRoom ? (
         <RoomsDivision
           statement={statement}
