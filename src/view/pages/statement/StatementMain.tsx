@@ -8,13 +8,13 @@ import { User, Role, Screen } from "delib-npm";
 // firestore
 import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
 import {
-  listenToSubStatements,
-  listenToStatement,
-  listenToStatementSubscription,
+	listenToSubStatements,
+	listenToStatement,
+	listenToStatementSubscription,
 } from "@/controllers/db/statements/listenToStatements";
 import {
-  updateSubscriberForStatementSubStatements,
-  setStatementSubscriptionToDB,
+	updateSubscriberForStatementSubStatements,
+	setStatementSubscriptionToDB,
 } from "@/controllers/db/subscriptions/setSubscriptions";
 
 import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
@@ -45,227 +45,227 @@ import FollowMeToast from "./components/followMeToast/FollowMeToast";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
-  (state: RootState) => state.statements.statements,
-  (_state: RootState, statementId: string | undefined) => statementId,
-  (statements, statementId) =>
-    statements
-      .filter((st) => st.parentId === statementId)
-      .sort((a, b) => a.createdAt - b.createdAt)
+	(state: RootState) => state.statements.statements,
+	(_state: RootState, statementId: string | undefined) => statementId,
+	(statements, statementId) =>
+		statements
+			.filter((st) => st.parentId === statementId)
+			.sort((a, b) => a.createdAt - b.createdAt)
 );
 
 const StatementMain: FC = () => {
-  // Hooks
-  const { statementId } = useParams();
-  const page = useParams().page as Screen;
-  const navigate = useNavigate();
+	// Hooks
+	const { statementId } = useParams();
+	const page = useParams().page as Screen;
+	const navigate = useNavigate();
 
-  //TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
-  const {
-    error,
-    isAuthorized,
-    loading,
-    statementSubscription,
-    statement,
-    topParentStatement,
-    role,
-  } = useIsAuthorized(statementId);
+	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
+	const {
+		error,
+		isAuthorized,
+		loading,
+		statementSubscription,
+		statement,
+		topParentStatement,
+		role,
+	} = useIsAuthorized(statementId);
 
-  // Redux store
-  const dispatch = useAppDispatch();
-  const user = useSelector(userSelector);
-  const hasNotifications = useAppSelector(
-    statementNotificationSelector(statementId)
-  );
+	// Redux store
+	const dispatch = useAppDispatch();
+	const user = useSelector(userSelector);
+	const hasNotifications = useAppSelector(
+		statementNotificationSelector(statementId)
+	);
 
-  const subStatements = useAppSelector((state: RootState) =>
-    subStatementsSelector(state, statementId)
-  );
+	const subStatements = useAppSelector((state: RootState) =>
+		subStatementsSelector(state, statementId)
+	);
 
-  // Use states
-  const [talker, setTalker] = useState<User | null>(null);
-  const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
-  const [askNotifications, setAskNotifications] = useState(false);
-  const [isStatementNotFound, setIsStatementNotFound] = useState(false);
+	// Use states
+	const [talker, setTalker] = useState<User | null>(null);
+	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
+	const [askNotifications, setAskNotifications] = useState(false);
+	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
-  // const [_, setPasswordCheck] = useState<boolean>(false)
+	// const [_, setPasswordCheck] = useState<boolean>(false)
 
-  // Constants
-  const screen = availableScreen(statement, statementSubscription, page);
+	// Constants
+	const screen = availableScreen(statement, statementSubscription, page);
 
-  // Functions
-  const toggleAskNotifications = () => {
-    // Ask for notifications after user interaction.
-    if (!hasNotifications && !statementSubscription?.userAskedForNotification) {
-      setAskNotifications(true);
-    }
-  };
+	// Functions
+	const toggleAskNotifications = () => {
+		// Ask for notifications after user interaction.
+		if (!hasNotifications && !statementSubscription?.userAskedForNotification) {
+			setAskNotifications(true);
+		}
+	};
 
-  const handleShowTalker = (_talker: User | null) => {
-    if (!talker) {
-      setTalker(_talker);
-    } else {
-      setTalker(null);
-    }
-  };
+	const handleShowTalker = (_talker: User | null) => {
+		if (!talker) {
+			setTalker(_talker);
+		} else {
+			setTalker(null);
+		}
+	};
 
-  //in case the url is of undefined screen, navigate to the first available screen
-  useEffect(() => {
-    if (screen && screen !== page) {
-      navigate(`/statement/${statementId}/${screen}`);
-    }
-  }, [screen]);
+	//in case the url is of undefined screen, navigate to the first available screen
+	useEffect(() => {
+		if (screen && screen !== page) {
+			navigate(`/statement/${statementId}/${screen}`);
+		}
+	}, [screen]);
 
-  useEffect(() => {
-    if (statement && screen) {
-      //set navigator tab title
-      const { shortVersion } = statementTitleToDisplay(statement.statement, 15);
-      document.title = `Console - ${shortVersion}-${screen}`;
-    }
-  }, [statement, screen]);
+	useEffect(() => {
+		if (statement && screen) {
+			//set navigator tab title
+			const { shortVersion } = statementTitleToDisplay(statement.statement, 15);
+			document.title = `Console - ${shortVersion}-${screen}`;
+		}
+	}, [statement, screen]);
 
-  // Listen to statement changes.
-  useEffect(() => {
-    let unSubListenToStatement: () => void = () => {
-      return;
-    };
+	// Listen to statement changes.
+	useEffect(() => {
+		let unSubListenToStatement: () => void = () => {
+			return;
+		};
 
-    let unSubSubStatements: () => void = () => {
-      return;
-    };
-    let unSubStatementSubscription: () => void = () => {
-      return;
-    };
-    let unSubEvaluations: () => void = () => {
-      return;
-    };
+		let unSubSubStatements: () => void = () => {
+			return;
+		};
+		let unSubStatementSubscription: () => void = () => {
+			return;
+		};
+		let unSubEvaluations: () => void = () => {
+			return;
+		};
 
-    if (user && statementId) {
-      unSubListenToStatement = listenToStatement(
-        statementId,
-        setIsStatementNotFound
-      );
+		if (user && statementId) {
+			unSubListenToStatement = listenToStatement(
+				statementId,
+				setIsStatementNotFound
+			);
 
-      unSubSubStatements = listenToSubStatements(statementId, dispatch);
-      unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
+			unSubSubStatements = listenToSubStatements(statementId, dispatch);
+			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
 
-      unSubStatementSubscription = listenToStatementSubscription(
-        statementId,
-        user,
-        dispatch
-      );
-    }
+			unSubStatementSubscription = listenToStatementSubscription(
+				statementId,
+				user,
+				dispatch
+			);
+		}
 
-    return () => {
-      unSubListenToStatement();
-      unSubSubStatements();
-      unSubStatementSubscription();
-      unSubEvaluations();
-    };
-  }, [user, statementId]);
+		return () => {
+			unSubListenToStatement();
+			unSubSubStatements();
+			unSubStatementSubscription();
+			unSubEvaluations();
+		};
+	}, [user, statementId]);
 
-  useEffect(() => {
-    //listen to top parent statement
-    let unSubscribe = () => {
-      return;
-    };
-    if (statement?.topParentId) {
-      unSubscribe = listenToStatement(
-        statement?.topParentId,
-        setIsStatementNotFound
-      );
-    }
+	useEffect(() => {
+		//listen to top parent statement
+		let unSubscribe = () => {
+			return;
+		};
+		if (statement?.topParentId) {
+			unSubscribe = listenToStatement(
+				statement?.topParentId,
+				setIsStatementNotFound
+			);
+		}
 
-    return () => {
-      unSubscribe();
-    };
-  }, [statement?.topParentId]);
+		return () => {
+			unSubscribe();
+		};
+	}, [statement?.topParentId]);
 
-  useEffect(() => {
-    if (statement) {
-      (async () => {
-        const isSubscribed = await getIsSubscribed(statementId);
+	useEffect(() => {
+		if (statement) {
+			(async () => {
+				const isSubscribed = await getIsSubscribed(statementId);
 
-        // if isSubscribed is false, then subscribe
-        if (!isSubscribed) {
-          // subscribe
-          setStatementSubscriptionToDB(statement, Role.member);
-        } else {
-          //update subscribed field
-          updateSubscriberForStatementSubStatements(statement);
-        }
-      })();
-    }
-  }, [statement]);
+				// if isSubscribed is false, then subscribe
+				if (!isSubscribed) {
+					// subscribe
+					setStatementSubscriptionToDB(statement, Role.member);
+				} else {
+					//update subscribed field
+					updateSubscriberForStatementSubStatements(statement);
+				}
+			})();
+		}
+	}, [statement]);
 
-  useEffect(() => {
-    if (user?.uid === statement?.creatorId) {
-      // setPasswordCheck(true);
-    } else {
-      // setPasswordCheck(false);
-    }
-  }, []);
+	useEffect(() => {
+		if (user?.uid === statement?.creatorId) {
+			// setPasswordCheck(true);
+		} else {
+			// setPasswordCheck(false);
+		}
+	}, []);
 
-  if (isStatementNotFound) return <Page404 />;
-  if (error) return <UnAuthorizedPage />;
-  if (loading) return <LoadingPage />;
+	if (isStatementNotFound) return <Page404 />;
+	if (error) return <UnAuthorizedPage />;
+	if (loading) return <LoadingPage />;
 
-  if (isAuthorized)
-    return (
-      <>
-        {/* {passwordCheck ?
+	if (isAuthorized)
+		return (
+			<>
+				{/* {passwordCheck ?
 					( */}
-        <div className="page">
-          {showAskPermission && <AskPermission showFn={setShowAskPermission} />}
-          {talker && (
-            <button
-              onClick={() => {
-                handleShowTalker(null);
-              }}
-            >
-              <ProfileImage user={talker} />
-            </button>
-          )}
-          {askNotifications && (
-            <EnableNotifications
-              statement={statement}
-              setAskNotifications={setAskNotifications}
-              setShowAskPermission={setShowAskPermission}
-            />
-          )}
+				<div className="page">
+					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
+					{talker && (
+						<button
+							onClick={() => {
+								handleShowTalker(null);
+							}}
+						>
+							<ProfileImage user={talker} />
+						</button>
+					)}
+					{askNotifications && (
+						<EnableNotifications
+							statement={statement}
+							setAskNotifications={setAskNotifications}
+							setShowAskPermission={setShowAskPermission}
+						/>
+					)}
 
-          <StatementHeader
-            statement={statement}
-            statementSubscription={statementSubscription}
-            topParentStatement={topParentStatement}
-            screen={screen ?? Screen.CHAT}
-            showAskPermission={showAskPermission}
-            setShowAskPermission={setShowAskPermission}
-            role={role}
-          />
-          <MapProvider>
-            <FollowMeToast role={role} statement={statement} />
+					<StatementHeader
+						statement={statement}
+						statementSubscription={statementSubscription}
+						topParentStatement={topParentStatement}
+						screen={screen ?? Screen.CHAT}
+						showAskPermission={showAskPermission}
+						setShowAskPermission={setShowAskPermission}
+						role={role}
+					/>
+					<MapProvider>
+						<FollowMeToast role={role} statement={statement} />
 
-            <SwitchScreens
-              screen={screen}
-              statement={statement}
-              statementSubscription={statementSubscription}
-              subStatements={subStatements}
-              handleShowTalker={handleShowTalker}
-              setShowAskPermission={setShowAskPermission}
-              toggleAskNotifications={toggleAskNotifications}
-            />
-          </MapProvider>
-        </div>
-        {/* )
+						<SwitchScreens
+							screen={screen}
+							statement={statement}
+							statementSubscription={statementSubscription}
+							subStatements={subStatements}
+							handleShowTalker={handleShowTalker}
+							setShowAskPermission={setShowAskPermission}
+							toggleAskNotifications={toggleAskNotifications}
+						/>
+					</MapProvider>
+				</div>
+				{/* )
 					:
 					<div className="passwordUiComponent">
 						<PasswordUi setPasswordCheck={setPasswordCheck} />
 					</div>
 				} */}
-      </>
-    );
+			</>
+		);
 
-  return <UnAuthorizedPage />;
+	return <UnAuthorizedPage />;
 };
 
 export default StatementMain;

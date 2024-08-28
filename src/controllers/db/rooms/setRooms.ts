@@ -61,6 +61,7 @@ export function deleteParticipantToDB(
 export async function toggleRoomEditingInDB(statementId: string): Promise<void> {
 	try {
 		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+
 		//use transaction
 		await runTransaction(DB, async (transaction) => {
 			try {
@@ -113,6 +114,7 @@ export async function setParticipantsPerRoom({ statementId, add, number }: { sta
 
 		if (number && number >= 1) {
 			updateDoc(roomSettingsRef, { participantsPerRoom: number });
+			
 			return;
 		}
 

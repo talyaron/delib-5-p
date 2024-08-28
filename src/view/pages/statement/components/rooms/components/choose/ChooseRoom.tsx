@@ -19,34 +19,34 @@ interface Props {
 }
 
 const ChooseRoom: FC<Props> = ({ statement, topics }) => {
-  const { t } = useLanguage();
-  const [showModal, setShowModal] = useState(false);
+	const { t } = useLanguage();
+	const [showModal, setShowModal] = useState(false);
 
-  return (
-    <div className={styles.wrapper}>
+	return (
+		<div className={styles.wrapper}>
     
-      <div className="btns">
-        <Button text={t("Create new room")} onClick={() => handleAddRoom()} />
-      </div>
-      <div className="roomsCards__wrapper">
-        {topics.map((topic: Statement) => {
-          return <RoomChoosingCard key={topic.statementId} topic={topic} />;
-        })}
+			<div className="btns">
+				<Button text={t("Create new room")} onClick={() => handleAddRoom()} />
+			</div>
+			<div className="roomsCards__wrapper">
+				{topics.map((topic: Statement) => {
+					return <RoomChoosingCard key={topic.statementId} topic={topic} />;
+				})}
        
-      </div>
-      {showModal && (
-        <CreateStatementModal
-          parentStatement={statement}
-          isOption={true}
-          setShowModal={setShowModal}
-        />
-      )}
-    </div>
-  );
+			</div>
+			{showModal && (
+				<CreateStatementModal
+					parentStatement={statement}
+					isOption={true}
+					setShowModal={setShowModal}
+				/>
+			)}
+		</div>
+	);
 
-  function handleAddRoom() {
-    setShowModal(true);
-  }
+	function handleAddRoom() {
+		setShowModal(true);
+	}
 };
 
 export default ChooseRoom;

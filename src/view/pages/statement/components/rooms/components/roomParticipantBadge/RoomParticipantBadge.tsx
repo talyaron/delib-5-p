@@ -1,6 +1,7 @@
 import { ParticipantInRoom } from "delib-npm";
 import { FC } from "react";
 import "./RoomParticipantBadge.scss";
+
 interface Props {
     participant: ParticipantInRoom;
 }

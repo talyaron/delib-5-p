@@ -12,7 +12,7 @@ import {
 	where,
 } from 'firebase/firestore';
 import { DB } from '../config';
-import {  deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/roomsSlice';
+import { deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
 import { store } from '@/model/store';
 
@@ -32,17 +32,17 @@ export function listenToParticipants(
 					const room = change.doc.data() as ParticipantInRoom;
 
 					switch (change.type) {
-						case 'added':
-							dispatch(setRoom(room));
-							break;
-						case 'modified':
-							dispatch(setRoom(room));
-							break;
-						case 'removed':
-							dispatch(deleteRoom(room));
-							break;
-						default:
-							break;
+					case 'added':
+						dispatch(setRoom(room));
+						break;
+					case 'modified':
+						dispatch(setRoom(room));
+						break;
+					case 'removed':
+						dispatch(deleteRoom(room));
+						break;
+					default:
+						break;
 					}
 				});
 
@@ -55,16 +55,17 @@ export function listenToParticipants(
 		console.error(error);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		return () => {};
+		return () => { };
 	}
 }
 
 // TODO: this function is not used. Delete it?
 
 
-export function listenToRoomsSettings(statementId:string):Unsubscribe{
+export function listenToRoomsSettings(statementId: string): Unsubscribe {
 	try {
 		const roomSettingRef = doc(DB, Collections.roomsSettings, statementId);
+
 		return onSnapshot(roomSettingRef, (doc) => {
 			if (!doc.exists()) return;
 			const roomSettings = doc.data() as RoomSettings;
@@ -72,6 +73,8 @@ export function listenToRoomsSettings(statementId:string):Unsubscribe{
 		});
 	} catch (error) {
 		console.error(error);
-		return () => {};
+		
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		return () => { };
 	}
 }

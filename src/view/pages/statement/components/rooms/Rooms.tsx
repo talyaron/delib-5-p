@@ -1,7 +1,7 @@
 import {
-  Statement,
-  StatementSubscription,
-  isOptionFn,
+	Statement,
+	StatementSubscription,
+	isOptionFn,
 } from "delib-npm";
 import  { FC, useEffect } from "react";
 
@@ -13,8 +13,8 @@ import InRoom from "./components/inRoom/InRoom";
 
 // database
 import {
-  listenToParticipants,
-  listenToRoomsSettings,
+	listenToParticipants,
+	listenToRoomsSettings,
 } from "@/controllers/db/rooms/getRooms";
 import { isAdmin } from "@/controllers/general/helpers";
 import { useSelector } from "react-redux";
@@ -28,52 +28,52 @@ interface RoomsProps {
 }
 
 const Rooms: FC<RoomsProps> = ({
-  statement,
-  subStatements,
-  statementSubscription,
+	statement,
+	subStatements,
+	statementSubscription,
 }) => {
-  const roomSettings = useSelector(
-    roomSettingsByStatementId(statement.statementId)
-  );
-  const isEditingRoom = roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
+	const roomSettings = useSelector(
+		roomSettingsByStatementId(statement.statementId)
+	);
+	const isEditingRoom = roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
   
 
-  useEffect(() => {
-    const unsubscribe = listenToParticipants(statement);
-    const unsubSettings = listenToRoomsSettings(statement.statementId);
+	useEffect(() => {
+		const unsubscribe = listenToParticipants(statement);
+		const unsubSettings = listenToRoomsSettings(statement.statementId);
 
-    return () => {
-      unsubscribe();
-      unsubSettings();
-    };
-  }, []);
+		return () => {
+			unsubscribe();
+			unsubSettings();
+		};
+	}, []);
 
-  const topics = subStatements.filter((subStatement: Statement) =>
-    isOptionFn(subStatement)
-  );
+	const topics = subStatements.filter((subStatement: Statement) =>
+		isOptionFn(subStatement)
+	);
 
-  const _isAdmin = isAdmin(statementSubscription?.role);
+	const _isAdmin = isAdmin(statementSubscription?.role);
 
-  return (
-    <div className="page__main">
-      {switchRoomScreens(isEditingRoom, topics, statement)}
+	return (
+		<div className="page__main">
+			{switchRoomScreens(isEditingRoom, topics, statement)}
 
-      {_isAdmin ? <RoomsAdmin statement={statement} /> : null}
-    </div>
-  );
+			{_isAdmin ? <RoomsAdmin statement={statement} /> : null}
+		</div>
+	);
 };
 
 export default Rooms;
 
 function switchRoomScreens(
-  isEditingRoom: boolean,
-  topics: Statement[],
-  statement: Statement
+	isEditingRoom: boolean,
+	topics: Statement[],
+	statement: Statement
 ) {
 
-  if (isEditingRoom) {
-    return <ChooseRoom topics={topics} statement={statement} />;
-  } else {
-    return <InRoom topic={statement} />;
-  }
+	if (isEditingRoom) {
+		return <ChooseRoom topics={topics} statement={statement} />;
+	} else {
+		return <InRoom topic={statement} />;
+	}
 }
