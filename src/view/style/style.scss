@@ -142,11 +142,12 @@
 
 
   //buttons
-  --btn-primary: #739ee4;
-  --btn-secondary: #739ee4;
-  --btn-tertiary: #739ee4;
+  --btn-primary: #5f8cd4;
+  --btn-secondary: #5f8cd4;
+  --btn-tertiary: #5f8cd4;
   --btn-follow-me: #ec8aba;
-  --btn-fab: #739ee4;
+  --btn-fab: #5f8cd4;
+  --btn-fab-pressed: #476fca;
   //buttons-contrast
   --btn-primary-contrast: #ffffff;
   --btn-secondary-contrast: #ffffff;
@@ -193,7 +194,8 @@
   --header-option-chosen: #76c0b3;
   --header-option-non-chosen: #e7d080;
   --header-home: #739ee4;
-  --header-search-chips: #f5e3a3;
+  --header-search-chips: #ffffff;
+  --header-search-chips-cosen: #f5e3a3;
   //headers-contrast
   --header-question-contrast: #476fca;
   --header-home-contrast: #ffffff;
@@ -218,9 +220,9 @@
 
 
   //info
-  --info-snackbar: #739ee4;
+  --info-snackbar: #729fe8;
   --info-massage-counter: #e478f8;
-  --info-tooltip: #739ee4;
+  --info-tooltip: #729fe8;
   //info-contrast
   --info-massage-counter-contrast: #d73484;
   --info-snackbar-contrast: #476fca;
@@ -267,7 +269,7 @@
   --member-evaluators: #e1fbf9;
   --member-non-voter: #fbffea;
   --member-blocked: #e8749e;
-  --section-tab: #739ee4;
+  --section-tab: #71b7da;
   //settings-contrast
   --section-tab-contrast: #476fca;
   --member-chip-contrast: #00a7ee;
@@ -304,7 +306,7 @@
   --text-paragraph-light: #818fad;
   --text-paragraph-lightest: #a4aec5;
   --text-white: #ffffff;
-  --text-blue: #5f88e5;
+  --text-blue: #5F88E5;
   --text-green: #3bb0b0;
   --text-red: #ff3a46;
   --text-crimson: #e8749e;
