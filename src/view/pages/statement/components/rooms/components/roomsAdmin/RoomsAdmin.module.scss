@@ -2,10 +2,18 @@
     display: flex;
     justify-content: center;
     gap: 1rem;
+    font-size: 1.5rem;
+
+ .title{
+        font-size: 1.1rem;
+        font-weight: 300;
+        margin-bottom: 0.5rem;
+    }
 
     input{
-        width: 3rem;
+        width: 5rem;
         text-align: center;
+        font-size: 1.5rem;
     }
 
     .add{

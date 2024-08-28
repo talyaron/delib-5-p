@@ -23,7 +23,7 @@ const ChooseRoom: FC<Props> = ({ statement, topics }) => {
 	const [showModal, setShowModal] = useState(false);
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={`${styles.wrapper} wrapper`}>
     
 			<div className="btns">
 				<Button text={t("Create new room")} onClick={() => handleAddRoom()} />

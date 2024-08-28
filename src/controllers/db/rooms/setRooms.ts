@@ -13,10 +13,10 @@ import { store } from "@/model/store";
 
 
 
-export async function setParticipantToDB(
+export function setParticipantToDB(
 	statement: Statement,
 	roomNumber?: number
-): Promise<void> {
+): void {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
@@ -33,8 +33,8 @@ export async function setParticipantToDB(
 
 		const roomRef = doc(DB, Collections.participants, participantInRoomId);
 
-		const results = await setDoc(roomRef, participantInRoom, { merge: true });
-		console.log(results);
+		setDoc(roomRef, participantInRoom, { merge: true });
+	
 	} catch (error) {
 		console.error(error);
 	}
