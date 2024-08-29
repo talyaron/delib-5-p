@@ -5,7 +5,7 @@ import styles from "./AskPermission.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
-    showFn: React.Dispatch<React.SetStateAction<boolean>>;
+	showFn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AskPermission: FC<Props> = ({ showFn }) => {

@@ -1,49 +1,42 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party
-import { Statement, StatementType, User, isOptionFn } from 'delib-npm';
+import { Statement, StatementType, User } from "delib-npm";
 
 // Redux Store
-import {
-	useAppDispatch,
-	useAppSelector,
-} from '@/controllers/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
 import {
 	setStatementElementHight,
 	statementSubscriptionSelector,
-} from '@/model/statements/statementsSlice';
+} from "@/model/statements/statementsSlice";
 
 // Helpers
-import {
-	isAuthorized,
-	linkToChildren,
-} from '@/controllers/general/helpers';
+import { isAuthorized, linkToChildren } from "@/controllers/general/helpers";
 
 // Hooks
 import useStatementColor, {
 	StyleProps,
-} from '@/controllers/hooks/useStatementColor';
+} from "@/controllers/hooks/useStatementColor";
 
 // Custom Components
-import EditIcon from '@/assets/icons/editIcon.svg?react';
-import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
-import { setStatementIsOption } from '@/controllers/db/statements/setStatements';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
-import EditTitle from '@/view/components/edit/EditTitle';
-import Menu from '@/view/components/menu/Menu';
-import MenuOption from '@/view/components/menu/MenuOption';
-import IconButton from '@/view/components/iconButton/IconButton';
-import StatementChatMore from '../../chat/components/StatementChatMore';
-import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
-import CreateStatementModal from '../../createStatementModal/CreateStatementModal';
-import Evaluation from './evaluation/Evaluation';
-import './StatementSolutionCard.scss';
+
+import { setStatementIsOption } from "@/controllers/db/statements/setStatements";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import EditTitle from "@/view/components/edit/EditTitle";
+
+import IconButton from "@/view/components/iconButton/IconButton";
+import StatementChatMore from "../../chat/components/StatementChatMore";
+import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
+import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
+import Evaluation from "./evaluation/Evaluation";
+import "./StatementSolutionCard.scss";
+import SolutionMenu from "./solutionMenu/SolutionMenu";
 
 interface Props {
-	statement: Statement;
-	parentStatement: Statement;
-	showImage: (talker: User | null) => void;
-	top: number;
+  statement: Statement;
+  parentStatement: Statement;
+  showImage: (talker: User | null) => void;
+  top: number;
 }
 
 const StatementSolutionCard: FC<Props> = ({
@@ -71,7 +64,7 @@ const StatementSolutionCard: FC<Props> = ({
 	const [newTop, setNewTop] = useState(top);
 	const [isEdit, setIsEdit] = useState(false);
 	const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
-		useState(false);
+    useState(false);
 	const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
 
 	const _isAuthorized = isAuthorized(
@@ -84,8 +77,6 @@ const StatementSolutionCard: FC<Props> = ({
 		setNewTop(top);
 	}, [top]);
 
-	
-
 	useEffect(() => {
 		dispatch(
 			setStatementElementHight({
@@ -95,12 +86,11 @@ const StatementSolutionCard: FC<Props> = ({
 		);
 	}, [statement.statement]);
 
-
 	function handleSetOption() {
 		try {
-			if (statement.statementType === 'option') {
+			if (statement.statementType === "option") {
 				const cancelOption = window.confirm(
-					'Are you sure you want to cancel this option?'
+					"Are you sure you want to cancel this option?"
 				);
 				if (cancelOption) {
 					setStatementIsOption(statement);
@@ -119,38 +109,42 @@ const StatementSolutionCard: FC<Props> = ({
 	);
 
 	const statementAge = new Date().getTime() - statement.createdAt;
-	
+
 	return (
 		<div
-			className={statementAge<10000?"statement-evaluation-card statement-evaluation-card--new":'statement-evaluation-card'}
+			className={
+				statementAge < 10000
+					? "statement-evaluation-card statement-evaluation-card--new"
+					: "statement-evaluation-card"
+			}
 			style={{
 				top: `${newTop}px`,
-				borderLeft: `8px solid ${statementColor.backgroundColor || 'wheat'}`,
+				borderLeft: `8px solid ${statementColor.backgroundColor || "wheat"}`,
 				color: statementColor.color,
-				flexDirection: dir === 'ltr' ? 'row' : 'row-reverse',
+				flexDirection: dir === "ltr" ? "row" : "row-reverse",
 			}}
 			ref={elementRef}
 		>
 			<div
-				className='selected-option'
+				className="selected-option"
 				style={{
 					backgroundColor: statement.selected
 						? statementColor.backgroundColor
-						: '',
+						: "",
 				}}
 			>
 				<div
 					style={{
 						color: statementColor.color,
-						display: statement.selected ? 'block' : 'none',
+						display: statement.selected ? "block" : "none",
 					}}
 				>
-					{t('Selected')}
+					{t("Selected")}
 				</div>
 			</div>
-			<div className='main'>
-				<div className='info'>
-					<div className='text'>
+			<div className="main">
+				<div className="info">
+					<div className="text">
 						<EditTitle
 							statement={statement}
 							isEdit={isEdit}
@@ -158,49 +152,28 @@ const StatementSolutionCard: FC<Props> = ({
 							isTextArea={true}
 						/>
 					</div>
-					<div className='more'>
-						{_isAuthorized && (
-							<Menu
-								setIsOpen={setIsCardMenuOpen}
-								isMenuOpen={isCardMenuOpen}
-								iconColor='#5899E0'
-							>
-								{_isAuthorized && (
-									<MenuOption
-										label={t('Edit Text')}
-										icon={<EditIcon />}
-										onOptionClick={() => {
-											setIsEdit(!isEdit);
-											setIsCardMenuOpen(false);
-										}}
-									/>
-								)}
-								{_isAuthorized && (
-									<MenuOption
-										isOptionSelected={isOptionFn(statement)}
-										icon={<LightBulbIcon />}
-										label={
-											isOptionFn(statement)
-												? t('Unmark as a Solution')
-												: t('Mark as a Solution')
-										}
-										onOptionClick={handleSetOption}
-									/>
-								)}
-							</Menu>
-						)}
+					<div className="more">
+						<SolutionMenu
+							statement={statement}
+							isAuthorized={_isAuthorized}
+							isCardMenuOpen={isCardMenuOpen}
+							setIsCardMenuOpen={setIsCardMenuOpen}
+							isEdit={isEdit}
+							setIsEdit={setIsEdit}
+							handleSetOption={handleSetOption}
+						/>
 					</div>
 				</div>
 				{shouldLinkToChildStatements && (
-					<div className='chat'>
+					<div className="chat">
 						<StatementChatMore statement={statement} />
 					</div>
 				)}
-				<div className='actions'>
+				<div className="actions">
 					<Evaluation parentStatement={parentStatement} statement={statement} />
 					{parentStatement.hasChildren && (
 						<IconButton
-							className='add-sub-question-button'
+							className="add-sub-question-button"
 							onClick={() => setShouldShowAddSubQuestionModal(true)}
 						>
 							<AddQuestionIcon />

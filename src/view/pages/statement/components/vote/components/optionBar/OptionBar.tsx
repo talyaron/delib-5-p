@@ -105,6 +105,7 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 			<div className="vote-button-container drop-shadow">
 				<button
 					onClick={handleVotePress}
+					aria-label="Vote button"
 					style={voteButtonStyle}
 					className={`vote-button ${
 						isOptionSelected ? "selected" : ""
@@ -119,6 +120,7 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 			</div>
 			<button
 				className="info-icon"
+				aria-label="Info button"
 				onClick={() => {
 					setStatementInfo(option);
 					setShowInfo(true);

@@ -1,0 +1,51 @@
+.inRoom {
+
+    margin-top: 2rem;
+   max-width: 75ch;
+    margin: 0 auto;
+    width: 100%;
+   
+    padding: 0 1rem;
+    .wrapper{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+    }
+
+    .room{
+        color:var(--text-headline);
+        font-weight:var(--wight-medium);
+        font-size: 1.1rem;
+        line-height: 2rem;
+    }
+     .topic{
+        color:var(--text-paragraph);
+        font-weight:var(--wight-medium);
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+      
+     }
+
+    .image {
+
+        width: 100%;
+        height: 300px;
+        max-height: 30vh;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position-x: center;
+        margin-bottom: 2rem;
+    }
+
+    .participants{
+        display: flex;
+        justify-content: start;
+        gap: .2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+}
+

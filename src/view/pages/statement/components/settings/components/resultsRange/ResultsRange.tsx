@@ -20,6 +20,7 @@ const ResultsRange: FC<StatementSettingsProps> = ({
 				<input
 					className="range"
 					type="range"
+					aria-label="Number Of Results"
 					name="numberOfResults"
 					value={resultsSettings.numberOfResults}
 					min="1"

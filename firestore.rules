@@ -81,7 +81,19 @@ service cloud.firestore {
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
-    
+     match /rooms/{roomId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+     match /participants/{participantId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+     match /roomsSettings/{roomSettingsId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
     match /timers-rooms/{timerIdx=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
