@@ -1,6 +1,7 @@
 import { membersAllowed, Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "@/view/components/text/Text";
+import Triangle from "@/view/components/triangle/Triangle";
 
 interface Props {
   statement: Statement;
@@ -21,7 +22,7 @@ const Info: FC<Props> = ({ statement }) => {
 		: `https://freedis.web.app/doc/${statement.statementId}`;
 
 	return (
-		<div>
+	
 			<div className="wrapper">
 				{statement.description && (
 					<>
@@ -43,8 +44,10 @@ const Info: FC<Props> = ({ statement }) => {
 						</a>
 					</li>
 				</ul>
+
+				<Triangle statement={statement} />
 			</div>
-		</div>
+		
 	);
 };
 
