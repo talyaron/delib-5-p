@@ -147,7 +147,13 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 									</>
 								) : (
 									<>
-										<span className={styles.titleSpan}>{`” ${t(`Add ${currentPage} button `)} ”`}</span>
+									<h1>
+                                      {`Click on `}
+                                        <span className={styles.titleSpan}>
+                                          {`” ${t(`Add ${currentPage} button`)} ”`}
+                                     </span><br/>
+                                         {` to add your ${t(`${currentPage}`)}`}
+                                     </h1>
 									</>
 								)}
 							</h1>
