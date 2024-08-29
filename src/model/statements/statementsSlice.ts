@@ -6,19 +6,15 @@ import { RootState } from "../store";
 
 import {
 	Screen,
-	ScreenSchema,
 	Statement,
-	StatementSchema,
 	StatementSubscription,
-	StatementSubscriptionSchema,
 	StatementType,
 	isOptionFn,
 } from "delib-npm";
 
-import { ZodError, z } from "zod";
 
 // Helpers
-import { updateArray, writeZodError } from "../../controllers/general/helpers";
+import { updateArray } from "../../controllers/general/helpers";
 import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
 
 enum StatementScreen {
@@ -57,13 +53,6 @@ export const statementsSlicer = createSlice({
 			try {
 				const newStatement = { ...action.payload };
 
-				const results = StatementSchema.safeParse(newStatement);
-				if (!results.success) {
-					const error = results.error as ZodError; // Type assertion for clarity
-					writeZodError(error, newStatement);
-					throw new Error("statement not valid on setStatement");
-				}
-
 				//for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
 				if (!Array.isArray(newStatement.results))
 					newStatement.results = [];
@@ -99,13 +88,6 @@ export const statementsSlicer = createSlice({
 		setStatements: (state, action: PayloadAction<Statement[]>) => {
 			try {
 				const statements = action.payload;
-
-				const { success } = z
-					.array(StatementSchema)
-					.safeParse(statements);
-				if (!success) {
-					console.error("statements not valid on setStatements");
-				}
 
 				statements.forEach((statement) => {
 					state.statements = updateArray(
@@ -173,9 +155,6 @@ export const statementsSlicer = createSlice({
 			try {
 				const newStatements = action.payload;
 
-				//TODO: remove this after all statements are updated at about 4 April 2024
-				// z.array(StatementSubscriptionSchema).parse(newStatements);
-
 				newStatements.forEach((statement) => {
 					state.statementSubscription = updateArray(
 						state.statementSubscription,
@@ -231,12 +210,6 @@ export const statementsSlicer = createSlice({
 			try {
 				const statements = action.payload;
 
-				const results = z
-					.array(StatementSchema)
-					.safeParse(statements);
-				if (!results.success) {
-					writeZodError(results.error, statements);
-				}
 
 				//clear all temp statements
 				state.statements.forEach((statement) => {
@@ -268,8 +241,7 @@ export const statementsSlicer = createSlice({
 			action: PayloadAction<{ statement: Statement; screen: Screen }>,
 		) => {
 			try {
-				ScreenSchema.parse(action.payload.screen);
-				StatementSchema.parse(action.payload.statement);
+				
 				const { statement, screen } = action.payload;
 				const _statement = state.statements.find(
 					(st) => st.statementId === statement.statementId,
@@ -297,14 +269,6 @@ export const statementsSlicer = createSlice({
 			try {
 				const newMembership = action.payload;
 
-				const { success } =
-					StatementSubscriptionSchema.safeParse(newMembership);
-
-				if (!success) {
-					console.error(
-						"statement subscription not valid in set membership.",
-					);
-				}
 				state.statementMembership = updateArray(
 					state.statementMembership,
 					newMembership,
