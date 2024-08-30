@@ -1,6 +1,6 @@
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { User, Vote } from "delib-npm";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { handleGetVoters } from "../statementSettingsCont";
 import MembersChipsList from "./membership/membersChipsList/MembersChipList";
 
@@ -25,7 +25,8 @@ const GetVoters: FC<GetVotersProps> = ({ statementId, joinedMembers }) => {
 		}
 	};
 
-	React.useEffect(() => {
+	//filter out users who haven't vote/those with no voter information
+	useEffect(() => {
 		if (voters.length > 0) {
 			const voterIds = new Set(voters.map((voter) => voter.voter?.uid));
 			const nonVotersList = joinedMembers.filter(
