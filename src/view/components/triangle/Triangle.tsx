@@ -10,23 +10,27 @@ interface Props {
 }
 
 const Triangle: FC<Props> = ({ statement }) => {
-  const subStatements = useSelector(
-    statementOptionsSelector(statement.statementId)
-  ).filter((s) => s.evaluation?.sumCon !== undefined);
-  console.log(subStatements);
+	const subStatements = useSelector(
+		statementOptionsSelector(statement.statementId)
+	).filter((s) => s.evaluation?.sumCon !== undefined);
 
-  return (
-    <>
-      <div className={styles.triangle}></div>
-      <div className={`${styles.triangle} ${styles["triangle--invisible"]}`}>
-        {subStatements.map((subStatement) => {
-          return (
-            <Dot key={subStatement.statementId} subStatement={subStatement} />
-          );
-        })}
-      </div>
-    </>
-  );
+	let maxEvaluators = 0;
+	subStatements.forEach((subStatement) => {
+		if (subStatement.evaluation?.numberOfEvaluators !== undefined &&  subStatement.evaluation?.numberOfEvaluators > maxEvaluators) maxEvaluators = subStatement.evaluation.numberOfEvaluators;
+	});
+
+	return (
+		<>
+			<div className={styles.triangle}></div>
+			<div className={`${styles.triangle} ${styles["triangle--invisible"]}`}>
+				{subStatements.map((subStatement) => {
+					return (
+						<Dot key={subStatement.statementId} subStatement={subStatement} maxEvaluators={maxEvaluators}/>
+					);
+				})}
+			</div>
+		</>
+	);
 };
 
 export default Triangle;
