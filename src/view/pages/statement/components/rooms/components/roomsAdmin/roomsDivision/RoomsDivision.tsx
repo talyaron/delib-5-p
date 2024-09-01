@@ -8,7 +8,7 @@ import {
 import { ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
 import Button from "@/view/components/buttons/button/Button";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import _ from "node_modules/cypress/types/lodash";
+
 
 interface Props {
   statement: Statement;

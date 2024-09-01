@@ -43,15 +43,21 @@ const EditTitle: FC<Props> = ({
 	function handleChange(
 		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
-		const _title = e.target.value.split("\n")[0].trim();
-		const _description = e.target.value.split("\n").slice(1).join("\n").trim();
+		const _title = e.target.value.split("\n")[0]
+		const _description = e.target.value.split("\n").slice(1).join("\n");
 		setTitle(_title);
 		setDescription(_description);
 	}
 
+	function handleEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+		if (e.key === "Enter") {
+			handleSave();
+		}
+	}
+
 	function handleSave() {
 		try {
-			if (!title.trim()) return; // Do not save if the text is empty
+			if (!title) return; // Do not save if the text is empty
 			if (!statement) throw new Error("Statement is undefined");
 
 
@@ -94,6 +100,7 @@ const EditTitle: FC<Props> = ({
 						type="text"
 						value={title}
 						onChange={handleChange}
+						onKeyUp={handleEnter}
 						autoFocus={true}
 						data-cy="edit-title-input"
 					></input>

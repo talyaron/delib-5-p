@@ -15,12 +15,11 @@ export function handleAddStatement(
 		if (!user) throw new Error("No user");
 
 		//remove white spaces and \n
-		const title = message.split("\n")[0].trim();
+		const title = message.split("\n")[0];
 		const description = message
 			.split("\n")
 			.slice(1)
 			.join("\n")
-			.trim();
 
 		if (!title) throw new Error("No value");
 
