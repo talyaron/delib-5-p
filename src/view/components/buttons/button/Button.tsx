@@ -28,8 +28,6 @@ const Button: FC<Props> = ({
 		}
 	}
 
-	// const buttonClassName = `button ${iconOnRight ? "" : "button--right"} ${Icon ? "button--with-icon" : ""} ${className}`.trim();
-
 	return (
 		<button className={`${styles.button} ${className}`} onClick={onClick}>
 			<div className={styles["button__text"]}>{text}</div>

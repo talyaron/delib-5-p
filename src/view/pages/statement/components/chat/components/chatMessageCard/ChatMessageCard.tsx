@@ -124,10 +124,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return;
+			if (!text) return;
 			if (!statement) throw new Error("Statement is undefined");
-			const title = text.split("\n")[0].trim();
-			const description = text.split("\n").slice(1).join("\n").trim()	;
+			const title = text.split("\n")[0];
+			const description = text.split("\n").slice(1).join("\n")	;
 
 			updateStatementText(statement, title, description);
 			setIsEdit(false);
