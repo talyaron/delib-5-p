@@ -1,0 +1,19 @@
+.triangle{
+    position: relative;
+    top:15vh;
+    width: 30vh;
+    height: 30vh;
+    border:2px solid #3498db;
+    background-color: #d2e8f7;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.9);
+    transform: rotate(45deg);
+}
+
+.dot{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #3498db;
+    border-radius: 50%;
+}
