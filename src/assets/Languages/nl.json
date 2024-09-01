@@ -149,5 +149,11 @@
     "Sort questions": "Sorteer vragen",
     "Sort suggestions": "Suggesties sorteren",
     "Allow similarity search": "Zoek naar overeenkomsten toestaan",
-    "Allow removal of navigational elements": "Verwijderen van navigatie-elementen toestaan"
+    "Allow removal of navigational elements": "Verwijderen van navigatie-elementen toestaan",
+    "Tabu": "Tabu",
+    "Conflicts": "Conflicten",
+    "Abstention": "Onthouding",
+    "Support": "Ondersteuning",
+    "Against": "Tegen",
+    "Voters": "Stemmers"
 }

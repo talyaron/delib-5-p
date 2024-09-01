@@ -150,5 +150,11 @@
     "Sort questions": "فرز الأسئلة",
     "Sort suggestions": "فرز الاقتراحات",
     "Allow similarity search": "السماح بالبحث عن التشابه",
-    "Allow removal of navigational elements": "السماح بإزالة عناصر التنقل"
+    "Allow removal of navigational elements": "السماح بإزالة عناصر التنقل",
+    "Tabu": "تابو",
+    "Conflicts": "الصراعات",
+    "Abstention": "الامتناع",
+    "Support": "الدعم",
+    "Against": "ضد",
+    "Voters": "الناخبين"
 }

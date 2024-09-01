@@ -162,5 +162,12 @@
     "Sort questions": "Sort questions",
     "Sort suggestions": "Sort suggetsions",
     "Allow similarity search": "Allow similarity search",
-    "Allow removal of navigational elements": "Allow removal of navigational elements"
+    "Allow removal of navigational elements": "Allow removal of navigational elements",
+    "Tabu": "Tabu",
+    "Conflicts": "Conflicts",
+    "Abstention": "Abstention",
+    "Support": "Support",
+    "Against": "Against",
+    "Voters": "Voters"
+
 }

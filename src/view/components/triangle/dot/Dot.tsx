@@ -1,6 +1,8 @@
 import { Statement } from "delib-npm";
 import { FC, useState, useRef } from "react";
 import styles from "./Dot.module.scss";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+
 
 interface Props {
   subStatement: Statement;
@@ -8,6 +10,7 @@ interface Props {
 }
 
 const Dot: FC<Props> = ({ subStatement, maxEvaluators }) => {
+	const {t} = useLanguage();
 	const randomX = useRef<number>((Math.random() - 0.5) * 0.07);
 	const randomY = useRef<number>((Math.random() - 0.5) * 0.07);
 	const [show, setShow] = useState(false);
@@ -39,9 +42,9 @@ const Dot: FC<Props> = ({ subStatement, maxEvaluators }) => {
 					<div className={styles["tooltip__title"]}>
 						{subStatement.statement}
 					</div>
-					<div>Support: {sumPro}</div>
-					<div>Against: {sumCon}</div>
-					<div>{numberOfEvaluators} evaluators</div>
+					<div>{t("Support")}: {sumPro}</div>
+					<div>{t("Against")}: {sumCon}</div>
+					<div>{t("Voters")}: {numberOfEvaluators}</div>
 				</div>
 			)}
 		</div>
@@ -70,14 +73,15 @@ function fromAgreementToColor(
 		if (agreement < -1 || agreement > 1) {
 			throw new Error("Agreement must be between -1 and 1");
 		}
-		const index = Math.floor((agreement + 1) * (agreementColors.length / 2));
-		
-		
-		
+
+		const adjustAgreement = (agreement + 1) / 2;
+
+		const index = Math.floor(adjustAgreement * agreementColors.length * 0.99);
+    
 		return agreementColors[index];
 	} catch (error) {
 		console.error(error);
-		
+
 		return undefined;
 	}
 }
