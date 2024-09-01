@@ -49,6 +49,12 @@ const EditTitle: FC<Props> = ({
 		setDescription(_description);
 	}
 
+	function handleEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+		if (e.key === "Enter") {
+			handleSave();
+		}
+	}
+
 	function handleSave() {
 		try {
 			if (!title) return; // Do not save if the text is empty
@@ -94,6 +100,7 @@ const EditTitle: FC<Props> = ({
 						type="text"
 						value={title}
 						onChange={handleChange}
+						onKeyUp={handleEnter}
 						autoFocus={true}
 						data-cy="edit-title-input"
 					></input>
