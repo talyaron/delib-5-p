@@ -73,7 +73,8 @@
 
 .wrapper {
     width: 100vw;
-    overflow-y: auto;
+    height: auto; 
+    overflow: visible; 
 
     .main {
         padding: 2rem 1.5rem;
