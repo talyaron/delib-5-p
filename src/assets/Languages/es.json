@@ -146,5 +146,11 @@
     "Sort questions": "Ordenar preguntas",
     "Sort suggestions": "Ordenar sugerencias",
     "Allow similarity search": "Permitir búsqueda de similitudes",
-    "Allow removal of navigational elements": "Permitir la eliminación de elementos de navegación"
+    "Allow removal of navigational elements": "Permitir la eliminación de elementos de navegación",
+    "Tabu": "Tabú",
+    "Conflicts": "Conflictos",
+    "Abstention": "Abstención",
+    "Support": "Soporte",
+    "Against": "En contra",
+    "Voters": "Votantes"
 }

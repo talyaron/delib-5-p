@@ -4,12 +4,16 @@ import { Statement } from "delib-npm";
 import { useSelector } from "react-redux";
 import { statementOptionsSelector } from "@/model/statements/statementsSlice";
 import Dot from "./dot/Dot";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
   statement: Statement;
 }
 
+
+
 const Triangle: FC<Props> = ({ statement }) => {
+	const {t} = useLanguage();
 	const subStatements = useSelector(
 		statementOptionsSelector(statement.statementId)
 	).filter((s) => s.evaluation?.sumCon !== undefined);
@@ -21,13 +25,19 @@ const Triangle: FC<Props> = ({ statement }) => {
 
 	return (
 		<>
-			<div className={styles.triangle}></div>
+			<div className={styles.triangle}>
+				
+			</div>
 			<div className={`${styles.triangle} ${styles["triangle--invisible"]}`}>
 				{subStatements.map((subStatement) => {
 					return (
 						<Dot key={subStatement.statementId} subStatement={subStatement} maxEvaluators={maxEvaluators}/>
 					);
 				})}
+				<span className={styles.xAxis}>{t("Agreements")}</span>
+				<span className={styles.yAxis}>{t("Tabu")}</span>
+				<span className={styles.conflicts}>{t("Conflicts")}</span>
+				<span className={styles.abstention}>{t("Abstention")}</span>
 			</div>
 		</>
 	);

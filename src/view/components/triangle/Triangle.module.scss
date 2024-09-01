@@ -15,4 +15,27 @@
         border: none;
         clip-path: none;
     }
+
+    .xAxis{
+        position: absolute;
+        bottom: -2rem;
+        left:calc(100% - 3rem);
+       
+    }
+    .yAxis{
+        position: absolute;
+        left: -3rem;
+        transform: rotate(-90deg);
+    }
+    .conflicts{
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform: rotate(45deg);
+    }
+    .abstention{
+        position: absolute;
+        bottom: -2rem;
+        left: -3rem;
+    }
 }

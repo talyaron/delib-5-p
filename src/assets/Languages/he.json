@@ -167,5 +167,11 @@
     "Sort questions": "מיין שאלות",
     "Sort suggestions": "מיין פתרונות",
     "Allow similarity search": "אפשר חיפוש דמיון",
-    "Allow removal of navigational elements": "אפשר הסרת רכיבי ניווט"
+    "Allow removal of navigational elements": "אפשר הסרת רכיבי ניווט",
+    "Tabu": "טאבו",
+    "Conflicts": "מחלוקות",
+    "Abstention": "המנעות",
+    "Support": "תומכים",
+    "Against": "מתנגדים",
+    "Voters": "מצביעים"
 }
