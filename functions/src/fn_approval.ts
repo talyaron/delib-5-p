@@ -1,5 +1,5 @@
 import { Approval, Collections, DocumentApproval, Statement } from "delib-npm";
-
+import { z } from "zod";
 import { logger } from "firebase-functions/v1";
 import { db } from ".";
 
@@ -17,7 +17,7 @@ export async function updateApprovalResults(event: any) {
         let approvingUserDiff = 0;
 
         if (action === Action.create) {
-           
+
             const { approval } = approveAfterData;
             approvingUserDiff = 1;
             approvedDiff = approval ? 1 : 0;
@@ -53,10 +53,12 @@ export async function updateApprovalResults(event: any) {
 
 
                 if (!documentApproval) {
+
+                    const averageApproval = getAverageApproval(approvingUserDiff !== 0 ? approvedDiff / approvingUserDiff : 0);
                     const newApprovalResults = {
                         approved: approvedDiff,
                         totalVoters: approvingUserDiff,
-                        averageApproval: approvingUserDiff !== 0 ? approvedDiff / approvingUserDiff : 0
+                        averageApproval
                     };
 
                     transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
@@ -64,13 +66,13 @@ export async function updateApprovalResults(event: any) {
                 }
 
                 const newApproved = documentApproval.approved + approvedDiff;
-                const totalVoters = documentApproval.totalVoters + approvingUserDiff;               
-                
+                const totalVoters = documentApproval.totalVoters + approvingUserDiff;
 
+                const averageApproval = getAverageApproval(totalVoters !== 0 ? newApproved / totalVoters : 0);
                 const newApprovalResults = {
                     approved: newApproved,
                     totalVoters,
-                    averageApproval: totalVoters !== 0 ? newApproved / totalVoters:0
+                    averageApproval,
                 };
 
                 transaction.set(statementRef, { documentApproval: newApprovalResults }, { merge: true });
@@ -82,6 +84,21 @@ export async function updateApprovalResults(event: any) {
 
 
         });
+
+        function getAverageApproval(averageApproval: number): number {
+            try {
+                const results = z.number().safeParse(averageApproval);
+                if (results.success) {
+                    return averageApproval;
+                }
+                throw new Error("Invalid average approval");
+            } catch (error) {
+                console.error(error);
+                return 0;
+            }
+
+
+        }
 
         //update document
         db.runTransaction(async (transaction) => {
@@ -110,11 +127,11 @@ export async function updateApprovalResults(event: any) {
                     const newApproved = documentApproval.approved + approvedDiff;
                     const newTotalVoters = documentApproval.totalVoters + addUser;
 
-
+                    const averageApproval = getAverageApproval(newTotalVoters !== 0 ? newApproved / newTotalVoters : 0);
                     newApprovalResults = {
                         approved: newApproved,
                         totalVoters: newTotalVoters,
-                        averageApproval: newTotalVoters !== 0 ?newApproved / newTotalVoters:0
+                        averageApproval,
                     };
                 }
 

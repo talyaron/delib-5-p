@@ -23,30 +23,30 @@ const Info: FC<Props> = ({ statement }) => {
 
 	return (
 	
-			<div className="wrapper">
-				{statement.description && (
-					<>
-						<h2>Description</h2>
-						<Text description={statement.description} />
-					</>
-				)}
-				<ul>
-					{isAnonymous && (
-						<li>
-							<a href={anonymousUrl} target="_blank">
-                Anonymous Link
-							</a>
-						</li>
-					)}
+		<div className="wrapper">
+			{statement.description && (
+				<>
+					<h2>Description</h2>
+					<Text description={statement.description} />
+				</>
+			)}
+			<ul>
+				{isAnonymous && (
 					<li>
-						<a href={memberUrl} target="_blank">
-              members Link
+						<a href={anonymousUrl} target="_blank">
+                Anonymous Link
 						</a>
 					</li>
-				</ul>
+				)}
+				<li>
+					<a href={memberUrl} target="_blank">
+              members Link
+					</a>
+				</li>
+			</ul>
 
-				<Triangle statement={statement} />
-			</div>
+			<Triangle statement={statement} />
+		</div>
 		
 	);
 };
