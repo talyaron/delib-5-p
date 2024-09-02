@@ -57,7 +57,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
   const handleMidIconClick = () => {
-    if (!isNavigationOpen) return setIsNavigationOpen(true);
+   
     if (isAddOption) {
       setShowModal(true);
     }
@@ -83,19 +83,17 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
           onClick={() => setIsNavigationOpen(false)}
         />
       )}
-      <div className="statement-bottom-nav" style={navStyle}>
-        <IconButton
-          className="open-nav-icon burger"
+      <div className="statement-bottom-nav">
+        <button
+          className="add-option-button"
           style={statementColor}
           onClick={handleMidIconClick}
           data-cy="bottom-nav-mid-icon"
         >
-          {isNavigationOpen && isAddOption ? (
+          {isAddOption && (
             <PlusIcon style={{ color: statementColor.color }} />
-          ) : (
-            <MainIcon style={{ color: statementColor.color }} />
-          )}
-        </IconButton>
+          ) }
+        </button>
         <div className="sort-menu">
           {navItems.map((navItem) => (
             <div className={`sort-menu__item  ${showSorting ? "active" : ""}`}>
