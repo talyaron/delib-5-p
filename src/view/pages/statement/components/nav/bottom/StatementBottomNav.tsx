@@ -32,7 +32,6 @@ interface Props {
 
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
   const { page } = useParams();
-  const MainIcon = page === Screen.QUESTIONS ? NavQuestionIcon : LightIcon;
 
   const navItems = getNavigationScreens(page);
 
@@ -61,19 +60,16 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     if (isAddOption) {
       setShowModal(true);
     }
-    setIsNavigationOpen(false);
+    
   };
 
   function handleSortingClick() {
     setShowSorting(!showSorting);
+
+
   }
 
-  const navStyle = {
-    bottom: page === "vote" ? "unset" : "3rem",
-    height: page === "vote" ? "4rem" : "unset",
-  };
 
-  console.log(showSorting);
 
   return (
     <>
@@ -101,7 +97,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
                 className={`open-nav-icon ${showSorting ? "active" : ""}`}
                 to={navItem.link}
                 key={navItem.id}
-                onClick={() => setIsNavigationOpen(false)}
+                onClick={() => setShowSorting(false)}
               >
                 <NavIcon
                   name={navItem.name}
