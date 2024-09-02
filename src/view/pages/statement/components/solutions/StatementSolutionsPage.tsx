@@ -147,13 +147,13 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 									</>
 								) : (
 									<>
-									<h1>
-                                      {`Click on `}
-                                        <span className={styles.titleSpan}>
-                                          {`” ${t(`Add ${currentPage} button`)} ”`}
-                                     </span><br/>
-                                         {` to add your ${t(`${currentPage}`)}`}
-                                     </h1>
+										<h1>
+											{`Click on `}
+											<span className={styles.titleSpan}>
+												{`” ${t(`Add ${currentPage} button`)} ”`}
+											</span><br/>
+											{` to add your ${t(`${currentPage}`)}`}
+										</h1>
 									</>
 								)}
 							</h1>
@@ -201,6 +201,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		if (sortedSubStatements.length === 0) {
 			return renderCommonContent();
 		}
+		
 		return (
 			<>
 				<div className='page__main'>
@@ -222,6 +223,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 								tops.push(topSum);
 
 							}
+							
 							return (
 								<StatementEvaluationCard
 									key={statementSub.statementId}
@@ -267,12 +269,26 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		function getToastButtons(questionStage: QuestionStage | undefined) {
 			try {
 				switch (questionStage) {
-					case QuestionStage.voting:
-					case QuestionStage.firstEvaluation:
-					case QuestionStage.secondEvaluation:
-					case QuestionStage.finished:
-					case QuestionStage.explanation:
-						return (
+				case QuestionStage.voting:
+				case QuestionStage.firstEvaluation:
+				case QuestionStage.secondEvaluation:
+				case QuestionStage.finished:
+				case QuestionStage.explanation:
+					return (
+						<Button
+							text={t('Close')}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							icon={<X />}
+							color='white'
+							bckColor='var(--crimson)'
+						/>
+					);
+				case QuestionStage.suggestion:
+					return (
+						<>
 							<Button
 								text={t('Close')}
 								iconOnRight={false}
@@ -283,46 +299,32 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 								color='white'
 								bckColor='var(--crimson)'
 							/>
-						);
-					case QuestionStage.suggestion:
-						return (
-							<>
-								<Button
-									text={t('Close')}
-									iconOnRight={false}
-									onClick={() => {
-										setShowToast(false);
-									}}
-									icon={<X />}
-									color='white'
-									bckColor='var(--crimson)'
-								/>
-								<Button
-									text={t('Add a solution')}
-									iconOnRight={true}
-									onClick={() => {
-										setShowToast(false);
-										setShowModal(true);
-									}}
-									icon={<LightBulbIcon />}
-									color='white'
-									bckColor='var(--green)'
-								/>
-							</>
-						);
-					default:
-						return (
 							<Button
-								text={t('Close')}
-								iconOnRight={false}
+								text={t('Add a solution')}
+								iconOnRight={true}
 								onClick={() => {
 									setShowToast(false);
+									setShowModal(true);
 								}}
-								icon={<X />}
+								icon={<LightBulbIcon />}
 								color='white'
-								bckColor='var(--crimson)'
+								bckColor='var(--green)'
 							/>
-						);
+						</>
+					);
+				default:
+					return (
+						<Button
+							text={t('Close')}
+							iconOnRight={false}
+							onClick={() => {
+								setShowToast(false);
+							}}
+							icon={<X />}
+							color='white'
+							bckColor='var(--crimson)'
+						/>
+					);
 				}
 			} catch (error) {
 				console.error(error);
@@ -332,6 +334,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		}
 	} catch (error) {
 		console.error(error);
+		
 		return null;
 	}
 };
