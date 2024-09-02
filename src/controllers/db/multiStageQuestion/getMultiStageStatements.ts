@@ -56,3 +56,47 @@ export async function getMultiStageOptions(
 		dispatch(setTempStatementsForPresentation([]));
 	}
 }
+
+export async function getFirstEvaluationOptions(
+	statement: Statement,
+
+): Promise<Statement[]> {
+	const dispatch: Dispatch<unknown> = store.dispatch;
+	try {
+		const urlBase = isProduction() ? "qeesi7aziq-uc.a.run.app" : "http://localhost:5001/synthesistalyaron/us-central1";
+
+		const url = isProduction() ? `https://getRandomStatements-${urlBase}` : "http://localhost:5001/synthesistalyaron/us-central1/getRandomStatements";
+
+		const response = await fetch(
+			`${url}?parentId=${statement.statementId}&limit=6`
+		);
+		const { randomStatements, error } = await response.json();
+		if (error) throw new Error(error);
+		dispatch(setTempStatementsForPresentation(randomStatements));
+		return randomStatements as Statement[];
+	} catch (error) {
+		console.error(error);
+		dispatch(setTempStatementsForPresentation([]));
+		return [];
+	}
+}
+
+export async function getSecondEvaluationOptions(statement: Statement): Promise<Statement[]> {
+	const dispatch: Dispatch<unknown> = store.dispatch;
+	try {
+		const urlBase = isProduction() ? "qeesi7aziq-uc.a.run.app" : "http://localhost:5001/synthesistalyaron/us-central1";
+
+		const url = isProduction() ? `https://getTopStatements-${urlBase}` : "http://localhost:5001/synthesistalyaron/us-central1/getTopStatements";
+		const response = await fetch(
+			`${url}?parentId=${statement.statementId}&limit=10`
+		);
+		const { topSolutions, error } = await response.json();
+		if (error) throw new Error(error);
+		dispatch(setTempStatementsForPresentation(topSolutions));
+		return topSolutions as Statement[];
+	} catch (error) {
+		console.error(error);
+		dispatch(setTempStatementsForPresentation([]));
+		return [];
+	}
+}

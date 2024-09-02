@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { RootState, store } from "../store";
 
 // Third party imports
 
@@ -241,7 +241,7 @@ export const statementsSlicer = createSlice({
 			action: PayloadAction<{ statement: Statement; screen: Screen }>,
 		) => {
 			try {
-				
+
 				const { statement, screen } = action.payload;
 				const _statement = state.statements.find(
 					(st) => st.statementId === statement.statementId,
@@ -434,12 +434,22 @@ export const hasTokenSelector =
 
 		return statement?.token?.includes(token) || false;
 	};
-	
+
 export const subscriptionParentStatementSelector = (parentId: string) =>
 	createSelector(
 		(state: RootState) => state.statements.statementSubscription,
 		(statementSubscription) =>
 			statementSubscription.filter((sub) => sub.statement.topParentId === parentId)
 	);
+
+
+export const myStatementsByStatementIdSelector = (statementId: string) =>{
+	const user = store.getState().user.user;
+	return createSelector(
+		(state: RootState) => state.statements.statements,
+		(statements) =>
+			statements.filter((st) => st.parentId === statementId && st.creatorId === user?.uid)
+	);
+}
 
 export default statementsSlicer.reducer;
