@@ -2,6 +2,9 @@
     width: 100%;
     position: relative;
     z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    background-color: teal;
 
     .open-nav-icon {
         width: 3rem;
@@ -14,7 +17,7 @@
         border-radius: 50%;
         cursor: pointer;
         transition: all 1s ease;
-        position: absolute;
+        // position: absolute;
         left: calc(50% - 1.5rem);
         top: -1.5rem;
 
@@ -22,32 +25,32 @@
             width: 26px;
         }
 
-        &.burger {
-            background-color: var(--question-header);
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        &.active:nth-child(2) {
-            z-index: 20;
-            transform: rotate(-360deg);
-            left: calc(50% - 1.5rem - 8rem);
-        }
-        &.active:nth-child(3) {
-            z-index: 20;
-            transform: rotate(360deg);
-            left: calc(50% - 1.5rem - 4rem);
-        }
-        &.active:nth-child(4) {
-            z-index: 20;
-            transform: rotate(-360deg);
-            left: calc(50% - 1.5rem + 4rem);
-        }
-        &.active:nth-child(5) {
-            z-index: 20;
-            transform: rotate(360deg);
-            left: calc(50% - 1.5rem + 8rem);
-        }
+        // &.burger {
+        //     background-color: var(--question-header);
+        //     z-index: 10;
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: center;
+        // }
+        // &.active:nth-child(2) {
+        //     z-index: 20;
+        //     transform: rotate(-360deg);
+        //     left: calc(50% - 1.5rem - 8rem);
+        // }
+        // &.active:nth-child(3) {
+        //     z-index: 20;
+        //     transform: rotate(360deg);
+        //     left: calc(50% - 1.5rem - 4rem);
+        // }
+        // &.active:nth-child(4) {
+        //     z-index: 20;
+        //     transform: rotate(-360deg);
+        //     left: calc(50% - 1.5rem + 4rem);
+        // }
+        // &.active:nth-child(5) {
+        //     z-index: 20;
+        //     transform: rotate(360deg);
+        //     left: calc(50% - 1.5rem + 8rem);
+        // }
     }
 }
