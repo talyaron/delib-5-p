@@ -12,6 +12,8 @@ import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
 import RandomIcon from "@/assets/icons/randomIcon.svg?react";
 import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
 import NewestIcon from "@/assets/icons/newIcon.svg?react";
+import SortIcon from "@/assets/icons/sort.svg?react";
+
 import useStatementColor from "@/controllers/hooks/useStatementColor";
 import {
   NavItem,
@@ -35,6 +37,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
   const navItems = getNavigationScreens(page);
 
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+  const [showSorting, setShowSorting] = useState(false);
 
   const statementColor = useStatementColor(
     statement.statementType || StatementType.statement
@@ -61,10 +64,16 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     setIsNavigationOpen(false);
   };
 
+  function handleSortingClick() {
+    setShowSorting(!showSorting);
+  }
+
   const navStyle = {
     bottom: page === "vote" ? "unset" : "3rem",
     height: page === "vote" ? "4rem" : "unset",
   };
+
+  console.log(showSorting);
 
   return (
     <>
@@ -87,20 +96,26 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
             <MainIcon style={{ color: statementColor.color }} />
           )}
         </IconButton>
-        <div>
+        <div className="sort-menu">
           {navItems.map((navItem) => (
-            <Link
-              className={`open-nav-icon ${isNavigationOpen ? "active" : ""}`}
-              to={navItem.link}
-              key={navItem.id}
-              onClick={() => setIsNavigationOpen(false)}
-            >
-              <NavIcon
-                name={navItem.name}
-                color={statementColor.backgroundColor}
-              />
-            </Link>
+            <div className={`sort-menu__item  ${showSorting ? "active" : ""}`}>
+              <Link
+                className={`open-nav-icon ${showSorting ? "active" : ""}`}
+                to={navItem.link}
+                key={navItem.id}
+                onClick={() => setIsNavigationOpen(false)}
+              >
+                <NavIcon
+                  name={navItem.name}
+                  color={statementColor.backgroundColor}
+                />
+              </Link>
+              <span className="button-name">{navItem.name}</span>
+            </div>
           ))}
+          <div className="sort-button" onClick={handleSortingClick}>
+            <SortIcon />
+          </div>
         </div>
       </div>
     </>
