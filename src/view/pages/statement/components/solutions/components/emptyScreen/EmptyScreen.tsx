@@ -6,15 +6,14 @@ import useWindowDimensions from "@/controllers/hooks/useWindowDimentions";
 import ideaImage from "@/assets/images/manWithIdeaLamp.png";
 import WhitePlusIcon from "@/view/components/icons/WhitePlusIcon";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { StageInfo } from "../../../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
+
 
 interface Props {
   currentPage: string;
-  stageInfo: StageInfo | undefined;
   setShowModal: Dispatch<boolean>;
 }
 
-const EmptyScreen: FC<Props> = ({ currentPage, stageInfo,setShowModal }) => {
+const EmptyScreen: FC<Props> = ({ currentPage, setShowModal }) => {
     const {t} = useLanguage();
   const { width } = useWindowDimensions();
   const smallScreen = width < 1024;
@@ -69,34 +68,7 @@ const EmptyScreen: FC<Props> = ({ currentPage, stageInfo,setShowModal }) => {
         </div>
         <img src={ideaImage} alt="" className={styles.ideaImage} />
       </div>
-      {isMultiStage && stageInfo?.message && (
-        <Toast
-          text={`${t(stageInfo.message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}"` : ""}`}
-          type="message"
-          show={showToast}
-          setShow={setShowToast}
-        >
-          {getToastButtons(currentStage)}
-        </Toast>
-      )}
-      {showExplanation && (
-        <Modal>
-          <StatementInfo
-            statement={statement}
-            setShowInfo={setShowExplanation}
-          />
-        </Modal>
-      )}
-      {showModal && (
-        <CreateStatementModalSwitch
-          toggleAskNotifications={toggleAskNotifications}
-          parentStatement={statement}
-          isQuestion={questions}
-          isMultiStage={isMultiStage}
-          setShowModal={setShowModal}
-          useSimilarStatements={useSearchForSimilarStatements}
-        />
-      )}
+      
     </>
   );
 };

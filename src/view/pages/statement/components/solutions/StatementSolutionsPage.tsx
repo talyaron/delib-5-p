@@ -1,12 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import {
-  QuestionStage,
-  QuestionType,
-  Statement,
-  User
-} from "delib-npm";
+import { QuestionStage, QuestionType, Statement, User } from "delib-npm";
 import { useParams, useNavigate } from "react-router";
 
 // Utils & Helpers
@@ -30,7 +25,6 @@ import styles from "./statementSolutinsPage.module.scss";
 import { useSelector } from "react-redux";
 import { myStatementsByStatementIdSelector } from "@/model/statements/statementsSlice";
 import EmptyScreen from "./components/emptyScreen/EmptyScreen";
-
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -57,14 +51,15 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const { t } = useLanguage();
     const isMultiStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
-    
-    const myStatements = useSelector(myStatementsByStatementIdSelector(statement.statementId));
-    
-      const currentStage = statement.questionSettings?.currentStage;
+
+    const myStatements = useSelector(
+      myStatementsByStatementIdSelector(statement.statementId)
+    );
+
+    const currentStage = statement.questionSettings?.currentStage;
     const stageInfo = getStagesInfo(currentStage);
     const useSearchForSimilarStatements =
       statement.statementSettings?.enableSimilaritiesSearch || false;
-
 
     // Use States
     const [showModal, setShowModal] = useState(false);
@@ -77,16 +72,14 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     );
 
     useEffect(() => {
-     
-		getSubStatements({
-			statement,
-			subStatements,
-			sort,
-			questions,
-			myStatements,
-			setSortedSubStatements,
-		});
-		
+      getSubStatements({
+        statement,
+        subStatements,
+        sort,
+        questions,
+        myStatements,
+        setSortedSubStatements,
+      });
     }, [sort, subStatements, questions, isMultiStage]);
 
     useEffect(() => {
@@ -117,51 +110,55 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const tops: number[] = [topSum];
     const message = stageInfo ? stageInfo.message : false;
 
-   
-
-    
-
-    
     if (sortedSubStatements.length === 0) {
-      return <EmptyScreen  currentPage={currentPage} stageInfo={stageInfo} setShowModal={setShowModal}/>
+      return;
     }
 
     return (
       <>
         <div className="page__main">
-          <div className={`wrapper ${styles.wrapper}`}>
-            {isMultiStage && message && (
-              <Toast
-                text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
-                type="message"
-                show={showToast}
-                setShow={setShowToast}
-              >
-                {getToastButtons(currentStage)}
-              </Toast>
-            )}
-            {sortedSubStatements?.map((statementSub: Statement, i: number) => {
-              //get the top of the element
-              if (statementSub.elementHight) {
-                topSum += statementSub.elementHight + 30;
-                tops.push(topSum);
-              }
+          {sortedSubStatements.length === 0 ? (
+            <EmptyScreen
+              currentPage={currentPage}
+              setShowModal={setShowModal}
+            />
+          ) : (
+            <div className={`wrapper ${styles.wrapper}`}>
+              {isMultiStage && message && (
+                <Toast
+                  text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
+                  type="message"
+                  show={showToast}
+                  setShow={setShowToast}
+                >
+                  {getToastButtons(currentStage)}
+                </Toast>
+              )}
+              {sortedSubStatements?.map(
+                (statementSub: Statement, i: number) => {
+                  //get the top of the element
+                  if (statementSub.elementHight) {
+                    topSum += statementSub.elementHight + 30;
+                    tops.push(topSum);
+                  }
 
-              return (
-                <StatementEvaluationCard
-                  key={statementSub.statementId}
-                  parentStatement={statement}
-                  statement={statementSub}
-                  showImage={handleShowTalker}
-                  top={tops[i]}
-                />
-              );
-            })}
-            <div
-              className="options__bottom"
-              style={{ height: `${topSum + 70}px` }}
-            ></div>
-          </div>
+                  return (
+                    <StatementEvaluationCard
+                      key={statementSub.statementId}
+                      parentStatement={statement}
+                      statement={statementSub}
+                      showImage={handleShowTalker}
+                      top={tops[i]}
+                    />
+                  );
+                }
+              )}
+              <div
+                className="options__bottom"
+                style={{ height: `${topSum + 70}px` }}
+              ></div>
+            </div>
+          )}
         </div>
         <div className="page__footer">
           <StatementBottomNav
@@ -190,7 +187,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
       </>
     );
 
-    
     function getToastButtons(questionStage: QuestionStage | undefined) {
       try {
         switch (questionStage) {

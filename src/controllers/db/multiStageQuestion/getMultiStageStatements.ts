@@ -73,9 +73,6 @@ export async function getFirstEvaluationOptions(
 		const { randomStatements, error } = await response.json();
 		if (error) throw new Error(error);
 
-		randomStatements.forEach((s: Statement, i) => {
-			s.order = i
-		})
 	
 		return randomStatements as Statement[];
 	} catch (error) {
@@ -97,9 +94,6 @@ export async function getSecondEvaluationOptions(statement: Statement): Promise<
 		const { topSolutions, error } = await response.json();
 		if (error) throw new Error(error);
 
-		topSolutions.forEach((s: Statement, i) => {
-			s.order = i
-		})
 	
 		return topSolutions as Statement[];
 	} catch (error) {
