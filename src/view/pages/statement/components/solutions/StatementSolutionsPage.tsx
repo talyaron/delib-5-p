@@ -67,9 +67,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const [showExplanation, setShowExplanation] = useState(
       currentStage === QuestionStage.explanation && isMultiStage && !questions
     );
-    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
-      [...subStatements]
-    );
+    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>([]);
 
     useEffect(() => {
       getSubStatements({
@@ -78,7 +76,9 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
         sort,
         questions,
         myStatements,
-        setSortedSubStatements,
+      }).then((_subStatements) => {
+        console.log("new st..............", _subStatements.length)
+        setSortedSubStatements(_subStatements);
       });
     }, [sort, subStatements, questions, isMultiStage]);
 
@@ -109,8 +109,9 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     let topSum = 30;
     const tops: number[] = [topSum];
     const message = stageInfo ? stageInfo.message : false;
+    console.log(topSum, tops)
 
-   console.log(sortedSubStatements.map((subStatement:Statement) => subStatement.statement).join(','));
+  
 
     return (
       <>

@@ -113,67 +113,47 @@ interface GetSubStatementsProps {
 	sort: string | undefined;
 	questions: boolean;
 	myStatements: Statement[];
-	setSortedSubStatements: React.Dispatch<Statement[]>;
 }
-export async function getSubStatements({ statement, subStatements, sort, questions, myStatements, setSortedSubStatements }: GetSubStatementsProps): Promise<void> {
+export async function getSubStatements({ statement, subStatements, sort, questions, myStatements }: GetSubStatementsProps): Promise<Statement[]> {
 	try {
-		console.log("getSubStatements")
-		if (!statement) return;
-		if (!subStatements) return;
+	
+		if (!statement) return [];
+		if (!subStatements) return [];
 		const _subStatements = [...subStatements];
 
 		const isMultiStage = statement.questionSettings?.questionType === QuestionType.multipleSteps;
 
 		if (!isMultiStage) {
-			const st = getSortedStatements(_subStatements, sort, questions);
-			console.log("single stage");
-			setSortedSubStatements(st);
+			return getSortedStatements(_subStatements, sort, questions);
 		} else {
-			console.log("multi steps")
+	
 			switch (statement.questionSettings?.currentStage) {
 				case QuestionStage.explanation:
-					setSortedSubStatements([]);
-					return;
+					return ([]);
 				case QuestionStage.suggestion:
-					setSortedSubStatements(myStatements);
-					return;
+					return myStatements;
 				case QuestionStage.firstEvaluation:
-					try {
-						const subStatements = await getFirstEvaluationOptions(statement);
-						const st = getSortedStatements(subStatements, sort, questions);
-						setSortedSubStatements(st);
-					} catch (error) {
-						console.error(error);
-					}
-
-					return;
+					const firstSt = await getFirstEvaluationOptions(statement);
+					return getSortedStatements(firstSt, sort, questions);
 				case QuestionStage.secondEvaluation:
-					try {
-						const subStatements = await getSecondEvaluationOptions(statement);
-						const st = getSortedStatements(subStatements, sort, questions);
-						setSortedSubStatements(st);
-					} catch (error) {
-						console.error(error);
-					}
-					return;
+					const secondSt = await getSecondEvaluationOptions(statement);
+					return getSortedStatements(secondSt, sort, questions);
 				case QuestionStage.voting:
-					setSortedSubStatements([]);
-					return;
+
+					return ([]);
 				default:
-					console.log("default ")
-					setSortedSubStatements([]);
-					return;
+					return ([]);
 			}
 		}
-		return;
+
 
 	} catch (error) {
 		console.error(error);
-
+		return [];
 	}
 }
 
-function getSortedStatements(_subStatements:Statement[], sort: string | undefined, questions: boolean) {
+function getSortedStatements(_subStatements: Statement[], sort: string | undefined, questions: boolean) {
 	return sortSubStatements(
 		_subStatements,
 		sort
