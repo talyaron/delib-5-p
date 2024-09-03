@@ -35,7 +35,7 @@ interface StatementEvaluationPageProps {
   toggleAskNotifications: () => void;
   currentPage?: string;
 }
-let counter = 0;
+
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
   statement,
   subStatements,
@@ -110,9 +110,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const tops: number[] = [topSum];
     const message = stageInfo ? stageInfo.message : false;
 
-    if (sortedSubStatements.length === 0) {
-      return;
-    }
+   console.log(sortedSubStatements.map((subStatement:Statement) => subStatement.statement).join(','));
 
     return (
       <>

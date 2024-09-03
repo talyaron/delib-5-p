@@ -138,17 +138,23 @@ export async function getSubStatements({ statement, subStatements, sort, questio
 					setSortedSubStatements(myStatements);
 					return;
 				case QuestionStage.firstEvaluation:
-					getFirstEvaluationOptions(statement).then((subStatements) => {
-						// const st = getSortedStatements(subStatements, sort, questions);
-						setSortedSubStatements(subStatements);
-					})
+					try {
+						const subStatements = await getFirstEvaluationOptions(statement);
+						const st = getSortedStatements(subStatements, sort, questions);
+						setSortedSubStatements(st);
+					} catch (error) {
+						console.error(error);
+					}
 
 					return;
 				case QuestionStage.secondEvaluation:
-					getSecondEvaluationOptions(statement).then((subStatements) => {
+					try {
+						const subStatements = await getSecondEvaluationOptions(statement);
 						const st = getSortedStatements(subStatements, sort, questions);
 						setSortedSubStatements(st);
-					})
+					} catch (error) {
+						console.error(error);
+					}
 					return;
 				case QuestionStage.voting:
 					setSortedSubStatements([]);
