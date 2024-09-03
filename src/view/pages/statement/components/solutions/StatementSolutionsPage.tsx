@@ -5,14 +5,12 @@ import {
   QuestionStage,
   QuestionType,
   Statement,
-  StatementType,
-  User,
-  isOptionFn,
+  User
 } from "delib-npm";
 import { useParams, useNavigate } from "react-router";
 
 // Utils & Helpers
-import { sortSubStatements } from "./statementSolutionsCont";
+import { getSubStatements } from "./statementSolutionsCont";
 
 // Custom Components
 import StatementEvaluationCard from "./components/StatementSolutionCard";
@@ -27,13 +25,12 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { getTitle } from "@/controllers/general/helpers";
 import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
-import { getMultiStageOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
 import styles from "./statementSolutinsPage.module.scss";
-import ideaImage from "@/assets/images/manWithIdeaLamp.png";
-import WhitePlusIcon from "@/view/components/icons/WhitePlusIcon";
-import useWindowDimensions from "@/controllers/hooks/useWindowDimentions";
-import { useMultiStage } from "./statementSolutionsHooks";
-import { set } from "node_modules/cypress/types/lodash";
+
+import { useSelector } from "react-redux";
+import { myStatementsByStatementIdSelector } from "@/model/statements/statementsSlice";
+import EmptyScreen from "./components/emptyScreen/EmptyScreen";
+
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -44,7 +41,7 @@ interface StatementEvaluationPageProps {
   toggleAskNotifications: () => void;
   currentPage?: string;
 }
-
+let counter = 0;
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
   statement,
   subStatements,
@@ -58,53 +55,39 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const { sort } = useParams();
     const navigate = useNavigate();
     const { t } = useLanguage();
-    const isMuliStage =
+    const isMultiStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
-    const currentStage = statement.questionSettings?.currentStage;
+    
+    const myStatements = useSelector(myStatementsByStatementIdSelector(statement.statementId));
+    
+      const currentStage = statement.questionSettings?.currentStage;
     const stageInfo = getStagesInfo(currentStage);
     const useSearchForSimilarStatements =
       statement.statementSettings?.enableSimilaritiesSearch || false;
 
-    //hooks
-    const { subStatements: multiStageOptions, isLoading } = useMultiStage({
-      statement,
-    });
 
     // Use States
     const [showModal, setShowModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [showExplanation, setShowExplanation] = useState(
-      currentStage === QuestionStage.explanation && isMuliStage && !questions
+      currentStage === QuestionStage.explanation && isMultiStage && !questions
     );
     const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
       [...subStatements]
     );
 
     useEffect(() => {
-      if (isMuliStage) {
-        setSortedSubStatements(multiStageOptions);
-      } else {
-        const _sortedSubStatements = sortSubStatements(
-          subStatements,
-          sort
-        ).filter((subStatement) => {
-          //if questions is true, only show questions
-          if (questions) {
-            return subStatement.statementType === StatementType.question;
-          }
-
-          if (isMuliStage) {
-            //filter the temp presentation designed for this stage
-            return subStatement.isPartOfTempPresentation;
-          }
-
-          //if options is true, only show options
-          return isOptionFn(subStatement);
-        });
-
-        setSortedSubStatements(_sortedSubStatements);
-      }
-    }, [sort, subStatements, questions, isMuliStage, multiStageOptions]);
+     
+		getSubStatements({
+			statement,
+			subStatements,
+			sort,
+			questions,
+			myStatements,
+			setSortedSubStatements,
+		});
+		
+    }, [sort, subStatements, questions, isMultiStage]);
 
     useEffect(() => {
       if (questions) {
@@ -118,7 +101,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
       }
       if (
         currentStage === QuestionStage.explanation &&
-        isMuliStage &&
+        isMultiStage &&
         !questions
       ) {
         setShowExplanation(true);
@@ -134,100 +117,20 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const tops: number[] = [topSum];
     const message = stageInfo ? stageInfo.message : false;
 
-    const handlePlusIconClick = () => {
-      setShowModal(true);
-    };
+   
 
-    const { width } = useWindowDimensions();
-    const smallScreen = width < 1024;
+    
 
-    const renderCommonContent = () => (
-      <>
-        <div
-          className={styles.addingStatementWrapper}
-          style={{ paddingTop: "2rem" }}
-        >
-          <div className={styles.header}>
-            <div className={styles.title}>
-              <h1 className={styles.h1}>
-                {isLoading && <p>Loading...</p>}
-                {smallScreen ? (
-                  <>
-                    {t(`Click on`)}{" "}
-                    <span className={styles.titleSpan}>{t(`”+”`)}</span>{" "}
-                    {t(`to add your ${currentPage}`)}
-                  </>
-                ) : (
-                  <>
-                    <h1>
-                      {`Click on `}
-                      <span className={styles.titleSpan}>
-                        {`” ${t(`Add ${currentPage} button`)} ”`}
-                      </span>
-                      <br />
-                      {` to add your ${t(`${currentPage}`)}`}
-                    </h1>
-                  </>
-                )}
-              </h1>
-            </div>
-            <div
-              className={styles.plusButton}
-              onClick={handlePlusIconClick}
-              style={smallScreen ? { width: "4rem", height: "4rem" } : {}}
-            >
-              {smallScreen ? (
-                <WhitePlusIcon />
-              ) : (
-                <p>
-                  {" "}
-                  {t(`Add ${currentPage}`)} <WhitePlusIcon />{" "}
-                </p>
-              )}
-            </div>
-          </div>
-          <img src={ideaImage} alt="" className={styles.ideaImage} />
-        </div>
-        {isMuliStage && stageInfo?.message && (
-          <Toast
-            text={`${t(stageInfo.message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}"` : ""}`}
-            type="message"
-            show={showToast}
-            setShow={setShowToast}
-          >
-            {getToastButtons(currentStage)}
-          </Toast>
-        )}
-        {showExplanation && (
-          <Modal>
-            <StatementInfo
-              statement={statement}
-              setShowInfo={setShowExplanation}
-            />
-          </Modal>
-        )}
-        {showModal && (
-          <CreateStatementModalSwitch
-            toggleAskNotifications={toggleAskNotifications}
-            parentStatement={statement}
-            isQuestion={questions}
-            isMuliStage={isMuliStage}
-            setShowModal={setShowModal}
-            useSimilarStatements={useSearchForSimilarStatements}
-          />
-        )}
-      </>
-    );
-
+    
     if (sortedSubStatements.length === 0) {
-      return renderCommonContent();
+      return <EmptyScreen  currentPage={currentPage} stageInfo={stageInfo} setShowModal={setShowModal}/>
     }
 
     return (
       <>
         <div className="page__main">
           <div className={`wrapper ${styles.wrapper}`}>
-            {isMuliStage && message && (
+            {isMultiStage && message && (
               <Toast
                 text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
                 type="message"
@@ -279,13 +182,15 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
             toggleAskNotifications={toggleAskNotifications}
             parentStatement={statement}
             isQuestion={questions}
-            isMuliStage={isMuliStage}
+            isMultiStage={isMultiStage}
             setShowModal={setShowModal}
             useSimilarStatements={useSearchForSimilarStatements}
           />
         )}
       </>
     );
+
+    
     function getToastButtons(questionStage: QuestionStage | undefined) {
       try {
         switch (questionStage) {
