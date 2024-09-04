@@ -2,7 +2,7 @@ import { QuestionStage, QuestionType, Statement, User } from "delib-npm";
 import { FC, useEffect } from "react";
 import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   myStatementsByStatementIdSelector,
@@ -28,6 +28,7 @@ const SuggestionCards: FC<Props> = ({
   setShowModal,
 }) => {
   const { sort } = useParams();
+  const navigate = useNavigate();
 
   const {questionType ,currentStage} = statement.questionSettings || {questionType: QuestionType.singleStep, currentStage: QuestionStage.suggestion};
   const subStatements = switchSubStatements() ;
@@ -50,6 +51,8 @@ const SuggestionCards: FC<Props> = ({
         getFirstEvaluationOptions(statement);
       else if(currentStage === QuestionStage.secondEvaluation)
         getSecondEvaluationOptions(statement);
+      else if(currentStage === QuestionStage.voting) navigate(`statement/${statement.statementId}/vote`);
+      else if(currentStage === QuestionStage.finished)  getSecondEvaluationOptions(statement);
    
     }
   }, [currentStage, questionType]);
