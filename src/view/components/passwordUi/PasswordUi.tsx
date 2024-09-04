@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { checkPassword } from './checkPassword.ts';
+
 //styles
 import styles from './passwordUi.module.scss';
 
@@ -14,15 +16,16 @@ import Button from '../buttons/button/Button';
 import PasswordInput from './PasswordInput.tsx';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
-export default function PasswordUi({
-	setPasswordCheck,
-}: {
+interface PasswordUiProps {
 	setPasswordCheck: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+	statementId: string | undefined;
+	userId: string | undefined
+}
+
+export default function PasswordUi({ setPasswordCheck, statementId, userId }: PasswordUiProps) {
 	const navigate = useNavigate();
 	const { t } = useLanguage();
 
-	const PASSWORD_CODE = 7538;
 	const PASSWORD_LENGTH = 4;
 	const MAX_TRIES = 3;
 
@@ -34,14 +37,24 @@ export default function PasswordUi({
 		textStyle: styles.passwordUi__statusSection__passwordTextDefault,
 	});
 
-	function handleSubmit() {
-		const enteredCode = Number(values.join(''));
 
+	async function handleSubmit() {
 		try {
-			if (enteredCode === PASSWORD_CODE) {
+			if (!statementId) {
+				throw new Error("No statement ID found");
+			}
+			if (!userId) {
+				throw new Error("No user ID found");
+			}
+
+			const userCodeInput = Number(values.join(''));
+
+			const isPasswordCorrect = await checkPassword(userCodeInput, statementId, userId);
+
+			if (isPasswordCorrect) {
 				setPasswordState({
 					img: passwordUiImgGreen,
-					text: t(`Bravo! Your password is correct. Welcome aboard!`),
+					text: t('Bravo! Your password is correct. Welcome aboard!'),
 					textStyle: styles.passwordUi__statusSection__passwordTextCorrect,
 				});
 
@@ -51,7 +64,7 @@ export default function PasswordUi({
 			} else {
 				setPasswordState({
 					img: passwordUiImgRed,
-					text: t(`Something went wrong. Please try again!`),
+					text: t('Something went wrong. Please try again!'),
 					textStyle: styles.passwordUi__statusSection__passwordTextIncorrect,
 				});
 
@@ -60,7 +73,7 @@ export default function PasswordUi({
 					if (newTriesCounter <= 0) {
 						navigate('/401');
 					}
-
+					
 					return newTriesCounter;
 				});
 			}
@@ -93,7 +106,7 @@ export default function PasswordUi({
 			<div className={styles.passwordUi__buttonSection}>
 				<Button
 					text={t('Submit')}
-					onClick={() => handleSubmit()}
+					onClick={handleSubmit}
 					className='btn btn--affirmation'
 				/>
 			</div>

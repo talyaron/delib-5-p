@@ -26,7 +26,6 @@ import './StatementSettingsForm.scss';
 // icons
 import SaveIcon from '@/assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
-import GeneratePassword from '@/view/components/generatePassword/GeneratePassword';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
@@ -99,7 +98,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						</section>
 						<section className='get-members-area'>
 							<GetEvaluators statementId={statementId} />
-							<GeneratePassword statementId={statementId}/>
 						</section>
 					</>
 				)}

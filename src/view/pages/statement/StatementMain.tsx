@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
-import { User, Role, Screen } from 'delib-npm';
+import { User, Role, Screen, Access } from 'delib-npm';
 
 // firestore
 import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
@@ -42,7 +42,7 @@ import SwitchScreens from './components/SwitchScreens';
 import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
 import AskPermission from '@/view/components/askPermission/AskPermission';
 import FollowMeToast from './components/followMeToast/FollowMeToast';
-
+import PasswordUi from '@/view/components/passwordUi/PasswordUi';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -87,7 +87,7 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
-	const [_, setPasswordCheck] = useState<boolean>(false)
+	const [passwordCheck, setPasswordCheck] = useState<boolean>(false)
 
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
@@ -197,11 +197,10 @@ const StatementMain: FC = () => {
 	useEffect(() => {
 		if (user?.uid === statement?.creatorId) {
 			setPasswordCheck(true);
-		}
-		else {
+		} else {
 			setPasswordCheck(false);
 		}
-	}, []);
+	}, [user, statement]);
 
 	if (isStatementNotFound) return <Page404 />;
 	if (error) return <UnAuthorizedPage />;
@@ -210,56 +209,55 @@ const StatementMain: FC = () => {
 	if (isAuthorized)
 		return (
 			<>
-				{/* {passwordCheck ?
-					( */}
-				<div className='page'>
-					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
-					{talker && (
-						<button
-							onClick={() => {
-								handleShowTalker(null);
-							}}
-						>
-							<ProfileImage user={talker} />
-						</button>
-					)}
-					{askNotifications && (
-						<EnableNotifications
-							statement={statement}
-							setAskNotifications={setAskNotifications}
-							setShowAskPermission={setShowAskPermission}
-						/>
-					)}
+				{passwordCheck || (statement?.membership?.access === Access.open) || user?.role === "member" ? (
+					<div className="page">
+						{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
+						{talker && (
+							<button
+								onClick={() => {
+									handleShowTalker(null);
+								}}
+							>
+								<ProfileImage user={talker} />
+							</button>
+						)}
+						{askNotifications && (
+							<EnableNotifications
+								statement={statement}
+								setAskNotifications={setAskNotifications}
+								setShowAskPermission={setShowAskPermission}
+							/>
+						)}
 
-					<StatementHeader
-						statement={statement}
-						statementSubscription={statementSubscription}
-						topParentStatement={topParentStatement}
-						screen={screen ?? Screen.CHAT}
-						showAskPermission={showAskPermission}
-						setShowAskPermission={setShowAskPermission}
-						role={role}
-					/>
-					<MapProvider>
-						<FollowMeToast role={role} statement={statement} />
-
-						<SwitchScreens
-							screen={screen}
+						<StatementHeader
 							statement={statement}
-							subStatements={subStatements}
-							handleShowTalker={handleShowTalker}
+							statementSubscription={statementSubscription}
+							topParentStatement={topParentStatement}
+							screen={screen ?? Screen.CHAT}
+							showAskPermission={showAskPermission}
 							setShowAskPermission={setShowAskPermission}
-							toggleAskNotifications={toggleAskNotifications}
+							role={role}
 						/>
-					</MapProvider>
-				</div>
-				{/* )
-					:
-					<div className="passwordUiComponent">
-						<PasswordUi setPasswordCheck={setPasswordCheck} />
+						<MapProvider>
+							<FollowMeToast role={role} statement={statement} />
+
+							<SwitchScreens
+								screen={screen}
+								statement={statement}
+								subStatements={subStatements}
+								handleShowTalker={handleShowTalker}
+								setShowAskPermission={setShowAskPermission}
+								toggleAskNotifications={toggleAskNotifications}
+							/>
+						</MapProvider>
 					</div>
-				} */}
+				) : (
+					< div className="passwordUiComponent">
+						<PasswordUi userId={user?.uid} statementId={statementId} setPasswordCheck={setPasswordCheck} />
+					</div >
+				)}
 			</>
+
 		);
 
 

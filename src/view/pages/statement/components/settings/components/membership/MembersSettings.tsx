@@ -27,10 +27,13 @@ import "./MembersSettings.scss";
 import { collection, getDocs } from "firebase/firestore";
 import { DB } from "../../../../../../../controllers/db/config";
 import Checkbox from "@/view/components/checkbox/Checkbox";
+import generatePassword from "@/view/components/passwordUi/generatePassword";
+import { useSelector } from "react-redux";
+import { userSelector } from "@/model/users/userSlice";
 
 interface MembersSettingsProps {
-  statement: Statement;
-  setStatementToEdit: Dispatch<Statement>;
+	statement: Statement;
+	setStatementToEdit: Dispatch<Statement>;
 }
 
 const MembersSettings: FC<MembersSettingsProps> = ({
@@ -41,6 +44,8 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 	const { statementId } = useParams();
 	const { t } = useLanguage();
 	const [userCount, setUserCount] = useState<number>(0);
+	const user = useSelector(userSelector);
+
 
 	const statementMembershipSelector = (statementId: string | undefined) =>
 		createSelector(
@@ -73,17 +78,22 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 	}
 
 	function handleOpenGroup() {
+		const isClosing = statement.membership?.access === Access.open;
+		const newAccess = isClosing ? Access.close : Access.open;
+
+		if (isClosing && (statement.creatorId === user?.uid)) {
+			generatePassword(statementId);
+		}
+
 		setStatementToEdit({
 			...statement,
 			membership: {
 				...statement.membership,
-				access:
-          statement.membership?.access === Access.open
-          	? Access.close
-          	: Access.open,
+				access: newAccess,
 			},
 		});
 	}
+
 
 	function handleAllowAnonymous() {
 		setStatementToEdit({
@@ -91,10 +101,10 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 			membership: {
 				...statement.membership,
 				typeOfMembersAllowed:
-          statement.membership?.typeOfMembersAllowed ===
-          membersAllowed.nonAnonymous
-          	? membersAllowed.all
-          	: membersAllowed.nonAnonymous,
+					statement.membership?.typeOfMembersAllowed ===
+						membersAllowed.nonAnonymous
+						? membersAllowed.all
+						: membersAllowed.nonAnonymous,
 			},
 		});
 	}
@@ -103,7 +113,7 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 		const usersCollection = collection(DB, Collections.awaitingUsers);
 		const usersSnapshot = await getDocs(usersCollection);
 		const count = usersSnapshot.docs.length;
-		
+
 		return setUserCount(count);
 	};
 
