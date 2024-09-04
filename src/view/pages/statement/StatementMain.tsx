@@ -1,36 +1,36 @@
-import { FC, useEffect, useState } from 'react';
-import { createSelector } from 'reselect';
+import { FC, useEffect, useState } from "react";
+import { createSelector } from "reselect";
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
 import { User, Role, Screen, Access } from 'delib-npm';
 
 // firestore
-import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
+import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
 import {
 	listenToSubStatements,
 	listenToStatement,
 	listenToStatementSubscription,
-} from '@/controllers/db/statements/listenToStatements';
+} from "@/controllers/db/statements/listenToStatements";
 import {
 	updateSubscriberForStatementSubStatements,
 	setStatementSubscriptionToDB,
-} from '@/controllers/db/subscriptions/setSubscriptions';
+} from "@/controllers/db/subscriptions/setSubscriptions";
 
-import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
+import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { statementNotificationSelector } from '@/model/statements/statementsSlice';
-import { RootState } from '@/model/store';
-import { userSelector } from '@/model/users/userSlice';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementNotificationSelector } from "@/model/statements/statementsSlice";
+import { RootState } from "@/model/store";
+import { userSelector } from "@/model/users/userSlice";
+import { useSelector } from "react-redux";
 
 // Hooks & Helpers
-import { MapProvider } from '@/controllers/hooks/useMap';
-import { statementTitleToDisplay } from '@/controllers/general/helpers';
-import { availableScreen } from './StatementCont';
-import { useIsAuthorized } from '@/controllers/hooks/authHooks';
+import { MapProvider } from "@/controllers/hooks/useMap";
+import { statementTitleToDisplay } from "@/controllers/general/helpers";
+import { availableScreen } from "./StatementCont";
+import { useIsAuthorized } from "@/controllers/hooks/authHooks";
 
 // Custom components
 import LoadingPage from '../loadingPage/LoadingPage';
@@ -169,7 +169,10 @@ const StatementMain: FC = () => {
 			return;
 		};
 		if (statement?.topParentId) {
-			unSubscribe = listenToStatement(statement?.topParentId, setIsStatementNotFound);
+			unSubscribe = listenToStatement(
+				statement?.topParentId,
+				setIsStatementNotFound
+			);
 		}
 
 		return () => {
@@ -244,7 +247,8 @@ const StatementMain: FC = () => {
 							<SwitchScreens
 								screen={screen}
 								statement={statement}
-								subStatements={subStatements}
+								statementSubscription={statementSubscription}
+							subStatements={subStatements}
 								handleShowTalker={handleShowTalker}
 								setShowAskPermission={setShowAskPermission}
 								toggleAskNotifications={toggleAskNotifications}
@@ -259,8 +263,6 @@ const StatementMain: FC = () => {
 			</>
 
 		);
-
-
 
 	return <UnAuthorizedPage />;
 };

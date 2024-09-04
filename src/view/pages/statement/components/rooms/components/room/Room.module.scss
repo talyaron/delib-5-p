@@ -1,0 +1,22 @@
+.room {
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    word-break: break-all;
+
+    .topic {
+        font-size: 1rem;
+        font-weight:400;
+        color:var(--text-paragraph);
+    }
+    &Number{
+        font-size: 1rem;
+        font-weight: 400;
+    }
+    .participants{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+}

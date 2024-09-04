@@ -5,13 +5,14 @@ import { Statement, Screen, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import LightIcon from "@/assets/icons/lightBulbIcon.svg?react";
-import NavQuestionIcon from "@/assets/icons/questionIcon.svg?react";
+
 import PlusIcon from "@/assets/icons/plusIcon.svg?react";
 import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
 import RandomIcon from "@/assets/icons/randomIcon.svg?react";
 import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
 import NewestIcon from "@/assets/icons/newIcon.svg?react";
+import SortIcon from "@/assets/icons/sort.svg?react";
+
 import useStatementColor from "@/controllers/hooks/useStatementColor";
 import {
 	NavItem,
@@ -19,51 +20,55 @@ import {
 	questionsArray,
 	votesArray,
 } from "./StatementBottomNavModal";
-import IconButton from "@/view/components/iconButton/IconButton";
+
 import "./StatementBottomNav.scss";
 
 interface Props {
-    statement: Statement;
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-    showNav?: boolean;
+  statement: Statement;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showNav?: boolean;
 }
 
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	const { page } = useParams();
-	const MainIcon = page === Screen.QUESTIONS ? NavQuestionIcon : LightIcon;
 
 	const navItems = getNavigationScreens(page);
 
 	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+	const [showSorting, setShowSorting] = useState(false);
 
-	const statementColor = useStatementColor(statement.statementType || StatementType.statement);
-	
+	const statementColor = useStatementColor(
+		statement.statementType || StatementType.statement
+	);
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
-        statement.statementSettings?.enableAddEvaluationOption;
+    statement.statementSettings?.enableAddEvaluationOption;
 
 	const addVotingOption: boolean | undefined =
-        statement.statementSettings?.enableAddVotingOption;
+    statement.statementSettings?.enableAddVotingOption;
 
 	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
 	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
 	const showAddQuestion = page === Screen.QUESTIONS;
 	const isAddOption =
-        showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
+    showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
 	const handleMidIconClick = () => {
-		if (!isNavigationOpen) return setIsNavigationOpen(true);
+   
 		if (isAddOption) {
 			setShowModal(true);
 		}
-		setIsNavigationOpen(false);
+    
 	};
 
-	const navStyle = {
-		bottom: page === "vote" ? "unset" : "3rem",
-		height: page === "vote" ? "4rem" : "unset",
-	};
+	function handleSortingClick() {
+		setShowSorting(!showSorting);
+
+
+	}
+
+
 
 	return (
 		<>
@@ -73,33 +78,38 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 					onClick={() => setIsNavigationOpen(false)}
 				/>
 			)}
-			<div className="statement-bottom-nav" style={navStyle}>
-				<IconButton
-					className="open-nav-icon burger"
+			<div className="statement-bottom-nav">
+				<button
+					className="add-option-button"
 					style={statementColor}
 					onClick={handleMidIconClick}
 					data-cy="bottom-nav-mid-icon"
 				>
-					{isNavigationOpen && isAddOption ? (
+					{isAddOption && (
 						<PlusIcon style={{ color: statementColor.color }} />
-					) : (
-						<MainIcon style={{ color: statementColor.color }} />
-					)}
-				</IconButton>
-
-				{navItems.map((navItem) => (
-					<Link
-						className={`open-nav-icon ${isNavigationOpen ? "active" : ""}`}
-						to={navItem.link}
-						key={navItem.id}
-						onClick={() => setIsNavigationOpen(false)}
-					>
-						<NavIcon
-							name={navItem.name}
-							color={statementColor.backgroundColor}
-						/>
-					</Link>
-				))}
+					) }
+				</button>
+				<div className="sort-menu">
+					{navItems.map((navItem) => (
+						<div className={`sort-menu__item  ${showSorting ? "active" : ""}`}>
+							<Link
+								className={`open-nav-icon ${showSorting ? "active" : ""}`}
+								to={navItem.link}
+								key={navItem.id}
+								onClick={() => setShowSorting(false)}
+							>
+								<NavIcon
+									name={navItem.name}
+									color={statementColor.backgroundColor}
+								/>
+							</Link>
+							<span className="button-name">{navItem.name}</span>
+						</div>
+					))}
+					<div className="sort-button" onClick={handleSortingClick}>
+						<SortIcon />
+					</div>
+				</div>
 			</div>
 		</>
 	);
@@ -123,8 +133,8 @@ function getNavigationScreens(page: string | undefined): NavItem[] {
 }
 
 interface NavIconProps {
-    name: string;
-    color: string;
+  name: string;
+  color: string;
 }
 
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {

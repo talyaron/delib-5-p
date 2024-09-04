@@ -24,6 +24,9 @@
     "Sign up with": "Registrarte con",
     "Conversations": "Conversaciones",
     "Creating Agreements": "Creando Acuerdos",
+    "Create new room": "Crear nueva sala",
+    "Number of participants per room": "Número de participantes por sala",
+    "Divide participants into rooms": "Dividir a los participantes en salas",
     "Delib": "Delib",
     "Delib: We create agreements together": "Delib: Creamos acuerdos juntos",
     "Description": "Descripción",
@@ -143,5 +146,11 @@
     "Sort questions": "Ordenar preguntas",
     "Sort suggestions": "Ordenar sugerencias",
     "Allow similarity search": "Permitir búsqueda de similitudes",
-    "Allow removal of navigational elements": "Permitir la eliminación de elementos de navegación"
+    "Allow removal of navigational elements": "Permitir la eliminación de elementos de navegación",
+    "Tabu": "Tabú",
+    "Conflicts": "Conflictos",
+    "Abstention": "Abstención",
+    "Support": "Soporte",
+    "Against": "En contra",
+    "Voters": "Votantes"
 }

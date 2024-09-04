@@ -91,6 +91,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 		<ScreenFadeIn className="page__main">
 			<ReactFlowProvider>
 				<select
+					aria-label="Select filter type for results"
 					onChange={(ev) => handleFilter(ev.target.value as FilterType)}
 					defaultValue={FilterType.questionsResultsOptions}
 					style={{

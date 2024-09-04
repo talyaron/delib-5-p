@@ -1,4 +1,4 @@
-congifKey.ts
+
 
 
 # Logs
@@ -43,3 +43,4 @@ firebase-debug.log
 firebase-debug.log*
 ./firestore.indexes.json
 firestore.rules
+

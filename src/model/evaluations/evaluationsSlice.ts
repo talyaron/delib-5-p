@@ -15,7 +15,7 @@ const initialState: EvaluationsState = {
 };
 
 export const evaluationsSlicer = createSlice({
-	name: "evaluations",
+	name: "suggestions",
 	initialState,
 	reducers: {
 		setEvaluationToStore: (state, action: PayloadAction<Evaluation>) => {

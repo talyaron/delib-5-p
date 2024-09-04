@@ -13,6 +13,7 @@ import {
 	StatementType,
 	UserSchema,
 	isAllowedStatementType,
+	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
@@ -25,6 +26,7 @@ import {
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { allowedScreens } from "@/controllers/general/screens";
+import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 
 
 
@@ -63,6 +65,34 @@ export const updateStatementParents = async (
 };
 
 const TextSchema = z.string().min(2);
+
+export function setSubStatementToDB(statement: Statement, title: string, description?: string) {
+	try {
+		const newSubStatement = createStatement({
+			text: title,
+			description: description,
+			parentStatement: statement,
+			statementType: StatementType.option,
+			enableAddEvaluationOption: true,
+			enableAddVotingOption: true,
+			enhancedEvaluation: true,
+			showEvaluation: true,
+			resultsBy: ResultsBy.topOptions,
+			numberOfResults: 1,
+			hasChildren: true,
+			membership: statement.membership,
+		});
+
+		if(!newSubStatement) throw new Error("New newSubStatement is undefined");
+
+		const newSubStatementRef = doc(DB, Collections.statements, newSubStatement.statementId);
+		setDoc(newSubStatementRef, newSubStatement);
+	} catch (error) {
+		console.error(error);
+		
+	}
+}
+
 interface SetStatementToDBParams {
 	statement: Statement;
 	parentStatement?: Statement | "top";
@@ -158,6 +188,9 @@ export const setStatementToDB = async ({
 		});
 
 		statementPromises.push(statementPromise);
+
+		//add roomSettings
+		setNewRoomSettingsToDB(statement.statementId);
 
 		//add subscription
 
@@ -294,7 +327,10 @@ export function createStatement({
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
 
-		StatementSchema.parse(newStatement);
+		const results = StatementSchema.safeParse(newStatement);
+		if(results.success === false) {
+			writeZodError(results.error, newStatement);
+		}
 
 		return newStatement;
 	} catch (error) {
@@ -387,7 +423,10 @@ export function updateStatement({
 					Screen.VOTE,
 				];
 
-		StatementSchema.parse(newStatement);
+		const results = StatementSchema.safeParse(newStatement);
+		if(results.success === false) {
+			writeZodError(results.error, newStatement);
+		}
 
 		return newStatement;
 	} catch (error) {
@@ -454,16 +493,12 @@ function updateStatementSettings({
 export async function updateStatementText(
 	statement: Statement | undefined,
 	title: string,
-	description?: string,
+	description: string,
 ) {
 	try {
 		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
-
-		// console.log(statement.statement);
-		// console.log(newText);
-		const _statement = title;
-		const _description = description ? description.split("\n").slice(1).join("\n").trim() : "";
+		
 
 		if (statement.statement === title && statement.description === description) return;
 
@@ -475,8 +510,8 @@ export async function updateStatementText(
 		);
 
 		const newStatement = {
-			statement: _statement,
-			description: _description,
+			statement:title,
+			description,
 			lastUpdate: Timestamp.now().toMillis(),
 		};
 		await updateDoc(statementRef, newStatement);

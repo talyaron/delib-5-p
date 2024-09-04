@@ -1,34 +1,55 @@
 import { Statement } from "delib-npm";
-import { FC, useState } from "react";
-import AdminArrange from "../adminArrange/AdminArrange";
-import SetTimers from "../setTimers/SetTimers";
+import { FC } from "react";
+
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import "./RoomsAdmin.scss";
+
+import { setNewRoomSettingsToDB } from "@/controllers/db/rooms/setRooms";
+import {
+	participantsByStatementId,
+	roomSettingsByStatementId,
+} from "@/model/rooms/roomsSlice";
+import { useSelector } from "react-redux";
+import { statementSubsSelector } from "@/model/statements/statementsSlice";
+import RoomsDivision from "./roomsDivision/RoomsDivision";
+import RoomsView from "./roomsView/RoomsView";
 
 interface Props {
-    statement: Statement;
+  statement: Statement;
 }
 
 const RoomsAdmin: FC<Props> = ({ statement }) => {
-	const { t } = useLanguage();
-
-	const [setRooms, setSetRooms] = useState<boolean>(
-		statement.roomsState === "chooseRoom" ||
-            statement.roomsState === undefined
-			? false
-			: true,
+	const participants = useSelector(
+		participantsByStatementId(statement.statementId)
 	);
 
-	return (
-		<div className="rooms-admin">
-			<p className="title">{t("Management board")}</p>
+	const topics = useSelector(statementSubsSelector(statement.statementId));
 
-			<AdminArrange
-				statement={statement}
-				setRooms={setRooms}
-				setSetRooms={setSetRooms}
-			/>
-			{!setRooms && <SetTimers parentStatement={statement} />}
+	const { t } = useLanguage();
+
+	const roomSettings = useSelector(
+		roomSettingsByStatementId(statement.statementId)
+	);
+
+	if (!roomSettings) {
+		setNewRoomSettingsToDB(statement.statementId);
+	}
+
+	const isEditingRoom =
+    roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
+
+	return (
+		<div className="rooms-admin wrapper">
+			<h2 className="title">{t("Management board")}</h2>
+			{isEditingRoom ? (
+				<RoomsDivision
+					statement={statement}
+					roomSettings={roomSettings}
+					topics={topics}
+					participants={participants}
+				/>
+			) : (
+				<RoomsView statement={statement} participants={participants} />
+			)}
 		</div>
 	);
 };

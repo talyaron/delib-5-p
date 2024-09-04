@@ -39,6 +39,7 @@
 
   //shadow
   --shadow: rgba(181, 197, 232, 0.486);
+  --radius:5px;
 
   //buttons
   --inactive: rgb(207, 207, 207);
@@ -80,7 +81,7 @@
   --settings-voting: #EA8222;
   --settings-finished: #e8749e;
 
-  //similarties colors
+  //similarities colors
   --similarities-textarea-border: #C3D0EA;
   --similarities-titleInput: #818FAD;
   --types-color: #668FD1;
@@ -100,38 +101,40 @@
   --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
 
+//wights
+  --wight-medium: 400;
+
+
+  
 
 
 
 
-
-
-
-  //FIGMA LABRARY COLORS
+  //FIGMA LIBRARY COLORS
   //agreement-rang
   --range-positive-100: #46b4a0;
-  --range-positive-60: ##78d2c2;
+  --range-positive-60: #78d2c2;
   --range-positive-30: #9add82;
 
-  --range-nuetral-100: #ff8401;
-  --range-nuetral-60: #ffbd01;
-  --range-nuetral-30: #e7de2e;
+  --range-conflict-100: #ff8401;
+  --range-conflict-60: #ffbd01;
+  --range-conflict-30: #e7de2e;
 
-  --range-negative-100: #ff4185;
-  --range-negative-60: #fd8ee5;
-  --range-negative-30: #e6b2ff;
+  --range-tabu-100: #ff4185;
+  --range-tabu-60: #fd8ee5;
+  --range-tabu-30: #e6b2ff;
   //agreement-rang-contrast
   --range-positive-100-contrast: #02f483;
   --range-positive-60-contrast: #2fcfb3b2;
   --range-positive-30-contrast: #6fd9764d;
 
-  --range-nuetral-100-contrast: #ff8401;
-  --range-nuetral-60-contrast: #b79016;
-  --range-nuetral-30-contrast: #70502d;
+  --range-conflict-100-contrast: #ff8401;
+  --range-conflict-60-contrast: #b79016;
+  --range-conflict-30-contrast: #70502d;
 
-  --range-negative-100-contrast: #c1145b;
-  --range-negative-60-contrast: #ff2b7799;
-  --range-negative-30-contrast: #ff589366;
+  --range-tabu-100-contrast: #c1145b;
+  --range-tabu-60-contrast: #ff2b7799;
+  --range-tabu-30-contrast: #ff589366;
 
 
   //base
@@ -144,7 +147,7 @@
   //buttons
   --btn-primary: #739ee4;
   --btn-secondary: #739ee4;
-  --btn-tertiary: #739ee4;
+  --btn-tertiary: #a2c0f0;
   --btn-follow-me: #ec8aba;
   --btn-fab: #739ee4;
   //buttons-contrast
@@ -189,10 +192,10 @@
 
 
   //headers
+  --header-home:#6394ee;
   --header-question: #62beeb;
   --header-option-chosen: #76c0b3;
   --header-option-non-chosen: #e7d080;
-  --header-home: #739ee4;
   --header-search-chips: #f5e3a3;
   //headers-contrast
   --header-question-contrast: #476fca;
@@ -213,7 +216,7 @@
   --icon-disabled-filled-contrast: #2b4170;
   --icon-disabled-filled-secondary-contrast: #209eac;
   --icon-disabled-outline-contrast: #a1b0d1;
-  --icon-grenn-contrast: #00a89a;
+  --icon-green-contrast: #00a89a;
   --icon-red-contrast: #d1004b;
 
 

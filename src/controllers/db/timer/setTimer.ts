@@ -12,7 +12,6 @@ import {
 import { DB } from "../config";
 import {
 	Collections,
-	RoomDivied,
 	RoomTimer,
 	RoomTimerSchema,
 	SetTimer,
@@ -183,7 +182,7 @@ export async function setTimersInitTimeDB({
 
 interface InitializeTimersDBParams {
     statementId: string;
-    rooms: RoomDivied[];
+    rooms: Array<{ roomNumber: number }>;
 }
 
 export async function initializeTimersDB({

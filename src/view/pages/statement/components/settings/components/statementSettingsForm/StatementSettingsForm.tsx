@@ -105,6 +105,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				<button
 					type='submit'
 					className='submit-button'
+					aria-label="Submit button"
 					data-cy='settings-statement-submit-btn'
 				>
 					<SaveIcon />

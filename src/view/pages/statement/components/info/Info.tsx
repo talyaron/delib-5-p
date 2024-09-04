@@ -1,6 +1,7 @@
 import { membersAllowed, Statement } from "delib-npm";
 import { FC } from "react";
 import Text from "@/view/components/text/Text";
+import Triangle from "@/view/components/triangle/Triangle";
 
 interface Props {
   statement: Statement;
@@ -21,30 +22,32 @@ const Info: FC<Props> = ({ statement }) => {
 		: `https://freedis.web.app/doc/${statement.statementId}`;
 
 	return (
-		<div>
-			<div className="wrapper">
-				{statement.description && (
-					<>
-						<h2>Description</h2>
-						<Text description={statement.description} />
-					</>
-				)}
-				<ul>
-					{isAnonymous && (
-						<li>
-							<a href={anonymousUrl} target="_blank">
-                Anonymous Link
-							</a>
-						</li>
-					)}
+	
+		<div className="wrapper">
+			{statement.description && (
+				<>
+					<h2>Description</h2>
+					<Text description={statement.description} />
+				</>
+			)}
+			<ul>
+				{isAnonymous && (
 					<li>
-						<a href={memberUrl} target="_blank">
-              members Link
+						<a href={anonymousUrl} target="_blank">
+                Anonymous Link
 						</a>
 					</li>
-				</ul>
-			</div>
+				)}
+				<li>
+					<a href={memberUrl} target="_blank">
+              members Link
+					</a>
+				</li>
+			</ul>
+
+			<Triangle statement={statement} />
 		</div>
+		
 	);
 };
 

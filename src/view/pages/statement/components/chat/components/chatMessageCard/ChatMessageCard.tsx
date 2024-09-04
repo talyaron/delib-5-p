@@ -124,10 +124,12 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return;
+			if (!text) return;
 			if (!statement) throw new Error("Statement is undefined");
+			const title = text.split("\n")[0];
+			const description = text.split("\n").slice(1).join("\n")	;
 
-			updateStatementText(statement, text.trim());
+			updateStatementText(statement, title, description);
 			setIsEdit(false);
 		} catch (error) {
 			console.error(error);
@@ -168,10 +170,9 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 									autoFocus={true}
 									style={{ direction: dir }}
 								/>
-								<button>
+								<button onClick={handleSave}>
 									<img
 										src={SaveTextIcon}
-										onClick={handleSave}
 										className="save-icon"
 										alt="Save Icon"
 									/>
@@ -236,6 +237,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 					{shouldLinkToChildren && (
 						<button
 							className="add-question-btn"
+							aria-label="Add question button"
 							onClick={() => setIsNewStatementModalOpen(true)}
 						>
 							<AddQuestionIcon />

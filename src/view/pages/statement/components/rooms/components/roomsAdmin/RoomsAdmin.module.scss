@@ -1,0 +1,31 @@
+.participantsPerRoom{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+
+ .title{
+        font-size: 1.1rem;
+        font-weight: 300;
+        margin-bottom: 0.5rem;
+    }
+
+    input{
+        width: 5rem;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+    .add{
+        background-color: var(--btn-tertiary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 2rem;
+        border-radius: (var(--radius));
+    }
+    
+}
+.btns{
+    margin: .6rem 0rem;
+}
