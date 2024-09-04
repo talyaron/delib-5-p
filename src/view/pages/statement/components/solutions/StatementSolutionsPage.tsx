@@ -25,6 +25,7 @@ import styles from "./statementSolutinsPage.module.scss";
 import { useSelector } from "react-redux";
 import { myStatementsByStatementIdSelector } from "@/model/statements/statementsSlice";
 import EmptyScreen from "./components/emptyScreen/EmptyScreen";
+import SuggestionCards from "./components/suggestionCards/SuggestionCards";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -67,7 +68,9 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const [showExplanation, setShowExplanation] = useState(
       currentStage === QuestionStage.explanation && isMultiStage && !questions
     );
-    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>([]);
+    const [sortedSubStatements, setSortedSubStatements] = useState<Statement[]>(
+      []
+    );
 
     useEffect(() => {
       getSubStatements({
@@ -77,7 +80,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
         questions,
         myStatements,
       }).then((_subStatements) => {
-        console.log("new st..............", _subStatements.length)
+        console.log("new st..............", _subStatements.length);
         setSortedSubStatements(_subStatements);
       });
     }, [sort, subStatements, questions, isMultiStage]);
@@ -105,13 +108,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
       }
     }, [statement.questionSettings?.currentStage, questions]);
 
-    // Variables
-    let topSum = 30;
-    const tops: number[] = [topSum];
     const message = stageInfo ? stageInfo.message : false;
-    console.log(topSum, tops)
-
-  
 
     return (
       <>
@@ -133,29 +130,11 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
                   {getToastButtons(currentStage)}
                 </Toast>
               )}
-              {sortedSubStatements?.map(
-                (statementSub: Statement, i: number) => {
-                  //get the top of the element
-                  if (statementSub.elementHight) {
-                    topSum += statementSub.elementHight + 30;
-                    tops.push(topSum);
-                  }
-
-                  return (
-                    <StatementEvaluationCard
-                      key={statementSub.statementId}
-                      parentStatement={statement}
-                      statement={statementSub}
-                      showImage={handleShowTalker}
-                      top={tops[i]}
-                    />
-                  );
-                }
-              )}
-              <div
-                className="options__bottom"
-                style={{ height: `${topSum + 70}px` }}
-              ></div>
+              <SuggestionCards
+                statement={statement}
+                sortedSubStatements={sortedSubStatements}
+                handleShowTalker={handleShowTalker}
+              />
             </div>
           )}
         </div>
