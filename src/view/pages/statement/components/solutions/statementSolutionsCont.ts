@@ -5,14 +5,18 @@ import {
 	enhancedEvaluationsThumbs,
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
 import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
+import { store } from "@/model/store";
+import { updateStatementTop } from "@/model/statements/statementsSlice";
 
 
 
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
-): Statement[] {
+	gap:number = 30
+): void {
 	try {
+		const dispatch = store.dispatch;
 		let _subStatements = [...subStatements];
 		switch (sort) {
 			case Screen.OPTIONS_CONSENSUS:
@@ -38,20 +42,28 @@ export function sortSubStatements(
 				);
 				break;
 		}
-		const __subStatements = _subStatements.map(
-			(statement: Statement, i: number) => {
-				const updatedStatement = Object.assign({}, statement);
-				updatedStatement.order = i;
+		
+		let totalHeight = gap;
+		const updates: { statementId: string; top: number }[] = _subStatements.map((subStatement) => {
+			try {
+				const update = {
+					statementId: subStatement.statementId,
+					top: totalHeight,
+				};
+				totalHeight += (subStatement.elementHight || 0) + gap;
+				return update;
 
-				return updatedStatement;
-			},
-		);
+			} catch (error) {
+				console.error(error);
+			}
+		}).filter((update) => update !== undefined) as { statementId: string; top: number }[];
+		dispatch(updateStatementTop(updates));
 
-		return __subStatements;
+
 	} catch (error) {
 		console.error(error);
 
-		return subStatements;
+
 	}
 }
 
@@ -116,7 +128,7 @@ interface GetSubStatementsProps {
 }
 export async function getSubStatements({ statement, subStatements, sort, questions, myStatements }: GetSubStatementsProps): Promise<Statement[]> {
 	try {
-	
+
 		if (!statement) return [];
 		if (!subStatements) return [];
 		const _subStatements = [...subStatements];
@@ -126,7 +138,7 @@ export async function getSubStatements({ statement, subStatements, sort, questio
 		if (!isMultiStage) {
 			return getSortedStatements(_subStatements, sort, questions);
 		} else {
-	
+
 			switch (statement.questionSettings?.currentStage) {
 				case QuestionStage.explanation:
 					return ([]);

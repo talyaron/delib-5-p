@@ -18,14 +18,11 @@ import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionS
 import { getTitle } from "@/controllers/general/helpers";
 import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
 import styles from "./statementSolutinsPage.module.scss";
-
-import EmptyScreen from "./components/emptyScreen/EmptyScreen";
 import SuggestionCards from "./components/suggestionCards/SuggestionCards";
-import { SubStatementsProvider } from "./statementSolutionPageContext";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
-  subStatements: Statement[];
+
   handleShowTalker: (talker: User | null) => void;
   showNav?: boolean;
   questions?: boolean;
@@ -35,7 +32,6 @@ interface StatementEvaluationPageProps {
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
   statement,
-  subStatements,
   handleShowTalker,
   questions = false,
   toggleAskNotifications,
@@ -43,13 +39,11 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 }) => {
   try {
     // Hooks
- 
+
     const navigate = useNavigate();
     const { t } = useLanguage();
     const isMultiStage =
       statement.questionSettings?.questionType === QuestionType.multipleSteps;
-
-   
 
     const currentStage = statement.questionSettings?.currentStage;
     const stageInfo = getStagesInfo(currentStage);
@@ -62,9 +56,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const [showExplanation, setShowExplanation] = useState(
       currentStage === QuestionStage.explanation && isMultiStage && !questions
     );
-    
-
-   
 
     useEffect(() => {
       if (questions) {
@@ -92,61 +83,53 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
     const message = stageInfo ? stageInfo.message : false;
 
     return (
-      <SubStatementsProvider>
-        <>
-          <div className="page__main">
-            {subStatements.length === 0 ? (
-              <EmptyScreen
-                currentPage={currentPage}
-                setShowModal={setShowModal}
-              />
-            ) : (
-              <div className={`wrapper ${styles.wrapper}`}>
-                {isMultiStage && message && (
-                  <Toast
-                    text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
-                    type="message"
-                    show={showToast}
-                    setShow={setShowToast}
-                  >
-                    {getToastButtons(currentStage)}
-                  </Toast>
-                )}
-                <SuggestionCards
-                  statement={statement}
-                  subStatements={subStatements}
-                  handleShowTalker={handleShowTalker}
-                  questions={questions}
-                />
-              </div>
+      <>
+        <div className="page__main">
+          <div className={`wrapper ${styles.wrapper}`}>
+            {isMultiStage && message && (
+              <Toast
+                text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ""}`}
+                type="message"
+                show={showToast}
+                setShow={setShowToast}
+              >
+                {getToastButtons(currentStage)}
+              </Toast>
             )}
-          </div>
-          <div className="page__footer">
-            <StatementBottomNav
-              setShowModal={setShowModal}
+            <SuggestionCards
               statement={statement}
+              handleShowTalker={handleShowTalker}
+              questions={questions}
+              currentPage={currentPage}
+              setShowModal={setShowModal}
             />
           </div>
-          {showExplanation && (
-            <Modal>
-              <StatementInfo
-                statement={statement}
-                setShowInfo={setShowExplanation}
-              />
-            </Modal>
-          )}
-          {showModal && (
-            <CreateStatementModalSwitch
-              toggleAskNotifications={toggleAskNotifications}
-              parentStatement={statement}
-              isQuestion={questions}
-              isMultiStage={isMultiStage}
-              setShowModal={setShowModal}
-              useSimilarStatements={useSearchForSimilarStatements}
+        </div>
+        <div className="page__footer">
+          <StatementBottomNav
+            setShowModal={setShowModal}
+            statement={statement}
+          />
+        </div>
+        {showExplanation && (
+          <Modal>
+            <StatementInfo
+              statement={statement}
+              setShowInfo={setShowExplanation}
             />
-          )}
-        </>
-      </SubStatementsProvider>
+          </Modal>
+        )}
+        {showModal && (
+          <CreateStatementModalSwitch
+            toggleAskNotifications={toggleAskNotifications}
+            parentStatement={statement}
+            isQuestion={questions}
+            isMultiStage={isMultiStage}
+            setShowModal={setShowModal}
+            useSimilarStatements={useSearchForSimilarStatements}
+          />
+        )}
+      </>
     );
 
     function getToastButtons(questionStage: QuestionStage | undefined) {

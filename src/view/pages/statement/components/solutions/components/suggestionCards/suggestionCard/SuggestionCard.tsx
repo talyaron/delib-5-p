@@ -1,7 +1,7 @@
-import { FC, useContext, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party
-import { Statement, StatementType, User } from "delib-npm";
+import { Screen, Statement, StatementType, User } from "delib-npm";
 
 // Redux Store
 import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
@@ -25,29 +25,31 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import EditTitle from "@/view/components/edit/EditTitle";
 
 import IconButton from "@/view/components/iconButton/IconButton";
-import StatementChatMore from "../../chat/components/StatementChatMore";
+import StatementChatMore from "../../../../chat/components/StatementChatMore";
 import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
-import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
-import Evaluation from "./evaluation/Evaluation";
-import "./StatementSolutionCard.scss";
-import SolutionMenu from "./solutionMenu/SolutionMenu";
-import { SubStatementsContext } from "../statementSolutionPageContext";
+import CreateStatementModal from "../../../../createStatementModal/CreateStatementModal";
+import Evaluation from "../../evaluation/Evaluation";
+import "./SuggestionCard.scss";
+import SolutionMenu from "../../solutionMenu/SolutionMenu";
+import { sortSubStatements } from "../../../statementSolutionsCont";
+import { useParams } from "react-router-dom";
 
 interface Props {
   statement: Statement;
+  siblingStatements: Statement[];
   parentStatement: Statement;
   showImage: (talker: User | null) => void;
-  top: number;
 }
 
-const StatementSolutionCard: FC<Props> = ({
+const SuggestionCard: FC<Props> = ({
   parentStatement,
+  siblingStatements,
   statement,
-  top,
 }) => {
   // Hooks
 
   const { t, dir } = useLanguage();
+  const { sort } = useParams();
 
   // Redux Store
   const dispatch = useAppDispatch();
@@ -62,9 +64,7 @@ const StatementSolutionCard: FC<Props> = ({
   const elementRef = useRef<HTMLDivElement>(null);
 
   // Use States
-  const { sortedSubStatements, setSortedSubStatements } =
-    useContext(SubStatementsContext);
-  const [newTop, setNewTop] = useState(top);
+
   const [isEdit, setIsEdit] = useState(false);
   const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
     useState(false);
@@ -75,10 +75,6 @@ const StatementSolutionCard: FC<Props> = ({
     statementSubscription,
     parentStatement.creatorId
   );
-
-  useEffect(() => {
-    setNewTop(top);
-  }, [top]);
 
   useEffect(() => {
     const element = elementRef.current;
@@ -94,14 +90,11 @@ const StatementSolutionCard: FC<Props> = ({
     }
   }, [elementRef.current?.clientHeight]);
 
-  // useEffect(() => {
-  //   dispatch(
-  //     setStatementElementHight({
-  //       statementId: statement.statementId,
-  //       height: elementRef.current?.clientHeight,
-  //     })
-  //   );
-  // }, [statement.statement, parentStatement.questionSettings?.currentStage]);
+  useEffect(() => {
+    if (sort !== Screen.OPTIONS_RANDOM && sort !== Screen.QUESTIONS_RANDOM) {
+      sortSubStatements(siblingStatements, sort, 30);
+    }
+  }, [statement.consensus]);
 
   function handleSetOption() {
     try {
@@ -135,7 +128,7 @@ const StatementSolutionCard: FC<Props> = ({
           : "statement-evaluation-card"
       }
       style={{
-        top: `${newTop}px`,
+        top: `${statement.top || 0}px`,
         borderLeft: `8px solid ${statementColor.backgroundColor || "wheat"}`,
         color: statementColor.color,
         flexDirection: dir === "ltr" ? "row" : "row-reverse",
@@ -210,4 +203,4 @@ const StatementSolutionCard: FC<Props> = ({
   );
 };
 
-export default StatementSolutionCard;
+export default SuggestionCard;

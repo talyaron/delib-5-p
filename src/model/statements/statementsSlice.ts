@@ -16,6 +16,7 @@ import {
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
 import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
+import { updateStatement } from "@/controllers/db/statements/setStatements";
 
 enum StatementScreen {
 	chat = "chat",
@@ -206,6 +207,28 @@ export const statementsSlicer = createSlice({
 				console.error(error);
 			}
 		},
+		updateStatementTop: (
+			state,
+			action: PayloadAction<{ statementId: string; top: number }[]>,
+		) => {
+			try {
+				const updates = action.payload;
+				updates.forEach((update) => {
+					try {
+						const statement = state.statements.find(
+							(statement) => statement.statementId === update.statementId,
+						);
+						if (statement) statement.top = update.top;
+						else throw new Error("statement not found");
+					} catch (error) {
+						console.error("On updateStatementTop loop: ",error);
+					}
+
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		setTempStatementsForPresentation: (state, action: PayloadAction<Statement[]>) => {
 			try {
 				const statements = action.payload;
@@ -307,6 +330,7 @@ export const {
 	setStatementsSubscription,
 	setTempStatementsForPresentation,
 	deleteStatement,
+	updateStatementTop,
 	deleteSubscribedStatement,
 	setStatementOrder,
 	setScreen,
@@ -443,7 +467,7 @@ export const subscriptionParentStatementSelector = (parentId: string) =>
 	);
 
 
-export const myStatementsByStatementIdSelector = (statementId: string) =>{
+export const myStatementsByStatementIdSelector = (statementId: string) => {
 	const user = store.getState().user.user;
 	return createSelector(
 		(state: RootState) => state.statements.statements,
