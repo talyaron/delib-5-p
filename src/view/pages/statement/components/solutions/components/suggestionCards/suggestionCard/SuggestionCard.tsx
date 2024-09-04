@@ -96,6 +96,10 @@ const SuggestionCard: FC<Props> = ({
     }
   }, [statement.consensus]);
 
+  useEffect(() => {
+    sortSubStatements(siblingStatements, sort, 30);
+  }, [statement.elementHight]);
+
   function handleSetOption() {
     try {
       if (statement.statementType === "option") {
@@ -153,7 +157,6 @@ const SuggestionCard: FC<Props> = ({
         </div>
       </div>
       <div className="main">
-        <p style={{ color: "black" }}>{statement.elementHight || 0}</p>
         <div className="info">
           <div className="text">
             <EditTitle

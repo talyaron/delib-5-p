@@ -1,5 +1,5 @@
 import { QuestionType, Statement, User } from "delib-npm";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import StatementEvaluationCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
 import { getSubStatements, sortSubStatements } from "../../statementSolutionsCont";
@@ -31,10 +31,19 @@ const SuggestionCards: FC<Props> = ({
     statementSubsSelector(statement.statementId)
   );
 
+  const [wrapperHeight, setWrapperHeight] = useState(0);
+
   
   useEffect(() => { 
     sortSubStatements(subStatements, sort, 30);
   },[sort]);
+
+  useEffect(() => {
+    if (subStatements) {
+      const height = subStatements.reduce((acc, statement:Statement) => acc + (statement.top ||0), 0);
+      setWrapperHeight(height);
+    }
+  }, [subStatements]);
 
   if (!subStatements) {
     return (
