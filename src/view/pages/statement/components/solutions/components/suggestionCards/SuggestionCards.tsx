@@ -1,14 +1,16 @@
-import { Statement, User } from "delib-npm";
+import { QuestionStage, QuestionType, Statement, User } from "delib-npm";
 import { FC, useEffect } from "react";
-import StatementEvaluationCard from "./suggestionCard/SuggestionCard";
+import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
+  statementsOfMultiStepSelectorByStatementId,
   statementSubsSelector,
 } from "@/model/statements/statementsSlice";
 import EmptyScreen from "../emptyScreen/EmptyScreen";
 import { sortSubStatements } from "../../statementSolutionsCont";
+import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
 
 interface Props {
   statement: Statement;
@@ -25,14 +27,30 @@ const SuggestionCards: FC<Props> = ({
   setShowModal,
 }) => {
   const { sort } = useParams();
-  const subStatements = useSelector(
-    statementSubsSelector(statement.statementId)
-  );
 
+  const {questionType ,currentStage} = statement.questionSettings || {questionType: QuestionType.singleStep, currentStage: QuestionStage.suggestion};
+  const subStatements = switchSubStatements() ;
+
+  function switchSubStatements(){
+    if(questionType === QuestionType.singleStep) return useSelector(
+      statementSubsSelector(statement.statementId)
+    )
+    else if(questionType === QuestionType.multipleSteps && currentStage !== QuestionStage.suggestion) return useSelector(statementsOfMultiStepSelectorByStatementId(statement.statementId));
+    else return [];
+  }
   
   useEffect(() => { 
     sortSubStatements(subStatements, sort, 30);
   },[sort]);
+  useEffect(() => {
+    if(questionType == QuestionType.multipleSteps){
+      if(currentStage === QuestionStage.firstEvaluation)
+        getFirstEvaluationOptions(statement);
+      else if(currentStage === QuestionStage.secondEvaluation)
+        getSecondEvaluationOptions(statement);
+   
+    }
+  }, [currentStage, questionType]);
 
 
   if (!subStatements) {
@@ -45,7 +63,7 @@ const SuggestionCards: FC<Props> = ({
     <div className={styles["suggestions-wrapper"]}>
       {subStatements?.map((statementSub: Statement) => {
         return (
-          <StatementEvaluationCard
+          <SuggestionCard
             key={statementSub.statementId}
             parentStatement={statement}
             siblingStatements={subStatements}

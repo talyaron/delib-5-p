@@ -16,7 +16,7 @@ import {
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
 import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
-import { updateStatement } from "@/controllers/db/statements/setStatements";
+
 
 enum StatementScreen {
 	chat = "chat",
@@ -326,7 +326,6 @@ export const {
 	setStatements,
 	setStatementSubscription,
 	setStatementsSubscription,
-	setTempStatementsForPresentation,
 	deleteStatement,
 	updateStatementTop,
 	deleteSubscribedStatement,
@@ -337,6 +336,7 @@ export const {
 	setMembership,
 	removeMembership,
 	resetStatements,
+	setCurrentMultiStepOptions
 } = statementsSlicer.actions;
 
 // statements
@@ -473,5 +473,12 @@ export const myStatementsByStatementIdSelector = (statementId: string) => {
 			statements.filter((st) => st.parentId === statementId && st.creatorId === user?.uid)
 	);
 }
+
+export const statementsOfMultiStepSelectorByStatementId =(statementId: string) => createSelector(
+	(state: RootState) => state.statements.statements,
+	(statements) => statements.filter((st) => st.isInMultiStage && st.parentId === statementId)
+);
+	
+
 
 export default statementsSlicer.reducer;
