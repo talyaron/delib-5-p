@@ -1,15 +1,14 @@
-import { QuestionType, Statement, User } from "delib-npm";
-import { FC, useEffect, useState } from "react";
+import { Statement, User } from "delib-npm";
+import { FC, useEffect } from "react";
 import StatementEvaluationCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
-import { getSubStatements, sortSubStatements } from "../../statementSolutionsCont";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
-  myStatementsByStatementIdSelector,
   statementSubsSelector,
 } from "@/model/statements/statementsSlice";
 import EmptyScreen from "../emptyScreen/EmptyScreen";
+import { sortSubStatements } from "../../statementSolutionsCont";
 
 interface Props {
   statement: Statement;
@@ -22,7 +21,6 @@ interface Props {
 const SuggestionCards: FC<Props> = ({
   statement,
   handleShowTalker,
-  questions,
   currentPage = `suggestion`,
   setShowModal,
 }) => {
@@ -31,19 +29,11 @@ const SuggestionCards: FC<Props> = ({
     statementSubsSelector(statement.statementId)
   );
 
-  const [wrapperHeight, setWrapperHeight] = useState(0);
-
   
   useEffect(() => { 
     sortSubStatements(subStatements, sort, 30);
   },[sort]);
 
-  useEffect(() => {
-    if (subStatements) {
-      const height = subStatements.reduce((acc, statement:Statement) => acc + (statement.top ||0), 0);
-      setWrapperHeight(height);
-    }
-  }, [subStatements]);
 
   if (!subStatements) {
     return (

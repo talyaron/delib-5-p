@@ -221,32 +221,9 @@ export const statementsSlicer = createSlice({
 						if (statement) statement.top = update.top;
 						else throw new Error("statement not found");
 					} catch (error) {
-						console.error("On updateStatementTop loop: ",error);
+						console.error("On updateStatementTop loop: ", error);
 					}
 
-				});
-			} catch (error) {
-				console.error(error);
-			}
-		},
-		setTempStatementsForPresentation: (state, action: PayloadAction<Statement[]>) => {
-			try {
-				const statements = action.payload;
-
-
-				//clear all temp statements
-				state.statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = false;
-				});
-
-				//set new temp statements
-				statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = true;
-					state.statements = updateArray(
-						state.statements,
-						statement,
-						"statementId",
-					);
 				});
 			} catch (error) {
 				console.error(error);
@@ -272,7 +249,7 @@ export const statementsSlicer = createSlice({
 				if (!_statement) throw new Error("statement not found");
 				const subScreens = _statement?.subScreens;
 				if (subScreens?.length === 0 || subScreens === undefined)
-					throw new Error("no subscreens");
+					throw new Error("no sub screens");
 				if (subScreens.includes(screen)) {
 					_statement.subScreens = subScreens.filter(
 						(subScreen) => subScreen !== screen,
@@ -319,6 +296,27 @@ export const statementsSlicer = createSlice({
 			state.statementSubscriptionLastUpdate = 0;
 			state.statementMembership = [];
 			state.screen = StatementScreen.chat;
+		},
+		setCurrentMultiStepOptions: (state, action: PayloadAction<Statement[]>) => {
+			try {
+
+				const previousInMultiStageOptions = state.statements.filter(statement => statement.isInMultiStage);
+				previousInMultiStageOptions.forEach((statement) => {
+					statement.isInMultiStage = false;
+				});
+
+				const newStatements = action.payload;
+				newStatements.forEach((statement) => {
+					statement.isInMultiStage = true;
+					state.statements = updateArray(
+						state.statements,
+						statement,
+						"statementId",
+					);
+				});
+			} catch (error) {
+				console.error(error);
+			}
 		},
 	},
 });
