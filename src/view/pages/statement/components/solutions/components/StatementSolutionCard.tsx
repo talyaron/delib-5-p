@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 
 // Third Party
 import { Statement, StatementType, User } from "delib-npm";
@@ -31,9 +31,9 @@ import CreateStatementModal from "../../createStatementModal/CreateStatementModa
 import Evaluation from "./evaluation/Evaluation";
 import "./StatementSolutionCard.scss";
 import SolutionMenu from "./solutionMenu/SolutionMenu";
+import { SubStatementsContext } from "../statementSolutionPageContext";
 
 interface Props {
- 
   statement: Statement;
   parentStatement: Statement;
   showImage: (talker: User | null) => void;
@@ -41,7 +41,6 @@ interface Props {
 }
 
 const StatementSolutionCard: FC<Props> = ({
-	
   parentStatement,
   statement,
   top,
@@ -63,6 +62,8 @@ const StatementSolutionCard: FC<Props> = ({
   const elementRef = useRef<HTMLDivElement>(null);
 
   // Use States
+  const { sortedSubStatements, setSortedSubStatements } =
+    useContext(SubStatementsContext);
   const [newTop, setNewTop] = useState(top);
   const [isEdit, setIsEdit] = useState(false);
   const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
@@ -80,13 +81,27 @@ const StatementSolutionCard: FC<Props> = ({
   }, [top]);
 
   useEffect(() => {
-    dispatch(
-      setStatementElementHight({
-        statementId: statement.statementId,
-        height: elementRef.current?.clientHeight,
-      })
-    );
-  }, [statement.statement, parentStatement.questionSettings?.currentStage]);
+    const element = elementRef.current;
+    if (element) {
+      setTimeout(() => {
+        dispatch(
+          setStatementElementHight({
+            statementId: statement.statementId,
+            height: elementRef.current?.clientHeight,
+          })
+        );
+      }, 0);
+    }
+  }, [elementRef.current?.clientHeight]);
+
+  // useEffect(() => {
+  //   dispatch(
+  //     setStatementElementHight({
+  //       statementId: statement.statementId,
+  //       height: elementRef.current?.clientHeight,
+  //     })
+  //   );
+  // }, [statement.statement, parentStatement.questionSettings?.currentStage]);
 
   function handleSetOption() {
     try {
@@ -145,6 +160,7 @@ const StatementSolutionCard: FC<Props> = ({
         </div>
       </div>
       <div className="main">
+        <p style={{ color: "black" }}>{statement.elementHight || 0}</p>
         <div className="info">
           <div className="text">
             <EditTitle

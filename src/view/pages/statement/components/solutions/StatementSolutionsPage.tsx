@@ -19,8 +19,6 @@ import { getTitle } from "@/controllers/general/helpers";
 import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
 import styles from "./statementSolutinsPage.module.scss";
 
-import { useSelector } from "react-redux";
-import { myStatementsByStatementIdSelector } from "@/model/statements/statementsSlice";
 import EmptyScreen from "./components/emptyScreen/EmptyScreen";
 import SuggestionCards from "./components/suggestionCards/SuggestionCards";
 import { SubStatementsProvider } from "./statementSolutionPageContext";

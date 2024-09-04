@@ -31,9 +31,11 @@ const SuggestionCards: FC<Props> = ({
   const { sortedSubStatements, setSortedSubStatements } =
     useContext(SubStatementsContext);
 
-    useEffect(() => {
-      setSortedSubStatements(subStatements);
-    }, []);
+  useEffect(() => {
+    setSortedSubStatements(subStatements);
+  }, []);
+
+
 
   useEffect(() => {
     getSubStatements({
@@ -45,7 +47,7 @@ const SuggestionCards: FC<Props> = ({
     }).then((_subStatements) => {
       setSortedSubStatements(_subStatements);
     });
-  }, [sort, subStatements, questions, isMultiStage]);
+  }, [sort,subStatements]);
 
   // Variables
   let topSum = 30;
