@@ -5,6 +5,7 @@ import styles from "./SuggestionCards.module.scss";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
+  myStatementsByStatementIdSelector,
   statementsOfMultiStepSelectorByStatementId,
   statementSubsSelector,
 } from "@/model/statements/statementsSlice";
@@ -36,6 +37,7 @@ const SuggestionCards: FC<Props> = ({
       statementSubsSelector(statement.statementId)
     )
     else if(questionType === QuestionType.multipleSteps && currentStage !== QuestionStage.suggestion) return useSelector(statementsOfMultiStepSelectorByStatementId(statement.statementId));
+    else if(questionType === QuestionType.multipleSteps && currentStage === QuestionStage.suggestion) return useSelector(myStatementsByStatementIdSelector(statement.statementId));
     else return [];
   }
   
