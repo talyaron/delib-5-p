@@ -4,17 +4,19 @@ import {
 	EnhancedEvaluationThumb,
 	enhancedEvaluationsThumbs,
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
+import { store } from "@/model/store";
+import { updateStatementTop } from "@/model/statements/statementsSlice";
 
 
 
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
-): Statement[] {
+	gap = 30
+): {totalHeight:number} {
 	try {
-		let _subStatements = subStatements.map(
-			(statement: Statement) => statement,
-		);
+		const dispatch = store.dispatch;
+		let _subStatements = [...subStatements];
 		switch (sort) {
 		case Screen.OPTIONS_CONSENSUS:
 		case Screen.QUESTIONS_CONSENSUS:
@@ -39,20 +41,30 @@ export function sortSubStatements(
 			);
 			break;
 		}
-		const __subStatements = _subStatements.map(
-			(statement: Statement, i: number) => {
-				const updatedStatement = Object.assign({}, statement);
-				updatedStatement.order = i;
+		
+		let totalHeight = gap;
+		const updates: { statementId: string; top: number }[] = _subStatements.map((subStatement) => {
+			try {
+				const update = {
+					statementId: subStatement.statementId,
+					top: totalHeight,
+				};
+				totalHeight += (subStatement.elementHight || 0) + gap;
+				
+				return update;
 
-				return updatedStatement;
-			},
-		);
+			} catch (error) {
+				console.error(error);
+			}
+		}).filter((update) => update !== undefined) as { statementId: string; top: number }[];
+		dispatch(updateStatementTop(updates));
 
-		return __subStatements;
+		return {totalHeight}
 	} catch (error) {
 		console.error(error);
+		
+		return {totalHeight:0};
 
-		return subStatements;
 	}
 }
 
@@ -107,3 +119,6 @@ export const getEvaluationThumbsToDisplay = ({
 
 	return [selectedThumb || defaultThumb];
 };
+
+
+

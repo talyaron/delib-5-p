@@ -90,8 +90,8 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 					) }
 				</button>
 				<div className="sort-menu">
-					{navItems.map((navItem) => (
-						<div className={`sort-menu__item  ${showSorting ? "active" : ""}`}>
+					{navItems.map((navItem, i) => (
+						<div key={`item-id-${i}`} className={`sort-menu__item  ${showSorting ? "active" : ""}`}>
 							<Link
 								className={`open-nav-icon ${showSorting ? "active" : ""}`}
 								to={navItem.link}

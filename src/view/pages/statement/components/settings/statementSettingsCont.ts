@@ -21,8 +21,7 @@ import {
 	defaultStatementSettings,
 } from './emptyStatementModel';
 import { NavigateFunction } from 'react-router-dom';
-import { store } from '@/model/store';
-import { setTempStatementsForPresentation } from '@/model/statements/statementsSlice';
+
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -260,8 +259,7 @@ export async function createStatementFromModal({
 	description,
 	isOptionSelected,
 	toggleAskNotifications,
-	parentStatement,
-	isSendToStoreTemp,
+	parentStatement
 }: CreateStatementFromModalParams) {
 	try {
 		if (!title) throw new Error('title is undefined');
@@ -288,10 +286,7 @@ export async function createStatementFromModal({
 			addSubscription: true,
 		});
 
-		if (isSendToStoreTemp) {
-			//dispatch to the store
-			store.dispatch(setTempStatementsForPresentation([newStatement]));
-		}
+		
 	} catch (error) {
 		console.error(error);
 	}

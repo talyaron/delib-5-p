@@ -7,7 +7,7 @@ interface CreateStatementModalSwitchProps {
 	useSimilarStatements: boolean;
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	isQuestion: boolean;
-	isMuliStage: boolean;
+	isMultiStage: boolean;
 	parentStatement: Statement;
 	toggleAskNotifications: () => void;
 }
@@ -16,7 +16,7 @@ export default function CreateStatementModalSwitch({
 	useSimilarStatements,
 	setShowModal,
 	isQuestion,
-	isMuliStage,
+	isMultiStage,
 	parentStatement,
 	toggleAskNotifications,
 }: CreateStatementModalSwitchProps) {
@@ -26,7 +26,7 @@ export default function CreateStatementModalSwitch({
 			isQuestion={isQuestion}
 			parentStatement={parentStatement}
 			toggleAskNotifications={toggleAskNotifications}
-			isSendToStoreTemp={isMuliStage}
+			isSendToStoreTemp={isMultiStage}
 		/>
 	) : (
 		<CreateStatementModal
@@ -34,7 +34,7 @@ export default function CreateStatementModalSwitch({
 			isOption={!isQuestion}
 			setShowModal={setShowModal}
 			toggleAskNotifications={toggleAskNotifications}
-			isSendToStoreTemp={isMuliStage}
+			isSendToStoreTemp={isMultiStage}
 		/>
 	);
 }
