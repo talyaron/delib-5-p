@@ -21,7 +21,7 @@
     flex-direction: column;
     justify-content: space-between;
     gap: .5rem;
-    background-color: var(--card-menu);
+    background-color:  var(--inputBackground);
     padding: 1rem;
     border-radius: 10px;
     box-shadow: 1px 0px 9px 0px rgba(66, 123, 158, 0.00), 1px 0px 9px 0px rgba(66, 123, 158, 0.01), 0px 0px 7px 0px rgba(66, 123, 158, 0.05), 0px 0px 5px 0px rgba(66, 123, 158, 0.09), 0px 0px 3px 0px rgba(66, 123, 158, 0.10);
@@ -46,7 +46,7 @@
         flex: 1;
         padding: var(--info-text-padding);
         // background-color: var(--background-color-info-text);
-        background-color: var(--card-menu);
+        background-color: var(--background-color-info-text);
       }
     }
     .actions {
@@ -140,7 +140,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--card-menu);
+  background-color:var(--background-color-info-text);
 }
 
 .edit-input {
