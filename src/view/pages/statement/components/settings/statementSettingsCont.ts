@@ -259,8 +259,7 @@ export async function createStatementFromModal({
 	description,
 	isOptionSelected,
 	toggleAskNotifications,
-	parentStatement,
-	isSendToStoreTemp,
+	parentStatement
 }: CreateStatementFromModalParams) {
 	try {
 		if (!title) throw new Error('title is undefined');

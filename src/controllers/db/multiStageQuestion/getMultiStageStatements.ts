@@ -11,7 +11,7 @@ export async function getFirstEvaluationOptions(
 ): Promise<void> {
 
 	try {
-		console.log("getFirstEvaluationOptions")
+		
 		const dispatch = store.dispatch;
 		const urlBase = isProduction() ? "qeesi7aziq-uc.a.run.app" : "http://localhost:5001/synthesistalyaron/us-central1";
 
@@ -23,7 +23,7 @@ export async function getFirstEvaluationOptions(
 		const { randomStatements, error } = await response.json();
 		if (error) throw new Error(error);
 		z.array(StatementSchema).parse(randomStatements);
-		console.log(randomStatements)
+		
 
 		dispatch(setCurrentMultiStepOptions(randomStatements));
 

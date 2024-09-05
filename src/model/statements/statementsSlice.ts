@@ -15,8 +15,6 @@ import {
 
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
-import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
-
 
 enum StatementScreen {
 	chat = "chat",
@@ -393,9 +391,7 @@ export const statementOptionsSelector =
 			.sort((a, b) => a.createdAt - b.createdAt)
 			.map((statement) => ({ ...statement }));
 
-		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
-
-		return sortedSubStatements;
+		return subStatements;
 	};
 
 export const questionsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter((statement) => statement.parentId === statementId && statement.statementType === StatementType.question).sort((a, b) => a.createdAt - b.createdAt);
@@ -467,7 +463,8 @@ export const subscriptionParentStatementSelector = (parentId: string) =>
 
 export const myStatementsByStatementIdSelector = (statementId: string) => {
 	const user = store.getState().user.user;
-	return createSelector(
+	
+return createSelector(
 		(state: RootState) => state.statements.statements,
 		(statements) =>
 			statements.filter((st) => st.parentId === statementId && st.creatorId === user?.uid)
