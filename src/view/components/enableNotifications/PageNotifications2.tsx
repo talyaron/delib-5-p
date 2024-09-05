@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./page2.scss";
+import "./pageNotifications2.scss";
 import pointer1 from "@/assets/images/woman pointing.svg";
 import Green1 from "@/assets/icons/green1.svg";
 import Elipse3 from "@/assets/icons/Group 2.svg";
@@ -12,17 +12,18 @@ import xicon from "@/assets/icons/x-icon.svg";
 import Modal from "../modal/Modal";
 import { Statement } from "delib-npm";
 
-
-
 interface Props { statement: Statement | undefined; 
 	setCurrentPage: React.Dispatch<React.SetStateAction<number>>; 
+	setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Page2({ statement, setCurrentPage }: Props) {
-	 if (!statement) throw new Error("No statement");
+export default function PageNotifications2({ statement, setCurrentPage, setAskNotifications }: Props) {
+	if (!statement) throw new Error("No statement");
 
 	const [isModalOpen, setIsModalOpen] = useState(true);
-	const handleClose = () => { setIsModalOpen(false); };
+	
+	const handleClose = () => {setAskNotifications(false); setIsModalOpen(false); };
 	const handleBack = () => { setCurrentPage(1); };
 
 	return (

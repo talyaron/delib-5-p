@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./page1.scss";
+import "./pageNotifications1.scss";
 import pointer1 from "@/assets/images/poiner 1.svg";
 import Elipse3 from "@/assets/icons/Group 2.svg";
 import Frame from "@/assets/icons/Frame 1171276030.svg";
@@ -17,16 +17,13 @@ interface Props {
   statement: Statement | undefined;
   setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-export default function Page1({ onNext, setAskNotifications, statement }: Props) {
+export default function PageNotifications1({ onNext, setAskNotifications, statement }: Props) {
 	if (!statement) throw new Error("No statement");
 
 	const [isModalOpen, setIsModalOpen] = useState(true);
 
 	const handleClose = () => {
-		setAskNotifications(false);
-		setIsModalOpen(false);
-	};
+		setAskNotifications(false); setIsModalOpen(false);};
 
 	return (
 		<>
