@@ -1,5 +1,5 @@
 import { QuestionStage, QuestionType, Statement, User } from "delib-npm";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,9 +30,12 @@ const SuggestionCards: FC<Props> = ({
   const { sort } = useParams();
   const navigate = useNavigate();
 
+  const [totalHeight, setTotalHeight] = useState(0);
+
   const {questionType ,currentStage} = statement.questionSettings || {questionType: QuestionType.singleStep, currentStage: QuestionStage.suggestion};
   const subStatements = switchSubStatements() ;
 
+  //change the source of options from the store based on the question type
   function switchSubStatements(){
     if(questionType === QuestionType.singleStep) return useSelector(
       statementSubsSelector(statement.statementId)
@@ -43,7 +46,8 @@ const SuggestionCards: FC<Props> = ({
   }
   
   useEffect(() => { 
-    sortSubStatements(subStatements, sort, 30);
+   const {totalHeight:_totalHeight} = sortSubStatements(subStatements, sort, 30);
+    setTotalHeight(_totalHeight);
   },[sort]);
   useEffect(() => {
     if(questionType == QuestionType.multipleSteps){
@@ -65,12 +69,12 @@ const SuggestionCards: FC<Props> = ({
   }
 
   return (
-    <div className={styles["suggestions-wrapper"]}>
+    <div className={styles["suggestions-wrapper"]} style={{height: `${totalHeight+100}px`}}>
       {subStatements?.map((statementSub: Statement) => {
         return (
           <SuggestionCard
             key={statementSub.statementId}
-            parentStatement={statement}
+            parentStatement={statement} 
             siblingStatements={subStatements}
             statement={statementSub}
             showImage={handleShowTalker}

@@ -13,7 +13,7 @@ export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
 	gap:number = 30
-): void {
+): {totalHeight:number} {
 	try {
 		const dispatch = store.dispatch;
 		let _subStatements = [...subStatements];
@@ -58,10 +58,10 @@ export function sortSubStatements(
 		}).filter((update) => update !== undefined) as { statementId: string; top: number }[];
 		dispatch(updateStatementTop(updates));
 
-
+		return {totalHeight}
 	} catch (error) {
 		console.error(error);
-
+		return {totalHeight:0};
 
 	}
 }
