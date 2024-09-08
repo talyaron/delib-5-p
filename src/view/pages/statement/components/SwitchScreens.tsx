@@ -53,7 +53,6 @@ export default function SwitchScreens({
 		return (
 			<StatementEvaluationPage
 				statement={statement}
-				subStatements={subStatements}
 				handleShowTalker={handleShowTalker}
 				toggleAskNotifications={toggleAskNotifications}
 			/>
@@ -83,7 +82,6 @@ export default function SwitchScreens({
 		return (
 			<StatementEvaluationPage
 				statement={statement}
-				subStatements={subStatements}
 				handleShowTalker={handleShowTalker}
 				questions={true}
 				toggleAskNotifications={toggleAskNotifications}

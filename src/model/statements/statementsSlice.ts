@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { RootState, store } from "../store";
 
 // Third party imports
 
@@ -15,7 +15,6 @@ import {
 
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
-import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
 
 enum StatementScreen {
 	chat = "chat",
@@ -206,24 +205,23 @@ export const statementsSlicer = createSlice({
 				console.error(error);
 			}
 		},
-		setTempStatementsForPresentation: (state, action: PayloadAction<Statement[]>) => {
+		updateStatementTop: (
+			state,
+			action: PayloadAction<{ statementId: string; top: number }[]>,
+		) => {
 			try {
-				const statements = action.payload;
+				const updates = action.payload;
+				updates.forEach((update) => {
+					try {
+						const statement = state.statements.find(
+							(statement) => statement.statementId === update.statementId,
+						);
+						if (statement) statement.top = update.top;
+						else throw new Error("statement not found");
+					} catch (error) {
+						console.error("On updateStatementTop loop: ", error);
+					}
 
-
-				//clear all temp statements
-				state.statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = false;
-				});
-
-				//set new temp statements
-				statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = true;
-					state.statements = updateArray(
-						state.statements,
-						statement,
-						"statementId",
-					);
 				});
 			} catch (error) {
 				console.error(error);
@@ -241,7 +239,7 @@ export const statementsSlicer = createSlice({
 			action: PayloadAction<{ statement: Statement; screen: Screen }>,
 		) => {
 			try {
-				
+
 				const { statement, screen } = action.payload;
 				const _statement = state.statements.find(
 					(st) => st.statementId === statement.statementId,
@@ -249,7 +247,7 @@ export const statementsSlicer = createSlice({
 				if (!_statement) throw new Error("statement not found");
 				const subScreens = _statement?.subScreens;
 				if (subScreens?.length === 0 || subScreens === undefined)
-					throw new Error("no subscreens");
+					throw new Error("no sub screens");
 				if (subScreens.includes(screen)) {
 					_statement.subScreens = subScreens.filter(
 						(subScreen) => subScreen !== screen,
@@ -297,6 +295,27 @@ export const statementsSlicer = createSlice({
 			state.statementMembership = [];
 			state.screen = StatementScreen.chat;
 		},
+		setCurrentMultiStepOptions: (state, action: PayloadAction<Statement[]>) => {
+			try {
+
+				const previousInMultiStageOptions = state.statements.filter(statement => statement.isInMultiStage);
+				previousInMultiStageOptions.forEach((statement) => {
+					statement.isInMultiStage = false;
+				});
+
+				const newStatements = action.payload;
+				newStatements.forEach((statement) => {
+					statement.isInMultiStage = true;
+					state.statements = updateArray(
+						state.statements,
+						statement,
+						"statementId",
+					);
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		},
 	},
 });
 
@@ -305,8 +324,8 @@ export const {
 	setStatements,
 	setStatementSubscription,
 	setStatementsSubscription,
-	setTempStatementsForPresentation,
 	deleteStatement,
+	updateStatementTop,
 	deleteSubscribedStatement,
 	setStatementOrder,
 	setScreen,
@@ -315,6 +334,7 @@ export const {
 	setMembership,
 	removeMembership,
 	resetStatements,
+	setCurrentMultiStepOptions
 } = statementsSlicer.actions;
 
 // statements
@@ -371,9 +391,7 @@ export const statementOptionsSelector =
 			.sort((a, b) => a.createdAt - b.createdAt)
 			.map((statement) => ({ ...statement }));
 
-		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
-
-		return sortedSubStatements;
+		return subStatements;
 	};
 
 export const questionsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter((statement) => statement.parentId === statementId && statement.statementType === StatementType.question).sort((a, b) => a.createdAt - b.createdAt);
@@ -434,12 +452,30 @@ export const hasTokenSelector =
 
 		return statement?.token?.includes(token) || false;
 	};
-	
+
 export const subscriptionParentStatementSelector = (parentId: string) =>
 	createSelector(
 		(state: RootState) => state.statements.statementSubscription,
 		(statementSubscription) =>
 			statementSubscription.filter((sub) => sub.statement.topParentId === parentId)
 	);
+
+
+export const myStatementsByStatementIdSelector = (statementId: string) => {
+	const user = store.getState().user.user;
+	
+return createSelector(
+		(state: RootState) => state.statements.statements,
+		(statements) =>
+			statements.filter((st) => st.parentId === statementId && st.creatorId === user?.uid)
+	);
+}
+
+export const statementsOfMultiStepSelectorByStatementId =(statementId: string) => createSelector(
+	(state: RootState) => state.statements.statements,
+	(statements) => statements.filter((st) => st.isInMultiStage && st.parentId === statementId)
+);
+	
+
 
 export default statementsSlicer.reducer;

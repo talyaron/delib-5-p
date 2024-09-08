@@ -110,7 +110,7 @@ const StatementVote: FC<Props> = ({
 
 				{isCreateStatementModalOpen && (
 					<CreateStatementModalSwitch
-						isMuliStage={isMuliStage}
+						isMultiStage={isMuliStage}
 						useSimilarStatements={useSearchForSimilarStatements}
 						parentStatement={statement}
 						isQuestion={false}

@@ -1,28 +1,40 @@
-import { User, Vote } from "delib-npm";
-import React, { FC } from "react";
-import { handleGetVoters } from "../statementSettingsCont";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { User, Vote } from "delib-npm";
+import React, { FC, useEffect } from "react";
+import { handleGetVoters } from "../statementSettingsCont";
 import MembersChipsList from "./membership/membersChipsList/MembersChipList";
 
 interface GetVotersProps {
-    statementId: string;
+	statementId: string;
+	joinedMembers: User[];
 }
 
-const GetVoters: FC<GetVotersProps> = ({ statementId }) => {
+const GetVoters: FC<GetVotersProps> = ({ statementId, joinedMembers }) => {
 	const { t } = useLanguage();
 
 	const [voters, setVoters] = React.useState<Vote[]>([]);
-	const [clicked, setClicked] = React.useState(false);
+	const [nonVoters, setNonVoters] = React.useState<User[]>([]);
+	const [clickedVoters, setClickedVoters] = React.useState(false);
+	const [clickedNonVoters, setClickedNonVoters] = React.useState(false);
 
 	const getVoters = () => {
-		if (!clicked) {
-			handleGetVoters(statementId, setVoters, setClicked);
+		if (!clickedVoters) {
+			handleGetVoters(statementId, setVoters, setClickedVoters);
 		} else {
-			setClicked(false);
+			setClickedVoters(false);
 		}
 	};
 
-	const members = voters.flatMap((voter) => voter.voter as User);
+	//filter out users who haven't vote/those with no voter information
+	useEffect(() => {
+		if (voters.length > 0) {
+			const voterIds = new Set(voters.map((voter) => voter.voter?.uid));
+			const nonVotersList = joinedMembers.filter(
+				(member) => !voterIds.has(member.uid)
+			);
+			setNonVoters(nonVotersList);
+		}
+	}, [voters, joinedMembers]);
 
 	return (
 		<>
@@ -35,17 +47,42 @@ const GetVoters: FC<GetVotersProps> = ({ statementId }) => {
 				{t("Get Voters")}
 			</button>
 
-			{clicked && (
+			{clickedVoters && (
 				<>
-					{members.length > 0 && (
+					{voters.length > 0 ? (
 						<>
 							<span>
 								{voters.length} {t("Voted")}
 							</span>
-							<MembersChipsList members={members} />
+							<MembersChipsList members={voters.map((v) => v.voter as User)} />
 						</>
+					) : (
+						<div>{t("No voters found")}</div>
 					)}
-					{members.length === 0 && <div>{t("No voters found")}</div>}
+				</>
+			)}
+
+			<button
+				type="button"
+				className="voters-button form-button"
+				onClick={() => setClickedNonVoters(!clickedNonVoters)}
+				tabIndex={0}
+			>
+				{t("Get Non Voters")}
+			</button>
+
+			{clickedNonVoters && (
+				<>
+					{nonVoters.length > 0 ? (
+						<>
+							<span>
+								{nonVoters.length} {t("Did Not Vote")}
+							</span>
+							<MembersChipsList members={nonVoters} />
+						</>
+					) : (
+						<div>{t("No non-voters found")}</div>
+					)}
 				</>
 			)}
 		</>
