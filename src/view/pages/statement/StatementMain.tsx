@@ -205,9 +205,9 @@ const StatementMain: FC = () => {
 		}
 	}, [user, statement]);
 
+	if (loading) return <LoadingPage />;
 	if (isStatementNotFound) return <Page404 />;
 	if (error) return <UnAuthorizedPage />;
-	if (loading) return <LoadingPage />;
 
 	if (isAuthorized)
 		return (
@@ -248,7 +248,7 @@ const StatementMain: FC = () => {
 								screen={screen}
 								statement={statement}
 								statementSubscription={statementSubscription}
-							subStatements={subStatements}
+								subStatements={subStatements}
 								handleShowTalker={handleShowTalker}
 								setShowAskPermission={setShowAskPermission}
 								toggleAskNotifications={toggleAskNotifications}

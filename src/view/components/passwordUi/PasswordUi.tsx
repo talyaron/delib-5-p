@@ -72,7 +72,7 @@ export default function PasswordUi({ setPasswordCheck, statementId, userId }: Pa
 					if (newTriesCounter <= 0) {
 						navigate('/401');
 					}
-					
+
 					return newTriesCounter;
 				});
 			}

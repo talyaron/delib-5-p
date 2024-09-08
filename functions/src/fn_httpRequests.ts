@@ -1,4 +1,12 @@
-import { Collections, getStatementSubscriptionId, Password, Statement, User } from "delib-npm";
+import {
+  Collections,
+  getStatementSubscriptionId,
+  Password,
+  Role,
+  Statement,
+  StatementSubscription,
+  User,
+} from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
 import * as bcrypt from "bcrypt";
@@ -126,7 +134,7 @@ export async function checkPassword(req: any, res: any) {
       db.collection(Collections.users).doc(userId).get(),
       db.collection(Collections.statements).doc(statementId).get(),
     ]);
-    
+
     if (!passwordDB.exists) {
       return res.status(404).json({ error: "Statement ID not found", ok: false });
     }
@@ -155,12 +163,12 @@ export async function checkPassword(req: any, res: any) {
     const stringifiedPassword = userCodeInput.toString();
     const match = await bcrypt.compare(stringifiedPassword, hashedPassword);
 
-    if (match && user.role !== "admin") {
-      const newSubscription = {
-        role: "member",
+    if (match && user.role !== Role.admin) {
+      const newSubscription: StatementSubscription = {
+        role: Role.member,
         userId,
         statementId,
-        lastUpdate: Date.now(),
+        lastUpdate: new Date().getTime(),
         statementsSubscribeId: subscriptionId,
         statement,
         notification: false,

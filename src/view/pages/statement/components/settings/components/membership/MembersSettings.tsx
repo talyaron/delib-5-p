@@ -27,9 +27,9 @@ import "./MembersSettings.scss";
 import { collection, getDocs } from "firebase/firestore";
 import { DB } from "../../../../../../../controllers/db/config";
 import Checkbox from "@/view/components/checkbox/Checkbox";
-import generatePassword from "@/view/components/passwordUi/generatePassword";
 import { useSelector } from "react-redux";
 import { userSelector } from "@/model/users/userSlice";
+import generatePassword from "@/view/components/passwordUi/generatePassword";
 
 interface MembersSettingsProps {
 	statement: Statement;
@@ -45,11 +45,12 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 	const { t } = useLanguage();
 	const [userCount, setUserCount] = useState<number>(0);
 	const user = useSelector(userSelector);
+	const [plainPassword, setPlainPassword] = useState<number | null>(null);
 
 
 	const statementMembershipSelector = (statementId: string | undefined) =>
 		createSelector(
-			(state: RootState) => state.statements.statementMembership, // Replace with your actual state selector
+			(state: RootState) => state.statements.statementMembership,
 			(memberships) =>
 				memberships.filter(
 					(membership: StatementSubscription) =>
@@ -77,12 +78,12 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 		navigator.share(shareData);
 	}
 
-	function handleOpenGroup() {
+	async function handleOpenGroup() {
 		const isClosing = statement.membership?.access === Access.open;
 		const newAccess = isClosing ? Access.close : Access.open;
 
 		if (isClosing && (statement.creatorId === user?.uid)) {
-			generatePassword(statementId);
+			await generatePassword({ statementId, setPlainPassword });
 		}
 
 		setStatementToEdit({
@@ -129,6 +130,12 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 				isChecked={statement.membership?.access === Access.open}
 				toggleSelection={handleOpenGroup}
 			/>
+			{plainPassword && (
+				<div className="password-display">
+					<strong>Generated Password: {plainPassword}</strong>
+				</div>
+			)}
+
 			<Checkbox
 				name="allowAnonymous"
 				label="Allow Anonymous users"
