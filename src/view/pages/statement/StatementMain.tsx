@@ -1,45 +1,47 @@
-import { FC, useEffect, useState } from 'react';
-import { createSelector } from 'reselect';
+import { FC, useEffect, useState } from "react";
+import { createSelector } from "reselect";
 
 // Third party imports
-import { useNavigate, useParams } from 'react-router-dom';
-import { User, Role, Screen } from 'delib-npm';
+import { useNavigate, useParams } from "react-router-dom";
+import { User, Role, Screen } from "delib-npm";
 
 // firestore
-import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
-import { listenToSubStatements } from '@/controllers/db/statements/listenToStatements';
-import { listenToStatement } from '@/controllers/db/statements/listenToStatements';
-import { listenToStatementSubscription } from '@/controllers/db/statements/listenToStatements';
-import { updateSubscriberForStatementSubStatements } from '@/controllers/db/subscriptions/setSubscriptions';
-import { setStatementSubscriptionToDB } from '@/controllers/db/subscriptions/setSubscriptions';
-import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
+import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
+import {
+	listenToSubStatements,
+	listenToStatement,
+	listenToStatementSubscription,
+} from "@/controllers/db/statements/listenToStatements";
+import {
+	updateSubscriberForStatementSubStatements,
+	setStatementSubscriptionToDB,
+} from "@/controllers/db/subscriptions/setSubscriptions";
+
+import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
 
 // Redux Store
-import {
-	useAppDispatch,
-	useAppSelector,
-} from '@/controllers/hooks/reduxHooks';
-import { statementNotificationSelector } from '@/model/statements/statementsSlice';
-import { RootState } from '@/model/store';
-import { userSelector } from '@/model/users/userSlice';
-import { useSelector } from 'react-redux';
-
-// Custom components
-import ProfileImage from '../../components/profileImage/ProfileImage';
-import StatementHeader from './components/header/StatementHeader';
-import AskPermisssion from '../../components/askPermission/AskPermisssion';
-import SwitchScreens from './components/SwitchScreens';
-import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { statementNotificationSelector } from "@/model/statements/statementsSlice";
+import { RootState } from "@/model/store";
+import { userSelector } from "@/model/users/userSlice";
+import { useSelector } from "react-redux";
 
 // Hooks & Helpers
-import { MapProvider } from '@/controllers/hooks/useMap';
-import { statementTitleToDisplay } from '@/controllers/general/helpers';
-import { availableScreen } from './StatementCont';
-import { useIsAuthorized } from '@/controllers/hooks/authHooks';
-import LoadingPage from '../loadingPage/LoadingPage';
-import UnAuthorizedPage from '../unAuthorizedPage/UnAuthorizedPage';
-import Page404 from '../page404/Page404';
-import FollowMeToast from './components/followMeToast/FollowMeToast';
+import { MapProvider } from "@/controllers/hooks/useMap";
+import { statementTitleToDisplay } from "@/controllers/general/helpers";
+import { availableScreen } from "./StatementCont";
+import { useIsAuthorized } from "@/controllers/hooks/authHooks";
+
+// Custom components
+import LoadingPage from "../loadingPage/LoadingPage";
+import Page404 from "../page404/Page404";
+import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
+import ProfileImage from "../../components/profileImage/ProfileImage";
+import StatementHeader from "./components/header/StatementHeader";
+import SwitchScreens from "./components/SwitchScreens";
+import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
+import AskPermission from "@/view/components/askPermission/AskPermission";
+import FollowMeToast from "./components/followMeToast/FollowMeToast";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -57,7 +59,7 @@ const StatementMain: FC = () => {
 	const page = useParams().page as Screen;
 	const navigate = useNavigate();
 
-	//TODO:create a check with the parent statement if subscribes. if not subscribed... go accoring to the rules of authorization
+	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
 	const {
 		error,
 		isAuthorized,
@@ -85,6 +87,8 @@ const StatementMain: FC = () => {
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 
+	// const [_, setPasswordCheck] = useState<boolean>(false)
+
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
 
@@ -104,7 +108,7 @@ const StatementMain: FC = () => {
 		}
 	};
 
-	//in case the url is of undefined screen, navigate to the first avilable screen
+	//in case the url is of undefined screen, navigate to the first available screen
 	useEffect(() => {
 		if (screen && screen !== page) {
 			navigate(`/statement/${statementId}/${screen}`);
@@ -121,33 +125,30 @@ const StatementMain: FC = () => {
 
 	// Listen to statement changes.
 	useEffect(() => {
-		let unsubListenToStatement: () => void = () => {
+		let unSubListenToStatement: () => void = () => {
 			return;
 		};
 
-		let unsubSubStatements: () => void = () => {
+		let unSubSubStatements: () => void = () => {
 			return;
 		};
-		let unsubStatementSubscription: () => void = () => {
+		let unSubStatementSubscription: () => void = () => {
 			return;
 		};
-		let unsubEvaluations: () => void = () => {
-			return;
-		};
-		const unsubSubSubscribedStatements: () => void = () => {
+		let unSubEvaluations: () => void = () => {
 			return;
 		};
 
 		if (user && statementId) {
-			unsubListenToStatement = listenToStatement(
+			unSubListenToStatement = listenToStatement(
 				statementId,
 				setIsStatementNotFound
 			);
 
-			unsubSubStatements = listenToSubStatements(statementId, dispatch);
-			unsubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
+			unSubSubStatements = listenToSubStatements(statementId, dispatch);
+			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
 
-			unsubStatementSubscription = listenToStatementSubscription(
+			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
 				user,
 				dispatch
@@ -155,25 +156,27 @@ const StatementMain: FC = () => {
 		}
 
 		return () => {
-			unsubListenToStatement();
-			unsubSubStatements();
-			unsubStatementSubscription();
-			unsubSubSubscribedStatements();
-			unsubEvaluations();
+			unSubListenToStatement();
+			unSubSubStatements();
+			unSubStatementSubscription();
+			unSubEvaluations();
 		};
 	}, [user, statementId]);
 
 	useEffect(() => {
 		//listen to top parent statement
-		let unsub = () => {
+		let unSubscribe = () => {
 			return;
 		};
 		if (statement?.topParentId) {
-			unsub = listenToStatement(statement?.topParentId, setIsStatementNotFound);
+			unSubscribe = listenToStatement(
+				statement?.topParentId,
+				setIsStatementNotFound
+			);
 		}
 
 		return () => {
-			unsub();
+			unSubscribe();
 		};
 	}, [statement?.topParentId]);
 
@@ -194,53 +197,72 @@ const StatementMain: FC = () => {
 		}
 	}, [statement]);
 
+	useEffect(() => {
+		if (user?.uid === statement?.creatorId) {
+			// setPasswordCheck(true);
+		} else {
+			// setPasswordCheck(false);
+		}
+	}, []);
+
 	if (isStatementNotFound) return <Page404 />;
 	if (error) return <UnAuthorizedPage />;
 	if (loading) return <LoadingPage />;
 
 	if (isAuthorized)
 		return (
-			<div className='page'>
-				{showAskPermission && <AskPermisssion showFn={setShowAskPermission} />}
-				{talker && (
-					<div
-						onClick={() => {
-							handleShowTalker(null);
-						}}
-					>
-						<ProfileImage user={talker} />
+			<>
+				{/* {passwordCheck ?
+					( */}
+				<div className="page">
+					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
+					{talker && (
+						<button
+							onClick={() => {
+								handleShowTalker(null);
+							}}
+						>
+							<ProfileImage user={talker} />
+						</button>
+					)}
+					{askNotifications && (
+						<EnableNotifications
+							statement={statement}
+							setAskNotifications={setAskNotifications}
+							setShowAskPermission={setShowAskPermission}
+						/>
+					)}
+
+					<StatementHeader
+						statement={statement}
+						statementSubscription={statementSubscription}
+						topParentStatement={topParentStatement}
+						screen={screen ?? Screen.CHAT}
+						showAskPermission={showAskPermission}
+						setShowAskPermission={setShowAskPermission}
+						role={role}
+					/>
+					<MapProvider>
+						<FollowMeToast role={role} statement={statement} />
+
+						<SwitchScreens
+							screen={screen}
+							statement={statement}
+							statementSubscription={statementSubscription}
+							subStatements={subStatements}
+							handleShowTalker={handleShowTalker}
+							setShowAskPermission={setShowAskPermission}
+							toggleAskNotifications={toggleAskNotifications}
+						/>
+					</MapProvider>
+				</div>
+				{/* )
+					:
+					<div className="passwordUiComponent">
+						<PasswordUi setPasswordCheck={setPasswordCheck} />
 					</div>
-				)}
-				{askNotifications && (
-					<EnableNotifications
-						statement={statement}
-						setAskNotifications={setAskNotifications}
-						setShowAskPermission={setShowAskPermission}
-					/>
-				)}
-
-				<StatementHeader
-					statement={statement}
-					statementSubscription={statementSubscription}
-					topParentStatement={topParentStatement}
-					screen={screen ?? Screen.CHAT}
-					showAskPermission={showAskPermission}
-					setShowAskPermission={setShowAskPermission}
-					role={role}
-				/>
-				<MapProvider>
-					<FollowMeToast role={role} statement={statement} />
-
-					<SwitchScreens
-						screen={screen}
-						statement={statement}
-						subStatements={subStatements}
-						handleShowTalker={handleShowTalker}
-						setShowAskPermission={setShowAskPermission}
-						toggleAskNotifications={toggleAskNotifications}
-					/>
-				</MapProvider>
-			</div>
+				} */}
+			</>
 		);
 
 	return <UnAuthorizedPage />;

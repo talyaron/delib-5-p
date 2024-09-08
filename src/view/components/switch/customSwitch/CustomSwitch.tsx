@@ -1,7 +1,8 @@
 // CustomSwitch.js
-import { FC } from "react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { FC } from "react";
 import "./CustomSwitch.scss";
+import VisuallyHidden from "../../accessibility/toScreenReaders/VisuallyHidden";
 
 interface Props {
     label: string;
@@ -26,9 +27,9 @@ const CustomSwitch: FC<Props> = ({
 
 	return (
 		<div className={`custom-switch ${checked ? "checked" : ""}`}>
-			<div className="tag" onClick={handleChange}>
+			<button className="tag" onClick={handleChange} aria-label="custom switch">
 				{children}
-			</div>
+			</button>
 			<div
 				className="label"
 				onClick={handleChange}
@@ -36,6 +37,9 @@ const CustomSwitch: FC<Props> = ({
 			>
 				{t(label)}
 			</div>
+			<label htmlFor={`toggleSwitch-${name}`}>
+				<VisuallyHidden labelName={label} />
+			</label>
 			<input
 				type="checkbox"
 				name={name}

@@ -1,14 +1,14 @@
 import { FC } from "react";
 import Modal from "../modal/Modal";
 import notifications from "@/assets/images/notifications.png";
-import styles from "./AskPermisssion.module.scss";
+import styles from "./AskPermission.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
-    showFn: React.Dispatch<React.SetStateAction<boolean>>;
+	showFn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AskPermisssion: FC<Props> = ({ showFn }) => {
+const AskPermission: FC<Props> = ({ showFn }) => {
 	const { t } = useLanguage();
 
 	return (
@@ -36,4 +36,4 @@ const AskPermisssion: FC<Props> = ({ showFn }) => {
 	);
 };
 
-export default AskPermisssion;
+export default AskPermission;

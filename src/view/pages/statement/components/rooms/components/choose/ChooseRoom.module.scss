@@ -1,19 +1,4 @@
-.fav{
-    background-color: var(--blue);
-    color:white;
-    height:13rem;
-    width:3rem;   
-    border-radius: 6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position:relative;
-    right:50%;
-    transform: translateX(50%);
-    cursor:pointer;
-    transition: all 0.3s;
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
-    &:hover{
-        background-color: var(--blue-dark);
-    }
+.wrapper{
+    padding: 1rem;
+    margin: auto;
 }

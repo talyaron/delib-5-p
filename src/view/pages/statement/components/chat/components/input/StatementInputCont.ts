@@ -15,14 +15,19 @@ export function handleAddStatement(
 		if (!user) throw new Error("No user");
 
 		//remove white spaces and \n
-		const value = message.replace(/\s+/g, " ").trim();
+		const title = message.split("\n")[0];
+		const description = message
+			.split("\n")
+			.slice(1)
+			.join("\n")
 
-		if (!value) throw new Error("No value");
+		if (!title) throw new Error("No value");
 
 		const newStatement: Statement | undefined = createStatement({
 			...defaultStatementSettings,
 			hasChildren: true,
-			text: value,
+			text: title,
+			description,
 			parentStatement: statement,
 			statementType: StatementType.statement,
 			toggleAskNotifications,

@@ -3,6 +3,10 @@
   display: flex;
   width: fit-content;
   align-items: center;
+  background-color: var(--btn-primary);
+  padding: .5rem 1.5rem;
+  border-radius: var(--radius);
+  color:var(--white);
 
   &__text {
     font-size: 1rem;

@@ -1,89 +1,43 @@
-import { Participant, Statement } from "delib-npm";
+import { Statement } from "delib-npm";
 import { FC } from "react";
-import Text from "@/view/components/text/Text";
-import { setRoomJoinToDB } from "@/controllers/db/rooms/setRooms";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { statementSelector } from "@/model/statements/statementsSlice";
-import {
-	topicParticipantsSelector,
-	userSelectedTopicSelector,
-} from "@/model/rooms/roomsSlice";
 import styles from "./RoomChoosingCard.module.scss";
+import { useSelector } from "react-redux";
+import { participantsByTopicId, roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
+import { userSelector } from "@/model/users/userSlice";
+import {
+	deleteParticipantToDB,
+	setParticipantToDB,
+} from "@/controllers/db/rooms/setRooms";
 
 interface Props {
-    statement: Statement;
+  topic: Statement;
 }
+const RoomChoosingCard: FC<Props> = ({ topic }) => {
+	const user = useSelector(userSelector);
+	const participants = useSelector(participantsByTopicId(topic.statementId));
+	const participant = participants.find((prt) => prt.user.uid === user?.uid);
+	const roomSettings = useSelector(roomSettingsByStatementId(topic.parentId));
+	const participantsPerRoom = roomSettings?.participantsPerRoom || 7;
 
-const RoomChoosingCard: FC<Props> = ({ statement }) => {
-	const request = useAppSelector(
-		userSelectedTopicSelector(statement.parentId),
-	);
-	const roomSize =
-        useAppSelector(statementSelector(statement.parentId))?.roomSize || 5;
-	const requestStatementId = request?.statement?.statementId;
-
-	const topicJoiners = useAppSelector(
-		topicParticipantsSelector(statement.statementId),
-	) as Participant[];
-
-	function handleAskToJoinRoom() {
-		setRoomJoinToDB(statement);
+	function handleJoinRoom() {
+		if (participant) {
+      
+			deleteParticipantToDB(topic);
+		} else {
+      
+			setParticipantToDB(topic);
+		}
 	}
-
-	const fill = fillHeight(topicJoiners, roomSize);
-	const borderRadius = fill > 0.9 ? `1rem` : "0px 0px 1rem 1rem";
+	let fill = (participants.length / participantsPerRoom) * 100;
+	if(fill > 100) fill = 100;
 
 	return (
-		<div
-			className={
-				requestStatementId === statement.statementId
-					? `${styles.roomCard} ${styles["roomCard--selected"]}`
-					: `${styles.roomCard}`
-			}
-			onClick={handleAskToJoinRoom}
-		>
-			<div className={styles.roomCard__title}>
-				<Text text={statement.statement} />
-			</div>
-			<div className={styles.roomCard__count}>
-				<span>{topicJoiners ? topicJoiners.length : 0}</span>/
-				{roomSize || 7}
-			</div>
-			<div
-				className={styles.roomCard__fill}
-				style={{
-					height: `${fill * 100}%`,
-					borderRadius,
-					backgroundColor: fillColor(fill),
-				}}
-			></div>
+		<div className={`${styles.roomCard} ${participant && styles["roomCard--selected"]}`} onClick={handleJoinRoom}>
+			<div className={styles.title}>{topic.statement}</div>
+			<div className={styles.amount}>{participants.length}/{participantsPerRoom}</div>
+			<div className={styles.fill} style={{height:`${fill}%`, borderRadius:fill>90?"1rem":"0px 0px 1rem 1rem"}}></div>
 		</div>
 	);
 };
 
 export default RoomChoosingCard;
-
-function fillHeight(topicJoiners: Participant[], maxRoomJoiners = 5) {
-	try {
-		if (!topicJoiners) return 0;
-
-		const joinersCount = topicJoiners.length;
-		const fill = joinersCount / maxRoomJoiners;
-		if (fill > 1) return 1;
-
-		return fill;
-	} catch (error) {
-		console.error(error);
-
-		return 0;
-	}
-}
-
-function fillColor(fill: number) {
-	if (fill < 0.25) return "#c502024b";
-	if (fill < 0.5) return "#c595024b";
-	if (fill < 0.75) return "#c4c5024b";
-	if (fill >= 1) return "rgba(2, 197, 2, 0.294)";
-
-	return "gray";
-}

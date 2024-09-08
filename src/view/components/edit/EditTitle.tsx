@@ -11,7 +11,6 @@ import Save from "@/assets/icons/saveIcon.svg?react";
 import styles from "./EditTitle.module.scss";
 
 // Custom components
-import { getDescription, getTitle } from "@/controllers/general/helpers";
 import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Text from "../text/Text";
@@ -29,10 +28,10 @@ const EditTitle: FC<Props> = ({
 	isEdit,
 	setEdit,
 	isTextArea,
-	onlyTitle,
+
 }) => {
-	const [text, setText] = useState(statement?.statement || "");
-	const [title, setTitle] = useState(getTitle(statement) || "");
+	const [description, setDescription] = useState(statement?.description || "");
+	const [title, setTitle] = useState(statement?.statement || "");
 	const textareaRef = useAutoFocus(isEdit);
 
 	if (!statement) return null;
@@ -42,25 +41,27 @@ const EditTitle: FC<Props> = ({
 	const align = direction === "ltr" ? "left" : "right";
 
 	function handleChange(
-		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-		setState: Dispatch<SetStateAction<string>>
+		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
-		setState(e.target.value);
+		const _title = e.target.value.split("\n")[0]
+		const _description = e.target.value.split("\n").slice(1).join("\n");
+		setTitle(_title);
+		setDescription(_description);
+	}
+
+	function handleEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+		if (e.key === "Enter") {
+			handleSave();
+		}
 	}
 
 	function handleSave() {
 		try {
-			if (!text.trim()) return; // Do not save if the text is empty
-
+			if (!title) return; // Do not save if the text is empty
 			if (!statement) throw new Error("Statement is undefined");
 
-			const description = getDescription(statement);
 
-			const updatedText = isTextArea
-				? text.trim()
-				: title + "\n" + description.trim();
-
-			updateStatementText(statement, updatedText);
+			updateStatementText(statement, title, description);
 			setEdit(false);
 		} catch (error) {
 			console.error(error);
@@ -70,7 +71,7 @@ const EditTitle: FC<Props> = ({
 	if (!isEdit)
 		return (
 			<div style={{ direction: direction, textAlign: align }}>
-				<Text text={statement.statement} onlyTitle={onlyTitle} />
+				<Text statement={statement.statement} description={statement.description} />
 			</div>
 		);
 
@@ -82,8 +83,8 @@ const EditTitle: FC<Props> = ({
 						ref={textareaRef}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.textarea}
-						value={text}
-						onChange={(e) => handleChange(e, setText)}
+						defaultValue={`${title}\n${description}`}
+						onChange={handleChange}
 						autoFocus={true}
 						placeholder="Add text"
 					></textarea>
@@ -98,7 +99,8 @@ const EditTitle: FC<Props> = ({
 						className={styles.input}
 						type="text"
 						value={title}
-						onChange={(e) => handleChange(e, setTitle)}
+						onChange={handleChange}
+						onKeyUp={handleEnter}
 						autoFocus={true}
 						data-cy="edit-title-input"
 					></input>

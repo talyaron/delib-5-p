@@ -11,11 +11,10 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 
 // icons
-import Logo from "@/assets/logo/106 x 89 SVG.svg?react";
-import MoreRight from "@/assets/icons/moreRight.svg?react";
-import MoreLeft from "@/assets/icons/moreLeft.svg?react";
-import StartPageImage from '@/assets/images/StartPageImage.png'
-import StartPageImageMobile from '@/assets/images/StartPageImageMobile.png'
+import Logo from "../../../assets/logo/106 x 89 SVG.svg?react";
+import MoreRight from "../../../assets/icons/moreRight.svg?react";
+import MoreLeft from "../../../assets/icons/moreLeft.svg?react";
+import StartPageImage from '@/assets/images/StartPageImage.png';
 
 // Constants
 import { LANGUAGES } from "@/constants/Languages";
@@ -55,9 +54,17 @@ const Start = () => {
 
 	return (
 		<div className={styles.splashPage}>
-			<Logo />
-			<div className={styles.slogan}>
-				{t("Fostering Collaborations")}
+			<div className={styles.mainlogo}>
+				<div className={styles.freeDiIcon}>
+					<Logo />
+				</div>
+				<div className={styles.mainlogo__title}>
+					<span className={styles.mainlogo__Free}>Free</span>
+					<span className={styles.mainlogo__Di}>Di</span>
+				</div>
+				<span className={styles.mainlogo__slogan}>
+					{t("Fostering Collaborations")}
+				</span>
 			</div>
 			<select
 				className={styles.language}
@@ -88,15 +95,14 @@ const Start = () => {
 				{direction === "row-reverse" ? <MoreLeft /> : null}
 				{t("Login with a temporary name")}{" "}
 				{direction === "row" ? <MoreRight /> : null}
-				
+
 			</button>
 
-			<GoogleLoginButton/>
-			
-			<img src={StartPageImage} alt="" className={styles.StratPageImage}/>
-			<img src={StartPageImageMobile} alt="" className={styles.StratPageImageMobile}/>
-			<a href="http://delib.org" target="_blank">
-				<footer className={styles.ddi}>
+			<GoogleLoginButton />
+
+			<img src={StartPageImage} alt="" className={styles.StratPageImage} />
+			<a href="http://delib.org" target="_blank" className={styles.ddi}>
+				<footer >
 					{t("From the Institute for Deliberative Democracy")}
 				</footer>
 			</a>

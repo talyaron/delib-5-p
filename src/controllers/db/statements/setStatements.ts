@@ -1,10 +1,11 @@
 // Firestore
-import {Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // Third Party Imports
 import { z } from "zod";
 import {
 	Access,
+	Membership,
 	ResultsBy,
 	Screen,
 	Statement,
@@ -12,6 +13,7 @@ import {
 	StatementType,
 	UserSchema,
 	isAllowedStatementType,
+	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
 import { DB } from "../config";
@@ -24,6 +26,8 @@ import {
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { allowedScreens } from "@/controllers/general/screens";
+import { setNewRoomSettingsToDB } from "../rooms/setRooms";
+
 
 
 
@@ -61,6 +65,34 @@ export const updateStatementParents = async (
 };
 
 const TextSchema = z.string().min(2);
+
+export function setSubStatementToDB(statement: Statement, title: string, description?: string) {
+	try {
+		const newSubStatement = createStatement({
+			text: title,
+			description: description,
+			parentStatement: statement,
+			statementType: StatementType.option,
+			enableAddEvaluationOption: true,
+			enableAddVotingOption: true,
+			enhancedEvaluation: true,
+			showEvaluation: true,
+			resultsBy: ResultsBy.topOptions,
+			numberOfResults: 1,
+			hasChildren: true,
+			membership: statement.membership,
+		});
+
+		if(!newSubStatement) throw new Error("New newSubStatement is undefined");
+
+		const newSubStatementRef = doc(DB, Collections.statements, newSubStatement.statementId);
+		setDoc(newSubStatementRef, newSubStatement);
+	} catch (error) {
+		console.error(error);
+		
+	}
+}
+
 interface SetStatementToDBParams {
 	statement: Statement;
 	parentStatement?: Statement | "top";
@@ -130,7 +162,7 @@ export const setStatementToDB = async ({
 		statement.lastUpdate = new Date().getTime();
 		statement.createdAt = statement?.createdAt || new Date().getTime();
 
-		statement.membership = { access: Access.open };
+		statement.membership = statement.membership || { access: Access.open };
 
 		//statement settings
 		if (!statement.statementSettings)
@@ -156,6 +188,9 @@ export const setStatementToDB = async ({
 		});
 
 		statementPromises.push(statementPromise);
+
+		//add roomSettings
+		setNewRoomSettingsToDB(statement.statementId);
 
 		//add subscription
 
@@ -185,6 +220,7 @@ export const setStatementToDB = async ({
 
 interface CreateStatementProps {
 	text: string;
+	description?: string;
 	parentStatement: Statement | "top";
 	subScreens?: Screen[];
 	statementType?: StatementType;
@@ -195,10 +231,12 @@ interface CreateStatementProps {
 	resultsBy?: ResultsBy;
 	numberOfResults?: number;
 	hasChildren: boolean;
+	membership?: Membership;
 	toggleAskNotifications?: () => void;
 }
 export function createStatement({
 	text,
+	description,
 	parentStatement,
 	subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
 	statementType = StatementType.statement,
@@ -210,6 +248,7 @@ export function createStatement({
 	numberOfResults = 1,
 	hasChildren = true,
 	toggleAskNotifications,
+	membership
 }: CreateStatementProps): Statement | undefined {
 	try {
 		if (parentStatement !== "top")
@@ -251,12 +290,14 @@ export function createStatement({
 
 		const newStatement: Statement = {
 			statement: text,
+			description: description || "",
 			statementId,
 			parentId,
 			parents,
 			topParentId,
 			creator: user,
 			creatorId: user.uid,
+			membership: membership || { access: Access.open },
 			statementSettings: {
 				enhancedEvaluation,
 				showEvaluation,
@@ -286,7 +327,10 @@ export function createStatement({
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
 
-		StatementSchema.parse(newStatement);
+		const results = StatementSchema.safeParse(newStatement);
+		if(results.success === false) {
+			writeZodError(results.error, newStatement);
+		}
 
 		return newStatement;
 	} catch (error) {
@@ -298,6 +342,7 @@ export function createStatement({
 
 interface UpdateStatementProps {
 	text: string;
+	description?: string;
 	statement: Statement;
 	subScreens?: Screen[];
 	statementType?: StatementType;
@@ -308,9 +353,11 @@ interface UpdateStatementProps {
 	resultsBy?: ResultsBy;
 	numberOfResults?: number;
 	hasChildren: boolean;
+	membership?: Membership;
 }
 export function updateStatement({
 	text,
+	description,
 	statement,
 	subScreens = [Screen.CHAT],
 	statementType = StatementType.statement,
@@ -321,11 +368,13 @@ export function updateStatement({
 	resultsBy,
 	numberOfResults,
 	hasChildren,
+	membership,
 }: UpdateStatementProps): Statement | undefined {
 	try {
 		const newStatement: Statement = JSON.parse(JSON.stringify(statement));
 
 		if (text) newStatement.statement = text;
+		if (description) newStatement.description = description;
 
 		newStatement.lastUpdate = Timestamp.now().toMillis();
 
@@ -359,6 +408,7 @@ export function updateStatement({
 		});
 
 		newStatement.hasChildren = hasChildren;
+		newStatement.membership = membership || statement.membership || { access: Access.open };
 
 		if (statementType !== undefined)
 			newStatement.statementType =
@@ -373,7 +423,10 @@ export function updateStatement({
 					Screen.VOTE,
 				];
 
-		StatementSchema.parse(newStatement);
+		const results = StatementSchema.safeParse(newStatement);
+		if(results.success === false) {
+			writeZodError(results.error, newStatement);
+		}
 
 		return newStatement;
 	} catch (error) {
@@ -398,6 +451,7 @@ interface UpdateStatementSettingsParams {
 	enhancedEvaluation: boolean;
 	showEvaluation: boolean;
 	subScreens: Screen[] | undefined;
+
 }
 
 function updateStatementSettings({
@@ -407,6 +461,7 @@ function updateStatementSettings({
 	enhancedEvaluation,
 	showEvaluation,
 	subScreens,
+
 }: UpdateStatementSettingsParams): UpdateStatementSettingsReturnType {
 	try {
 		if (!statement) throw new Error("Statement is undefined");
@@ -421,7 +476,7 @@ function updateStatementSettings({
 			showEvaluation,
 			enableAddEvaluationOption,
 			enableAddVotingOption,
-			subScreens
+			subScreens,
 		};
 	} catch (error) {
 		console.error(error);
@@ -437,17 +492,15 @@ function updateStatementSettings({
 
 export async function updateStatementText(
 	statement: Statement | undefined,
-	newText: string,
+	title: string,
+	description: string,
 ) {
 	try {
-		if (!newText) throw new Error("New text is undefined");
+		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
+		
 
-		// console.log(statement.statement);
-		// console.log(newText);
-		
-		
-		if (statement.statement === newText) return;
+		if (statement.statement === title && statement.description === description) return;
 
 		StatementSchema.parse(statement);
 		const statementRef = doc(
@@ -455,9 +508,10 @@ export async function updateStatementText(
 			Collections.statements,
 			statement.statementId,
 		);
-		
+
 		const newStatement = {
-			statement: newText,
+			statement:title,
+			description,
 			lastUpdate: Timestamp.now().toMillis(),
 		};
 		await updateDoc(statementRef, newStatement);

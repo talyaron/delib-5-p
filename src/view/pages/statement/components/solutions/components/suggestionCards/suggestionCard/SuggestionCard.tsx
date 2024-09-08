@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 
 // Third Party
-import { Statement, StatementType, User, isOptionFn } from "delib-npm";
+import { Screen, Statement, StatementType, User } from "delib-npm";
 
 // Redux Store
 import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
@@ -19,35 +19,37 @@ import useStatementColor, {
 } from "@/controllers/hooks/useStatementColor";
 
 // Custom Components
-import EditIcon from "@/assets/icons/editIcon.svg?react";
-import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+
 import { setStatementIsOption } from "@/controllers/db/statements/setStatements";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import EditTitle from "@/view/components/edit/EditTitle";
-import Menu from "@/view/components/menu/Menu";
-import MenuOption from "@/view/components/menu/MenuOption";
+
 import IconButton from "@/view/components/iconButton/IconButton";
-import StatementChatMore from "../../chat/components/StatementChatMore";
+import StatementChatMore from "../../../../chat/components/StatementChatMore";
 import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
-import CreateStatementModal from "../../createStatementModal/CreateStatementModal";
-import Evaluation from "./evaluation/Evaluation";
-import "./StatementSolutionCard.scss";
+import CreateStatementModal from "../../../../createStatementModal/CreateStatementModal";
+import Evaluation from "../../evaluation/Evaluation";
+import "./SuggestionCard.scss";
+import SolutionMenu from "../../solutionMenu/SolutionMenu";
+import { sortSubStatements } from "../../../statementSolutionsCont";
+import { useParams } from "react-router-dom";
 
 interface Props {
   statement: Statement;
+  siblingStatements: Statement[];
   parentStatement: Statement;
   showImage: (talker: User | null) => void;
-  top: number;
 }
 
-const StatementSolutionCard: FC<Props> = ({
+const SuggestionCard: FC<Props> = ({
 	parentStatement,
+	siblingStatements,
 	statement,
-	top,
 }) => {
 	// Hooks
 
 	const { t, dir } = useLanguage();
+	const { sort } = useParams();
 
 	// Redux Store
 	const dispatch = useAppDispatch();
@@ -62,7 +64,7 @@ const StatementSolutionCard: FC<Props> = ({
 	const elementRef = useRef<HTMLDivElement>(null);
 
 	// Use States
-	const [newTop, setNewTop] = useState(top);
+
 	const [isEdit, setIsEdit] = useState(false);
 	const [shouldShowAddSubQuestionModal, setShouldShowAddSubQuestionModal] =
     useState(false);
@@ -75,17 +77,28 @@ const StatementSolutionCard: FC<Props> = ({
 	);
 
 	useEffect(() => {
-		setNewTop(top);
-	}, [top]);
+		const element = elementRef.current;
+		if (element) {
+			setTimeout(() => {
+				dispatch(
+					setStatementElementHight({
+						statementId: statement.statementId,
+						height: elementRef.current?.clientHeight,
+					})
+				);
+			}, 0);
+		}
+	}, [elementRef.current?.clientHeight]);
 
 	useEffect(() => {
-		dispatch(
-			setStatementElementHight({
-				statementId: statement.statementId,
-				height: elementRef.current?.clientHeight,
-			})
-		);
-	}, [statement.statement]);
+		if (sort !== Screen.OPTIONS_RANDOM && sort !== Screen.QUESTIONS_RANDOM) {
+			sortSubStatements(siblingStatements, sort, 30);
+		}
+	}, [statement.consensus]);
+
+	useEffect(() => {
+		sortSubStatements(siblingStatements, sort, 30);
+	}, [statement.elementHight]);
 
 	function handleSetOption() {
 		try {
@@ -119,7 +132,7 @@ const StatementSolutionCard: FC<Props> = ({
 					: "statement-evaluation-card"
 			}
 			style={{
-				top: `${newTop}px`,
+				top: `${statement.top || 0}px`,
 				borderLeft: `8px solid ${statementColor.backgroundColor || "wheat"}`,
 				color: statementColor.color,
 				flexDirection: dir === "ltr" ? "row" : "row-reverse",
@@ -154,36 +167,15 @@ const StatementSolutionCard: FC<Props> = ({
 						/>
 					</div>
 					<div className="more">
-						{_isAuthorized && (
-							<Menu
-								setIsOpen={setIsCardMenuOpen}
-								isMenuOpen={isCardMenuOpen}
-								iconColor="#5899E0"
-							>
-								{_isAuthorized && (
-									<MenuOption
-										label={t("Edit Text")}
-										icon={<EditIcon />}
-										onOptionClick={() => {
-											setIsEdit(!isEdit);
-											setIsCardMenuOpen(false);
-										}}
-									/>
-								)}
-								{_isAuthorized && (
-									<MenuOption
-										isOptionSelected={isOptionFn(statement)}
-										icon={<LightBulbIcon />}
-										label={
-											isOptionFn(statement)
-												? t("Unmark as a Solution")
-												: t("Mark as a Solution")
-										}
-										onOptionClick={handleSetOption}
-									/>
-								)}
-							</Menu>
-						)}
+						<SolutionMenu
+							statement={statement}
+							isAuthorized={_isAuthorized}
+							isCardMenuOpen={isCardMenuOpen}
+							setIsCardMenuOpen={setIsCardMenuOpen}
+							isEdit={isEdit}
+							setIsEdit={setIsEdit}
+							handleSetOption={handleSetOption}
+						/>
 					</div>
 				</div>
 				{shouldLinkToChildStatements && (
@@ -214,4 +206,4 @@ const StatementSolutionCard: FC<Props> = ({
 	);
 };
 
-export default StatementSolutionCard;
+export default SuggestionCard;

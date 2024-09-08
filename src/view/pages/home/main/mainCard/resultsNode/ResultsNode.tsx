@@ -19,7 +19,7 @@ export const ResultsNode: FC<Props> = ({ statement }) => {
 				}}
 				to={`/statement/${statement.statementId}/chat`}
 			>
-				<Text text={statement.statement} />
+				<Text statement={statement.statement} />
 
 				<StatementChatMore statement={statement} />
 			</Link>

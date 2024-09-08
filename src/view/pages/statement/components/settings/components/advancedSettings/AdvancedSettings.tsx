@@ -24,6 +24,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 		enableAddVotingOption,
 		enableAddEvaluationOption,
 		enableSimilaritiesSearch,
+		enableNavigationalElements,
 	} = statementSettings;
 
 	const setStatementSetting = (
@@ -100,6 +101,16 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 					setStatementSetting(
 						'enableSimilaritiesSearch',
 						!enableSimilaritiesSearch
+					);
+				}}
+			/>
+			<Checkbox
+				label='Allow removal of navigational elements'
+				isChecked={enableNavigationalElements}
+				toggleSelection={() => {
+					setStatementSetting(
+						'enableNavigationalElements',
+						!enableNavigationalElements
 					);
 				}}
 			/>

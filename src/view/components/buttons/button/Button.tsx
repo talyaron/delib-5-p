@@ -1,5 +1,5 @@
 import { FC } from "react";
-import "./Button.scss";
+import styles from "./Button.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
@@ -28,13 +28,11 @@ const Button: FC<Props> = ({
 		}
 	}
 
-	const buttonClassName = `button ${iconOnRight ? "" : "button--right"} ${Icon ? "button--with-icon" : ""} ${className}`.trim();
-
 	return (
-		<button className={buttonClassName} onClick={onClick}>
-			<div className="button__text">{text}</div>
+		<button className={`${styles.button} ${className}`} onClick={onClick}>
+			<div className={styles["button__text"]}>{text}</div>
 			{Icon && (
-				<div className="button__icon-wrapper">
+				<div className={styles["button__icon-wrapper"]}>
 					<div
 						className={
 							dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
