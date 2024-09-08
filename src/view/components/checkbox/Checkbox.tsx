@@ -6,49 +6,55 @@ import "./Checkbox.scss";
 import VisuallyHidden from "../accessibility/toScreenReaders/VisuallyHidden";
 
 interface CheckboxProps {
-	name?: string;
-	label: string;
-	isChecked: boolean;
-	toggleSelection: () => void;
+  name?: string;
+  label: string;
+  isChecked: boolean;
+  toggleSelection: () => void;
 }
 
 const Checkbox: FC<CheckboxProps> = ({
-	name,
-	label,
-	isChecked,
-	toggleSelection,
+  name,
+  label,
+  isChecked,
+  toggleSelection,
 }: CheckboxProps) => {
-	const { t } = useLanguage();
+  const { t } = useLanguage();
 
-	return (
-		<label className={`checkbox ${isChecked ? "checked" : ""}`} htmlFor={`checkbox-${label}`}>
-			 <VisuallyHidden labelName={t(label)} /> 
-			<button
-				type="button"
-				className="checkbox-icon"
-				onClick={toggleSelection}
-				onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
-					if (e.key === 'Enter') {
-						e.preventDefault(); 
-						toggleSelection();
-					}
-				}}
-				aria-label={isChecked ? "Uncheck" : "Check"}
-			>
-				{isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
-			</button>
+  return (
+    <div className={`checkbox ${isChecked ? "checked" : ""}`}>
+      <label
+        // className={`checkbox ${isChecked ? "checked" : ""}`}
+        htmlFor={`checkbox-${label}`}
+		onClick={toggleSelection}
+      >
+        <VisuallyHidden labelName={t(label)} />
+      </label>
+      <button
+        type="button"
+        className="checkbox-icon"
+        onClick={toggleSelection}
+        onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            toggleSelection();
+          }
+        }}
+        aria-label={isChecked ? "Uncheck" : "Check"}
+      >
+        {isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
+      </button>
 
-			<input
-				type="checkbox"
-				name={name}
-				id={`checkbox-${label}`}
-				checked={isChecked}
-				onChange={toggleSelection}
-			/>
+      <input
+        type="checkbox"
+        name={name}
+        id={`checkbox-${label}`}
+        checked={isChecked}
+        onChange={toggleSelection}
+      />
 
-			<div className="checkbox-label">{t(label)}</div>
-		</label>
-	);
+      <div className="checkbox-label">{t(label)}</div>
+    </div>
+  );
 };
 
 export default Checkbox;
