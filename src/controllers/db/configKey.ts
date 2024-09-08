@@ -1,6 +1,5 @@
 const mode = import.meta.env.VITE_APP_ENV as 'development' | 'production';
 
-console.log("mode", mode);
 const firebaseConfig = {
 	development: {
 		apiKey: import.meta.env.VITE_FIREBASE_API_KEY_DEV,
