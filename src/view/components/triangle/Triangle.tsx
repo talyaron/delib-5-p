@@ -14,12 +14,12 @@ interface Props {
 
 const Triangle: FC<Props> = ({ statement }) => {
 	const {t} = useLanguage();
-	const subStatements = useSelector(
+	const subStatements:Statement[] = useSelector(
 		statementOptionsSelector(statement.statementId)
-	).filter((s) => s.evaluation?.sumCon !== undefined);
+	).filter((s:Statement) => s.evaluation?.sumCon !== undefined);
 
 	let maxEvaluators = 0;
-	subStatements.forEach((subStatement) => {
+	subStatements.forEach((subStatement:Statement) => {
 		if (subStatement.evaluation?.numberOfEvaluators !== undefined &&  subStatement.evaluation?.numberOfEvaluators > maxEvaluators) maxEvaluators = subStatement.evaluation.numberOfEvaluators;
 	});
 
@@ -29,7 +29,7 @@ const Triangle: FC<Props> = ({ statement }) => {
 				
 			</div>
 			<div className={`${styles.triangle} ${styles["triangle--invisible"]}`}>
-				{subStatements.map((subStatement) => {
+				{subStatements.map((subStatement:Statement) => {
 					return (
 						<Dot key={subStatement.statementId} subStatement={subStatement} maxEvaluators={maxEvaluators}/>
 					);

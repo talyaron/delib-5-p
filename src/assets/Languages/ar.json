@@ -156,5 +156,7 @@
     "Abstention": "الامتناع",
     "Support": "الدعم",
     "Against": "ضد",
-    "Voters": "الناخبين"
+    "Voters": "الناخبين",
+    "Did Not Vote": "لم يصوت",
+    "Get Non Voters": "الحصول على الناخبين غير المصوتين"
 }

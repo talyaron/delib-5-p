@@ -155,5 +155,7 @@
     "Abstention": "Onthouding",
     "Support": "Ondersteuning",
     "Against": "Tegen",
-    "Voters": "Stemmers"
+    "Voters": "Stemmers",
+     "Did Not Vote": "Heeft niet gestemd",
+  "Get Non Voters": "Krijg niet-stemmers"
 }
