@@ -18,7 +18,7 @@ interface Props {
 const EnterNameModal: FC<Props> = ({ closeModal }) => {
 	const [displayName, setDisplayName] = useState<string | null>(null);
 	const [showStartBtn, setShowStartBtn] = useState<boolean>(false);
-	console.log("showStartBtn", showStartBtn);
+	
 	const { t } = useLanguage();
 
 	function handleSetName(ev: React.ChangeEvent<HTMLInputElement>) {

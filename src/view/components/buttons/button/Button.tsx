@@ -26,7 +26,7 @@ const Button: FC<Props> = ({
 	iconOnRight = true,
 	className = "",
 	buttonType = ButtonType.PRIMARY,
-  disabled = false,
+	disabled = false,
 }) => {
 	let { dir } = useLanguage();
 	if (iconOnRight === false) {
@@ -40,15 +40,15 @@ const Button: FC<Props> = ({
 	const btnTypes = {
 		primary: styles["button--primary"],
 		secondary: styles["button--secondary"],
-    disabled: styles["button--disabled"],
+		disabled: styles["button--disabled"],
 	};
 
-  if(disabled) buttonType = ButtonType.DISABLED;
-  console.log("disabled", disabled);
-  console.log("buttonType", buttonType);
+	if(disabled) buttonType = ButtonType.DISABLED;
+	
+	
 
 	return (
-		<button className={`${styles.button} ${className} ${btnTypes[buttonType]}`} onClick={!disabled? onClick:()=>{}}>
+		<button className={`${styles.button} ${className} ${btnTypes[buttonType]}`} onClick={!disabled ? onClick : undefined}>
 			{Icon && (
 				<div className={styles["button__icon-wrapper"]}>
 					<div
