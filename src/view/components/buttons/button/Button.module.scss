@@ -19,6 +19,12 @@
     border:1px solid var(--text-dark-btn);
   }
 
+  &--disabled {
+    background-color: var(--btn-disabled);
+    color: var(--text-light-btn);
+    cursor: not-allowed;
+  }
+
   &__text {
     font-size: 1rem;
     text-align: center;
