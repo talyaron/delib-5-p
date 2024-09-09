@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./CustomSwitchSmall.scss";
-import background from "./customSwitchSmallBackground.svg";
+import BackgroundImage from "./customSwitchSmallBackground.svg";
 
 import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
 import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
@@ -37,7 +37,7 @@ const CustomSwitchSmall: FC<Props> = ({
 		<div className="custom-switch-small" onClick={handleChange}>
 			<div
 				className={dir==="rtl"?"background":"background background--ltr"}
-				style={{ backgroundImage: `url(${background})` }}
+				style={{ backgroundImage: `url(${BackgroundImage})` }}
 			>
 				<div className="ball ball-background" style={{left:"4.15rem"}}>
 					<StepsNoIcon /> 

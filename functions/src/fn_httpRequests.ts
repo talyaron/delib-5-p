@@ -36,7 +36,6 @@ export const getUserOptions = async (req: any, res: any) => {
 export const getRandomStatements = async (req: any, res: any) => {
 
 
-
     try {
 
         const parentId = req.query.parentId;

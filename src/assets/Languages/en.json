@@ -168,6 +168,7 @@
     "Abstention": "Abstention",
     "Support": "Support",
     "Against": "Against",
-    "Voters": "Voters"
-
+    "Voters": "Voters",
+     "Did Not Vote": "Did Not Vote",
+  "Get Non Voters": "Get Non Voters"
 }
