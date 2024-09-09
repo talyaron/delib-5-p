@@ -146,9 +146,12 @@
   --btn-secondary: #5f8cd4;
   --btn-tertiary: #5f8cd4;
   --btn-follow-me: #ec8aba;
-  --btn-fab: #5f8cd4;
+  --btn-fab-blue: #5f8cd4;
+  --btn-fab-white: #ffffff;
   --btn-fab-pressed: #476fca;
   //buttons-contrast
+  --btn-fab-white-contrast: #ffffff;
+  --btn-fab-blue-contrast: #476FCA;
   --btn-primary-contrast: #ffffff;
   --btn-secondary-contrast: #ffffff;
   --btn-tertiary-contrast: #ffffff;
@@ -181,6 +184,11 @@
   --emoji-neutral: #e7d080;
   --emoji-thinking: #f6ae92;
   --emoji-sad: #fc8c9b;
+  --emoji-happy-inactive: #a89f93;
+  --emoji-smiley-inactive: #bbb5ab;
+  --emoji-neutral-inactive: #cfcac4;
+  --emoji-thinking-inactive: #bbb5ab;
+  --emoji-sad-inactive: #a89f93;
   //emojis-contrast
   --emoji-happy-contrast: #25bceb;
   --emoji-smiley-contrast: #0ed68e;
@@ -298,6 +306,14 @@
   --dot-taboo-50: #ff4185;
   --dot-taboo-100: #99250e;
   --dot-disinterest: #dae0e8;
+  // triangle dots-contrast
+  --dot-agreement-100-contrast: #1a8c78;
+  --dot-agreement-50-contrast: #ffe100;
+  --dot-agreement-0-contrast: #ff6200;
+  --dot-taboo-50-contrast: #f90059;
+  --dot-taboo-100-contrast: #99250e;
+  --dot-disinterest-contrast: #c7cacf;
+
 
 
   //text
@@ -319,6 +335,7 @@
   --text-triangle-taboo: #99250e;
   //text-contrast
   --text-emphasis-contrast: #ffa463;
+  --text-green-contrast: #6FE9E9;
   --text-dark-contrast: #021832;
   --text-disabled-contrast: #6379a7;
   --text-blue-contrast: #3e61b0;
