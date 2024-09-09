@@ -5,7 +5,8 @@ import { db } from ".";
 
 export async function updateApprovalResults(event: any) {
     try {
-        const action: Action = getAction(event);
+        const action: Action|undefined = getAction(event);
+        if (!action) throw new Error("No action found");
         const eventData = event.data.after.data() as Approval || event.data.before.data() as Approval;
         const { statementId, documentId, userId } = eventData;
         const approveAfterData = event.data.after.data() as Approval;
@@ -156,16 +157,23 @@ export enum Action {
 }
 
 
-export function getAction(event: any): Action {
+export function getAction(event: any): Action|undefined {
 
-    if (event.data.after.data() && event.data.before.data()) {
+    try {
+        if(!event.data.after && !event.data.before) throw new Error("No data before or after");
+
+        if (event.data.after.data() && event.data.before.data()) {
+            return Action.update;
+        } else if (event.data.after.data() && event.data.before.data() === undefined) {
+            return Action.create;
+        } else if (event.data.after.data() === undefined && event.data.before.data()) {
+            return Action.delete;
+        }
+
         return Action.update;
-    } else if (event.data.after.data() && event.data.before.data() === undefined) {
-        return Action.create;
-    } else if (event.data.after.data() === undefined && event.data.before.data()) {
-        return Action.delete;
+    } catch (error) {
+        logger.error(error);
+        return undefined;
     }
-
-    return Action.update;
 }
 
