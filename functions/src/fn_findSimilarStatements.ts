@@ -3,6 +3,8 @@ import { Collections, Statement } from 'delib-npm';
 import { Response, onInit } from 'firebase-functions/v1';
 import { Request } from 'firebase-functions/v2/https';
 import { db } from '.';
+import 'dotenv/config';
+
 
 export async function findSimilarStatements(
 	request: Request,
@@ -48,8 +50,10 @@ export async function findSimilarStatements(
 let genAI: GoogleGenerativeAI;
 
 onInit(() => {
-	genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
+	genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 });
+
+console.log("GEMINI_API_KEY: ", process.env.GEMINI_API_KEY);
 
 export async function runGenAI(allStatements: string[], userInput: string) {
 	try {
