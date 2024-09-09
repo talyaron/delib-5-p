@@ -10,19 +10,21 @@ export enum ButtonType {
 interface Props {
   buttonType?: ButtonType;
   text: string;
+  type?: "button" | "submit" | "reset";
   bckColor?: string;
   color?: string;
   className?: string;
   iconOnRight?: boolean;
   disabled?: boolean;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   icon?: React.ReactNode;
 }
 
 const Button: FC<Props> = ({
 	text,
+	type = "submit",
 	icon: Icon,
-	onClick,
+	onClick = () => {},
 	iconOnRight = true,
 	className = "",
 	buttonType = ButtonType.PRIMARY,
@@ -48,7 +50,7 @@ const Button: FC<Props> = ({
 	
 
 	return (
-		<button className={`${styles.button} ${className} ${btnTypes[buttonType]}`} onClick={!disabled ? onClick : undefined}>
+		<button type={type} className={`${styles.button} ${className} ${btnTypes[buttonType]}`} onClick={!disabled ? onClick : undefined}>
 			{Icon && (
 				<div className={styles["button__icon-wrapper"]}>
 					<div
