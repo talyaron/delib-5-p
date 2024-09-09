@@ -2,48 +2,61 @@ import { FC } from "react";
 import styles from "./Button.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
+export enum ButtonType {
+  PRIMARY = "primary",
+  SECONDARY = "secondary",
+}
 interface Props {
-	text: string;
-	bckColor?: string;
-	color?: string;
-	className?: string;
-	iconOnRight?: boolean;
-	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-	icon?: React.ReactNode;
+  buttonType?: ButtonType;
+  text: string;
+  bckColor?: string;
+  color?: string;
+  className?: string;
+  iconOnRight?: boolean;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  icon?: React.ReactNode;
 }
 
 const Button: FC<Props> = ({
-	text,
-	icon: Icon,
-	onClick,
-	iconOnRight = true,
-	className = "",
+  text,
+  icon: Icon,
+  onClick,
+  iconOnRight = true,
+  className = "",
+  buttonType = ButtonType.PRIMARY
 }) => {
-	let { dir } = useLanguage();
-	if (iconOnRight === false) {
-		if (dir === "rtl") {
-			dir = "ltr";
-		} else {
-			dir = "rtl";
-		}
-	}
+  let { dir } = useLanguage();
+  if (iconOnRight === false) {
+    if (dir === "rtl") {
+      dir = "ltr";
+    } else {
+      dir = "rtl";
+    }
+  }
 
-	return (
-		<button className={`${styles.button} ${className}`} onClick={onClick}>
-			<div className={styles["button__text"]}>{text}</div>
-			{Icon && (
-				<div className={styles["button__icon-wrapper"]}>
-					<div
-						className={
-							dir === "rtl" ? "button__icon button__icon--right" : "button__icon"
-						}
-					>
-						{Icon}
-					</div>
-				</div>
-			)}
-		</button>
-	);
+  const btnTypes = {
+	primary: styles["button--primary"],
+	secondary: styles["button--secondary"],
+  };
+
+  return (
+    <button className={`${styles.button} ${className} ${btnTypes[buttonType]}`} onClick={onClick}>
+      <div className={styles["button__text"]}>{text}</div>
+      {Icon && (
+        <div className={styles["button__icon-wrapper"]}>
+          <div
+            className={
+              dir === "rtl"
+                ? "button__icon button__icon--right"
+                : "button__icon"
+            }
+          >
+            {Icon}
+          </div>
+        </div>
+      )}
+    </button>
+  );
 };
 
 export default Button;
