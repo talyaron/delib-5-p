@@ -7,7 +7,7 @@ interface Props {
 }
 const Text: FC<Props> = ({ statement, description }) => {
 	try {
-		if (!statement && !description) throw new Error("No text provided");
+		if (!statement && !description) return null;
 
 		const textId = `${Math.random()}`.replace(".", "");
 
@@ -45,7 +45,7 @@ const Text: FC<Props> = ({ statement, description }) => {
 		return (
 			<>
 				{statement && <p className={styles.title}>{statement}</p>}
-				{paragraphs.length > 0 && (
+				{(description && paragraphs.length > 0) && (
 					<div className={styles.text}>{paragraphs}</div>
 				)}
 			</>
