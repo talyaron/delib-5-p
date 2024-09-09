@@ -13,48 +13,49 @@ interface CheckboxProps {
 }
 
 const Checkbox: FC<CheckboxProps> = ({
-  name,
-  label,
-  isChecked,
-  toggleSelection,
+	name,
+	label,
+	isChecked,
+	toggleSelection,
 }: CheckboxProps) => {
-  const { t } = useLanguage();
+	const { t } = useLanguage();
 
-  return (
-    <div className={`checkbox ${isChecked ? "checked" : ""}`}>
-      <label
-        // className={`checkbox ${isChecked ? "checked" : ""}`}
-        htmlFor={`checkbox-${label}`}
-		onClick={toggleSelection}
-      >
-        <VisuallyHidden labelName={t(label)} />
-      </label>
-      <button
-        type="button"
-        className="checkbox-icon"
-        onClick={toggleSelection}
-        onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            toggleSelection();
-          }
-        }}
-        aria-label={isChecked ? "Uncheck" : "Check"}
-      >
-        {isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
-      </button>
+	return (
+		<div className={`checkbox ${isChecked ? "checked" : ""}`}>
+			<label
 
-      <input
-        type="checkbox"
-        name={name}
-        id={`checkbox-${label}`}
-        checked={isChecked}
-        onChange={toggleSelection}
-      />
+				// className={`checkbox ${isChecked ? "checked" : ""}`}
+				htmlFor={`checkbox-${label}`}
+				onClick={toggleSelection}
+			>
+				<VisuallyHidden labelName={t(label)} />
+			</label>
+			<button
+				type="button"
+				className="checkbox-icon"
+				onClick={toggleSelection}
+				onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
+					if (e.key === "Enter") {
+						e.preventDefault();
+						toggleSelection();
+					}
+				}}
+				aria-label={isChecked ? "Uncheck" : "Check"}
+			>
+				{isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
+			</button>
 
-      <div className="checkbox-label">{t(label)}</div>
-    </div>
-  );
+			<input
+				type="checkbox"
+				name={name}
+				id={`checkbox-${label}`}
+				checked={isChecked}
+				onChange={toggleSelection}
+			/>
+
+			<div className="checkbox-label">{t(label)}</div>
+		</div>
+	);
 };
 
 export default Checkbox;
