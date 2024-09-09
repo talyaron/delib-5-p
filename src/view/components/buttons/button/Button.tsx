@@ -41,20 +41,20 @@ const Button: FC<Props> = ({
 
   return (
     <button className={`${styles.button} ${className} ${btnTypes[buttonType]}`} onClick={onClick}>
-      <div className={styles["button__text"]}>{text}</div>
       {Icon && (
         <div className={styles["button__icon-wrapper"]}>
           <div
             className={
               dir === "rtl"
-                ? "button__icon button__icon--right"
-                : "button__icon"
+                ? `${styles["button__icon"]} ${styles["button__icon--right"]}`
+                : `${styles["button__icon"]}` 
             }
           >
             {Icon}
           </div>
         </div>
       )}
+         <div className={styles["button__text"]}>{text}</div>
     </button>
   );
 };
