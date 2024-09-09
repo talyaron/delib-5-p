@@ -5,7 +5,7 @@
     display: grid;
     position: fixed;
     grid-template-rows: auto 1fr auto;
-    background-color: var(--statementBackground);
+    background-color: var(--bg-screen);
 
 
     &__header {
