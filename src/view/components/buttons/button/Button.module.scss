@@ -3,7 +3,7 @@
   display: flex;
   width:fit-content;
   align-items: center;
- 
+  min-height: 2rem;
   border-radius: 50px;
   color: var(--text-light-btn);
   box-sizing: border-box  ;
@@ -28,7 +28,7 @@
   &__text {
     font-size: 1rem;
     text-align: center;
-    padding: .5rem 1rem;
+    
   }
 
   &__icon-wrapper {

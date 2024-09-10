@@ -1,4 +1,4 @@
-import { Statement } from 'delib-npm';
+import { Statement, StatementType } from 'delib-npm';
 import React from 'react';
 import SimilarStatementsSuggestion from '../SimilarStatementsSuggestion/SimilarStatementsSuggestion';
 import CreateStatementModal from '../createStatementModal/CreateStatementModal';
@@ -9,6 +9,7 @@ interface CreateStatementModalSwitchProps {
 	isQuestion: boolean;
 	isMultiStage: boolean;
 	parentStatement: Statement;
+	allowedTypes?: StatementType[];
 	
 }
 
@@ -18,6 +19,7 @@ export default function CreateStatementModalSwitch({
 	isQuestion,
 	isMultiStage,
 	parentStatement,
+	allowedTypes
 
 }: CreateStatementModalSwitchProps) {
 	return useSimilarStatements ? (
@@ -33,6 +35,7 @@ export default function CreateStatementModalSwitch({
 			isOption={!isQuestion}
 			setShowModal={setShowModal}
 			isSendToStoreTemp={isMultiStage}
+			allowedTypes={allowedTypes}
 		/>
 	);
 }

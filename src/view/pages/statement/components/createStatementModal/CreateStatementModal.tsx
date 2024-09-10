@@ -1,10 +1,9 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { Statement, StatementType, isAllowedStatementType } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 
 // Statements Helpers
-
 
 // Images
 import newQuestionGraphic from "@/assets/images/newQuestionGraphic.png";
@@ -18,10 +17,12 @@ import Button, { ButtonType } from "@/view/components/buttons/button/Button";
 interface CreateStatementModalProps {
   parentStatement: Statement | "top";
   isOption: boolean;
+  singleSelection?: boolean;
   setShowModal: (bool: boolean) => void;
   getSubStatements?: () => Promise<void>;
   toggleAskNotifications?: () => void;
   isSendToStoreTemp?: boolean; // This is used for setting the input from the user to the store and from there to the UI as a new statement
+  allowedTypes?: StatementType[];
 }
 
 const CreateStatementModal: FC<CreateStatementModalProps> = ({
@@ -30,6 +31,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 	setShowModal,
 	getSubStatements,
 	isSendToStoreTemp,
+	allowedTypes,
 }) => {
 	const [isOptionSelected, setIsOptionSelected] = useState(isOption);
 	const [title, setTitle] = useState("");
@@ -64,6 +66,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 					isOptionChosen={isOptionSelected}
 					setIsOptionChosen={setIsOptionSelected}
 					parentStatement={parentStatement}
+					allowedTypes={allowedTypes}
 				/>
 
 				<div className="form-inputs">
@@ -99,24 +102,22 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 export default CreateStatementModal;
 
 interface TabsProps {
+  allowedTypes?: StatementType[];
   isOptionChosen: boolean;
   setIsOptionChosen: (isOptionChosen: boolean) => void;
   parentStatement: Statement | "top";
 }
 
 const Tabs: FC<TabsProps> = ({
+	allowedTypes,
 	isOptionChosen,
 	setIsOptionChosen,
-	parentStatement,
 }) => {
 	const { t } = useLanguage();
 
 	return (
 		<div className="tabs">
-			{isAllowedStatementType({
-				parentStatement,
-				statementType: StatementType.option,
-			}) && (
+			{allowedTypes?.includes(StatementType.option) && (
 				<button
 					onClick={() => setIsOptionChosen(true)}
 					className={`tab option ${isOptionChosen ? "active" : ""}`}
@@ -126,10 +127,7 @@ const Tabs: FC<TabsProps> = ({
 					{isOptionChosen && <div className="block" />}
 				</button>
 			)}
-			{isAllowedStatementType({
-				parentStatement,
-				statementType: StatementType.question,
-			}) && (
+			{allowedTypes?.includes(StatementType.question) && (
 				<button
 					onClick={() => setIsOptionChosen(false)}
 					className={`tab question ${isOptionChosen ? "" : "active"}`}
