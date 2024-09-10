@@ -232,7 +232,7 @@ interface CreateStatementProps {
 	numberOfResults?: number;
 	hasChildren: boolean;
 	membership?: Membership;
-	toggleAskNotifications?: () => void;
+	
 }
 export function createStatement({
 	text,
@@ -247,7 +247,6 @@ export function createStatement({
 	resultsBy = ResultsBy.topOptions,
 	numberOfResults = 1,
 	hasChildren = true,
-	toggleAskNotifications,
 	membership
 }: CreateStatementProps): Statement | undefined {
 	try {
@@ -260,7 +259,7 @@ export function createStatement({
 					`Statement type ${statementType} is not allowed under ${parentStatement.statementType}`,
 				);
 
-		if (toggleAskNotifications) toggleAskNotifications();
+		
 		const storeState = store.getState();
 		const user = storeState.user.user;
 		if (!user) throw new Error("User is undefined");

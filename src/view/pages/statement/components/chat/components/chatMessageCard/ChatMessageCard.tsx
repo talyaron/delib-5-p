@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 
 // Third Party Imports
 import { Statement, StatementType, User, isOptionFn } from "delib-npm";
@@ -24,6 +24,7 @@ import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";
 import EditIcon from "@/assets/icons/editIcon.svg?react";
 import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
 import QuestionMarkIcon from "@/assets/icons/questionIcon.svg?react";
+import DeleteIcon from "@/assets/icons/delete.svg?react";
 import SaveTextIcon from "@/assets/icons/SaveTextIcon.svg";
 import {
 	setStatementIsOption,
@@ -37,6 +38,7 @@ import CreateStatementModal from "@/view/pages/statement/components/createStatem
 
 import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import "./ChatMessageCard.scss";
+import { deleteStatementFromDB } from "@/controllers/db/statements/deleteStatements";
 
 export interface NewQuestion {
   statement: Statement;
@@ -98,6 +100,14 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isAlignedLeft = (isMe && dir === "ltr") || (!isMe && dir === "rtl");
 
 	const shouldLinkToChildren = linkToChildren(statement, parentStatement);
+
+	useEffect(() => {
+		if(isCardMenuOpen){
+			setTimeout(() => {
+				setIsCardMenuOpen(false);
+			},5000);
+		}
+	}, [isCardMenuOpen]);
 
 	function handleSetOption() {
 		try {
@@ -212,7 +222,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 										? t("Unmark as a Solution")
 										: t("Mark as a Solution")
 								}
-								onOptionClick={handleSetOption}
+								onOptionClick={()=>{
+									handleSetOption()
+									setIsCardMenuOpen(false);
+								}}
 							/>
 						)}
 
@@ -225,9 +238,20 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 										: t("Mark as a Question")
 								}
 								icon={<QuestionMarkIcon />}
-								onOptionClick={() => updateIsQuestion(statement)}
+								onOptionClick={() => {
+									updateIsQuestion(statement)
+									setIsCardMenuOpen(false);
+								}}
 							/>
 						)}
+						{_isAuthorized && <MenuOption
+							label={t("Delete")}
+							icon={<DeleteIcon />}
+							onOptionClick={() => {
+								deleteStatementFromDB(statement, _isAuthorized)
+								setIsCardMenuOpen(false);
+							}}
+						/>}
 					</Menu>
 				</div>
 				<div className="bottom-icons">

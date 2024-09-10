@@ -14,9 +14,23 @@ $addOptionSize: 60px;
     z-index: 10;
     padding: 5px 5px 30px 5px;
     // background-color: teal;
-    background: rgb(252, 252, 252);
-    background: linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, rgba(255, 255, 255, 0.8687850140056023) 37%, rgba(255, 255, 255, 1) 100%);
 
+
+    &--show {
+        background: rgb(252, 252, 252);
+        background: linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, rgba(255, 255, 255, 0.8687850140056023) 37%, rgba(255, 255, 255, 1) 100%);
+        animation: showSortMenu 750ms linear 0s 1 forwards normal;
+    }
+    @keyframes showSortMenu {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+        
+    }
 
     .add-option-button {
         width: $addOptionSize;
@@ -70,13 +84,13 @@ $addOptionSize: 60px;
                     width: 26px;
                 }
 
-              
+
 
 
             }
 
             &.active {
-               
+
 
 
                 &:nth-child(1) {

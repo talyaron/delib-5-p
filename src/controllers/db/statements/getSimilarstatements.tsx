@@ -4,6 +4,7 @@ export const findSimilarStatements = async (
 ) => {
 	const prodEndPoint =
 		'https://checkforsimilarstatements-qeesi7aziq-uc.a.run.app';
+
 	// const devEndPoint =
 	// 	'https://checkforsimilarstatements-oeqnq63ina-uc.a.run.app';
 	const localEndPoint =
