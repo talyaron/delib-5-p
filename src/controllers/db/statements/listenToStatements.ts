@@ -19,6 +19,7 @@ import {
 
 // Redux Store
 import {
+	deleteStatement,
 	removeMembership,
 	setMembership,
 	setStatement,
@@ -158,6 +159,10 @@ export const listenToSubStatements = (
 
 				if (change.type === "modified") {
 					dispatch(setStatement(statement));
+				}
+
+				if (change.type === "removed") {
+					dispatch(deleteStatement(statement.statementId));
 				}
 
 				// There shouldn't be deleted statements. instead the statement should be updated to status "deleted".

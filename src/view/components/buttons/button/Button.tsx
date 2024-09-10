@@ -16,7 +16,7 @@ interface Props {
   className?: string;
   iconOnRight?: boolean;
   disabled?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined;
   icon?: React.ReactNode;
 }
 
@@ -24,7 +24,7 @@ const Button: FC<Props> = ({
 	text,
 	type = "submit",
 	icon: Icon,
-	onClick = () => {},
+	onClick = undefined,
 	iconOnRight = true,
 	className = "",
 	buttonType = ButtonType.PRIMARY,

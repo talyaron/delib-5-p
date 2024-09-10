@@ -68,6 +68,14 @@ const SuggestionCards: FC<Props> = ({
 		);
 	}
 
+	useEffect(() => {
+		const _totalHeight = subStatements.reduce((acc: number, sub: Statement) => {
+			return acc + (sub.elementHight || 200) + 30;
+		}
+		, 0);
+		setTotalHeight(_totalHeight);
+	}, [subStatements.length]);
+
 	return (
 		<div className={styles["suggestions-wrapper"]} style={{height: `${totalHeight+100}px`}}>
 			{subStatements?.map((statementSub: Statement) => {

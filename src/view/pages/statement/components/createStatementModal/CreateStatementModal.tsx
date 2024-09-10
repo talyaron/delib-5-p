@@ -5,8 +5,6 @@ import { Statement, StatementType, isAllowedStatementType } from "delib-npm";
 
 // Statements Helpers
 
-// Custom Components
-import Loader from "@/view/components/loaders/Loader";
 
 // Images
 import newQuestionGraphic from "@/assets/images/newQuestionGraphic.png";
@@ -27,78 +25,77 @@ interface CreateStatementModalProps {
 }
 
 const CreateStatementModal: FC<CreateStatementModalProps> = ({
-  parentStatement,
-  isOption,
-  setShowModal,
-  getSubStatements,
-  toggleAskNotifications,
-  isSendToStoreTemp,
+	parentStatement,
+	isOption,
+	setShowModal,
+	getSubStatements,
+	toggleAskNotifications,
+	isSendToStoreTemp,
 }) => {
-  const [isOptionSelected, setIsOptionSelected] = useState(isOption);
-  const [isLoading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const { t } = useLanguage();
+	const [isOptionSelected, setIsOptionSelected] = useState(isOption);
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const { t } = useLanguage();
 
-  const onFormSubmit = async () => {
-    setShowModal(false);
+	const onFormSubmit = async () => {
+		setShowModal(false);
 
-    await createStatementFromModal({
-      title,
-      description,
-      isOptionSelected,
-      toggleAskNotifications,
-      parentStatement,
-      isSendToStoreTemp,
-    });
+		await createStatementFromModal({
+			title,
+			description,
+			isOptionSelected,
+			toggleAskNotifications,
+			parentStatement,
+			isSendToStoreTemp,
+		});
 
-    await getSubStatements?.();
-  };
+		await getSubStatements?.();
+	};
 
-  return (
-    <Modal className="create-statement-modal">
-      <form className="overlay" onSubmit={onFormSubmit}>
-        <div className="modal-image">
-          <img
-            src={isOptionSelected ? newOptionGraphic : newQuestionGraphic}
-            alt="New Statement"
-          />
-        </div>
+	return (
+		<Modal className="create-statement-modal">
+			<form className="overlay" onSubmit={onFormSubmit}>
+				<div className="modal-image">
+					<img
+						src={isOptionSelected ? newOptionGraphic : newQuestionGraphic}
+						alt="New Statement"
+					/>
+				</div>
 
-        <Tabs
-          isOptionChosen={isOptionSelected}
-          setIsOptionChosen={setIsOptionSelected}
-          parentStatement={parentStatement}
-        />
+				<Tabs
+					isOptionChosen={isOptionSelected}
+					setIsOptionChosen={setIsOptionSelected}
+					parentStatement={parentStatement}
+				/>
 
-        <div className="form-inputs">
-          <input
-            data-cy="statement-title-simple"
-            autoComplete="off"
-            autoFocus={true}
-            type="text"
-            placeholder={t("Title")}
-            required
-            minLength={3}
-            value={title}
-            onChange={(ev) => setTitle(ev.target.value)}
-          />
-          <textarea
-            name="description"
-            placeholder={t("Description")}
-            rows={4}
-            value={description}
-            onChange={(ev) => setDescription(ev.target.value)}
-          ></textarea>
-        </div>
+				<div className="form-inputs">
+					<input
+						data-cy="statement-title-simple"
+						autoComplete="off"
+						autoFocus={true}
+						type="text"
+						placeholder={t("Title")}
+						required
+						minLength={3}
+						value={title}
+						onChange={(ev) => setTitle(ev.target.value)}
+					/>
+					<textarea
+						name="description"
+						placeholder={t("Description")}
+						rows={4}
+						value={description}
+						onChange={(ev) => setDescription(ev.target.value)}
+					></textarea>
+				</div>
 
-        <CreateStatementButtons
-          isOption={isOptionSelected}
-          onCancel={() => setShowModal(false)}
-        />
-      </form>
-    </Modal>
-  );
+				<CreateStatementButtons
+					isOption={isOptionSelected}
+					onCancel={() => setShowModal(false)}
+				/>
+			</form>
+		</Modal>
+	);
 };
 
 export default CreateStatementModal;
@@ -110,41 +107,41 @@ interface TabsProps {
 }
 
 const Tabs: FC<TabsProps> = ({
-  isOptionChosen,
-  setIsOptionChosen,
-  parentStatement,
+	isOptionChosen,
+	setIsOptionChosen,
+	parentStatement,
 }) => {
-  const { t } = useLanguage();
+	const { t } = useLanguage();
 
-  return (
-    <div className="tabs">
-      {isAllowedStatementType({
-        parentStatement,
-        statementType: StatementType.option,
-      }) && (
-        <button
-          onClick={() => setIsOptionChosen(true)}
-          className={`tab option ${isOptionChosen ? "active" : ""}`}
-        >
-          {t("Option")}
+	return (
+		<div className="tabs">
+			{isAllowedStatementType({
+				parentStatement,
+				statementType: StatementType.option,
+			}) && (
+				<button
+					onClick={() => setIsOptionChosen(true)}
+					className={`tab option ${isOptionChosen ? "active" : ""}`}
+				>
+					{t("Option")}
 
-          {isOptionChosen && <div className="block" />}
-        </button>
-      )}
-      {isAllowedStatementType({
-        parentStatement,
-        statementType: StatementType.question,
-      }) && (
-        <button
-          onClick={() => setIsOptionChosen(false)}
-          className={`tab question ${isOptionChosen ? "" : "active"}`}
-        >
-          {t("Question")}
-          {!isOptionChosen && <div className="block" />}
-        </button>
-      )}
-    </div>
-  );
+					{isOptionChosen && <div className="block" />}
+				</button>
+			)}
+			{isAllowedStatementType({
+				parentStatement,
+				statementType: StatementType.question,
+			}) && (
+				<button
+					onClick={() => setIsOptionChosen(false)}
+					className={`tab question ${isOptionChosen ? "" : "active"}`}
+				>
+					{t("Question")}
+					{!isOptionChosen && <div className="block" />}
+				</button>
+			)}
+		</div>
+	);
 };
 
 interface CreateStatementButtonsProps {
@@ -153,24 +150,24 @@ interface CreateStatementButtonsProps {
 }
 
 const CreateStatementButtons: FC<CreateStatementButtonsProps> = ({
-  isOption,
-  onCancel,
+	isOption,
+	onCancel,
 }) => {
-  const { t } = useLanguage();
+	const { t } = useLanguage();
 
-  return (
-    <div className="create-statement-buttons">
-      <Button
-        text={t("Cancel")}
-        onClick={onCancel}
-        buttonType={ButtonType.SECONDARY}
-        className="cancel-button"
-      />
-      <Button
-        text={t(`Add ${isOption ? "Option" : "Question"}`)}
-        buttonType={ButtonType.PRIMARY}
-        data-cy="add-statement-simple"
-      />
-    </div>
-  );
+	return (
+		<div className="create-statement-buttons">
+			<Button
+				text={t("Cancel")}
+				onClick={onCancel}
+				buttonType={ButtonType.SECONDARY}
+				className="cancel-button"
+			/>
+			<Button
+				text={t(`Add ${isOption ? "Option" : "Question"}`)}
+				buttonType={ButtonType.PRIMARY}
+				data-cy="add-statement-simple"
+			/>
+		</div>
+	);
 };
