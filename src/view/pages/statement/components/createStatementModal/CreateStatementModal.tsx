@@ -1,10 +1,9 @@
 import { FC, useState } from "react";
 
 // Third party imports
-import { QuestionType, Statement, StatementType, isAllowedStatementType } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 
 // Statements Helpers
-
 
 // Images
 import newQuestionGraphic from "@/assets/images/newQuestionGraphic.png";
@@ -32,7 +31,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 	setShowModal,
 	getSubStatements,
 	isSendToStoreTemp,
-	allowedTypes
+	allowedTypes,
 }) => {
 	const [isOptionSelected, setIsOptionSelected] = useState(isOption);
 	const [title, setTitle] = useState("");
@@ -103,7 +102,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 export default CreateStatementModal;
 
 interface TabsProps {
-	allowedTypes?: StatementType[];
+  allowedTypes?: StatementType[];
   isOptionChosen: boolean;
   setIsOptionChosen: (isOptionChosen: boolean) => void;
   parentStatement: Statement | "top";
@@ -113,13 +112,12 @@ const Tabs: FC<TabsProps> = ({
 	allowedTypes,
 	isOptionChosen,
 	setIsOptionChosen,
-
 }) => {
 	const { t } = useLanguage();
 
 	return (
 		<div className="tabs">
-			{allowedTypes?.includes(StatementType.option ) && (
+			{allowedTypes?.includes(StatementType.option) && (
 				<button
 					onClick={() => setIsOptionChosen(true)}
 					className={`tab option ${isOptionChosen ? "active" : ""}`}
@@ -129,7 +127,7 @@ const Tabs: FC<TabsProps> = ({
 					{isOptionChosen && <div className="block" />}
 				</button>
 			)}
-			{allowedTypes?.includes(StatementType.question ) && (
+			{allowedTypes?.includes(StatementType.question) && (
 				<button
 					onClick={() => setIsOptionChosen(false)}
 					className={`tab question ${isOptionChosen ? "" : "active"}`}
