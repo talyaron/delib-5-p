@@ -373,6 +373,7 @@ export const statementSelector =
 		state.statements.statements.find(
 			(statement) => statement.statementId === statementId,
 		);
+
 // export const statementSubsSelector =
 // 	(statementId: string | undefined) => (state: RootState) =>
 // 		state.statements.statements

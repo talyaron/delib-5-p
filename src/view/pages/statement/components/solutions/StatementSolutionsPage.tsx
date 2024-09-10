@@ -25,7 +25,6 @@ interface StatementEvaluationPageProps {
   handleShowTalker: (talker: User | null) => void;
   showNav?: boolean;
   questions?: boolean;
-  toggleAskNotifications: () => void;
   currentPage?: string;
 }
 
@@ -33,7 +32,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 	statement,
 	handleShowTalker,
 	questions = false,
-	toggleAskNotifications,
 	currentPage = `suggestion`,
 }) => {
 	try {
@@ -120,7 +118,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				)}
 				{showModal && (
 					<CreateStatementModalSwitch
-						toggleAskNotifications={toggleAskNotifications}
 						parentStatement={statement}
 						isQuestion={questions}
 						isMultiStage={isMultiStage}

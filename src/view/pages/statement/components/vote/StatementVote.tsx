@@ -30,14 +30,14 @@ import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStat
 interface Props {
 	statement: Statement;
 	subStatements: Statement[];
-	toggleAskNotifications: () => void;
+	
 }
 let getVoteFromDB = false;
 
 const StatementVote: FC<Props> = ({
 	statement,
 	subStatements,
-	toggleAskNotifications,
+	
 }) => {
 	// * Hooks * //
 	const dispatch = useAppDispatch();
@@ -115,7 +115,7 @@ const StatementVote: FC<Props> = ({
 						parentStatement={statement}
 						isQuestion={false}
 						setShowModal={setIsCreateStatementModalOpen}
-						toggleAskNotifications={toggleAskNotifications}
+					
 					/>
 				)}
 				{isStatementInfoModalOpen && (

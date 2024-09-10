@@ -9,7 +9,7 @@ interface CreateStatementModalSwitchProps {
 	isQuestion: boolean;
 	isMultiStage: boolean;
 	parentStatement: Statement;
-	toggleAskNotifications: () => void;
+	
 }
 
 export default function CreateStatementModalSwitch({
@@ -18,14 +18,13 @@ export default function CreateStatementModalSwitch({
 	isQuestion,
 	isMultiStage,
 	parentStatement,
-	toggleAskNotifications,
+
 }: CreateStatementModalSwitchProps) {
 	return useSimilarStatements ? (
 		<SimilarStatementsSuggestion
 			setShowModal={setShowModal}
 			isQuestion={isQuestion}
 			parentStatement={parentStatement}
-			toggleAskNotifications={toggleAskNotifications}
 			isSendToStoreTemp={isMultiStage}
 		/>
 	) : (
@@ -33,7 +32,6 @@ export default function CreateStatementModalSwitch({
 			parentStatement={parentStatement}
 			isOption={!isQuestion}
 			setShowModal={setShowModal}
-			toggleAskNotifications={toggleAskNotifications}
 			isSendToStoreTemp={isMultiStage}
 		/>
 	);

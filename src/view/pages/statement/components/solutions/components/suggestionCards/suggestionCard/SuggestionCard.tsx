@@ -169,7 +169,6 @@ const SuggestionCard: FC<Props> = ({
 					<div className="more">
 						<SolutionMenu
 							statement={statement}
-							statementSubscription={statementSubscription}
 							isAuthorized={_isAuthorized}
 							isCardMenuOpen={isCardMenuOpen}
 							setIsCardMenuOpen={setIsCardMenuOpen}

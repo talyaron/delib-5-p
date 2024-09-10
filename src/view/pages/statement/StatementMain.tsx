@@ -21,7 +21,6 @@ import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
 
 // Redux Store
 import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { statementNotificationSelector } from "@/model/statements/statementsSlice";
 import { RootState } from "@/model/store";
 import { userSelector } from "@/model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -73,9 +72,6 @@ const StatementMain: FC = () => {
 	// Redux store
 	const dispatch = useAppDispatch();
 	const user = useSelector(userSelector);
-	const hasNotifications = useAppSelector(
-		statementNotificationSelector(statementId)
-	);
 
 	const subStatements = useAppSelector((state: RootState) =>
 		subStatementsSelector(state, statementId)
@@ -92,13 +88,6 @@ const StatementMain: FC = () => {
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
 
-	// Functions
-	const toggleAskNotifications = () => {
-		// Ask for notifications after user interaction.
-		if (!hasNotifications && !statementSubscription?.userAskedForNotification) {
-			setAskNotifications(true);
-		}
-	};
 
 	const handleShowTalker = (_talker: User | null) => {
 		if (!talker) {
@@ -252,7 +241,6 @@ const StatementMain: FC = () => {
 							subStatements={subStatements}
 							handleShowTalker={handleShowTalker}
 							setShowAskPermission={setShowAskPermission}
-							toggleAskNotifications={toggleAskNotifications}
 						/>
 					</MapProvider>
 				</div>
