@@ -1,7 +1,7 @@
 import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { Results, Role, Statement } from "delib-npm";
+import { Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "@/view/components/animation/ScreenFadeIn";
@@ -130,6 +130,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 				{mapContext.showModal && (
 					<Modal>
 						<CreateStatementModal
+							allowedTypes={[StatementType.option, StatementType.question]}
 							parentStatement={mapContext.parentStatement}
 							isOption={mapContext.isOption}
 							setShowModal={toggleModal}

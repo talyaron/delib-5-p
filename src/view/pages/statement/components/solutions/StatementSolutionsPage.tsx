@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement, User } from "delib-npm";
+import { QuestionStage, QuestionType, Statement, StatementType, User } from "delib-npm";
 import { useNavigate } from "react-router";
 
 // Custom Components
@@ -118,6 +118,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				)}
 				{showModal && (
 					<CreateStatementModalSwitch
+						allowedTypes={[StatementType.option]}
 						parentStatement={statement}
 						isQuestion={questions}
 						isMultiStage={isMultiStage}

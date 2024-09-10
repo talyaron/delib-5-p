@@ -196,6 +196,7 @@ const SuggestionCard: FC<Props> = ({
 				</div>
 				{shouldShowAddSubQuestionModal && (
 					<CreateStatementModal
+						allowedTypes={[StatementType.question]}
 						parentStatement={statement}
 						isOption={false}
 						setShowModal={setShouldShowAddSubQuestionModal}
