@@ -102,7 +102,6 @@ const StatementChat: FC<Props> = ({
 				/>
 				{statement && (
 					<StatementInput
-						toggleAskNotifications={toggleAskNotifications}
 						statement={statement}
 					/>
 				)}
