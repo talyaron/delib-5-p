@@ -11,6 +11,7 @@ import { DB } from "../config";
 import { VoteSchema, getVoteId } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { store } from "@/model/store";
+import { z } from "zod";
 
 // Why get user from firebase when we can pass it as a parameter?
 export async function getToVoteOnParent(
@@ -55,6 +56,7 @@ export async function getVoters(parentId: string): Promise<Vote[]> {
 
 		const votersDB = await getDocs(q);
 		const voters = votersDB.docs.map((vote) => vote.data()) as Vote[];
+		z.array(VoteSchema).parse(voters);
 
 		return voters;
 	} catch (error) {

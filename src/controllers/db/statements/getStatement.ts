@@ -13,6 +13,7 @@ import {
 import {
 	Collections,
 	Statement,
+	StatementSchema,
 	StatementType,
 } from "delib-npm";
 
@@ -27,6 +28,8 @@ export async function getStatementFromDB(
 	try {
 		const statementRef = doc(DB, Collections.statements, statementId);
 		const statementDB = await getDoc(statementRef);
+		if (!statementDB.exists()) throw new Error("Statement does not exist");
+		StatementSchema.parse(statementDB.data());
 
 		return statementDB.data() as Statement | undefined;
 	} catch (error) {
@@ -99,6 +102,8 @@ export async function getStatementDepth(
 
 			statementsDB.forEach((doc) => {
 				const statement = doc.data() as Statement;
+				StatementSchema.parse(statement);
+
 				subStatements.push(statement);
 			});
 
@@ -124,7 +129,10 @@ export async function getChildStatements(
 		const statementsDB = await getDocs(q);
 
 		const subStatements = statementsDB.docs.map(
-			(doc) => doc.data() as Statement,
+			(doc) => {
+				StatementSchema.parse(doc.data());
+				return doc.data() as Statement
+			}
 		);
 
 		return subStatements;
