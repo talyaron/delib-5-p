@@ -149,7 +149,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-> {
+	> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
@@ -299,7 +299,6 @@ export async function getTopParentSubscription(
 			topParentSubscriptionId
 		);
 
-		StatementSubscriptionSchema.parse(topParentSubscription);
 
 		if (topParentSubscription) {
 
@@ -373,6 +372,7 @@ export async function getTopParentSubscription(
 		if (!statement) throw new Error("Statement not found");
 		
 		StatementSchema.parse(statement);
+		
 		return statement;
 	}
 }

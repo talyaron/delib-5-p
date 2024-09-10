@@ -106,7 +106,7 @@ export const listenToStatement = (
 					if (!statementDB.exists()) {
 						if (setIsStatementNotFound)
 							setIsStatementNotFound(true);
-						throw new Error("Statement does not exist");
+						throw new Error("Statement does not exist at listenToStatement");
 					}
 					const statement = statementDB.data() as Statement;
 					StatementSchema.parse(statement);

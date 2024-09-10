@@ -28,7 +28,7 @@ export async function getStatementFromDB(
 	try {
 		const statementRef = doc(DB, Collections.statements, statementId);
 		const statementDB = await getDoc(statementRef);
-		if (!statementDB.exists()) throw new Error("Statement does not exist");
+		if (!statementDB.exists()) throw new Error("Statement does not exist at getStatementFromDB");
 		StatementSchema.parse(statementDB.data());
 
 		return statementDB.data() as Statement | undefined;
@@ -131,6 +131,7 @@ export async function getChildStatements(
 		const subStatements = statementsDB.docs.map(
 			(doc) => {
 				StatementSchema.parse(doc.data());
+				
 				return doc.data() as Statement
 			}
 		);

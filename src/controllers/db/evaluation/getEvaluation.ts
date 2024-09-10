@@ -104,6 +104,7 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
 		const evaluators = evaluatorsDB.map((evaluatorDB) => {
 			const evaluator = evaluatorDB?.data() as User;
 			UserSchema.parse(evaluator);
+			
 			return evaluator;
 		}) as User[];
 
