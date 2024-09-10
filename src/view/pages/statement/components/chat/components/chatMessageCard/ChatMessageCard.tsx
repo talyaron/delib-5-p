@@ -222,7 +222,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 										? t("Unmark as a Solution")
 										: t("Mark as a Solution")
 								}
-								onOptionClick={handleSetOption}
+								onOptionClick={()=>{
+									handleSetOption()
+									setIsCardMenuOpen(false);
+								}}
 							/>
 						)}
 
@@ -235,13 +238,19 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 										: t("Mark as a Question")
 								}
 								icon={<QuestionMarkIcon />}
-								onOptionClick={() => updateIsQuestion(statement)}
+								onOptionClick={() => {
+									updateIsQuestion(statement)
+									setIsCardMenuOpen(false);
+								}}
 							/>
 						)}
 						{_isAuthorized && <MenuOption
 							label={t("Delete")}
 							icon={<DeleteIcon />}
-							onOptionClick={() => deleteStatementFromDB(statement, statementSubscription)}
+							onOptionClick={() => {
+								deleteStatementFromDB(statement, _isAuthorized)
+								setIsCardMenuOpen(false);
+							}}
 						/>}
 					</Menu>
 				</div>

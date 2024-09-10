@@ -373,12 +373,24 @@ export const statementSelector =
 		state.statements.statements.find(
 			(statement) => statement.statementId === statementId,
 		);
-export const statementSubsSelector =
-	(statementId: string | undefined) => (state: RootState) =>
-		state.statements.statements
-			.filter((statementSub) => statementSub.parentId === statementId)
-			.sort((a, b) => a.createdAt - b.createdAt)
-			.map((statement) => ({ ...statement }));
+// export const statementSubsSelector =
+// 	(statementId: string | undefined) => (state: RootState) =>
+// 		state.statements.statements
+// 			.filter((statementSub) => statementSub.parentId === statementId)
+// 			.sort((a, b) => a.createdAt - b.createdAt)
+// 			.map((statement) => ({ ...statement }));
+
+const selectStatements = (state: RootState) => state.statements.statements;
+
+export const statementSubsSelector = (statementId: string | undefined) =>
+  createSelector(
+    [selectStatements],
+    (statements) =>
+      statements
+        .filter((statementSub) => statementSub.parentId === statementId)
+        .sort((a, b) => a.createdAt - b.createdAt)
+        .map((statement) => ({ ...statement }))
+  );
 
 export const statementOptionsSelector =
 	(statementId: string | undefined) => (state: RootState) => {

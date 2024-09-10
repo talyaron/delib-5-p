@@ -74,6 +74,7 @@ const SuggestionCards: FC<Props> = ({
 		}
 		, 0);
 		setTotalHeight(_totalHeight);
+		sortSubStatements(subStatements, sort, 30);
 	}, [subStatements.length]);
 
 	return (

@@ -1,20 +1,18 @@
-import { Collections, Role, Statement, StatementSubscription } from "delib-npm";
+import { Collections, Statement } from "delib-npm";
 import { collection, deleteDoc, doc, getDocs, limit, query, where } from "firebase/firestore";
 import { DB } from "../config";
-import { store } from "@/model/store";
+
 
 
 export async function deleteStatementFromDB (
     statement: Statement,
-    subscription?: StatementSubscription,
+   isAuthorized: boolean,
 ) {
     try {
         if(!statement) throw new Error("No statement");
-        if(!subscription) throw new Error("No subscription");
-        const user = store.getState().user.user;
-        const { role } = subscription;
-        if (!(role === Role.admin || statement.creatorId === user?.uid)) throw new Error("Unauthorized");
-
+       
+       if(!isAuthorized) alert("You are not authorized to delete this statement");
+        
         if (!statement) throw new Error("No statement");
         const confirmed = confirm(`Are you sure you want to delete ${statement.statement}?`);
         if (!confirmed) return;
