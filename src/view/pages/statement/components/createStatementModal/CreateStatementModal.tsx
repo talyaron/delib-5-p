@@ -29,7 +29,6 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 	isOption,
 	setShowModal,
 	getSubStatements,
-	toggleAskNotifications,
 	isSendToStoreTemp,
 }) => {
 	const [isOptionSelected, setIsOptionSelected] = useState(isOption);
@@ -44,7 +43,6 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 			title,
 			description,
 			isOptionSelected,
-			toggleAskNotifications,
 			parentStatement,
 			isSendToStoreTemp,
 		});

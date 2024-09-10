@@ -268,7 +268,6 @@ interface CreateStatementFromModalParams {
   description: string;
   isOptionSelected: boolean;
   parentStatement: Statement | "top";
-  toggleAskNotifications?: VoidFunction;
   isSendToStoreTemp?: boolean;
 }
 
@@ -276,7 +275,6 @@ export async function createStatementFromModal({
 	title,
 	description,
 	isOptionSelected,
-	toggleAskNotifications,
 	parentStatement
 }: CreateStatementFromModalParams) {
 	try {
@@ -285,7 +283,6 @@ export async function createStatementFromModal({
 		const newStatement = createStatement({
 			...defaultStatementSettings,
 			hasChildren: true,
-			toggleAskNotifications,
 			text: title,
 			description,
 			parentStatement,
