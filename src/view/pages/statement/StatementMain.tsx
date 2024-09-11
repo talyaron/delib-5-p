@@ -186,9 +186,9 @@ const StatementMain: FC = () => {
 				const isSubscribed = await getIsSubscribed(statementId);
 
 				// if isSubscribed is false, then subscribe
-				if (!isSubscribed) {
+				if (!isSubscribed && statement.membership?.access === Access.close) {
 					// subscribe
-					setStatementSubscriptionToDB(statement, Role.member);
+					setStatementSubscriptionToDB(statement, Role.unsubscribed);
 				} else {
 					//update subscribed field
 					updateSubscriberForStatementSubStatements(statement);
@@ -212,7 +212,7 @@ const StatementMain: FC = () => {
 	if (isAuthorized)
 		return (
 			<>
-				{passwordCheck || (statement?.membership?.access === Access.open) || user?.role === "member" ? (
+				{passwordCheck || (statement?.membership?.access === Access.open) || statementSubscription?.role === Role.member ? (
 					<div className="page">
 						{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 						{talker && (
@@ -256,15 +256,16 @@ const StatementMain: FC = () => {
 						</MapProvider>
 					</div>
 				) : (
-					< div className="passwordUiComponent">
-						<PasswordUi userId={user?.uid} statementId={statementId} setPasswordCheck={setPasswordCheck} />
-					</div >
+					<UnAuthorizedPage />
 				)}
 			</>
-
 		);
 
-	return <UnAuthorizedPage />;
+	return (
+		<div className="passwordUiComponent">
+			<PasswordUi userId={user?.uid} statementId={statementId} setPasswordCheck={setPasswordCheck} />
+		</div >
+	);
 };
 
 export default StatementMain;

@@ -10,9 +10,13 @@ import { setStatementSubscriptionToDB } from "../db/subscriptions/setSubscriptio
 const useAuth = () => {
   const [isLogged, setIsLogged] = useState(false);
   const user = store.getState().user.user;
+
   useEffect(() => {
-    if (user) setIsLogged(true);
-    else setIsLogged(false);
+    if (user) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
   }, [user]);
 
   return isLogged;
