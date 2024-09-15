@@ -57,6 +57,13 @@ export function useIsAuthorized(statementId: string | undefined): {
 
 	// const [role, setRole] = useState<Role | undefined>(Role.unsubscribed);
 	useEffect(() => {
+		//if statement is open, and the user has not subscribed to it, subscribe to it
+		if(statement?.membership?.access === Access.open && !statementSubscription){
+			setStatementSubscriptionToDB(statement, Role.member, false	);
+		}
+	}, [statementId, user, statement, statementSubscription]);
+
+	useEffect(() => {
 		if (statement && statementId && user) {
 			getTopParentSubscription(statementId).then(
 				({ topParentSubscription, topParentStatement, error }) => {
@@ -129,17 +136,17 @@ export function useIsAuthorized(statementId: string | undefined): {
 		}
 	}, [statementId, user, statement, statementSubscription]);
 
-	// useEffect(() => {
-	//     if (statementSubscription && statement) {
-	//         if (allowedRoles.includes(statementSubscription.role)) {
-	//             setIsAuthorized(true);
-	//         } else {
-	//             setIsAuthorized(false);
-	//             setError(true);
-	//         }
-	//         setLoading(false);
-	//     }
-	// }, [statementSubscription, statement]);
+	useEffect(() => {
+	    if (statementSubscription && statement) {
+	        if (allowedRoles.includes(statementSubscription.role)) {
+	            setIsAuthorized(true);
+	        } else {
+	            setIsAuthorized(false);
+	            setError(true);
+	        }
+	        setLoading(false);
+	    }
+	}, [statementSubscription, statement]);
 
 	return {
 		isAuthorized,

@@ -1,7 +1,9 @@
 import {
 	Collections,
 	ParticipantInRoom,
+	ParticipantInRoomSchema,
 	RoomSettings,
+	roomSettingsSchema,
 	Statement
 } from 'delib-npm';
 import {
@@ -30,6 +32,7 @@ export function listenToParticipants(
 				roomsDB.docChanges().forEach((change) => {
 
 					const room = change.doc.data() as ParticipantInRoom;
+					ParticipantInRoomSchema.parse(room);
 
 					switch (change.type) {
 					case 'added':
@@ -69,6 +72,8 @@ export function listenToRoomsSettings(statementId: string): Unsubscribe {
 		return onSnapshot(roomSettingRef, (doc) => {
 			if (!doc.exists()) return;
 			const roomSettings = doc.data() as RoomSettings;
+			roomSettingsSchema.parse(roomSettings);
+			
 			store.dispatch(setRoomSettings(roomSettings));
 		});
 	} catch (error) {

@@ -11,6 +11,7 @@ import {
 } from "@firebase/firestore";
 import { DB } from "../config";
 import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
+import { z } from "zod";
 
 export async function getResultsDB(statement: Statement): Promise<Statement[]> {
 	try {
@@ -71,6 +72,8 @@ async function getTopOptionsDB(statement: Statement): Promise<Statement[]> {
 		const topOptions = topOptionsSnap.docs.map(
 			(doc) => doc.data() as Statement,
 		);
+
+		z.array(StatementSchema).parse(topOptions);
 
 		return topOptions;
 	} catch (error) {

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement } from 'delib-npm';
+import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
 
 // Redux
 import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
@@ -110,6 +110,7 @@ const StatementVote: FC<Props> = ({
 
 				{isCreateStatementModalOpen && (
 					<CreateStatementModalSwitch
+						allowedTypes={[StatementType.option]}
 						isMultiStage={isMuliStage}
 						useSimilarStatements={useSearchForSimilarStatements}
 						parentStatement={statement}

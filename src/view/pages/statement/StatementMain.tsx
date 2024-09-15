@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 
 // Third party imports
 import { useNavigate, useParams } from "react-router-dom";
-import { User, Role, Screen } from "delib-npm";
+import { User, Role, Screen, Access } from "delib-npm";
 
 // firestore
 import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
@@ -175,7 +175,7 @@ const StatementMain: FC = () => {
 				const isSubscribed = await getIsSubscribed(statementId);
 
 				// if isSubscribed is false, then subscribe
-				if (!isSubscribed) {
+				if (!isSubscribed && statement.membership?.access === Access.close) {
 					// subscribe
 					setStatementSubscriptionToDB(statement, Role.member);
 				} else {
