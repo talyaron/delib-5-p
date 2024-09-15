@@ -32,11 +32,11 @@ const RoomChoosingCard: FC<Props> = ({ topic }) => {
 	if(fill > 100) fill = 100;
 
 	return (
-		<div className={`${styles.roomCard} ${participant && styles["roomCard--selected"]}`} onClick={handleJoinRoom}>
+		<button className={`${styles.roomCard} ${participant && styles["roomCard--selected"]}`} onClick={handleJoinRoom}>
 			<div className={styles.title}>{topic.statement}</div>
 			<div className={styles.amount}>{participants.length}/{participantsPerRoom}</div>
 			<div className={styles.fill} style={{height:`${fill}%`, borderRadius:fill>90?"1rem":"0px 0px 1rem 1rem"}}></div>
-		</div>
+		</button>
 	);
 };
 

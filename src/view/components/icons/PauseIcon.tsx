@@ -5,7 +5,7 @@ interface Props {
 
 export default function PauseIcon({ onClick, color = "#5899E0" }: Props) {
 	return (
-		<div onClick={onClick}>
+		<button onClick={onClick} aria-label="Pause">
 			<svg
 				width="50"
 				height="59"
@@ -124,6 +124,6 @@ export default function PauseIcon({ onClick, color = "#5899E0" }: Props) {
 					</filter>
 				</defs>
 			</svg>
-		</div>
+		</button>
 	);
 }

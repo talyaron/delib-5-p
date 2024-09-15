@@ -88,7 +88,7 @@ const EditTitle: FC<Props> = ({
 						autoFocus={true}
 						placeholder="Add text"
 					></textarea>
-					<button className={styles.save} onClick={handleSave}>
+					<button className={styles.save} onClick={handleSave} aria-label="Save">
 						<Save />
 					</button>
 				</>
@@ -108,6 +108,7 @@ const EditTitle: FC<Props> = ({
 						className={styles.save}
 						onClick={handleSave}
 						style={{ left: direction === "rtl" ? "-1.4rem" : "none" }}
+						aria-label="Save"
 					>
 						<Save />
 					</button>

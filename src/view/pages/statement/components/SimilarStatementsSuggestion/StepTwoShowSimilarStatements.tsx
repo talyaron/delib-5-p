@@ -54,7 +54,7 @@ export default function StepTwoShowSimilarStatements({
 			<h4 className='alertText'>Here are several results that were found in the following topic:</h4>
 			<section className='similarities__statementsBox'>
 				{similarStatements.map((statement, index) => (
-					<div
+					<button
 						key={index}
 						className='similarities__statementsBox__similarStatement'
 						onClick={() => handleViewSimilarStatement(statement)}
@@ -63,7 +63,7 @@ export default function StepTwoShowSimilarStatements({
 						<p className='similarities__statementsBox__statementDescription'>{statement.description}</p>
 						<img className={`${dir === 'rtl' ? 'similarities__statementsBox__rtl__similarEyeIcon' : 'similarities__statementsBox__similarEyeIcon'}`} src={similarEyeIcon}  alt="Similar Eye Icon" />
 						<hr />
-					</div>
+					</button>
 				))}
 			</section>
 

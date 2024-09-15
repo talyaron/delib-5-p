@@ -19,9 +19,9 @@ const Toast: FC<Props> = ({ text, type, show, setShow, children }) => {
 			<p className="toast__text"> {text}</p>
 			{children && <div className="toast__children">{children}</div>}
 			{!children&& <div className="toast__close">
-				<div className="toast__close__x" onClick={() => setShow(false)}>
+				<button className="toast__close__x" onClick={() => setShow(false)}>
 					<X />
-				</div>
+				</button>
 			</div>}
 		</div>
 	);
