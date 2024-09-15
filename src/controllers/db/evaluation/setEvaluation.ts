@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
-import { Statement, Collections } from "delib-npm";
+import { Statement, Collections, EvaluationSchema } from "delib-npm";
 import { DB } from "../config";
 import { store } from "@/model/store";
 
@@ -27,7 +27,7 @@ export async function setEvaluationToDB(
 		//set evaluation to db
 
 		const evaluationRef = doc(DB, Collections.evaluations, evaluationId);
-		await setDoc(evaluationRef, {
+		const evaluationData = {
 			parentId,
 			evaluationId,
 			statementId,
@@ -35,7 +35,11 @@ export async function setEvaluationToDB(
 			updatedAt: Timestamp.now().toMillis(),
 			evaluation,
 			evaluator: user,
-		});
+		};
+		
+		EvaluationSchema.parse(evaluationData);
+
+		await setDoc(evaluationRef, evaluationData);
 	} catch (error) {
 		console.error(error);
 	}

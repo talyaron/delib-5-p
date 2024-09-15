@@ -17,6 +17,7 @@ interface UserState {
     askToSubscribeToNotifications: {
         show: boolean;
     };
+	colorContrast: boolean;
 }
 
 // Define the initial state using that type
@@ -26,6 +27,7 @@ const initialState: UserState = {
 		show: false,
 	},
 	status: Status.idle,
+	colorContrast: false,
 };
 
 export const userSlicer = createSlice({
@@ -97,6 +99,9 @@ export const userSlicer = createSlice({
 				console.error(error);
 			}
 		},
+		toggleColorContrast: (state) => {
+			state.colorContrast = !state.colorContrast;
+		},
 	},
 });
 
@@ -105,6 +110,7 @@ export const {
 	increaseFontSize,
 	setFontSize,
 	updateAgreementToStore,
+	toggleColorContrast,
 } = userSlicer.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -114,5 +120,7 @@ export const askToSubscribeToNotificationsSelector = (state: RootState) =>
 	state.user.askToSubscribeToNotifications;
 export const fontSizeSelector = (state: RootState) =>
 	state.user.user?.fontSize || defaultFontSize;
+export const colorContrastSelector = (state: RootState) =>
+	state.user.colorContrast;
 
 export default userSlicer.reducer;

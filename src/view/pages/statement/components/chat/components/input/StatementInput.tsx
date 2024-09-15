@@ -15,10 +15,9 @@ import useStatementColor from "@/controllers/hooks/useStatementColor";
 
 interface Props {
     statement: Statement;
-    toggleAskNotifications: () => void;
 }
 
-const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
+const StatementInput: FC<Props> = ({ statement }) => {
 	if (!statement) throw new Error("No statement");
 
 	// Redux hooks
@@ -52,7 +51,7 @@ const StatementInput: FC<Props> = ({ statement, toggleAskNotifications }) => {
 		e.preventDefault();
 
 		// Create statement
-		handleAddStatement(message, statement, user, toggleAskNotifications);
+		handleAddStatement(message, statement, user);
 
 		setMessage(""); // Clear input
 	};

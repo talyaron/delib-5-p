@@ -6,6 +6,7 @@ import {
 	StatementType,
 	Statement,
 	Role,
+	StatementSchema,
 } from "delib-npm";
 import {
 	collection,
@@ -19,6 +20,7 @@ import {
 
 // Redux Store
 import {
+	deleteStatement,
 	removeMembership,
 	setMembership,
 	setStatement,
@@ -104,9 +106,10 @@ export const listenToStatement = (
 					if (!statementDB.exists()) {
 						if (setIsStatementNotFound)
 							setIsStatementNotFound(true);
-						throw new Error("Statement does not exist");
+						throw new Error("Statement does not exist at listenToStatement");
 					}
 					const statement = statementDB.data() as Statement;
+					StatementSchema.parse(statement);
 
 					dispatch(setStatement(statement));
 				} catch (error) {
@@ -147,6 +150,7 @@ export const listenToSubStatements = (
 			const startStatements: Statement[] = [];
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
+				StatementSchema.parse(statement);
 
 				if (change.type === "added") {
 					if (isFirstCall) {
@@ -158,6 +162,10 @@ export const listenToSubStatements = (
 
 				if (change.type === "modified") {
 					dispatch(setStatement(statement));
+				}
+
+				if (change.type === "removed") {
+					dispatch(deleteStatement(statement.statementId));
 				}
 
 				// There shouldn't be deleted statements. instead the statement should be updated to status "deleted".
@@ -188,6 +196,8 @@ export const listenToMembers =
 			return onSnapshot(q, (subsDB) => {
 				subsDB.docChanges().forEach((change) => {
 					const member = change.doc.data() as StatementSubscription;
+					StatementSubscriptionSchema.parse(member);
+
 					if (change.type === "added") {
 						dispatch(setMembership(member));
 					}
@@ -228,6 +238,7 @@ export async function listenToUserAnswer(
 		return onSnapshot(q, (statementsDB) => {
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
+				StatementSchema.parse(statement);
 
 				cb(statement);
 			});

@@ -14,9 +14,9 @@ export default async function toggleNotifications(
 		if (!statement)
 			throw new Error("Statement is undefined in toggleNotifications");
 
-		const isPermited = await getUserPermissionToNotifications(t);
+		const isPermitted = await getUserPermissionToNotifications(t);
 
-		if (!isPermited) return setShowAskPermission(true);
+		if (!isPermitted) return setShowAskPermission(true);
 
 		setStatementSubscriptionNotificationToDB(statement, !permission);
 	} catch (error) {

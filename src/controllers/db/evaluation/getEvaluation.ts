@@ -8,7 +8,7 @@ import {
 	getDoc,
 } from "@firebase/firestore";
 import { DB } from "../config";
-import { Collections, Evaluation, User } from "delib-npm";
+import { Collections, Evaluation, User, UserSchema } from "delib-npm";
 import { EvaluationSchema } from "@/model/evaluations/evaluationModel";
 import { AppDispatch } from "@/model/store";
 import { setEvaluationToStore } from "@/model/evaluations/evaluationsSlice";
@@ -59,7 +59,7 @@ export const listenToEvaluations = (
 		console.error(error);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		return () => {};
+		return () => { };
 	}
 };
 
@@ -69,20 +69,22 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
 		const q = query(evaluationsRef, where("parentId", "==", parentId));
 
 		const evaluationsDB = await getDocs(q);
-		const evauatorsIds = new Set<string>();
+		const evaluatorsIds = new Set<string>();
 		const evaluations = evaluationsDB.docs
 			.map((evaluationDB) => {
 				const evaluation = evaluationDB.data() as Evaluation;
-				if (!evauatorsIds.has(evaluation.evaluatorId)) {
+				EvaluationSchema.parse(evaluation);
+
+				if (!evaluatorsIds.has(evaluation.evaluatorId)) {
 					//prevent duplicate evaluators
-					evauatorsIds.add(evaluation.evaluatorId);
+					evaluatorsIds.add(evaluation.evaluatorId);
 
 					return evaluation;
 				}
 			})
 			.filter((evaluation) => evaluation) as Evaluation[];
 
-		//get evaluators details if not allready in db
+		//get evaluators details if not already in db
 		const evaluatorsPromise = evaluations
 			.map((evaluation) => {
 				if (!evaluation.evaluator) {
@@ -99,9 +101,12 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
 			.filter((promise) => promise);
 
 		const evaluatorsDB = await Promise.all(evaluatorsPromise);
-		const evaluators = evaluatorsDB.map((evaluatorDB) =>
-			evaluatorDB?.data(),
-		) as User[];
+		const evaluators = evaluatorsDB.map((evaluatorDB) => {
+			const evaluator = evaluatorDB?.data() as User;
+			UserSchema.parse(evaluator);
+			
+			return evaluator;
+		}) as User[];
 
 		evaluations.forEach((evaluation) => {
 			const evaluator = evaluators.find(

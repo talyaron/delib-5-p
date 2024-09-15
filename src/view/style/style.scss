@@ -59,6 +59,7 @@
 
   // header -colors
   --question-header: #62beeb;
+  --question-header-contrast: #476FCA;
 
   // main colors
   --green: #6fc5be;
@@ -141,15 +142,16 @@
   --bg-screen: #f2f6ff;
   --bg-overlay: rgba(44, 46, 80, 0.8);
   //base-contrast
-  --bg-screen-contrast: ##021832;
+  --bg-screen-contrast: #021832;
 
 
   //buttons
   --btn-primary: #739ee4;
-  --btn-secondary: #739ee4;
+  --btn-secondary: #ffffff;
   --btn-tertiary: #a2c0f0;
   --btn-follow-me: #ec8aba;
   --btn-fab: #739ee4;
+  --btn-disabled: #c6d2de;
   //buttons-contrast
   --btn-primary-contrast: #ffffff;
   --btn-secondary-contrast: #ffffff;
@@ -193,11 +195,13 @@
 
   //headers
   --header-home:#6394ee;
+  --header-bg-color: #5899e0;
   --header-question: #62beeb;
   --header-option-chosen: #76c0b3;
   --header-option-non-chosen: #e7d080;
   --header-search-chips: #f5e3a3;
   //headers-contrast
+  --header-bg-color-contrast: #476FCA;
   --header-question-contrast: #476fca;
   --header-home-contrast: #ffffff;
 
@@ -324,10 +328,6 @@
   --text-disabled-contrast: #6379a7;
   --text-blue-contrast: #3e61b0;
   --text-crimson-contrast: #ff5b9c;
-  
-
-
-
 }
 
 * {

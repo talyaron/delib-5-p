@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 // Third party
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 
 // Custom components
 import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
@@ -36,6 +36,7 @@ const ChooseRoom: FC<Props> = ({ statement, topics }) => {
 			</div>
 			{showModal && (
 				<CreateStatementModal
+					allowedTypes={[StatementType.option]}
 					parentStatement={statement}
 					isOption={true}
 					setShowModal={setShowModal}

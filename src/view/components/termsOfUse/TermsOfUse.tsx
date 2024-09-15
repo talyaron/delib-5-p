@@ -1,5 +1,5 @@
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import Button from "../buttons/button/Button";
+import Button, { ButtonType } from "../buttons/button/Button";
 import Modal from "../modal/Modal";
 import "./TermsOfUse.scss";
 
@@ -26,7 +26,7 @@ export default function TermsOfUse({ handleAgreement, agreement }: Props) {
 						data-cy="agree-btn"
 						text={t('Dont agree')}
 						onClick={() => handleAgreement(false, agreement)}
-						className="btn "
+						buttonType={ButtonType.SECONDARY}
 					/>
 				</div>
 			</div>

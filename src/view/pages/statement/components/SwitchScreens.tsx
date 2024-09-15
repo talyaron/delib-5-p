@@ -21,7 +21,7 @@ interface SwitchScreensProps {
 	statementSubscription:StatementSubscription | undefined;
     handleShowTalker: (statement: User | null) => void;
     setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
-    toggleAskNotifications: () => void;
+
 }
 
 export default function SwitchScreens({
@@ -31,7 +31,7 @@ export default function SwitchScreens({
 	statementSubscription,
 	handleShowTalker,
 	setShowAskPermission,
-	toggleAskNotifications,
+
 }: Readonly<SwitchScreensProps>) {
 	if (!statement) return null;
 
@@ -46,7 +46,7 @@ export default function SwitchScreens({
 				subStatements={subStatements}
 				handleShowTalker={handleShowTalker}
 				setShowAskPermission={setShowAskPermission}
-				toggleAskNotifications={toggleAskNotifications}
+			
 			/>
 		);
 	case Screen.OPTIONS:
@@ -54,7 +54,7 @@ export default function SwitchScreens({
 			<StatementEvaluationPage
 				statement={statement}
 				handleShowTalker={handleShowTalker}
-				toggleAskNotifications={toggleAskNotifications}
+			
 			/>
 		);
 	case Screen.VOTE:
@@ -62,7 +62,7 @@ export default function SwitchScreens({
 			<StatementVote
 				statement={statement}
 				subStatements={subStatements}
-				toggleAskNotifications={toggleAskNotifications}
+				
 			/>
 		);
 	case Screen.MASS_QUESTIONS:
@@ -84,7 +84,6 @@ export default function SwitchScreens({
 				statement={statement}
 				handleShowTalker={handleShowTalker}
 				questions={true}
-				toggleAskNotifications={toggleAskNotifications}
 			/>
 		);
 	case Screen.INFO:
@@ -97,7 +96,6 @@ export default function SwitchScreens({
 				subStatements={subStatements}
 				handleShowTalker={handleShowTalker}
 				setShowAskPermission={setShowAskPermission}
-				toggleAskNotifications={toggleAskNotifications}
 			/>
 		);
 	}

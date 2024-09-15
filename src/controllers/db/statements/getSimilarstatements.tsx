@@ -4,19 +4,16 @@ export const findSimilarStatements = async (
 ) => {
 	const prodEndPoint =
 		'https://checkforsimilarstatements-qeesi7aziq-uc.a.run.app';
-	const devEndPoint =
-		'https://checkforsimilarstatements-oeqnq63ina-uc.a.run.app';
+
+	// const devEndPoint =
+	// 	'https://checkforsimilarstatements-oeqnq63ina-uc.a.run.app';
 	const localEndPoint =
 		'http://localhost:5001/synthesistalyaron/us-central1/checkForSimilarStatements';
 	const url = () => {
-		const isProd = true;
-
-		if (isProd) {
-			return prodEndPoint;
-		}
+		
 
 		if (location.hostname !== 'localhost') {
-			return devEndPoint;
+			return prodEndPoint;
 		} else {
 			return localEndPoint;
 		}

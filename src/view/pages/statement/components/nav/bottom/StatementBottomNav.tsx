@@ -55,20 +55,14 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
     showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
 	const handleMidIconClick = () => {
-   
 		if (isAddOption) {
 			setShowModal(true);
 		}
-    
 	};
 
 	function handleSortingClick() {
 		setShowSorting(!showSorting);
-
-
 	}
-
-
 
 	return (
 		<>
@@ -78,20 +72,21 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 					onClick={() => setIsNavigationOpen(false)}
 				/>
 			)}
-			<div className="statement-bottom-nav">
+			<div className={showSorting?"statement-bottom-nav statement-bottom-nav--show":"statement-bottom-nav"}>
 				<button
 					className="add-option-button"
 					style={statementColor}
 					onClick={handleMidIconClick}
 					data-cy="bottom-nav-mid-icon"
 				>
-					{isAddOption && (
-						<PlusIcon style={{ color: statementColor.color }} />
-					) }
+					{isAddOption && <PlusIcon style={{ color: statementColor.color }} />}
 				</button>
 				<div className="sort-menu">
 					{navItems.map((navItem, i) => (
-						<div key={`item-id-${i}`} className={`sort-menu__item  ${showSorting ? "active" : ""}`}>
+						<div
+							key={`item-id-${i}`}
+							className={`sort-menu__item  ${showSorting ? "active" : ""}`}
+						>
 							<Link
 								className={`open-nav-icon ${showSorting ? "active" : ""}`}
 								to={navItem.link}

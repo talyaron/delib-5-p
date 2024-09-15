@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement, User } from "delib-npm";
+import { QuestionStage, QuestionType, Statement, StatementType, User } from "delib-npm";
 import { useNavigate } from "react-router";
 
 // Custom Components
@@ -25,7 +25,6 @@ interface StatementEvaluationPageProps {
   handleShowTalker: (talker: User | null) => void;
   showNav?: boolean;
   questions?: boolean;
-  toggleAskNotifications: () => void;
   currentPage?: string;
 }
 
@@ -33,7 +32,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 	statement,
 	handleShowTalker,
 	questions = false,
-	toggleAskNotifications,
 	currentPage = `suggestion`,
 }) => {
 	try {
@@ -120,7 +118,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 				)}
 				{showModal && (
 					<CreateStatementModalSwitch
-						toggleAskNotifications={toggleAskNotifications}
+						allowedTypes={[StatementType.option]}
 						parentStatement={statement}
 						isQuestion={questions}
 						isMultiStage={isMultiStage}

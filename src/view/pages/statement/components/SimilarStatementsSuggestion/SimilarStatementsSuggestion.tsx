@@ -43,7 +43,6 @@ export default function SimilarStatementsSuggestion({
 	isQuestion,
 	parentStatement,
 	isSendToStoreTemp,
-	toggleAskNotifications,
 	getSubStatements,
 }: Readonly<SimilarStatementsSuggestionProps>) {
 	const { dir } = useLanguage();
@@ -64,7 +63,6 @@ export default function SimilarStatementsSuggestion({
 			title: newStatementInput.title,
 			description: newStatementInput.description,
 			isOptionSelected: !isQuestion,
-			toggleAskNotifications,
 			parentStatement,
 			isSendToStoreTemp,
 		});

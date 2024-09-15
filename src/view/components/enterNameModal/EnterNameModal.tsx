@@ -9,15 +9,16 @@ import Modal from "../modal/Modal";
 // Functions
 import { signAnonymously } from "@/controllers/db/auth";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import Button from "../buttons/button/Button";
+import Button, { ButtonType } from "../buttons/button/Button";
 
 interface Props {
-	closeModal: VoidFunction;
+  closeModal: VoidFunction;
 }
 
 const EnterNameModal: FC<Props> = ({ closeModal }) => {
 	const [displayName, setDisplayName] = useState<string | null>(null);
-	const [showeStartBtn, setShowStartBtn] = useState<boolean>(false);
+	const [showStartBtn, setShowStartBtn] = useState<boolean>(false);
+	
 	const { t } = useLanguage();
 
 	function handleSetName(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -52,26 +53,24 @@ const EnterNameModal: FC<Props> = ({ closeModal }) => {
 					autoComplete="off"
 				/>
 				<div className="btns">
-
-					<Button
+					{<Button
+						buttonType={ButtonType.PRIMARY}
 						data-cy="anonymous-start-btn"
-						text={t('Start')}
+						text={t("Start")}
 						onClick={handleStart}
-						className={
-							showeStartBtn
-								? "btn btn--affirmation"
-								: "btn btn--inactive"
-						}
-					/>
+						disabled={!showStartBtn}
+					/>}
 					<Button
+						buttonType={ButtonType.SECONDARY}
 						data-cy="anonymous-cancel-btn"
-						text={t('Cancel')}
+						text={t("Cancel")}
 						onClick={closeModal}
-						className="btn"
+
+						// className="btn"
 					/>
 				</div>
 			</div>
-		</Modal >
+		</Modal>
 	);
 };
 

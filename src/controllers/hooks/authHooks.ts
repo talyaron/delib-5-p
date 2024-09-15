@@ -108,17 +108,17 @@ export function useIsAuthorized(statementId: string | undefined): {
     }
   }, [statementId, user, statement, statementSubscription]);
 
-  // useEffect(() => {
-  //     if (statementSubscription && statement) {
-  //         if (allowedRoles.includes(statementSubscription.role)) {
-  //             setIsAuthorized(true);
-  //         } else {
-  //             setIsAuthorized(false);
-  //             setError(true);
-  //         }
-  //         setLoading(false);
-  //     }
-  // }, [statementSubscription, statement]);
+	useEffect(() => {
+	    if (statementSubscription && statement) {
+	        if (allowedRoles.includes(statementSubscription.role)) {
+	            setIsAuthorized(true);
+	        } else {
+	            setIsAuthorized(false);
+	            setError(true);
+	        }
+	        setLoading(false);
+	    }
+	}, [statementSubscription, statement]);
 
   return {
     isAuthorized,

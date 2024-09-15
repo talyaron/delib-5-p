@@ -18,7 +18,7 @@ interface Props {
 	subStatements: Statement[];
 	handleShowTalker: (statement: User | null) => void;
 	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
-	toggleAskNotifications: () => void;
+
 }
 
 let firstTime = true;
@@ -28,7 +28,7 @@ const StatementChat: FC<Props> = ({
 	statement,
 	subStatements,
 	handleShowTalker,
-	toggleAskNotifications,
+	
 }) => {
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
@@ -102,7 +102,6 @@ const StatementChat: FC<Props> = ({
 				/>
 				{statement && (
 					<StatementInput
-						toggleAskNotifications={toggleAskNotifications}
 						statement={statement}
 					/>
 				)}
