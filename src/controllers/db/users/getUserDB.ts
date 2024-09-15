@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { Agreement, Collections, User } from "delib-npm";
+import { Agreement, Collections, StatementSchema, User } from "delib-npm";
 import { DB } from "../config";
 import { store } from "@/model/store";
 
@@ -17,6 +17,8 @@ export async function getUserFromDB(): Promise<User | undefined> {
 		const userDB = userDoc.data() as User;
 
 		if (!userDB) throw new Error("userDB is undefined");
+		StatementSchema.parse(userDB);
+		
 		if (
 			userDB.fontSize === undefined ||
             typeof userDB.fontSize !== "number" ||

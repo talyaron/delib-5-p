@@ -4,6 +4,8 @@ import {
 	ParticipantInRoom,
 	getStatementSubscriptionId,
 	RoomSettings,
+	ParticipantInRoomSchema,
+	roomSettingsSchema,
 } from "delib-npm";
 import { deleteDoc, doc, getDoc, runTransaction, setDoc, updateDoc, writeBatch } from "firebase/firestore";
 import { DB } from "../config";
@@ -30,6 +32,8 @@ export function setParticipantToDB(
 			participantInRoomId
 		};
 		if (roomNumber) participantInRoom.roomNumber = roomNumber;
+
+		ParticipantInRoomSchema.parse(participantInRoom);
 
 		const roomRef = doc(DB, Collections.participants, participantInRoomId);
 
@@ -101,6 +105,8 @@ export async function setNewRoomSettingsToDB(statementId: string): Promise<void>
 			timers: [],
 			participantsPerRoom: 7,
 		};
+		roomSettingsSchema.parse(roomSettings);
+		
 		setDoc(roomSettingsRef, roomSettings, { merge: true });
 	} catch (error) {
 		console.error(error);

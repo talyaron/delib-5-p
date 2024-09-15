@@ -1,4 +1,4 @@
-import { Statement, Role, StatementSchema, Collections, User } from "delib-npm";
+import { Statement, Role, StatementSchema, Collections, User, StatementSubscriptionSchema } from "delib-npm";
 import { doc, updateDoc, setDoc, Timestamp, getDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
@@ -39,18 +39,22 @@ export async function setStatementSubscriptionToDB(
 			});
 		}
 
+		const subscriptionData = {
+			user,
+			statementsSubscribeId,
+			statement,
+			role,
+			userId: user.uid,
+			statementId,
+			lastUpdate: Timestamp.now().toMillis(),
+			createdAt: Timestamp.now().toMillis(),
+		};
+
+		StatementSubscriptionSchema.parse(subscriptionData);
+
 		await setDoc(
 			statementsSubscribeRef,
-			{
-				user,
-				statementsSubscribeId,
-				statement,
-				role,
-				userId: user.uid,
-				statementId,
-				lastUpdate: Timestamp.now().toMillis(),
-				createdAt: Timestamp.now().toMillis(),
-			},
+			subscriptionData,
 			{ merge: true }
 		);
 	} catch (error) {
