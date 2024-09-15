@@ -30,7 +30,7 @@ $SwitchHeight: 2.6729rem;
     .text {
         margin: 5px 0px 0px 0px;
         font-size: .9rem;
-        color: #769cc2;
+        color: var(--text-disabled-paragraph);
         position: relative;
     }
 
@@ -45,7 +45,8 @@ $SwitchHeight: 2.6729rem;
         border-radius: 100%;
 
         &-background{
-            color:#9FB1D4;
+            // color:#9FB1D4;
+            color: var(--text-paragraph-lightest);
            
 
             &-off{
@@ -56,13 +57,13 @@ $SwitchHeight: 2.6729rem;
 
 
         &-switch {
-
-            color: white;
+            color: var(--icon-white);
             animation-duration: 0.15s;
             animation-timing-function: ease-in-out;
 
             &--checked {
-                background-color: var(--green);
+                background-color: var(--toggle-green-active);
+                filter: drop-shadow(0px -2.1px 4.2px rgba(90, 174, 159, 0.30)) drop-shadow(0px 2.1px 4.2px rgba(90, 174, 159, 0.40));
 
                 left: 4.15rem;
                 animation-name: toChecked;
@@ -73,6 +74,7 @@ $SwitchHeight: 2.6729rem;
 
             &--unchecked {
                 background-color: var(--settings-finished);
+                filter: drop-shadow(0px -2.1px 4.2px rgba(223, 136, 136, 0.30)) drop-shadow(0px 2.1px 4.2px rgba(223, 136, 136, 0.40));
                 left: 0;
 
                 animation-name: toUnchecked;

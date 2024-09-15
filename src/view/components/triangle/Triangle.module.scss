@@ -1,0 +1,41 @@
+.triangle {
+    position: absolute;
+    top: 30vh;
+    width: 30vh;
+    height: 30vh;
+    border: 2px solid #92cff8;
+    // background-color: #e4eef5;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+   
+    // transform: rotate(45deg);
+
+    &--invisible {
+        position: absolute;
+        background-color: transparent;
+        border: none;
+        clip-path: none;
+    }
+
+    .xAxis{
+        position: absolute;
+        bottom: -2rem;
+        left:calc(100% - 3rem);
+       
+    }
+    .yAxis{
+        position: absolute;
+        left: -3rem;
+        transform: rotate(-90deg);
+    }
+    .conflicts{
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform: rotate(45deg);
+    }
+    .abstention{
+        position: absolute;
+        bottom: -2rem;
+        left: -3rem;
+    }
+}

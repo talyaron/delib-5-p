@@ -1,7 +1,8 @@
 .dropZone {
   width: 100%;
   height: 400px;
-  background-color: #e0edfb;
+  background-color: var(--drag-drop-bg);
+  border: var(--Spacing-2, 2px) dashed var(--Mapped-Color-Icons-Icon-Blue-Light, #739EE4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +10,7 @@
 }
 
 .dropZoneActive {
-  border: 2px dashed #2196f3;
+  border: var(--Spacing-2, 2px) dashed var(--Mapped-Color-Icons-Icon-Blue-Light, #2196f3);
   transition: border-color 1s;
 }
 

@@ -3,15 +3,18 @@
     color: #7f7f7f;
 
     width: fit-content;
-    border-radius: 30px;
+    border-radius: 4rem;
     display: flex;
     align-items: center;
     height: 1.6rem;
+    padding: 0 0px 0px 4px;
+    gap:0px;
+   
 
     .badge-text {
         padding: 5px 10px 5px 5px;
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: .8rem;
+        font-weight: 300;
     }
 
     .badge-image {
@@ -23,5 +26,6 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        transform: translateX(5px);
     }
 }

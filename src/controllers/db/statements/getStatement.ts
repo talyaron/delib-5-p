@@ -1,7 +1,12 @@
 import { and, collection, doc, getDoc, getDocs, or, query, where } from "firebase/firestore";
 
 // Third party imports
-import { Collections, Statement, StatementType } from "delib-npm";
+import {
+	Collections,
+	Statement,
+	StatementSchema,
+	StatementType,
+} from "delib-npm";
 
 // Helpers
 // import { listenedStatements } from "../../../view/pages/home/Home";
@@ -74,10 +79,12 @@ export async function getStatementDepth(
       );
       const statementsDB = await getDocs(q);
 
-      statementsDB.forEach((doc) => {
-        const statement = doc.data() as Statement;
-        subStatements.push(statement);
-      });
+			statementsDB.forEach((doc) => {
+				const statement = doc.data() as Statement;
+				StatementSchema.parse(statement);
+
+				subStatements.push(statement);
+			});
 
       return subStatements;
     } catch (error) {
@@ -98,7 +105,13 @@ export async function getChildStatements(statementId: string): Promise<Statement
     );
     const statementsDB = await getDocs(q);
 
-    const subStatements = statementsDB.docs.map((doc) => doc.data() as Statement);
+		const subStatements = statementsDB.docs.map(
+			(doc) => {
+				StatementSchema.parse(doc.data());
+				
+				return doc.data() as Statement
+			}
+		);
 
     return subStatements;
   } catch (error) {

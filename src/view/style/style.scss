@@ -8,6 +8,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Patrick+Hand&display=swap&family=Roboto");
 
+
 :root {
   // --- MAIN COLORS ---
   --mainBackground: #1f5895;
@@ -31,12 +32,14 @@
     //question
     --question: #62beeb;
 
+
   //evaluation
   --agree: #57c6b2;
   --disagree: #fe6ba2;
 
   //shadow
   --shadow: rgba(181, 197, 232, 0.486);
+  --radius:5px;
 
   //buttons
   --inactive: rgb(207, 207, 207);
@@ -56,6 +59,7 @@
 
   // header -colors
   --question-header: #62beeb;
+  --question-header-contrast: #476FCA;
 
   // main colors
   --green: #6fc5be;
@@ -68,14 +72,21 @@
   --purple: #b1a4fc;
   --light-purple: #b1a4fc;
   --body-dark: #57688f;
-  --button-blue: #739ee4;
+  --button-blue: #739EE4;
+
 
   //settings colors
   --settings-suggestions: #68b4d4;
   --settings-first-evaluation: #d4abf7;
   --settings-second-evaluation: #f38ec2;
-  --settings-voting: #fba669;
+  --settings-voting: #EA8222;
   --settings-finished: #e8749e;
+
+  //similarities colors
+  --similarities-textarea-border: #C3D0EA;
+  --similarities-titleInput: #818FAD;
+  --types-color: #668FD1;
+  --solution-Title: #3BB0B0;
 
   //texts
   --header: #3b4f7d;
@@ -86,9 +97,237 @@
   --textOnDark: white;
   --placeHolder: #93b6da;
 
-  //Card Ellips Menu/Card
+  --incorrectText: #ff3a46;
+  --correctText: #3bb0b0;
   --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
+
+//wights
+  --wight-medium: 400;
+
+
+  
+
+
+
+
+  //FIGMA LIBRARY COLORS
+  //agreement-rang
+  --range-positive-100: #46b4a0;
+  --range-positive-60: #78d2c2;
+  --range-positive-30: #9add82;
+
+  --range-conflict-100: #ff8401;
+  --range-conflict-60: #ffbd01;
+  --range-conflict-30: #e7de2e;
+
+  --range-tabu-100: #ff4185;
+  --range-tabu-60: #fd8ee5;
+  --range-tabu-30: #e6b2ff;
+  //agreement-rang-contrast
+  --range-positive-100-contrast: #02f483;
+  --range-positive-60-contrast: #2fcfb3b2;
+  --range-positive-30-contrast: #6fd9764d;
+
+  --range-conflict-100-contrast: #ff8401;
+  --range-conflict-60-contrast: #b79016;
+  --range-conflict-30-contrast: #70502d;
+
+  --range-tabu-100-contrast: #c1145b;
+  --range-tabu-60-contrast: #ff2b7799;
+  --range-tabu-30-contrast: #ff589366;
+
+
+  //base
+  --bg-screen: #f2f6ff;
+  --bg-overlay: rgba(44, 46, 80, 0.8);
+  //base-contrast
+  --bg-screen-contrast: #021832;
+
+
+  //buttons
+  --btn-primary: #739ee4;
+  --btn-secondary: #ffffff;
+  --btn-tertiary: #a2c0f0;
+  --btn-follow-me: #ec8aba;
+  --btn-fab: #739ee4;
+  --btn-disabled: #c6d2de;
+  //buttons-contrast
+  --btn-primary-contrast: #ffffff;
+  --btn-secondary-contrast: #ffffff;
+  --btn-tertiary-contrast: #ffffff;
+  --btn-primary-blue-contrast: ##476fca;
+  --btn-secondary-blue-contrast: #476fca;
+  --btn-tertiary-blue-contrast: #476fca;
+  --btn-follow-me-contrast: #d4428a;
+  --btn-tertiary-red-contrast: #ff5b9c;
+
+
+  //card-menu
+  --card-menu: #ffffff;
+  --card-menu-stroke: #c7d7fb;
+  --menu-chosen: #ecf5ff;
+  --added-option: #fdffe0;
+  --added-option-stroke: #ecdbc0;
+  --added-question: #d6f1ff;
+  --added-question-contrast: #a5d6ee;
+  --drag-drop-bg: #e1f0f6;
+  //card-menu-contrast
+  --card-menu-contrast: #476fca;
+  --card-menu-stroke-contrast: #264384;
+  --menu-chosen-contrast: #ffffff;
+  --added-option-contrast: #ffeaa0;
+
+
+  //emojis
+  --emoji-happy: #67b8d1;
+  --emoji-smiley: #7cd4b5;
+  --emoji-neutral: #e7d080;
+  --emoji-thinking: #f6ae92;
+  --emoji-sad: #fc8c9b;
+  //emojis-contrast
+  --emoji-happy-contrast: #25bceb;
+  --emoji-smiley-contrast: #0ed68e;
+  --emoji-neutral-contrast: #e8c23e;
+  --emoji-thinking-contrast: #f97b4b;
+  --emoji-sad-contrast: #ff455e;
+
+
+  //headers
+  --header-home:#6394ee;
+  --header-bg-color: #5899e0;
+  --header-question: #62beeb;
+  --header-option-chosen: #76c0b3;
+  --header-option-non-chosen: #e7d080;
+  --header-search-chips: #f5e3a3;
+  //headers-contrast
+  --header-bg-color-contrast: #476FCA;
+  --header-question-contrast: #476fca;
+  --header-home-contrast: #ffffff;
+
+
+  //icons
+  --icon-white: #ffffff;
+  --icon-blue: #5f88e5;
+  --icon-blue-light: #739ee4;
+  --icon-red: #e8749e;
+  --icon-grenn: #46b4a0;
+  --icon-disabled-outline: #dbedff;
+  --icon-disabled-filled: #a9d2ff;
+  --icon-disabled-dark: #c1d8f0;
+  //icons-contrast
+  --icon-blue-contrast: #082a53;
+  --icon-disabled-filled-contrast: #2b4170;
+  --icon-disabled-filled-secondary-contrast: #209eac;
+  --icon-disabled-outline-contrast: #a1b0d1;
+  --icon-green-contrast: #00a89a;
+  --icon-red-contrast: #d1004b;
+
+
+  //info
+  --info-snackbar: #739ee4;
+  --info-massage-counter: #e478f8;
+  --info-tooltip: #739ee4;
+  //info-contrast
+  --info-massage-counter-contrast: #d73484;
+  --info-snackbar-contrast: #476fca;
+  --info-massage-Home-counter-blue-contrast: #4894ff;
+  --info-massage-Home-counter-green-contrast: #34e15c;
+
+
+  //maps
+  --map-question: #739ee4;
+  --map-option: #ffffff;
+  --map-option-chosen: #78d2c2;
+  --map-option-current: #fdffe0;
+  --map-question-current: #d6f1ff;
+  //maps-contrast
+  --map-star-contrast: #06cebd;
+  --map-question-contrast: #476fca;
+  --map-option-contrast: #20a08a;
+
+
+  //multisteps
+  --step-vote-inactive: #f8bbda;
+  --step-vote-active: #f38ec2;
+  --step-evaluate-inactive: #e5cdfa;
+  --step-evaluate-active: #d4abf7;
+  --step-explanation-inactive: #fdcaa5;
+  --step-explanation-active: #fba669;
+  --step-option-inactive: #a9dcd8;
+  --step-option-active: #6fc5be;
+  --step-top-rank-inactive: #bbd8f7;
+  --step-top-rank-active: #8dbef2;
+  --step-joined-members-active: #ffd48d;
+  --step-summary-active: #e88489;
+  //multisteps-contrast
+  --step-vote-active-contrast: #a8367a;
+  --step-evaluate-active-contrast: #c489f8;
+  --step-explanation-active-contrast: #ff7e20;
+  --step-option-active-contrast: #00dac7;
+  --step-top-rank-active-contrast: #3894f9;
+
+
+  //settings
+  --member-chip: #68b4d4;
+  --member-voter: #ebeaff;
+  --member-evaluators: #e1fbf9;
+  --member-non-voter: #fbffea;
+  --member-blocked: #e8749e;
+  --section-tab: #739ee4;
+  //settings-contrast
+  --section-tab-contrast: #476fca;
+  --member-chip-contrast: #00a7ee;
+  --member-evaluators-contrast: #73e1d8;
+  --member-voter-contrast: #a6a2ff;
+
+
+  //toggles
+  --toggle-blue-active: #739ee4;
+  --toggle-green-active: #6fc5be;
+  --toggle-crimson-active: #e8749e;
+  --toggle-inactive: #dbedff;
+  --toggle-inactive-icon: #c1d8f0;
+  //toggles-contrast
+  --toggle-bg-contrast: #2f3545;
+  --toggle-inactive-contrast: #184477;
+  --toggle-active-contrast: #ffffff;
+  --toggle-green-active-contrast: #00dac7;
+  --toggle-crimson-active-contrast: #f63c86;
+
+
+  // triangle dots
+  --dot-agreement-100: #46b4a0;
+  --dot-agreement-50: #e7de2e;
+  --dot-agreement-0: #ff8401;
+  --dot-taboo-50: #ff4185;
+  --dot-taboo-100: #99250e;
+  --dot-disinterest: #dae0e8;
+
+
+  //text
+  --text-headline: #232f4a;
+  --text-paragraph: #57688f;
+  --text-paragraph-light: #818fad;
+  --text-paragraph-lightest: #a4aec5;
+  --text-white: #ffffff;
+  --text-blue: #5f88e5;
+  --text-green: #3bb0b0;
+  --text-red: #ff3a46;
+  --text-crimson: #e8749e;
+  --text-emphasis: #ea8222;
+  --text-dark-btn: #57688f;
+  --text-light-btn: #ffffff;
+  --text-disabled-paragraph: #a1b0d1;
+  --text-disabled-light: #c7cedd;
+  --text-disabled-digit: #adcbed;
+  --text-triangle-taboo: #99250e;
+  //text-contrast
+  --text-emphasis-contrast: #ffa463;
+  --text-dark-contrast: #021832;
+  --text-disabled-contrast: #6379a7;
+  --text-blue-contrast: #3e61b0;
+  --text-crimson-contrast: #ff5b9c;
 }
 
 * {
@@ -114,8 +353,9 @@ body {
   height: 100svh;
   margin: 0px;
   font-family: "Open Sans", sans-serif;
-  font-size: 17px;
-  background: var(--pageBackground);
+  font-size: 1.0625rem;
+  line-height: 150%;
+  background: var(--bg-screen);
   overflow: hidden;
 }
 
@@ -154,6 +394,7 @@ b {
 .wrapper {
   flex: auto;
   width: 100%;
+  height: fit-content;
   max-width: 75ch;
   gap: 1rem;
   position: relative;
@@ -165,7 +406,7 @@ b {
 }
 
 .card {
-  background: white;
+  color: var(--card-menu);
   border-radius: 3px;
   direction: rtl;
   padding: 10px;
@@ -180,7 +421,7 @@ b {
   }
 
   p {
-    color: var(--gray1);
+    color: var(--text-paragraph);
     font-size: var(--size13);
   }
 }

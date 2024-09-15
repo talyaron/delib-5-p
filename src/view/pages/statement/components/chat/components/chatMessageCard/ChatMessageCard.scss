@@ -6,6 +6,7 @@
   margin: auto;
   padding: 0.3rem;
   padding-inline: 1rem;
+  color: var(--text-paragraph);
   
   .user {
     display: flex;
@@ -19,11 +20,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 0.5rem;
-    background-color: var(--inputBackground);
+    gap: .5rem;
+    background-color:  var(--inputBackground);
     padding: 1rem;
     border-radius: 10px;
-    box-shadow: 3px 3px 3px var(--shadow);
+    box-shadow: 1px 0px 9px 0px rgba(66, 123, 158, 0.00), 1px 0px 9px 0px rgba(66, 123, 158, 0.01), 0px 0px 7px 0px rgba(66, 123, 158, 0.05), 0px 0px 5px 0px rgba(66, 123, 158, 0.09), 0px 0px 3px 0px rgba(66, 123, 158, 0.10);
     position: relative;
     
     &--statement{
@@ -43,8 +44,8 @@
       position: relative;
       .info-text {
         flex: 1;
-        // display: flex;
         padding: var(--info-text-padding);
+        // background-color: var(--background-color-info-text);
         background-color: var(--background-color-info-text);
       }
     }
@@ -108,7 +109,7 @@
   }
 
   .menu-option svg {
-    color: #226cbc;
+    color: var(--icon-blue);
   }
 
   .bottom-icons {
@@ -132,14 +133,14 @@
     margin-top: 13px;
     height: 22px;
     width: 20px;
-    color: #62beeb;
+    color: var(--icon-blue);
   }
 }
 .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--white);
+  background-color:var(--background-color-info-text);
 }
 
 .edit-input {
@@ -149,4 +150,5 @@
 
 .save-icon {
   cursor: pointer;
+  color: var(--icon-blue);
 }

@@ -5,7 +5,7 @@
     display: grid;
     position: fixed;
     grid-template-rows: auto 1fr auto;
-    background-color: var(--statementBackground);
+    background-color: var(--bg-screen);
 
 
     &__header {
@@ -140,11 +140,14 @@
 
     &__footer {
         width: 100%;
-        max-width: 75ch;
+        max-width: 82ch;
         margin: 0 auto;
-        padding: 0.5rem 0;
         display: flex;
         justify-content: center;
+        position:absolute;
+        bottom: 0;
+        left:50%;
+        transform: translateX(-50%);
 
         &__form {
             width: 100%;

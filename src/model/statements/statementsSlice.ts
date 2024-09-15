@@ -1,25 +1,20 @@
 /* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { RootState, store } from "../store";
 
 // Third party imports
 
 import {
 	Screen,
-	ScreenSchema,
 	Statement,
-	StatementSchema,
 	StatementSubscription,
-	StatementSubscriptionSchema,
 	StatementType,
 	isOptionFn,
 } from "delib-npm";
 
-import { ZodError, z } from "zod";
 
 // Helpers
-import { updateArray, writeZodError } from "../../controllers/general/helpers";
-import { sortSubStatements } from "../../view/pages/statement/components/solutions/statementSolutionsCont";
+import { updateArray } from "../../controllers/general/helpers";
 
 enum StatementScreen {
 	chat = "chat",
@@ -57,13 +52,6 @@ export const statementsSlicer = createSlice({
 			try {
 				const newStatement = { ...action.payload };
 
-				const results = StatementSchema.safeParse(newStatement);
-				if (!results.success) {
-					const error = results.error as ZodError; // Type assertion for clarity
-					writeZodError(error, newStatement);
-					throw new Error("statement not valid on setStatement");
-				}
-
 				//for legacy statements - can be deleted after all statements are updated or at least after 1 feb 24.
 				if (!Array.isArray(newStatement.results))
 					newStatement.results = [];
@@ -99,13 +87,6 @@ export const statementsSlicer = createSlice({
 		setStatements: (state, action: PayloadAction<Statement[]>) => {
 			try {
 				const statements = action.payload;
-
-				const { success } = z
-					.array(StatementSchema)
-					.safeParse(statements);
-				if (!success) {
-					console.error("statements not valid on setStatements");
-				}
 
 				statements.forEach((statement) => {
 					state.statements = updateArray(
@@ -160,7 +141,7 @@ export const statementsSlicer = createSlice({
 					state.statementSubscriptionLastUpdate
 				) {
 					state.statementSubscriptionLastUpdate =
-					newStatementSubscription.lastUpdate;
+						newStatementSubscription.lastUpdate;
 				}
 			} catch (error) {
 				console.error(error);
@@ -172,9 +153,6 @@ export const statementsSlicer = createSlice({
 		) => {
 			try {
 				const newStatements = action.payload;
-
-				//TODO: remove this after all statements are updated at about 4 April 2024
-				// z.array(StatementSubscriptionSchema).parse(newStatements);
 
 				newStatements.forEach((statement) => {
 					state.statementSubscription = updateArray(
@@ -227,30 +205,23 @@ export const statementsSlicer = createSlice({
 				console.error(error);
 			}
 		},
-		setTempStatementsForPresentation: (state, action: PayloadAction<Statement[]>) => {
+		updateStatementTop: (
+			state,
+			action: PayloadAction<{ statementId: string; top: number }[]>,
+		) => {
 			try {
-				const statements = action.payload;
+				const updates = action.payload;
+				updates.forEach((update) => {
+					try {
+						const statement = state.statements.find(
+							(statement) => statement.statementId === update.statementId,
+						);
+						if (statement) statement.top = update.top;
+						else throw new Error("statement not found");
+					} catch (error) {
+						console.error("On updateStatementTop loop: ", error);
+					}
 
-				const results = z
-					.array(StatementSchema)
-					.safeParse(statements);
-				if (!results.success) {
-					writeZodError(results.error, statements);
-				}
-
-				//clear all temp statements
-				state.statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = false;
-				});
-
-				//set new temp statements
-				statements.forEach((statement) => {
-					statement.isPartOfTempPresentation = true;
-					state.statements = updateArray(
-						state.statements,
-						statement,
-						"statementId",
-					);
 				});
 			} catch (error) {
 				console.error(error);
@@ -268,8 +239,7 @@ export const statementsSlicer = createSlice({
 			action: PayloadAction<{ statement: Statement; screen: Screen }>,
 		) => {
 			try {
-				ScreenSchema.parse(action.payload.screen);
-				StatementSchema.parse(action.payload.statement);
+
 				const { statement, screen } = action.payload;
 				const _statement = state.statements.find(
 					(st) => st.statementId === statement.statementId,
@@ -277,7 +247,7 @@ export const statementsSlicer = createSlice({
 				if (!_statement) throw new Error("statement not found");
 				const subScreens = _statement?.subScreens;
 				if (subScreens?.length === 0 || subScreens === undefined)
-					throw new Error("no subscreens");
+					throw new Error("no sub screens");
 				if (subScreens.includes(screen)) {
 					_statement.subScreens = subScreens.filter(
 						(subScreen) => subScreen !== screen,
@@ -297,14 +267,6 @@ export const statementsSlicer = createSlice({
 			try {
 				const newMembership = action.payload;
 
-				const { success } =
-					StatementSubscriptionSchema.safeParse(newMembership);
-
-				if (!success) {
-					console.error(
-						"statement subscription not valid in set membership.",
-					);
-				}
 				state.statementMembership = updateArray(
 					state.statementMembership,
 					newMembership,
@@ -333,6 +295,27 @@ export const statementsSlicer = createSlice({
 			state.statementMembership = [];
 			state.screen = StatementScreen.chat;
 		},
+		setCurrentMultiStepOptions: (state, action: PayloadAction<Statement[]>) => {
+			try {
+
+				const previousInMultiStageOptions = state.statements.filter(statement => statement.isInMultiStage);
+				previousInMultiStageOptions.forEach((statement) => {
+					statement.isInMultiStage = false;
+				});
+
+				const newStatements = action.payload;
+				newStatements.forEach((statement) => {
+					statement.isInMultiStage = true;
+					state.statements = updateArray(
+						state.statements,
+						statement,
+						"statementId",
+					);
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		},
 	},
 });
 
@@ -341,8 +324,8 @@ export const {
 	setStatements,
 	setStatementSubscription,
 	setStatementsSubscription,
-	setTempStatementsForPresentation,
 	deleteStatement,
+	updateStatementTop,
 	deleteSubscribedStatement,
 	setStatementOrder,
 	setScreen,
@@ -351,6 +334,7 @@ export const {
 	setMembership,
 	removeMembership,
 	resetStatements,
+	setCurrentMultiStepOptions
 } = statementsSlicer.actions;
 
 // statements
@@ -389,12 +373,25 @@ export const statementSelector =
 		state.statements.statements.find(
 			(statement) => statement.statementId === statementId,
 		);
-export const statementSubsSelector =
-	(statementId: string | undefined) => (state: RootState) =>
-		state.statements.statements
-			.filter((statementSub) => statementSub.parentId === statementId)
-			.sort((a, b) => a.createdAt - b.createdAt)
-			.map((statement) => ({ ...statement }));
+
+// export const statementSubsSelector =
+// 	(statementId: string | undefined) => (state: RootState) =>
+// 		state.statements.statements
+// 			.filter((statementSub) => statementSub.parentId === statementId)
+// 			.sort((a, b) => a.createdAt - b.createdAt)
+// 			.map((statement) => ({ ...statement }));
+
+const selectStatements = (state: RootState) => state.statements.statements;
+
+export const statementSubsSelector = (statementId: string | undefined) =>
+  createSelector(
+    [selectStatements],
+    (statements) =>
+      statements
+        .filter((statementSub) => statementSub.parentId === statementId)
+        .sort((a, b) => a.createdAt - b.createdAt)
+        .map((statement) => ({ ...statement }))
+  );
 
 export const statementOptionsSelector =
 	(statementId: string | undefined) => (state: RootState) => {
@@ -407,9 +404,7 @@ export const statementOptionsSelector =
 			.sort((a, b) => a.createdAt - b.createdAt)
 			.map((statement) => ({ ...statement }));
 
-		const sortedSubStatements = sortSubStatements(subStatements, state.statements.screen);
-		
-		return sortedSubStatements;
+		return subStatements;
 	};
 
 export const questionsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter((statement) => statement.parentId === statementId && statement.statementType === StatementType.question).sort((a, b) => a.createdAt - b.createdAt);
@@ -471,8 +466,29 @@ export const hasTokenSelector =
 		return statement?.token?.includes(token) || false;
 	};
 
-	export const subscriptionParentStatementSelector = (parentId: string) => (state: RootState) => {
-		return state.statements.statementSubscription.filter((sub) => sub.statement.topParentId === parentId);
-	}
+export const subscriptionParentStatementSelector = (parentId: string) =>
+	createSelector(
+		(state: RootState) => state.statements.statementSubscription,
+		(statementSubscription) =>
+			statementSubscription.filter((sub) => sub.statement.topParentId === parentId)
+	);
+
+
+export const myStatementsByStatementIdSelector = (statementId: string) => {
+	const user = store.getState().user.user;
+	
+return createSelector(
+		(state: RootState) => state.statements.statements,
+		(statements) =>
+			statements.filter((st) => st.parentId === statementId && st.creatorId === user?.uid)
+	);
+}
+
+export const statementsOfMultiStepSelectorByStatementId =(statementId: string) => createSelector(
+	(state: RootState) => state.statements.statements,
+	(statements) => statements.filter((st) => st.isInMultiStage && st.parentId === statementId)
+);
+	
+
 
 export default statementsSlicer.reducer;

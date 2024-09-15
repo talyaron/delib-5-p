@@ -8,6 +8,7 @@ import { SetWaitingListCont } from "./SetWaitingListCont";
 
 //Styles
 import styles from "./setWaitingList.module.scss"
+import VisuallyHidden from "@/view/components/accessibility/toScreenReaders/VisuallyHidden";
 
 	interface Props {
 		statement: Statement
@@ -30,7 +31,11 @@ const SetWaitingList: FC<Props> = ({ statement }) => {
 
 	return (
 		<div>
+			<label htmlFor="uploadFile">
+				<VisuallyHidden labelName={"uploadFile"} />
+			</label>
 			<input
+				id="uploadFile"
 				className={styles.uploadInput}
 				type="file"
 				accept=".xlsx, .xls"

@@ -1,92 +1,85 @@
 import {
 	Collections,
-	Participant,
-	Statement,
-	StatementSchema,
-	StatementType,
+	ParticipantInRoom,
+	ParticipantInRoomSchema,
+	RoomSettings,
+	roomSettingsSchema,
+	Statement
 } from 'delib-npm';
 import {
-	and,
 	collection,
+	doc,
 	onSnapshot,
-	or,
 	query,
 	where,
 } from 'firebase/firestore';
 import { DB } from '../config';
-import { setRoomRequests } from '@/model/rooms/roomsSlice';
+import { deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
-import { AppDispatch } from '@/model/store';
+import { store } from '@/model/store';
 
-export function listenToAllRoomsRequest(
+
+export function listenToParticipants(
 	statement: Statement,
-	dispatch: AppDispatch
 ): Unsubscribe {
 	try {
-		const requestRef = collection(DB, Collections.statementRoomsAsked);
-		const q = query(requestRef, where('parentId', '==', statement.statementId));
+		const dispatch = store.dispatch;
+		const requestRef = collection(DB, Collections.participants);
+		const q = query(requestRef, where('statement.parentId', '==', statement.statementId));
 
-		return onSnapshot(q, (requestsDB) => {
+		return onSnapshot(q, (roomsDB) => {
 			try {
-				const requests = requestsDB.docs.map(
-					(requestDB) => requestDB.data() as Participant
-				);
+				roomsDB.docChanges().forEach((change) => {
 
-				dispatch(setRoomRequests(requests));
+					const room = change.doc.data() as ParticipantInRoom;
+					ParticipantInRoomSchema.parse(room);
+
+					switch (change.type) {
+					case 'added':
+						dispatch(setRoom(room));
+						break;
+					case 'modified':
+						dispatch(setRoom(room));
+						break;
+					case 'removed':
+						dispatch(deleteRoom(room));
+						break;
+					default:
+						break;
+					}
+				});
+
 			} catch (error) {
 				console.error(error);
-				dispatch(setRoomRequests([]));
+				dispatch(setRooms([]));
 			}
 		});
 	} catch (error) {
 		console.error(error);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		return () => {};
+		return () => { };
 	}
 }
 
 // TODO: this function is not used. Delete it?
-export function listenToRoomSolutions(
-	statementId: string,
-	cb: (rooms: Statement | null) => void
-) {
+
+
+export function listenToRoomsSettings(statementId: string): Unsubscribe {
 	try {
-		const statementSolutionsRef = collection(DB, Collections.statements);
-		const q = query(
-			statementSolutionsRef,
-			and(
-				where('parentId', '==', statementId),
-				or(
-					where('statementType', '==', StatementType.option),
-					where('statementType', '==', StatementType.result)
-				)
-			)
-		);
+		const roomSettingRef = doc(DB, Collections.roomsSettings, statementId);
 
-		return onSnapshot(q, (roomSolutionsDB) => {
-			try {
-				roomSolutionsDB.forEach((roomSolutionDB) => {
-					try {
-						const roomSolution = roomSolutionDB.data() as Statement;
-						const { success } = StatementSchema.safeParse(roomSolution);
-
-						if (!success)
-							throw new Error(
-								'roomSolution is not valid in listenToRoomSolutions()'
-							);
-
-						cb(roomSolution);
-					} catch (error) {
-						console.error(error);
-					}
-				});
-			} catch (error) {
-				console.error(error);
-				cb(null);
-			}
+		return onSnapshot(roomSettingRef, (doc) => {
+			if (!doc.exists()) return;
+			const roomSettings = doc.data() as RoomSettings;
+			roomSettingsSchema.parse(roomSettings);
+			
+			store.dispatch(setRoomSettings(roomSettings));
 		});
 	} catch (error) {
 		console.error(error);
+		
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		return () => { };
 	}
 }

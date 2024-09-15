@@ -1,4 +1,4 @@
-import { Statement, Collections, StatementSubscription } from "delib-npm";
+import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema } from "delib-npm";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
@@ -87,7 +87,7 @@ export async function setStatementSubscriptionNotificationToDB(
 		const token = await getToken(msg, { vapidKey });
 		if (!token)
 			throw new Error(
-				"Token is undefined in setstatementSubscriptionNotificationToDB.",
+				"Token is undefined in setStatementSubscriptionNotificationToDB.",
 			);
 
 		if (!statement) throw new Error("Statement is undefined");
@@ -106,6 +106,7 @@ export async function setStatementSubscriptionNotificationToDB(
 		const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
 
 		if (!statementSubscriptionDB.exists()) {
+
 			//set new subscription
 			const tokenArr = [token];
 
@@ -126,7 +127,9 @@ export async function setStatementSubscriptionNotificationToDB(
 		} else {
 			// update subscription -> Remove notifications
 			const statementSubscription =
-                statementSubscriptionDB.data() as StatementSubscription;
+				statementSubscriptionDB.data() as StatementSubscription;
+
+			StatementSubscriptionSchema.parse(statementSubscription);
 
 			const tokenArr = statementSubscription.token
 				? [...statementSubscription.token]

@@ -147,6 +147,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 		<ScreenFadeIn className="page__main">
 			<ReactFlowProvider>
 				<select
+					aria-label="Select filter type for results"
 					onChange={(ev) => handleFilter(ev.target.value as FilterType)}
 					defaultValue={FilterType.questionsResultsOptions}
 					style={{
@@ -185,6 +186,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 				{mapContext.showModal && (
 					<Modal>
 						<CreateStatementModal
+							allowedTypes={[StatementType.option, StatementType.question]}
 							parentStatement={mapContext.parentStatement}
 							isOption={mapContext.isOption}
 							setShowModal={toggleModal}

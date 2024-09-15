@@ -36,7 +36,6 @@ export const getUserOptions = async (req: any, res: any) => {
 export const getRandomStatements = async (req: any, res: any) => {
 
 
-
     try {
 
         const parentId = req.query.parentId;
@@ -100,4 +99,30 @@ export const getTopStatements = async (req: any, res: any) => {
         return;
     }
     // })
+}
+
+export async function hashPassword(req:any, res:any){
+    try {
+        //req -> {password}
+        //set hash password in the statementPassword collection
+
+        // if(ok) --> res.send({ok:true, error:null})
+        // else --> res.send({ok:false, error:error.message})
+    } catch (error:any) {
+        res.status(500).send({ error: error.message, ok: false });
+        return;
+    }
+}
+
+export async function checkPassword(req:any, res:any){
+    try {
+        //req -> {password}
+        //get hash password form the statementPassword collection
+
+        // if(true) --> res.send({ok:true})
+        // else --> res.send({ok:false})
+    } catch (error:any) {
+        res.status(500).send({ error: error.message, ok: false });
+        return;
+    }
 }

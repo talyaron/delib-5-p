@@ -1,10 +1,11 @@
 import { FC } from "react";
 import "./CustomSwitchSmall.scss";
-import background from "./customSwitchSmallBackground.svg";
+import BackgroundImage from "./customSwitchSmallBackground.svg";
 
-import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
 import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
+import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import VisuallyHidden from "../../accessibility/toScreenReaders/VisuallyHidden";
 
 interface Props {
   label: string;
@@ -36,7 +37,7 @@ const CustomSwitchSmall: FC<Props> = ({
 		<div className="custom-switch-small" onClick={handleChange}>
 			<div
 				className={dir==="rtl"?"background":"background background--ltr"}
-				style={{ backgroundImage: `url(${background})` }}
+				style={{ backgroundImage: `url(${BackgroundImage})` }}
 			>
 				<div className="ball ball-background" style={{left:"4.15rem"}}>
 					<StepsNoIcon /> 
@@ -44,14 +45,25 @@ const CustomSwitchSmall: FC<Props> = ({
 				<div className="ball ball-background ball-background-off">
 					<StepsIcon />
 				</div>
-				<div
+				<button
 					className={`ball ball-switch ball-switch--${checked ? "checked" : "unchecked"}`}
+					type="button"
 					style={{ left: `${checked ? 0 : 4.15}rem` }}
+					aria-label={checked ? "Turn off" : "Turn on"}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') { 
+							e.preventDefault(); 
+							handleChange(); 
+						}
+					}}
 				>
 					{checked ? <StepsIcon /> : <StepsNoIcon />}
-				</div>
+				</button>
 			</div>
 			<div className="text">{checked ? textChecked : textUnchecked}</div>
+			<label htmlFor={`toggleSwitchSimple-${label}`}>
+				<VisuallyHidden labelName={label} />
+			</label>
 			<input
 				type="checkbox"
 				name={label}

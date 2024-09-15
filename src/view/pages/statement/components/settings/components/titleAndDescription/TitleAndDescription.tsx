@@ -4,6 +4,7 @@ import { FC } from "react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./TitleAndDescription.scss";
+import VisuallyHidden from "@/view/components/accessibility/toScreenReaders/VisuallyHidden";
 
 const TitleAndDescription: FC<StatementSettingsProps> = ({
 	statement,
@@ -21,6 +22,7 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 	return (
 		<div className="title-and-description">
 			<label htmlFor="statement-title">
+				<VisuallyHidden labelName={t("Group Title")}></VisuallyHidden>
 				<input
 					id="statement-title"
 					data-cy="statement-title"
@@ -40,17 +42,18 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 				/>
 			</label>
 			<label htmlFor="statement-description">
+				<VisuallyHidden labelName={t("Group Description")}></VisuallyHidden>
 				<textarea
 					id="statement-description"
 					name="description"
 					placeholder={t("Group Description")}
 					rows={3}
-					value={description}
+					defaultValue={statement.description}
 					onChange={(e) => {
 						const newDescription = e.target.value;
 						setStatementToEdit({
 							...statement,
-							statement: `${title}\n${newDescription}`,
+							description: newDescription,
 						});
 					}}
 				/>

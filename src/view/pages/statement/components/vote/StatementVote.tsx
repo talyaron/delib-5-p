@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement } from 'delib-npm';
+import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
 
 // Redux
 import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
@@ -30,14 +30,14 @@ import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStat
 interface Props {
 	statement: Statement;
 	subStatements: Statement[];
-	toggleAskNotifications: () => void;
+	
 }
 let getVoteFromDB = false;
 
 const StatementVote: FC<Props> = ({
 	statement,
 	subStatements,
-	toggleAskNotifications,
+	
 }) => {
 	// * Hooks * //
 	const dispatch = useAppDispatch();
@@ -110,12 +110,13 @@ const StatementVote: FC<Props> = ({
 
 				{isCreateStatementModalOpen && (
 					<CreateStatementModalSwitch
-						isMuliStage={isMuliStage}
+						allowedTypes={[StatementType.option]}
+						isMultiStage={isMuliStage}
 						useSimilarStatements={useSearchForSimilarStatements}
 						parentStatement={statement}
 						isQuestion={false}
 						setShowModal={setIsCreateStatementModalOpen}
-						toggleAskNotifications={toggleAskNotifications}
+					
 					/>
 				)}
 				{isStatementInfoModalOpen && (

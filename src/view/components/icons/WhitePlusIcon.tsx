@@ -6,6 +6,7 @@ const WhitePlusIcon = () => {
 			viewBox="0 0 40 40"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
+			style={{ verticalAlign: 'middle' }} 
 		>
 			<path
 				d="M19.998 8.80005L19.998 31.2"

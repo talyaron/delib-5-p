@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { Dispatch, FC } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
-import { Statement } from 'delib-npm';
+import { Role, Statement, StatementSubscription } from 'delib-npm';
 
 // Firestore functions
 
@@ -26,12 +26,15 @@ import './StatementSettingsForm.scss';
 // icons
 import SaveIcon from '@/assets/icons/save.svg?react';
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '@/model/store';
 
 interface StatementSettingsFormProps {
 	setIsLoading: (isLoading: boolean) => void;
 	statement: Statement;
 	parentStatement?: Statement | 'top';
-	setStatementToEdit: (statement: Statement) => void;
+	setStatementToEdit: Dispatch<Statement>;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
@@ -46,10 +49,29 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const { statementId } = useParams();
 		const { t } = useLanguage();
 
+		// Selector to get the statement memberships
+		const statementMembershipSelector = (statementId: string | undefined) =>
+			createSelector(
+				(state: RootState) => state.statements.statementMembership,
+				(memberships) =>
+					memberships.filter(
+						(membership: StatementSubscription) =>
+							membership.statementId === statementId
+					)
+			);
+
+		const members: StatementSubscription[] = useAppSelector(
+			statementMembershipSelector(statementId)
+		);
+
+		const joinedMembers = members.filter((member) => member.role !== Role.banned).map(m => m.user);
+
+
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 			setIsLoading(true);
+
 			await handleSetStatement({
 				navigate,
 				statementId,
@@ -90,12 +112,12 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						<UploadImage {...statementSettingsProps} />
 						<QuestionSettings {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
-						<MembersSettings {...statementSettingsProps} />
+						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement} />
 						<section className='get-members-area'>
-							<GetVoters statementId={statementId} />
+							<GetVoters statementId={statementId!} joinedMembers={joinedMembers} />
 						</section>
 						<section className='get-members-area'>
-							<GetEvaluators statementId={statementId} />
+							<GetEvaluators statementId={statementId!} />
 						</section>
 					</>
 				)}
@@ -103,6 +125,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				<button
 					type='submit'
 					className='submit-button'
+					aria-label="Submit button"
 					data-cy='settings-statement-submit-btn'
 				>
 					<SaveIcon />

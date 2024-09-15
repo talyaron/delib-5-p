@@ -5,8 +5,7 @@ import {
 	updateEvaluation,
 } from './fn_evaluation';
 import { updateResultsSettings } from './fn_results';
-import { countRoomJoiners } from './fn_rooms';
-import { addSignature, removeSignature } from './fn_signatures';
+import { updateDocumentSignatures } from './fn_signatures';
 import {
 	updateParentWithNewMessageCB,
 
@@ -31,14 +30,17 @@ import { cleanOldTimers } from './fn_timers';
 import { setAdminsToNewStatement } from './fn_roles';
 import { updateStatementNumberOfMembers } from './fn_subscriptions';
 import {
+	checkPassword,
 	getRandomStatements,
 	getTopStatements,
 	getUserOptions,
+	hashPassword,
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
 import { updateApprovalResults } from './fn_approval';
 import { setImportanceToStatement } from './fn_importance';
+import { updateAgrees } from './fn_agree';
 require('dotenv').config()
 
 
@@ -98,21 +100,9 @@ exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);
 
 // exports.removeVote = onDocumentDeleted('/votes/{voteId}', removeVote);
 
-//signatures (part of delib-signatures)
-exports.changeSignature = onDocumentCreated(
-	'/statementsSignatures/{signatureId}',
-	addSignature
-);
-exports.deleteSignature = onDocumentDeleted(
-	'/statementsSignatures/{signatureId}',
-	removeSignature
-);
 
-//rooms
-exports.countRoomJoiners = onDocumentWritten(
-	`${Collections.statementRoomsAsked}/{requestId}`,
-	countRoomJoiners
-);
+
+
 
 //timers
 exports.cleanTimers = onSchedule('every day 00:00', cleanOldTimers);
@@ -126,19 +116,28 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 //approval
 exports.updateDocumentApproval = onDocumentWritten(`/${Collections.approval}/{approvalId}`, updateApprovalResults);
 
+//importance
+exports.setImportanceToStatement = onDocumentWritten(`/${Collections.importance}/{importanceId}`, setImportanceToStatement);
+
+//agree/disagree
+exports.updateAgrees = onDocumentWritten(`/${Collections.agrees}/{agreeId}`, updateAgrees);
+
+//signatures
+exports.updateDocumentSignatures = onDocumentWritten(`/${Collections.signatures}/{signatureId}`, updateDocumentSignatures);
+
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
 
-
-console.log('isProduction', isProduction);
+console.info('isProduction', isProduction);
 const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech"] }
 
 
 
-exports.getRandomStatements = onRequest(cors, getRandomStatements);
-exports.getTopStatements = onRequest(cors, getTopStatements);
-exports.getUserOptions = onRequest(cors, getUserOptions);
-
+exports.getRandomStatements = onRequest(cors, getRandomStatements); //first evaluation
+exports.getTopStatements = onRequest(cors, getTopStatements); //second evaluation
+exports.getUserOptions = onRequest(cors, getUserOptions); //suggestions
+exports.checkPassword = onRequest(cors, checkPassword);
+exports.hashPassword = onRequest(cors, hashPassword);
 exports.checkForSimilarStatements = onRequest(
 	cors,
 	findSimilarStatements
@@ -146,5 +145,4 @@ exports.checkForSimilarStatements = onRequest(
 
 exports.app = onRequest(cors, app);
 
-//importance
-exports.setImportanceToStatement = onDocumentWritten(`/${Collections.importance}/{importanceId}`, setImportanceToStatement);
+

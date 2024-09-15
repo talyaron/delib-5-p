@@ -1,21 +1,23 @@
 import {
-  User,
-  Collections,
-  StatementSubscription,
-  StatementSubscriptionSchema,
-  StatementType,
-  Statement,
-  Role,
+	User,
+	Collections,
+	StatementSubscription,
+	StatementSubscriptionSchema,
+	StatementType,
+	Statement,
+	Role,
+	StatementSchema,
 } from "delib-npm";
 import { collection, doc, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 
 // Redux Store
 import {
-  removeMembership,
-  setMembership,
-  setStatement,
-  setStatementSubscription,
-  setStatements,
+	deleteStatement,
+	removeMembership,
+	setMembership,
+	setStatement,
+	setStatementSubscription,
+	setStatements,
 } from "@/model/statements/statementsSlice";
 import { AppDispatch, store } from "@/model/store";
 import { DB } from "../config";
@@ -128,9 +130,13 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
           }
         }
 
-        if (change.type === "modified") {
-          dispatch(setStatement(statement));
-        }
+				if (change.type === "modified") {
+					dispatch(setStatement(statement));
+				}
+
+				if (change.type === "removed") {
+					dispatch(deleteStatement(statement.statementId));
+				}
 
         // There shouldn't be deleted statements. instead the statement should be updated to status "deleted".
         // If You will use delete, it will remove from the dom a messages that are outside of the limit of the query.
@@ -187,9 +193,10 @@ export async function listenToUserAnswer(questionId: string, cb: (statement: Sta
       limit(1)
     );
 
-    return onSnapshot(q, (statementsDB) => {
-      statementsDB.docChanges().forEach((change) => {
-        const statement = change.doc.data() as Statement;
+		return onSnapshot(q, (statementsDB) => {
+			statementsDB.docChanges().forEach((change) => {
+				const statement = change.doc.data() as Statement;
+				StatementSchema.parse(statement);
 
         cb(statement);
       });

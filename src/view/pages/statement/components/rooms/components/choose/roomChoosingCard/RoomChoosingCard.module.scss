@@ -14,7 +14,18 @@
     transform: scale(0.9);
     border: 1px solid rgba(0, 0, 0, 0.2);
 
-    &__fill {
+    .title{
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    .amount{
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .fill {
         transition: all 100ms ease-in-out;
         background-color: rgba(2, 197, 2, 0.294);
         position: absolute;

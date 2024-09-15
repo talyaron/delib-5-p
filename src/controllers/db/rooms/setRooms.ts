@@ -1,214 +1,203 @@
 import {
 	Collections,
 	Statement,
-	Participant,
-	getRequestIdToJoinRoom,
-	RoomsStateSelection,
-	User,
+	ParticipantInRoom,
+	getStatementSubscriptionId,
+	RoomSettings,
+	ParticipantInRoomSchema,
+	roomSettingsSchema,
 } from "delib-npm";
-import {
-	DocumentData,
-	DocumentReference,
-	doc,
-	getDoc,
-	setDoc,
-	updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, getDoc, runTransaction, setDoc, updateDoc, writeBatch } from "firebase/firestore";
 import { DB } from "../config";
-import { getUserFromFirebase } from "../users/usersGeneral";
-import { ParticipantInRoom } from "@/view/pages/statement/components/rooms/components/adminArrange/AdminArrange";
+
+
 import { store } from "@/model/store";
 
-export function enterRoomsDB(parentStatement: Statement) {
+
+
+export function setParticipantToDB(
+	statement: Statement,
+	roomNumber?: number
+): void {
 	try {
-		const userId = getUserFromFirebase()?.uid;
-		if (!userId) throw new Error("User not logged in");
-
-		const requestId = getRequestIdToJoinRoom(
-			userId,
-			parentStatement.statementId,
-		);
-		if (!requestId) throw new Error("Request-id is undefined");
-
-		const statementRef = doc(
-			DB,
-			Collections.statementRoomsAsked,
-			requestId,
-		);
-		const user = getUserFromFirebase();
+		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
-		const room: Participant = {
-			participant: user,
-			parentId: parentStatement.statementId,
-			requestId: requestId,
-			lastUpdate: new Date().getTime(),
+
+		const participantInRoomId = getStatementSubscriptionId(statement.parentId, user);
+		if (!participantInRoomId) throw new Error("Participant in room id is undefined");
+
+		const participantInRoom: ParticipantInRoom = {
+			user: user,
+			statement,
+			participantInRoomId
 		};
-		setDoc(statementRef, room, { merge: true });
+		if (roomNumber) participantInRoom.roomNumber = roomNumber;
+
+		ParticipantInRoomSchema.parse(participantInRoom);
+
+		const roomRef = doc(DB, Collections.participants, participantInRoomId);
+
+		setDoc(roomRef, participantInRoom, { merge: true });
+	
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export async function setRoomJoinToDB(
-	statement: Statement,
-	participant?: User,
-	roomNumber?: number,
-): Promise<boolean> {
+export function deleteParticipantToDB(
+	statement: Statement
+): void {
 	try {
-		const { requestDB, user, requestId, requestRef } =
-            await getRequestFromDB(statement, participant);
+		const user = store.getState().user.user;
+		if (!user) throw new Error("User not logged in");
 
-		if (!requestDB.exists()) {
-			// If there is no request, create one
-			await saveToDB({ requestId, requestRef, statement, user });
+		const roomId = getStatementSubscriptionId(statement.parentId, user);
+		if (!roomId) throw new Error("Room id is undefined");
 
-			return true;
-		} else {
-			//if there is a request
-			const request = requestDB.data() as Participant;
+		const roomRef = doc(DB, Collections.participants, roomId);
 
-			return await updateRequestToDB(request, requestRef);
-		}
+		deleteDoc(roomRef);
 	} catch (error) {
-		console.error(error);
-
-		return false;
-	}
-
-    interface SaveToDB {
-        requestId: string;
-        requestRef: DocumentReference<DocumentData, DocumentData>;
-        statement: Statement;
-        user?: User;
-        approved?: boolean;
-        newRoomNumber?: number;
-    }
-
-    //helpers functions
-    async function saveToDB({
-    	requestId,
-    	requestRef,
-    	statement,
-    	user,
-    	approved,
-    	newRoomNumber,
-    }: SaveToDB) {
-    	const _user = user || store.getState().user.user;
-    	if (!_user) throw new Error("User not logged in");
-    	const request: Participant = {
-    		statementId: statement.statementId,
-    		participant: _user,
-    		parentId: statement.parentId,
-    		requestId: requestId,
-    		statement,
-    	};
-    	if (typeof newRoomNumber === "number")
-    		request.roomNumber = newRoomNumber;
-    	if (typeof approved === "boolean") request.approved = approved;
-
-    	await setDoc(requestRef, request);
-    }
-    async function getRequestFromDB(statement: Statement, participant?: User) {
-    	const user = participant ? participant : store.getState().user.user;
-    	if (!user) throw new Error("User not logged in");
-    	const userId = user.uid;
-    	if (!userId) throw new Error("User not logged in");
-
-    	const requestId = getRequestIdToJoinRoom(userId, statement.parentId);
-    	if (!requestId) throw new Error("Request id is undefined");
-
-    	const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
-
-    	const requestDB = await getDoc(requestRef);
-
-    	return { requestDB, user, requestId, requestRef };
-    }
-
-    async function updateRequestToDB(
-    	request: Participant,
-    	requestRef: DocumentReference<DocumentData, DocumentData>,
-    ) {
-    	try {
-    		const user = store.getState().user.user;
-    		if (!user) throw new Error("User not logged in");
-    		if (request.statement === undefined) {
-    			// If the user is not in a room
-    			await saveToDB({
-    				requestId: request.requestId,
-    				requestRef,
-    				statement,
-    				user,
-    				approved: request.approved,
-    			});
-
-    			return true;
-    		} else if (
-    			request.statement.statementId !== statement.statementId
-    		) {
-    			// If the user is already in a room and wants to join another room
-    			await saveToDB({
-    				requestId: request.requestId,
-    				requestRef,
-    				statement,
-    				user,
-    				approved: request.approved,
-    				newRoomNumber: roomNumber,
-    			});
-
-    			return true;
-    		} else {
-    			// If the user is already in the same room, remove the user from the room
-    			const { parentId, participant, requestId } = request;
-    			const updatedRequest = {
-    				parentId,
-    				participant,
-    				requestId,
-    				lastUpdate: new Date().getTime(),
-    			};
-    			await setDoc(requestRef, updatedRequest);
-
-    			return false;
-    		}
-    	} catch (error) {
-    		console.error(error);
-
-    		return false;
-    	}
-    }
-}
-
-export async function setRoomsStateToDB(
-	statement: Statement,
-	roomsState: RoomsStateSelection,
-) {
-	try {
-		//get timers settings from DB
-
-		const statementRef = doc(
-			DB,
-			Collections.statements,
-			statement.statementId,
-		);
-		await setDoc(statementRef, { roomsState }, { merge: true });
-	} catch (error) {
-		roomsState;
 		console.error(error);
 	}
 }
 
-export function setParticipantInRoomToDB(participant: ParticipantInRoom) {
+
+export async function toggleRoomEditingInDB(statementId: string): Promise<void> {
 	try {
-		const { uid, topic, roomNumber } = participant;
+		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+
+		//use transaction
+		await runTransaction(DB, async (transaction) => {
+			try {
+				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
+				if (!roomSettings) {
+					transaction.set(roomSettingsRef, {
+						statementId,
+						isEdit: false,
+						timers: []
+
+					});
+				} else {
+
+					transaction.update(roomSettingsRef, { isEdit: !roomSettings.isEdit });
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		});
+
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+export async function setNewRoomSettingsToDB(statementId: string): Promise<void> {
+	try {
+		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+
+		const roomSettingsDB = await getDoc(roomSettingsRef);
+		if (roomSettingsDB.exists()) return;
+
+		const roomSettings: RoomSettings = {
+			statementId,
+			isEdit: true,
+			timers: [],
+			participantsPerRoom: 7,
+		};
+		roomSettingsSchema.parse(roomSettings);
 		
-		if (!topic) return;
+		setDoc(roomSettingsRef, roomSettings, { merge: true });
+	} catch (error) {
+		console.error(error);
+	}
+}
 
-		const requestId = getRequestIdToJoinRoom(uid, topic.parentId);
-		if (!requestId) throw new Error("Request id is undefined");
+export async function setParticipantsPerRoom({ statementId, add, number }: { statementId: string, add?: number, number?: number }): Promise<void> {
+	try {
+		if (!number && !add) throw new Error("number or add must be defined");
 
-		const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
-		if (topic.statementId)
-			updateDoc(requestRef, { approved: true, roomNumber });
-		else updateDoc(requestRef, { approved: false, roomNumber });
+		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+
+		if (number && number >= 1) {
+			updateDoc(roomSettingsRef, { participantsPerRoom: number });
+
+			return;
+		}
+
+		if (typeof add !== "number") throw new Error("add is not a number");
+
+		//use transaction
+		await runTransaction(DB, async (transaction) => {
+			try {
+				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
+				if (!roomSettings) throw new Error("Room settings not found");
+				const participantsPerRoom = roomSettings.participantsPerRoom || 7;
+
+				if (participantsPerRoom + add < 1) return;
+
+				transaction.update(roomSettingsRef, { participantsPerRoom: participantsPerRoom + add });
+
+			} catch (error) {
+				console.error(error);
+			}
+		});
+
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+export async function divideParticipantIntoRoomsToDB(topics: Statement[], participants: ParticipantInRoom[], participantsPerRoom: number): Promise<void> {
+	try {
+		const _topics = [...topics];
+		const _participants = [...participants];
+
+		const batch = writeBatch(DB);
+		let roomNumber = 1;
+
+		_topics.forEach((topic) => {
+			const participantsInTopic = _participants.filter((participant) => participant.statement.statementId === topic.statementId);
+			participantsInTopic.sort(() => Math.random() - 0.5);
+			const numberOfRooms = Math.ceil(participantsInTopic.length / participantsPerRoom);
+			const topRoomNumber = roomNumber + (numberOfRooms - 1);
+			const initialRoomNumber = roomNumber;
+			let localRoomNumber = roomNumber;
+
+
+			participantsInTopic.forEach((participant) => {
+
+				const participantRef = doc(DB, Collections.participants, participant.participantInRoomId);
+
+				batch.update(participantRef, { roomNumber: localRoomNumber });
+
+				localRoomNumber++;
+
+				if (localRoomNumber > topRoomNumber) localRoomNumber = initialRoomNumber;
+			});
+			roomNumber = topRoomNumber + 1;
+
+		});
+
+		await batch.commit();
+
+	} catch (error) {
+		console.error(error)
+	}
+
+}
+
+export async function clearRoomsToDB(participants: ParticipantInRoom[]): Promise<void> {
+	try {
+
+		const batch = writeBatch(DB);
+		participants.forEach((participant) => {
+			const participantRef = doc(DB, Collections.participants, participant.participantInRoomId);
+			batch.update(participantRef, { roomNumber: 0 });
+		});
+
+		await batch.commit();
+
 	} catch (error) {
 		console.error(error);
 	}

@@ -1,0 +1,30 @@
+.dot {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1px solid #3498db;
+    transition: all 200ms;
+
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    // transform: rotate(-45deg);
+    background-color: rgba(1, 68, 68, 0.411);
+    color: white;
+     padding: 1rem;
+    border-radius: 0.36rem;
+    z-index: 1003;
+    font-size: .8rem;
+    min-width: 12rem;
+
+    &__title{
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+}

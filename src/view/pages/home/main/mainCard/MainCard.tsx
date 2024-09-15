@@ -25,6 +25,8 @@ const MainCard: FC<Props> = ({ statement }) => {
   const subscribedStatements = getLastElements(_subscribedStatements, 5) as StatementSubscription[];
   const statementImgUrl = statement.imagesURL?.main
 
+  const description = statement.description && statement.description.length>30 ?`${statement.description.slice(0,144)} ...`: statement.description ;
+
   return (
     <div className="main-card">
       <Link
@@ -36,7 +38,7 @@ const MainCard: FC<Props> = ({ statement }) => {
           <StatementChatMore statement={statement} />
         </div>
 
-        <Text text={statement.statement} />
+        <Text statement={statement.statement}  description={description}/>
         <div className="main-card__updates">
           {subscribedStatements.map((subscribedStatement) => (
             <UpdateMainCard

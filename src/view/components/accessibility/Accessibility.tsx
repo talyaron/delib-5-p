@@ -6,8 +6,10 @@ import {
 	useAppSelector,
 } from "@/controllers/hooks/reduxHooks";
 import {
+	colorContrastSelector,
 	fontSizeSelector,
 	increaseFontSize,
+	toggleColorContrast,
 	userSelector,
 } from "@/model/users/userSlice";
 import { updateUserFontSize } from "@/controllers/db/users/setUsersDB";
@@ -17,11 +19,28 @@ import AccessibilityIcon from "@/assets/icons/accessibilityIcon.svg?react";
 import { defaultFontSize } from "@/model/fonts/fontsModel";
 import IconButton from "../iconButton/IconButton";
 import "./Accessibility.scss";
+import { colorMappings } from "./colorContrast";
 
 const Accessibility = () => {
 	const dispatch = useAppDispatch();
 	const fontSize = useAppSelector(fontSizeSelector);
 	const user = useAppSelector(userSelector);
+	const colorContrast = useAppSelector(colorContrastSelector)
+	
+	
+	useEffect(() => {
+		Object.entries(colorMappings).forEach(([key, contrastKey]) => {
+			document.documentElement.style.setProperty(
+			  key,
+			  colorContrast ? `var(${contrastKey})` : '' 
+			);
+		  });
+		
+	  }, [colorContrast]);
+
+	const handleToggleContrast = () => {
+		dispatch(toggleColorContrast());
+	};
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [_fontSize, setFontSize] = useState(fontSize || defaultFontSize);
@@ -61,11 +80,13 @@ const Accessibility = () => {
 	return (
 		<div
 			className="accessibility"
-			style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}
+			style={!isOpen ? { left: "-18.6rem" } : { left: "0rem" }}
 		>
-			<button className="accessibility-button" onClick={handleOpen}>
-				
+			<button className="accessibility-button" onClick={handleOpen}>			
 				<AccessibilityIcon />
+			</button>
+			<button onClick={handleToggleContrast}>
+                Toggle Contrast
 			</button>
 			<div className="accessibility-fonts">
 				<IconButton
@@ -74,7 +95,7 @@ const Accessibility = () => {
 				>
                     +
 				</IconButton>
-				<div className="accessibility__fonts__size">
+				<div className="accessibility__fonts__size" role="status">
 					{user ? fontSize : _fontSize}px
 				</div>
 				<IconButton
