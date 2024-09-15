@@ -240,7 +240,6 @@ const StatementMain: FC = () => {
 								subStatements={subStatements}
 								handleShowTalker={handleShowTalker}
 								setShowAskPermission={setShowAskPermission}
-								toggleAskNotifications={toggleAskNotifications}
 							/>
 						</MapProvider>
 					</div>
