@@ -25,7 +25,7 @@ export async function findSimilarStatements(
 	const statementsText = subStatements.map((subStatement) => ({
 		statement: removeNonAlphabeticalCharacters(
 			subStatement.statement.split('\n')[0]
-		),
+		).normalize("NFC"),
 		id: subStatement.statementId,
 	}));
 
@@ -39,10 +39,13 @@ export async function findSimilarStatements(
 		statementsText.map((s) => s.statement),
 		userInput
 	);
+	console.log('genAiResponse:', genAiResponse)
 
 	const similarStatementsIds = statementsText
 		.filter((subStatement) => genAiResponse.includes(subStatement.statement))
 		.map((subStatement) => subStatement.id);
+
+	console.log('similarStatementsIds:', similarStatementsIds)
 
 	response.status(200).send(similarStatementsIds);
 }
@@ -50,10 +53,19 @@ export async function findSimilarStatements(
 let genAI: GoogleGenerativeAI;
 
 onInit(() => {
-	genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+	try {
+		if (!process.env.GOOGLE_API_KEY) {
+			throw new Error('Missing GOOGLE_API_KEY environment variable');
+		}
+		console.log("initiating genAI")
+		genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+	} catch (error) {
+		console.error('Error initializing GenAI', error);
+	}
+
 });
 
-console.log("GEMINI_API_KEY: ", process.env.GEMINI_API_KEY);
+console.log("process.env.GOOGLE_API_KEY: ", process.env.GOOGLE_API_KEY);
 
 export async function runGenAI(allStatements: string[], userInput: string) {
 	try {
