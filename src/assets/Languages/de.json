@@ -158,8 +158,11 @@
     "Compose your suggestion": "Ihren Vorschlag verfassen",
     "Suggestion title. What people would see at first sight": "Titel des Vorschlags. Was Menschen auf den ersten Blick sehen würden",
     "Formulate here the description. Add as much detail as you can to help others understand your suggestion": "Formulieren Sie hier die Beschreibung. Fügen Sie so viele Details wie möglich hinzu, um anderen zu helfen, Ihren Vorschlag zu verstehen",
-    "Submit Suggestion":    "Vorschlag einreichen",
+    "Submit Suggestion": "Vorschlag einreichen",
     "Here are several results that were found in the following topic": "Hier sind mehrere Ergebnisse, die in dem folgenden Thema gefunden wurden",
     "Searching for similar suggestions": "Suche nach ähnlichen Vorschlägen",
-    "Would you like to choose this suggestion": "Möchten Sie diesen Vorschlag auswählen"
+    "Would you like to choose this suggestion": "Möchten Sie diesen Vorschlag auswählen",
+    "Continue with your original suggestion": "Mit Ihrem ursprünglichen Vorschlag fortfahren",
+    "Continue with this suggestion": "Mit diesem Vorschlag fortfahren",
+    "Back": "Zurück"
 }

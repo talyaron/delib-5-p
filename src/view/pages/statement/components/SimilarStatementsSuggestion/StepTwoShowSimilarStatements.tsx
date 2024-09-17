@@ -70,7 +70,7 @@ export default function StepTwoShowSimilarStatements({
 			<div className='similarities__buttonBox'>
 				<SubmitStatementButton
 					icon={SendIcon}
-					text='Continue compose solution'
+					text={t('Continue with your original suggestion')}
 					textColor='var(--white)'
 					onClick={handleSubmit}
 				/>

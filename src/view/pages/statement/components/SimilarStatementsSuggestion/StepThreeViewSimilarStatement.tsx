@@ -31,10 +31,10 @@ export default function StepThreeViewSimilarStatement({
 				<button
 					className='twoButtonBox__backButton'
 					onClick={() => setCurrentStep((prev) => prev - 1)}
-				>Back</button>
+				>{t("Back")}</button>
 				<SubmitStatementButton
 					icon={SendIcon}
-					text='Choose this solution'
+					text={t('Continue with this suggestion')}
 					textColor='var(--white)'
 					onClick={handleSimilarStatementChosen}
 				/>
