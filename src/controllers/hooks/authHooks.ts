@@ -58,7 +58,7 @@ export function useIsAuthorized(statementId: string | undefined): {
 	// const [role, setRole] = useState<Role | undefined>(Role.unsubscribed);
 	useEffect(() => {
 		//if statement is open, and the user has not subscribed to it, subscribe to it
-		if(statement?.membership?.access === Access.open && !statementSubscription){
+		if(statement?.creatorId !== user?.uid &&  statement?.membership?.access === Access.open && !statementSubscription){
 			setStatementSubscriptionToDB(statement, Role.member, false	);
 		}
 	}, [statementId, user, statement, statementSubscription]);
