@@ -175,5 +175,15 @@
   "Against": "מתנגדים",
   "Voters": "מצביעים",
   "Did Not Vote": "לא הצביעו",
-  "Get Non Voters": "הבא לא מצביעים"
+  "Get Non Voters": "הבא לא מצביעים",
+  "Compose your suggestion": "כתוב/י את הפתרון שלך",
+  "Suggestion title. What people would see at first sight": "כותרת הפתרון. מה שאנשים יראו במבט ראשון",
+  "Formulate here the description. Add as much detail as you can to help others understand your suggestion": "כתוב/י כאן את התיאור. הוסף/י כמה שיותר פרטים כדי לעזור לאחרים להבין את הפתרון שלך",
+  "Submit Suggestion": "הוספ/י הצעה",
+  "Here are several results that were found in the following topic": "הנה מספר תוצאות דומות שנמצאו ",
+  "Searching for similar suggestions": "מחפש פתרונות דומים",
+  "Would you like to choose this suggestion": "האם תרצה/י לבחור את הפתרון הזה"
+
+  
+ 
 }

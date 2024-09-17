@@ -159,12 +159,7 @@ export default function SimilarStatementsSuggestion({
 							</div>
 						) : null))
 						}
-						<div className={`similarities__header__types  ${currentStep === 2 ? 'hidden' : ''}`}>
-							<div className='type'>
-								<LightBulbPlusIcon />
-								<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>
-							</div>
-						</div>
+						
 					</header>
 					{renderStep()}
 				</main>

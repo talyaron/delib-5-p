@@ -158,5 +158,12 @@
     "Against": "ضد",
     "Voters": "الناخبين",
     "Did Not Vote": "لم يصوت",
-    "Get Non Voters": "الحصول على الناخبين غير المصوتين"
+    "Get Non Voters": "الحصول على الناخبين غير المصوتين",
+    "Compose your suggestion": "أكتب اقتراحك",
+    "Suggestion title. What people would see at first sight": "عنوان الاقتراح. ما سيراه الناس في النظرة الأولى",
+    "Formulate here the description. Add as much detail as you can to help others understand your suggestion": "صياغة الوصف هنا. أضف قدر الإمكان من التفاصيل لمساعدة الآخرين على فهم اقتراحك",
+    "Submit Suggestion": "إرسال الاقتراح",
+    "Here are several results that were found in the following topic": "هناك عدة نتائج تم العثور عليها في الموضوع التالي",
+    "Searching for similar suggestions": "البحث عن اقتراحات مماثلة",
+    "Would you like to choose this suggestion": "هل ترغب في اختيار هذا الاقتراح"
 }

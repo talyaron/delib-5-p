@@ -22,7 +22,7 @@ export default function StepTwoShowSimilarStatements({
 	similarStatements,
 	setViewSimilarStatement
 }: SimilarStatementsSuggestionProps) {
-	const { dir } = useLanguage();
+	const { dir, t } = useLanguage();
 	const handleViewSimilarStatement = (statement: {
 		title: string;
 		description: string;
@@ -37,21 +37,21 @@ export default function StepTwoShowSimilarStatements({
 
 	return (
 		<>
-			<h4 className='similarities__title'>Compose your solution</h4>
+			<h4 className='similarities__title'>{t("Searching for similar suggestions")}...</h4>
 			<div className='similarities__titleInput activeTitle'>
 				<label
 					htmlFor='titleInput'
-				>Your statement title</label>
+				>{t("Title")}</label>
 				<input
 					type='text'
 					id='titleInput'
 					className={newStatementInput.title ? 'active' : ''}
-					placeholder='Statement title. What people would see at first sight.'
+					placeholder={t('Suggestion title. What people would see at first sight') }
 					value={newStatementInput.title}
 					disabled
 				/>
 			</div>
-			<h4 className='alertText'>Here are several results that were found in the following topic:</h4>
+			<h4 className='alertText'>{t("Here are several results that were found in the following topic")}:</h4>
 			<section className='similarities__statementsBox'>
 				{similarStatements.map((statement, index) => (
 					<div

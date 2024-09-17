@@ -92,9 +92,6 @@ export async function runGenAI(allStatements: string[], userInput: string) {
 	}
 }
 
-function removeNonAlphabeticalCharacters(input: string) {
-	return input.replace(/[^a-zA-Z ]/g, '');
-}
 
 function extractAndParseJsonString(input: string): { strings: string[] } {
 	try {

@@ -170,5 +170,12 @@
     "Against": "Against",
     "Voters": "Voters",
      "Did Not Vote": "Did Not Vote",
-  "Get Non Voters": "Get Non Voters"
+  "Get Non Voters": "Get Non Voters",
+  "Compose your suggestion:": "Compose your suggestion:",
+  "Suggestion title. What people would see at first sight": "Suggestion title. What people would see at first sight",
+  "Formulate here the description. Add as much detail as you can to help others understand your suggestion": "Formulate here the description. Add as much detail as you can to help others understand your suggestion",
+  "Submit Suggestion": "Submit Suggestion",
+  "Here are several results that were found in the following topic": "Here are several results that were found in the following topic",
+  "Searching for similar suggestions": "Searching for similar suggestions",
+  "Would you like to choose this suggestion": "Would you like to choose this suggestion"
 }
