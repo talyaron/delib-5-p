@@ -39,8 +39,13 @@ export async function setStatementSubscriptionToDB(
 			});
 		}
 
+		//check if user is already subscribed
+		const statementSubscription = await getDoc(statementsSubscribeRef);
+		if (statementSubscription.exists()) return;
+
+		//if not subscribed, subscribe
 		const subscriptionData = {
-			user,
+			user, 
 			statementsSubscribeId,
 			statement,
 			role,
