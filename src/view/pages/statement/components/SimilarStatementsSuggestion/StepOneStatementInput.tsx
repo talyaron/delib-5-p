@@ -45,26 +45,18 @@ export default function StepOneStatementInput({
 			statementId,
 			newStatementInput.title
 		);
+		
 
 		const getSubStatements = subStatements
 			.filter((subStatement) =>
 				similarStatementsIds.includes(subStatement.statementId)
 			)
 			.map((subState) => {
-				const arrayOfStatementParagraphs =
-					subState?.statement.split('\n') || [];
-				const title = removeNonAlphabeticalCharacters(
-					arrayOfStatementParagraphs[0]
-				);
-
-				// Get all elements of the array except the first one
-				const description = removeNonAlphabeticalCharacters(
-					arrayOfStatementParagraphs.slice(1).join('\n')
-				);
+				
 
 				return {
-					title,
-					description,
+					title: subState.statement,
+					description: subState.description || '',
 				};
 			});
 
