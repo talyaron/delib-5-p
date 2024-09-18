@@ -11,6 +11,7 @@
 
 export const SetWaitingListCont = async (
 	file: File, 
+
 	// statement: Statement
 ) => {
 	const reader = new FileReader();

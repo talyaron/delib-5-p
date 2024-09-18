@@ -239,7 +239,7 @@ export async function getIsSubscribed(
 }
 
 export async function getStatementSubscriptionFromDB(
-	statementSubscrionId: string,
+	statementSubscriptionId: string,
 ): Promise<StatementSubscription | undefined> {
 	try {
 		const user = store.getState().user.user;
@@ -247,13 +247,13 @@ export async function getStatementSubscriptionFromDB(
 
 
 
-		if (!statementSubscrionId)
+		if (!statementSubscriptionId)
 			throw new Error("Statement subscription id is undefined");
 
 		const subscriptionRef = doc(
 			DB,
 			Collections.statementsSubscribe,
-			statementSubscrionId,
+			statementSubscriptionId,
 		);
 		const subscriptionDB = await getDoc(subscriptionRef);
 
@@ -265,6 +265,25 @@ export async function getStatementSubscriptionFromDB(
 		return subscription;
 	} catch (error) {
 		console.error(error);
+	}
+}
+
+export async function getTopParentSubscriptionFromDByStatement(statement: Statement): Promise<StatementSubscription | undefined> {
+	try {
+		const {topParentId, parentId} = statement;
+		if(parentId === "top") return undefined;
+
+		if(!topParentId) throw new Error("Top parent id is undefined");
+		const user = store.getState().user.user;
+		if (!user) throw new Error("User not logged in");
+		const topParentSubscriptionId = getStatementSubscriptionId(topParentId, user);
+		if(!topParentSubscriptionId) throw new Error("Top parent subscription id is undefined");
+		const subscription = await getStatementSubscriptionFromDB(topParentSubscriptionId);
+		
+		return subscription;
+	} catch (error) {
+		console.error(error);
+		
 	}
 }
 
@@ -354,6 +373,7 @@ export async function getTopParentSubscription(
 			topParentSubscription =
 				await getStatementSubscriptionFromDB(topParentSubscriptionId);
 		}
+		if(!topParentSubscription) throw new Error("Top parent subscription not found");
 		StatementSubscriptionSchema.parse(topParentSubscription);
 
 		return topParentSubscription;
