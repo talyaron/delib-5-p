@@ -3,8 +3,6 @@ import FullScreenModal from '@/view/components/fullScreenModal/FullScreenModal';
 
 import './similarStatementsSuggestion.scss';
 
-// import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
-import LightBulbPlusIcon from '@/assets/icons/lightBulbPlus.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
 import illustration from '@/assets/images/similarities-Illustration.png';
@@ -159,12 +157,7 @@ export default function SimilarStatementsSuggestion({
 							</div>
 						) : null))
 						}
-						<div className={`similarities__header__types  ${currentStep === 2 ? 'hidden' : ''}`}>
-							<div className='type'>
-								<LightBulbPlusIcon />
-								<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>
-							</div>
-						</div>
+						
 					</header>
 					{renderStep()}
 				</main>
