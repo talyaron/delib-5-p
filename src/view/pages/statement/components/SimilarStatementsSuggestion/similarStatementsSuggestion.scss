@@ -15,6 +15,11 @@
         flex-direction: column;
         margin-top: 2rem;
 
+        @media screen and (max-width: 768px) {
+            display: none;
+
+        }
+
         &__top {
             display: flex;
             justify-content: space-between;
@@ -194,11 +199,13 @@
     }
 
 
-    &__statementsBox {
+    &__suggestions {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        flex: 1;
+        gap: 1rem;       
+        background-color: rgb(230, 230, 230);
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        height: fit-content;
 
         &__statementTitle {
             font-size: 1rem;
@@ -212,11 +219,21 @@
             letter-spacing: 0.01rem;
         }
 
-        &__similarStatement {
+        .suggestion {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             padding: 0.5rem;
+            background-color: rgb(216, 216, 216);
+            border-radius: .3rem;
+            cursor: pointer;
+            user-select: none   ;
+
+            &__title {
+                font-size: 1rem;
+                font-weight: 600;
+                letter-spacing: 0.01rem;
+            }
 
             hr {
                 height: 1px;
@@ -248,12 +265,14 @@
 
     &__buttonBox {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         width: fit-content;
         margin: 0 auto;
         padding: none;
         width: 100%;
-        margin-top: auto;
+        position: sticky;
+        bottom: 6rem;
+
     }
 
     .twoButtonBox {
