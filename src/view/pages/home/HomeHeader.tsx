@@ -7,7 +7,6 @@ import InstallIcon from "@/assets/icons/installIcon.svg?react";
 import InvitationIcon from "@/assets/icons/invitation.svg?react";
 
 // Components
-import { useDispatch } from "react-redux";
 import { install } from "@/App";
 import DisconnectIcon from "@/assets/icons/disconnectIcon.svg?react";
 import { handleLogout } from "@/controllers/general/helpers";
@@ -23,7 +22,7 @@ export default function HomeHeader() {
 	const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
 	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
 	const [showInvitationModal, setShowInvitationModal] = useState(false);
-	const dispatch = useDispatch();
+	
 	const { t, dir } = useLanguage();
 	useEffect(() => {
 		// for deferred app install
@@ -66,7 +65,7 @@ export default function HomeHeader() {
 						<MenuOption
 							icon={<DisconnectIcon style={{ color: "#4E88C7" }} />}
 							label={t("Disconnect")}
-							onOptionClick={() => handleLogout(dispatch)}
+							onOptionClick={() => handleLogout()}
 						/>
 						<MenuOption
 							icon={<InvitationIcon style={{ color: "#4E88C7" }}/>}
