@@ -87,12 +87,15 @@ export default function SimilarStatementsSuggestion({
 			newStatementInput={newStatementInput}
 			similarStatements={similarStatements}
 			setViewSimilarStatement={setViewSimilarStatement}
+			setShowModal={setShowModal}
+			
 		/>,
 		<StepThreeViewSimilarStatement
 			key={2}
 			setCurrentStep={setCurrentStep}
 			viewSimilarStatement={viewSimilarStatement}
 			setShowModal={setShowModal}
+			
 		/>,
 		<StepFourContinueWithOwnInput
 			key={3}

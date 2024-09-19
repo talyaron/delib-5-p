@@ -47,7 +47,7 @@ const Accessibility = () => {
 
 	useEffect(() => {
 		// document.documentElement.style.fontSize = fontSize + "px";
-		document.body.style.fontSize = fontSize + "px";
+		document.documentElement.style.fontSize = fontSize + "px";
 	}, [fontSize]);
 
 	function handleChangeFontSize(number: number) {

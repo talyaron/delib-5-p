@@ -7,6 +7,7 @@ import { subStatementsSelector } from '../../StatementMain';
 import { RootState } from '@/model/store';
 import SubmitStatementButton from './SubmitStatementButton';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button, { ButtonType } from '@/view/components/buttons/button/Button';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -57,6 +58,7 @@ export default function StepOneStatementInput({
 				
 
 				return {
+					statementId: subState.statementId,
 					title: subState.statement,
 					description: subState.description || '',
 				};
@@ -97,7 +99,10 @@ export default function StepOneStatementInput({
 				/>
 			</div>
 			{isLoading ? (
+				<>
+				<p>Search for similar suggestions...</p>
 				<Loader />
+				</>
 			) : (
 				<>
 					<div className='similarities__titleInput'>
@@ -116,11 +121,11 @@ export default function StepOneStatementInput({
 						/>
 					</div>
 					<div className='similarities__buttonBox'>
-						<SubmitStatementButton
-							icon={SendIcon}
+						<Button
+							icon={<SendIcon />}
 							text={t('Submit Suggestion')}
-							textColor='var(--white)'
-							onClick={handleSubmit}
+							buttonType={ButtonType.PRIMARY}
+							onClick={(e) => { e.preventDefault(); handleSubmit(); }}
 						/>
 					</div>
 				</>

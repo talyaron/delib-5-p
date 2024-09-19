@@ -1,44 +1,46 @@
-import React from 'react';
-import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import SubmitStatementButton from './SubmitStatementButton';
-import similarEyeIcon from '@/assets/icons/similarEyeIcon.svg';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
+import React from "react";
+import SendIcon from "@/assets/icons/send-icon-pointing-up-and-right.svg?react";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Button, { ButtonType } from "@/view/components/buttons/button/Button";
+import { Statement } from "delib-npm";
 
 interface SimilarStatementsSuggestionProps {
-	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-	newStatementInput: { title: string; description: string };
-	setViewSimilarStatement: React.Dispatch<
-		React.SetStateAction<{
-			title: string;
-			description: string;
-		}>
-	>;
-	similarStatements: { title: string; description: string }[];
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  newStatementInput: { title: string; description: string };
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setViewSimilarStatement: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      description: string;
+    }>
+  >;
+  similarStatements: { title: string; description: string }[];
 }
 
 export default function StepTwoShowSimilarStatements({
-	setCurrentStep,
-	newStatementInput,
-	similarStatements,
-	setViewSimilarStatement
+  setCurrentStep,
+  setShowModal,
+  similarStatements,
 }: SimilarStatementsSuggestionProps) {
-	const { dir, t } = useLanguage();
-	const handleViewSimilarStatement = (statement: {
-		title: string;
-		description: string;
-	}) => {
-		setViewSimilarStatement(statement);
-		setCurrentStep(2);
-	};
+  const { t } = useLanguage();
+  const handleViewSimilarStatement = (statement:Statement) => {
+	const anchor = document.getElementById(statement.statementId);
+	console.log(anchor);
+	if(anchor) anchor.scrollIntoView({behavior: 'smooth'});
+	
+	setShowModal(false)
+  };
 
-	const handleSubmit = () => {
-		setCurrentStep((prev) => prev + 2);
-	};
+  const handleSubmit = () => {
+    setCurrentStep((prev) => prev + 2);
+  };
 
-	return (
-		<>
-			<h4 className='similarities__title'>{t("Searching for similar suggestions")}...</h4>
-			<div className='similarities__titleInput activeTitle'>
+  return (
+    <>
+      <h1 className="similarities__title">
+        {t("Similar suggestions")}
+      </h1>
+      {/* <div className='similarities__titleInput activeTitle'>
 				<label
 					htmlFor='titleInput'
 				>{t("Title")}</label>
@@ -50,32 +52,39 @@ export default function StepTwoShowSimilarStatements({
 					value={newStatementInput.title}
 					disabled
 				/>
-			</div>
-			<h4 className='alertText'>{t("Here are several results that were found in the following topic")}:</h4>
-			<section className='similarities__statementsBox'>
-				{similarStatements.map((statement, index) => (
-					<div
-						key={index}
-						className='similarities__statementsBox__similarStatement'
-						onClick={() => handleViewSimilarStatement(statement)}
-					>
-						<p className='similarities__statementsBox__statementTitle'>{statement.title}</p>
-						<p className='similarities__statementsBox__statementDescription'>{statement.description}</p>
-						<img className={`${dir === 'rtl' ? 'similarities__statementsBox__rtl__similarEyeIcon' : 'similarities__statementsBox__similarEyeIcon'}`} src={similarEyeIcon}  alt="Similar Eye Icon" />
-						<hr />
-					</div>
-				))}
-			</section>
+			</div> */}
+      <h4 className="alertText">
+        {t("Here are several results that were found in the following topic")}:
+      </h4>
+      <section className="similarities__suggestions">
+        {similarStatements.map((statement, index) => (
+          <div
+            key={index}
+            className="suggestion"
+            onClick={() => handleViewSimilarStatement(statement)}
+          >
+            <p className="suggestion__title">
+              {statement.title}
+            </p>
+            <p className="suggestion__description">
+              {statement.description}
+            </p>
 
-			<div className='similarities__buttonBox'>
-				<SubmitStatementButton
-					icon={SendIcon}
-					text={t('Continue with your original suggestion')}
-					textColor='var(--white)'
-					onClick={handleSubmit}
-				/>
-			</div>
-		</>
-	);
+            <hr />
+          </div>
+        ))}
+		<div className="similarities__buttonBox">
+	  <Button text={t("Back")} onClick={() => setCurrentStep(0)} buttonType={ButtonType.SECONDARY}/>
+        <Button
+          icon={<SendIcon />}
+          text={t("Continue with your original suggestion")}
+          onClick={handleSubmit}
+        />
+        
+      </div>
+      </section>
+
+      
+    </>
+  );
 }
-
