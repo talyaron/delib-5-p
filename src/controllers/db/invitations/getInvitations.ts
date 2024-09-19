@@ -27,7 +27,7 @@ export async function getInvitationPathName(number:number):Promise<string | unde
 		if(typeof number !== "number") number = Number(number);
 	
 		const invitationsRef = collection(DB, Collections.invitations);
-		const q = query(invitationsRef, where("number", "==", number));
+		const q = query(invitationsRef, where("number", "==", number), where("lastUpdate", ">", new Date().getTime() - 24 * 60 * 60 * 1000), orderBy("number", "desc"), limit(1));
 		const numbersDB = await getDocs(q);
 		const numbers = numbersDB.docs.map(doc => doc.data());
 		
