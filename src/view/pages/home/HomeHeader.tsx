@@ -48,7 +48,7 @@ export default function HomeHeader() {
 	return (
 		<div className={`homePage__header ${dir}`}>
 			<div className="homePage__header__wrapper">
-				<div
+				<h1
 					className="homePage__header__wrapper__title"
 					children={t("Delib")}
 				/>
