@@ -26,14 +26,16 @@ interface SimilarStatementsSuggestionProps {
 	getSubStatements?: () => Promise<void>;
 }
 
-interface DisplayStatement {
+export interface DisplayStatement {
 	title: string;
 	description: string;
+	statementId: string;
 }
 
 const initDisplayStatement: DisplayStatement = {
 	title: '',
 	description: '',
+	statementId: '',
 };
 
 export default function SimilarStatementsSuggestion({

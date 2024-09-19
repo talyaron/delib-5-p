@@ -2,19 +2,17 @@ import React from "react";
 import SendIcon from "@/assets/icons/send-icon-pointing-up-and-right.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button, { ButtonType } from "@/view/components/buttons/button/Button";
-import { Statement } from "delib-npm";
+import { DisplayStatement } from "./SimilarStatementsSuggestion";
+
 
 interface SimilarStatementsSuggestionProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  newStatementInput: { title: string; description: string };
+  newStatementInput: DisplayStatement;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setViewSimilarStatement: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      description: string;
-    }>
+    React.SetStateAction<DisplayStatement>
   >;
-  similarStatements: { title: string; description: string }[];
+  similarStatements:DisplayStatement[];
 }
 
 export default function StepTwoShowSimilarStatements({
@@ -23,7 +21,7 @@ export default function StepTwoShowSimilarStatements({
   similarStatements,
 }: SimilarStatementsSuggestionProps) {
   const { t } = useLanguage();
-  const handleViewSimilarStatement = (statement:Statement) => {
+  const handleViewSimilarStatement = (statement:DisplayStatement) => {
 	const anchor = document.getElementById(statement.statementId);
 	console.log(anchor);
 	if(anchor) anchor.scrollIntoView({behavior: 'smooth'});

@@ -5,18 +5,18 @@ import { findSimilarStatements } from '@/controllers/db/statements/getSimilarsta
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { subStatementsSelector } from '../../StatementMain';
 import { RootState } from '@/model/store';
-import SubmitStatementButton from './SubmitStatementButton';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';
+import { DisplayStatement } from './SimilarStatementsSuggestion';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-	newStatementInput: { title: string; description: string };
+	newStatementInput: DisplayStatement;
 	setNewStatementInput: React.Dispatch<
-		React.SetStateAction<{ title: string; description: string }>
+		React.SetStateAction<DisplayStatement>
 	>;
 	setSimilarStatements: React.Dispatch<
-		React.SetStateAction<{ title: string; description: string }[]>
+		React.SetStateAction<DisplayStatement[]>
 	>;
 	onFormSubmit: () => void;
 	statementId: string;
