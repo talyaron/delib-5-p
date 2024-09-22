@@ -7,7 +7,7 @@ interface Props {
 
 export default function PlayIcon({ onClick, color="#5770F4"}: Props) {
 	return (
-		<div  onClick={onClick}>
+		<div  onClick={onClick} role="button" aria-label="Play" tabIndex={0} >
 			<svg
 				width="50"
 				height="58"

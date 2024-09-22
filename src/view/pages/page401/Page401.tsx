@@ -17,10 +17,12 @@ const Page401 = () => {
 			<img
 				className="page401__titleImg"
 				src="/src/assets/images/401-error.png"
+				alt="Title 404 Img"
 			/>
 			<img
 				className="page401__img"
 				src="/src/assets/images/401-img.png"
+				alt="Dog tangled in cables"
 			/>
 			<p className="page401__stamp">
                 From the Institute for Deliberative Democracy

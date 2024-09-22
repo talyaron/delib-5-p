@@ -38,19 +38,6 @@ export default function StepTwoShowSimilarStatements({
       <h1 className="similarities__title">
         {t("Similar suggestions")}
       </h1>
-      {/* <div className='similarities__titleInput activeTitle'>
-				<label
-					htmlFor='titleInput'
-				>{t("Title")}</label>
-				<input
-					type='text'
-					id='titleInput'
-					className={newStatementInput.title ? 'active' : ''}
-					placeholder={t('Suggestion title. What people would see at first sight') }
-					value={newStatementInput.title}
-					disabled
-				/>
-			</div> */}
       <h4 className="alertText">
         {t("Here are several results that were found in the following topic")}:
       </h4>
@@ -67,6 +54,7 @@ export default function StepTwoShowSimilarStatements({
             <p className="suggestion__description">
               {statement.description}
             </p>
+
 
             <hr />
           </div>

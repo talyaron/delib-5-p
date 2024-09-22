@@ -1,17 +1,17 @@
 import React, { FC, useState } from "react";
 
 // Third party libraries
-import { Statement, Screen, StatementType } from "delib-npm";
+import { Screen, Statement, StatementType } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
 
 import PlusIcon from "@/assets/icons/plusIcon.svg?react";
 import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
-import RandomIcon from "@/assets/icons/randomIcon.svg?react";
-import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
 import NewestIcon from "@/assets/icons/newIcon.svg?react";
+import RandomIcon from "@/assets/icons/randomIcon.svg?react";
 import SortIcon from "@/assets/icons/sort.svg?react";
+import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
 
 import useStatementColor from "@/controllers/hooks/useStatementColor";
 import {
@@ -20,7 +20,6 @@ import {
 	questionsArray,
 	votesArray,
 } from "./StatementBottomNavModal";
-
 import "./StatementBottomNav.scss";
 
 interface Props {
@@ -67,14 +66,16 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	return (
 		<>
 			{isNavigationOpen && (
-				<div
+				<button
 					className="invisibleBackground"
 					onClick={() => setIsNavigationOpen(false)}
+					aria-label="Close navigation"
 				/>
 			)}
 			<div className={showSorting?"statement-bottom-nav statement-bottom-nav--show":"statement-bottom-nav"}>
 				<button
 					className="add-option-button"
+					aria-label="Add option"
 					style={statementColor}
 					onClick={handleMidIconClick}
 					data-cy="bottom-nav-mid-icon"
@@ -90,6 +91,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 							<Link
 								className={`open-nav-icon ${showSorting ? "active" : ""}`}
 								to={navItem.link}
+								aria-label="Sorting options"
 								key={navItem.id}
 								onClick={() => setShowSorting(false)}
 							>
@@ -101,9 +103,9 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 							<span className="button-name">{navItem.name}</span>
 						</div>
 					))}
-					<div className="sort-button" onClick={handleSortingClick}>
+					<button className="sort-button" onClick={handleSortingClick} aria-label="Sort items">
 						<SortIcon />
-					</div>
+					</button>
 				</div>
 			</div>
 		</>

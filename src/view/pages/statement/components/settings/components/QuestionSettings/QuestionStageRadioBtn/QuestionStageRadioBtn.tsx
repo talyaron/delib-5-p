@@ -42,7 +42,7 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 				{stageInfo ? stageInfo.icon : <LightBulbIcon className="img" />}
 				{stage === QuestionStage.suggestion &&<div className="number">{numberOfEvaluators}</div>}
 			</div>
-			<div
+			<button
 				className="question-stage-radio-btn__radio"
 				onClick={() => {
 					setQuestionStage({ statementId: statement.statementId, stage });
@@ -60,7 +60,7 @@ const QuestionStageRadioBtn: FC<Props> = ({ stage, statement }) => {
 					<div className="radio-button__inner"></div>
 				</div>
 				{t(stageInfo ? stageInfo.name : stage)}
-			</div>
+			</button>
 		</div>
 	);
 };

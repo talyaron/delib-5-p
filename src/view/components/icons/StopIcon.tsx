@@ -8,7 +8,7 @@ export default function StopIcon({ onClick, color = "#5899E0" }: Props) {
 
 
 	return (
-		<div  onClick={onClick}>
+		<div  onClick={onClick} role="button" aria-label="Stop" tabIndex={0}>
 			<svg
 				width="50"
 				height="59"

@@ -11,11 +11,11 @@ const NewMessages:FC<Props> = ({newMessages,setNewMessages,scrollToBottom}) => {
 	if(newMessages === 0) return null;
 
 	return (
-		<div className={styles.newMessages} onClick={()=>{
+		<button className={styles.newMessages} onClick={()=>{
 			setNewMessages(0)
 			scrollToBottom()
         
-		}}> {newMessages}</div>
+		}}> {newMessages}</button>
 	)
 }
 

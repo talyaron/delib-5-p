@@ -52,7 +52,7 @@ const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
 
 	function ToastInner() {
 		return (
-			<div className="follow-me-toast" onClick={handleRemoveToast}>
+			<button className="follow-me-toast" onClick={handleRemoveToast}>
 				<span>
 					{t(_isAdmin ? "Follow Mode Active" : "Follow Instructor")}
 				</span>
@@ -63,7 +63,7 @@ const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
 				>
 					<FollowMeIcon color="white" />
 				</div>
-			</div>
+			</button>
 		);
 	}
 };

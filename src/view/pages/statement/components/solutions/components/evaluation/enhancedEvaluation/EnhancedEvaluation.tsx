@@ -40,8 +40,9 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 		<div
 			className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
 		>
-			<div
+			<button
 				className="evaluation-thumbs"
+				role="button"
 				onClick={() => {
 					setIsEvaluationPanelOpen(!isEvaluationPanelOpen);
 				}}
@@ -55,7 +56,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 						isEvaluationPanelOpen={isEvaluationPanelOpen}
 					/>
 				))}
-			</div>
+			</button>
 			{shouldDisplayScore && (
 				<div
 					className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
