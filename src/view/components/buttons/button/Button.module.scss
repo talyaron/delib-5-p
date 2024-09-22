@@ -54,8 +54,10 @@
     border: solid 2px var(--white);
 
     svg {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      margin: .2rem;
+
     }
 
     &--right {
@@ -70,4 +72,14 @@
   &--with-icon {
     padding-right: 2.5rem;
   }
+}
+
+.rtl {
+  flex-direction: row-reverse;
+  svg{
+    transform:scaleX(-1);
+  }
+}
+.ltr {
+  flex-direction: row;
 }

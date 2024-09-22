@@ -5,10 +5,17 @@
   background-color: var(--inputBackground);
   box-shadow: 2px 2px 4px var(--shadow);
   transition: all 1s ease-in-out;
+
   width: 100%;
   box-sizing: border-box;
   gap: 0.4rem;
   position: absolute;
+
+  @media screen and (max-width: 768px) {
+    margin: 0rem 2%;
+    width: 96%;
+    
+  }
 
   .selected-option {
     color: white;
@@ -17,6 +24,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  
     width: 10px;
 
     div {
@@ -26,7 +34,7 @@
 
   .main {
     width: 100%;
-    padding: var(--padding) var(--padding) var(--padding) 0;
+    padding: 1rem 1rem 1rem 0rem;
 
     .info {
       color: var(--header);
@@ -36,11 +44,13 @@
       .text {
         // display: flex;
         // justify-content: space-between;
-        margin-bottom: 1rem;
         flex: 1;
         width: 100%;
         background-color:var(--background-color-info-text);
-        padding: var(--info-text-padding);
+        padding: 0rem;
+        p{
+          margin: 3px 0px;
+        }
       }
     }
 

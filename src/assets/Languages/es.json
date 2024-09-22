@@ -154,5 +154,15 @@
     "Against": "En contra",
     "Voters": "Votantes",
     "Did Not Vote": "No Votó",
-    "Get Non Voters": "Obtener No Votantes"
+    "Get Non Voters": "Obtener No Votantes",
+    "Compose your suggestion": "Escribe tu sugerencia",
+    "Suggestion title. What people would see at first sight": "Título de la sugerencia. Lo que la gente vería a primera vista",
+    "Formulate here the description. Add as much detail as you can to help others understand your suggestion": "Formula aquí la descripción. Agrega tantos detalles como puedas para ayudar a otros a entender tu sugerencia",
+    "Submit Suggestion": "Enviar Sugerencia",
+    "Here are several results that were found in the following topic": "Aquí hay varios resultados que se encontraron en el siguiente tema",
+    "Searching for similar suggestions": "Buscando sugerencias similares",
+    "Would you like to choose this suggestion": "¿Te gustaría elegir esta sugerencia",
+    "Continue with your original suggestion": "Continuar con tu sugerencia original",
+    "Continue with this suggestion": "Continuar con esta sugerencia",
+    "Back": "Atrás"
 }

@@ -7,7 +7,7 @@ import {
 	User,
 	isOptionFn,
 } from "delib-npm";
-import { AppDispatch, store } from "@/model/store";
+import { store } from "@/model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "@/model/users/userSlice";
@@ -197,8 +197,8 @@ export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
 	return `${fontSize}px`;
 }
 
-export function handleLogout(dispatch: AppDispatch) {
-	logOut(dispatch);
+export function handleLogout() {
+	logOut();
 	store.dispatch(setUser(null));
 }
 
