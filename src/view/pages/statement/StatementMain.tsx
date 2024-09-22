@@ -194,14 +194,17 @@ const StatementMain: FC = () => {
 		}
 	}, [user, statement]);
 
+	if (!statement || !statement?.creatorId || !statement?.membership?.access) {
+		return <LoadingPage />;
+	}
 	if (loading) return <LoadingPage />;
 	if (isStatementNotFound) return <Page404 />;
-	if (error) return <UnAuthorizedPage />;
+	// if (error) return <UnAuthorizedPage />;
 
-	if (isAuthorized)
+	if (isAuthorized) {
 		return (
 			<>
-				{passwordCheck || (statement?.membership?.access === Access.open) || statementSubscription?.role === Role.member ? (
+				{passwordCheck || (statement?.membership?.access === Access.open) || (statementSubscription?.role === Role.member) ? (
 					<div className="page">
 						{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 						{talker && (
@@ -248,6 +251,7 @@ const StatementMain: FC = () => {
 				)}
 			</>
 		);
+	}
 
 	return (
 		<div className="passwordUiComponent">
