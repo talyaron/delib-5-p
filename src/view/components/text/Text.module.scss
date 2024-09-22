@@ -1,10 +1,7 @@
 .p {
     display: block;
-    font-size: 1rem;
-    margin-block-start: 0.3rem;
-    margin-block-end: 0.3rem;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    font-size: .8rem;
+    line-height: 1.2rem;
     user-select: text;
     font-weight: 300;
 
@@ -14,10 +11,10 @@
 }
 
 .title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.25rem;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.15rem;
     user-select: text;
     color: #3b4f7d;
-    margin-bottom: 1rem;
+    margin-bottom: .2rem;
 }

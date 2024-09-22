@@ -29,22 +29,22 @@ const Text: FC<Props> = ({ statement, description }) => {
 						});
 
 						return (
-							<p className={`${styles["p--bold"]} ${styles.p}`} key={`${textId}--${i}`}>
+							<div className={`${styles["p--bold"]} ${styles.p}`} key={`${textId}--${i}`}>
 								{boldedParagraph}
-							</p>
+							</div>
 						);
 					}
 
 					return (
-						<p className={styles.p} key={`${textId}--${i}`}>
+						<div className={styles.p} key={`${textId}--${i}`}>
 							{paragraph}
-						</p>
+						</div>
 					);
 				});
 
 		return (
 			<>
-				{statement && <p className={styles.title}>{statement}</p>}
+				{statement && <div className={styles.title}>{statement}</div>}
 				{(description && paragraphs.length > 0) && (
 					<div className={styles.text}>{paragraphs}</div>
 				)}
@@ -54,7 +54,7 @@ const Text: FC<Props> = ({ statement, description }) => {
 	} catch (error: any) {
 		console.error(error);
 
-		return <p>error: {error.message}</p>;
+		return null;
 	}
 };
 
