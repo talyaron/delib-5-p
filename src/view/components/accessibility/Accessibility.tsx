@@ -80,7 +80,7 @@ const Accessibility = () => {
 	return (
 		<div
 			className="accessibility"
-			style={!isOpen ? { left: "-18.6rem" } : { left: "0rem" }}
+			style={!isOpen ? { left: "-300px" } : { left: "0rem" }}
 		>
 			<button className="accessibility-button" onClick={handleOpen}>			
 				<AccessibilityIcon />
