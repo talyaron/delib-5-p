@@ -52,7 +52,6 @@ export function useIsAuthorized(statementId: string | undefined): {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(false);
 
-
 	useEffect(() => {
 		if (!statement) return;
 
