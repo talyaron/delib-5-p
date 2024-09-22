@@ -120,3 +120,4 @@ export async function getChildStatements(statementId: string): Promise<Statement
     return [];
   }
 }
+

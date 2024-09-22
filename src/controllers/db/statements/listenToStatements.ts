@@ -1,23 +1,23 @@
 import {
-	User,
-	Collections,
-	StatementSubscription,
-	StatementSubscriptionSchema,
-	StatementType,
-	Statement,
-	Role,
-	StatementSchema,
+  User,
+  Collections,
+  StatementSubscription,
+  StatementSubscriptionSchema,
+  StatementType,
+  Statement,
+  Role,
+  StatementSchema,
 } from "delib-npm";
 import { collection, doc, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 
 // Redux Store
 import {
-	deleteStatement,
-	removeMembership,
-	setMembership,
-	setStatement,
-	setStatementSubscription,
-	setStatements,
+  deleteStatement,
+  removeMembership,
+  setMembership,
+  setStatement,
+  setStatementSubscription,
+  setStatements,
 } from "@/model/statements/statementsSlice";
 import { AppDispatch, store } from "@/model/store";
 import { DB } from "../config";
@@ -65,7 +65,7 @@ export const listenToStatementSubscription = (statementId: string, user: User, d
     console.error(error);
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return () => {};
+    return () => { };
   }
 };
 
@@ -100,7 +100,7 @@ export const listenToStatement = (
     if (setIsStatementNotFound) setIsStatementNotFound(true);
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return () => {};
+    return () => { };
   }
 };
 
@@ -130,13 +130,13 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
           }
         }
 
-				if (change.type === "modified") {
-					dispatch(setStatement(statement));
-				}
+        if (change.type === "modified") {
+          dispatch(setStatement(statement));
+        }
 
-				if (change.type === "removed") {
-					dispatch(deleteStatement(statement.statementId));
-				}
+        if (change.type === "removed") {
+          dispatch(deleteStatement(statement.statementId));
+        }
 
         // There shouldn't be deleted statements. instead the statement should be updated to status "deleted".
         // If You will use delete, it will remove from the dom a messages that are outside of the limit of the query.
@@ -149,7 +149,7 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
     console.error(error);
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return () => {};
+    return () => { };
   }
 };
 
@@ -193,10 +193,10 @@ export async function listenToUserAnswer(questionId: string, cb: (statement: Sta
       limit(1)
     );
 
-		return onSnapshot(q, (statementsDB) => {
-			statementsDB.docChanges().forEach((change) => {
-				const statement = change.doc.data() as Statement;
-				StatementSchema.parse(statement);
+    return onSnapshot(q, (statementsDB) => {
+      statementsDB.docChanges().forEach((change) => {
+        const statement = change.doc.data() as Statement;
+        StatementSchema.parse(statement);
 
         cb(statement);
       });
@@ -235,5 +235,45 @@ export async function listenToChildStatements(
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+export function listenToAllSubStatements(statementId: string, numberOfLastMessages: number = 7) {
+  try {
+    if (numberOfLastMessages > 25) numberOfLastMessages = 25;
+    if (!statementId) throw new Error("Statement id is undefined");
+
+    const statementsRef = collection(DB, Collections.statements);
+    const q = query(
+      statementsRef,
+      where("topParentId", "==", statementId),
+      where("statementId", "!=", statementId),
+      orderBy("createdAt", "desc"),
+      limit(numberOfLastMessages)
+    );
+
+    return onSnapshot(q, (statementsDB) => {
+
+      statementsDB.docChanges().forEach((change) => {
+        const statement = change.doc.data() as Statement;
+        StatementSchema.parse(statement);
+        console.log(statement.statement)
+
+        switch (change.type) {
+          case "added":
+          case "modified":
+            store.dispatch(setStatement(statement));
+            break;
+          case "removed":
+            store.dispatch(deleteStatement(statement.statementId));
+            break;
+        }
+      });
+
+
+    });
+  } catch (error) {
+    console.error(error);
+    return ():void => { };
   }
 }
