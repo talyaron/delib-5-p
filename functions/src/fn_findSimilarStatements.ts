@@ -49,7 +49,7 @@ export async function findSimilarStatements(
 	response.status(200).send(similarStatementsIds);
 }
 
-let genAI: GoogleGenerativeAI;
+export let genAI: GoogleGenerativeAI;
 
 onInit(() => {
 	try {
@@ -93,7 +93,7 @@ export async function runGenAI(allStatements: string[], userInput: string) {
 }
 
 
-function extractAndParseJsonString(input: string): { strings: string[] } {
+export function extractAndParseJsonString(input: string): { strings: string[] } {
 	try {
 		// Find the first '{' and the last '}'
 		const startIndex = input.indexOf('{');

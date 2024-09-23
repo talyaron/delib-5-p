@@ -41,6 +41,7 @@ import { findSimilarStatements } from './fn_findSimilarStatements';
 import { updateApprovalResults } from './fn_approval';
 import { setImportanceToStatement } from './fn_importance';
 import { updateAgrees } from './fn_agree';
+import { getClusters } from './fn_clustering';
 require('dotenv').config()
 
 
@@ -142,6 +143,8 @@ exports.checkForSimilarStatements = onRequest(
 	cors,
 	findSimilarStatements
 );
+
+exports.getClusters = onRequest(cors, getClusters);
 
 exports.app = onRequest(cors, app);
 
