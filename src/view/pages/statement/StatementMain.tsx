@@ -199,7 +199,7 @@ const StatementMain: FC = () => {
 	}
 	if (loading) return <LoadingPage />;
 	if (isStatementNotFound) return <Page404 />;
-	// if (error) return <UnAuthorizedPage />;
+	if (error) return <UnAuthorizedPage />;
 
 	if (isAuthorized) {
 		return (
