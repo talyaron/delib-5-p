@@ -11,6 +11,7 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 	setStatementToEdit,
 }) => {
 	const { t } = useLanguage();
+	const navigate = useNavigate();
 
 	// * Variables * //
 	const arrayOfStatementParagraphs = statement?.statement.split("\n") || [];
@@ -58,6 +59,22 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 					}}
 				/>
 			</label>
+			<div className="btns">
+				<Button
+					text={t("Save")}
+					aria-label="Submit button"
+					data-cy="settings-statement-submit-btn"
+					type="submit"
+				/>
+				<Button
+		  text={t("Cancel")}
+		  type="button"
+		  buttonType={ButtonType.SECONDARY}
+		  aria-label="Submit button"
+		  data-cy="settings-statement-submit-btn"
+		  onClick={() => {navigate("/home") }} // Add the function to cancel the changes
+				/>
+			</div>
 		</div>
 	);
 };

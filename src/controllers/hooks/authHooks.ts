@@ -46,67 +46,23 @@ export function useIsAuthorized(statementId: string | undefined): {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 
-  // const [role, setRole] = useState<Role | undefined>(Role.unsubscribed);
-  useEffect(() => {
-    if (statement && statementId && user) {
-      setLoading(true);
-      getTopParentSubscription(statementId)
-        .then(({ topParentSubscription, topParentStatement, error }) => {
-          try {
-            StatementSchema.parse(topParentStatement);
-            setTopParentStatement(topParentStatement);
+	useEffect(() => {
+		if (!statement) return;
 
-            // const topRole:Role = getRole()
-            // setRole(topRole);
+		// if statment close, and !member or admin -> show password
 
-            if (error) {
-              throw new Error("Error in getting top parent subscription");
-            }
+		isAuthorizedFn(statement, statementSubscription).then((_isAuthorized) => {
+			if (_isAuthorized) {
+				setIsAuthorized(true);
+				setLoading(false);
+			} else {
+				setIsAuthorized(false);
+				setLoading(false);
+				setError(true);
+			}
+		});
 
-            if (topParentSubscription) {
-              if (allowedRoles.includes(topParentSubscription.role)) {
-                setIsAuthorized(true);
-                setError(false);
-              } else {
-                setIsAuthorized(false);
-                setError(false);
-              }
-            } else if (topParentStatement?.membership?.access === Access.open) {
-              //if group is open, subscribe to its top parent statement
-              setStatementSubscriptionToDB(topParentStatement, Role.member, false);
-              setIsAuthorized(true);
-              setError(false);
-            } else {
-              //deal with registration...
-              setIsAuthorized(false);
-              setError(false);
-            }
-          } catch (e) {
-            console.error("An error occurred:", e);
-            setIsAuthorized(false);
-            setError(true);
-          }
-
-          // function getRole(): Role {
-
-          //     const currentRole = statementSubscription?.role;
-          //     const topParentStatementRole = topParentSubscription?.role;
-          //     const _role = currentRole === Role.admin || topParentStatementRole === Role.admin ? Role.admin : currentRole;
-          //     const role = _role ? _role : Role.unsubscribed
-          //     return role;
-
-          // }
-        })
-        .catch((err) => {
-          console.error("Promise rejected:", err);
-          setIsAuthorized(false);
-          setError(true);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [statementId, user, statement, statementSubscription]);
+	}, [statement, statementSubscription]);
 
   useEffect(() => {
     if (statementSubscription && statement) {

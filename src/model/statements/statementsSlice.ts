@@ -356,6 +356,13 @@ export const statementsChildSelector =
 		state.statements.statements.filter((statement) =>
 			statement.parents?.includes(statementId),
 		);
+
+export const subStatementsByTopParentIdMemo = (statementId: string | undefined) => createSelector(
+	[statementsSelector],
+	(statements) =>
+		statements.filter((statement) => statement.topParentId === statementId)
+);
+
 export const statementsRoomSolutions =
 	(statementId: string | undefined) => (state: RootState) =>
 		state.statements.statements
@@ -384,14 +391,14 @@ export const statementSelector =
 const selectStatements = (state: RootState) => state.statements.statements;
 
 export const statementSubsSelector = (statementId: string | undefined) =>
-  createSelector(
-    [selectStatements],
-    (statements) =>
-      statements
-        .filter((statementSub) => statementSub.parentId === statementId)
-        .sort((a, b) => a.createdAt - b.createdAt)
-        .map((statement) => ({ ...statement }))
-  );
+	createSelector(
+		[selectStatements],
+		(statements) =>
+			statements
+				.filter((statementSub) => statementSub.parentId === statementId)
+				.sort((a, b) => a.createdAt - b.createdAt)
+				.map((statement) => ({ ...statement }))
+	);
 
 export const statementOptionsSelector =
 	(statementId: string | undefined) => (state: RootState) => {
@@ -476,19 +483,19 @@ export const subscriptionParentStatementSelector = (parentId: string) =>
 
 export const myStatementsByStatementIdSelector = (statementId: string) => {
 	const user = store.getState().user.user;
-	
-return createSelector(
+
+	return createSelector(
 		(state: RootState) => state.statements.statements,
 		(statements) =>
 			statements.filter((st) => st.parentId === statementId && st.creatorId === user?.uid)
 	);
 }
 
-export const statementsOfMultiStepSelectorByStatementId =(statementId: string) => createSelector(
+export const statementsOfMultiStepSelectorByStatementId = (statementId: string) => createSelector(
 	(state: RootState) => state.statements.statements,
 	(statements) => statements.filter((st) => st.isInMultiStage && st.parentId === statementId)
 );
-	
+
 
 
 export default statementsSlicer.reducer;

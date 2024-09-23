@@ -103,7 +103,10 @@ export default function StepOneStatementInput({
 				/>
 			</div>
 			{isLoading ? (
-				<Loader />
+				<>
+					<p>Search for similar suggestions...</p>
+					<Loader />
+				</>
 			) : (
 				<>
 					<div className='similarities__titleInput'>

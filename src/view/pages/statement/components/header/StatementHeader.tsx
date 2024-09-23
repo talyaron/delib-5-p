@@ -121,7 +121,19 @@ const StatementHeader: FC<Props> = ({
 			await setFollowMeDB(topParentStatement, pathname);
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setIsHeaderMenuOpen(false);
 		}
+	}
+	function handleToggleNotifications() {
+		
+		toggleNotifications(
+			statement,
+			permission,
+			setShowAskPermission,
+			t
+		)
+		setIsHeaderMenuOpen(false);
 	}
 
 	function handleInvitePanel() {
