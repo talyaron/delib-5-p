@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getMessaging, isSupported } from 'firebase/messaging';
+import { getMessaging, isSupported, onMessage } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
@@ -24,3 +24,6 @@ if (!isProduction()) {
 	connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
+
+
+
