@@ -21,7 +21,7 @@ export async function sendNotificationsCB(e: any) {
         const parent = parentDB.exists ? (parentDB.data() as Statement) : null;
         const _title = parent ? parent.statement.replace(/\*/g, "") : "Delib-5";
 
-        //bring only the first pargarpah
+        //bring only the first paragraph
         const _titleArr = _title.split("\n");
         const _titleFirstParagraph = _titleArr[0];
 
@@ -29,7 +29,7 @@ export async function sendNotificationsCB(e: any) {
         const parentStatementTitle = _titleFirstParagraph.substring(0, 20);
 
         // const title = "In conversation: " + __first20Chars;
-        const title = `${statement.creator.displayName} sent a message in ${parentStatementTitle}`;
+        const title = `${parentStatementTitle} / ${statement.creator.displayName}`;
 
         //get all subscribers to this statement
         const subscribersRef = db.collection(Collections.statementsSubscribe);
@@ -41,8 +41,8 @@ export async function sendNotificationsCB(e: any) {
         const subscribersDB = await q.get();
 
         //send push notifications to all subscribers
-        subscribersDB.docs.forEach((dosubscriberDB) => {
-            const subscriber = dosubscriberDB.data() as StatementSubscription;
+        subscribersDB.docs.forEach((subscriberDB) => {
+            const subscriber =subscriberDB.data() as StatementSubscription;
             const tokenArr = subscriber.token;
             const { success } = z.array(z.string()).safeParse(tokenArr);
             if (!success) {
@@ -56,15 +56,40 @@ export async function sendNotificationsCB(e: any) {
                 try {
                     tokenArr.forEach((token: string) => {
                         const message: any = {
-                            data: {
+                            notification: {
                                 title,
                                 body: statement.statement,
+                            },
+                            data:{
+                                title,
+                                body: statement.statement,
+                                statementId: parentId,
+                                chatId: `${parentId}/chat`,
                                 url: `https://freedi.tech/statement/${parentId}/chat`,
-                                creatorId: statement.creatorId,
+
+                            },
+                            webpush: {
+                                fcm_options: {
+                                    link: `https://freedi.tech/statement/${parentId}/chat`,
+                                },
                             },
                             token,
                         };
-
+                        message.android = {
+                            notification: {
+                                icon: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0", // Replace with your icon name
+                            },
+                        };
+                        message.apns = {
+                            payload: {
+                                aps: {
+                                    "mutable-content": 1,
+                                },
+                            },
+                            fcm_options: {
+                                image: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0", // Replace with your icon URL
+                            },
+                        };
                         admin
                             .messaging()
                             .send(message)

@@ -30,14 +30,15 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function (payload) {
     try {
         // Customize notification here
-        if (!payload.data) throw new Error("no data");
-        const { title, body, url } = payload.data;
-        const notificationTitle = title || "Background Message Title";
+        if (!payload.notification) throw new Error("no data");
+        console.log(payload)
+        const { title, body } = payload.notification;
+      
+        const notificationTitle = title || "Background Message";
         const notificationOptions = {
             body,
-            icon: "https://delib-5.web.app/assets/logo-128px-a9e7b0f8.png",
-            data: { url },
-            badge: "https://delib-5.web.app/assets/logo-128px-a9e7b0f8.png",
+            icon: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0",
+            badge: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0",
             dir: "rtl",
             tag: "confirm-notification",
         };
@@ -66,3 +67,5 @@ messaging.onBackgroundMessage(function (payload) {
         console.error(error);
     }
 });
+
+

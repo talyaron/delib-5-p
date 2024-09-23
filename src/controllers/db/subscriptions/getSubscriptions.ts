@@ -103,6 +103,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 		return onSnapshot(q, (subscriptionsDB) => {
 			subscriptionsDB.docChanges().forEach((change) => {
 				const statementSubscription = change.doc.data() as StatementSubscription;
+				
 				StatementSubscriptionSchema.parse(statementSubscription);
 
 				if (change.type === "added") {
