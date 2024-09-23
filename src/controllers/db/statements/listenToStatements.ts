@@ -258,10 +258,10 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
         const statement = change.doc.data() as Statement;
         StatementSchema.parse(statement);
         console.log(statement.statement)
+        if(statement.statementId === statementId) return;
 
         switch (change.type) {
           case "added":
-          case "modified":
             store.dispatch(setStatement(statement));
             break;
           case "removed":

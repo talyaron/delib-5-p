@@ -10,7 +10,10 @@ import "./MainCard.scss";
 //img
 import ImgThumb from "@/assets/images/ImgThumb.png";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { subscriptionParentStatementSelector, subStatementsByTopParentIdMemo } from "@/model/statements/statementsSlice";
+import {
+  subscriptionParentStatementSelector,
+  subStatementsByTopParentIdMemo,
+} from "@/model/statements/statementsSlice";
 import { getLastElements } from "@/controllers/general/helpers";
 import UpdateMainCard from "./updateMainCard/UpdateMainCard";
 import { listenToAllSubStatements } from "@/controllers/db/statements/listenToStatements";
@@ -20,13 +23,12 @@ interface Props {
 }
 
 const MainCard: FC<Props> = ({ statement }) => {
-  const _subStatements:Statement[] = useAppSelector(
+  const _subStatements: Statement[] = useAppSelector(
     subStatementsByTopParentIdMemo(statement.statementId)
-  ).sort((a, b) => a.lastUpdate - b.lastUpdate);
-  const subStatements = getLastElements(
-    _subStatements,
-    7
-  ) as Statement[];
+  )
+    .filter((s) => s.statementId !== statement.statementId)
+    .sort((a, b) => a.lastUpdate - b.lastUpdate);
+  const subStatements = getLastElements(_subStatements, 7) as Statement[];
   const statementImgUrl = statement.imagesURL?.main;
 
   const description =
@@ -39,8 +41,8 @@ const MainCard: FC<Props> = ({ statement }) => {
 
     return () => {
       unsub();
-    }
-  },[]);
+    };
+  }, []);
 
   return (
     <div className="main-card">
@@ -56,11 +58,11 @@ const MainCard: FC<Props> = ({ statement }) => {
             className="main-card__img"
           ></div>
           <StatementChatMore statement={statement} />
-        </div>
+        </div>  
+        <Text statement={statement.statement} description={description} />
       </Link>
-      <Text statement={statement.statement} description={description} />
       <div className="main-card__updates">
-        {subStatements.map((subStatement:Statement) => (
+        {subStatements.map((subStatement: Statement) => (
           <UpdateMainCard
             key={subStatement.statementId}
             statement={subStatement}
