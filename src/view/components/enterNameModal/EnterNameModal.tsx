@@ -78,6 +78,6 @@ export default EnterNameModal;
 
 function isReadyToStart(displayName: string | null) {
 	if (displayName === null) return false;
-	if (displayName.length > 2) return true;
+	if (displayName.length > 1) return true;
 	else return false;
 }

@@ -44,8 +44,7 @@
       position: relative;
       .info-text {
         flex: 1;
-        padding: var(--info-text-padding);
-        // background-color: var(--background-color-info-text);
+    
         background-color: var(--background-color-info-text);
       }
     }
@@ -75,7 +74,7 @@
     }
     .message-box {
       border-right: 0.65rem solid;
-      margin-left: 4rem;
+      margin-left: 2rem;
       margin-right: 1rem;
 
       &--statement{
@@ -99,7 +98,7 @@
     }
     .message-box {
       border-left: 0.65rem solid;
-      margin-right: 4rem;
+      margin-right: 1.8rem;
       margin-left: 1rem;
       .triangle {
         clip-path: polygon(0 0, 0% 100%, 70% 0);
