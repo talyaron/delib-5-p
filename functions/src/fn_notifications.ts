@@ -58,7 +58,15 @@ export async function sendNotificationsCB(e: any) {
                         const message: any = {
                             notification: {
                                 title,
-                                body: statement.statement
+                                body: statement.statement,
+                            },
+                            data:{
+                                title,
+                                body: statement.statement,
+                                statementId: parentId,
+                                chatId: `${parentId}/chat`,
+                                url: `https://freedi.tech/statement/${parentId}/chat`,
+
                             },
                             webpush: {
                                 fcm_options: {

@@ -30,8 +30,9 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function (payload) {
     try {
         // Customize notification here
-        if (!payload.data) throw new Error("no data");
-        const { title, body, url } = payload.data;
+        if (!payload.notification) throw new Error("no data");
+        console.log(payload)
+        const { title, body, url } = payload.notification;
         const notificationTitle = title || "Background Message";
         const notificationOptions = {
             body,
