@@ -128,14 +128,14 @@ const StatementHeader: FC<Props> = ({
 	}
 	function handleToggleNotifications() {
 		
-			toggleNotifications(
-				statement,
-				permission,
-				setShowAskPermission,
-				t
-			)
-			setIsHeaderMenuOpen(false);
-		}
+		toggleNotifications(
+			statement,
+			permission,
+			setShowAskPermission,
+			t
+		)
+		setIsHeaderMenuOpen(false);
+	}
 
 	function handleInvitePanel() {
 		try {

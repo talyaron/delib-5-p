@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { Statement, StatementSubscription } from "delib-npm";
+import { Statement } from "delib-npm";
 import { FC, useEffect } from "react";
 import Text from "@/view/components/text/Text";
 
@@ -10,10 +10,7 @@ import "./MainCard.scss";
 //img
 import ImgThumb from "@/assets/images/ImgThumb.png";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import {
-  subscriptionParentStatementSelector,
-  subStatementsByTopParentIdMemo,
-} from "@/model/statements/statementsSlice";
+import {  subStatementsByTopParentIdMemo} from "@/model/statements/statementsSlice";
 import { getLastElements } from "@/controllers/general/helpers";
 import UpdateMainCard from "./updateMainCard/UpdateMainCard";
 import { listenToAllSubStatements } from "@/controllers/db/statements/listenToStatements";

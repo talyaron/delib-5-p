@@ -69,7 +69,6 @@ export const listenToAuth =
 						if (!_user) throw new Error("user is undefined");
 
 						const userDB = (await setUserToDB(_user)) as User;
-						console.log(userDB.uid);
 
 						const fontSize = userDB.fontSize ? userDB.fontSize : defaultFontSize;
 

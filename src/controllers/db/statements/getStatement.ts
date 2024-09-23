@@ -13,71 +13,71 @@ import {
 import { DB } from "../config";
 
 export async function getStatementFromDB(statementId: string): Promise<Statement | undefined> {
-  try {
-    const statementRef = doc(DB, Collections.statements, statementId);
-    const statementDB = await getDoc(statementRef);
+	try {
+		const statementRef = doc(DB, Collections.statements, statementId);
+		const statementDB = await getDoc(statementRef);
 
-    return statementDB.data() as Statement | undefined;
-  } catch (error) {
-    console.error(error);
+		return statementDB.data() as Statement | undefined;
+	} catch (error) {
+		console.error(error);
 
-    return undefined;
-  }
+		return undefined;
+	}
 }
 
 export async function getStatementDepth(
-  statement: Statement,
-  subStatements: Statement[],
-  depth: number
+	statement: Statement,
+	subStatements: Statement[],
+	depth: number
 ): Promise<Statement[]> {
-  try {
-    const statements: Statement[][] = [[statement]];
+	try {
+		const statements: Statement[][] = [[statement]];
 
-    //level 1 is allready in store
-    //find second level
-    const levleOneStatements: Statement[] = subStatements.filter(
-      (s) => s.parentId === statement.statementId && s.statementType === StatementType.result
-    );
-    statements.push(levleOneStatements);
+		//level 1 is allready in store
+		//find second level
+		const levleOneStatements: Statement[] = subStatements.filter(
+			(s) => s.parentId === statement.statementId && s.statementType === StatementType.result
+		);
+		statements.push(levleOneStatements);
 
-    //get the next levels
+		//get the next levels
 
-    for (let i = 1; i < depth; i++) {
-      const statementsCB = statements[i].map((st: Statement) => getLevelResults(st) as Promise<Statement[]>);
+		for (let i = 1; i < depth; i++) {
+			const statementsCB = statements[i].map((st: Statement) => getLevelResults(st) as Promise<Statement[]>);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let statementsTemp: any = await Promise.all(statementsCB);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			let statementsTemp: any = await Promise.all(statementsCB);
 
-      statementsTemp = statementsTemp.flat(1);
+			statementsTemp = statementsTemp.flat(1);
 
-      if (statementsTemp.length === 0) break;
+			if (statementsTemp.length === 0) break;
 
-      statements[i + 1] = [];
-      statements[i + 1].push(...statementsTemp);
-    }
+			statements[i + 1] = [];
+			statements[i + 1].push(...statementsTemp);
+		}
 
-    // @ts-ignore
-    const finalStatements: Statement[] = statements.flat(Infinity);
+		// @ts-ignore
+		const finalStatements: Statement[] = statements.flat(Infinity);
 
-    return finalStatements;
-  } catch (error) {
-    console.error(error);
+		return finalStatements;
+	} catch (error) {
+		console.error(error);
 
-    return [];
-  }
+		return [];
+	}
 
-  async function getLevelResults(statement: Statement): Promise<Statement[]> {
-    try {
-      const subStatements: Statement[] = [];
-      const statementsRef = collection(DB, Collections.statements);
-      const q = query(
-        statementsRef,
-        and(
-          where("parentId", "==", statement.statementId),
-          or(where("statementType", "==", StatementType.result), where("statementType", "==", StatementType.question))
-        )
-      );
-      const statementsDB = await getDocs(q);
+	async function getLevelResults(statement: Statement): Promise<Statement[]> {
+		try {
+			const subStatements: Statement[] = [];
+			const statementsRef = collection(DB, Collections.statements);
+			const q = query(
+				statementsRef,
+				and(
+					where("parentId", "==", statement.statementId),
+					or(where("statementType", "==", StatementType.result), where("statementType", "==", StatementType.question))
+				)
+			);
+			const statementsDB = await getDocs(q);
 
 			statementsDB.forEach((doc) => {
 				const statement = doc.data() as Statement;
@@ -86,24 +86,24 @@ export async function getStatementDepth(
 				subStatements.push(statement);
 			});
 
-      return subStatements;
-    } catch (error) {
-      console.error(error);
+			return subStatements;
+		} catch (error) {
+			console.error(error);
 
-      return [];
-    }
-  }
+			return [];
+		}
+	}
 }
 
 export async function getChildStatements(statementId: string): Promise<Statement[]> {
-  try {
-    const statementsRef = collection(DB, Collections.statements);
-    const q = query(
-      statementsRef,
-      where("statementType", "!=", StatementType.statement),
-      where("parents", "array-contains", statementId)
-    );
-    const statementsDB = await getDocs(q);
+	try {
+		const statementsRef = collection(DB, Collections.statements);
+		const q = query(
+			statementsRef,
+			where("statementType", "!=", StatementType.statement),
+			where("parents", "array-contains", statementId)
+		);
+		const statementsDB = await getDocs(q);
 
 		const subStatements = statementsDB.docs.map(
 			(doc) => {
@@ -113,11 +113,11 @@ export async function getChildStatements(statementId: string): Promise<Statement
 			}
 		);
 
-    return subStatements;
-  } catch (error) {
-    console.error(error);
+		return subStatements;
+	} catch (error) {
+		console.error(error);
 
-    return [];
-  }
+		return [];
+	}
 }
 

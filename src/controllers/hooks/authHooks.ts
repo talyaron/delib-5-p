@@ -55,7 +55,7 @@ export function useIsAuthorized(statementId: string | undefined): {
 	useEffect(() => {
 		if (!statement) return;
 
-	// if statment close, and !member or admin -> show password
+		// if statment close, and !member or admin -> show password
 
 		isAuthorizedFn(statement, statementSubscription).then((_isAuthorized) => {
 			if (_isAuthorized) {

@@ -100,8 +100,8 @@ export default function StepOneStatementInput({
 			</div>
 			{isLoading ? (
 				<>
-				<p>Search for similar suggestions...</p>
-				<Loader />
+					<p>Search for similar suggestions...</p>
+					<Loader />
 				</>
 			) : (
 				<>
