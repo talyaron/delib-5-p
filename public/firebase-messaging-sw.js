@@ -32,12 +32,12 @@ messaging.onBackgroundMessage(function (payload) {
         // Customize notification here
         if (!payload.data) throw new Error("no data");
         const { title, body, url } = payload.data;
-        const notificationTitle = title || "Background Message Title";
+        const notificationTitle = title || "Background Message";
         const notificationOptions = {
             body,
-            icon: "https://delib-5.web.app/assets/logo-128px-a9e7b0f8.png",
+            icon: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0",
             data: { url },
-            badge: "https://delib-5.web.app/assets/logo-128px-a9e7b0f8.png",
+            badge: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0",
             dir: "rtl",
             tag: "confirm-notification",
         };
