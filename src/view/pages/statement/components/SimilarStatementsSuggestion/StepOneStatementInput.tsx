@@ -19,6 +19,7 @@ interface SimilarStatementsSuggestionProps {
 		React.SetStateAction<DisplayStatement[]>
 	>;
 	onFormSubmit: () => void;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	statementId: string;
 }
 
@@ -28,6 +29,7 @@ export default function StepOneStatementInput({
 	setNewStatementInput,
 	statementId,
 	setSimilarStatements,
+	setShowModal,
 	onFormSubmit,
 }: Readonly<SimilarStatementsSuggestionProps>) {
 	const {t} = useLanguage();
@@ -126,6 +128,11 @@ export default function StepOneStatementInput({
 							text={t('Submit Suggestion')}
 							buttonType={ButtonType.PRIMARY}
 							onClick={(e) => { e.preventDefault(); handleSubmit(); }}
+						/>
+						<Button
+						text={t('Cancel')}
+						buttonType={ButtonType.SECONDARY}
+						onClick={() => setShowModal(false)}
 						/>
 					</div>
 				</>
