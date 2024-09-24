@@ -12,6 +12,7 @@ import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "@/model/users/userSlice";
 import { ZodError, ZodIssue } from "zod";
+import { HistoryTracker } from "@/model/history/HistorySlice";
 
 export function updateArray<T>(
 	currentArray: Array<T>,
@@ -359,5 +360,37 @@ export function getTime(time: number): string {
 
 export function truncateString(text: string, maxLength = 20): string {
 	return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+}
+
+
+
+export function processHistory(location:string, historyTracker:HistoryTracker[]):HistoryTracker[] {
+	try {
+		if(typeof location !== "string") throw new Error("Location is not a string");
+		if(!Array.isArray(historyTracker)) throw new Error("History tracker is not an array");
+		const newHistory = [...historyTracker];
+
+		//detect statement id
+		const parameters = location.split("/");
+	
+		const statementId = parameters.find((param) => param.length >15);
+		if(!statementId) throw new Error("No statement id found");
+
+		const screen = parameters.find((pr: string) => Object.values(Screen).includes(pr as Screen) && pr !== Screen.STATEMENT) as Screen;
+		if(!screen) throw new Error("No screen found");
+
+		//add statement id to history only if it is not already there
+		if(newHistory.length === 0) return [{statementId, screen}];
+		if(newHistory[newHistory.length-1].statementId === statementId){
+			newHistory[newHistory.length-1].screen = screen;
+			return newHistory;
+		} else {
+			return [...newHistory, {statementId, screen}];
+		}
+
+	} catch (error) {
+		console.error(error);
+		return historyTracker
+	}
 }
 

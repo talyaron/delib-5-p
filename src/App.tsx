@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Third party imports
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Firebase functions
 import { listenToAuth, logOut } from "./controllers/db/auth";
@@ -25,9 +25,14 @@ import { getSigniture } from "./controllers/db/users/getUserDB";
 import { onLocalMessage } from "./controllers/db/notifications/notifications";
 import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
+import { HistoryTracker, processHistory } from "./controllers/general/helpers";
+import { setHistory } from "./model/history/HistorySlice";
+
+let historyTracker:HistoryTracker[] = [];
 
 export default function App() {
 	// Hooks
+	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { anonymous } = useParams();
@@ -65,6 +70,11 @@ export default function App() {
 			unsub();
 		};
 	}, []);
+
+	useEffect(() => {
+		
+		dispatch(setHistory(location.pathname));
+	}, [location]);
 
 	useEffect(() => {
 		if (!user) {
