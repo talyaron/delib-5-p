@@ -130,9 +130,9 @@ export default function StepOneStatementInput({
 							onClick={(e) => { e.preventDefault(); handleSubmit(); }}
 						/>
 						<Button
-						text={t('Cancel')}
-						buttonType={ButtonType.SECONDARY}
-						onClick={() => setShowModal(false)}
+							text={t('Cancel')}
+							buttonType={ButtonType.SECONDARY}
+							onClick={() => setShowModal(false)}
 						/>
 					</div>
 				</>

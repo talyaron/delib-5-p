@@ -46,9 +46,7 @@ export default function HomeHeader() {
   return (
     <div className={`homePage__header ${dir}`}>
       <div className="homePage__header__wrapper">
-        <h1 className="homePage__header__wrapper__title">
-			Free<span>Di</span>
-		</h1>
+        <h1 className="homePage__header__wrapper__title">FreeDi</h1>
         <div className="homePage__header__wrapper__icons">
           {deferredPrompt && (
             <IconButton onClick={handleInstallApp}>
