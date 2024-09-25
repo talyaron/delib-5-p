@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { Screen } from "delib-npm";
 import { processHistory } from "@/controllers/general/helpers";
 
 export interface HistoryTracker {
-    statementId: string;
-    screen:Screen;
+    statementId?: string;
+   pathname: string;
 }
 
 interface HistoryState {
@@ -22,9 +21,9 @@ export const historySlice = createSlice({
 	name: "history",
 	initialState: historyState, 
 	reducers: {
-		setHistory: (state, action: PayloadAction<string>) => {
-			const pathname = action.payload;
-			state.history = processHistory(pathname, state.history);
+		setHistory: (state, action: PayloadAction<HistoryTracker>) => {
+			const {statementId, pathname } = action.payload;
+			state.history = processHistory({statementId, pathname }, state.history);
 		},
         
 	},
@@ -34,6 +33,7 @@ export const historySlice = createSlice({
 
 export const { setHistory} = historySlice.actions;
 
-export const historySelect = (statementId:string)=> (state: RootState) => state.history.history.find((history) => history.statementId === statementId);
+//@ts-ignore
+export const historySelect = (statementId:string)=> (state: RootState) => state.history.history.findLast((history) => history.statementId === statementId);
 
 export default historySlice.reducer;

@@ -171,7 +171,6 @@ const StatementHeader: FC<Props> = ({
 				{(enableNavigationalElements || isAdmin) && (
 					<div className="page__header__wrapper__actions">
 						<Back
-							parentStatement={parentStatement}
 							statement={statement}
 							headerColor={headerColor}
 						/>

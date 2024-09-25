@@ -364,33 +364,30 @@ export function truncateString(text: string, maxLength = 20): string {
 
 
 
-export function processHistory(location:string, historyTracker:HistoryTracker[]):HistoryTracker[] {
+export function processHistory({statementId, pathname }:HistoryTracker, state:HistoryTracker[]):HistoryTracker[] {
 	try {
-		if(typeof location !== "string") throw new Error("Location is not a string");
-		if(!Array.isArray(historyTracker)) throw new Error("History tracker is not an array");
-		const newHistory = [...historyTracker];
-
-		//detect statement id
-		const parameters = location.split("/");
 	
-		const statementId = parameters.find((param) => param.length >15);
-		if(!statementId) throw new Error("No statement id found");
+		const newHistory = [...state];
 
-		const screen = parameters.find((pr: string) => Object.values(Screen).includes(pr as Screen) && pr !== Screen.STATEMENT) as Screen;
-		if(!screen) throw new Error("No screen found");
+		
+		
 
 		//add statement id to history only if it is not already there
-		if(newHistory.length === 0) return [{statementId, screen}];
-		if(newHistory[newHistory.length-1].statementId === statementId){
-			newHistory[newHistory.length-1].screen = screen;
+		if(newHistory.length === 0) return [{statementId, pathname}];
+		if(pathname === state[state.length - 1]?.pathname) return newHistory;
+		
+		//in case the the user only navigate between the screens of the statement, just update the pathname
+		if(!statementId) return [...state, {pathname }]
+		if(newHistory[newHistory.length - 1].statementId === statementId){
+			newHistory[newHistory.length - 1].pathname = pathname;
 			return newHistory;
 		} else {
-			return [...newHistory, {statementId, screen}];
+			return [...state, {statementId, pathname }];
 		}
 
 	} catch (error) {
 		console.error(error);
-		return historyTracker
+		return state;
 	}
 }
 

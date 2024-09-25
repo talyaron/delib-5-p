@@ -25,17 +25,16 @@ import { getSigniture } from "./controllers/db/users/getUserDB";
 import { onLocalMessage } from "./controllers/db/notifications/notifications";
 import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
-import { HistoryTracker, processHistory } from "./controllers/general/helpers";
 import { setHistory } from "./model/history/HistorySlice";
 
-let historyTracker:HistoryTracker[] = [];
+
 
 export default function App() {
 	// Hooks
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { anonymous } = useParams();
+	const {statementId,  anonymous } = useParams();
 	const { changeLanguage, t } = useLanguage();
 
 	// Redux Store
@@ -72,8 +71,7 @@ export default function App() {
 	}, []);
 
 	useEffect(() => {
-		
-		dispatch(setHistory(location.pathname));
+		dispatch(setHistory({ statementId, pathname: location.pathname }));
 	}, [location]);
 
 	useEffect(() => {
