@@ -9,37 +9,44 @@ export interface EnhancedEvaluationThumb {
     evaluation: number;
     svg: string;
     color: string;
+	colorSelected: string;
     alt: string;
 }
 
+
+
 export const enhancedEvaluationsThumbs: EnhancedEvaluationThumb[] = [
-	{ id: "a", evaluation: 1, svg: evaluation1, color: "#70CB9F", alt: "like" },
+	{ id: "a", evaluation: 1, svg: evaluation1,color:"rgba(0,0,0, 0.18)", colorSelected: "#70CB9F", alt: "like" },
 	{
 		id: "b",
 		evaluation: 0.5,
 		svg: evaluation2,
-		color: "#67B8D1",
+		color:"rgba(0,0,0, 0.18)",
+		colorSelected: "#67B8D1",
 		alt: "half like",
 	},
 	{
 		id: "c",
 		evaluation: 0,
 		svg: evaluation3,
-		color: "#E7D080",
+		color:"rgba(0,0,0, 0.18)",
+		colorSelected: "#E7D080",
 		alt: "neutral",
 	},
 	{
 		id: "d",
 		evaluation: -0.5,
 		svg: evaluation4,
-		color: "#F6AE92",
+		color:"rgba(0,0,0, 0.18)",
+		colorSelected: "#F6AE92",
 		alt: "half dislike",
 	},
 	{
 		id: "e",
 		evaluation: -1,
 		svg: evaluation5,
-		color: "#FC8C9B",
+		color:"rgba(0,0,0, 0.18)",
+		colorSelected: "#FC8C9B",
 		alt: "dislike",
 	},
 ];

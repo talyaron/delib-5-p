@@ -21,7 +21,7 @@ import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 // Helpers
 import { updateUserAgreement } from "./controllers/db/users/setUsersDB";
-import { getSigniture } from "./controllers/db/users/getUserDB";
+import { getSignature as getSignature } from "./controllers/db/users/getUserDB";
 import { onLocalMessage } from "./controllers/db/notifications/notifications";
 import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
@@ -84,7 +84,7 @@ export default function App() {
 		if (user.agreement?.date) {
 			setShowSignAgreement(false);
 		} else {
-			const agreement = getSigniture("basic", t);
+			const agreement = getSignature("basic", t);
 
 			if (!agreement) throw new Error("agreement not found");
 
@@ -104,7 +104,7 @@ export default function App() {
 			if (!text) throw new Error("text is empty");
 			if (agree) {
 				setShowSignAgreement(false);
-				const agreement: Agreement | undefined = getSigniture(
+				const agreement: Agreement | undefined = getSignature(
 					"basic",
 					t,
 				);

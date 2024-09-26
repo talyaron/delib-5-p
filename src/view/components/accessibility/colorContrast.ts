@@ -13,10 +13,10 @@ export const colorMappings: ColorMappings = {
 	"--range-conflict-60": "--range-conflict-60-contrast",
 	"--range-conflict-30": "--range-conflict-30-contrast",
 
-	// Tabu range
-	"--range-tabu-100": "--range-tabu-100-contrast",
-	"--range-tabu-60": "--range-tabu-60-contrast",
-	"--range-tabu-30": "--range-tabu-30-contrast",
+	// Objections range
+	"--range-Objections-100": "--range-Objections-100-contrast",
+	"--range-Objections-60": "--range-Objections-60-contrast",
+	"--range-Objections-30": "--range-Objections-30-contrast",
 
 	// Hover agreement range
 	"--range-hover-positive-100": "--range-hover-positive-100-contrast",
@@ -28,10 +28,10 @@ export const colorMappings: ColorMappings = {
 	"--range-hover-conflict-60": "--range-conflict-60-contrast",
 	"--range-hover-conflict-30": "--range-conflict-30-contrast",
 
-	// Hover tabu range
-	"--range-hover-tabu-100": "--range-tabu-100-contrast",
-	"--range-hover-tabu-60": "--range-tabu-60-contrast",
-	"--range-hover-tabu-30": "--range-tabu-30-contrast",
+	// Hover Objections range
+	"--range-hover-Objections-100": "--range-Objections-100-contrast",
+	"--range-hover-Objections-60": "--range-Objections-60-contrast",
+	"--range-hover-Objections-30": "--range-Objections-30-contrast",
 
 	// Base
 	"--bg-screen": "--bg-screen-contrast",

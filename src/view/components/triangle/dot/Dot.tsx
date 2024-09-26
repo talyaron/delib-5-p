@@ -54,9 +54,9 @@ const Dot: FC<Props> = ({ subStatement, maxEvaluators }) => {
 export default Dot;
 
 const agreementColors = [
-	"--range-tabu-100",
-	"--range-tabu-60",
-	"--range-tabu-30",
+	"--range-Objections-100",
+	"--range-Objections-60",
+	"--range-Objections-30",
 	"--range-conflict-100",
 	"--range-conflict-60",
 	"--range-conflict-30",

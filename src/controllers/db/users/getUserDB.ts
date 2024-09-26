@@ -36,12 +36,12 @@ export async function getUserFromDB(): Promise<User | undefined> {
 	}
 }
 
-export interface SignitaureDB {
+export interface SignatureDB {
     agreement: string;
     version: string;
 }
 
-export function getSigniture(
+export function getSignature(
 	version = "basic",
 	t: (text: string) => string,
 ): Agreement | undefined {

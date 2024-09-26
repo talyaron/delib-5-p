@@ -93,7 +93,7 @@ const StatementChat: FC<Props> = ({
 				subStatements.length - numberOfSubStatements > 0 ? true : false;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
-				setNewMessages((nmbr) => nmbr + 1);
+				setNewMessages((n) => n + 1);
 			}
 		} else {
 			scrollToBottom();
