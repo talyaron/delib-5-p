@@ -5,12 +5,14 @@ import { setEvaluationToDB } from "@/controllers/db/evaluation/setEvaluation";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
 import {
-	enhancedEvaluationsThumbs,
-	EnhancedEvaluationThumb,
+  enhancedEvaluationsThumbs,
+  EnhancedEvaluationThumb,
 } from "./EnhancedEvaluationModel";
 import { getEvaluationThumbIdByScore } from "../../../statementSolutionsCont";
 import "./EnhancedEvaluation.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { decreesUserSettingsEvaluation } from "@/controllers/db/users/setUsersDB";
+import { userSettingsSelector } from "@/model/users/userSlice";
 
 interface EnhancedEvaluationProps {
   statement: Statement;
@@ -18,61 +20,67 @@ interface EnhancedEvaluationProps {
 }
 
 const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
-	statement,
-	shouldDisplayScore,
+  statement,
+  shouldDisplayScore,
 }) => {
-	const evaluationScore = useAppSelector(
-		evaluationSelector(statement.statementId)
-	);
-	const { dir, t } = useLanguage();
+  const evaluationScore = useAppSelector(
+    evaluationSelector(statement.statementId)
+  );
 
+  const learningEvaluation =
+    useAppSelector(userSettingsSelector)?.learning?.evaluation || 0;
+  const { dir, t } = useLanguage();
 
-	const { sumPro, sumCon, numberOfEvaluators } = statement.evaluation || {
-		sumPro: 0,
-		sumCon: 0,
-		numberOfEvaluators: 0,
-	};
+  const { sumPro, sumCon, numberOfEvaluators } = statement.evaluation || {
+    sumPro: 0,
+    sumCon: 0,
+    numberOfEvaluators: 0,
+  };
 
-	return (
-		<div
-			className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
-		>
-			<div className="evaluation-score">{shouldDisplayScore === true ? sumCon : null}</div>
+  return (
+    <div
+      className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
+    >
+      <div className="evaluation-score">
+        {shouldDisplayScore === true ? sumCon : null}
+      </div>
 
-			<div
-				className="evaluation-thumbs"
-				style={{ flexDirection: dir === "ltr" ? "row" : "row-reverse" }}
-			>
-				{enhancedEvaluationsThumbs.map((evaluationThumb) => (
-					<EvaluationThumb
-						key={evaluationThumb.id}
-						evaluationThumb={evaluationThumb}
-						evaluationScore={evaluationScore}
-						statement={statement}
-					/>
-				))}
-			</div>
+      <div
+        className="evaluation-thumbs"
+        style={{ flexDirection: dir === "ltr" ? "row" : "row-reverse" }}
+      >
+        {enhancedEvaluationsThumbs.map((evaluationThumb) => (
+          <EvaluationThumb
+            key={evaluationThumb.id}
+            evaluationThumb={evaluationThumb}
+            evaluationScore={evaluationScore}
+            statement={statement}
+          />
+        ))}
+      </div>
 
-			{shouldDisplayScore ? (
-				<div
-					className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
-				>
-					{sumPro}
-					{numberOfEvaluators && numberOfEvaluators > 0 && (
-						<span className="total-evaluators"> ({numberOfEvaluators})</span>
-					)}
-				</div>
-			) : (
-				<div />
-			)}
-			<div />
-			<div className="evaluation-explain">
-				<span>{t("Disagree")}</span>
-				<span>{t("Agree")}</span>
-			</div>
-			<div />
-		</div>
-	);
+      {shouldDisplayScore ? (
+        <div
+          className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
+        >
+          {sumPro}
+          {numberOfEvaluators && numberOfEvaluators > 0 && (
+            <span className="total-evaluators"> ({numberOfEvaluators})</span>
+          )}
+        </div>
+      ) : (
+        <div />
+      )}
+      <div />
+      {learningEvaluation > 0 && (
+        <div className="evaluation-explain">
+          <span>{t("Disagree")}</span>
+          <span>{t("Agree")}</span>
+        </div>
+      )}
+      <div />
+    </div>
+  );
 };
 
 export default EnhancedEvaluation;
@@ -84,29 +92,30 @@ interface EvaluationThumbProps {
 }
 
 const EvaluationThumb: FC<EvaluationThumbProps> = ({
-	evaluationThumb,
-	evaluationScore,
-	statement,
+  evaluationThumb,
+  evaluationScore,
+  statement,
 }) => {
-	const handleSetEvaluation = (): void => {
-		setEvaluationToDB(statement, evaluationThumb.evaluation);
-	};
+  const handleSetEvaluation = (): void => {
+    setEvaluationToDB(statement, evaluationThumb.evaluation);
+    decreesUserSettingsEvaluation();
+  };
 
-	const isThumbActive =
+  const isThumbActive =
     evaluationScore !== undefined &&
     evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
 
-	return (
-		<button
-			className={`evaluation-thumb ${isThumbActive ? "active" : ""}`}
-			style={{
-				backgroundColor: isThumbActive
-					? evaluationThumb.colorSelected
-					: evaluationThumb.color,
-			}}
-			onClick={handleSetEvaluation}
-		>
-			<img src={evaluationThumb.svg} alt={evaluationThumb.alt} />
-		</button>
-	);
+  return (
+    <button
+      className={`evaluation-thumb ${isThumbActive ? "active" : ""}`}
+      style={{
+        backgroundColor: isThumbActive
+          ? evaluationThumb.colorSelected
+          : evaluationThumb.color,
+      }}
+      onClick={handleSetEvaluation}
+    >
+      <img src={evaluationThumb.svg} alt={evaluationThumb.alt} />
+    </button>
+  );
 };

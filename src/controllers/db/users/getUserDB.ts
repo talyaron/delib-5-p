@@ -1,4 +1,4 @@
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { Agreement, Collections, StatementSchema, User, UserSettings, userSettingsSchema } from "delib-npm";
 import { DB } from "../config";
 import { store } from "@/model/store";
@@ -62,30 +62,35 @@ export function getSignature(
 }
 
 
-export function listenToUserSettings() {
+export function listenToUserSettings(): Unsubscribe {
 	try {
 
 
 		const user = store.getState().user.user;
-		if (!user) return;
+		if (!user) throw new Error("user is not logged in");
+		
 
 		const userSettingsRef = doc(DB, Collections.usersSettings, user.uid);
 		return onSnapshot(userSettingsRef, (settingsDB) => {
 			const userSettings = settingsDB.data() as UserSettings;
+			
 			if (userSettings) {
-				store.dispatch(setUserSettings(null));
+				userSettingsSchema.parse(userSettings);
+				store.dispatch(setUserSettings(userSettings));
 				return
 
-			} 
-			userSettingsSchema.parse(userSettings);
+			}
 
-			store.dispatch(setUserSettings(userSettings));
+
+
+			store.dispatch(setUserSettings(null));
 
 		});
 
 	} catch (error) {
 		console.error(error);
 		store.dispatch(setUserSettings(null));
+		return () => { return };
 
 	}
 }
