@@ -1,7 +1,8 @@
-import { doc, getDoc } from "firebase/firestore";
-import { Agreement, Collections, StatementSchema, User } from "delib-npm";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { Agreement, Collections, StatementSchema, User, UserSettings, userSettingsSchema } from "delib-npm";
 import { DB } from "../config";
 import { store } from "@/model/store";
+import { setUserSettings } from "@/model/users/userSlice";
 
 // get user font size and update document and html with the size in the DB
 export async function getUserFromDB(): Promise<User | undefined> {
@@ -18,11 +19,11 @@ export async function getUserFromDB(): Promise<User | undefined> {
 
 		if (!userDB) throw new Error("userDB is undefined");
 		StatementSchema.parse(userDB);
-		
+
 		if (
 			userDB.fontSize === undefined ||
-            typeof userDB.fontSize !== "number" ||
-            isNaN(userDB.fontSize)
+			typeof userDB.fontSize !== "number" ||
+			isNaN(userDB.fontSize)
 		)
 			userDB.fontSize = 14;
 		if (typeof userDB.fontSize !== "number")
@@ -37,8 +38,8 @@ export async function getUserFromDB(): Promise<User | undefined> {
 }
 
 export interface SignatureDB {
-    agreement: string;
-    version: string;
+	agreement: string;
+	version: string;
 }
 
 export function getSignature(
@@ -57,5 +58,34 @@ export function getSignature(
 		console.error(error);
 
 		return undefined;
+	}
+}
+
+
+export function listenToUserSettings() {
+	try {
+
+
+		const user = store.getState().user.user;
+		if (!user) return;
+
+		const userSettingsRef = doc(DB, Collections.usersSettings, user.uid);
+		return onSnapshot(userSettingsRef, (settingsDB) => {
+			const userSettings = settingsDB.data() as UserSettings;
+			if (userSettings) {
+				store.dispatch(setUserSettings(null));
+				return
+
+			} 
+			userSettingsSchema.parse(userSettings);
+
+			store.dispatch(setUserSettings(userSettings));
+
+		});
+
+	} catch (error) {
+		console.error(error);
+		store.dispatch(setUserSettings(null));
+
 	}
 }

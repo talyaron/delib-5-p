@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { Agreement, User, UserSchema } from "delib-npm";
+import { Agreement, User, UserSchema, UserSettings } from "delib-npm";
 import { defaultFontSize } from "../fonts/fontsModel";
 
 export enum Status {
@@ -18,6 +18,7 @@ interface UserState {
         show: boolean;
     };
 	colorContrast: boolean;
+	userSettings: UserSettings |null;	
 }
 
 // Define the initial state using that type
@@ -28,6 +29,7 @@ const initialState: UserState = {
 	},
 	status: Status.idle,
 	colorContrast: false,
+	userSettings: null,
 };
 
 export const userSlicer = createSlice({
@@ -102,6 +104,9 @@ export const userSlicer = createSlice({
 		toggleColorContrast: (state) => {
 			state.colorContrast = !state.colorContrast;
 		},
+		setUserSettings: (state, action: PayloadAction<UserSettings | null>) => {
+			state.userSettings = action.payload;
+		}
 	},
 });
 
@@ -111,6 +116,7 @@ export const {
 	setFontSize,
 	updateAgreementToStore,
 	toggleColorContrast,
+	setUserSettings
 } = userSlicer.actions;
 
 // Other code such as selectors can use the imported `RootState` type
@@ -122,5 +128,8 @@ export const fontSizeSelector = (state: RootState) =>
 	state.user.user?.fontSize || defaultFontSize;
 export const colorContrastSelector = (state: RootState) =>
 	state.user.colorContrast;
+
+export const userSettingsSelector = (state: RootState) =>
+	state.user.userSettings;
 
 export default userSlicer.reducer;
