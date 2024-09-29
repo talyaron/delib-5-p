@@ -43,7 +43,7 @@ export async function updateParentWithNewMessageCB(e: any) {
 		if (!parentId) throw new Error('parentId not found');
 
 		//get parent
-		const parentRef = db.doc(`statements/${parentId}`);
+		const parentRef = db.doc(`${Collections.statements}/${parentId}`);
 		const parentDB = await parentRef.get();
 		const parent = parentDB.data();
 		if (!parent) throw new Error('parent not found');

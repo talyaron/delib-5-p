@@ -147,7 +147,7 @@
     "Sort suggestions": "Ordenar sugerencias",
     "Allow similarity search": "Permitir búsqueda de similitudes",
     "Allow removal of navigational elements": "Permitir la eliminación de elementos de navegación",
-    "Tabu": "Tabú",
+    "Objections": "Objeciones",
     "Conflicts": "Conflictos",
     "Abstention": "Abstención",
     "Support": "Soporte",
@@ -164,5 +164,6 @@
     "Would you like to choose this suggestion": "¿Te gustaría elegir esta sugerencia",
     "Continue with your original suggestion": "Continuar con tu sugerencia original",
     "Continue with this suggestion": "Continuar con esta sugerencia",
-    "Back": "Atrás"
+    "Back": "Atrás",
+     "Disagree": "En desacuerdo"
 }

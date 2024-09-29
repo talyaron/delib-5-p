@@ -151,7 +151,7 @@
     "Sort suggestions": "فرز الاقتراحات",
     "Allow similarity search": "السماح بالبحث عن التشابه",
     "Allow removal of navigational elements": "السماح بإزالة عناصر التنقل",
-    "Tabu": "تابو",
+    "Objections": "الاعتراضات",
     "Conflicts": "الصراعات",
     "Abstention": "الامتناع",
     "Support": "الدعم",
@@ -168,5 +168,6 @@
     "Would you like to choose this suggestion": "هل ترغب في اختيار هذا الاقتراح",
     "Continue with your original suggestion": "الاستمرار بالاقتراح الأصلي الخاص بك",
     "Continue with this suggestion": "الاستمرار مع هذا الاقتراح",
-    "Back": "عودة"
+    "Back": "عودة",
+    "Disagree": "لا أوافق"
 }

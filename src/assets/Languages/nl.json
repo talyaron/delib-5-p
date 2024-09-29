@@ -150,7 +150,7 @@
   "Sort suggestions": "Suggesties sorteren",
   "Allow similarity search": "Zoek naar overeenkomsten toestaan",
   "Allow removal of navigational elements": "Verwijderen van navigatie-elementen toestaan",
-  "Tabu": "Tabu",
+  "Objections": "Bezwaren",
   "Conflicts": "Conflicten",
   "Abstention": "Onthouding",
   "Support": "Ondersteuning",
@@ -167,5 +167,6 @@
   "Would you like to choose this suggestion": "Wil je deze suggestie kiezen",
   "Continue with your original suggestion": "Ga door met uw oorspronkelijke suggestie",
   "Continue with this suggestion": "Ga door met deze suggestie",
-  "Back": "Terug"
+  "Back": "Terug",
+   "Disagree": "Niet akkoord gaan"
 }

@@ -76,9 +76,7 @@ const StatementHeader: FC<Props> = ({
 	const [showInvitationPanel, setShowInvitationPanel] = useState(false);
 	
 	const { t, dir } = useLanguage();
-	const parentStatement = store
-		.getState()
-		.statements.statements.find((st) => st.statementId === statement?.parentId);
+
 
 	// Redux Store
 	const user = store.getState().user.user;
@@ -171,7 +169,6 @@ const StatementHeader: FC<Props> = ({
 				{(enableNavigationalElements || isAdmin) && (
 					<div className="page__header__wrapper__actions">
 						<Back
-							parentStatement={parentStatement}
 							statement={statement}
 							headerColor={headerColor}
 						/>

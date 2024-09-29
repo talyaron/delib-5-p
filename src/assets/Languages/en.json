@@ -163,7 +163,7 @@
   "Sort suggestions": "Sort suggetsions",
   "Allow similarity search": "Allow similarity search",
   "Allow removal of navigational elements": "Allow removal of navigational elements",
-  "Tabu": "Tabu",
+  "Objections": "Objections",
   "Conflicts": "Conflicts",
   "Abstention": "Abstention",
   "Support": "Support",
@@ -180,5 +180,6 @@
   "Would you like to choose this suggestion": "Would you like to choose this suggestion",
   "Continue with your original suggestion": "Continue with your original suggestion",
   "Continue with this suggestion": "Continue with this suggestion",
-  "Back": "Back"
+  "Back": "Back",
+  "Disagree": "Disagree"
 }

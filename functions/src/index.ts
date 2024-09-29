@@ -41,6 +41,7 @@ import { findSimilarStatements } from './fn_findSimilarStatements';
 import { updateApprovalResults } from './fn_approval';
 import { setImportanceToStatement } from './fn_importance';
 import { updateAgrees } from './fn_agree';
+import { setUserSettings } from './fn_users';
 require('dotenv').config()
 
 
@@ -57,6 +58,7 @@ export const db = getFirestore();
 //     updateSubscribedListenersCB,
 // );
 
+exports.setUserSettings = onDocumentCreated(`/${Collections.users}/{userId}`, setUserSettings);
 
 
 exports.updateParentWithNewMessage = onDocumentCreated(

@@ -16,13 +16,12 @@ import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
 import InvitationModal from "./main/invitationModal/InvitationModal";
 
-
 export default function HomeHeader() {
 	// Use State
 	const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
 	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
 	const [showInvitationModal, setShowInvitationModal] = useState(false);
-	
+
 	const { t, dir } = useLanguage();
 	useEffect(() => {
 		// for deferred app install
@@ -43,14 +42,11 @@ export default function HomeHeader() {
 			console.error(error);
 		}
 	}
-	
+
 	return (
 		<div className={`homePage__header ${dir}`}>
 			<div className="homePage__header__wrapper">
-				<h1
-					className="homePage__header__wrapper__title"
-					children={t("Delib")}
-				/>
+				<h1 className="homePage__header__wrapper__title">FreeDi</h1>
 				<div className="homePage__header__wrapper__icons">
 					{deferredPrompt && (
 						<IconButton onClick={handleInstallApp}>
@@ -68,26 +64,16 @@ export default function HomeHeader() {
 							onOptionClick={() => handleLogout()}
 						/>
 						<MenuOption
-							icon={<InvitationIcon style={{ color: "#4E88C7" }}/>}
+							icon={<InvitationIcon style={{ color: "#4E88C7" }} />}
 							label={t("Join with PIN number")}
 							onOptionClick={handleInvitationPanel}
 						/>
 					</Menu>
 				</div>
 			</div>
-			{showInvitationModal && <InvitationModal setShowModal={setShowInvitationModal} />}
+			{showInvitationModal && (
+				<InvitationModal setShowModal={setShowInvitationModal} />
+			)}
 		</div>
 	);
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -12,6 +12,7 @@ import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
+import { useLocation } from "react-router-dom";
 
 interface Props {
 	statement: Statement;
@@ -32,6 +33,7 @@ const StatementChat: FC<Props> = ({
 }) => {
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
+	const location = useLocation();
 
 	const [newMessages, setNewMessages] = useState<number>(0);
 
@@ -39,11 +41,27 @@ const StatementChat: FC<Props> = ({
 		statement.parentId,
 	);
 
+	function scrollToHash() {
+		
+		if (location.hash) {
+			const element = document.querySelector(location.hash);
+			
+			if (element) {
+				element.scrollIntoView();
+				firstTime = false;
+				
+				return
+			}
+		}
+		
+	}
 
 	//scroll to bottom
 	const scrollToBottom = () => {
+		
 		if (!messagesEndRef) return;
 		if (!messagesEndRef.current) return;
+		if(location.hash) return;
 		if (firstTime) {
 			//@ts-ignore
 			messagesEndRef.current.scrollIntoView({ behavior: "auto" });
@@ -54,21 +72,29 @@ const StatementChat: FC<Props> = ({
 		}
 	};
 
-	//effects
 	useEffect(() => {
 		firstTime = true;
-		scrollToBottom();
+		
 	}, []);
 
+	//effects
 	useEffect(() => {
-		//if new substament was not created by the user, then set newMessages to the number of new subStatements
+		
+		if(!firstTime) return;
+		
+		if(location.hash) {scrollToHash();}
+		else {scrollToBottom();}
+	}, [subStatements]);
+
+	useEffect(() => {
+		//if new sub-statement was not created by the user, then set newMessages to the number of new subStatements
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
 			const isNewMessages =
 				subStatements.length - numberOfSubStatements > 0 ? true : false;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
-				setNewMessages((nmbr) => nmbr + 1);
+				setNewMessages((n) => n + 1);
 			}
 		} else {
 			scrollToBottom();
@@ -80,6 +106,7 @@ const StatementChat: FC<Props> = ({
 		<>
 			<div
 				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
+				id={`msg-${statement.statementId}`}
 			>
 				{subStatements?.map((statementSub: Statement, index) => (
 					<div key={statementSub.statementId}>
