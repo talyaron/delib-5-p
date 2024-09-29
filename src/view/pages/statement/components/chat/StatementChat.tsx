@@ -42,13 +42,14 @@ const StatementChat: FC<Props> = ({
 	);
 
 	function scrollToHash() {
-		console.log("scrollToHash");
+		
 		if (location.hash) {
 			const element = document.querySelector(location.hash);
-			console.log(element?"element exists":`element ${ location.hash} does not exist`);
+			
 			if (element) {
 				element.scrollIntoView();
 				firstTime = false;
+				
 				return
 			}
 		}
@@ -57,7 +58,7 @@ const StatementChat: FC<Props> = ({
 
 	//scroll to bottom
 	const scrollToBottom = () => {
-	console.log("scrollToBottom");
+		
 		if (!messagesEndRef) return;
 		if (!messagesEndRef.current) return;
 		if(location.hash) return;
@@ -73,14 +74,14 @@ const StatementChat: FC<Props> = ({
 
 	useEffect(() => {
 		firstTime = true;
-		console.log("staring at...... ",location.hash);
+		
 	}, []);
 
 	//effects
 	useEffect(() => {
-		console.log("subStatements changed");
+		
 		if(!firstTime) return;
-		console.log("location.hash:", location.hash);
+		
 		if(location.hash) {scrollToHash();}
 		else {scrollToBottom();}
 	}, [subStatements]);

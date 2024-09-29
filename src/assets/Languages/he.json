@@ -6,7 +6,7 @@
   "Add Question": "הוספת שאלה",
   "Admin": "מנהל",
   "Advanced": "מתקדם",
-  "Agree": "אני מסכים/ה",
+  "Agree": "מסכים/ה",
   "Agreement": "הסכמה",
   "Agreement Description": "אנא אשר/י שאת/ה יודע/ת שזאת תוכנת ניסוי, וכל מידע שתכניס/י למערכת עלול להיות ציבורי וחשוף לקהל רחב. אנא המנע/י מהכנסת מידע רגיש. כל הכנסת מידע נמצא באחריותך בלבד, ואין לך תביעה מבעלי המערכת",
   "Agreements": "הסכמות",
@@ -185,7 +185,8 @@
   "Would you like to choose this suggestion": "האם תרצה/י לבחור את הפתרון הזה",
   "Continue with your original suggestion": "המשך עם ההצעה המקורית שלך",
   "Continue with this suggestion": "המשך/י עם הפתרון הזה",
-  "Back": "חזרה"
+  "Back": "חזרה",
+  "Disagree": "מתנגד/ת"
 
 
 

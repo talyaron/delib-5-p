@@ -14,57 +14,58 @@ interface Props {
 }
 
 const Back: FC<Props> = ({ statement, headerColor }) => {
-  const navigate = useNavigate();
-  const topParentHistory = useAppSelector(historySelect(statement?.parentId || ""));
+	const navigate = useNavigate();
+	const topParentHistory = useAppSelector(historySelect(statement?.parentId || ""));
 
  
-  function handleBack() {
-    try {
-      //google analytics log
-      logEvent(analytics, "statement_back_button", {
-        button_category: "buttons",
-        button_label: "back_button",
-      });
+	function handleBack() {
+		try {
+			//google analytics log
+			logEvent(analytics, "statement_back_button", {
+				button_category: "buttons",
+				button_label: "back_button",
+			});
 
-      //rules: if history exits --> go back in history
+			//rules: if history exits --> go back in history
 
-      //in case the back should direct to home
-      if (statement?.parentId === "top") {
-        return navigate("/home", {
-          state: { from: window.location.pathname },
-        });
-      }
+			//in case the back should direct to home
+			if (statement?.parentId === "top") {
+				return navigate("/home", {
+					state: { from: window.location.pathname },
+				});
+			}
 
      
-      if (!topParentHistory || !statement)
-       return  navigate("/home", {
-          state: { from: window.location.pathname },
-        });
-      return navigate(topParentHistory.pathname, {
-        state: { from: window.location.pathname },
-      });
+			if (!topParentHistory || !statement)
+				return  navigate("/home", {
+					state: { from: window.location.pathname },
+				});
+			
+			return navigate(topParentHistory.pathname, {
+				state: { from: window.location.pathname },
+			});
 
-    } catch (error) {
-      console.error(error);
-    }
-  }
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  return (
-    <button
-      className="page__header__wrapper__actions__iconButton"
-      aria-label="Back Button"
-      onClick={handleBack}
-      style={{ cursor: "pointer" }}
-      data-cy="back-icon-header"
-    >
-      <BackArrowIcon
-        className="back-arrow-icon"
-        style={{
-          color: headerColor.color,
-        }}
-      />
-    </button>
-  );
+	return (
+		<button
+			className="page__header__wrapper__actions__iconButton"
+			aria-label="Back Button"
+			onClick={handleBack}
+			style={{ cursor: "pointer" }}
+			data-cy="back-icon-header"
+		>
+			<BackArrowIcon
+				className="back-arrow-icon"
+				style={{
+					color: headerColor.color,
+				}}
+			/>
+		</button>
+	);
 };
 
 export default Back;

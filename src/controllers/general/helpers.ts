@@ -380,6 +380,7 @@ export function processHistory({statementId, pathname }:HistoryTracker, state:Hi
 		if(!statementId) return [...state, {pathname }]
 		if(newHistory[newHistory.length - 1].statementId === statementId){
 			newHistory[newHistory.length - 1].pathname = pathname;
+			
 			return newHistory;
 		} else {
 			return [...state, {statementId, pathname }];
@@ -387,6 +388,7 @@ export function processHistory({statementId, pathname }:HistoryTracker, state:Hi
 
 	} catch (error) {
 		console.error(error);
+		
 		return state;
 	}
 }
