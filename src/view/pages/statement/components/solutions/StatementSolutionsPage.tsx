@@ -19,6 +19,7 @@ import { getTitle } from "@/controllers/general/helpers";
 import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
 import styles from "./statementSolutinsPage.module.scss";
 import SuggestionCards from "./components/suggestionCards/SuggestionCards";
+import Description from "./components/description/Description";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
@@ -93,6 +94,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 								{getToastButtons(currentStage)}
 							</Toast>
 						)}
+						<Description statement={statement} />
 						<SuggestionCards
 							statement={statement}
 							handleShowTalker={handleShowTalker}

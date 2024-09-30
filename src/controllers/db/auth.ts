@@ -5,7 +5,7 @@ import {
 	GoogleAuthProvider,
 	onAuthStateChanged,
 	signInAnonymously,
-	Unsubscribe,
+	Unsubscribe
 } from "firebase/auth";
 import { app } from "./config";
 import { parseUserFromFirebase, User } from "delib-npm";
@@ -61,7 +61,7 @@ export const listenToAuth =
 								`Anonymous ${Math.floor(Math.random() * 10000)}`;
 						const _user = parseUserFromFirebase(user);
 
-						if(_user?.isAnonymous){
+						if (_user?.isAnonymous) {
 							_user.displayName = sessionStorage.getItem("displayName") || `Anonymous ${Math.floor(Math.random() * 10000)}`;
 						}
 
@@ -117,3 +117,41 @@ export function signAnonymously() {
 			console.error(error);
 		});
 }
+
+// export function listenToRedirectResults() {
+// 	getRedirectResult(auth)
+// 		.then((result) => {
+// 			try {
+// 				if(!result) throw new Error("Result is undefined after redirect.")
+// 			if (result.user) {
+				
+
+
+// 					// User signed in successfully.
+// 					const user = result.user;
+// 					if(!user) throw new Error("User is undefined after redirect.")
+// 					console.log("User signed in:", user);
+
+// 					// You can access additional information here
+// 					// const credential = result.credential;
+// 					// const accessToken = credential.accessToken;
+
+// 					// Handle the signed-in user information as needed
+// 				} else {
+// 					// No user is signed in.
+// 					console.log("No user signed in after redirect.");
+// 				}
+// 			} catch (error) {
+// 				console.error(error)
+
+// 			}
+// 		})
+// 		.catch((error) => {
+// 			// Handle errors here
+// 			const errorCode = error.code;
+// 			const errorMessage = error.message;
+// 			const email = error.email;
+// 			const credential = error.credential;
+// 			console.error("Error after redirect:", errorCode, errorMessage);
+// 		});
+// }

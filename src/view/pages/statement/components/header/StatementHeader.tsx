@@ -99,7 +99,7 @@ const StatementHeader: FC<Props> = ({
 		const baseUrl = window.location.origin;
 
 		const shareData = {
-			title: t("Delib: We create agreements together"),
+			title: t("FreeDi: Empowering Agreements"),
 			text: t("Invited:") + statement?.statement,
 			url: `${baseUrl}${pathname}`,
 		};

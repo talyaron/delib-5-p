@@ -65,6 +65,8 @@ export default function App() {
 			initLocation,
 		);
 
+		// listenToRedirectResults();
+
 		return () => {
 			unsub();
 		};

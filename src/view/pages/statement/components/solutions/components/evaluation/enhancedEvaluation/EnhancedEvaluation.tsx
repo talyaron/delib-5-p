@@ -47,7 +47,6 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 			<div
 				className="evaluation-thumbs"
-				style={{ flexDirection: dir === "ltr" ? "row" : "row-reverse" }}
 			>
 				{enhancedEvaluationsThumbs.map((evaluationThumb) => (
 					<EvaluationThumb
