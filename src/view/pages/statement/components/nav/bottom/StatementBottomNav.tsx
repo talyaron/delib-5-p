@@ -23,6 +23,7 @@ import {
 import "./StatementBottomNav.scss";
 import Start from "@/view/pages/start/Start";
 import StartHere from "@/view/components/startHere/StartHere";
+import { set } from "node_modules/cypress/types/lodash";
 
 interface Props {
   statement: Statement;
@@ -59,6 +60,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
   const handleMidIconClick = () => {
     if (isAddOption) {
       setShowModal(true);
+	  setShowStartHere(false);
     }
   };
 
@@ -83,7 +85,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
         }
       >
         <div className="add-option-button-wrapper">
-			{showStartHere && <StartHere setShow={setShowModal} />}
+			{showStartHere && <StartHere setShow={setShowStartHere} />}
           <button
             className="add-option-button"
             aria-label="Add option"
