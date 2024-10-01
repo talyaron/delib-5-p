@@ -77,9 +77,7 @@ const StatementHeader: FC<Props> = ({
 	const [showInvitationModal, setShowInvitationModal] = useState(false);
 	const dispatch = useDispatch();
 	const { t, dir } = useLanguage();
-	const parentStatement = store
-		.getState()
-		.statements.statements.find((st) => st.statementId === statement?.parentId);
+
 
 	// Redux Store
 	const user = store.getState().user.user;
@@ -102,7 +100,7 @@ const StatementHeader: FC<Props> = ({
 		const baseUrl = window.location.origin;
 
 		const shareData = {
-			title: t("Delib: We create agreements together"),
+			title: t("FreeDi: Empowering Agreements"),
 			text: t("Invited:") + statement?.statement,
 			url: `${baseUrl}${pathname}`,
 		};
@@ -160,7 +158,6 @@ const StatementHeader: FC<Props> = ({
 				{(enableNavigationalElements || isAdmin) && (
 					<div className="page__header__wrapper__actions">
 						<Back
-							parentStatement={parentStatement}
 							statement={statement}
 							headerColor={headerColor}
 						/>

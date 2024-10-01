@@ -47,6 +47,7 @@ const SuggestionCard: FC<Props> = ({
 	statement,
 }) => {
 	// Hooks
+	if(!parentStatement) console.error("parentStatement is not defined")
 
 	const { t, dir } = useLanguage();
 	const { sort } = useParams();

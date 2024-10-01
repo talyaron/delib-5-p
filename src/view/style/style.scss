@@ -121,9 +121,9 @@
   --range-conflict-60: #ffbd01;
   --range-conflict-30: #e7de2e;
 
-  --range-tabu-100: #ff4185;
-  --range-tabu-60: #fd8ee5;
-  --range-tabu-30: #e6b2ff;
+  --range-objections-100: #ff4185;
+  --range-objections-60: #fd8ee5;
+  --range-objections-30: #e6b2ff;
   //agreement-rang-contrast
   --range-positive-100-contrast: #02f483;
   --range-positive-60-contrast: #2fcfb3b2;
@@ -133,9 +133,9 @@
   --range-conflict-60-contrast: #b79016;
   --range-conflict-30-contrast: #70502d;
 
-  --range-tabu-100-contrast: #c1145b;
-  --range-tabu-60-contrast: #ff2b7799;
-  --range-tabu-30-contrast: #ff589366;
+  --range-objections-100-contrast: #c1145b;
+  --range-objections-60-contrast: #ff2b7799;
+  --range-objections-30-contrast: #ff589366;
 
 
   //base
@@ -328,6 +328,8 @@
   --text-disabled-contrast: #6379a7;
   --text-blue-contrast: #3e61b0;
   --text-crimson-contrast: #ff5b9c;
+
+  --wrapper-max-width: 75ch;
 }
 
 * {
@@ -395,7 +397,7 @@ b {
   flex: auto;
   width: 100%;
   height: fit-content;
-  max-width: 75ch;
+  max-width: var(--wrapper-max-width);
   gap: 1rem;
   position: relative;
   margin: 0 auto;

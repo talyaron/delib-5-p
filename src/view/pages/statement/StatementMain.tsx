@@ -42,6 +42,7 @@ import EnableNotifications from '../../components/enableNotifications/EnableNoti
 import AskPermission from '@/view/components/askPermission/AskPermission';
 import FollowMeToast from './components/followMeToast/FollowMeToast';
 import PasswordUi from '@/view/components/passwordUi/PasswordUi';
+import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -128,14 +129,19 @@ const StatementMain: FC = () => {
 			return;
 		};
 
+		let unSubUserSettings: () => void = () => { return; };
+
 		if (user && statementId) {
 			unSubListenToStatement = listenToStatement(
 				statementId,
 				setIsStatementNotFound
 			);
 
+			unSubUserSettings = listenToUserSettings();
+
 			unSubSubStatements = listenToSubStatements(statementId, dispatch);
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
+			
 
 			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
@@ -146,6 +152,7 @@ const StatementMain: FC = () => {
 
 		return () => {
 			unSubListenToStatement();
+			unSubUserSettings();
 			unSubSubStatements();
 			unSubStatementSubscription();
 			unSubEvaluations();

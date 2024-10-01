@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Third party imports
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Firebase functions
 import { listenToAuth, logOut } from "./controllers/db/auth";
@@ -21,16 +21,20 @@ import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 
 // Helpers
 import { updateUserAgreement } from "./controllers/db/users/setUsersDB";
-import { getSigniture } from "./controllers/db/users/getUserDB";
+import { getSignature as getSignature } from "./controllers/db/users/getUserDB";
 import { onLocalMessage } from "./controllers/db/notifications/notifications";
 import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
+import { setHistory } from "./model/history/HistorySlice";
+
+
 
 export default function App() {
 	// Hooks
+	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { anonymous } = useParams();
+	const {statementId,  anonymous } = useParams();
 	const { changeLanguage, t } = useLanguage();
 
 	// Redux Store
@@ -61,10 +65,16 @@ export default function App() {
 			initLocation,
 		);
 
+		// listenToRedirectResults();
+
 		return () => {
 			unsub();
 		};
 	}, []);
+
+	useEffect(() => {
+		dispatch(setHistory({ statementId, pathname: location.pathname }));
+	}, [location]);
 
 	useEffect(() => {
 		if (!user) {
@@ -76,7 +86,7 @@ export default function App() {
 		if (user.agreement?.date) {
 			setShowSignAgreement(false);
 		} else {
-			const agreement = getSigniture("basic", t);
+			const agreement = getSignature("basic", t);
 
 			if (!agreement) throw new Error("agreement not found");
 
@@ -96,7 +106,7 @@ export default function App() {
 			if (!text) throw new Error("text is empty");
 			if (agree) {
 				setShowSignAgreement(false);
-				const agreement: Agreement | undefined = getSigniture(
+				const agreement: Agreement | undefined = getSignature(
 					"basic",
 					t,
 				);
@@ -133,6 +143,6 @@ export default function App() {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const install: { deferredPrompt: any } = {
-	deferredPrompt: {} as Event,
-};
+// export const install: { deferredPrompt: any } = {
+// 	deferredPrompt: {} as Event,
+// };

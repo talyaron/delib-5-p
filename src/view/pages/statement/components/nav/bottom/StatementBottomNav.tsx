@@ -22,6 +22,10 @@ import {
 } from "./StatementBottomNavModal";
 
 import "./StatementBottomNav.scss";
+import StartHere from "@/view/components/startHere/StartHere";
+import { useSelector } from "react-redux";
+import { userSettingsSelector } from "@/model/users/userSlice";
+import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
 
 interface Props {
   statement: Statement;
@@ -33,9 +37,12 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	const { page } = useParams();
 
 	const navItems = getNavigationScreens(page);
+	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
+  
 
 	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 	const [showSorting, setShowSorting] = useState(false);
+	const [showStartHere, setShowStartHere] = useState(timesRemainToLearnAddOption > 0);
 
 	const statementColor = useStatementColor(
 		statement.statementType || StatementType.statement
@@ -54,9 +61,12 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	const isAddOption =
     showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
-	const handleMidIconClick = () => {
+	const handleAddOption = () => {
 		if (isAddOption) {
 			setShowModal(true);
+	  setShowStartHere(false);
+	  decreesUserSettingsLearningRemain({addOption: true});
+
 		}
 	};
 
@@ -81,6 +91,27 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 				>
 					{isAddOption && <PlusIcon style={{ color: statementColor.color }} />}
 				</button>
+			<div
+				className={
+					showSorting
+						? "statement-bottom-nav statement-bottom-nav--show"
+						: "statement-bottom-nav"
+				}
+			>
+				<div className="add-option-button-wrapper">
+					{showStartHere && <StartHere setShow={setShowStartHere} />}
+					<button
+						className="add-option-button"
+						aria-label="Add option"
+						style={statementColor}
+						onClick={handleAddOption}
+						data-cy="bottom-nav-mid-icon"
+					>
+						{isAddOption && (
+							<PlusIcon style={{ color: statementColor.color }} />
+						)}
+					</button>
+				</div>
 				<div className="sort-menu">
 					{navItems.map((navItem, i) => (
 						<div
@@ -102,6 +133,11 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 						</div>
 					))}
 					<div className="sort-button" onClick={handleSortingClick}>
+					<button
+						className="sort-button"
+						onClick={handleSortingClick}
+						aria-label="Sort items"
+					>
 						<SortIcon />
 					</div>
 				</div>

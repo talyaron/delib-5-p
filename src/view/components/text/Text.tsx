@@ -29,16 +29,16 @@ const Text: FC<Props> = ({ statement, description }) => {
 						});
 
 						return (
-							<div className={`${styles["p--bold"]} ${styles.p}`} key={`${textId}--${i}`}>
+							<p className={`${styles["p--bold"]} ${styles.p}`} key={`${textId}--${i}`}>
 								{boldedParagraph}
-							</div>
+							</p>
 						);
 					}
 
 					return (
-						<div className={styles.p} key={`${textId}--${i}`}>
+						<p className={styles.p} key={`${textId}--${i}`}>
 							{paragraph}
-						</div>
+						</p>
 					);
 				});
 

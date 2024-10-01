@@ -38,7 +38,7 @@ const Dot: FC<Props> = ({ subStatement, maxEvaluators }) => {
 			onMouseLeave={() => handleShowTooltip(false)}
 		>
 			{show && (
-				<div className={styles.tooltip}>
+				<div className={`${styles.tooltip} ${left>0.5&&styles["tooltip--left"]}`}>
 					<div className={styles["tooltip__title"]}>
 						{subStatement.statement}
 					</div>
@@ -54,9 +54,9 @@ const Dot: FC<Props> = ({ subStatement, maxEvaluators }) => {
 export default Dot;
 
 const agreementColors = [
-	"--range-tabu-100",
-	"--range-tabu-60",
-	"--range-tabu-30",
+	"--range-objections-100",
+	"--range-objections-60",
+	"--range-objections-30",
 	"--range-conflict-100",
 	"--range-conflict-60",
 	"--range-conflict-30",

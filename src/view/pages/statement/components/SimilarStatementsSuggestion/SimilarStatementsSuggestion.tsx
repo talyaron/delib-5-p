@@ -78,6 +78,7 @@ export default function SimilarStatementsSuggestion({
 			key={0}
 			statementId={parentStatement.statementId}
 			setCurrentStep={setCurrentStep}
+			setShowModal={setShowModal}
 			newStatementInput={newStatementInput}
 			setNewStatementInput={setNewStatementInput}
 			setSimilarStatements={setSimilarStatements}
