@@ -143,6 +143,6 @@ export default function App() {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const install: { deferredPrompt: any } = {
-	deferredPrompt: {} as Event,
-};
+// export const install: { deferredPrompt: any } = {
+// 	deferredPrompt: {} as Event,
+// };
