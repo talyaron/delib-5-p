@@ -15,7 +15,7 @@ import { NavigateFunction } from "react-router-dom";
 import { setUserToDB } from "./users/setUsersDB";
 
 // Redux store imports
-import { AppDispatch } from "@/model/store";
+import { AppDispatch, store } from "@/model/store";
 import { setFontSize, setUser } from "@/model/users/userSlice";
 import { resetStatements } from "@/model/statements/statementsSlice";
 import { resetEvaluations } from "@/model/evaluations/evaluationsSlice";
@@ -94,7 +94,8 @@ export const listenToAuth =
 			});
 		};
 
-export function logOut(dispatch: AppDispatch) {
+export function logOut() {
+	const dispatch = store.dispatch;
 	signOut(auth)
 		.then(() => {
 			// Sign-out successful.
