@@ -25,32 +25,32 @@ const manifestPlugin: Partial<VitePWAOptions> = {
 		orientation: 'portrait',
 		icons: [
 			{
-				src: './assets/logo/logo-48px.png',
+				src: 'icons/logo-48px.png',
 				sizes: '48x48',
 				type: 'image/png',
 			},
 			{
-				src: './assets/logo/logo-72px.png',
+				src: 'icons/logo-72px.png',
 				sizes: '72x72',
 				type: 'image/png',
 			},
 			{
-				src: './assets/logo/logo-96px.png',
+				src: 'icons/logo-96px.png',
 				sizes: '96x96',
 				type: 'image/png',
 			},
 			{
-				src: './assets/logo/logo-128px.png',
+				src: 'icons/logo-128px.png',
 				sizes: '128x128',
 				type: 'image/png',
 			},
 			{
-				src: './assets/logo/logo-192px.png',
+				src: 'icons/logo-192px.png',
 				sizes: '192x192',
 				type: 'image/png',
 			},
 			{
-				src: './assets/logo/logo-512px.png',
+				src: 'icons/logo-512px.png',
 				sizes: '512x512',
 				type: 'image/png',
 			},

@@ -11,18 +11,14 @@
             navigator.serviceWorker
                 .register("/firebase-messaging-sw.js")
                 .then((registration) => {
-                    console.info("firebase-messaging-sw.js was registered");
+               
 
                     registration.addEventListener("updatefound", () => {
                         // If update found is fired, it means that there's
                         // a new service worker being installed.
-                        console.info(
-                            "new firebase-messaging-sw.js being installed",
-                        );
+                   
                         const installingWorker = registration.installing;
-                        console.info(
-                            "A new firebase-messaging-sw.js is being installed:"
-                        );
+                      
 
                         // You can listen for changes to the installing service worker's
                         // state via installingWorker.onstatechange

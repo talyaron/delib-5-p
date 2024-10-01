@@ -23,7 +23,7 @@ body {
     }
 
     &__freediIcon {
-        margin-top: 5rem;
+        margin-top: 4rem;
     }
 
     &__subTitle {
@@ -61,7 +61,7 @@ body {
     opacity: 0.7;
 }
 
-.mainlogo {
+.mainLogo {
     width: 18.5rem;
     height: fit-content;
     align-items: center;
@@ -73,7 +73,7 @@ body {
         font-weight: 400;
         font-style: normal;
         position: absolute;
-        margin-top: 4rem;
+        margin-top: 5rem;
     }
 
     &__Free {
@@ -187,8 +187,8 @@ body {
         margin-left: 4rem;
     }
 
-    .mainlogo__Free,
-    .mainlogo__Di {
+    .mainLogo__Free,
+    .mainLogo__Di {
         font-size: 3rem;
     }
 
@@ -201,7 +201,7 @@ body {
         justify-content: center;
     }
 
-    .mainlogo__slogan {
+    .mainLogo__slogan {
         font-size: 1.2rem;
     }
 }
