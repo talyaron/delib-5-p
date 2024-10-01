@@ -1,7 +1,8 @@
+
 import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { Results, Role, Statement, StatementType } from "delib-npm";
+import { isOptionFn, Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "@/view/components/animation/ScreenFadeIn";
@@ -21,22 +22,24 @@ import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { useMapContext } from "@/controllers/hooks/useMap";
 import { ReactFlowProvider } from "reactflow";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
 import { isAdmin } from "@/controllers/general/helpers";
+import { listenToChildStatements } from "@/controllers/db/statements/listenToStatements";
+import { Unsubscribe } from "firebase/auth";
 
 interface Props {
-  statement: Statement;
+	statement: Statement;
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
 	const userSubscription = useAppSelector(
 		statementSubscriptionSelector(statement.statementId)
 	);
-	
+
 	const role = userSubscription ? userSubscription.role : Role.member;
 	const _isAdmin = isAdmin(role);
-	
+
 
 	const { t } = useLanguage();
 	const { mapContext, setMapContext } = useMapContext();
@@ -70,15 +73,68 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
 		const topResult = sortStatementsByHirarrchy([
 			statement,
-			...childStatements.filter((state) => state.statementType !== "statement"),
+			...childStatements.filter(
+				(state) =>
+					isOptionFn(state) || state.statementType === StatementType.question
+			),
 		])[0];
 
 		setResults(topResult);
 	};
 
+	const dispatch = useAppDispatch();
+
 	useEffect(() => {
-		getSubStatements();
-	}, []);
+		let unsubscribe: Unsubscribe | null = null;
+
+		const fetchInitialData = async () => {
+			try {
+				unsubscribe = await listenToChildStatements(
+					dispatch,
+					statement.statementId,
+					(childStatements) => {
+						setSubStatements((prevStatements) => {
+							return updateStatementsAndResults(prevStatements, childStatements, statement);
+						});
+					}
+				);
+			} catch (error) {
+				console.error("Error fetching initial data:", error);
+			}
+		};
+
+		fetchInitialData();
+
+		return () => {
+			if (unsubscribe) {
+				unsubscribe();
+			}
+		};
+	}, [statement.statementId, dispatch]);
+
+	function updateStatementsAndResults(
+		prevStatements: Statement[],
+		childStatements: Statement[],
+		statement: Statement,
+	): Statement[] {
+		const updatedStatements = [
+			...prevStatements,
+			...childStatements.filter(
+				(stmt) => !prevStatements.some((prev) => prev.statementId === stmt.statementId)
+			),
+		];
+
+		const topResult = sortStatementsByHirarrchy([
+			statement,
+			...updatedStatements.filter(
+				(state) => isOptionFn(state) || state.statementType === StatementType.question
+			),
+		])[0];
+
+		setResults(topResult);
+
+		return updatedStatements;
+	}
 
 	const toggleModal = (show: boolean) => {
 		setMapContext((prev) => ({

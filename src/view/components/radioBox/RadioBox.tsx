@@ -18,7 +18,7 @@ export default function RadioBox({
 	const checked = currentValue === radioValue;
 
 	return (
-		<div className="radio-box" onClick={() => setCurrentValue(radioValue)}>
+		<button className="radio-box" onClick={() => setCurrentValue(radioValue)}>
 			{checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
 			<input
 				type="radio"
@@ -28,6 +28,6 @@ export default function RadioBox({
 				value={radioValue}
 			/>
 			{children}
-		</div>
+		</button>
 	);
 }

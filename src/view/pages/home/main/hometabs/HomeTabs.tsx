@@ -32,7 +32,7 @@ const HomeTabs: React.FC = () => {
     return (
         <div className="homebar-main">
             {tabs.map((tab) => (
-                <div
+                <button
                     key={tab.name}
                     className={`homebar-main__tab ${activeTab === tab.name ? "active" : "inactive"}`}
                     onClick={() => handleTabClick(tab.name)}
@@ -43,7 +43,7 @@ const HomeTabs: React.FC = () => {
                         alt={`${tab.name} icon`}
                     />
                     <p className={activeTab === tab.name ? "active-title" : "inactive-title"}>{tab.name}</p>
-                </div>
+                </button>
             ))}
         </div>
     );

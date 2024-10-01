@@ -5,18 +5,21 @@ import { findSimilarStatements } from '@/controllers/db/statements/getSimilarsta
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { subStatementsSelector } from '../../StatementMain';
 import { RootState } from '@/model/store';
-import SubmitStatementButton from './SubmitStatementButton';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button, { ButtonType } from '@/view/components/buttons/button/Button';
+import { DisplayStatement } from './SimilarStatementsSuggestion';
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-	newStatementInput: { title: string; description: string };
+	newStatementInput: DisplayStatement;
 	setNewStatementInput: React.Dispatch<
-		React.SetStateAction<{ title: string; description: string }>
+		React.SetStateAction<DisplayStatement>
 	>;
 	setSimilarStatements: React.Dispatch<
-		React.SetStateAction<{ title: string; description: string }[]>
+		React.SetStateAction<DisplayStatement[]>
 	>;
 	onFormSubmit: () => void;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	statementId: string;
 }
 
@@ -26,8 +29,10 @@ export default function StepOneStatementInput({
 	setNewStatementInput,
 	statementId,
 	setSimilarStatements,
+	setShowModal,
 	onFormSubmit,
 }: Readonly<SimilarStatementsSuggestionProps>) {
+	const {t} = useLanguage();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const subStatements = useAppSelector((state: RootState) =>
@@ -45,26 +50,19 @@ export default function StepOneStatementInput({
 			statementId,
 			newStatementInput.title
 		);
+		
 
 		const getSubStatements = subStatements
 			.filter((subStatement) =>
 				similarStatementsIds.includes(subStatement.statementId)
 			)
 			.map((subState) => {
-				const arrayOfStatementParagraphs =
-					subState?.statement.split('\n') || [];
-				const title = removeNonAlphabeticalCharacters(
-					arrayOfStatementParagraphs[0]
-				);
-
-				// Get all elements of the array except the first one
-				const description = removeNonAlphabeticalCharacters(
-					arrayOfStatementParagraphs.slice(1).join('\n')
-				);
+				
 
 				return {
-					title,
-					description,
+					statementId: subState.statementId,
+					title: subState.statement,
+					description: subState.description || '',
 				};
 			});
 
@@ -80,14 +78,14 @@ export default function StepOneStatementInput({
 
 	return (
 		<>
-			<h4 className='similarities__title'>Compose your solution</h4>
+			<h4 className='similarities__title'>{t("Compose your suggestion")}</h4>
 			<div className='similarities__titleInput'>
-				<label htmlFor='titleInput'>Your statement title</label>
+				<label htmlFor='titleInput'>{t("Title")}</label>
 				<input
 					autoFocus
 					type='text'
 					id='titleInput'
-					placeholder='Statement title. What people would see at first sight.'
+					placeholder={t('Suggestion title. What people would see at first sight') }
 					value={newStatementInput.title}
 					onChange={(e) =>
 						setNewStatementInput({
@@ -103,16 +101,19 @@ export default function StepOneStatementInput({
 				/>
 			</div>
 			{isLoading ? (
-				<Loader />
+				<>
+					<p>Search for similar suggestions...</p>
+					<Loader />
+				</>
 			) : (
 				<>
 					<div className='similarities__titleInput'>
-						<label htmlFor='descriptionInput'>Your statement description</label>
+						<label htmlFor='descriptionInput'>{t("Description")}</label>
 						<textarea className='similarities__titleInput'
 							rows={5}
 							id='descriptionInput'
-							placeholder='Formulate here the statement description. Add as much detail as you can to help others understand your statement.'
-							value={newStatementInput.description}
+							placeholder={t('Formulate here the description. Add as much detail as you can to help others understand your suggestion')}
+							defaultValue={newStatementInput.description}
 							onChange={(e) =>
 								setNewStatementInput({
 									...newStatementInput,
@@ -122,11 +123,16 @@ export default function StepOneStatementInput({
 						/>
 					</div>
 					<div className='similarities__buttonBox'>
-						<SubmitStatementButton
-							icon={SendIcon}
-							text='Submit Statement'
-							textColor='var(--white)'
-							onClick={handleSubmit}
+						<Button
+							icon={<SendIcon />}
+							text={t('Submit Suggestion')}
+							buttonType={ButtonType.PRIMARY}
+							onClick={(e) => { e.preventDefault(); handleSubmit(); }}
+						/>
+						<Button
+							text={t('Cancel')}
+							buttonType={ButtonType.SECONDARY}
+							onClick={() => setShowModal(false)}
 						/>
 					</div>
 				</>
@@ -135,7 +141,4 @@ export default function StepOneStatementInput({
 	);
 }
 
-function removeNonAlphabeticalCharacters(input: string) {
-	return input.replace(/[^a-zA-Z ]/g, '');
-}
 

@@ -34,7 +34,7 @@ const CustomSwitchSmall: FC<Props> = ({
 	//checked means multi-stage question
 
 	return (
-		<div className="custom-switch-small" onClick={handleChange}>
+		<div className="custom-switch-small">
 			<div
 				className={dir==="rtl"?"background":"background background--ltr"}
 				style={{ backgroundImage: `url(${BackgroundImage})` }}

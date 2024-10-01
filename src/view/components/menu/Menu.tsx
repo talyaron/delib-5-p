@@ -35,6 +35,9 @@ const Menu: FC<MenuProps> = ({
 					<div
 						className="invisibleBackground"
 						onClick={() => setIsOpen(false)}
+						role="button"
+						aria-label="Close menu"
+						tabIndex={0}
 					/>
 				</div>
 			)}

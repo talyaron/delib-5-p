@@ -25,15 +25,15 @@ const AddSubQuestion: FC<Props> = ({ setShowModal, text }) => {
 	return (
 		<>
 			{text && (
-				<span className="clickable" onClick={handleShwQuestionModal}>
+				<button className="clickable" onClick={handleShwQuestionModal}>
 					{t(text)}
-				</span>
+				</button>
 			)}
-			<div className="clickable" onClick={handleShwQuestionModal}>
+			<button className="clickable" onClick={handleShwQuestionModal}>
 				<AddQuestionIcon
 					style={{ height: "24px", width: "24px", color: "#4E88C7" }}
 				/>
-			</div>
+			</button>
 		</>
 	);
 };

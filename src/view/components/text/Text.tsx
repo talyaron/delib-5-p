@@ -44,7 +44,7 @@ const Text: FC<Props> = ({ statement, description }) => {
 
 		return (
 			<>
-				{statement && <p className={styles.title}>{statement}</p>}
+				{statement && <div className={styles.title}>{statement}</div>}
 				{(description && paragraphs.length > 0) && (
 					<div className={styles.text}>{paragraphs}</div>
 				)}
@@ -54,7 +54,7 @@ const Text: FC<Props> = ({ statement, description }) => {
 	} catch (error: any) {
 		console.error(error);
 
-		return <p>error: {error.message}</p>;
+		return null;
 	}
 };
 

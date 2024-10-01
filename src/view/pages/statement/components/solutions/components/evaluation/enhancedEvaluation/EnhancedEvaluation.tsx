@@ -1,20 +1,22 @@
 import { Statement } from "delib-npm";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import { setEvaluationToDB } from "@/controllers/db/evaluation/setEvaluation";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
-import { EnhancedEvaluationThumb } from "./EnhancedEvaluationModel";
 import {
-	getEvaluationThumbIdByScore,
-	getEvaluationThumbsToDisplay,
-} from "../../../statementSolutionsCont";
+	enhancedEvaluationsThumbs,
+	EnhancedEvaluationThumb,
+} from "./EnhancedEvaluationModel";
+import { getEvaluationThumbIdByScore } from "../../../statementSolutionsCont";
 import "./EnhancedEvaluation.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { userSettingsSelector } from "@/model/users/userSlice";
+import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
 
 interface EnhancedEvaluationProps {
   statement: Statement;
-  shouldDisplayScore?: boolean;
+  shouldDisplayScore: boolean;
 }
 
 const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
@@ -24,48 +26,58 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 	const evaluationScore = useAppSelector(
 		evaluationSelector(statement.statementId)
 	);
-	const { totalEvaluators } = statement;
-	const { dir } = useLanguage();
 
-	const [isEvaluationPanelOpen, setIsEvaluationPanelOpen] = useState(false);
+	const learningEvaluation =
+    useAppSelector(userSettingsSelector)?.learning?.evaluation || 0;
+	const { dir, t } = useLanguage();
 
-	const evaluationsThumbs = getEvaluationThumbsToDisplay({
-		evaluationScore,
-		isEvaluationPanelOpen,
-	});
-
-	const roundedEvaluationScore = Math.round(statement.consensus * 100) / 100;
+	const { sumPro, sumCon, numberOfEvaluators } = statement.evaluation || {
+		sumPro: 0,
+		sumCon: 0,
+		numberOfEvaluators: 0,
+	};
 
 	return (
 		<div
 			className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
 		>
+			<div className="evaluation-score">
+				{shouldDisplayScore === true ? sumCon : null}
+			</div>
+
 			<div
 				className="evaluation-thumbs"
-				onClick={() => {
-					setIsEvaluationPanelOpen(!isEvaluationPanelOpen);
-				}}
 			>
-				{evaluationsThumbs.map((evaluationThumb) => (
+				{enhancedEvaluationsThumbs.map((evaluationThumb) => (
 					<EvaluationThumb
 						key={evaluationThumb.id}
 						evaluationThumb={evaluationThumb}
-						evaluationScore={evaluationScore || 0}
+						evaluationScore={evaluationScore}
 						statement={statement}
-						isEvaluationPanelOpen={isEvaluationPanelOpen}
 					/>
 				))}
 			</div>
-			{shouldDisplayScore && (
+
+			{shouldDisplayScore ? (
 				<div
 					className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
 				>
-					{roundedEvaluationScore}
-					{totalEvaluators && totalEvaluators > 0 && (
-						<span className="total-evaluators"> ({totalEvaluators})</span>
+					{sumPro}
+					{numberOfEvaluators && numberOfEvaluators > 0 && (
+						<span className="total-evaluators"> ({numberOfEvaluators})</span>
 					)}
 				</div>
+			) : (
+				<div />
 			)}
+			<div />
+			{learningEvaluation > 0 && (
+				<div className="evaluation-explain">
+					<span>{t("Disagree")}</span>
+					<span>{t("Agree")}</span>
+				</div>
+			)}
+			<div />
 		</div>
 	);
 };
@@ -76,28 +88,30 @@ interface EvaluationThumbProps {
   statement: Statement;
   evaluationScore: number | undefined;
   evaluationThumb: EnhancedEvaluationThumb;
-  isEvaluationPanelOpen: boolean;
 }
 
 const EvaluationThumb: FC<EvaluationThumbProps> = ({
 	evaluationThumb,
-	evaluationScore = 0,
+	evaluationScore,
 	statement,
-	isEvaluationPanelOpen,
 }) => {
 	const handleSetEvaluation = (): void => {
-		if (isEvaluationPanelOpen) {
-			setEvaluationToDB(statement, evaluationThumb.evaluation);
-		}
+		setEvaluationToDB(statement, evaluationThumb.evaluation);
+		decreesUserSettingsLearningRemain({ evaluation: true });
 	};
 
 	const isThumbActive =
+    evaluationScore !== undefined &&
     evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
 
 	return (
 		<button
 			className={`evaluation-thumb ${isThumbActive ? "active" : ""}`}
-			style={{ backgroundColor: evaluationThumb.color }}
+			style={{
+				backgroundColor: isThumbActive
+					? evaluationThumb.colorSelected
+					: evaluationThumb.color,
+			}}
 			onClick={handleSetEvaluation}
 		>
 			<img src={evaluationThumb.svg} alt={evaluationThumb.alt} />

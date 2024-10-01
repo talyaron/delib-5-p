@@ -62,23 +62,24 @@ const MembershipCard: FC<Props> = ({ member }) => {
 			</div>
 			<div className={styles.card__membership}>
 				{isBanned ? (
-					<div onClick={handleRemoveMember}>
+					<button onClick={handleRemoveMember}>
 						<img src={unBlockImg} alt="Unblock" className={styles.unBlockImg} />
-					</div>
+					</button>
 				) : (
 					<>
-						<div
+						<button
+							role="button"
 							onClick={handleSetRole}
 							className={`${styles["card__membership--admin"]} ${isAdmin ? styles.admin : ""}`}
 						>
 							<MemberAdmin />
-						</div>
-						<div
+						</button>
+						<button
 							onClick={handleRemoveMember}
 							className={styles["card__membership--remove"]}
 						>
 							<MemberRemove />
-						</div>
+						</button>
 					</>
 				)}
 			</div>

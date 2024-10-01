@@ -51,7 +51,7 @@ const EmptyScreen: FC<Props> = ({ currentPage, setShowModal }) => {
 							)}
 						</h1>
 					</div>
-					<div
+					<button
 						className={styles.plusButton}
 						onClick={handlePlusIconClick}
 						style={smallScreen ? { width: "4rem", height: "4rem" } : {}}
@@ -64,7 +64,7 @@ const EmptyScreen: FC<Props> = ({ currentPage, setShowModal }) => {
 								{t(`Add ${currentPage}`)} <WhitePlusIcon />{" "}
 							</p>
 						)}
-					</div>
+					</button>
 				</div>
 				<img src={ideaImage} alt="" className={styles.ideaImage} />
 			</div>

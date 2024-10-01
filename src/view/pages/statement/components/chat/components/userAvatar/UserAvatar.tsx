@@ -22,7 +22,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, showImage }) => {
 	const color = generateRandomLightColor(uid);
 
 	return (
-		<div
+		<button
 			className="user-avatar"
 			onClick={() => showImage(user)}
 			style={
@@ -32,7 +32,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, showImage }) => {
 			}
 		>
 			{!photoURL && <span>{initials}</span>}
-		</div>
+		</button>
 	);
 };
 

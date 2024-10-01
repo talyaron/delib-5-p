@@ -10,6 +10,15 @@
         align-items: center;
         flex-direction: column;
         z-index: 2000;
+        @media screen and (max-width: 768px) {
+            width: 100vw;
+            height:100svh;
+           
+            max-width: 100%;
+            display: flex;
+           
+            
+        }
 
         .modal-image {
             width: 100%;
@@ -18,11 +27,20 @@
             align-items: center;
             justify-content: center;
 
+            @media screen and (max-width: 768px) {
+               display: none;
+                
+            }
+
             img {
                 height: 260px;
                 width: auto;
                 margin-top: -86px;
                 cursor: unset;
+                @media screen and (max-width: 768px) {
+                    display: none;
+                     
+                 }
             }
         }
 
@@ -77,16 +95,19 @@
             flex-direction: column;
             gap: 1rem;          
             height: auto;
+          
            
 
 
             input {
                 font-style: italic;
+                border: 1px solid rgb(182, 182, 182);
             }
         }
 
         textarea {
             font-style: italic;
+            border: 1px solid  rgb(182, 182, 182);
                          
         }
 
@@ -96,6 +117,11 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-top: 20%;
+            @media screen and (max-width: 768px) {
+                margin-top: 0;
+                margin-bottom: 10%;
+                
+            }
 
 
             button {    
@@ -124,3 +150,4 @@
         }
     }
 }
+

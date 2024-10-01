@@ -7,11 +7,12 @@ import {
 	User,
 	isOptionFn,
 } from "delib-npm";
-import { AppDispatch, store } from "@/model/store";
+import { store } from "@/model/store";
 import { NavigateFunction } from "react-router-dom";
 import { logOut } from "../db/auth";
 import { setUser } from "@/model/users/userSlice";
 import { ZodError, ZodIssue } from "zod";
+import { HistoryTracker } from "@/model/history/HistorySlice";
 
 export function updateArray<T>(
 	currentArray: Array<T>,
@@ -197,8 +198,8 @@ export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
 	return `${fontSize}px`;
 }
 
-export function handleLogout(dispatch: AppDispatch) {
-	logOut(dispatch);
+export function handleLogout() {
+	logOut();
 	store.dispatch(setUser(null));
 }
 
@@ -359,5 +360,36 @@ export function getTime(time: number): string {
 
 export function truncateString(text: string, maxLength = 20): string {
 	return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+}
+
+
+
+export function processHistory({statementId, pathname }:HistoryTracker, state:HistoryTracker[]):HistoryTracker[] {
+	try {
+	
+		const newHistory = [...state];
+
+		
+		
+
+		//add statement id to history only if it is not already there
+		if(newHistory.length === 0) return [{statementId, pathname}];
+		if(pathname === state[state.length - 1]?.pathname) return newHistory;
+		
+		//in case the the user only navigate between the screens of the statement, just update the pathname
+		if(!statementId) return [...state, {pathname }]
+		if(newHistory[newHistory.length - 1].statementId === statementId){
+			newHistory[newHistory.length - 1].pathname = pathname;
+			
+			return newHistory;
+		} else {
+			return [...state, {statementId, pathname }];
+		}
+
+	} catch (error) {
+		console.error(error);
+		
+		return state;
+	}
 }
 

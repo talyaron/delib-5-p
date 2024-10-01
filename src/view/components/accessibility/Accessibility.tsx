@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 // Redux Store
-import {
-	useAppDispatch,
-	useAppSelector,
-} from "@/controllers/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
 import {
 	colorContrastSelector,
 	fontSizeSelector,
@@ -25,18 +22,18 @@ const Accessibility = () => {
 	const dispatch = useAppDispatch();
 	const fontSize = useAppSelector(fontSizeSelector);
 	const user = useAppSelector(userSelector);
-	const colorContrast = useAppSelector(colorContrastSelector)
-	
-	
+	const colorContrast = useAppSelector(colorContrastSelector);
+
+	const accessibilityPanel = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		Object.entries(colorMappings).forEach(([key, contrastKey]) => {
 			document.documentElement.style.setProperty(
-			  key,
-			  colorContrast ? `var(${contrastKey})` : '' 
+				key,
+				colorContrast ? `var(${contrastKey})` : ""
 			);
-		  });
-		
-	  }, [colorContrast]);
+		});
+	}, [colorContrast]);
 
 	const handleToggleContrast = () => {
 		dispatch(toggleColorContrast());
@@ -47,7 +44,7 @@ const Accessibility = () => {
 
 	useEffect(() => {
 		// document.documentElement.style.fontSize = fontSize + "px";
-		document.body.style.fontSize = fontSize + "px";
+		document.documentElement.style.fontSize = fontSize + "px";
 	}, [fontSize]);
 
 	function handleChangeFontSize(number: number) {
@@ -77,23 +74,26 @@ const Accessibility = () => {
 		}
 	}
 
+	const accessibilityPanelWidth = accessibilityPanel.current?.offsetWidth || 0;
+
 	return (
 		<div
 			className="accessibility"
-			style={!isOpen ? { left: "-18.6rem" } : { left: "0rem" }}
+			style={
+				!isOpen ? { left: `${-accessibilityPanelWidth}px` } : { left: "0rem" }
+			}
 		>
-			<button className="accessibility-button" onClick={handleOpen}>			
+			<button className="accessibility-button" onClick={handleOpen}>
 				<AccessibilityIcon />
 			</button>
-			<button onClick={handleToggleContrast}>
-                Toggle Contrast
-			</button>
-			<div className="accessibility-fonts">
+
+			<div className="accessibility-panel" ref={accessibilityPanel}>
+				<button onClick={handleToggleContrast}>Toggle Contrast</button>
 				<IconButton
 					className="change-font-size-button"
 					onClick={() => handleChangeFontSize(1)}
 				>
-                    +
+          +
 				</IconButton>
 				<div className="accessibility__fonts__size" role="status">
 					{user ? fontSize : _fontSize}px
@@ -102,7 +102,7 @@ const Accessibility = () => {
 					className="change-font-size-button"
 					onClick={() => handleChangeFontSize(-1)}
 				>
-                    -
+          -
 				</IconButton>
 				<span dir="ltr">Fonts:</span>
 			</div>

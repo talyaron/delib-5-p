@@ -11,10 +11,10 @@
             navigator.serviceWorker
                 .register("/firebase-messaging-sw.js")
                 .then((registration) => {
-                    console.info("firebase-messaging-sw.js was registerd");
+                    console.info("firebase-messaging-sw.js was registered");
 
                     registration.addEventListener("updatefound", () => {
-                        // If updatefound is fired, it means that there'sx
+                        // If update found is fired, it means that there's
                         // a new service worker being installed.
                         console.info(
                             "new firebase-messaging-sw.js being installed",
@@ -133,7 +133,7 @@
 <body>
     <div id="root">
         <div class="loaderBox">
-            <h1>Welcome to Delib - 5</h1>
+            <h1>Welcome to FreeDi app</h1>
             <h4>Sit back and relax we are setting things up for you</h4>
             <span class="loader"></span>
         </div>

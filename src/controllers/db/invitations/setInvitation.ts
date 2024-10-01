@@ -18,7 +18,7 @@ export async function setInvitationToDB({ pathname, statementId }: CreateInvitat
 		const invitationsRef = collection(DB, Collections.invitations);
 		const q = query(invitationsRef, where("lastUpdate", ">", new Date().getTime() - 24 * 60 * 60 * 1000), orderBy("number", "desc"), limit(1));
 		const numbers = await getDocs(q);
-     
+	
 		if (numbers.size === 0) {
 
 

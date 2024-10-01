@@ -111,6 +111,7 @@ export default function CustomNode({ data }: NodeProps) {
 					<button
 						className="addIcon"
 						onClick={handleAddChildNode}
+						aria-label="Add child node" 
 						style={{
 							position: "absolute",
 							cursor: "pointer",
@@ -124,6 +125,7 @@ export default function CustomNode({ data }: NodeProps) {
 					<button
 						className="addIcon"
 						onClick={handleAddSiblingNode}
+						aria-label="Add sibling node" 
 						style={{
 							position: "absolute",
 							cursor: "pointer",

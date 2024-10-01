@@ -55,18 +55,18 @@ const MassQuestions: FC<Props> = ({ statement, subStatements }) => {
 							))}
 							<div className="btns">
 								{answerd.filter((a) => a).length === questions.length && (
-									<div className="btn" onClick={() => setShowThankYou(true)}>
+									<button className="btn" onClick={() => setShowThankYou(true)}>
 										<span>שליחה</span>
-									</div>
+									</button>
 								)}
 							</div>
 						</>
 					) : (
 						<div className={styles.thankyou}>
 							<h2>תודה על התשובות</h2>
-							<div className="btn" onClick={() => setShowThankYou(false)}>
+							<button className="btn" onClick={() => setShowThankYou(false)}>
 								<span>עריכה חדשה</span>
-							</div>
+							</button>
 						</div>
 					)}
 				</div>

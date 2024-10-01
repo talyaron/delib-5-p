@@ -9,7 +9,7 @@ const LoadingPage = () => {
 	return (
 		<div className={styles.loader}>
 			<div className={styles.box}>
-				<h1>{t("Delib: We create agreements together")}</h1>
+				<h1>{t("FreeDi: Empowering Agreements")}</h1>
 				<LoaderGlass />
 				<h2>{t("Please wait while the page loads")}</h2>
 			</div>

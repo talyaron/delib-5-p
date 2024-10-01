@@ -1,5 +1,12 @@
 {
-  "plugins": ["import", "react", "@typescript-eslint", "prettier", "sonarjs"],
+  "plugins": [
+    "import",
+    "react",
+    "@typescript-eslint",
+    "prettier",
+    "sonarjs",
+    "jsx-a11y"
+  ],
   "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
   "rules": {
     "react/display-name": "error",
@@ -11,6 +18,68 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     // add new line above comment
     "no-duplicate-case": "error",
+    "jsx-a11y/interactive-supports-focus": [
+  "error",
+  {
+    "tabbable": [
+      "button",
+      "checkbox",
+      "link",
+      "searchbox",
+      "spinbutton",
+      "switch",
+      "textbox"
+    ]
+  }
+],
+    "jsx-a11y/role-has-required-aria-props": "warn",
+    "jsx-a11y/alt-text": [
+      2,
+      {
+        "elements": ["img"],
+        "img": ["Image"]
+      }
+    ],
+    "jsx-a11y/no-static-element-interactions": [
+      "error",
+      {
+        "handlers": [
+          "onClick",
+          "onMouseDown",
+          "onMouseUp",
+          "onKeyPress",
+          "onKeyDown",
+          "onKeyUp"
+        ],
+        "allowExpressionValues": true
+      }
+    ],
+    "jsx-a11y/control-has-associated-label": [ 1, {
+      "labelAttributes": ["label"],
+      "controlComponents": ["CustomButton"],
+      "ignoreElements": [
+        "audio",
+        "canvas",
+        "embed",
+        "input",
+        "textarea",
+        "tr",
+        "video"
+      ],
+      "ignoreRoles": [
+        "grid",
+        "listbox",
+        "menu",
+        "menubar",
+        "radiogroup",
+        "row",
+        "tablist",
+        "toolbar",
+        "tree",
+        "treegrid"
+      ],
+      "depth": 3
+    }],
     "lines-around-comment": [
       "error",
       {

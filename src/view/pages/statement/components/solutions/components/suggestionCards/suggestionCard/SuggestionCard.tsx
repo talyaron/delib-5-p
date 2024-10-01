@@ -47,6 +47,7 @@ const SuggestionCard: FC<Props> = ({
 	statement,
 }) => {
 	// Hooks
+	if(!parentStatement) console.error("parentStatement is not defined")
 
 	const { t, dir } = useLanguage();
 	const { sort } = useParams();
@@ -138,6 +139,7 @@ const SuggestionCard: FC<Props> = ({
 				flexDirection: dir === "ltr" ? "row" : "row-reverse",
 			}}
 			ref={elementRef}
+			id={statement.statementId}
 		>
 			<div
 				className="selected-option"

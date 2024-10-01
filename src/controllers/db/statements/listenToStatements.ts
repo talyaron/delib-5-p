@@ -8,15 +8,7 @@ import {
 	Role,
 	StatementSchema,
 } from "delib-npm";
-import {
-	collection,
-	doc,
-	limit,
-	onSnapshot,
-	orderBy,
-	query,
-	where,
-} from "firebase/firestore";
+import { collection, doc, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 
 // Redux Store
 import {
@@ -33,17 +25,9 @@ import { DB } from "../config";
 // Helpers
 import { Unsubscribe } from "firebase/auth";
 
-export const listenToStatementSubscription = (
-	statementId: string,
-	user: User,
-	dispatch: AppDispatch,
-): Unsubscribe => {
+export const listenToStatementSubscription = (statementId: string, user: User, dispatch: AppDispatch): Unsubscribe => {
 	try {
-		const statementsSubscribeRef = doc(
-			DB,
-			Collections.statementsSubscribe,
-			`${user.uid}--${statementId}`,
-		);
+		const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
 
 		return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
 			try {
@@ -52,10 +36,7 @@ export const listenToStatementSubscription = (
 
 					return;
 				}
-				const statementSubscription =
-					statementSubscriptionDB.data() as StatementSubscription;
-
-
+				const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
 
 				const { role } = statementSubscription;
 
@@ -73,7 +54,6 @@ export const listenToStatementSubscription = (
 					console.info("Role is undefined. Setting role to unsubscribed");
 				}
 
-
 				StatementSubscriptionSchema.parse(statementSubscription);
 
 				dispatch(setStatementSubscription(statementSubscription));
@@ -89,11 +69,9 @@ export const listenToStatementSubscription = (
 	}
 };
 
-
-
 export const listenToStatement = (
 	statementId: string,
-	setIsStatementNotFound?: React.Dispatch<React.SetStateAction<boolean>>,
+	setIsStatementNotFound?: React.Dispatch<React.SetStateAction<boolean>>
 ): Unsubscribe => {
 	try {
 		const dispatch = store.dispatch;
@@ -104,36 +82,29 @@ export const listenToStatement = (
 			(statementDB) => {
 				try {
 					if (!statementDB.exists()) {
-						if (setIsStatementNotFound)
-							setIsStatementNotFound(true);
-						throw new Error("Statement does not exist at listenToStatement");
+						if (setIsStatementNotFound) setIsStatementNotFound(true);
+						throw new Error("Statement does not exist");
 					}
 					const statement = statementDB.data() as Statement;
-					StatementSchema.parse(statement);
 
 					dispatch(setStatement(statement));
 				} catch (error) {
-					console.error(error)
-					if (setIsStatementNotFound)
-						setIsStatementNotFound(true);
+					console.error(error);
+					if (setIsStatementNotFound) setIsStatementNotFound(true);
 				}
 			},
-			(error) => console.error(error),
+			(error) => console.error(error)
 		);
 	} catch (error) {
 		console.error(error);
-		if (setIsStatementNotFound)
-			setIsStatementNotFound(true);
+		if (setIsStatementNotFound) setIsStatementNotFound(true);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		return () => { };
 	}
 };
 
-export const listenToSubStatements = (
-	statementId: string | undefined,
-	dispatch: AppDispatch,
-): Unsubscribe => {
+export const listenToSubStatements = (statementId: string | undefined, dispatch: AppDispatch): Unsubscribe => {
 	try {
 		if (!statementId) throw new Error("Statement id is undefined");
 		const statementsRef = collection(DB, Collections.statements);
@@ -142,7 +113,7 @@ export const listenToSubStatements = (
 			where("parentId", "==", statementId),
 			where("statementType", "!=", StatementType.document),
 			orderBy("createdAt", "desc"),
-			limit(20),
+			limit(20)
 		);
 		let isFirstCall = true;
 
@@ -150,7 +121,6 @@ export const listenToSubStatements = (
 			const startStatements: Statement[] = [];
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
-				StatementSchema.parse(statement);
 
 				if (change.type === "added") {
 					if (isFirstCall) {
@@ -183,45 +153,33 @@ export const listenToSubStatements = (
 	}
 };
 
-export const listenToMembers =
-	(dispatch: AppDispatch) => (statementId: string) => {
-		try {
-			const membersRef = collection(DB, Collections.statementsSubscribe);
-			const q = query(
-				membersRef,
-				where("statementId", "==", statementId),
-				orderBy("createdAt", "desc"),
-			);
+export const listenToMembers = (dispatch: AppDispatch) => (statementId: string) => {
+	try {
+		const membersRef = collection(DB, Collections.statementsSubscribe);
+		const q = query(membersRef, where("statementId", "==", statementId), orderBy("createdAt", "desc"));
 
-			return onSnapshot(q, (subsDB) => {
-				subsDB.docChanges().forEach((change) => {
-					const member = change.doc.data() as StatementSubscription;
-					StatementSubscriptionSchema.parse(member);
+		return onSnapshot(q, (subsDB) => {
+			subsDB.docChanges().forEach((change) => {
+				const member = change.doc.data() as StatementSubscription;
+				if (change.type === "added") {
+					dispatch(setMembership(member));
+				}
 
-					if (change.type === "added") {
-						dispatch(setMembership(member));
-					}
+				if (change.type === "modified") {
+					dispatch(setMembership(member));
+				}
 
-					if (change.type === "modified") {
-						dispatch(setMembership(member));
-					}
-
-					if (change.type === "removed") {
-						dispatch(
-							removeMembership(member.statementsSubscribeId),
-						);
-					}
-				});
+				if (change.type === "removed") {
+					dispatch(removeMembership(member.statementsSubscribeId));
+				}
 			});
-		} catch (error) {
-			console.error(error);
-		}
-	};
+		});
+	} catch (error) {
+		console.error(error);
+	}
+};
 
-export async function listenToUserAnswer(
-	questionId: string,
-	cb: (statement: Statement) => void,
-) {
+export async function listenToUserAnswer(questionId: string, cb: (statement: Statement) => void) {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
@@ -232,7 +190,7 @@ export async function listenToUserAnswer(
 			where("parentId", "==", questionId),
 			where("creatorId", "==", user.uid),
 			orderBy("createdAt", "desc"),
-			limit(1),
+			limit(1)
 		);
 
 		return onSnapshot(q, (statementsDB) => {
@@ -245,5 +203,79 @@ export async function listenToUserAnswer(
 		});
 	} catch (error) {
 		console.error(error);
+	}
+}
+
+export async function listenToChildStatements(
+	dispatch: AppDispatch,
+	statementId: string,
+	callback: (childStatements: Statement[]) => void
+): Promise<Unsubscribe | null> {
+	try {
+		const statementsRef = collection(DB, Collections.statements);
+		const q = query(
+			statementsRef,
+			where("statementType", "!=", StatementType.statement),
+			where("parents", "array-contains", statementId)
+		);
+
+		const unsubscribe = onSnapshot(q, (statementsDB) => {
+			const childStatements: Statement[] = [];
+
+			statementsDB.forEach((doc) => {
+				const childStatement = doc.data() as Statement;
+				childStatements.push(childStatement);
+				dispatch(setStatement(childStatement));
+			});
+
+			callback(childStatements);
+		});
+
+		return unsubscribe;
+	} catch (error) {
+		console.error(error);
+		
+		return null;
+	}
+}
+
+export function listenToAllSubStatements(statementId: string, numberOfLastMessages = 7) {
+	try {
+		if (numberOfLastMessages > 25) numberOfLastMessages = 25;
+		if (!statementId) throw new Error("Statement id is undefined");
+
+		const statementsRef = collection(DB, Collections.statements);
+		const q = query(
+			statementsRef,
+			where("topParentId", "==", statementId),
+			where("statementId", "!=", statementId),
+			orderBy("createdAt", "desc"),
+			limit(numberOfLastMessages)
+		);
+
+		return onSnapshot(q, (statementsDB) => {
+
+			statementsDB.docChanges().forEach((change) => {
+				const statement = change.doc.data() as Statement;
+				StatementSchema.parse(statement);
+        
+				if(statement.statementId === statementId) return;
+
+				switch (change.type) {
+				case "added":
+					store.dispatch(setStatement(statement));
+					break;
+				case "removed":
+					store.dispatch(deleteStatement(statement.statementId));
+					break;
+				}
+			});
+
+
+		});
+	} catch (error) {
+		console.error(error);
+		
+		return ():void => {return;};
 	}
 }

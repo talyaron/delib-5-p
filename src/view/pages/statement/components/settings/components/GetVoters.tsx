@@ -25,9 +25,10 @@ const GetVoters: FC<GetVotersProps> = ({ statementId, joinedMembers }) => {
 		}
 	};
 
-	//filter out users who haven't vote/those with no voter information
 	useEffect(() => {
-		if (voters.length > 0) {
+		if (voters.length === 0) {
+			setNonVoters(joinedMembers);
+		} else {
 			const voterIds = new Set(voters.map((voter) => voter.voter?.uid));
 			const nonVotersList = joinedMembers.filter(
 				(member) => !voterIds.has(member.uid)

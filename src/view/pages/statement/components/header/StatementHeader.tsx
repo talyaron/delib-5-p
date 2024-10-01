@@ -25,8 +25,7 @@ import FollowMe from "@/assets/icons/follow.svg?react";
 import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 import {
 	calculateFontSize,
-	getTitle,
-	handleLogout,
+	getTitle
 } from "@/controllers/general/helpers";
 import DisconnectIcon from "@/assets/icons/disconnectIcon.svg?react";
 
@@ -38,13 +37,13 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { setFollowMeDB } from "@/controllers/db/statements/setStatements";
 import Menu from "@/view/components/menu/Menu";
 import MenuOption from "@/view/components/menu/MenuOption";
-import { useDispatch } from "react-redux";
 import Back from "./Back";
 import HomeButton from "./HomeButton";
 import InvitePanel from "./invitePanel/InvitePanel";
 
 // icons
 import InvitationIcon from "@/assets/icons/invitation.svg?react";
+import { logOut } from "@/controllers/db/auth";
 
 interface Props {
   screen: Screen;
@@ -74,12 +73,10 @@ const StatementHeader: FC<Props> = ({
 	);
 	const permission = useNotificationPermission(token);
 	const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
-	const [showInvitationModal, setShowInvitationModal] = useState(false);
-	const dispatch = useDispatch();
+	const [showInvitationPanel, setShowInvitationPanel] = useState(false);
+	
 	const { t, dir } = useLanguage();
-	const parentStatement = store
-		.getState()
-		.statements.statements.find((st) => st.statementId === statement?.parentId);
+
 
 	// Redux Store
 	const user = store.getState().user.user;
@@ -102,11 +99,12 @@ const StatementHeader: FC<Props> = ({
 		const baseUrl = window.location.origin;
 
 		const shareData = {
-			title: t("Delib: We create agreements together"),
+			title: t("FreeDi: Empowering Agreements"),
 			text: t("Invited:") + statement?.statement,
 			url: `${baseUrl}${pathname}`,
 		};
 		navigator.share(shareData);
+		setIsHeaderMenuOpen(false);
 	}
 	function handleEditTitle(): void {
 		if (statementSubscription?.role === Role.admin) {
@@ -119,16 +117,39 @@ const StatementHeader: FC<Props> = ({
 			if (!topParentStatement) throw new Error("No top parent statement");
 
 			await setFollowMeDB(topParentStatement, pathname);
+
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsHeaderMenuOpen(false);
+		}
+	}
+	function handleToggleNotifications() {
+		
+		toggleNotifications(
+			statement,
+			permission,
+			setShowAskPermission,
+			t
+		)
+		setIsHeaderMenuOpen(false);
+	}
+
+	function handleInvitePanel() {
+		try {
+			setShowInvitationPanel(true);
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
-	function handleInvitePanel() {
+	function handleLogout() {
 		try {
-			setShowInvitationModal(true);
+			logOut();
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setIsHeaderMenuOpen(false);
 		}
 	}
 
@@ -148,7 +169,6 @@ const StatementHeader: FC<Props> = ({
 				{(enableNavigationalElements || isAdmin) && (
 					<div className="page__header__wrapper__actions">
 						<Back
-							parentStatement={parentStatement}
 							statement={statement}
 							headerColor={headerColor}
 						/>
@@ -196,19 +216,12 @@ const StatementHeader: FC<Props> = ({
 								<BellSlashIcon style={menuIconStyle} />
 							)
 						}
-						onOptionClick={() =>
-							toggleNotifications(
-								statement,
-								permission,
-								setShowAskPermission,
-								t
-							)
-						}
+						onOptionClick={handleToggleNotifications}
 					/>
 					<MenuOption
 						label={t("Disconnect")}
 						icon={<DisconnectIcon style={menuIconStyle} />}
-						onOptionClick={() => handleLogout(dispatch)}
+						onOptionClick={handleLogout}
 					/>
 					{isAdmin && (
 						<>
@@ -233,9 +246,9 @@ const StatementHeader: FC<Props> = ({
 					statementSubscription={statementSubscription}
 				/>
 			)}
-			{showInvitationModal && (
+			{showInvitationPanel && (
 				<InvitePanel
-					setShowModal={setShowInvitationModal}
+					setShowModal={setShowInvitationPanel}
 					statementId={statement?.statementId}
 					pathname={pathname}
 				/>

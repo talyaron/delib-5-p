@@ -38,6 +38,7 @@ export async function onLocalMessage() {
 		if (!msg) throw new Error("msg is undefined");
 
 		return onMessage(msg, (payload) => {
+		
 			if (payload.data?.creatorId === getUserFromFirebase()?.uid) return;
 
 			Notification.requestPermission().then((permission) => {

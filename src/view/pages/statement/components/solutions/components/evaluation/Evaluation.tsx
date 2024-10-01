@@ -4,24 +4,34 @@ import SimpleEvaluation from "./simpleEvaluation/SimpleEvaluation";
 import EnhancedEvaluation from "./enhancedEvaluation/EnhancedEvaluation";
 
 interface EvaluationProps {
-    parentStatement: Statement;
-    statement: Statement;
+  parentStatement: Statement;
+  statement: Statement;
 }
 
 const Evaluation: FC<EvaluationProps> = ({ parentStatement, statement }) => {
-	const shouldDisplayScore =
-        parentStatement.statementSettings?.showEvaluation || false;
-
-	const props = {
-		statement,
-		shouldDisplayScore,
-	} as const;
+  
+	const shouldDisplayScore: boolean = parentStatement.statementSettings
+		?.showEvaluation
+		? parentStatement.statementSettings?.showEvaluation
+		: false;
+ 
+ 
 
 	if (parentStatement.statementSettings?.enhancedEvaluation) {
-		return <EnhancedEvaluation {...props} />;
+		return (
+			<EnhancedEvaluation
+				statement={statement}
+				shouldDisplayScore={shouldDisplayScore}
+			/>
+		);
 	}
 
-	return <SimpleEvaluation {...props} />;
+	return (
+		<SimpleEvaluation
+			statement={statement}
+			shouldDisplayScore={shouldDisplayScore}
+		/>
+	);
 };
 
 export default Evaluation;

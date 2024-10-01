@@ -5,12 +5,15 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./TitleAndDescription.scss";
 import VisuallyHidden from "@/view/components/accessibility/toScreenReaders/VisuallyHidden";
+import Button, { ButtonType } from "@/view/components/buttons/button/Button";
+import { useNavigate } from "react-router-dom";
 
 const TitleAndDescription: FC<StatementSettingsProps> = ({
 	statement,
 	setStatementToEdit,
 }) => {
 	const { t } = useLanguage();
+	const navigate = useNavigate();
 
 	// * Variables * //
 	const arrayOfStatementParagraphs = statement?.statement.split("\n") || [];
@@ -58,6 +61,22 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 					}}
 				/>
 			</label>
+			<div className="btns">
+				<Button
+					text={t("Save")}
+					aria-label="Submit button"
+					data-cy="settings-statement-submit-btn"
+					type="submit"
+				/>
+				<Button
+		  text={t("Cancel")}
+		  type="button"
+		  buttonType={ButtonType.SECONDARY}
+		  aria-label="Submit button"
+		  data-cy="settings-statement-submit-btn"
+		  onClick={() => {navigate("/home") }} // Add the function to cancel the changes
+				/>
+			</div>
 		</div>
 	);
 };
