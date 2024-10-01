@@ -13,13 +13,13 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
 import { useLocation } from "react-router-dom";
+import Description from "../solutions/components/description/Description";
 
 interface Props {
-	statement: Statement;
-	subStatements: Statement[];
-	handleShowTalker: (statement: User | null) => void;
-	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
-
+  statement: Statement;
+  subStatements: Statement[];
+  handleShowTalker: (statement: User | null) => void;
+  setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 let firstTime = true;
@@ -29,7 +29,6 @@ const StatementChat: FC<Props> = ({
 	statement,
 	subStatements,
 	handleShowTalker,
-	
 }) => {
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
@@ -37,31 +36,26 @@ const StatementChat: FC<Props> = ({
 
 	const [newMessages, setNewMessages] = useState<number>(0);
 
-	const { toSlide, slideInOrOut } = useSlideAndSubStatement(
-		statement.parentId,
-	);
+	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement.parentId);
 
 	function scrollToHash() {
-		
 		if (location.hash) {
 			const element = document.querySelector(location.hash);
-			
+
 			if (element) {
 				element.scrollIntoView();
 				firstTime = false;
-				
-				return
+
+				return;
 			}
 		}
-		
 	}
 
 	//scroll to bottom
 	const scrollToBottom = () => {
-		
 		if (!messagesEndRef) return;
 		if (!messagesEndRef.current) return;
-		if(location.hash) return;
+		if (location.hash) return;
 		if (firstTime) {
 			//@ts-ignore
 			messagesEndRef.current.scrollIntoView({ behavior: "auto" });
@@ -74,16 +68,17 @@ const StatementChat: FC<Props> = ({
 
 	useEffect(() => {
 		firstTime = true;
-		
 	}, []);
 
 	//effects
 	useEffect(() => {
-		
-		if(!firstTime) return;
-		
-		if(location.hash) {scrollToHash();}
-		else {scrollToBottom();}
+		if (!firstTime) return;
+
+		if (location.hash) {
+			scrollToHash();
+		} else {
+			scrollToBottom();
+		}
 	}, [subStatements]);
 
 	useEffect(() => {
@@ -91,7 +86,7 @@ const StatementChat: FC<Props> = ({
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
 			const isNewMessages =
-				subStatements.length - numberOfSubStatements > 0 ? true : false;
+        subStatements.length - numberOfSubStatements > 0 ? true : false;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
 				setNewMessages((n) => n + 1);
@@ -101,13 +96,15 @@ const StatementChat: FC<Props> = ({
 		}
 	}, [subStatements]);
 
-
 	return (
 		<>
 			<div
 				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
 				id={`msg-${statement.statementId}`}
 			>
+				<div className="statement-chat__description">
+					<Description statement={statement} />
+				</div>
 				{subStatements?.map((statementSub: Statement, index) => (
 					<div key={statementSub.statementId}>
 						<ChatMessageCard
@@ -119,6 +116,7 @@ const StatementChat: FC<Props> = ({
 						/>
 					</div>
 				))}
+
 				<div ref={messagesEndRef} />
 			</div>
 			<div className="page__footer">
@@ -127,15 +125,10 @@ const StatementChat: FC<Props> = ({
 					setNewMessages={setNewMessages}
 					scrollToBottom={scrollToBottom}
 				/>
-				{statement && (
-					<StatementInput
-						statement={statement}
-					/>
-				)}
+				{statement && <StatementInput statement={statement} />}
 			</div>
 		</>
-	)
-
+	);
 };
 
 export default StatementChat;

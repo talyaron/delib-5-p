@@ -15,14 +15,16 @@ import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
 
 import useStatementColor from "@/controllers/hooks/useStatementColor";
 import {
-  NavItem,
-  optionsArray,
-  questionsArray,
-  votesArray,
+	NavItem,
+	optionsArray,
+	questionsArray,
+	votesArray,
 } from "./StatementBottomNavModal";
 import "./StatementBottomNav.scss";
-import Start from "@/view/pages/start/Start";
 import StartHere from "@/view/components/startHere/StartHere";
+import { useSelector } from "react-redux";
+import { userSettingsSelector } from "@/model/users/userSlice";
+import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
 
 interface Props {
   statement: Statement;
@@ -31,120 +33,125 @@ interface Props {
 }
 
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
-  const { page } = useParams();
+	const { page } = useParams();
 
-  const navItems = getNavigationScreens(page);
+	const navItems = getNavigationScreens(page);
+	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
+  
 
-  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-  const [showSorting, setShowSorting] = useState(false);
-  const [showStartHere, setShowStartHere] = useState(true);
+	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+	const [showSorting, setShowSorting] = useState(false);
+	const [showStartHere, setShowStartHere] = useState(timesRemainToLearnAddOption > 0);
 
-  const statementColor = useStatementColor(
-    statement.statementType || StatementType.statement
-  );
+	const statementColor = useStatementColor(
+		statement.statementType || StatementType.statement
+	);
 
-  //used to check if the user can add a new option in voting and in evaluation screens
-  const addOption: boolean | undefined =
+	//used to check if the user can add a new option in voting and in evaluation screens
+	const addOption: boolean | undefined =
     statement.statementSettings?.enableAddEvaluationOption;
 
-  const addVotingOption: boolean | undefined =
+	const addVotingOption: boolean | undefined =
     statement.statementSettings?.enableAddVotingOption;
 
-  const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
-  const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
-  const showAddQuestion = page === Screen.QUESTIONS;
-  const isAddOption =
+	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
+	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
+	const showAddQuestion = page === Screen.QUESTIONS;
+	const isAddOption =
     showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
-  const handleMidIconClick = () => {
-    if (isAddOption) {
-      setShowModal(true);
-    }
-  };
+	const handleAddOption = () => {
+		if (isAddOption) {
+			setShowModal(true);
+	  setShowStartHere(false);
+	  decreesUserSettingsLearningRemain({addOption: true});
 
-  function handleSortingClick() {
-    setShowSorting(!showSorting);
-  }
+		}
+	};
 
-  return (
-    <>
-      {isNavigationOpen && (
-        <button
-          className="invisibleBackground"
-          onClick={() => setIsNavigationOpen(false)}
-          aria-label="Close navigation"
-        />
-      )}
-      <div
-        className={
-          showSorting
-            ? "statement-bottom-nav statement-bottom-nav--show"
-            : "statement-bottom-nav"
-        }
-      >
-        <div className="add-option-button-wrapper">
-			{showStartHere && <StartHere setShow={setShowModal} />}
-          <button
-            className="add-option-button"
-            aria-label="Add option"
-            style={statementColor}
-            onClick={handleMidIconClick}
-            data-cy="bottom-nav-mid-icon"
-          >
-            {isAddOption && (
-              <PlusIcon style={{ color: statementColor.color }} />
-            )}
-          </button>
-        </div>
-        <div className="sort-menu">
-          {navItems.map((navItem, i) => (
-            <div
-              key={`item-id-${i}`}
-              className={`sort-menu__item  ${showSorting ? "active" : ""}`}
-            >
-              <Link
-                className={`open-nav-icon ${showSorting ? "active" : ""}`}
-                to={navItem.link}
-                aria-label="Sorting options"
-                key={navItem.id}
-                onClick={() => setShowSorting(false)}
-              >
-                <NavIcon
-                  name={navItem.name}
-                  color={statementColor.backgroundColor}
-                />
-              </Link>
-              <span className="button-name">{navItem.name}</span>
-            </div>
-          ))}
-          <button
-            className="sort-button"
-            onClick={handleSortingClick}
-            aria-label="Sort items"
-          >
-            <SortIcon />
-          </button>
-        </div>
-      </div>
-    </>
-  );
+	function handleSortingClick() {
+		setShowSorting(!showSorting);
+	}
+
+	return (
+		<>
+			{isNavigationOpen && (
+				<button
+					className="invisibleBackground"
+					onClick={() => setIsNavigationOpen(false)}
+					aria-label="Close navigation"
+				/>
+			)}
+			<div
+				className={
+					showSorting
+						? "statement-bottom-nav statement-bottom-nav--show"
+						: "statement-bottom-nav"
+				}
+			>
+				<div className="add-option-button-wrapper">
+					{showStartHere && <StartHere setShow={setShowStartHere} />}
+					<button
+						className="add-option-button"
+						aria-label="Add option"
+						style={statementColor}
+						onClick={handleAddOption}
+						data-cy="bottom-nav-mid-icon"
+					>
+						{isAddOption && (
+							<PlusIcon style={{ color: statementColor.color }} />
+						)}
+					</button>
+				</div>
+				<div className="sort-menu">
+					{navItems.map((navItem, i) => (
+						<div
+							key={`item-id-${i}`}
+							className={`sort-menu__item  ${showSorting ? "active" : ""}`}
+						>
+							<Link
+								className={`open-nav-icon ${showSorting ? "active" : ""}`}
+								to={navItem.link}
+								aria-label="Sorting options"
+								key={navItem.id}
+								onClick={() => setShowSorting(false)}
+							>
+								<NavIcon
+									name={navItem.name}
+									color={statementColor.backgroundColor}
+								/>
+							</Link>
+							<span className="button-name">{navItem.name}</span>
+						</div>
+					))}
+					<button
+						className="sort-button"
+						onClick={handleSortingClick}
+						aria-label="Sort items"
+					>
+						<SortIcon />
+					</button>
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default StatementBottomNav;
 
 function getNavigationScreens(page: string | undefined): NavItem[] {
-  if (!page) return optionsArray;
+	if (!page) return optionsArray;
 
-  switch (page) {
-    case Screen.VOTE:
-      return votesArray;
-    case Screen.OPTIONS:
-      return optionsArray;
-    case Screen.QUESTIONS:
-      return questionsArray;
-    default:
-      return optionsArray;
-  }
+	switch (page) {
+	case Screen.VOTE:
+		return votesArray;
+	case Screen.OPTIONS:
+		return optionsArray;
+	case Screen.QUESTIONS:
+		return questionsArray;
+	default:
+		return optionsArray;
+	}
 }
 
 interface NavIconProps {
@@ -153,17 +160,17 @@ interface NavIconProps {
 }
 
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {
-  const props = { style: { color } };
-  switch (name) {
-    case "New":
-      return <NewestIcon {...props} />;
-    case "Update":
-      return <UpdateIcon {...props} />;
-    case "Random":
-      return <RandomIcon {...props} />;
-    case "Agreement":
-      return <AgreementIcon {...props} />;
-    default:
-      return null;
-  }
+	const props = { style: { color } };
+	switch (name) {
+	case "New":
+		return <NewestIcon {...props} />;
+	case "Update":
+		return <UpdateIcon {...props} />;
+	case "Random":
+		return <RandomIcon {...props} />;
+	case "Agreement":
+		return <AgreementIcon {...props} />;
+	default:
+		return null;
+	}
 };

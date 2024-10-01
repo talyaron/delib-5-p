@@ -11,8 +11,8 @@ import {
 import { getEvaluationThumbIdByScore } from "../../../statementSolutionsCont";
 import "./EnhancedEvaluation.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { decreesUserSettingsEvaluation } from "@/controllers/db/users/setUsersDB";
 import { userSettingsSelector } from "@/model/users/userSlice";
+import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
 
 interface EnhancedEvaluationProps {
   statement: Statement;
@@ -97,7 +97,7 @@ const EvaluationThumb: FC<EvaluationThumbProps> = ({
 }) => {
 	const handleSetEvaluation = (): void => {
 		setEvaluationToDB(statement, evaluationThumb.evaluation);
-		decreesUserSettingsEvaluation();
+		decreesUserSettingsLearningRemain({ evaluation: true });
 	};
 
 	const isThumbActive =
