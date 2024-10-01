@@ -88,7 +88,7 @@ export default function HomeHeader() {
 						<MenuOption
 							icon={<DisconnectIcon style={{ color: "#4E88C7" }} />}
 							label={t("Disconnect")}
-							onOptionClick={() => handleLogout(dispatch)}
+							onOptionClick={() => handleLogout()}
 						/>
 						<MenuOption
 							icon={<InvitationIcon style={{ color: "#4E88C7" }} />}
