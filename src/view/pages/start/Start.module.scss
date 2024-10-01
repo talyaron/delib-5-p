@@ -14,6 +14,14 @@ body {
     transition: all 0.3s;
     justify-content: space-between;
 
+    .version{
+       
+        margin-top: 2rem;
+        color: #5D8FE1;
+        font-size: smaller;
+        font-weight: 200;
+    }
+
     &__freediIcon {
         margin-top: 5rem;
     }
