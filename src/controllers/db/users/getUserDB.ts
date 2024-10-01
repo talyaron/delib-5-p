@@ -71,12 +71,14 @@ export function listenToUserSettings(): Unsubscribe {
 		
 
 		const userSettingsRef = doc(DB, Collections.usersSettings, user.uid);
+		
 		return onSnapshot(userSettingsRef, (settingsDB) => {
 			const userSettings = settingsDB.data() as UserSettings;
 			
 			if (userSettings) {
 				userSettingsSchema.parse(userSettings);
 				store.dispatch(setUserSettings(userSettings));
+				
 				return
 
 			}
@@ -90,6 +92,7 @@ export function listenToUserSettings(): Unsubscribe {
 	} catch (error) {
 		console.error(error);
 		store.dispatch(setUserSettings(null));
+		
 		return () => { return };
 
 	}

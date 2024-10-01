@@ -336,6 +336,8 @@
   --text-disabled-contrast: #6379a7;
   --text-blue-contrast: #3e61b0;
   --text-crimson-contrast: #ff5b9c;
+
+  --wrapper-max-width: 75ch;
 }
 
 * {
@@ -404,7 +406,7 @@ b {
   flex: auto;
   width: 100%;
   height: fit-content;
-  max-width: 75ch;
+  max-width: var(--wrapper-max-width);
   gap: 1rem;
   position: relative;
   margin: 0 auto;
