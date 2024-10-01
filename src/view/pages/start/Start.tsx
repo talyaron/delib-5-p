@@ -54,19 +54,19 @@ const Start = () => {
 
 	return (
 		<div className={styles.splashPage}>
-			<div className={styles.mainlogo}>
+			<div className={styles.mainLogo}>
 				<div className={styles.freeDiIcon}>
 					<Logo />
 				</div>
-				<div className={styles.mainlogo__title}>
-					<span className={styles.mainlogo__Free}>Free</span>
-					<span className={styles.mainlogo__Di}>Di</span>
+				<div className={styles.mainLogo__title}>
+					<span className={styles.mainLogo__Free}>Free</span>
+					<span className={styles.mainLogo__Di}>Di</span>
 				</div>
-				<span className={styles.mainlogo__slogan}>
+				<span className={styles.mainLogo__slogan}>
 					{t("Fostering Collaborations")}
 				</span>
 			</div>
-			<div className={styles.version}>v: 5.1.30</div>
+			<div className={styles.version}>v: 5.1.33</div>
 			<select
 				className={styles.language}
 				defaultValue={savedLang || defaultLang}
