@@ -400,19 +400,22 @@ export const statementSubsSelector = (statementId: string | undefined) =>
 				.map((statement) => ({ ...statement }))
 	);
 
-export const statementOptionsSelector =
-	(statementId: string | undefined) => (state: RootState) => {
-		const subStatements = state.statements.statements
-			.filter(
-				(statementSub) =>
-					statementSub.parentId === statementId &&
-					isOptionFn(statementSub),
-			)
-			.sort((a, b) => a.createdAt - b.createdAt)
-			.map((statement) => ({ ...statement }));
+export const statementOptionsSelector = (statementId: string | undefined) =>
+	createSelector(
+		[statementsSelector],
+		(statements) => {
+			const subStatements = statements
+				.filter(
+					(statementSub) =>
+						statementSub.parentId === statementId &&
+						isOptionFn(statementSub),
+				)
+				.sort((a, b) => a.createdAt - b.createdAt)
+				.map((statement) => ({ ...statement }));
 
-		return subStatements;
-	};
+			return subStatements;
+		}
+	);
 
 export const questionsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter((statement) => statement.parentId === statementId && statement.statementType === StatementType.question).sort((a, b) => a.createdAt - b.createdAt);
 

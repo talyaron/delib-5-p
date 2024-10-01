@@ -66,7 +66,7 @@ const Start = () => {
 					{t("Fostering Collaborations")}
 				</span>
 			</div>
-			<div className={styles.version}>v: 5.1.33</div>
+			<div className={styles.version}>v: 5.1.35</div>
 			<select
 				className={styles.language}
 				defaultValue={savedLang || defaultLang}

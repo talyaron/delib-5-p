@@ -38,7 +38,7 @@ const Dot: FC<Props> = ({ subStatement, maxEvaluators }) => {
 			onMouseLeave={() => handleShowTooltip(false)}
 		>
 			{show && (
-				<div className={styles.tooltip}>
+				<div className={`${styles.tooltip} ${left>0.5&&styles["tooltip--left"]}`}>
 					<div className={styles["tooltip__title"]}>
 						{subStatement.statement}
 					</div>
