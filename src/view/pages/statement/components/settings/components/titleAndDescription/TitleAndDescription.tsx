@@ -5,6 +5,8 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import "./TitleAndDescription.scss";
 import VisuallyHidden from "@/view/components/accessibility/toScreenReaders/VisuallyHidden";
+import Button, { ButtonType } from "@/view/components/buttons/button/Button";
+import { useNavigate } from "react-router-dom";
 
 const TitleAndDescription: FC<StatementSettingsProps> = ({
 	statement,
