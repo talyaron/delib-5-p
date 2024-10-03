@@ -141,7 +141,7 @@ const StatementMain: FC = () => {
 
 			unSubSubStatements = listenToSubStatements(statementId, dispatch);
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
-			
+
 
 			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
