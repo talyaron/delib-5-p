@@ -11,7 +11,6 @@ export async function setStatementSubscriptionToDB(
 	userAskedForNotification = false
 ) {
 	try {
-		
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
@@ -40,11 +39,6 @@ export async function setStatementSubscriptionToDB(
 			});
 		}
 
-		//check if user is already subscribed
-		const statementSubscription = await getDoc(statementsSubscribeRef);
-		if (statementSubscription.exists()) return;
-
-		//if not subscribed, subscribe
 		const subscriptionData = {
 			user,
 			statementsSubscribeId,
@@ -55,8 +49,6 @@ export async function setStatementSubscriptionToDB(
 			lastUpdate: Timestamp.now().toMillis(),
 			createdAt: Timestamp.now().toMillis(),
 		};
-
-		if(user.uid === statement.creatorId) subscriptionData.role = Role.admin;
 
 		StatementSubscriptionSchema.parse(subscriptionData);
 

@@ -1,18 +1,19 @@
-import React from "react";
-import SendIcon from "@/assets/icons/send-icon-pointing-up-and-right.svg?react";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import Button, { ButtonType } from "@/view/components/buttons/button/Button";
-import { DisplayStatement } from "./SimilarStatementsSuggestion";
-
+import React from 'react';
+import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
+import SubmitStatementButton from './SubmitStatementButton';
+import similarEyeIcon from '@/assets/icons/similarEyeIcon.svg';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SimilarStatementsSuggestionProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  newStatementInput: DisplayStatement;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setViewSimilarStatement: React.Dispatch<
-    React.SetStateAction<DisplayStatement>
-  >;
-  similarStatements:DisplayStatement[];
+	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+	newStatementInput: { title: string; description: string };
+	setViewSimilarStatement: React.Dispatch<
+		React.SetStateAction<{
+			title: string;
+			description: string;
+		}>
+	>;
+	similarStatements: { title: string; description: string }[];
 }
 
 export default function StepTwoShowSimilarStatements({
@@ -74,3 +75,4 @@ export default function StepTwoShowSimilarStatements({
 		</>
 	);
 }
+

@@ -62,26 +62,25 @@ const RoomsDivision: FC<Props> = ({
 			</div>
 			<div className={styles.title}>{t("Number of participants per room")}</div>
 			<div className={styles.participantsPerRoom}>
-				<button
+				<div
 					className={styles.add}
 					onClick={() => handleSetParticipantsPerRoom(1)}
 				>
           +
-				</button>
+				</div>
 				<input
 					type="number"
-					aria-label="Number of participants Per Room"
 					value={participantsPerRoom}
 					onChange={(e) =>
 						handleSetParticipantsPerRoomNumber(e.target.valueAsNumber)
 					}
 				/>
-				<button
+				<div
 					className={styles.add}
 					onClick={() => handleSetParticipantsPerRoom(-1)}
 				>
           -
-				</button>
+				</div>
 			</div>
 		</>
 	);

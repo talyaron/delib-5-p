@@ -139,7 +139,6 @@ const SuggestionCard: FC<Props> = ({
 				flexDirection: dir === "ltr" ? "row" : "row-reverse",
 			}}
 			ref={elementRef}
-			id={statement.statementId}
 		>
 			<div
 				className="selected-option"

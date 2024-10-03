@@ -26,19 +26,17 @@ const CustomSwitch: FC<Props> = ({
 	};
 
 	return (
-		<div className={`custom-switch ${checked ? "checked" : ""}`} >
-			<button className="tag" onClick={handleChange} aria-label="custom switch" type="button">
+		<div className={`custom-switch ${checked ? "checked" : ""}`}>
+			<button className="tag" onClick={handleChange} aria-label="custom switch">
 				{children}
 			</button>
-			<button
+			<div
 				className="label"
 				onClick={handleChange}
 				data-cy={`toggleSwitch-${name}`}
-				type='button'
-				
 			>
 				{t(label)}
-			</button>
+			</div>
 			<label htmlFor={`toggleSwitch-${name}`}>
 				<VisuallyHidden labelName={label} />
 			</label>

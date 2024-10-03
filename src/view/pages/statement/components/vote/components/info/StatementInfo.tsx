@@ -107,7 +107,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 						<h3>
 							{formData.title}
 							{_isAuthorized && (
-								<button className="edit-icon" onClick={() => setIsInEditMode(true)} aria-label="Edit">
+								<button className="edit-icon" onClick={() => setIsInEditMode(true)}>
 									<EditIcon
 									/>
 								</button>

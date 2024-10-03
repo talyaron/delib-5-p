@@ -23,10 +23,11 @@ export async function findSimilarStatements(
 	) as Statement[];
 
 	const statementsText = subStatements.map((subStatement) => ({
-		statement: subStatement.statement,
+		statement: removeNonAlphabeticalCharacters(
+			subStatement.statement.split('\n')[0]
+		),
 		id: subStatement.statementId,
 	}));
-	
 
 	if (statementsText.length === 0) {
 		response.status(200).send([]);
@@ -38,13 +39,10 @@ export async function findSimilarStatements(
 		statementsText.map((s) => s.statement),
 		userInput
 	);
-	
 
 	const similarStatementsIds = statementsText
 		.filter((subStatement) => genAiResponse.includes(subStatement.statement))
 		.map((subStatement) => subStatement.id);
-
-	
 
 	response.status(200).send(similarStatementsIds);
 }
@@ -52,32 +50,20 @@ export async function findSimilarStatements(
 let genAI: GoogleGenerativeAI;
 
 onInit(() => {
-	try {
-		if (!process.env.GOOGLE_API_KEY) {
-			throw new Error('Missing GOOGLE_API_KEY environment variable');
-		}
-		
-		genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-	} catch (error) {
-		console.error('Error initializing GenAI', error);
-	}
-
+	genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 });
 
-
+console.log("GEMINI_API_KEY: ", process.env.GEMINI_API_KEY);
 
 export async function runGenAI(allStatements: string[], userInput: string) {
 	try {
 		const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 		const prompt = `
-		Find the sentences in the following strings:  ${allStatements},  that are similar to the user input '${userInput}'. 
-		The use Input can be either in English or in Hebrew. Look for similar strings to the user input in both languages.
-		Consider a match if the sentence shares at least 60% similarity in meaning the user input.
+		Find the strings in the following text that are similar to '${userInput}': ${allStatements}. 
+		Consider a match if the sentence shares at least 60% similarity in meaning.
 		Give answer back in this json format: { strings: ['string1', 'string2', ...] }
 		`;
-
-		
 
 		const result = await model.generateContent(prompt);
 
@@ -92,6 +78,9 @@ export async function runGenAI(allStatements: string[], userInput: string) {
 	}
 }
 
+function removeNonAlphabeticalCharacters(input: string) {
+	return input.replace(/[^a-zA-Z ]/g, '');
+}
 
 function extractAndParseJsonString(input: string): { strings: string[] } {
 	try {

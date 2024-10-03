@@ -65,12 +65,12 @@ const Thumb: FC<ThumbProps> = ({
 	const isActive = isUpVote ? isSmileActive : isFrownActive;
 
 	return (
-		<button
+		<div
 			className={`${styles.thumb} ${isActive ? "" : styles.inactive}`}
 			onClick={() => handleVote(isUpVote)}
 		>
 			{isUpVote ? <SmileIcon /> : <FrownIcon />}
-		</button>
+		</div>
 	);
 };
 

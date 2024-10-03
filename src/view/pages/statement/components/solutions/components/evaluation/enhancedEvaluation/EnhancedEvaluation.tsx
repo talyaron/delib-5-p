@@ -47,6 +47,9 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 			<div
 				className="evaluation-thumbs"
+				onClick={() => {
+					setIsEvaluationPanelOpen(!isEvaluationPanelOpen);
+				}}
 			>
 				{enhancedEvaluationsThumbs.map((evaluationThumb) => (
 					<EvaluationThumb

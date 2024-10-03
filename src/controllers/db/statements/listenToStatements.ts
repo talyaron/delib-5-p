@@ -8,7 +8,15 @@ import {
 	Role,
 	StatementSchema,
 } from "delib-npm";
-import { collection, doc, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import {
+	collection,
+	doc,
+	limit,
+	onSnapshot,
+	orderBy,
+	query,
+	where,
+} from "firebase/firestore";
 
 // Redux Store
 import {
@@ -68,6 +76,8 @@ export const listenToStatementSubscription = (statementId: string, user: User, d
 		return () => { };
 	}
 };
+
+
 
 export const listenToStatement = (
 	statementId: string,

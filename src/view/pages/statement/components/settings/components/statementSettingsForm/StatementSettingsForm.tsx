@@ -98,6 +98,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				<TitleAndDescription
 					statement={statement}
 					setStatementToEdit={setStatementToEdit}
+
 				/>
 				<SectionTitle title={t('General Settings')} />
 				<section className='switches-area'>

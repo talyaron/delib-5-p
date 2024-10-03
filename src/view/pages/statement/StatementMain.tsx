@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from "react";
 import { createSelector } from "reselect";
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom";
-import { User, Role, Screen, Access } from "delib-npm";
+import { useNavigate, useParams } from 'react-router-dom';
+import { User, Role, Screen, Access } from 'delib-npm';
 
 // firestore
 import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
@@ -32,15 +32,16 @@ import { availableScreen } from "./StatementCont";
 import { useIsAuthorized } from "@/controllers/hooks/authHooks";
 
 // Custom components
-import LoadingPage from "../loadingPage/LoadingPage";
-import Page404 from "../page404/Page404";
-import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
-import ProfileImage from "../../components/profileImage/ProfileImage";
-import StatementHeader from "./components/header/StatementHeader";
-import SwitchScreens from "./components/SwitchScreens";
-import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
-import AskPermission from "@/view/components/askPermission/AskPermission";
-import FollowMeToast from "./components/followMeToast/FollowMeToast";
+import LoadingPage from '../loadingPage/LoadingPage';
+import Page404 from '../page404/Page404';
+import UnAuthorizedPage from '../unAuthorizedPage/UnAuthorizedPage';
+import ProfileImage from '../../components/profileImage/ProfileImage';
+import StatementHeader from './components/header/StatementHeader';
+import SwitchScreens from './components/SwitchScreens';
+import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
+import AskPermission from '@/view/components/askPermission/AskPermission';
+import FollowMeToast from './components/followMeToast/FollowMeToast';
+import PasswordUi from '@/view/components/passwordUi/PasswordUi';
 import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 
 // Create selectors
@@ -83,8 +84,7 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
-
-	// const [_, setPasswordCheck] = useState<boolean>(false)
+	const [passwordCheck, setPasswordCheck] = useState<boolean>(false)
 
 	// Constants
 	const screen = availableScreen(statement, statementSubscription, page);
@@ -141,7 +141,7 @@ const StatementMain: FC = () => {
 
 			unSubSubStatements = listenToSubStatements(statementId, dispatch);
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
-			
+
 
 			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
@@ -184,7 +184,7 @@ const StatementMain: FC = () => {
 				// if isSubscribed is false, then subscribe
 				if (!isSubscribed && statement.membership?.access === Access.close) {
 					// subscribe
-					setStatementSubscriptionToDB(statement, Role.member);
+					setStatementSubscriptionToDB(statement, Role.unsubscribed);
 				} else {
 					//update subscribed field
 					updateSubscriberForStatementSubStatements(statement);
@@ -195,72 +195,76 @@ const StatementMain: FC = () => {
 
 	useEffect(() => {
 		if (user?.uid === statement?.creatorId) {
-			// setPasswordCheck(true);
+			setPasswordCheck(true);
 		} else {
-			// setPasswordCheck(false);
+			setPasswordCheck(false);
 		}
-	}, []);
+	}, [user, statement]);
 
+	if (!statement || !statement?.creatorId || !statement?.membership?.access) {
+		return <LoadingPage />;
+	}
+	if (loading) return <LoadingPage />;
 	if (isStatementNotFound) return <Page404 />;
 	if (error) return <UnAuthorizedPage />;
-	if (loading) return <LoadingPage />;
 
-	if (isAuthorized)
+	if (isAuthorized) {
 		return (
 			<>
-				{/* {passwordCheck ?
-					( */}
-				<div className="page">
-					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
-					{talker && (
-						<button
-							onClick={() => {
-								handleShowTalker(null);
-							}}
-						>
-							<ProfileImage user={talker} />
-						</button>
-					)}
-					{askNotifications && (
-						<EnableNotifications
-							statement={statement}
-							setAskNotifications={setAskNotifications}
-							setShowAskPermission={setShowAskPermission}
-						/>
-					)}
+				{passwordCheck || (statement?.membership?.access === Access.open) || (statementSubscription?.role === Role.member) ? (
+					<div className="page">
+						{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
+						{talker && (
+							<button
+								onClick={() => {
+									handleShowTalker(null);
+								}}
+							>
+								<ProfileImage user={talker} />
+							</button>
+						)}
+						{askNotifications && (
+							<EnableNotifications
+								statement={statement}
+								setAskNotifications={setAskNotifications}
+								setShowAskPermission={setShowAskPermission}
+							/>
+						)}
 
-					<StatementHeader
-						statement={statement}
-						statementSubscription={statementSubscription}
-						topParentStatement={topParentStatement}
-						screen={screen ?? Screen.CHAT}
-						showAskPermission={showAskPermission}
-						setShowAskPermission={setShowAskPermission}
-						role={role}
-					/>
-					<MapProvider>
-						<FollowMeToast role={role} statement={statement} />
-
-						<SwitchScreens
-							screen={screen}
+						<StatementHeader
 							statement={statement}
 							statementSubscription={statementSubscription}
-							subStatements={subStatements}
-							handleShowTalker={handleShowTalker}
+							topParentStatement={topParentStatement}
+							screen={screen ?? Screen.CHAT}
+							showAskPermission={showAskPermission}
 							setShowAskPermission={setShowAskPermission}
+							role={role}
 						/>
-					</MapProvider>
-				</div>
-				{/* )
-					:
-					<div className="passwordUiComponent">
-						<PasswordUi setPasswordCheck={setPasswordCheck} />
+						<MapProvider>
+							<FollowMeToast role={role} statement={statement} />
+
+							<SwitchScreens
+								screen={screen}
+								statement={statement}
+								statementSubscription={statementSubscription}
+								subStatements={subStatements}
+								handleShowTalker={handleShowTalker}
+								setShowAskPermission={setShowAskPermission}
+							/>
+						</MapProvider>
 					</div>
-				} */}
+				) : (
+					<UnAuthorizedPage />
+				)}
 			</>
 		);
+	}
 
-	return <UnAuthorizedPage />;
+	return (
+		<div className="passwordUiComponent">
+			<PasswordUi userId={user?.uid} statementId={statementId} setPasswordCheck={setPasswordCheck} />
+		</div >
+	);
 };
 
 export default StatementMain;

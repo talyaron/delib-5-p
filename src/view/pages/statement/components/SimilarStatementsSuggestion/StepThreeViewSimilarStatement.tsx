@@ -1,7 +1,6 @@
 import React from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import SubmitStatementButton from './SubmitStatementButton';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface StepThreeViewSimilarStatementProps {
 	viewSimilarStatement: { title: string; description: string };
@@ -14,8 +13,6 @@ export default function StepThreeViewSimilarStatement({
 	setCurrentStep,
 	setShowModal,
 }: Readonly<StepThreeViewSimilarStatementProps>) {
-
-	const {t} = useLanguage();
 	const handleSimilarStatementChosen = () => {
 		setShowModal(false);
 	};
@@ -23,7 +20,7 @@ export default function StepThreeViewSimilarStatement({
 	return (
 		<>
 			<h4 className='alertText'>
-				{t("Would you like to choose this suggestion")}?...
+				One of the relevant statements from the given topic:
 			</h4>
 			<p className='similarities__statementsBox__statementTitle'>{viewSimilarStatement.title}</p>
 			<p className='similarities__statementsBox__statementDescription'>{viewSimilarStatement.description}</p>
@@ -31,10 +28,10 @@ export default function StepThreeViewSimilarStatement({
 				<button
 					className='twoButtonBox__backButton'
 					onClick={() => setCurrentStep((prev) => prev - 1)}
-				>{t("Back")}</button>
+				>Back</button>
 				<SubmitStatementButton
 					icon={SendIcon}
-					text={t('Continue with this suggestion')}
+					text='Choose this solution'
 					textColor='var(--white)'
 					onClick={handleSimilarStatementChosen}
 				/>

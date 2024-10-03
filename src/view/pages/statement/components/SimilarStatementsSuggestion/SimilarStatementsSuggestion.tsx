@@ -3,6 +3,8 @@ import FullScreenModal from '@/view/components/fullScreenModal/FullScreenModal';
 
 import './similarStatementsSuggestion.scss';
 
+// import AddQuestionIcon from '@/assets/icons/questionPlus.svg?react';
+import LightBulbPlusIcon from '@/assets/icons/lightBulbPlus.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import ArrowLeftIcon from '@/assets/icons/arrow-left.svg?react';
 import illustration from '@/assets/images/similarities-Illustration.png';
@@ -26,16 +28,14 @@ interface SimilarStatementsSuggestionProps {
 	getSubStatements?: () => Promise<void>;
 }
 
-export interface DisplayStatement {
+interface DisplayStatement {
 	title: string;
 	description: string;
-	statementId: string;
 }
 
 const initDisplayStatement: DisplayStatement = {
 	title: '',
 	description: '',
-	statementId: '',
 };
 
 export default function SimilarStatementsSuggestion({
@@ -90,15 +90,12 @@ export default function SimilarStatementsSuggestion({
 			newStatementInput={newStatementInput}
 			similarStatements={similarStatements}
 			setViewSimilarStatement={setViewSimilarStatement}
-			setShowModal={setShowModal}
-			
 		/>,
 		<StepThreeViewSimilarStatement
 			key={2}
 			setCurrentStep={setCurrentStep}
 			viewSimilarStatement={viewSimilarStatement}
 			setShowModal={setShowModal}
-			
 		/>,
 		<StepFourContinueWithOwnInput
 			key={3}
@@ -163,7 +160,12 @@ export default function SimilarStatementsSuggestion({
 							</div>
 						) : null))
 						}
-						
+						<div className={`similarities__header__types  ${currentStep === 2 ? 'hidden' : ''}`}>
+							<div className='type'>
+								<LightBulbPlusIcon />
+								<h2 className={isQuestion ? 'unmarked' : 'marked'}>Solution</h2>
+							</div>
+						</div>
 					</header>
 					{renderStep()}
 				</main>

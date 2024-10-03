@@ -120,7 +120,7 @@ export default function App() {
 				);
 			} else {
 				setShowSignAgreement(false);
-				logOut();
+				logOut(dispatch);
 			}
 		} catch (error) {
 			console.error(error);

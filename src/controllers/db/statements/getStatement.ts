@@ -1,4 +1,13 @@
-import { and, collection, doc, getDoc, getDocs, or, query, where } from "firebase/firestore";
+import {
+	and,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	or,
+	query,
+	where,
+} from "firebase/firestore";
 
 // Third party imports
 import {
