@@ -67,6 +67,7 @@ exports.updateParentWithNewMessage = onDocumentCreated(
 );
 
 //update statements with the amount of  members
+//TODO: There is a problem. because the subscription contain also the full-statement, every time something in the statement is updated, the subscription is updated as well.
 exports.updateMembers = onDocumentWritten(
 	`/${Collections.statementsSubscribe}/{subscriptionId}`,
 	updateStatementNumberOfMembers
