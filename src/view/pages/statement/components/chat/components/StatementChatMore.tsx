@@ -15,9 +15,6 @@ import { useNavigate } from "react-router-dom";
 // Redux
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
-// Helpers
-import { statementTitleToDisplay } from "@/controllers/general/helpers";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
 	statement: Statement;
@@ -26,7 +23,7 @@ interface Props {
 const StatementChatMore: FC<Props> = ({ statement }) => {
 	// Hooks
 	const navigate = useNavigate();
-	const { t } = useLanguage();
+	
 
 	// Redux store
 	const statementSubscription: StatementSubscription | undefined =
@@ -39,9 +36,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 	const { statementType } = statement;
 	if (statementType === StatementType.statement) return;
 
-	const messageToDisplay = statement.lastMessage
-		? statementTitleToDisplay(statement.lastMessage, 20).shortVersion
-		: t("Conversations");
+	
 
 	return (
 		<button
@@ -54,6 +49,7 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 			}
 		>
 			<div className="icon">
+			{messages}
 				{messages - messagesRead > 0 && (
 					<div className="redCircle">
 						{messages - messagesRead < 10
@@ -62,8 +58,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 					</div>
 				)}
 				<ChatIcon />
+				
 			</div>
-			<div className="text">{messageToDisplay}</div>
 		</button>
 	);
 };

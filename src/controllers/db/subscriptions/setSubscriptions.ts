@@ -85,11 +85,11 @@ export async function updateSubscriberForStatementSubStatements(
 			Collections.statementsSubscribe,
 			statementsSubscribeId
 		);
-		const newSubStatmentsRead = {
+		const newSubStatementsRead = {
 			totalSubStatementsRead: statement.totalSubStatements || 0,
 		};
 
-		await updateDoc(statementsSubscribeRef, newSubStatmentsRead);
+		await updateDoc(statementsSubscribeRef, newSubStatementsRead);
 	} catch (error) {
 		console.error(error);
 	}

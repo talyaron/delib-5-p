@@ -12,11 +12,20 @@
     .accessibility-panel {
         display: flex;
         width: 12rem;
+        flex-direction: column;
         background-color: white;
         padding: 0.3rem;
         gap: 10px;
 
-        > * {
+        &__fonts {
+            background-color: teal;
+        }
+
+        &__contrast{
+            background-color: tomato;
+        }
+
+        >* {
             display: flex;
             justify-content: center;
             align-items: center;

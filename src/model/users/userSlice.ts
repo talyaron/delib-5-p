@@ -104,6 +104,9 @@ export const userSlicer = createSlice({
 		toggleColorContrast: (state) => {
 			state.colorContrast = !state.colorContrast;
 		},
+		setColorContrast: (state, action: PayloadAction<boolean>) => {
+			state.colorContrast = action.payload;
+		},
 		setUserSettings: (state, action: PayloadAction<UserSettings | null>) => {
 			state.userSettings = action.payload;
 		}
@@ -116,6 +119,7 @@ export const {
 	setFontSize,
 	updateAgreementToStore,
 	toggleColorContrast,
+	setColorContrast,
 	setUserSettings
 } = userSlicer.actions;
 

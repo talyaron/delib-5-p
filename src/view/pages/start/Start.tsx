@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
+const version = "5.1.42";
 
 // firestore functions
 
@@ -66,7 +67,7 @@ const Start = () => {
 					{t("Fostering Collaborations")}
 				</span>
 			</div>
-			<div className={styles.version}>v: 5.1.35</div>
+			<div className={styles.version}>v: {version}</div>
 			<select
 				className={styles.language}
 				defaultValue={savedLang || defaultLang}
