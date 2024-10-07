@@ -102,44 +102,52 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 		return onSnapshot(q, (subscriptionsDB) => {
 			subscriptionsDB.docChanges().forEach((change) => {
-				const statementSubscription = change.doc.data() as StatementSubscription;
-				
-				StatementSubscriptionSchema.parse(statementSubscription);
+				try {
 
-				if (change.type === "added") {
+					const statementSubscription = change.doc.data() as StatementSubscription;
+
+					StatementSubscriptionSchema.parse(statementSubscription);
+
+					if (change.type === "added") {
 
 
-					const unsubFunction = listenToStatement(statementSubscription.statementId);
+						const unsubFunction = listenToStatement(statementSubscription.statementId);
 
-					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
-					if (index === -1) {
-						listenedStatements.push({ unsubFunction, statementId: statementSubscription.statementId });
+						const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
+						if (index === -1) {
+							listenedStatements.push({ unsubFunction, statementId: statementSubscription.statementId });
+						}
+
+						dispatch(setStatementSubscription(statementSubscription));
 					}
 
-					dispatch(setStatementSubscription(statementSubscription));
-				}
+					if (change.type === "modified") {
 
-				if (change.type === "modified") {
-
-					dispatch(setStatementSubscription(statementSubscription));
-				}
-
-				if (change.type === "removed") {
-
-					const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
-					if (index !== -1) {
-						listenedStatements[index].unsubFunction();
-						listenedStatements.splice(index, 1);
+						dispatch(setStatementSubscription(statementSubscription));
 					}
 
-					dispatch(deleteSubscribedStatement(statementSubscription.statementId));
+					if (change.type === "removed") {
+
+						const index = listenedStatements.findIndex((ls) => ls.statementId === statementSubscription.statementId);
+						if (index !== -1) {
+							listenedStatements[index].unsubFunction();
+							listenedStatements.splice(index, 1);
+						}
+
+						dispatch(deleteSubscribedStatement(statementSubscription.statementId));
+					}
+
+				} catch (error) {
+					
+					console.error("Listen to statement subscriptions each error", error);
+
 				}
 			});
 		});
 
 
 	} catch (error) {
-		console.error(error);
+		console.error("Listen to statement subscriptions error", error);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		return () => { };
@@ -150,7 +158,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-	> {
+> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
@@ -271,20 +279,20 @@ export async function getStatementSubscriptionFromDB(
 
 export async function getTopParentSubscriptionFromDByStatement(statement: Statement): Promise<StatementSubscription | undefined> {
 	try {
-		const {topParentId, parentId} = statement;
-		if(parentId === "top") return undefined;
+		const { topParentId, parentId } = statement;
+		if (parentId === "top") return undefined;
 
-		if(!topParentId) throw new Error("Top parent id is undefined");
+		if (!topParentId) throw new Error("Top parent id is undefined");
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 		const topParentSubscriptionId = getStatementSubscriptionId(topParentId, user);
-		if(!topParentSubscriptionId) throw new Error("Top parent subscription id is undefined");
+		if (!topParentSubscriptionId) throw new Error("Top parent subscription id is undefined");
 		const subscription = await getStatementSubscriptionFromDB(topParentSubscriptionId);
-		
+
 		return subscription;
 	} catch (error) {
 		console.error(error);
-		
+
 	}
 }
 
@@ -374,7 +382,7 @@ export async function getTopParentSubscription(
 			topParentSubscription =
 				await getStatementSubscriptionFromDB(topParentSubscriptionId);
 		}
-		if(!topParentSubscription) throw new Error("Top parent subscription not found");
+		if (!topParentSubscription) throw new Error("Top parent subscription not found");
 		StatementSubscriptionSchema.parse(topParentSubscription);
 
 		return topParentSubscription;
@@ -391,9 +399,9 @@ export async function getTopParentSubscription(
 			statement = await getStatementFromDB(statementId);
 		}
 		if (!statement) throw new Error("Statement not found");
-		
+
 		StatementSchema.parse(statement);
-		
+
 		return statement;
 	}
 }
@@ -418,7 +426,7 @@ export function getNewStatementsFromSubscriptions(): Unsubscribe {
 		return onSnapshot(q, (subscriptionsDB) => {
 			subscriptionsDB.docChanges().forEach((change) => {
 				const statementSubscription = change.doc.data() as StatementSubscription;
-				StatementSubscriptionSchema.parse(statementSubscription);
+				// StatementSubscriptionSchema.parse(statementSubscription);
 
 				if (change.type === "added" || change.type === "modified") {
 					dispatch(setStatementSubscription(statementSubscription));

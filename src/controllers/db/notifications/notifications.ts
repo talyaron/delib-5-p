@@ -1,4 +1,4 @@
-import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema } from "delib-npm";
+import { Statement, Collections, StatementSubscription } from "delib-npm";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
@@ -130,7 +130,7 @@ export async function setStatementSubscriptionNotificationToDB(
 			const statementSubscription =
 				statementSubscriptionDB.data() as StatementSubscription;
 
-			StatementSubscriptionSchema.parse(statementSubscription);
+			// StatementSubscriptionSchema.parse(statementSubscription);
 
 			const tokenArr = statementSubscription.token
 				? [...statementSubscription.token]

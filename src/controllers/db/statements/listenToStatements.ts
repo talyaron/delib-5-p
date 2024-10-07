@@ -2,7 +2,6 @@ import {
 	User,
 	Collections,
 	StatementSubscription,
-	StatementSubscriptionSchema,
 	StatementType,
 	Statement,
 	Role,
@@ -54,7 +53,7 @@ export const listenToStatementSubscription = (statementId: string, user: User, d
 					console.info("Role is undefined. Setting role to unsubscribed");
 				}
 
-				StatementSubscriptionSchema.parse(statementSubscription);
+				// StatementSubscriptionSchema.parse(statementSubscription);
 
 				dispatch(setStatementSubscription(statementSubscription));
 			} catch (error) {

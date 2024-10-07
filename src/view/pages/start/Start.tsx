@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
 
-const version = "5.1.43";
-
 // firestore functions
 
 // Third Party Libraries
@@ -27,11 +25,13 @@ import {
 	useLanguage,
 } from "@/controllers/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
-import { selectInitLocation } from "@/model/location/locationSlice";
+import { selectInitLocation, versionSelector } from "@/model/location/locationSlice";
+import { useSelector } from "react-redux";
 
 const Start = () => {
 	const navigate = useNavigate();
 	const user = useAppSelector(userSelector);
+	const version = useSelector(versionSelector);
 	const initLocation = useAppSelector(selectInitLocation);
 	const [shouldShowNameModal, setShouldShowNameModal] = useState(false);
 	const savedLang = localStorage.getItem("lang");
