@@ -186,3 +186,15 @@ export function listenToInAppNotifications(): Unsubscribe {
 		return () => { return }
 	}
 }
+
+export function updateNotificationRead(notificationId: string) {
+	try {
+		const user = store.getState().user.user;
+		if (!user) return;
+
+		const notificationRef = doc(DB, Collections.inAppNotifications, notificationId);
+		setDoc(notificationRef, { read: true }, { merge: true });
+	} catch (error) {
+		console.error(error);
+	}
+}

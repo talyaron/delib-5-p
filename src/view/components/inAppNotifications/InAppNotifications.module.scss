@@ -1,0 +1,17 @@
+.notifications{
+   
+    position: absolute;
+    top:30px;
+    left:10px;
+    width: fit-content;
+    .notification{
+        display: flex;
+        border:0.5px solid rgb(215, 215, 215);
+        background-color: var(--white);
+        user-select: none;
+        cursor: pointer;
+        padding: .2rem;
+        // width: fit-content;
+        word-wrap: normal;
+    }
+}

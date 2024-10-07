@@ -25,13 +25,20 @@
 
     &__wrapper {
       display: grid;
-      grid-template-columns: 1fr 70px;
+      grid-template-columns: 70px 1fr 70px;
       align-items: center;
       justify-content: space-between;
       width: 100%;
       padding: 0 1rem;
       max-width: 75ch;
       margin: auto;
+
+      &__notifications{
+        position: relative;
+        button{
+          background-color: teal;
+      }
+      }
 
       &__title {
         text-align: center;
