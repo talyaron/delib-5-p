@@ -33,6 +33,7 @@ export default function HomeHeader() {
 	useEffect(() => {
 		window.addEventListener("beforeinstallprompt", (e: Event) => {
 			const beforeInstallPromptEvent = e as BeforeInstallPromptEvent;
+
 			// Prevent Chrome 67 and earlier from automatically showing the prompt
 			beforeInstallPromptEvent.preventDefault();
 
