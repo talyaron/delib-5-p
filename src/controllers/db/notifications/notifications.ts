@@ -1,10 +1,11 @@
-import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema } from "delib-npm";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema, NotificationType } from "delib-npm";
+import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "@/assets/logo/logo-96px.png";
+import { store } from "@/model/store";
 
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string,
@@ -154,5 +155,34 @@ export async function setStatementSubscriptionNotificationToDB(
 		}
 	} catch (error) {
 		console.error(error);
+	}
+}
+
+
+export function listenToInAppNotifications():Unsubscribe{
+	try {
+		const user = store.getState().user.user;
+		if(!user) return ()=>{return};
+		
+		const messagesRef = collection(DB, Collections.inAppNotifications);
+		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false));
+		return onSnapshot(q, (messagesDB:any) => {
+			messagesDB.docChanges().forEach((change) => {
+				if (change.type === "added") {
+					const message = change.doc.data() as NotificationType;
+					const notification = new Notification(message.title, {
+						body: message.body,
+						icon: logo,
+					});
+					notification.onclick = () => {
+						window.open(message.url, "_self");
+					};
+				}
+			});
+		}
+		return ()=>{return}
+	} catch (error) {
+		console.error(error)
+		return ()=>{return}
 	}
 }
