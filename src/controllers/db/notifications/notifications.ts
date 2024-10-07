@@ -1,11 +1,13 @@
 import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema, NotificationType } from "delib-npm";
-import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "@/assets/logo/logo-96px.png";
 import { store } from "@/model/store";
+import { deleteInAppNotification, setInAppNotification } from "@/model/notifications/notificationsSlice";
+
 
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string,
@@ -39,7 +41,7 @@ export async function onLocalMessage() {
 		if (!msg) throw new Error("msg is undefined");
 
 		return onMessage(msg, (payload) => {
-		
+
 			if (payload.data?.creatorId === getUserFromFirebase()?.uid) return;
 
 			Notification.requestPermission().then((permission) => {
@@ -159,30 +161,28 @@ export async function setStatementSubscriptionNotificationToDB(
 }
 
 
-export function listenToInAppNotifications():Unsubscribe{
+export function listenToInAppNotifications(): Unsubscribe {
 	try {
 		const user = store.getState().user.user;
-		if(!user) return ()=>{return};
-		
+		if (!user) return () => { return };
+
+		const dispatch = store.dispatch;
+
 		const messagesRef = collection(DB, Collections.inAppNotifications);
-		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false));
-		return onSnapshot(q, (messagesDB:any) => {
-			messagesDB.docChanges().forEach((change) => {
-				if (change.type === "added") {
+		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false), orderBy("createdAt", "desc"));
+		return onSnapshot(q, (messagesDB: any) => {
+			messagesDB.docChanges().forEach((change: { type: string; doc: { data: () => NotificationType; id: string } }) => {
+				if (change.type === "added" || change.type === "modified") {
 					const message = change.doc.data() as NotificationType;
-					const notification = new Notification(message.title, {
-						body: message.body,
-						icon: logo,
-					});
-					notification.onclick = () => {
-						window.open(message.url, "_self");
-					};
+					dispatch(setInAppNotification(message));
+				} else if (change.type === "removed") {
+					dispatch(deleteInAppNotification(change.doc.id));
 				}
 			});
-		}
-		return ()=>{return}
+		});
+
 	} catch (error) {
 		console.error(error)
-		return ()=>{return}
+		return () => { return }
 	}
 }

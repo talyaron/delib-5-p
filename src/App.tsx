@@ -22,7 +22,7 @@ import TermsOfUse from "./view/components/termsOfUse/TermsOfUse";
 // Helpers
 import { updateUserAgreement } from "./controllers/db/users/setUsersDB";
 import { getSignature as getSignature } from "./controllers/db/users/getUserDB";
-import { onLocalMessage } from "./controllers/db/notifications/notifications";
+import { listenToInAppNotifications, onLocalMessage } from "./controllers/db/notifications/notifications";
 import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
 import { setHistory } from "./model/history/HistorySlice";
@@ -82,6 +82,7 @@ export default function App() {
 		}
 
 		const unsub = onLocalMessage();
+		const unsubInAppNotifications = listenToInAppNotifications();
 
 		if (user.agreement?.date) {
 			setShowSignAgreement(false);
@@ -96,6 +97,7 @@ export default function App() {
 
 		return () => {
 			unsub;
+			unsubInAppNotifications()
 		};
 	}, [user]);
 
