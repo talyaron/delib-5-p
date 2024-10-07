@@ -158,7 +158,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-> {
+	> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
@@ -426,6 +426,7 @@ export function getNewStatementsFromSubscriptions(): Unsubscribe {
 		return onSnapshot(q, (subscriptionsDB) => {
 			subscriptionsDB.docChanges().forEach((change) => {
 				const statementSubscription = change.doc.data() as StatementSubscription;
+
 				// StatementSubscriptionSchema.parse(statementSubscription);
 
 				if (change.type === "added" || change.type === "modified") {
