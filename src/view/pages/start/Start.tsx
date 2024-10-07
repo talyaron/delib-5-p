@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Start.module.scss";
-const version = "5.1.42";
+const version = "5.1.43";
 
 // firestore functions
 
