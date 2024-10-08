@@ -26,7 +26,7 @@ import { listenToInAppNotifications, onLocalMessage } from "./controllers/db/not
 import { LanguagesEnum, useLanguage } from "./controllers/hooks/useLanguages";
 import { selectInitLocation } from "./model/location/locationSlice";
 import { setHistory } from "./model/history/HistorySlice";
-
+import { listenToVersionFromDB } from "./controllers/db/version/getVersion";
 
 
 export default function App() {
@@ -34,7 +34,7 @@ export default function App() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const {statementId,  anonymous } = useParams();
+	const { statementId, anonymous } = useParams();
 	const { changeLanguage, t } = useLanguage();
 
 	// Redux Store
@@ -53,7 +53,7 @@ export default function App() {
 		if (lang) {
 			changeLanguage(lang);
 			document.body.style.direction =
-                lang === "he" || lang === "ar" ? "rtl" : "ltr";
+        lang === "he" || lang === "ar" ? "rtl" : "ltr";
 		}
 	}, []);
 
@@ -62,13 +62,14 @@ export default function App() {
 		const unsub: Unsubscribe = listenToAuth(dispatch)(
 			anonymous === "true" ? true : false,
 			navigate,
-			initLocation,
+			initLocation
 		);
 
-		// listenToRedirectResults();
+		const unsubVersion = listenToVersionFromDB();
 
 		return () => {
 			unsub();
+	  unsubVersion();
 		};
 	}, []);
 
@@ -101,6 +102,8 @@ export default function App() {
 		};
 	}, [user]);
 
+
+
 	//handles
 
 	function handleAgreement(agree: boolean, text: string) {
@@ -108,17 +111,14 @@ export default function App() {
 			if (!text) throw new Error("text is empty");
 			if (agree) {
 				setShowSignAgreement(false);
-				const agreement: Agreement | undefined = getSignature(
-					"basic",
-					t,
-				);
+				const agreement: Agreement | undefined = getSignature("basic", t);
 				if (!agreement) throw new Error("agreement not found");
 				agreement.text = text;
 
 				dispatch(updateAgreementToStore(agreement));
 
 				updateUserAgreement(agreement).then((isAgreed: boolean) =>
-					setShowSignAgreement(!isAgreed),
+					setShowSignAgreement(!isAgreed)
 				);
 			} else {
 				setShowSignAgreement(false);
@@ -135,10 +135,7 @@ export default function App() {
 
 			<Outlet />
 			{showSignAgreement && (
-				<TermsOfUse
-					handleAgreement={handleAgreement}
-					agreement={agreement}
-				/>
+				<TermsOfUse handleAgreement={handleAgreement} agreement={agreement} />
 			)}
 		</div>
 	);

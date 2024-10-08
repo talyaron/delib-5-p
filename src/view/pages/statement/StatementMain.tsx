@@ -109,7 +109,7 @@ const StatementMain: FC = () => {
 		if (statement && screen) {
 			//set navigator tab title
 			const { shortVersion } = statementTitleToDisplay(statement.statement, 15);
-			document.title = `Console - ${shortVersion}-${screen}`;
+			document.title = `FreeDi - ${shortVersion}-${screen}`;
 		}
 	}, [statement, screen]);
 

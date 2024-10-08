@@ -133,7 +133,7 @@ export async function setStatementSubscriptionNotificationToDB(
 			const statementSubscription =
 				statementSubscriptionDB.data() as StatementSubscription;
 
-			StatementSubscriptionSchema.parse(statementSubscription);
+			// StatementSubscriptionSchema.parse(statementSubscription);
 
 			const tokenArr = statementSubscription.token
 				? [...statementSubscription.token]
