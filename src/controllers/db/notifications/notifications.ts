@@ -1,5 +1,5 @@
 import { Statement, Collections, StatementSubscription, NotificationType } from "delib-npm";
-import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy, getDocs, writeBatch } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
@@ -170,8 +170,9 @@ export function listenToInAppNotifications(): Unsubscribe {
 
 		const messagesRef = collection(DB, Collections.inAppNotifications);
 		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false), orderBy("createdAt", "desc"));
-		return onSnapshot(q, (messagesDB: any) => {
-			messagesDB.docChanges().forEach((change: { type: string; doc: { data: () => NotificationType; id: string } }) => {
+		
+		return onSnapshot(q, (messagesDB) => {
+			messagesDB.docChanges().forEach((change) => {
 				if (change.type === "added" || change.type === "modified") {
 					const message = change.doc.data() as NotificationType;
 					dispatch(setInAppNotification(message));
@@ -183,17 +184,31 @@ export function listenToInAppNotifications(): Unsubscribe {
 
 	} catch (error) {
 		console.error(error)
+		
 		return () => { return }
 	}
 }
 
-export function updateNotificationRead(notificationId: string) {
+export async function updateNotificationRead(notificationId: string, parentId?: string) {
 	try {
 		const user = store.getState().user.user;
 		if (!user) return;
 
 		const notificationRef = doc(DB, Collections.inAppNotifications, notificationId);
 		setDoc(notificationRef, { read: true }, { merge: true });
+
+		//set all notifications of this parent to read
+		if (!parentId) return;
+		const notificationsRef = collection(DB, Collections.inAppNotifications);
+		const q = query(notificationsRef, where("userId", "==", user.uid), where("parentId", "==", parentId));
+		const allParentNotificationsDB = await getDocs(q);
+
+		const batch = writeBatch(DB);
+		allParentNotificationsDB.forEach((doc) => {
+			batch.set(doc.ref, { read: true }, { merge: true });
+		});
+		await batch.commit();
+		
 	} catch (error) {
 		console.error(error);
 	}

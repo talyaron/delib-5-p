@@ -21,8 +21,8 @@ service cloud.firestore {
     }
 
     match /inAppNotifications/{inAppNotificationId=**}{
-      allow read: if request.auth.uid != null;
-      allow write: if request.auth.uid != null;
+      allow read: if request.auth.uid == resource.data.userId;
+      allow update: if request.auth.uid == resource.data.userId;
     }
 
      match /statementsMeta/{statementId=**}{

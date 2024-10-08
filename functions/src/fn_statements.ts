@@ -48,7 +48,7 @@ export async function updateParentWithNewMessageCB(e: any) {
 		// const parent = parentDB.data();
 		// if (!parent) throw new Error('parent not found');
 
-		await setAppNotifications(parentId,_statement);
+		await setInAppNotifications(parentId, _statement);
 
 		//update parent
 		const lastMessage = statement;
@@ -84,22 +84,29 @@ export async function updateParentWithNewMessageCB(e: any) {
 }
 
 
-async function setAppNotifications(parentId:string,statement:Statement){
+async function setInAppNotifications(parentId: string, statement: Statement) {
 	try {
-		console.log(parentId)
+		const { creatorId } = statement;
+
+		const parentRef = db.doc(`${Collections.statements}/${parentId}`);
+		const parentDB = await parentRef.get();
+		if(!parentDB.exists) throw new Error('parent not found');
+		const parent = parentDB.data() as Statement;
+
 		//get subscribers of parent
 		const subscribersRef = db.collection(Collections.statementsSubscribe);
-		const q = subscribersRef.where('statementId', '==', parentId).where('role', 'in', ['admin', 'member']).where('user.isAnonymous', '==', false);
+		const q = subscribersRef.where('statementId', '==', parentId).where('role', 'in', ['admin', 'member']).where('user.isAnonymous', '==', false).where('userId', '!=', creatorId);
 		const subscribersDB = await q.get();
 		//get array of subscribers ids
 		const subscribersIds = subscribersDB.docs.map((sub) => sub.data().userId);
-		console.log(subscribersIds)
+
 		const batch = db.batch();
 		subscribersIds.forEach((userId) => {
 			const notificationRef = db.collection(Collections.inAppNotifications).doc();
-			const notification:NotificationType = {
+			const notification: NotificationType = {
 				userId,
 				parentId,
+				parentStatement: parent.statement,
 				text: statement.statement,
 				creatorName: statement.creator.displayName,
 				creatorImage: statement.creator.photoURL,

@@ -42,14 +42,23 @@ export const notificationsSlicer = createSlice({
 			} catch (error) {
 				console.error(error);
 			}
-		}
+		},
+		deleteInAppNotificationsByParentId: (state, action: PayloadAction<string>) => {
+			try {
+				state.inAppNotifications = state.inAppNotifications.filter(notification => notification.parentId !== action.payload);
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		
 	},
 });
 
 export const {
 	setInAppNotification,
 	setInAppNotifications,
-	deleteInAppNotification
+	deleteInAppNotification,
+	deleteInAppNotificationsByParentId
 } = notificationsSlicer.actions;
 
 // Other code such as selectors can use the imported `RootState` type
