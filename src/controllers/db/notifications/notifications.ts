@@ -1,10 +1,13 @@
-import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema } from "delib-npm";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { Statement, Collections, StatementSubscription, NotificationType } from "delib-npm";
+import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy, getDocs, writeBatch } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "@/assets/logo/logo-96px.png";
+import { store } from "@/model/store";
+import { deleteInAppNotification, setInAppNotification } from "@/model/notifications/notificationsSlice";
+
 
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string,
@@ -38,7 +41,7 @@ export async function onLocalMessage() {
 		if (!msg) throw new Error("msg is undefined");
 
 		return onMessage(msg, (payload) => {
-		
+
 			if (payload.data?.creatorId === getUserFromFirebase()?.uid) return;
 
 			Notification.requestPermission().then((permission) => {
@@ -130,7 +133,7 @@ export async function setStatementSubscriptionNotificationToDB(
 			const statementSubscription =
 				statementSubscriptionDB.data() as StatementSubscription;
 
-			StatementSubscriptionSchema.parse(statementSubscription);
+			// StatementSubscriptionSchema.parse(statementSubscription);
 
 			const tokenArr = statementSubscription.token
 				? [...statementSubscription.token]
@@ -152,6 +155,60 @@ export async function setStatementSubscriptionNotificationToDB(
 				{ merge: true },
 			);
 		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+
+export function listenToInAppNotifications(): Unsubscribe {
+	try {
+		const user = store.getState().user.user;
+		if (!user) return () => { return };
+
+		const dispatch = store.dispatch;
+
+		const messagesRef = collection(DB, Collections.inAppNotifications);
+		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false), orderBy("createdAt", "desc"));
+		
+		return onSnapshot(q, (messagesDB) => {
+			messagesDB.docChanges().forEach((change) => {
+				if (change.type === "added" || change.type === "modified") {
+					const message = change.doc.data() as NotificationType;
+					dispatch(setInAppNotification(message));
+				} else if (change.type === "removed") {
+					dispatch(deleteInAppNotification(change.doc.id));
+				}
+			});
+		});
+
+	} catch (error) {
+		console.error(error)
+		
+		return () => { return }
+	}
+}
+
+export async function updateNotificationRead(notificationId: string, parentId?: string) {
+	try {
+		const user = store.getState().user.user;
+		if (!user) return;
+
+		const notificationRef = doc(DB, Collections.inAppNotifications, notificationId);
+		setDoc(notificationRef, { read: true }, { merge: true });
+
+		//set all notifications of this parent to read
+		if (!parentId) return;
+		const notificationsRef = collection(DB, Collections.inAppNotifications);
+		const q = query(notificationsRef, where("userId", "==", user.uid), where("parentId", "==", parentId));
+		const allParentNotificationsDB = await getDocs(q);
+
+		const batch = writeBatch(DB);
+		allParentNotificationsDB.forEach((doc) => {
+			batch.set(doc.ref, { read: true }, { merge: true });
+		});
+		await batch.commit();
+		
 	} catch (error) {
 		console.error(error);
 	}

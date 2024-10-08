@@ -9,9 +9,20 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
+
+    match /version/{version=**}{
+      allow read;
+    
+    }
+
       match /statements/{statementId=**}{
       allow read;
       allow write: if request.auth.uid != null;
+    }
+
+    match /inAppNotifications/{inAppNotificationId=**}{
+      allow read: if request.auth.uid == resource.data.userId;
+      allow update: if request.auth.uid == resource.data.userId;
     }
 
      match /statementsMeta/{statementId=**}{

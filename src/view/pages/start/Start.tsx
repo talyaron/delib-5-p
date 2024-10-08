@@ -25,11 +25,13 @@ import {
 	useLanguage,
 } from "@/controllers/hooks/useLanguages";
 import GoogleLoginButton from "../../components/buttons/GoogleLoginButton";
-import { selectInitLocation } from "@/model/location/locationSlice";
+import { selectInitLocation, versionSelector } from "@/model/location/locationSlice";
+import { useSelector } from "react-redux";
 
 const Start = () => {
 	const navigate = useNavigate();
 	const user = useAppSelector(userSelector);
+	const version = useSelector(versionSelector);
 	const initLocation = useAppSelector(selectInitLocation);
 	const [shouldShowNameModal, setShouldShowNameModal] = useState(false);
 	const savedLang = localStorage.getItem("lang");
@@ -66,7 +68,7 @@ const Start = () => {
 					{t("Fostering Collaborations")}
 				</span>
 			</div>
-			<div className={styles.version}>v: 5.1.35</div>
+			<div className={styles.version}>v: {version}</div>
 			<select
 				className={styles.language}
 				defaultValue={savedLang || defaultLang}

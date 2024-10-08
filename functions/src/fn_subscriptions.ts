@@ -15,6 +15,7 @@ export async function updateStatementNumberOfMembers(event: any) {
         const roleAfter = statementsSubscribeAfter ? statementsSubscribeAfter.role : undefined;
 
         const eventType = getEventType(event);
+        if(eventType === "update" && roleBefore === roleAfter) return;
 
 
         const _isMemberAfter = isMember(roleAfter);

@@ -67,6 +67,7 @@ exports.updateParentWithNewMessage = onDocumentCreated(
 );
 
 //update statements with the amount of  members
+//TODO: There is a problem. because the subscription contain also the full-statement, every time something in the statement is updated, the subscription is updated as well.
 exports.updateMembers = onDocumentWritten(
 	`/${Collections.statementsSubscribe}/{subscriptionId}`,
 	updateStatementNumberOfMembers
@@ -131,7 +132,7 @@ exports.updateDocumentSignatures = onDocumentWritten(`/${Collections.signatures}
 const isProduction = process.env.NODE_ENV === 'production';
 
 console.info('isProduction', isProduction);
-const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech"] }
+const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech", "https://delib.web.app"] }
 
 
 

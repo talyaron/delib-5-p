@@ -12,18 +12,22 @@ import { userSelector } from "@/model/users/userSlice";
 import useDirection from "@/controllers/hooks/useDirection";
 import { handleAddStatement } from "./StatementInputCont";
 import useStatementColor from "@/controllers/hooks/useStatementColor";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
-    statement: Statement;
+  statement: Statement;
 }
 
 const StatementInput: FC<Props> = ({ statement }) => {
 	if (!statement) throw new Error("No statement");
 
 	// Redux hooks
+	const {t} = useLanguage();
 	const user = useAppSelector(userSelector);
 
-	const statementColor = useStatementColor(statement.statementType || StatementType.statement);
+	const statementColor = useStatementColor(
+		statement.statementType || StatementType.statement
+	);
 
 	const direction = useDirection();
 	const [message, setMessage] = useState("");
@@ -31,9 +35,9 @@ const StatementInput: FC<Props> = ({ statement }) => {
 	function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
 		try {
 			const _isMobile =
-                !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                	navigator.userAgent,
-                );
+        !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        	navigator.userAgent
+        );
 
 			if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
 				handleSubmitInput(e);
@@ -45,8 +49,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
 	const handleSubmitInput = (
 		e:
-            | React.FormEvent<HTMLFormElement>
-            | React.KeyboardEvent<HTMLTextAreaElement>,
+      | React.FormEvent<HTMLFormElement>
+      | React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
 		e.preventDefault();
 
@@ -55,7 +59,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
 		setMessage(""); // Clear input
 	};
-
+	
 	return (
 		<form
 			onSubmit={(e) => handleSubmitInput(e)}
@@ -63,6 +67,19 @@ const StatementInput: FC<Props> = ({ statement }) => {
 			className="page__footer__form"
 			style={{ flexDirection: direction }}
 		>
+			<textarea
+	   style={{borderTop: `2px solid ${statementColor.backgroundColor}` }}
+				data-cy="statement-chat-input"
+				className="page__footer__form__input"
+				aria-label="Form Input"
+				name="newStatement"
+				onKeyUp={(e) => handleKeyUp(e)}
+				autoFocus={false}
+				value={message}
+				onChange={(e) => setMessage(e.target.value)}
+				required
+				placeholder={t("Type your message here...")}
+			></textarea>
 			<button
 				type="submit"
 				className="page__footer__form__sendBtnBox"
@@ -72,18 +89,6 @@ const StatementInput: FC<Props> = ({ statement }) => {
 			>
 				<SendIcon color={statementColor.color} />
 			</button>
-			<textarea
-				data-cy="statement-chat-input"
-				style={{ height: "4rem" }}
-				className="page__footer__form__input"
-				aria-label="Form Input"
-				name="newStatement"
-				onKeyUp={(e) => handleKeyUp(e)}
-				autoFocus={false}
-				value={message}
-				onChange={(e) => setMessage(e.target.value)}
-				required
-			/>
 		</form>
 	);
 };

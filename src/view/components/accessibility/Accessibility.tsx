@@ -6,7 +6,7 @@ import {
 	colorContrastSelector,
 	fontSizeSelector,
 	increaseFontSize,
-	toggleColorContrast,
+	setColorContrast,
 	userSelector,
 } from "@/model/users/userSlice";
 import { updateUserFontSize } from "@/controllers/db/users/setUsersDB";
@@ -35,8 +35,8 @@ const Accessibility = () => {
 		});
 	}, [colorContrast]);
 
-	const handleToggleContrast = () => {
-		dispatch(toggleColorContrast());
+	const handleToggleContrast = (isContrast:boolean) => {
+		dispatch(setColorContrast(isContrast));
 	};
 
 	const [isOpen, setIsOpen] = useState(false);
@@ -88,23 +88,28 @@ const Accessibility = () => {
 			</button>
 
 			<div className="accessibility-panel" ref={accessibilityPanel}>
-				<button onClick={handleToggleContrast}>Toggle Contrast</button>
-				<IconButton
-					className="change-font-size-button"
-					onClick={() => handleChangeFontSize(1)}
-				>
-          +
-				</IconButton>
-				<div className="accessibility__fonts__size" role="status">
-					{user ? fontSize : _fontSize}px
+				<div className="accessibility-panel__fonts">
+					<IconButton
+						className="change-font-size-button"
+						onClick={() => handleChangeFontSize(1)}
+					>
+            +
+					</IconButton>
+					<div className="accessibility__fonts__size" role="status">
+						{user ? fontSize : _fontSize}px
+					</div>
+					<IconButton
+						className="change-font-size-button"
+						onClick={() => handleChangeFontSize(-1)}
+					>
+            -
+					</IconButton>
+					<span dir="ltr">Fonts:</span>
 				</div>
-				<IconButton
-					className="change-font-size-button"
-					onClick={() => handleChangeFontSize(-1)}
-				>
-          -
-				</IconButton>
-				<span dir="ltr">Fonts:</span>
+				<div className="accessibility-panel__contrast">
+					<button onClick={()=>handleToggleContrast(true)}>High contrast</button>
+					<button onClick={()=>handleToggleContrast(false)}>Light Contrast</button>
+				</div>
 			</div>
 		</div>
 	);

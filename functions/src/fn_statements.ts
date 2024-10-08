@@ -1,4 +1,4 @@
-import { Collections, Statement } from 'delib-npm';
+import { Collections, NotificationType, Statement } from 'delib-npm';
 import { logger } from 'firebase-functions';
 import { Timestamp, FieldValue } from 'firebase-admin/firestore';
 import { db } from './index';
@@ -35,8 +35,8 @@ export async function updateSubscribedListenersCB(event: any) {
 export async function updateParentWithNewMessageCB(e: any) {
 	try {
 		//get parentId
-		const statement = e.data.data() as Statement;
-		const { parentId, topParentId, statementId } = statement;
+		const _statement = e.data.data() as Statement;
+		const { parentId, topParentId, statementId, statement } = _statement;
 
 		if (parentId === 'top') return;
 
@@ -44,12 +44,14 @@ export async function updateParentWithNewMessageCB(e: any) {
 
 		//get parent
 		const parentRef = db.doc(`${Collections.statements}/${parentId}`);
-		const parentDB = await parentRef.get();
-		const parent = parentDB.data();
-		if (!parent) throw new Error('parent not found');
+		// const parentDB = await parentRef.get();
+		// const parent = parentDB.data();
+		// if (!parent) throw new Error('parent not found');
+
+		await setInAppNotifications(parentId, _statement);
 
 		//update parent
-		const lastMessage = statement.statement;
+		const lastMessage = statement;
 		const lastUpdate = Timestamp.now().toMillis();
 		parentRef.update({
 			lastMessage,
@@ -78,5 +80,44 @@ export async function updateParentWithNewMessageCB(e: any) {
 		logger.error(error);
 
 		return;
+	}
+}
+
+
+async function setInAppNotifications(parentId: string, statement: Statement) {
+	try {
+		const { creatorId } = statement;
+
+		const parentRef = db.doc(`${Collections.statements}/${parentId}`);
+		const parentDB = await parentRef.get();
+		if(!parentDB.exists) throw new Error('parent not found');
+		const parent = parentDB.data() as Statement;
+
+		//get subscribers of parent
+		const subscribersRef = db.collection(Collections.statementsSubscribe);
+		const q = subscribersRef.where('statementId', '==', parentId).where('role', 'in', ['admin', 'member']).where('user.isAnonymous', '==', false).where('userId', '!=', creatorId);
+		const subscribersDB = await q.get();
+		//get array of subscribers ids
+		const subscribersIds = subscribersDB.docs.map((sub) => sub.data().userId);
+
+		const batch = db.batch();
+		subscribersIds.forEach((userId) => {
+			const notificationRef = db.collection(Collections.inAppNotifications).doc();
+			const notification: NotificationType = {
+				userId,
+				parentId,
+				parentStatement: parent.statement,
+				text: statement.statement,
+				creatorName: statement.creator.displayName,
+				creatorImage: statement.creator.photoURL,
+				createdAt: new Date().getTime(),
+				read: false,
+				notificationId: notificationRef.id,
+			}
+			batch.set(notificationRef, notification);
+		});
+		await batch.commit();
+	} catch (error) {
+		console.error(error);
 	}
 }
