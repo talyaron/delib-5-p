@@ -33,18 +33,30 @@
       max-width: 75ch;
       margin: auto;
 
-      &__notifications{
+      &__notifications {
         position: relative;
-        button{
-          background-color: teal;
-      }
+
+        button {
+         position: relative;
+          min-width: 32px;
+          color: white;
+          .redCircle {
+            position: absolute;
+            top: -7px;
+            right: 0;
+            width: 1rem;
+            height: 1rem;
+            background-color: red;
+            border-radius: 50%;
+          }
+        }
       }
 
       &__title {
         text-align: center;
         font-size: 2rem;
         color: var(--text-white);
-       
+
       }
 
       &__icons {
@@ -95,6 +107,7 @@
     }
   }
 }
+
 .peopleLoadingScreen {
   margin-top: 10rem;
 }

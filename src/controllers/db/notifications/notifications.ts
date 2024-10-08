@@ -1,4 +1,4 @@
-import { Statement, Collections, StatementSubscription, StatementSubscriptionSchema, NotificationType } from "delib-npm";
+import { Statement, Collections, StatementSubscription, NotificationType } from "delib-npm";
 import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
 import { messaging, DB } from "../config";

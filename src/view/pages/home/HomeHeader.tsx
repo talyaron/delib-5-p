@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import InstallIcon from "@/assets/icons/installIcon.svg?react";
 import InvitationIcon from "@/assets/icons/invitation.svg?react";
 
+
 // Components
 import DisconnectIcon from "@/assets/icons/disconnectIcon.svg?react";
 import { handleLogout } from "@/controllers/general/helpers";
@@ -13,13 +14,15 @@ import IconButton from "../../components/iconButton/IconButton";
 import Menu from "../../components/menu/Menu";
 import MenuOption from "../../components/menu/MenuOption";
 import InvitationModal from "./main/invitationModal/InvitationModal";
-import InAppNotifications from "@/view/components/inAppNotifications/InAppNotifications";
+import NotificationHeader from "./NotificatiosHeader";
 
 export default function HomeHeader() {
   const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);
   const [showInvitationModal, setShowInvitationModal] = useState(false);
+ 
 
   const [isInstallable, setIsInstallable] = useState(false);
+  
   interface BeforeInstallPromptEvent extends Event {
     prompt: () => void;
     userChoice: Promise<{ outcome: string }>;
@@ -71,10 +74,7 @@ export default function HomeHeader() {
   return (
     <div className={`homePage__header ${dir}`}>
       <div className="homePage__header__wrapper">
-	  <div className="homePage__header__wrapper__notifications">
-          <button>Messages</button>
-          <InAppNotifications />
-        </div>
+        <NotificationHeader />
         <h1 className="homePage__header__wrapper__title">FreeDi</h1>
         <div className="homePage__header__wrapper__icons">
           {isInstallable && (
@@ -99,7 +99,6 @@ export default function HomeHeader() {
             />
           </Menu>
         </div>
-        
       </div>
       {showInvitationModal && (
         <InvitationModal setShowModal={setShowInvitationModal} />

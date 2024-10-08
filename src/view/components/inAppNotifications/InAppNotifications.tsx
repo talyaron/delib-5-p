@@ -2,25 +2,29 @@ import { inAppNotificationsSelector } from '@/model/notifications/notificationsS
 
 import { useSelector } from 'react-redux'
 import styles from './InAppNotifications.module.scss'
-import { updateNotificationRead } from '@/controllers/db/notifications/notifications';
-import { useNavigate } from 'react-router-dom';
+
+import InAppNotification from './inAppNotification/InAppNotification';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 const InAppNotifications = () => {
-    const navigate = useNavigate();
-    const inAppNotifications = useSelector(inAppNotificationsSelector);
-    function handleUpdateRead(notificationId: string, parentId: string) {
-        updateNotificationRead(notificationId);
-        navigate(`/statement/${parentId}/chat`);
-    }
-  return (
-    <div className={styles.notifications}>{
-        inAppNotifications.map((notification) => (
-            <div key={notification.notificationId}  className={styles.notification} onClick={()=>handleUpdateRead(notification.notificationId, notification.parentId)}>
-                <div className="notification__title">{notification.text}</div>
-            </div>
-        ))
-        }</div>
-  )
+  const {dir} = useLanguage();
+  try {
+    const _inAppNotifications = [...useSelector(inAppNotificationsSelector)]
+    console.log(_inAppNotifications)
+    const inAppNotifications =_inAppNotifications.length>0? _inAppNotifications.sort((a, b) => b.createdAt - a.createdAt):[]
+    
+    return (
+        <div className={styles.notifications} style={{left:dir === 'ltr'?"10px":"none", right:dir=== "ltr"?"none":"10px"}}>{
+            inAppNotifications.map((notification) => (
+                <InAppNotification key={notification.notificationId} notification={notification} />
+            ))
+            }</div>
+      )
+  } catch (error) {
+    console.error(error)
+    return <div></div>
+  }
+ 
 }
 
 export default InAppNotifications
