@@ -59,7 +59,8 @@ service cloud.firestore {
        allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
-      match /admins/{adminStatementId=**}{
+    
+    match /admins/{adminStatementId=**}{
      
       allow write: if request.auth.uid == request.resource.data.user.uid;
     }
@@ -152,8 +153,10 @@ service cloud.firestore {
     }
 
       match /usersSettings/{userId=**}{
-        allow read: if request.auth.uid == resource.data.userId;
-        allow write: if request.auth.uid == resource.data.userId;
+        allow read: if request.auth.uid != null;
+        allow create: if request.auth.uid != null;
+        allow update: if request.auth.uid != null;
+        allow delete: if request.auth.uid != null;
       }
 
       match /usersV2/{userId=**}{
