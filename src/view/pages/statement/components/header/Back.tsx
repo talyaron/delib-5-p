@@ -5,7 +5,7 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "@/assets/icons/chevronLeftIcon.svg?react";
 import { StyleProps } from "@/controllers/hooks/useStatementColor";
-import { historySelect } from "@/model/history/HistorySlice";
+import { historySelect, HistoryTracker } from "@/model/history/HistorySlice";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 interface Props {
@@ -15,7 +15,8 @@ interface Props {
 
 const Back: FC<Props> = ({ statement, headerColor }) => {
 	const navigate = useNavigate();
-	const topParentHistory = useAppSelector(historySelect(statement?.parentId || ""));
+	const topParentHistory: HistoryTracker | undefined = useAppSelector( historySelect(statement?.parentId || ""));
+	
 
  
 	function handleBack() {
@@ -29,8 +30,16 @@ const Back: FC<Props> = ({ statement, headerColor }) => {
 			//rules: if history exits --> go back in history
 
 			//in case the back should direct to home
-			if (statement?.parentId === "top") {
+
+
+			if (statement?.parentId === "top" || !statement?.parentId ) {
 				return navigate("/home", {
+					state: { from: window.location.pathname },
+				});
+			}
+
+			if(topParentHistory === undefined) {
+				return navigate(`/statement/${statement?.parentId}/chat`, {
 					state: { from: window.location.pathname },
 				});
 			}
