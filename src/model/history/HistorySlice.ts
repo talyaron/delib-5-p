@@ -34,6 +34,6 @@ export const historySlice = createSlice({
 export const { setHistory} = historySlice.actions;
 
 //@ts-ignore
-export const historySelect = (statementId:string)=> (state: RootState) => state.history.history.findLast((history) => history.statementId === statementId);
+export const historySelect = (statementId:string)=> (state: RootState) => state.history.history.findLast((history:HistoryTracker) => history.statementId === statementId);
 
 export default historySlice.reducer;
