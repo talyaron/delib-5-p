@@ -13,7 +13,7 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
 import { useLocation } from "react-router-dom";
-import Description from "../solutions/components/description/Description";
+import Description from "../evaluations/components/description/Description";
 
 interface Props {
   statement: Statement;

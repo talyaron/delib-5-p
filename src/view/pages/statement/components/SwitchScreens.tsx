@@ -7,7 +7,7 @@ import { Screen, Statement, StatementSubscription, User } from "delib-npm";
 // import Rooms from "./rooms/Rooms";
 import Map from "./map/StatementMap";
 import StatementChat from "./chat/StatementChat";
-import StatementEvaluationPage from "./solutions/StatementSolutionsPage";
+import StatementEvaluationPage from "./evaluations/StatementsEvaluationPage";
 import StatementVote from "./vote/StatementVote";
 import MassQuestions from "./massQuestions/MassQuestions";
 import StatementSettings from "./settings/StatementSettings";

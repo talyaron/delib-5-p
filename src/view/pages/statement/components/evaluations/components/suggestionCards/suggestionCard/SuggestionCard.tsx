@@ -31,7 +31,7 @@ import CreateStatementModal from "../../../../createStatementModal/CreateStateme
 import Evaluation from "../../evaluation/Evaluation";
 import "./SuggestionCard.scss";
 import SolutionMenu from "../../solutionMenu/SolutionMenu";
-import { sortSubStatements } from "../../../statementSolutionsCont";
+import { sortSubStatements } from "../../../statementsEvaluationCont";
 import { useParams } from "react-router-dom";
 
 interface Props {

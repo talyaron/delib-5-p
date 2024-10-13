@@ -17,7 +17,7 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { getTitle } from "@/controllers/general/helpers";
 import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
-import styles from "./statementSolutinsPage.module.scss";
+import styles from "./statementEvaluationsPage.module.scss";
 import SuggestionCards from "./components/suggestionCards/SuggestionCards";
 import Description from "./components/description/Description";
 

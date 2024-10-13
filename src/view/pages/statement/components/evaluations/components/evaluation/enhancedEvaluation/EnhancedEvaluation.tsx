@@ -8,7 +8,7 @@ import {
 	enhancedEvaluationsThumbs,
 	EnhancedEvaluationThumb,
 } from "./EnhancedEvaluationModel";
-import { getEvaluationThumbIdByScore } from "../../../statementSolutionsCont";
+import { getEvaluationThumbIdByScore } from "../../../statementsEvaluationCont";
 import "./EnhancedEvaluation.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { userSettingsSelector } from "@/model/users/userSlice";

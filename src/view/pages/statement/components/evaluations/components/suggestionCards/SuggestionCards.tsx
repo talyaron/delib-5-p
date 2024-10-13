@@ -10,7 +10,7 @@ import {
 	statementSubsSelector,
 } from "@/model/statements/statementsSlice";
 import EmptyScreen from "../emptyScreen/EmptyScreen";
-import { sortSubStatements } from "../../statementSolutionsCont";
+import { sortSubStatements } from "../../statementsEvaluationCont";
 import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
 
 interface Props {
