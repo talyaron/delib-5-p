@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "outDir": "lib",
