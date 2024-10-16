@@ -218,10 +218,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
               )}
               {_isAuthorized && !isQuestion && !isParentOption && (
                 <MenuOption
-                  isOptionSelected={isOptionFn(statement)}
+                  isOptionSelected={isOption}
                   icon={<LightBulbIcon />}
                   label={
-                    isOptionFn(statement)
+                    isOption
                       ? t("Unmark as a Solution")
                       : t("Mark as a Solution")
                   }

@@ -602,14 +602,14 @@ export async function updateIsQuestion(statement: Statement) {
 		const parentStatement = parentStatementDB.data() as Statement;
 		StatementSchema.parse(parentStatement);
 
-		let { statementType } = statement;
-		if (statementType === StatementType.question)
-			statementType = StatementType.statement;
+		let { deliberativeElement } = statement;
+		if (deliberativeElement === DeliberativeElement.research)
+			deliberativeElement = DeliberativeElement.general;
 		else {
-			statementType = StatementType.question;
+			deliberativeElement = DeliberativeElement.research;
 		}
 
-		const newStatementType = { statementType };
+		const newStatementType = { deliberativeElement };
 		await updateDoc(statementRef, newStatementType);
 	} catch (error) {
 		console.error(error);
