@@ -131,7 +131,7 @@ const SuggestionCard: FC<Props> = ({
 			}
 			style={{
 				top: `${statement.top || 0}px`,
-				borderLeft: `8px solid ${statementColor.backgroundColor || "wheat"}`,
+				borderLeft: `8px solid ${statementColor.backgroundColor || "white"}`,
 				color: statementColor.color,
 				flexDirection: dir === "ltr" ? "row" : "row-reverse",
 			}}

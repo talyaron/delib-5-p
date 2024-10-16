@@ -1,4 +1,4 @@
-import { DeliberativeElement, Statement, isOptionFn } from "delib-npm";
+import { DeliberativeElement, Statement } from "delib-npm";
 import { setSelectionsToOptions, sortOptionsIndex } from "../../statementVoteCont";
 
 export function isVerticalOptionBar(width: number, optionsCount: number) {

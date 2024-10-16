@@ -11,7 +11,7 @@ import {
 } from "@/model/vote/votesSlice";
 
 // Statements helpers
-import { setVote } from "@/controllers/db/vote/setVote";
+import { setVoteToDB } from "@/controllers/db/vote/setVote";
 import { getSelections } from "../../statementVoteCont";
 import { statementTitleToDisplay } from "@/controllers/general/helpers";
 import InfoIcon from "@/assets/icons/infoCircleIcon.svg?react";
@@ -64,7 +64,7 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 	// * Functions * //
 	const handleVotePress = () => {
 		dispatch(setVoteToStore(option));
-		setVote(option);
+		setVoteToDB(option);
 		getStatementFromDB(option.statementId);
 	};
 
