@@ -71,7 +71,7 @@ export async function updateVote(event: any) {
 
         await db
             .doc(`${Collections.statements}/${topVotedId}`)
-            .update({ selected: true });
+            .update({ selected: true }); 
 
         return true;
     } catch (error) {

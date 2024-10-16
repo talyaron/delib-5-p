@@ -1,21 +1,18 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 import {
     Collections,
     Evaluation,
-    Evaluator,
-    QuestionStage,
     ResultsBy,
     SimpleStatement,
     Statement,
     StatementSchema,
-    StatementType,
     User,
-    getStatementSubscriptionId,
     statementToSimpleStatement,
 } from "delib-npm";
 import { z } from "zod";
+import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
 enum ActionTypes {
     new = "new",
@@ -41,81 +38,80 @@ export async function newEvaluation(event: any) {
         //update evaluators that the statement was evaluated
         const evaluator: User | undefined = statementEvaluation.evaluator;
         if (!evaluator) throw new Error("evaluator is not defined");
-        const evaluatorData = await getEvaluatorData(evaluator, statement);
-        if (!evaluatorData) throw new Error("evaluatorData is not defined");
+        
+        // const evaluatorData = await getEvaluatorData(evaluator, statement);
+        // if (!evaluatorData) throw new Error("evaluatorData is not defined");
 
-        await updateStatementMetaDataAndEvaluator(evaluator, evaluatorData, statement);
-
+        // await updateStatementMetaDataAndEvaluator(evaluator, evaluatorData, statement);
 
         return;
-
-
 
     } catch (error) {
         logger.error(error);
         return;
     }
 
-    function getUpdatedFields(statement: Statement, isFirstTime: boolean, evaluator?: Evaluator) {
+    // function getUpdatedFields(statement: Statement, isFirstTime: boolean, evaluator?: Evaluator) {
 
-        const update = { lastUpdate: Timestamp.now().toMillis() }
-        //@ts-ignore
-        if (isFirstTime) update.numberOfEvaluators = FieldValue.increment(1);
-        //@ts-ignore
-        if (statement.questionSettings?.currentStage === QuestionStage.suggestion && !evaluator?.suggested) update.numberOfFirstSuggesters = FieldValue.increment(1);
-        //@ts-ignore
-        if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation && !evaluator?.firstEvaluation) update.numberOfFirstEvaluators = FieldValue.increment(1);
-        //@ts-ignore
-        if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation && !evaluator?.secondEvaluation) update.numberOfSecondEvaluators = FieldValue.increment(1);
-    
-        return update;
-    }
+    //     const update = { lastUpdate: Timestamp.now().toMillis() }
+    //     //@ts-ignore
+    //     if (isFirstTime) update.numberOfEvaluators = FieldValue.increment(1);
+    //     //@ts-ignore
+    //     if (statement.questionSettings?.currentStage === QuestionStage.suggestion && !evaluator?.suggested) update.numberOfFirstSuggesters = FieldValue.increment(1);
+    //     //@ts-ignore
+    //     if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation && !evaluator?.firstEvaluation) update.numberOfFirstEvaluators = FieldValue.increment(1);
+    //     //@ts-ignore
+    //     if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation && !evaluator?.secondEvaluation) update.numberOfSecondEvaluators = FieldValue.increment(1);
 
-    async function getEvaluatorData(evaluator: User, statement: Statement) {
-        try {
-            const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-            if (!evaluationId) throw new Error("evaluationId is not defined");
-            const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
-            const evaluatorDB = await evaluatorRef.get();
-            const evaluatorData = evaluatorDB.data() as Evaluator;
-            if (!evaluatorData) throw new Error("evaluatorData was not found");
-        } catch (error) {
-            logger.error(error);
-            return undefined;
-        }
-    }
+    //     return update;
+    // }
 
-    async function updateStatementMetaDataAndEvaluator(evaluator: User, evaluatorData: Evaluator | undefined, statement: Statement) {
-        try {
-            const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-            if (!evaluationId) throw new Error("evaluationId is not defined");
-            const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
+    // async function getEvaluatorData(evaluator: User, statement: Statement):Promise<Evaluator | undefined> {
+    //     try {
+    //         const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
+    //         if (!evaluationId) throw new Error("evaluationId is not defined");
+    //         const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
+    //         const evaluatorDB = await evaluatorRef.get();
+    //         const evaluatorData = evaluatorDB.data() as Evaluator;
+    //         if (!evaluatorData) throw new Error("evaluatorData was not found");
+    //         return evaluatorData;
+    //     } catch (error) {
+    //         logger.error(error);
+    //         return undefined;
+    //     }
+    // }
 
-            if (!evaluatorData) {
-               
-                await evaluatorRef.set({ statementId: statement.parentId, evaluated: true, evaluatorId: evaluator.uid });
+    // async function updateStatementMetaDataAndEvaluator(evaluator: User, evaluatorData: Evaluator | undefined, statement: Statement) {
+    //     try {
+    //         const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
+    //         if (!evaluationId) throw new Error("evaluationId is not defined");
+    //         const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
 
-                const update = getUpdatedFields(statement, true);
-                await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
-            } else {
+    //         if (!evaluatorData) {
 
-              
-                const update = getUpdatedFields(statement, false, evaluatorData);
-                await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
-            }
+    //             await evaluatorRef.set({ statementId: statement.parentId, evaluated: true, evaluatorId: evaluator.uid });
 
-            const evaluatorUpdate: Evaluator = { evaluated: true };
-            if (statement.questionSettings?.currentStage === QuestionStage.suggestion) evaluatorUpdate.suggested = true;
-            if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation) evaluatorUpdate.firstEvaluation = true;
-            if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation) evaluatorUpdate.secondEvaluation = true;
-
-            await evaluatorRef.update(evaluatorUpdate);
-        } catch (error) {
-            logger.error(error);
+    //             const update = getUpdatedFields(statement, true);
+    //             await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
+    //         } else {
 
 
-        }
-    }
+    //             const update = getUpdatedFields(statement, false, evaluatorData);
+    //             await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
+    //         }
+
+    //         const evaluatorUpdate: Evaluator = { evaluated: true };
+    //         if (statement.questionSettings?.currentStage === QuestionStage.suggestion) evaluatorUpdate.suggested = true;
+    //         if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation) evaluatorUpdate.firstEvaluation = true;
+    //         if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation) evaluatorUpdate.secondEvaluation = true;
+
+    //         await evaluatorRef.update(evaluatorUpdate);
+    //     } catch (error) {
+    //         logger.error(error);
+
+
+    //     }
+    // }
 }
 
 
@@ -312,6 +308,7 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined,
 ) {
     try {
+        console.log("updateParentStatementWithChildResults", parentId);
         if (!parentId) throw new Error("parentId is not defined");
 
         //get parent statement
@@ -323,10 +320,10 @@ async function updateParentStatementWithChildResults(
 
         //get results settings
         const { resultsSettings } = parentStatement;
-        let { resultsBy, numberOfResults } =
+        let { resultsBy, numberOfResults = 1 } =
             getResultsSettings(resultsSettings);
 
-        if (numberOfResults === undefined) numberOfResults = 1;
+        // if (numberOfResults === undefined) numberOfResults = 1;
         if (resultsBy === undefined) resultsBy = ResultsBy.topOptions;
 
         //this function is responsible for converting the results of evaluation of options
@@ -337,45 +334,50 @@ async function updateParentStatementWithChildResults(
             return;
         }
 
+        //get all options of the parent statement
         const allOptionsStatementsRef = db
             .collection(Collections.statements)
             .where("parentId", "==", parentId)
-            .where("statementType", "in", [
-                StatementType.option,
-                StatementType.result,
-            ]);
+            .where("deliberativeElement", "==", DeliberativeElement.option);
+      
 
+
+        //get top options
         const topOptionsStatementsRef = allOptionsStatementsRef
             .orderBy("consensus", "desc") //TODO: in the future (1st aug 2024), this will be changed to evaluation.agreement
             .limit(numberOfResults);
-
-
-        //get all options of the parent statement and convert them to either result, or an option
         const topOptionsStatementsDB = await topOptionsStatementsRef.get();
         const topOptionsStatements = topOptionsStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement,
         );
 
-        const childIds = topOptionsStatements.map(
+        console.log("topOptionsStatements", topOptionsStatements);
+
+        
+        //get all options of the parent statement and convert them to either result, or an option
+        const topOptionsIds = topOptionsStatements.map(
             (st: Statement) => st.statementId,
         );
 
+        console.log('topOptionsId', topOptionsIds);
+
         const optionsDB = await allOptionsStatementsRef.get();
 
-        await optionsDB.forEach(async (stDB: any) => {
-            const st = stDB.data() as Statement;
+        const batch = db.batch();
 
-            //update child statement selected to be of type result
-            if (childIds.includes(st.statementId)) {
-                db.collection(Collections.statements)
-                    .doc(st.statementId)
-                    .update({ statementType: StatementType.result });
-            } else if (st.statementType === StatementType.result) {
-                db.collection(Collections.statements)
-                    .doc(st.statementId)
-                    .update({ statementType: StatementType.option });
+        optionsDB.forEach((stDB: any) => {
+            const st = stDB.data() as Statement;
+            console.log("option:",st.statement);
+            const statementRef = db.collection(Collections.statements).doc(st.statementId);
+
+            if (topOptionsIds.includes(st.statementId)) {
+                batch.update(statementRef, { isResult: true });
+            } else {
+                batch.update(statementRef, { isResult: false });
             }
         });
+
+        await batch.commit();
 
         await updateParentChildren(topOptionsStatements, numberOfResults);
 
@@ -386,11 +388,13 @@ async function updateParentStatementWithChildResults(
 
     async function updateParentChildren(
         topOptionsStatements: Statement[],
-        numberOfResults: number | undefined,
+        numberOfResults: number = 1,
     ) {
+        console.log("updateParentChildren", topOptionsStatements, topOptionsStatements.length, numberOfResults);
         const childStatementsSimple = topOptionsStatements.map(
             (st: Statement) => statementToSimpleStatement(st),
         );
+        console.log("childStatementsSimple", childStatementsSimple);
 
         if (!parentId) throw new Error("parentId is not defined");
 
