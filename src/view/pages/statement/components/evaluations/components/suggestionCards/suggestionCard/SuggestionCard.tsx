@@ -54,9 +54,9 @@ const SuggestionCard: FC<Props> = ({
 
 	// Redux Store
 	const dispatch = useAppDispatch();
-	const statementColor: StyleProps = useStatementColor(
-		statement.statementType || StatementType.statement
-	);
+	const {deliberativeElement, isResult} = statement;
+	const statementColor: StyleProps = useStatementColor({ deliberativeElement, isResult });
+	
 	const statementSubscription = useAppSelector(
 		statementSubscriptionSelector(statement.statementId)
 	);
@@ -177,12 +177,13 @@ const SuggestionCard: FC<Props> = ({
 						/>
 					</div>
 				</div>
+				
+				<div className="actions">
 				{statement.hasChildren && (
 					<div className="chat">
 						<StatementChatMore statement={statement} />
 					</div>
 				)}
-				<div className="actions">
 					<Evaluation parentStatement={parentStatement} statement={statement} />
 					{parentStatement.hasChildren && (
 						<IconButton

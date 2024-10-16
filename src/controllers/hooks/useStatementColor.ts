@@ -10,7 +10,7 @@ export interface StyleProps {
 
 export default function useStatementColor({deliberativeElement, isResult}:{deliberativeElement?: DeliberativeElement, isResult?:boolean}): StyleProps {
 	const initStyle = {
-		backgroundColor: "gray",
+		backgroundColor: "var(--header-home)",
 		color: "white",
 	};
 	const [style, setStyle] = useState(initStyle);
@@ -35,7 +35,7 @@ export default function useStatementColor({deliberativeElement, isResult}:{delib
 				});
 			} else if (deliberativeElement === DeliberativeElement.general) {
 				setStyle({
-					backgroundColor: "gray",
+					backgroundColor: "var(--header-home)",
 					color: "white",
 				});
 			} else {

@@ -147,6 +147,10 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
     }
   }
   try {
+
+
+    const isGeneral= statement.deliberativeElement === DeliberativeElement.general || statement.deliberativeElement === undefined
+
     return (
       <div
         className={`chat-message-card ${isAlignedLeft && "aligned-left"} ${dir}`}
@@ -162,7 +166,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
           className={
             isStatement ? "message-box message-box--statement" : "message-box"
           }
-          style={{ borderColor: statementColor.backgroundColor }}
+          style={{ borderColor: isGeneral ?"var(--inputBackground)": statementColor.backgroundColor }}
         >
           {!isPreviousFromSameAuthor && <div className="triangle" />}
 
