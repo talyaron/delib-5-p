@@ -308,7 +308,7 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined,
 ) {
     try {
-        console.log("updateParentStatementWithChildResults", parentId);
+        
         if (!parentId) throw new Error("parentId is not defined");
 
         //get parent statement
@@ -351,7 +351,7 @@ async function updateParentStatementWithChildResults(
             (doc: any) => doc.data() as Statement,
         );
 
-        console.log("topOptionsStatements", topOptionsStatements);
+        
 
         
         //get all options of the parent statement and convert them to either result, or an option
@@ -359,7 +359,7 @@ async function updateParentStatementWithChildResults(
             (st: Statement) => st.statementId,
         );
 
-        console.log('topOptionsId', topOptionsIds);
+        
 
         const optionsDB = await allOptionsStatementsRef.get();
 
@@ -367,7 +367,7 @@ async function updateParentStatementWithChildResults(
 
         optionsDB.forEach((stDB: any) => {
             const st = stDB.data() as Statement;
-            console.log("option:",st.statement);
+            
             const statementRef = db.collection(Collections.statements).doc(st.statementId);
 
             if (topOptionsIds.includes(st.statementId)) {
@@ -390,11 +390,11 @@ async function updateParentStatementWithChildResults(
         topOptionsStatements: Statement[],
         numberOfResults: number = 1,
     ) {
-        console.log("updateParentChildren", topOptionsStatements, topOptionsStatements.length, numberOfResults);
+        
         const childStatementsSimple = topOptionsStatements.map(
             (st: Statement) => statementToSimpleStatement(st),
         );
-        console.log("childStatementsSimple", childStatementsSimple);
+        
 
         if (!parentId) throw new Error("parentId is not defined");
 

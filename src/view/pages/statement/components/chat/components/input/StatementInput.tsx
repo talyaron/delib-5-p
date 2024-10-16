@@ -25,9 +25,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
 	const {t} = useLanguage();
 	const user = useAppSelector(userSelector);
 
-	const statementColor = useStatementColor(
-		statement.statementType || StatementType.statement
-	);
+	const {deliberativeElement, isResult} = statement;
+	const statementColor = useStatementColor({deliberativeElement, isResult});
 
 	const direction = useDirection();
 	const [message, setMessage] = useState("");

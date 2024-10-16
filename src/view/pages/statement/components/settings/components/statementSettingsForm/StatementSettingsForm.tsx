@@ -70,7 +70,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-			setIsLoading(true);
 
 			await handleSetStatement({
 				navigate,
@@ -79,7 +78,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				parentStatement,
 			});
 
-			setIsLoading(false);
+			
 		};
 
 		const isNewStatement = !statementId;

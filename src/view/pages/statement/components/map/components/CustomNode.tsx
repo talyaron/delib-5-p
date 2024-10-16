@@ -52,7 +52,9 @@ export default function CustomNode({ data }: NodeProps) {
 
 	const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
 
-	const statementColor = useStatementColor(statementType);
+	const { deliberativeElement, isResult } = statement;
+
+	const statementColor = useStatementColor({ deliberativeElement, isResult });
 
 	const { mapContext, setMapContext } = useMapContext();
 
