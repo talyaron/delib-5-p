@@ -3,9 +3,7 @@ import {
 	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType,
-	User,
-	isOptionFn,
+	User
 } from "delib-npm";
 import { store } from "@/model/store";
 import { NavigateFunction } from "react-router-dom";

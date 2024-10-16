@@ -9,7 +9,7 @@ import ChatIcon from "@/assets/icons/roundedChatDotIcon.svg?react";
 import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
 
 // Third party
-import { Statement, StatementSubscription, StatementType } from "delib-npm";
+import { Statement, StatementSubscription } from "delib-npm";
 import { useNavigate } from "react-router-dom";
 
 // Redux

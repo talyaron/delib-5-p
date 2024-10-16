@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 
 // Third Party Imports
-import { Statement, StatementType, User, isOptionFn } from "delib-npm";
+import { Statement, User, isOptionFn } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
