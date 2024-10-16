@@ -11,7 +11,7 @@ import {
 } from "@/model/statements/statementsSlice";
 
 // Helpers
-import { isAuthorized, linkToChildren } from "@/controllers/general/helpers";
+import { isAuthorized } from "@/controllers/general/helpers";
 
 // Hooks
 import useStatementColor, {
@@ -118,10 +118,7 @@ const SuggestionCard: FC<Props> = ({
 		}
 	}
 
-	const shouldLinkToChildStatements = linkToChildren(
-		statement,
-		parentStatement
-	);
+
 
 	const statementAge = new Date().getTime() - statement.createdAt;
 
@@ -180,7 +177,7 @@ const SuggestionCard: FC<Props> = ({
 						/>
 					</div>
 				</div>
-				{shouldLinkToChildStatements && (
+				{statement.hasChildren && (
 					<div className="chat">
 						<StatementChatMore statement={statement} />
 					</div>

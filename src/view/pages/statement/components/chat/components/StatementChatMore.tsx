@@ -33,8 +33,8 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 	const messagesRead = statementSubscription?.totalSubStatementsRead || 0;
 	const messages = statement.totalSubStatements || 0;
 
-	const { statementType } = statement;
-	if (statementType === StatementType.statement) return;
+	
+	
 
 	
 

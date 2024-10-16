@@ -506,34 +506,28 @@ export async function setStatementIsOption(statement: Statement) {
 			Collections.statements,
 			statement.statementId,
 		);
-		const parentStatementRef = doc(
-			DB,
-			Collections.statements,
-			statement.parentId,
-		);
+		
 
 		//get current statement
-		const [statementDB, parentStatementDB] = await Promise.all([
-			getDoc(statementRef),
-			getDoc(parentStatementRef),
-		]);
+		
+		const statementDB = await getDoc(statementRef)
+		
 
 		if (!statementDB.exists()) throw new Error("Statement not found");
 
 		const statementDBData = statementDB.data() as Statement;
-		const parentStatementDBData = parentStatementDB.data() as Statement;
+		
 
 		StatementSchema.parse(statementDBData);
-		StatementSchema.parse(parentStatementDBData);
 
-		await toggleStatementOption(statementDBData, parentStatementDBData);
+
+		await toggleStatementOption(statementDBData);
 	} catch (error) {
 		console.error(error);
 	}
 
 	async function toggleStatementOption(
-		statement: Statement,
-		parentStatement: Statement,
+		statement: Statement
 	) {
 		try {
 			const statementRef = doc(
@@ -542,18 +536,14 @@ export async function setStatementIsOption(statement: Statement) {
 				statement.statementId,
 			);
 
-			if (statement.statementType === StatementType.option) {
+			if (statement.deliberativeElement === DeliberativeElement.option) {
 				await updateDoc(statementRef, {
-					statementType: StatementType.statement,
+					deliberativeElement: DeliberativeElement.general,
 				});
-			} else if (statement.statementType === StatementType.statement) {
-				if (!(parentStatement.statementType === StatementType.question))
-					throw new Error(
-						"You can't create option under option or statement",
-					);
+			} else {
 
 				await updateDoc(statementRef, {
-					statementType: StatementType.option,
+					deliberativeElement: DeliberativeElement.option,
 				});
 			}
 		} catch (error) {
