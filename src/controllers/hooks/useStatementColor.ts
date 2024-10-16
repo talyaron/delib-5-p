@@ -41,7 +41,7 @@ export default function useStatementColor({deliberativeElement, isResult}:{delib
 			} else {
 				setStyle(initStyle);
 			}
-		}, [deliberativeElement]);
+		}, [deliberativeElement, isResult]);
 
 		return style;
 	} catch (error) {
