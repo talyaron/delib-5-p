@@ -8,6 +8,8 @@ import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { isProduction } from '../general/helpers';
 import firebaseConfig from './configKey';
 
+console.warn('firebaseConfig', firebaseConfig);
+
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const DB = getFirestore(app);
