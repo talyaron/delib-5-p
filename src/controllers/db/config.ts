@@ -5,7 +5,6 @@ import { getMessaging, isSupported } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
-import { isProduction } from '../general/helpers';
 import firebaseConfig from './configKey';
 
 // Initialize Firebase
@@ -17,13 +16,10 @@ export const storage = getStorage(app);
 const auth = getAuth();
 
 //development
-if (!isProduction()) {
+if (import.meta.env.MODE === 'development') {
 	console.warn('Running on development mode');
 
 	connectFirestoreEmulator(DB, '127.0.0.1', 8080);
 	connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
-
-
-
