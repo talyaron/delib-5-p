@@ -4,7 +4,6 @@
     "react",
     "@typescript-eslint",
     "prettier",
-    "sonarjs",
     "jsx-a11y"
   ],
   "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
@@ -111,9 +110,6 @@
     ],
     "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "indent": ["error", "tab"],
-    // SonarJS rules
-    "sonarjs/no-identical-expressions": "error",
-    "no-useless-catch": "error"
   },
   "settings": {
     "import/parsers": {
