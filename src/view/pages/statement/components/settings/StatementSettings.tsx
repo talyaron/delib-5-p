@@ -31,7 +31,7 @@ const StatementSettings: FC = () => {
 	const [parentStatement, setParentStatement] = useState<
 		Statement | undefined | 'top'
 	>(undefined);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading] = useState(false);
 	const [statementToEdit, setStatementToEdit] = useState<
 		Statement | undefined
 	>();
@@ -116,7 +116,6 @@ const StatementSettings: FC = () => {
 				</div>
 			) : (
 				<StatementSettingsForm
-					setIsLoading={setIsLoading}
 					statement={statementToEdit}
 					parentStatement={parentStatement}
 					setStatementToEdit={setStatementToEdit}

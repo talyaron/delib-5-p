@@ -1,4 +1,4 @@
-import { Screen, Statement, StatementType, isOptionFn } from "delib-npm";
+import { Screen, Statement } from "delib-npm";
 
 
 

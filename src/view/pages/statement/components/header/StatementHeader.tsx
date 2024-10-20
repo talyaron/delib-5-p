@@ -6,7 +6,6 @@ import {
 	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType,
 } from "delib-npm";
 import { useLocation } from "react-router-dom";
 
