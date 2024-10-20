@@ -4,7 +4,7 @@ import MenuOption from "@/view/components/menu/MenuOption";
 import EditIcon from "@/assets/icons/editIcon.svg?react";
 import DeleteIcon from "@/assets/icons/delete.svg?react";
 import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
-import { isOptionFn, Statement } from "delib-npm";
+import { DeliberativeElement, Statement } from "delib-npm";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { deleteStatementFromDB } from "@/controllers/db/statements/deleteStatements";
 
@@ -28,6 +28,8 @@ const SolutionMenu: FC<Props> = ({
 	handleSetOption,
 }) => {
 	const { t } = useLanguage();
+
+	const isOption = statement.deliberativeElement === DeliberativeElement.option;
 
 	if (!isAuthorized) return null;
 
@@ -57,10 +59,10 @@ const SolutionMenu: FC<Props> = ({
 			)}
 			{isAuthorized && (
 				<MenuOption
-					isOptionSelected={isOptionFn(statement)}
+					isOptionSelected={isOption}
 					icon={<LightBulbIcon />}
 					label={
-						isOptionFn(statement)
+						isOption
 							? t("Unmark as a Solution")
 							: t("Mark as a Solution")
 					}

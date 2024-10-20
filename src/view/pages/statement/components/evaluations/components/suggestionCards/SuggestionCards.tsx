@@ -1,4 +1,4 @@
-import { isOptionFn, QuestionStage, QuestionType, Statement, User } from "delib-npm";
+import { DeliberativeElement, QuestionStage, QuestionType, Statement, User } from "delib-npm";
 import { FC, useEffect, useState } from "react";
 import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
@@ -33,7 +33,7 @@ const SuggestionCards: FC<Props> = ({
 	const [totalHeight, setTotalHeight] = useState(0);
 
 	const {questionType ,currentStage} = statement.questionSettings || {questionType: QuestionType.singleStep, currentStage: QuestionStage.suggestion};
-	const subStatements = switchSubStatements().filter((sub) => isOptionFn(sub)) ;
+	const subStatements = switchSubStatements().filter((sub) => sub.deliberativeElement === DeliberativeElement.option); ;
 
 	//change the source of options from the store based on the question type
 	function switchSubStatements(){

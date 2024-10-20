@@ -3,9 +3,7 @@ import {
 	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType,
-	User,
-	isOptionFn,
+	User
 } from "delib-npm";
 import { store } from "@/model/store";
 import { NavigateFunction } from "react-router-dom";
@@ -160,25 +158,7 @@ export const statementTitleToDisplay = (
 };
 
 //function which check if the statement can be linked to children
-export function linkToChildren(
-	statement: Statement,
-	parentStatement: Statement,
-): boolean {
-	try {
-		const isQuestion = statement.statementType === StatementType.question;
-		const isOption = isOptionFn(statement);
-		const hasChildren = parentStatement.hasChildren;
 
-		if (isQuestion) return true;
-		if (isOption && hasChildren) return true;
-
-		return false;
-	} catch (error) {
-		console.error(error);
-
-		return false;
-	}
-}
 
 export function getPastelColor() {
 	return `hsl(${360 * Math.random()},100%,75%)` || "red";

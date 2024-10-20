@@ -11,7 +11,7 @@ import {
 } from "@/model/statements/statementsSlice";
 
 // Helpers
-import { isAuthorized, linkToChildren } from "@/controllers/general/helpers";
+import { isAuthorized } from "@/controllers/general/helpers";
 
 // Hooks
 import useStatementColor, {
@@ -54,9 +54,9 @@ const SuggestionCard: FC<Props> = ({
 
 	// Redux Store
 	const dispatch = useAppDispatch();
-	const statementColor: StyleProps = useStatementColor(
-		statement.statementType || StatementType.statement
-	);
+	const {deliberativeElement, isResult} = statement;
+	const statementColor: StyleProps = useStatementColor({ deliberativeElement, isResult });
+	
 	const statementSubscription = useAppSelector(
 		statementSubscriptionSelector(statement.statementId)
 	);
@@ -118,10 +118,7 @@ const SuggestionCard: FC<Props> = ({
 		}
 	}
 
-	const shouldLinkToChildStatements = linkToChildren(
-		statement,
-		parentStatement
-	);
+
 
 	const statementAge = new Date().getTime() - statement.createdAt;
 
@@ -134,7 +131,7 @@ const SuggestionCard: FC<Props> = ({
 			}
 			style={{
 				top: `${statement.top || 0}px`,
-				borderLeft: `8px solid ${statementColor.backgroundColor || "wheat"}`,
+				borderLeft: `8px solid ${statementColor.backgroundColor || "white"}`,
 				color: statementColor.color,
 				flexDirection: dir === "ltr" ? "row" : "row-reverse",
 			}}
@@ -180,12 +177,13 @@ const SuggestionCard: FC<Props> = ({
 						/>
 					</div>
 				</div>
-				{shouldLinkToChildStatements && (
+				
+				<div className="actions">
+				{statement.hasChildren && (
 					<div className="chat">
 						<StatementChatMore statement={statement} />
 					</div>
 				)}
-				<div className="actions">
 					<Evaluation parentStatement={parentStatement} statement={statement} />
 					{parentStatement.hasChildren && (
 						<IconButton

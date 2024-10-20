@@ -98,7 +98,7 @@ interface HandleSetStatementParams {
   navigate: NavigateFunction;
   statementId: string | undefined;
   statement: Statement;
-  parentStatement: Statement | "top";
+  parentStatement?: Statement | "top";
 }
 
 export async function handleSetStatement({
@@ -110,6 +110,7 @@ export async function handleSetStatement({
 	try {
 		// If statement title is empty, don't save
 		if (!statement.statement) return;
+		if(!parentStatement) throw new Error("Parent statement is missing");
 
 		const {
 			hasChildren,
@@ -162,7 +163,7 @@ export async function handleSetStatement({
 				text: statement.statement,
 				description: statement.description || "",
 				subScreens: subScreens,
-				deliberativeElement:DeliberativeElement.research,
+				deliberativeElement:statement.deliberativeElement || DeliberativeElement.general,
 				resultsBy,
 				numberOfResults,
 				hasChildren,

@@ -43,9 +43,8 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	const [showSorting, setShowSorting] = useState(false);
 	const [showStartHere, setShowStartHere] = useState(timesRemainToLearnAddOption > 0);
 
-	const statementColor = useStatementColor(
-		statement.statementType || StatementType.statement
-	);
+	const { deliberativeElement, isResult } = statement;
+	const statementColor = useStatementColor({ deliberativeElement, isResult });
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
