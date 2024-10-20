@@ -21,7 +21,6 @@ import { listenToStatementMetaData } from '@/controllers/db/statements/statement
 
 // Custom components
 import Loader from '@/view/components/loaders/Loader';
-import ScreenFadeIn from '@/view/components/animation/ScreenFadeIn';
 
 const StatementSettings: FC = () => {
 	// * Hooks * //
@@ -109,7 +108,7 @@ const StatementSettings: FC = () => {
 	}, [statementId]);
 
 	return (
-		<ScreenFadeIn className='page__main'>
+		<main className='page__main'>
 			{isLoading || !statementToEdit ? (
 				<div className='center'>
 					<h2>{t('Updating')}</h2>
@@ -123,7 +122,7 @@ const StatementSettings: FC = () => {
 					setStatementToEdit={setStatementToEdit}
 				/>
 			)}
-		</ScreenFadeIn>
+		</main>
 	);
 };
 
