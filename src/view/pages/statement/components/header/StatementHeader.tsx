@@ -69,7 +69,7 @@ const StatementHeader: FC<Props> = ({
 
 	const token = useToken();
 	const headerColor = useStatementColor(
-		statement?.statementType || StatementType.statement
+		statement?.statementType ?? StatementType.statement
 	);
 	const permission = useNotificationPermission(token);
 	const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
@@ -180,7 +180,6 @@ const StatementHeader: FC<Props> = ({
 					<button onClick={handleEditTitle}>
 						<h1
 							className={isAdmin ? 'clickable' : ''}
-							onClick={handleEditTitle}
 							style={{ fontSize: titleFontSize, padding: '0 2rem', color:'white' }}
 							data-cy='statement-header-title'
 						>
