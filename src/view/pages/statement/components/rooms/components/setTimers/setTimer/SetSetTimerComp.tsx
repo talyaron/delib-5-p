@@ -51,7 +51,6 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 						min={0}
 						max={5}
 						step={1}
-						data-innerindex={0}
 						maxLength={1}
 						tabIndex={index * 4 + 0}
 						onKeyUp={handleInputDigit}
@@ -64,7 +63,6 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 						min={0}
 						max={9}
 						step={1}
-						data-innerindex={1}
 						maxLength={1}
 						tabIndex={index * 4 + 1}
 						onKeyUp={handleInputDigit}
@@ -77,7 +75,6 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 						min={0}
 						max={5}
 						step={1}
-						data-innerindex={2}
 						maxLength={1}
 						tabIndex={index * 4 + 2}
 						onKeyUp={handleInputDigit}
@@ -90,7 +87,6 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 						min={0}
 						max={9}
 						step={1}
-						data-innerindex={3}
 						maxLength={1}
 						tabIndex={index * 4 + 3}
 						onKeyUp={(e) => handleInputDigit(e)}
@@ -100,12 +96,13 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 					/>
 				</div>
 				<div className={styles.edit}>
-					<img
-						src={deleteIcon}
-						alt="delete"
+					<button
 						onClick={() => handleDeleteTimer(setTimer.timerId)}
 						className="clickable"
-					/>
+						aria-label="delete timer"
+					>
+						<img src={deleteIcon} alt="delete" />
+					</button>
 				</div>
 			</div>
 		);

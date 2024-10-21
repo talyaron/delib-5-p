@@ -20,7 +20,7 @@ export const defaultStatementSubScreens: Screen[] = [
 	Screen.CHAT,
 	Screen.OPTIONS,
 	Screen.VOTE,
-] as const;
+];
 
 export const defaultEmptyStatement: Statement = {
 	topParentId: '',

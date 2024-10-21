@@ -1,29 +1,27 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { getMinutesAndSeconds } from "../timerPageController";
-import { RoomTimer, TimerStatus } from "delib-npm";
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { getMinutesAndSeconds } from '../timerPageController';
+import { RoomTimer, TimerStatus } from 'delib-npm';
 import {
 	setTimersStatusDB,
 	startNextTimer,
-} from "@/controllers/db/timer/setTimer";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { selectTimerByTimerId } from "@/model/timers/timersSlice";
-import "./Timer.scss";
+} from '@/controllers/db/timer/setTimer';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { selectTimerByTimerId } from '@/model/timers/timersSlice';
+import './Timer.scss';
 
 // icons
 
-import TimerIcon from "../timerIcon/TimerIcon";
-import PlayIcon from "@/view/components/icons/PlayIcon";
-import PauseIcon from "@/view/components/icons/PauseIcon";
-import StopIcon from "@/view/components/icons/StopIcon";
+import TimerIcon from '../timerIcon/TimerIcon';
+import PlayIcon from '@/view/components/icons/PlayIcon';
+import PauseIcon from '@/view/components/icons/PauseIcon';
+import StopIcon from '@/view/components/icons/StopIcon';
 
 //sound
-import bell from "@/assets/sounds/bell.mp3";
-
-
+import bell from '@/assets/sounds/bell.mp3';
 
 interface Props {
-  roomTimer: RoomTimer;
-  isActiveTimer: boolean;
+	roomTimer: RoomTimer;
+	isActiveTimer: boolean;
 }
 
 export default function Timer({
@@ -35,7 +33,7 @@ export default function Timer({
 	);
 
 	//@ts-ignore
-	const bellRef:MutableRefObject = useRef(null);
+	const bellRef: MutableRefObject = useRef(null);
 	const playSound = () => {
 		bellRef?.current?.play();
 	};
@@ -52,8 +50,8 @@ export default function Timer({
 	);
 	const [isActive, setIsActive] = useState(false);
 	const [timer, setTimer] = useState<
-    string | number | NodeJS.Timeout | undefined
-  >();
+		string | number | NodeJS.Timeout | undefined
+	>();
 
 	const percent = (timeLeft / initTime) * 100;
 
@@ -67,10 +65,9 @@ export default function Timer({
 					clearInterval(timer);
 					setTimersStatusDB(roomTimer, TimerStatus.finish);
 					startNextTimer(roomTimer);
-		  playSound();
-					
+					playSound();
+
 					return 0;
-		 
 				}
 
 				setMinutes(getMinutesAndSeconds(newTime).minutes);
@@ -81,7 +78,6 @@ export default function Timer({
 		}, 1000);
 
 	useEffect(() => {
-  
 		setTimeLeft(initTime);
 		setMinutes(getMinutesAndSeconds(initTime).minutes);
 		setSeconds(getMinutesAndSeconds(initTime).seconds);
@@ -135,19 +131,19 @@ export default function Timer({
 	}
 
 	return (
-		<div className="timer">
+		<div className='timer'>
 			<h2>{roomTimer.title}</h2>
-			<div className="clock">
+			<div className='clock'>
 				<TimerIcon percent={percent} />
 			</div>
-			<div className="digits">
-				<p>{`${minutes < 10 ? "0" + minutes : minutes}:${
-					seconds < 10 ? "0" + seconds : seconds
+			<div className='digits'>
+				<p>{`${minutes < 10 ? '0' + minutes : minutes}:${
+					seconds < 10 ? '0' + seconds : seconds
 				}`}</p>
 			</div>
 			<div
-				className="timer-buttons"
-				style={{ opacity: isActiveTimer ? "1" : "0.2" }}
+				className='timer-buttons'
+				style={{ opacity: isActiveTimer ? '1' : '0.2' }}
 			>
 				{!isActive && (
 					<PlayIcon
@@ -182,8 +178,9 @@ export default function Timer({
 				)}
 			</div>
 			<audio ref={bellRef}>
-				<source src={bell} type="audio/mpeg" />
-        Your browser does not support the audio element.
+				<source src={bell} type='audio/mpeg' />
+				<track kind='captions' />
+				Your browser does not support the audio element.
 			</audio>
 		</div>
 	);

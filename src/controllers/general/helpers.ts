@@ -295,7 +295,7 @@ export function getNumberDigits(number: number): number {
 }
 
 export function isProduction(): boolean {
-	return location.hostname !== "localhost"
+	return import.meta.env.MODE === 'development'
 }
 
 export const handleCloseInviteModal = (setShowModal: (show: boolean) => void) => {

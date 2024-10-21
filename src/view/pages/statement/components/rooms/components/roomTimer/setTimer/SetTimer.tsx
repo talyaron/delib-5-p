@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./SetTimer.scss";
 import {
 	fromFourDigitsToMilliseconds,
@@ -9,9 +9,9 @@ import { RoomTimer } from "delib-npm";
 import { getRoomTimerId } from "@/controllers/general/helpers";
 
 interface TimerProps {
-    roomTimer: RoomTimer;
-    setTimerAdjustment: React.Dispatch<React.SetStateAction<boolean>>;
-    setInitTime: React.Dispatch<React.SetStateAction<number>>;
+	roomTimer: RoomTimer;
+	setTimerAdjustment: React.Dispatch<React.SetStateAction<boolean>>;
+	setInitTime: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function SetTimer({
@@ -23,59 +23,33 @@ function SetTimer({
 		fromMillisecondsToFourDigits(roomTimer.time || 1000 * 90),
 	);
 
+	// Refs for the inputs
+	const inputRefs = useRef<HTMLInputElement[]>([]);
+
 	return (
-		<div className='set-timer'>
+		<div className="set-timer">
 			<div className="time">
-				<input
-					type="number"
-					min={0}
-					max={5}
-					step={1}
-					maxLength={1}
-					tabIndex={0}
-					onKeyUp={(e) => handleInputDigit(e)}
-					defaultValue={timeDigits[0]}
-				/>
-
-				<input
-					type="number"
-					min={0}
-					max={9}
-					step={1}
-					maxLength={1}
-					tabIndex={1}
-					onKeyUp={(e) => handleInputDigit(e)}
-					defaultValue={timeDigits[1]}
-				/>
-				<span>:</span>
-				<input
-					type="number"
-					min={0}
-					max={5}
-					step={1}
-					maxLength={1}
-					tabIndex={2}
-					onKeyUp={(e) => handleInputDigit(e)}
-					defaultValue={timeDigits[2]}
-				/>
-
-				<input
-					type="number"
-					min={0}
-					max={9}
-					step={1}
-					maxLength={1}
-					tabIndex={3}
-					onKeyUp={(e) => handleInputDigit(e)}
-					defaultValue={timeDigits[3]}
-				/>
+				{[0, 1, 2, 3].map((index) => (
+					<React.Fragment key={index}>
+						<input
+							type="number"
+							ref={(el) => (inputRefs.current[index] = el!)}
+							min={index % 2 === 0 ? 0 : index === 1 ? 9 : 5}
+							max={index % 2 === 0 ? 5 : 9}
+							step={1}
+							maxLength={1}
+							onKeyUp={(e) => handleInputDigit(e, index)}
+							defaultValue={timeDigits[index]}
+						/>
+						{index === 1 && <span>:</span>}
+					</React.Fragment>
+				))}
 			</div>
 			<button
 				className="btn btn--cancel"
-				onClick={() => handleUpdateTimer()}
-				tabIndex={4}
+				onClick={handleUpdateTimer}
 			>
-                SET
+				SET
 			</button>
 		</div>
 	);
@@ -97,41 +71,29 @@ function SetTimer({
 		setTimerAdjustment(false);
 	}
 
-	function handleInputDigit(ev: React.KeyboardEvent<HTMLInputElement>) {
+	function handleInputDigit(
+		ev: React.KeyboardEvent<HTMLInputElement>,
+		index: number,
+	) {
 		const target = ev.target as HTMLInputElement;
-		let digit = ev.key;
-		ev.type === "input" || "change"
-			? (digit = target.value)
-			: (digit = ev.key);
+		const digit = ev.key;
 
 		if (!isNaN(parseInt(digit))) {
-			target.valueAsNumber = parseInt(digit);
-			const max = parseInt(target.max);
-			const tabIndex = parseInt(
-                target.getAttribute("tabindex") as string,
-			);
-			const maxNumber =
-                target.valueAsNumber > max ? max : target.valueAsNumber;
-			target.value = maxNumber.toString();
-
-			const nextInput = document.querySelector(
-				`[tabindex="${tabIndex + 1}"]`,
+			const newValue = Math.min(
+				parseInt(digit),
+				parseInt(target.max)
 			);
 
-			setTimeDigits((dig) =>
-				dig.map((d: number, i: number) =>
-					i === tabIndex ? maxNumber : d,
-				),
+			setTimeDigits((prevDigits) =>
+				prevDigits.map((d, i) => (i === index ? newValue : d))
 			);
 
-			//    dispatch(setSetTimer())
-
-			if (nextInput) {
-				//@ts-ignore
-				nextInput.focus();
+			// Move focus to the next input
+			if (inputRefs.current[index + 1]) {
+				inputRefs.current[index + 1].focus();
 			}
 		} else {
-			target.value = "";
+			target.value = ""; // Clear the input if non-numeric
 		}
 	}
 }

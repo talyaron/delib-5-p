@@ -11,7 +11,6 @@ import { userSelector } from "@/model/users/userSlice";
 import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "@/controllers/db/subscriptions/getSubscriptions";
 
 // Custom Components
-import ScreenSlide from "../../components/animation/ScreenSlide";
 import HomeHeader from "./HomeHeader";
 
 interface ListenedStatements {
@@ -69,9 +68,9 @@ export default function Home() {
 
 
 	return (
-		<ScreenSlide className="page slide-in">
+		<main className="page slide-in">
 			{displayHeader && <HomeHeader />}     
 			<Outlet />
-		</ScreenSlide>
+		</main>
 	);
 }

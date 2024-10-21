@@ -11,7 +11,6 @@ import { statementsSelector } from "@/model/statements/statementsSlice";
 
 // Custom components
 import Footer from "@/view/components/footer/Footer";
-import ScreenSlide from "@/view/components/animation/ScreenSlide";
 import PeopleLoader from "@/view/components/loaders/PeopleLoader";
 import MainCard from "./mainCard/MainCard";
 
@@ -43,9 +42,9 @@ const HomeMain = () => {
 	}, [statements]);
 
 	return (
-		<ScreenSlide className="home-page__main slide-in">
+		<main className="home-page__main slide-in">
 			<div className="heroImg"></div>
-			<img className="bikeImg" alt="Bike image" src={bike} />
+			<img className="bikeImg" alt="Three-Characters-on-a-bicycle" src={bike} />
 
 			<div
 				className="wrapper main-wrap"
@@ -65,7 +64,7 @@ const HomeMain = () => {
 			</div>
 			<Footer onclick={handleAddStatement} />
 
-		</ScreenSlide >
+		</main >
 	);
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import Loader from '@/view/components/loaders/Loader';
 import { findSimilarStatements } from '@/controllers/db/statements/getSimilarstatements';
@@ -12,9 +12,7 @@ import { DisplayStatement } from './SimilarStatementsSuggestion';
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 	newStatementInput: DisplayStatement;
-	setNewStatementInput: React.Dispatch<
-		React.SetStateAction<DisplayStatement>
-	>;
+	setNewStatementInput: React.Dispatch<React.SetStateAction<DisplayStatement>>;
 	setSimilarStatements: React.Dispatch<
 		React.SetStateAction<DisplayStatement[]>
 	>;
@@ -32,12 +30,17 @@ export default function StepOneStatementInput({
 	setShowModal,
 	onFormSubmit,
 }: Readonly<SimilarStatementsSuggestionProps>) {
-	const {t} = useLanguage();
+	const { t } = useLanguage();
 	const [isLoading, setIsLoading] = useState(false);
+	const titleInputRef = useRef<HTMLInputElement>(null);
 
 	const subStatements = useAppSelector((state: RootState) =>
 		subStatementsSelector(state, statementId)
 	);
+
+	useEffect(() => {
+		titleInputRef.current?.focus();
+	}, []);
 
 	const handleSubmit = async () => {
 		if (!newStatementInput.title || newStatementInput.title.length < 5) {
@@ -50,42 +53,38 @@ export default function StepOneStatementInput({
 			statementId,
 			newStatementInput.title
 		);
-		
 
 		const getSubStatements = subStatements
 			.filter((subStatement) =>
 				similarStatementsIds.includes(subStatement.statementId)
 			)
-			.map((subState) => {
-				
-
-				return {
-					statementId: subState.statementId,
-					title: subState.statement,
-					description: subState.description || '',
-				};
-			});
+			.map((subState) => ({
+				statementId: subState.statementId,
+				title: subState.statement,
+				description: subState.description || '',
+			}));
 
 		if (getSubStatements.length === 0) {
 			onFormSubmit();
 		}
 
 		setSimilarStatements(getSubStatements);
-
 		setCurrentStep((prev) => prev + 1);
 		setIsLoading(false);
 	};
 
 	return (
 		<>
-			<h4 className='similarities__title'>{t("Compose your suggestion")}</h4>
+			<h4 className='similarities__title'>{t('Compose your suggestion')}</h4>
 			<div className='similarities__titleInput'>
-				<label htmlFor='titleInput'>{t("Title")}</label>
+				<label htmlFor='titleInput'>{t('Title')}</label>
 				<input
-					autoFocus
+					ref={titleInputRef}
 					type='text'
 					id='titleInput'
-					placeholder={t('Suggestion title. What people would see at first sight') }
+					placeholder={t(
+						'Suggestion title. What people would see at first sight'
+					)}
 					value={newStatementInput.title}
 					onChange={(e) =>
 						setNewStatementInput({
@@ -108,12 +107,15 @@ export default function StepOneStatementInput({
 			) : (
 				<>
 					<div className='similarities__titleInput'>
-						<label htmlFor='descriptionInput'>{t("Description")}</label>
-						<textarea className='similarities__titleInput'
+						<label htmlFor='descriptionInput'>{t('Description')}</label>
+						<textarea
+							className='similarities__titleInput'
 							rows={5}
 							id='descriptionInput'
-							placeholder={t('Formulate here the description. Add as much detail as you can to help others understand your suggestion')}
-							defaultValue={newStatementInput.description}
+							placeholder={t(
+								'Formulate here the description. Add as much detail as you can to help others understand your suggestion'
+							)}
+							value={newStatementInput.description}
 							onChange={(e) =>
 								setNewStatementInput({
 									...newStatementInput,
@@ -127,7 +129,10 @@ export default function StepOneStatementInput({
 							icon={<SendIcon />}
 							text={t('Submit Suggestion')}
 							buttonType={ButtonType.PRIMARY}
-							onClick={(e) => { e.preventDefault(); handleSubmit(); }}
+							onClick={(e) => {
+								e.preventDefault();
+								handleSubmit();
+							}}
 						/>
 						<Button
 							text={t('Cancel')}
@@ -140,5 +145,3 @@ export default function StepOneStatementInput({
 		</>
 	);
 }
-
-

@@ -5,7 +5,6 @@ import { useState, FC, useEffect } from "react";
 import { isOptionFn, Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
-import ScreenFadeIn from "@/view/components/animation/ScreenFadeIn";
 import TreeChart from "./components/TreeChart";
 import Modal from "@/view/components/modal/Modal";
 
@@ -144,7 +143,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 	};
 
 	return (
-		<ScreenFadeIn className="page__main">
+		<main className="page__main">
 			<ReactFlowProvider>
 				<select
 					aria-label="Select filter type for results"
@@ -195,7 +194,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 					</Modal>
 				)}
 			</ReactFlowProvider>
-		</ScreenFadeIn>
+		</main>
 	);
 };
 

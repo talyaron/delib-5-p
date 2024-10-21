@@ -68,7 +68,6 @@ const MembershipCard: FC<Props> = ({ member }) => {
 				) : (
 					<>
 						<button
-							role="button"
 							onClick={handleSetRole}
 							className={`${styles["card__membership--admin"]} ${isAdmin ? styles.admin : ""}`}
 						>

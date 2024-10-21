@@ -23,10 +23,9 @@ const Checkbox: FC<CheckboxProps> = ({
 	return (
 		<div className={`checkbox ${isChecked ? "checked" : ""}`}>
 			<label
-
 				// className={`checkbox ${isChecked ? "checked" : ""}`}
 				htmlFor={`checkbox-${label}`}
-				onClick={toggleSelection}
+				onChange={toggleSelection}
 			>
 				<VisuallyHidden labelName={t(label)} />
 			</label>
