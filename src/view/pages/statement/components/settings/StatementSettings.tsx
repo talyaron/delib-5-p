@@ -28,9 +28,9 @@ const StatementSettings: FC = () => {
 	const { t } = useLanguage();
 
 	// * State * //
-	const [parentStatement, setParentStatement] = useState<
-		Statement | undefined | 'top'
-	>(undefined);
+	const [parentStatement, setParentStatement] = useState<Statement | 'top'>(
+		'top'
+	);
 	const [isLoading] = useState(false);
 	const [statementToEdit, setStatementToEdit] = useState<
 		Statement | undefined

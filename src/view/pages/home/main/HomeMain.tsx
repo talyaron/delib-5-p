@@ -44,7 +44,7 @@ const HomeMain = () => {
 	return (
 		<main className="home-page__main slide-in">
 			<div className="heroImg"></div>
-			<img className="bikeImg" alt="Bike image" src={bike} />
+			<img className="bikeImg" alt="Three-Characters-on-a-bicycle" src={bike} />
 
 			<div
 				className="wrapper main-wrap"
