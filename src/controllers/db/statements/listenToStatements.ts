@@ -6,8 +6,9 @@ import {
 	Statement,
 	Role,
 	StatementSchema,
+	DeliberativeElement,
 } from "delib-npm";
-import { collection, doc, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { and, collection, doc, limit, onSnapshot, or, orderBy, query, where } from "firebase/firestore";
 
 // Redux Store
 import {
@@ -214,8 +215,13 @@ export async function listenToChildStatements(
 		const statementsRef = collection(DB, Collections.statements);
 		const q = query(
 			statementsRef,
-			where("statementType", "!=", StatementType.statement),
-			where("parents", "array-contains", statementId)
+			and(
+				or(
+					where("deliberativeElement", "==", DeliberativeElement.option),
+					where("deliberativeElement", "==", DeliberativeElement.research)
+				),
+				where("parents", "array-contains", statementId)
+			)
 		);
 
 		const unsubscribe = onSnapshot(q, (statementsDB) => {
@@ -226,14 +232,14 @@ export async function listenToChildStatements(
 				childStatements.push(childStatement);
 				dispatch(setStatement(childStatement));
 			});
-
+			console.log("childStatements", childStatements)
 			callback(childStatements);
 		});
 
 		return unsubscribe;
 	} catch (error) {
 		console.error(error);
-		
+
 		return null;
 	}
 }
@@ -257,16 +263,16 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
 				StatementSchema.parse(statement);
-        
-				if(statement.statementId === statementId) return;
+
+				if (statement.statementId === statementId) return;
 
 				switch (change.type) {
-				case "added":
-					store.dispatch(setStatement(statement));
-					break;
-				case "removed":
-					store.dispatch(deleteStatement(statement.statementId));
-					break;
+					case "added":
+						store.dispatch(setStatement(statement));
+						break;
+					case "removed":
+						store.dispatch(deleteStatement(statement.statementId));
+						break;
 				}
 			});
 
@@ -274,7 +280,7 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 		});
 	} catch (error) {
 		console.error(error);
-		
-		return ():void => {return;};
+
+		return (): void => { return; };
 	}
 }

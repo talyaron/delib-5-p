@@ -126,9 +126,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 
 		const topResult = sortStatementsByHirarrchy([
 			statement,
-			...updatedStatements.filter(
-				(state) => isOptionFn(state) || state.statementType === StatementType.question
-			),
+			...updatedStatements,
 		])[0];
 
 		setResults(topResult);
