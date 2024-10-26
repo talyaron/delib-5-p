@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
 
 // Third party
 import { Statement } from "delib-npm";
@@ -11,7 +11,6 @@ import Save from "@/assets/icons/saveIcon.svg?react";
 import styles from "./EditTitle.module.scss";
 
 // Custom components
-import useAutoFocus from "@/controllers/hooks/useAutoFocus ";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Text from "../text/Text";
 
@@ -28,22 +27,27 @@ const EditTitle: FC<Props> = ({
 	isEdit,
 	setEdit,
 	isTextArea,
-
 }) => {
 	const [description, setDescription] = useState(statement?.description || "");
 	const [title, setTitle] = useState(statement?.statement || "");
-	const textareaRef = useAutoFocus(isEdit);
+
+	// Single ref for both textarea and input
+	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+
+	// Manage focus when editing starts
+	useEffect(() => {
+		if (isEdit && inputRef.current) {
+			(inputRef.current).focus();
+		}
+	}, [isEdit]);
 
 	if (!statement) return null;
 
 	const { dir: direction } = useLanguage();
-
 	const align = direction === "ltr" ? "left" : "right";
 
-	function handleChange(
-		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-	) {
-		const _title = e.target.value.split("\n")[0]
+	function handleChange(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+		const _title = e.target.value.split("\n")[0];
 		const _description = e.target.value.split("\n").slice(1).join("\n");
 		setTitle(_title);
 		setDescription(_description);
@@ -60,7 +64,6 @@ const EditTitle: FC<Props> = ({
 			if (!title) return; // Do not save if the text is empty
 			if (!statement) throw new Error("Statement is undefined");
 
-
 			updateStatementText(statement, title, description);
 			setEdit(false);
 		} catch (error) {
@@ -68,24 +71,24 @@ const EditTitle: FC<Props> = ({
 		}
 	}
 
-	if (!isEdit)
+	if (!isEdit) {
 		return (
 			<div style={{ direction: direction, textAlign: align }}>
 				<Text statement={statement.statement} description={statement.description} />
 			</div>
 		);
+	}
 
 	return (
 		<div className={styles.container}>
 			{isTextArea ? (
 				<>
 					<textarea
-						ref={textareaRef}
+						ref={inputRef as React.RefObject<HTMLTextAreaElement>}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.textarea}
 						defaultValue={`${title}\n${description}`}
 						onChange={handleChange}
-						autoFocus={true}
 						placeholder="Add text"
 					></textarea>
 					<button className={styles.save} onClick={handleSave} aria-label="Save">
@@ -95,15 +98,15 @@ const EditTitle: FC<Props> = ({
 			) : (
 				<>
 					<input
+						ref={inputRef as React.RefObject<HTMLInputElement>}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.input}
 						type="text"
 						value={title}
 						onChange={handleChange}
 						onKeyUp={handleEnter}
-						autoFocus={true}
 						data-cy="edit-title-input"
-					></input>
+					/>
 					<button
 						className={styles.save}
 						onClick={handleSave}

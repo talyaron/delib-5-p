@@ -6,7 +6,6 @@ import {
 	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType,
 } from "delib-npm";
 import { useLocation } from "react-router-dom";
 
@@ -180,7 +179,6 @@ const StatementHeader: FC<Props> = ({
 					<button onClick={handleEditTitle}>
 						<h1
 							className={isAdmin ? 'clickable' : ''}
-							onClick={handleEditTitle}
 							style={{ fontSize: titleFontSize, padding: '0 2rem', color:'white' }}
 							data-cy='statement-header-title'
 						>

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 // Third party libraries
-import { Screen, Statement, StatementType } from "delib-npm";
+import { Screen, Statement } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons

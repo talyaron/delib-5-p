@@ -35,8 +35,6 @@ export async function setVoteToDB(option: Statement) {
 
 		VoteSchema.parse(vote);
 
-		console.log(vote);
-
 		await setDoc(voteRef, vote, { merge: true });
 	} catch (error) {
 		console.error(error);
