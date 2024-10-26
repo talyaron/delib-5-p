@@ -8,16 +8,17 @@
 		"dev:h": "vite --host",
 		"devf": "cd functions && npm run build:watch",
 		"deve": "firebase emulators:start",
+
 		"build": "tsc && vite build",
-		"build:test": "tsc && vite build --mode development",
 		"build:dev": "tsc && vite build --mode development",
+
 		"lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
 		"typecheck": "tsc",
 		"check-all": "npm run lint && npm run typecheck && npm run build",
 		"preview": "vite preview",
+		
 		"deploy:h": "npm run build && firebase use prod && firebase deploy --only hosting:prod",
 		"deploy:h:dev": "npm run build:dev && firebase use dev && firebase deploy --only hosting:dev",
-		"deploy:h:test": "npm run build:test && firebase use test && firebase deploy --only hosting:test",
 		"deploy:f": "cd functions && npm run build && firebase use prod && firebase deploy --only functions",
 		"deploy": "npm run deploy:h && npm run deploy:f"
 	},

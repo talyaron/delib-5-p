@@ -6,6 +6,7 @@ import { getAnalytics } from 'firebase/analytics';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import firebaseConfig from './configKey';
+import { isProduction } from '../general/helpers';
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
@@ -16,7 +17,7 @@ export const storage = getStorage(app);
 const auth = getAuth();
 
 //development
-if (import.meta.env.MODE === 'development') {
+if (!isProduction()) {
 	console.warn('Running on development mode');
 
 	connectFirestoreEmulator(DB, '127.0.0.1', 8080);
