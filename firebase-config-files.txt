@@ -1,0 +1,144 @@
+----------------- firebase.json template -----------------
+
+{
+	"firestore": {
+		"rules": "firestore.rules",
+		"indexes": "firestore.indexes.json"
+	},
+	"functions": [
+		{
+			"runtime": "nodejs20",
+			"source": "functions",
+			"codebase": "default",
+			"ignore": [
+				"node_modules",
+				".git",
+				"firebase-debug.log",
+				"firebase-debug.*.log"
+			],
+			"predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
+		}
+	],
+	"hosting": [
+		{
+			"target": "prod",
+			"public": "dist",
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"rewrites": [
+				{
+					"source": "/getRandomStatements2",
+					"function": {
+						"functionId": "getRandomStatements2",
+						"region": "us-central1"
+					}
+				},
+				{
+					"source": "**",
+					"destination": "/index.html"
+				}
+			]
+		},
+		{
+			"target": "dev",
+			"public": "dist",
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"rewrites": [
+				{
+					"source": "/getRandomStatements2",
+					"function": {
+						"functionId": "getRandomStatements2",
+						"region": "us-central1"
+					}
+				},
+				{
+					"source": "**",
+					"destination": "/index.html"
+				}
+			]
+		},
+		{
+			"target": "test",
+			"public": "dist",
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"rewrites": [
+				{
+					"source": "/getRandomStatements2",
+					"function": {
+						"functionId": "getRandomStatements2",
+						"region": "us-central1"
+					}
+				},
+				{
+					"source": "**",
+					"destination": "/index.html"
+				}
+			]
+		}
+	],
+	"emulators": {
+		"auth": {
+			"port": 9099
+		},
+		"functions": {
+			"port": 5001
+		},
+		"firestore": {
+			"port": 8080
+		},
+		"storage": {
+			"port": 9199
+		},
+		"ui": {
+			"enabled": true,
+			"port": 5002
+		},
+		"singleProjectMode": true,
+		"hosting": {
+			"port": 5000
+		}
+	},
+	"storage": {
+		"rules": "storage.rules"
+	}
+}
+
+----------------- firebase.json template -----------------
+
+
+
+----------------- .firebaserc template -----------------
+
+{
+	"projects": {
+		"test": "delib-testing",
+		"dev": "delib-v3-dev",
+		"prod": "synthesistalyaron"
+	},
+	"targets": {
+		"synthesistalyaron": {
+			"hosting": {
+				"prod": [
+					"synthesistalyaron"
+				]
+			}
+		},
+		"delib-v3-dev": {
+			"hosting": {
+				"dev": [
+					"delib-v3-dev"
+				]
+			}
+		},
+		"delib-testing": {
+			"hosting": {
+				"test": [
+					"delib-testing"
+				]
+			}
+		}
+	},
+	"etags": {},
+	"dataconnectEmulatorConfig": {}
+}
+
+----------------- .firebaserc template -----------------

@@ -64,10 +64,12 @@ Delib-5 uses a technological stack consisting of React-Redux-PWA (built with Vit
 4. **Set up Firebase configuration**
 
    - In the Firebase console, create a new project named "delib-5" and copy the project ID.
-   - In the `.firebaserc` file, replace the project ID with the one you just created.
+   - Set up the `.firebaserc` file according to template in "firebase-config-files.txt", replace the project ID with the one you just created.
    - Run `firebase use <project-id>` to select the new project.
 
-5. **Create `configKey.ts` file**
+   - Set up your `firebase.json` file by copying the template from "firebase-config-files.txt". You do not have to adjust any attributes.
+
+5. **Create `.env` files**
 
    Under `src/functions/db/`, create a new file named `configKey.ts` and add the following code, replacing the placeholders with your actual Firebase project configuration:
 
