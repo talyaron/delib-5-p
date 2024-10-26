@@ -5,7 +5,6 @@ import { Screen, Statement } from "delib-npm";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-
 import PlusIcon from "@/assets/icons/plusIcon.svg?react";
 import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
 import NewestIcon from "@/assets/icons/newIcon.svg?react";
