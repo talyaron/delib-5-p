@@ -71,21 +71,19 @@ Delib-5 uses a technological stack consisting of React-Redux-PWA (built with Vit
 
 5. **Create `.env` files**
 
-   Under `src/functions/db/`, create a new file named `configKey.ts` and add the following code, replacing the placeholders with your actual Firebase project configuration:
+   In the project root create two files, `.env.development` & `.env.production` (Only if specified by project leader). replacing the placeholders with your actual Firebase project configuration:
 
-   ```typescript
-   export const keys = {
-     apiKey: "your-api-key",
-     authDomain: "your-auth-domain",
-     databaseURL: "your-database-url",
-     projectId: "your-project-id",
-     storageBucket: "your-storage-bucket",
-     messagingSenderId: "your-messaging-sender-id",
-     appId: "your-app-id",
-     measurementId: "your-measurement-id"
-   }
+   ```env
+      VITE_FIREBASE_API_KEY=__YOUR_CONFIG__
+      VITE_FIREBASE_AUTH_DOMAIN=__YOUR_CONFIG__
+      VITE_FIREBASE_DATABASE_URL=__YOUR_CONFIG__
+      VITE_FIREBASE_PROJECT_ID=__YOUR_CONFIG__
+      VITE_FIREBASE_STORAGE_BUCKET=__YOUR_CONFIG__
+      VITE_FIREBASE_MESSAGING_SENDER_ID=__YOUR_CONFIG__
+      VITE_FIREBASE_APP_ID=__YOUR_CONFIG__
+      VITE_FIREBASE_MEASUREMENT_ID=__YOUR_CONFIG__
 
-   export const vapidKey = 'your-vapid-key';
+      VITE_FIREBASE_VAPID_KEY=__YOUR_CONFIG__
    ```
 
    Note: This file is not uploaded to GitHub, and you'll need to create it yourself.
