@@ -60,19 +60,22 @@ const manifestPlugin: Partial<VitePWAOptions> = {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig({
-	plugins: [
-		react(),
-		VitePWA(manifestPlugin),
-		visualizer({ open: true, gzipSize: true, brotliSize: true }),
-		svgr({ include: '**/*.svg?react' }),
-	],
-	resolve: {
-		alias: {
-			'@': path.resolve(__dirname, './src'),
+export default defineConfig(({ mode }) => {
+	return {
+		plugins: [
+			react(),
+			VitePWA(manifestPlugin),
+			mode === 'development' &&
+				visualizer({ open: true, gzipSize: true, brotliSize: true }),
+			svgr({ include: '**/*.svg?react' }),
+		],
+		resolve: {
+			alias: {
+				'@': path.resolve(__dirname, './src'),
+			},
 		},
-	},
-	define: {
-		'process.env': process.env,
-	},
+		define: {
+			'process.env': process.env,
+		},
+	};
 });
