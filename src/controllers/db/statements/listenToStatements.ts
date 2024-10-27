@@ -284,7 +284,7 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 		return (): void => { return; };
 	}
 }
-export function listenToAllDescendants(statementId: string) {
+export function listenToAllDescendants(statementId: string): Unsubscribe {
 	try {
 		const statementsRef = collection(DB, Collections.statements);
 		const q = query(
@@ -295,7 +295,7 @@ export function listenToAllDescendants(statementId: string) {
 					where("deliberativeElement", "==", DeliberativeElement.research)
 				),
 				where("parents", "array-contains", statementId)
-			)
+			),limit(100)
 		);
 		return onSnapshot(q, (statementsDB) => {
 			statementsDB.docChanges().forEach((change) => {
@@ -312,5 +312,6 @@ export function listenToAllDescendants(statementId: string) {
 
 	} catch (error) {
 		console.error(error);
+		return (): void => { return; };
 	}
 }
