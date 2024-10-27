@@ -7,7 +7,7 @@
 		"dev": "vite",
 		"dev:h": "vite --host",
 		"devf": "cd functions && npm run build:watch",
-		"deve": "firebase emulators:start",
+		"deve": "firebase emulators:start --only hosting:dev,firestore,auth,functions,storage",
 
 		"build": "tsc && vite build",
 		"build:dev": "tsc && vite build --mode development",
