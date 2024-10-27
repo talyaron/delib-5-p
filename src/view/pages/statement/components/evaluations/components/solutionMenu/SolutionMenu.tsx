@@ -3,10 +3,12 @@ import Menu from "@/view/components/menu/Menu";
 import MenuOption from "@/view/components/menu/MenuOption";
 import EditIcon from "@/assets/icons/editIcon.svg?react";
 import DeleteIcon from "@/assets/icons/delete.svg?react";
+import QuestionMarkIcon from '@/assets/icons/questionIcon.svg?react';
 import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
 import { DeliberativeElement, Statement } from "delib-npm";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { deleteStatementFromDB } from "@/controllers/db/statements/deleteStatements";
+import { updateIsQuestion } from "@/controllers/db/statements/setStatements";
 
 interface Props {
   statement: Statement;
@@ -30,6 +32,7 @@ const SolutionMenu: FC<Props> = ({
 	const { t } = useLanguage();
 
 	const isOption = statement.deliberativeElement === DeliberativeElement.option;
+	const isResearch = statement.deliberativeElement === DeliberativeElement.research;
 
 	if (!isAuthorized) return null;
 
@@ -68,6 +71,21 @@ const SolutionMenu: FC<Props> = ({
 					}
 					onOptionClick={() => {
 						handleSetOption();
+						setIsCardMenuOpen(false);
+					}}
+				/>
+			)}
+			{isAuthorized && (
+				<MenuOption
+					isOptionSelected={isResearch}
+					icon={<QuestionMarkIcon />}
+					label={
+						isResearch
+							? t('Unmark as a Question')
+							: t('Mark as a Question')
+					}
+					onOptionClick={() => {
+						updateIsQuestion(statement);
 						setIsCardMenuOpen(false);
 					}}
 				/>

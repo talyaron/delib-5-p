@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import "@/view/pages/statement/components/createStatementModal/CreateStatementModal.scss";
 
 // Third party imports
-import { Results } from "delib-npm";
+import { Results, Statement } from "delib-npm";
 
 // React Flow imports
 import ReactFlow, {
@@ -48,14 +48,17 @@ const nodeTypes = {
 };
 
 interface Props {
-  topResult: Results;
+	descendants: Results[];
   isAdmin: boolean;
 }
 
 export default function TreeChart({
-	topResult,
+	descendants,
 	isAdmin
 }: Readonly<Props>) {
+
+	
+	
 	const { getIntersectingNodes } = useReactFlow();
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -82,7 +85,7 @@ export default function TreeChart({
 
 	useEffect(() => {
 		const { nodes: createdNodes, edges: createdEdges } =
-      createInitialNodesAndEdges(topResult);
+      createInitialNodesAndEdges(descendants[0]);
 
 		const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 			createdNodes,
@@ -99,7 +102,7 @@ export default function TreeChart({
 		setTimeout(() => {
 			onSave();
 		}, 500);
-	}, [topResult]);
+	}, [descendants[0]]);
 
 	const onLayout = useCallback(
 		(direction: "TB" | "LR") => {

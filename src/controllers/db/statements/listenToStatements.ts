@@ -301,6 +301,7 @@ export function listenToAllDescendants(statementId: string): Unsubscribe {
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
 				StatementSchema.parse(statement);
+				console.log(change.type)
 				if (change.type === "added" || change.type === "modified") {
 					store.dispatch(setStatement(statement));
 
