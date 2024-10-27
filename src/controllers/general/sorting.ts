@@ -1,4 +1,4 @@
-import { DeliberativeElement, Results, Statement, StatementType } from "delib-npm";
+import { DeliberativeElement, Results, Statement } from "delib-npm";
 
 interface ResultLevel {
 	result: Results;
@@ -121,38 +121,38 @@ interface Filter {
 export function filterByStatementType(filter: FilterType): Filter {
 	try {
 		switch (filter) {
-			case FilterType.all:
-				return {
-					types: [
-						DeliberativeElement.option,
-						DeliberativeElement.research,
-						"result"
-					],
-				};
-			case FilterType.questionsResults:
-				return {
-					types: [DeliberativeElement.research, "result"],
-				};
-			case FilterType.questionsResultsOptions:
-				return {
-					types: [
-						DeliberativeElement.option,
-						DeliberativeElement.research,
-						"result"
-					],
-				};
-			case FilterType.questions:
-				return {
-					types: [DeliberativeElement.research],
-				};
-			default:
-				return {
-					types: [
-						DeliberativeElement.option,
-						DeliberativeElement.research,
-						"result"
-					],
-				};
+		case FilterType.all:
+			return {
+				types: [
+					DeliberativeElement.option,
+					DeliberativeElement.research,
+					"result"
+				],
+			};
+		case FilterType.questionsResults:
+			return {
+				types: [DeliberativeElement.research, "result"],
+			};
+		case FilterType.questionsResultsOptions:
+			return {
+				types: [
+					DeliberativeElement.option,
+					DeliberativeElement.research,
+					"result"
+				],
+			};
+		case FilterType.questions:
+			return {
+				types: [DeliberativeElement.research],
+			};
+		default:
+			return {
+				types: [
+					DeliberativeElement.option,
+					DeliberativeElement.research,
+					"result"
+				],
+			};
 		}
 	} catch (error) {
 		console.error(error);

@@ -1,74 +1,59 @@
 .timers {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 2rem;
+	margin-top: 2rem;
 }
 
 .timerStage {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1rem;
+	border-radius: 1rem;
 
-    label {
-        font-size: .8rem;
-        color: gray;
-    }
-
-   
+	label {
+		font-size: 0.8rem;
+		color: gray;
+	}
 }
 
 .time {
-    direction: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   max-width: 14rem;
-    direction: ltr;
-   
-    input[type="number"] {
+	direction: inherit;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 14rem;
+	direction: ltr;
 
-font-size: 1.5rem;
-text-align: center;
-background-color: var(--pageBackground);
-    }
-  
+	input[type='number'] {
+		font-size: 1.5rem;
+		text-align: center;
+		background-color: var(--pageBackground);
+	}
 }
 
 .timer {
-    display: flex;
-    align-items: center;
-   
+	display: flex;
+	align-items: center;
 
-    span {
-        height: 3rem;
-        font-size: 2.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+	span {
+		height: 3rem;
+		font-size: 2.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-    }
-
-    
-
-    
-
-    label {
-        font-size: .8rem;
-        color: gray;
-    }
+	label {
+		font-size: 0.8rem;
+		color: gray;
+	}
 }
 
-
-
-
 .edit {
-    display: flex;
-  
-    justify-content: center;
- 
-    margin-left: 1rem;
+	display: flex;
+	justify-content: center;
+	margin-left: 1rem;
 }

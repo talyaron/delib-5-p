@@ -267,12 +267,12 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 				if (statement.statementId === statementId) return;
 
 				switch (change.type) {
-					case "added":
-						store.dispatch(setStatement(statement));
-						break;
-					case "removed":
-						store.dispatch(deleteStatement(statement.statementId));
-						break;
+				case "added":
+					store.dispatch(setStatement(statement));
+					break;
+				case "removed":
+					store.dispatch(deleteStatement(statement.statementId));
+					break;
 				}
 			});
 
@@ -297,6 +297,7 @@ export function listenToAllDescendants(statementId: string): Unsubscribe {
 				where("parents", "array-contains", statementId)
 			),limit(100)
 		);
+		
 		return onSnapshot(q, (statementsDB) => {
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
@@ -312,6 +313,7 @@ export function listenToAllDescendants(statementId: string): Unsubscribe {
 
 	} catch (error) {
 		console.error(error);
+		
 		return (): void => { return; };
 	}
 }

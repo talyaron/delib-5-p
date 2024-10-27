@@ -179,11 +179,11 @@ const SuggestionCard: FC<Props> = ({
 				</div>
 				
 				<div className="actions">
-				{statement.hasChildren && (
-					<div className="chat">
-						<StatementChatMore statement={statement} />
-					</div>
-				)}
+					{statement.hasChildren && (
+						<div className="chat">
+							<StatementChatMore statement={statement} />
+						</div>
+					)}
 					<Evaluation parentStatement={parentStatement} statement={statement} />
 					{parentStatement.hasChildren && (
 						<IconButton

@@ -5,8 +5,8 @@ import { getMessaging, isSupported } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
-import { isProduction } from '../general/helpers';
 import firebaseConfig from './configKey';
+import { isProduction } from '../general/helpers';
 
 
 // Initialize Firebase
@@ -25,6 +25,3 @@ if (!isProduction()) {
 	connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
-
-
-

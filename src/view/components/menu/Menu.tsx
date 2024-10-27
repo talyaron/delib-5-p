@@ -32,12 +32,10 @@ const Menu: FC<MenuProps> = ({
 			{isMenuOpen && (
 				<div className={`menu-content ${dir}`}>
 					{children}
-					<div
+					<button
 						className="invisibleBackground"
 						onClick={() => setIsOpen(false)}
-						role="button"
 						aria-label="Close menu"
-						tabIndex={0}
 					/>
 				</div>
 			)}

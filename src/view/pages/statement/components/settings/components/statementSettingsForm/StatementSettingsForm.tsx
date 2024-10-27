@@ -31,14 +31,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/model/store';
 
 interface StatementSettingsFormProps {
-	setIsLoading: (isLoading: boolean) => void;
 	statement: Statement;
 	parentStatement?: Statement | 'top';
 	setStatementToEdit: Dispatch<Statement>;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
-	setIsLoading,
 	statement,
 	parentStatement,
 	setStatementToEdit,
