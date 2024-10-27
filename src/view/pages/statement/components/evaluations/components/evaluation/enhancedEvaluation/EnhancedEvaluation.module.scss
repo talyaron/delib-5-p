@@ -57,6 +57,7 @@
     align-items: center;
     justify-content: center;
     color:var(--text-paragraph-light);
+    // direction: ltr;
   
   }
 
@@ -100,5 +101,5 @@
 }
 
 .active{
-  transform: scale(1.2);
+  transform: scale(1.1);
 }

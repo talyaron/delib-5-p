@@ -29,23 +29,23 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 	const learningEvaluation =
     useAppSelector(userSettingsSelector)?.learning?.evaluation || 0;
-	const { dir, t } = useLanguage();
+	const { t } = useLanguage();
 
 	const { sumPro, sumCon, numberOfEvaluators } = statement.evaluation || {
 		sumPro: 0,
 		sumCon: 0,
 		numberOfEvaluators: 0,
 	};
+	console.log(statement.statement, statement.statementType, numberOfEvaluators);
 
 	return (
 		<div
 			className={styles[`enhanced-evaluation`]}
 			// className={styles[`enhanced-evaluation] ${dir === "ltr" ? "mirrorReverse" : ""}`]}
 		>
-			<div className="evaluation-score">
+			<div className={styles["evaluation-score"]}>
 				{shouldDisplayScore === true ? sumCon : null}
 			</div>
-
 			<div
 				className={styles["evaluation-thumbs"]}
 			>
@@ -63,18 +63,18 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 				<div
 					className={`${styles[`evaluation-score`]} ${statement.consensus < 0 ? "negative" : ""}`}
 				>
-					{sumPro}
-					{numberOfEvaluators && numberOfEvaluators > 0 && (
-						<span className="total-evaluators"> ({numberOfEvaluators})</span>
-					)}
+					<span>{sumPro}</span>
+					{(numberOfEvaluators && numberOfEvaluators > 0)? (
+						<span className={styles["total-evaluators"]}> ({numberOfEvaluators})</span>
+					):null}
+					
 				</div>
 			) : (
 				<div />
 			)}
 			<div />
 			{learningEvaluation > 0 && (
-				<div className={styles["evaluation-explain"]}>
-					
+				<div className={styles["evaluation-explain"]}>					
 					<span>{t("Disagree")}</span>	
 					<span>{t("Agree")}</span>				
 				</div>
