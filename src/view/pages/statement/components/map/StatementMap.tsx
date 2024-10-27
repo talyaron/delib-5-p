@@ -32,11 +32,12 @@ interface Props {
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
+	
   const userSubscription = useAppSelector(
     statementSubscriptionSelector(statement.statementId)
   );
   const descendants = useSelector(
-    statementDescendantsSelector(statement.statementId)
+    state => statementDescendantsSelector(state, statement.statementId)
   );
 
 
@@ -46,14 +47,15 @@ const StatementMap: FC<Props> = ({ statement }) => {
   const { t } = useLanguage();
   const { mapContext, setMapContext } = useMapContext();
 
-  const [sortedDescendant, setSortedDescendant] = useState<Results[]>([]);
+  const [sortedDescendants, setSortedDescendants] = useState<Results[]>([]);
   const [filterBy, setFilterBy] = useState<FilterType>(FilterType.questionsResultsOptions);
 
-  const handleFilter = (filterBy: FilterType) => {
+  const handleFilter = (filterBy: FilterType, descendants:Statement[]) => {
+	const _descendants =[... descendants];
     const filterArray = filterByStatementType(filterBy).types;
-    descendants.forEach((st) => console.log(st.deliberativeElement));
+    
 
-    const filterSubStatements = descendants.filter((st) => {
+    const filterSubStatements = _descendants.filter((st) => {
       if (!st.deliberativeElement) return false;
 
       if (filterArray.includes("result") && st.isResult) return true;
@@ -65,13 +67,18 @@ const StatementMap: FC<Props> = ({ statement }) => {
       statement,
       ...filterSubStatements,
     ]);
-    console.log(sorted);
-    setSortedDescendant(sorted);
+   
+    setSortedDescendants(sorted);
   };
 
   useEffect(() => {
-	handleFilter(filterBy);
+	handleFilter(filterBy, descendants);
   }, [filterBy]);
+
+  useEffect(() => {
+	console.log("descendants", descendants);
+	handleFilter(filterBy, descendants);
+  }, [descendants]);
 
   const toggleModal = (show: boolean) => {
     setMapContext((prev) => ({
@@ -111,7 +118,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
             direction: "ltr",
           }}
         >
-          <TreeChart descendants={sortedDescendant} isAdmin={_isAdmin} />
+          <TreeChart descendants={sortedDescendants} isAdmin={_isAdmin} />
         </div>
 
         {mapContext.showModal && (
