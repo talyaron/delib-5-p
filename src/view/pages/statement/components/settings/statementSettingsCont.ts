@@ -105,12 +105,12 @@ export async function handleSetStatement({
 	navigate,
 	statementId,
 	statement,
-	parentStatement,
+	parentStatement = "top",
 }: HandleSetStatementParams) {
 	try {
 		// If statement title is empty, don't save
 		if (!statement.statement) return;
-		if(!parentStatement) throw new Error("Parent statement is missing");
+		
 
 		const {
 			hasChildren,
