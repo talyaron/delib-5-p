@@ -1,4 +1,13 @@
-import { and, collection, doc, getDoc, getDocs, or, query, where } from "firebase/firestore";
+import {
+	and,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	or,
+	query,
+	where,
+} from 'firebase/firestore';
 
 // Third party imports
 import {
@@ -7,13 +16,15 @@ import {
 	Statement,
 	StatementSchema,
 	StatementType,
-} from "delib-npm";
+} from 'delib-npm';
 
 // Helpers
 // import { listenedStatements } from "../../../view/pages/home/Home";
-import { DB } from "../config";
+import { DB } from '../config';
 
-export async function getStatementFromDB(statementId: string): Promise<Statement | undefined> {
+export async function getStatementFromDB(
+	statementId: string
+): Promise<Statement | undefined> {
 	try {
 		const statementRef = doc(DB, Collections.statements, statementId);
 		const statementDB = await getDoc(statementRef);
@@ -37,14 +48,18 @@ export async function getStatementDepth(
 		//level 1 is allready in store
 		//find second level
 		const levleOneStatements: Statement[] = subStatements.filter(
-			(s) => s.parentId === statement.statementId && s.statementType === StatementType.result
+			(s) =>
+				s.parentId === statement.statementId &&
+				s.statementType === StatementType.result
 		);
 		statements.push(levleOneStatements);
 
 		//get the next levels
 
 		for (let i = 1; i < depth; i++) {
-			const statementsCB = statements[i].map((st: Statement) => getLevelResults(st) as Promise<Statement[]>);
+			const statementsCB = statements[i].map(
+				(st: Statement) => getLevelResults(st) as Promise<Statement[]>
+			);
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			let statementsTemp: any = await Promise.all(statementsCB);
@@ -75,10 +90,10 @@ export async function getStatementDepth(
 				statementsRef,
 				and(
 					or(
-						where("deliberativeElement", "==", DeliberativeElement.option),
-						where("deliberativeElement", "==", DeliberativeElement.research)
+						where('deliberativeElement', '==', DeliberativeElement.option),
+						where('deliberativeElement', '==', DeliberativeElement.research)
 					),
-					where("parentId", "==", statement.statementId),
+					where('parentId', '==', statement.statementId)
 				)
 			);
 			const statementsDB = await getDocs(q);
@@ -89,7 +104,6 @@ export async function getStatementDepth(
 
 				subStatements.push(statement);
 			});
-			console.log(subStatements)
 
 			return subStatements;
 		} catch (error) {
@@ -100,31 +114,28 @@ export async function getStatementDepth(
 	}
 }
 
-export async function getChildStatements(statementId: string): Promise<Statement[]> {
+export async function getChildStatements(
+	statementId: string
+): Promise<Statement[]> {
 	try {
-		console.log("getChildStatements", statementId);
 		const statementsRef = collection(DB, Collections.statements);
 		const q = query(
 			statementsRef,
 			and(
 				or(
-					where("deliberativeElement", "==", DeliberativeElement.option),
-					where("deliberativeElement", "==", DeliberativeElement.research)
+					where('deliberativeElement', '==', DeliberativeElement.option),
+					where('deliberativeElement', '==', DeliberativeElement.research)
 				),
-				where("parents", "array-contains", statementId)
+				where('parents', 'array-contains', statementId)
 			)
 		);
 		const statementsDB = await getDocs(q);
 
-		const subStatements = statementsDB.docs.map(
-			(doc) => {
-				StatementSchema.parse(doc.data());
+		const subStatements = statementsDB.docs.map((doc) => {
+			StatementSchema.parse(doc.data());
 
-				return doc.data() as Statement
-			}
-		);
-
-		console.log(subStatements);
+			return doc.data() as Statement;
+		});
 
 		return subStatements;
 	} catch (error) {
@@ -133,4 +144,3 @@ export async function getChildStatements(statementId: string): Promise<Statement
 		return [];
 	}
 }
-
