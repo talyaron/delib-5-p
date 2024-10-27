@@ -232,7 +232,7 @@ export async function listenToChildStatements(
 				childStatements.push(childStatement);
 				dispatch(setStatement(childStatement));
 			});
-			
+
 			callback(childStatements);
 		});
 
@@ -284,10 +284,33 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 		return (): void => { return; };
 	}
 }
-export function listenToAllDecendents(statementId:string){
+export function listenToAllDescendants(statementId: string) {
 	try {
-		
+		const statementsRef = collection(DB, Collections.statements);
+		const q = query(
+			statementsRef,
+			and(
+				or(
+					where("deliberativeElement", "==", DeliberativeElement.option),
+					where("deliberativeElement", "==", DeliberativeElement.research)
+				),
+				where("parents", "array-contains", statementId)
+			)
+		);
+		return onSnapshot(q, (statementsDB) => {
+			statementsDB.docChanges().forEach((change) => {
+				const statement = change.doc.data() as Statement;
+				StatementSchema.parse(statement);
+				if (change.type === "added" || change.type === "modified") {
+					store.dispatch(setStatement(statement));
+
+				} else if (change.type === "removed") {
+					store.dispatch(setStatement(statement));
+				}
+			});
+		});
+
 	} catch (error) {
-		console.
+		console.error(error);
 	}
 }
