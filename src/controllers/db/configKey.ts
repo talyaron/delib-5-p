@@ -24,6 +24,8 @@ const firebaseConfig = {
 	},
 };
 
+
+
 const vapidKeys = {
 	development: import.meta.env.VITE_FIREBASE_VAPID_KEY_DEV,
 	production: import.meta.env.VITE_FIREBASE_VAPID_KEY_PROD,
