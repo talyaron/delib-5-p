@@ -1,5 +1,4 @@
 ----------------- firebase.json template -----------------
-
 {
 	"firestore": {
 		"rules": "firestore.rules",
@@ -21,24 +20,6 @@
 	],
 	"hosting": [
 		{
-			"target": "prod",
-			"public": "dist",
-			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-			"rewrites": [
-				{
-					"source": "/getRandomStatements2",
-					"function": {
-						"functionId": "getRandomStatements2",
-						"region": "us-central1"
-					}
-				},
-				{
-					"source": "**",
-					"destination": "/index.html"
-				}
-			]
-		},
-		{
 			"target": "dev",
 			"public": "dist",
 			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
@@ -58,6 +39,24 @@
 		},
 		{
 			"target": "test",
+			"public": "dist",
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"rewrites": [
+				{
+					"source": "/getRandomStatements2",
+					"function": {
+						"functionId": "getRandomStatements2",
+						"region": "us-central1"
+					}
+				},
+				{
+					"source": "**",
+					"destination": "/index.html"
+				}
+			]
+		},
+		{
+			"target": "prod",
 			"public": "dist",
 			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 			"rewrites": [
@@ -101,6 +100,7 @@
 		"rules": "storage.rules"
 	}
 }
+
 
 ----------------- firebase.json template -----------------
 

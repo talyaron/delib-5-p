@@ -7,10 +7,11 @@
 		"dev": "vite",
 		"dev:h": "vite --host",
 		"devf": "cd functions && npm run build:watch",
-		"deve": "firebase emulators:start --only hosting:dev,firestore,auth,functions,storage",
+		"deve": "firebase use dev && firebase emulators:start --only hosting:dev,firestore,auth,functions,storage",
 
 		"build": "tsc && vite build",
 		"build:dev": "tsc && vite build --mode development",
+		"build:test": "tsc && vite build --mode testing",
 
 		"lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
 		"typecheck": "tsc",
@@ -19,6 +20,7 @@
 		
 		"deploy:h": "npm run build && firebase use prod && firebase deploy --only hosting:prod",
 		"deploy:h:dev": "npm run build:dev && firebase use dev && firebase deploy --only hosting:dev",
+		"deploy:h:test": "npm run build:test && firebase use test && firebase deploy --only hosting:test",
 		"deploy:f": "cd functions && npm run build && firebase use prod && firebase deploy --only functions",
 		"deploy": "npm run deploy:h && npm run deploy:f"
 	},
