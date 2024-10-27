@@ -68,6 +68,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 	// In the future refactor to listen to changes in sub statements
 	const getSubStatements = async () => {
 		const childStatements = await getChildStatements(statement.statementId);
+		console.log(childStatements)
 
 		setSubStatements(childStatements);
 
@@ -75,7 +76,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 			statement,
 			...childStatements.filter(
 				(state) =>
-					statement.deliberativeElement === DeliberativeElement.option || state.statementType === StatementType.question
+					statement.deliberativeElement === DeliberativeElement.option || state.deliberativeElement === DeliberativeElement.research
 			),
 		])[0];
 

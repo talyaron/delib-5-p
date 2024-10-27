@@ -72,7 +72,7 @@ const StatementChat: FC<Props> = ({
 
 	//effects
 	useEffect(() => {
-		console.log('firstTime', firstTime);
+		
 		if (!firstTime) return;
 
 		if (location.hash) {

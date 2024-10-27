@@ -36,7 +36,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 		sumCon: 0,
 		numberOfEvaluators: 0,
 	};
-	console.log(statement.statement, statement.statementType, numberOfEvaluators);
+	
 
 	return (
 		<div

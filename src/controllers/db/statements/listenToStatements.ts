@@ -232,7 +232,7 @@ export async function listenToChildStatements(
 				childStatements.push(childStatement);
 				dispatch(setStatement(childStatement));
 			});
-			console.log("childStatements", childStatements)
+			
 			callback(childStatements);
 		});
 
@@ -282,5 +282,12 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 		console.error(error);
 
 		return (): void => { return; };
+	}
+}
+export function listenToAllDecendents(statementId:string){
+	try {
+		
+	} catch (error) {
+		console.
 	}
 }
