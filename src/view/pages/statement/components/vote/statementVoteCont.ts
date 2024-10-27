@@ -1,4 +1,4 @@
-import { Screen, Statement, isOptionFn } from "delib-npm";
+import { DeliberativeElement, Screen, Statement } from "delib-npm";
 
 // Updates the displayed options with how many votes each option has from the parent statement
 export function setSelectionsToOptions(
@@ -126,7 +126,7 @@ export const getSiblingOptionsByParentId = (
 	statements: Statement[],
 ): Statement[] => {
 	return statements.filter((statement) => {
-		return statement.parentId === parentId && isOptionFn(statement);
+		return statement.parentId === parentId && statement.deliberativeElement === DeliberativeElement.option;
 	});
 };
 

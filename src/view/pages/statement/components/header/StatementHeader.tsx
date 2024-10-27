@@ -6,7 +6,6 @@ import {
 	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType,
 } from "delib-npm";
 import { useLocation } from "react-router-dom";
 
@@ -68,9 +67,9 @@ const StatementHeader: FC<Props> = ({
 	const title = getTitle(statement);
 
 	const token = useToken();
-	const headerColor = useStatementColor(
-		statement?.statementType || StatementType.statement
-	);
+	const deliberativeElement = statement?.deliberativeElement;
+	const isResult = statement?.isResult;
+	const headerColor = useStatementColor({deliberativeElement, isResult});
 	const permission = useNotificationPermission(token);
 	const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 	const [showInvitationPanel, setShowInvitationPanel] = useState(false);
@@ -180,7 +179,6 @@ const StatementHeader: FC<Props> = ({
 					<button onClick={handleEditTitle}>
 						<h1
 							className={isAdmin ? 'clickable' : ''}
-							onClick={handleEditTitle}
 							style={{ fontSize: titleFontSize, padding: '0 2rem', color:'white' }}
 							data-cy='statement-header-title'
 						>

@@ -50,13 +50,11 @@ const nodeTypes = {
 interface Props {
   topResult: Results;
   isAdmin: boolean;
-  getSubStatements: () => Promise<void>;
 }
 
 export default function TreeChart({
 	topResult,
-	isAdmin,
-	getSubStatements,
+	isAdmin
 }: Readonly<Props>) {
 	const { getIntersectingNodes } = useReactFlow();
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -190,7 +188,6 @@ export default function TreeChart({
 			]);
 			if (!draggedStatement || !newDraggedStatementParent) return;
 			await updateStatementParents(draggedStatement, newDraggedStatementParent);
-			await getSubStatements();
 		} else {
 			onRestore();
 		}

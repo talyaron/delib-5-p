@@ -12,7 +12,6 @@ import {
 	StatementSchema,
 	StatementType,
 	UserSchema,
-	isAllowedStatementType,
 	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
@@ -27,6 +26,7 @@ import {
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { allowedScreens } from "@/controllers/general/screens";
 import { setNewRoomSettingsToDB } from "../rooms/setRooms";
+import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
 
 
@@ -38,10 +38,7 @@ export const updateStatementParents = async (
 	try {
 		if (!statement) throw new Error("Statement is undefined");
 		if (!parentStatement) throw new Error("Parent statement is undefined");
-		if (isAllowedStatementType({ parentStatement, statement }) === false)
-			throw new Error(
-				`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`,
-			);
+	
 
 		const statementRef = doc(
 			DB,
@@ -72,7 +69,7 @@ export function setSubStatementToDB(statement: Statement, title: string, descrip
 			text: title,
 			description: description,
 			parentStatement: statement,
-			statementType: StatementType.option,
+			deliberativeElement:DeliberativeElement.option,
 			enableAddEvaluationOption: true,
 			enableAddVotingOption: true,
 			enhancedEvaluation: true,
@@ -95,7 +92,7 @@ export function setSubStatementToDB(statement: Statement, title: string, descrip
 
 interface SetStatementToDBParams {
 	statement: Statement;
-	parentStatement?: Statement | "top";
+	parentStatement: Statement | "top";
 	addSubscription: boolean;
 }
 
@@ -107,13 +104,7 @@ export const setStatementToDB = async ({
 	try {
 		if (!statement) throw new Error("Statement is undefined");
 		if (!parentStatement) throw new Error("Parent statement is undefined");
-		if (
-			parentStatement !== "top" &&
-			isAllowedStatementType({ parentStatement, statement }) === false
-		)
-			throw new Error(
-				`Statement type ${statement.statementType} is not allowed under ${parentStatement.statementType}`,
-			);
+	
 
 		const storeState = store.getState();
 		const user = storeState.user.user;
@@ -124,7 +115,7 @@ export const setStatementToDB = async ({
 		const parentId =
 			parentStatement === "top"
 				? "top"
-				: statement.parentId || parentStatement?.statementId || "top";
+				: statement.parentId ;
 
 		statement.statementType =
 			statement.statementId === undefined
@@ -223,7 +214,7 @@ interface CreateStatementProps {
 	description?: string;
 	parentStatement: Statement | "top";
 	subScreens?: Screen[];
-	statementType?: StatementType;
+	deliberativeElement: DeliberativeElement;
 	enableAddEvaluationOption: boolean;
 	enableAddVotingOption: boolean;
 	enhancedEvaluation: boolean;
@@ -239,7 +230,7 @@ export function createStatement({
 	description,
 	parentStatement,
 	subScreens = [Screen.CHAT, Screen.OPTIONS, Screen.VOTE],
-	statementType = StatementType.statement,
+	deliberativeElement,
 	enableAddEvaluationOption = true,
 	enableAddVotingOption = true,
 	enhancedEvaluation = true,
@@ -250,15 +241,7 @@ export function createStatement({
 	membership
 }: CreateStatementProps): Statement | undefined {
 	try {
-		if (parentStatement !== "top")
-			if (
-				isAllowedStatementType({ parentStatement, statementType }) ===
-				false
-			)
-				throw new Error(
-					`Statement type ${statementType} is not allowed under ${parentStatement.statementType}`,
-				);
-
+		
 		
 		const storeState = store.getState();
 		const user = storeState.user.user;
@@ -313,7 +296,6 @@ export function createStatement({
 				numberOfResults: Number(numberOfResults),
 			},
 			hasChildren,
-			statementType,
 			consensus: 0,
 			evaluation: {
 				numberOfEvaluators: 0,
@@ -325,6 +307,7 @@ export function createStatement({
 		};
 
 		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
+		if(deliberativeElement) newStatement.deliberativeElement = deliberativeElement;
 
 		const results = StatementSchema.safeParse(newStatement);
 		if(results.success === false) {
@@ -344,7 +327,7 @@ interface UpdateStatementProps {
 	description?: string;
 	statement: Statement;
 	subScreens?: Screen[];
-	statementType?: StatementType;
+	deliberativeElement?: DeliberativeElement;
 	enableAddEvaluationOption: boolean;
 	enableAddVotingOption: boolean;
 	enhancedEvaluation: boolean;
@@ -359,7 +342,7 @@ export function updateStatement({
 	description,
 	statement,
 	subScreens = [Screen.CHAT],
-	statementType = StatementType.statement,
+	deliberativeElement,
 	enableAddEvaluationOption,
 	enableAddVotingOption,
 	enhancedEvaluation,
@@ -409,9 +392,8 @@ export function updateStatement({
 		newStatement.hasChildren = hasChildren;
 		newStatement.membership = membership || statement.membership || { access: Access.open };
 
-		if (statementType !== undefined)
-			newStatement.statementType =
-				statement.statementType ?? StatementType.statement;
+		if (deliberativeElement)
+			newStatement.deliberativeElement = deliberativeElement;
 
 		newStatement.subScreens =
 			subScreens !== undefined
@@ -524,34 +506,28 @@ export async function setStatementIsOption(statement: Statement) {
 			Collections.statements,
 			statement.statementId,
 		);
-		const parentStatementRef = doc(
-			DB,
-			Collections.statements,
-			statement.parentId,
-		);
+		
 
 		//get current statement
-		const [statementDB, parentStatementDB] = await Promise.all([
-			getDoc(statementRef),
-			getDoc(parentStatementRef),
-		]);
+		
+		const statementDB = await getDoc(statementRef)
+		
 
 		if (!statementDB.exists()) throw new Error("Statement not found");
 
 		const statementDBData = statementDB.data() as Statement;
-		const parentStatementDBData = parentStatementDB.data() as Statement;
+		
 
 		StatementSchema.parse(statementDBData);
-		StatementSchema.parse(parentStatementDBData);
 
-		await toggleStatementOption(statementDBData, parentStatementDBData);
+
+		await toggleStatementOption(statementDBData);
 	} catch (error) {
 		console.error(error);
 	}
 
 	async function toggleStatementOption(
-		statement: Statement,
-		parentStatement: Statement,
+		statement: Statement
 	) {
 		try {
 			const statementRef = doc(
@@ -560,18 +536,14 @@ export async function setStatementIsOption(statement: Statement) {
 				statement.statementId,
 			);
 
-			if (statement.statementType === StatementType.option) {
+			if (statement.deliberativeElement === DeliberativeElement.option) {
 				await updateDoc(statementRef, {
-					statementType: StatementType.statement,
+					deliberativeElement: DeliberativeElement.general,
 				});
-			} else if (statement.statementType === StatementType.statement) {
-				if (!(parentStatement.statementType === StatementType.question))
-					throw new Error(
-						"You can't create option under option or statement",
-					);
+			} else {
 
 				await updateDoc(statementRef, {
-					statementType: StatementType.option,
+					deliberativeElement: DeliberativeElement.option,
 				});
 			}
 		} catch (error) {
@@ -630,14 +602,14 @@ export async function updateIsQuestion(statement: Statement) {
 		const parentStatement = parentStatementDB.data() as Statement;
 		StatementSchema.parse(parentStatement);
 
-		let { statementType } = statement;
-		if (statementType === StatementType.question)
-			statementType = StatementType.statement;
+		let { deliberativeElement } = statement;
+		if (deliberativeElement === DeliberativeElement.research)
+			deliberativeElement = DeliberativeElement.general;
 		else {
-			statementType = StatementType.question;
+			deliberativeElement = DeliberativeElement.research;
 		}
 
-		const newStatementType = { statementType };
+		const newStatementType = { deliberativeElement };
 		await updateDoc(statementRef, newStatementType);
 	} catch (error) {
 		console.error(error);

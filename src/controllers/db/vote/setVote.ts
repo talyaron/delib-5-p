@@ -5,7 +5,7 @@ import { DB } from "../config";
 import { Vote, getVoteId, VoteSchema } from "delib-npm";
 import { store } from "@/model/store";
 
-export async function setVote(option: Statement) {
+export async function setVoteToDB(option: Statement) {
 	try {
 		//vote reference
 		const user: User | null = store.getState().user.user;

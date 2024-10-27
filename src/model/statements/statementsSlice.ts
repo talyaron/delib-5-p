@@ -5,12 +5,11 @@ import { RootState, store } from "../store";
 // Third party imports
 
 import {
+	DeliberativeElement,
 	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType,
-	isOptionFn,
-} from "delib-npm";
+	StatementType} from "delib-npm";
 
 
 // Helpers
@@ -408,7 +407,7 @@ export const statementOptionsSelector = (statementId: string | undefined) =>
 				.filter(
 					(statementSub) =>
 						statementSub.parentId === statementId &&
-						isOptionFn(statementSub),
+						statementSub.deliberativeElement === DeliberativeElement.option,
 				)
 				.sort((a, b) => a.createdAt - b.createdAt)
 				.map((statement) => ({ ...statement }));

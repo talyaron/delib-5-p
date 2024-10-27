@@ -1,45 +1,52 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect, useRef } from 'react';
 
 // Third Party Imports
-import { Statement, StatementType } from "delib-npm";
+import { Statement } from 'delib-npm';
 
 // Icons
-import SendIcon from "@/view/components/icons/SendIcon";
+import SendIcon from '@/view/components/icons/SendIcon';
 
 // Redux Store
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
-import useDirection from "@/controllers/hooks/useDirection";
-import { handleAddStatement } from "./StatementInputCont";
-import useStatementColor from "@/controllers/hooks/useStatementColor";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { userSelector } from '@/model/users/userSlice';
+import useDirection from '@/controllers/hooks/useDirection';
+import { handleAddStatement } from './StatementInputCont';
+import useStatementColor from '@/controllers/hooks/useStatementColor';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface Props {
-  statement: Statement;
+	statement: Statement;
 }
 
 const StatementInput: FC<Props> = ({ statement }) => {
-	if (!statement) throw new Error("No statement");
+	if (!statement) throw new Error('No statement');
 
 	// Redux hooks
-	const {t} = useLanguage();
+	const { t } = useLanguage();
 	const user = useAppSelector(userSelector);
 
-	const statementColor = useStatementColor(
-		statement.statementType || StatementType.statement
-	);
+	const { deliberativeElement, isResult } = statement;
+	const statementColor = useStatementColor({ deliberativeElement, isResult });
 
 	const direction = useDirection();
-	const [message, setMessage] = useState("");
+	const [message, setMessage] = useState('');
+
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	useEffect(() => {
+		if (textareaRef.current) {
+			textareaRef.current.focus();
+		}
+	}, []);
 
 	function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
 		try {
 			const _isMobile =
-        !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        	navigator.userAgent
-        );
+				!!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+					navigator.userAgent
+				);
 
-			if (e.key === "Enter" && !e.shiftKey && !_isMobile) {
+			if (e.key === 'Enter' && !e.shiftKey && !_isMobile) {
 				handleSubmitInput(e);
 			}
 		} catch (error) {
@@ -49,43 +56,43 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
 	const handleSubmitInput = (
 		e:
-      | React.FormEvent<HTMLFormElement>
-      | React.KeyboardEvent<HTMLTextAreaElement>
+			| React.FormEvent<HTMLFormElement>
+			| React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
 		e.preventDefault();
 
 		// Create statement
 		handleAddStatement(message, statement, user);
 
-		setMessage(""); // Clear input
+		setMessage('');
 	};
-	
+
 	return (
 		<form
 			onSubmit={(e) => handleSubmitInput(e)}
-			name="theForm"
-			className="page__footer__form"
+			name='theForm'
+			className='page__footer__form'
 			style={{ flexDirection: direction }}
 		>
 			<textarea
-	   style={{borderTop: `2px solid ${statementColor.backgroundColor}` }}
-				data-cy="statement-chat-input"
-				className="page__footer__form__input"
-				aria-label="Form Input"
-				name="newStatement"
+				style={{ borderTop: `2px solid ${statementColor.backgroundColor}` }}
+				data-cy='statement-chat-input'
+				className='page__footer__form__input'
+				aria-label='Form Input'
+				name='newStatement'
+				ref={textareaRef}
 				onKeyUp={(e) => handleKeyUp(e)}
-				autoFocus={false}
 				value={message}
 				onChange={(e) => setMessage(e.target.value)}
 				required
-				placeholder={t("Type your message here...")}
+				placeholder={t('Type your message here...')}
 			></textarea>
 			<button
-				type="submit"
-				className="page__footer__form__sendBtnBox"
-				aria-label="Submit Button"
+				type='submit'
+				className='page__footer__form__sendBtnBox'
+				aria-label='Submit Button'
 				style={statementColor}
-				data-cy="statement-chat-send-btn"
+				data-cy='statement-chat-send-btn'
 			>
 				<SendIcon color={statementColor.color} />
 			</button>

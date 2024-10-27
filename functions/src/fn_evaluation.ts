@@ -1,21 +1,18 @@
 import { logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 import {
     Collections,
     Evaluation,
-    Evaluator,
-    QuestionStage,
     ResultsBy,
     SimpleStatement,
     Statement,
     StatementSchema,
-    StatementType,
     User,
-    getStatementSubscriptionId,
     statementToSimpleStatement,
 } from "delib-npm";
 import { z } from "zod";
+import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
 enum ActionTypes {
     new = "new",
@@ -41,81 +38,19 @@ export async function newEvaluation(event: any) {
         //update evaluators that the statement was evaluated
         const evaluator: User | undefined = statementEvaluation.evaluator;
         if (!evaluator) throw new Error("evaluator is not defined");
-        const evaluatorData = await getEvaluatorData(evaluator, statement);
-        if (!evaluatorData) throw new Error("evaluatorData is not defined");
+        
+        // const evaluatorData = await getEvaluatorData(evaluator, statement);
+        // if (!evaluatorData) throw new Error("evaluatorData is not defined");
 
-        await updateStatementMetaDataAndEvaluator(evaluator, evaluatorData, statement);
-
+        // await updateStatementMetaDataAndEvaluator(evaluator, evaluatorData, statement);
 
         return;
-
-
 
     } catch (error) {
         logger.error(error);
         return;
     }
 
-    function getUpdatedFields(statement: Statement, isFirstTime: boolean, evaluator?: Evaluator) {
-
-        const update = { lastUpdate: Timestamp.now().toMillis() }
-        //@ts-ignore
-        if (isFirstTime) update.numberOfEvaluators = FieldValue.increment(1);
-        //@ts-ignore
-        if (statement.questionSettings?.currentStage === QuestionStage.suggestion && !evaluator?.suggested) update.numberOfFirstSuggesters = FieldValue.increment(1);
-        //@ts-ignore
-        if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation && !evaluator?.firstEvaluation) update.numberOfFirstEvaluators = FieldValue.increment(1);
-        //@ts-ignore
-        if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation && !evaluator?.secondEvaluation) update.numberOfSecondEvaluators = FieldValue.increment(1);
-    
-        return update;
-    }
-
-    async function getEvaluatorData(evaluator: User, statement: Statement) {
-        try {
-            const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-            if (!evaluationId) throw new Error("evaluationId is not defined");
-            const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
-            const evaluatorDB = await evaluatorRef.get();
-            const evaluatorData = evaluatorDB.data() as Evaluator;
-            if (!evaluatorData) throw new Error("evaluatorData was not found");
-        } catch (error) {
-            logger.error(error);
-            return undefined;
-        }
-    }
-
-    async function updateStatementMetaDataAndEvaluator(evaluator: User, evaluatorData: Evaluator | undefined, statement: Statement) {
-        try {
-            const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-            if (!evaluationId) throw new Error("evaluationId is not defined");
-            const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
-
-            if (!evaluatorData) {
-               
-                await evaluatorRef.set({ statementId: statement.parentId, evaluated: true, evaluatorId: evaluator.uid });
-
-                const update = getUpdatedFields(statement, true);
-                await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
-            } else {
-
-              
-                const update = getUpdatedFields(statement, false, evaluatorData);
-                await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
-            }
-
-            const evaluatorUpdate: Evaluator = { evaluated: true };
-            if (statement.questionSettings?.currentStage === QuestionStage.suggestion) evaluatorUpdate.suggested = true;
-            if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation) evaluatorUpdate.firstEvaluation = true;
-            if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation) evaluatorUpdate.secondEvaluation = true;
-
-            await evaluatorRef.update(evaluatorUpdate);
-        } catch (error) {
-            logger.error(error);
-
-
-        }
-    }
 }
 
 
@@ -156,6 +91,7 @@ export async function updateEvaluation(event: any) {
         //get statement
         const statement = await _updateStatementEvaluation({ statementId, evaluationDiff, action: ActionTypes.update, newEvaluation: evaluationAfter, oldEvaluation: evaluationBefore });
         if (!statement) throw new Error("statement does not exist");
+        console.log("updated statement", statement.statement);
 
         //update parent statement?
         updateParentStatementWithChildResults(statement.parentId);
@@ -178,7 +114,7 @@ function calcAgreement(newSumEvaluations: number, numberOfEvaluators: number): n
         z.number().parse(numberOfEvaluators);
 
 
-        if (numberOfEvaluators === 0) throw new Error("numberOfEvaluators is 0");
+        if (numberOfEvaluators === 0) numberOfEvaluators = 1;
         const averageEvaluation = newSumEvaluations / numberOfEvaluators; // average evaluation
         const agreement = averageEvaluation * Math.sqrt(numberOfEvaluators)
         //TODO: divide by the number of question members to get a scale of 100% agreement
@@ -224,6 +160,7 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
                     sumCon: proConDiff.conDiff
 
                 };
+                console.log(statement.evaluation);
                 await transaction.update(statementRef, { evaluation: statement.evaluation });
             } else {
                 statement.evaluation.sumEvaluations += evaluationDiff;
@@ -312,6 +249,7 @@ async function updateParentStatementWithChildResults(
     parentId: string | undefined,
 ) {
     try {
+        
         if (!parentId) throw new Error("parentId is not defined");
 
         //get parent statement
@@ -323,10 +261,10 @@ async function updateParentStatementWithChildResults(
 
         //get results settings
         const { resultsSettings } = parentStatement;
-        let { resultsBy, numberOfResults } =
+        let { resultsBy, numberOfResults = 1 } =
             getResultsSettings(resultsSettings);
 
-        if (numberOfResults === undefined) numberOfResults = 1;
+        // if (numberOfResults === undefined) numberOfResults = 1;
         if (resultsBy === undefined) resultsBy = ResultsBy.topOptions;
 
         //this function is responsible for converting the results of evaluation of options
@@ -337,45 +275,50 @@ async function updateParentStatementWithChildResults(
             return;
         }
 
+        //get all options of the parent statement
         const allOptionsStatementsRef = db
             .collection(Collections.statements)
             .where("parentId", "==", parentId)
-            .where("statementType", "in", [
-                StatementType.option,
-                StatementType.result,
-            ]);
+            .where("deliberativeElement", "==", DeliberativeElement.option);
+      
 
+
+        //get top options
         const topOptionsStatementsRef = allOptionsStatementsRef
             .orderBy("consensus", "desc") //TODO: in the future (1st aug 2024), this will be changed to evaluation.agreement
             .limit(numberOfResults);
-
-
-        //get all options of the parent statement and convert them to either result, or an option
         const topOptionsStatementsDB = await topOptionsStatementsRef.get();
         const topOptionsStatements = topOptionsStatementsDB.docs.map(
             (doc: any) => doc.data() as Statement,
         );
 
-        const childIds = topOptionsStatements.map(
+        
+
+        
+        //get all options of the parent statement and convert them to either result, or an option
+        const topOptionsIds = topOptionsStatements.map(
             (st: Statement) => st.statementId,
         );
 
+        
+
         const optionsDB = await allOptionsStatementsRef.get();
 
-        await optionsDB.forEach(async (stDB: any) => {
-            const st = stDB.data() as Statement;
+        const batch = db.batch();
 
-            //update child statement selected to be of type result
-            if (childIds.includes(st.statementId)) {
-                db.collection(Collections.statements)
-                    .doc(st.statementId)
-                    .update({ statementType: StatementType.result });
-            } else if (st.statementType === StatementType.result) {
-                db.collection(Collections.statements)
-                    .doc(st.statementId)
-                    .update({ statementType: StatementType.option });
+        optionsDB.forEach((stDB: any) => {
+            const st = stDB.data() as Statement;
+            
+            const statementRef = db.collection(Collections.statements).doc(st.statementId);
+
+            if (topOptionsIds.includes(st.statementId)) {
+                batch.update(statementRef, { isResult: true });
+            } else {
+                batch.update(statementRef, { isResult: false });
             }
         });
+
+        await batch.commit();
 
         await updateParentChildren(topOptionsStatements, numberOfResults);
 
@@ -386,11 +329,13 @@ async function updateParentStatementWithChildResults(
 
     async function updateParentChildren(
         topOptionsStatements: Statement[],
-        numberOfResults: number | undefined,
+        numberOfResults: number = 1,
     ) {
+        
         const childStatementsSimple = topOptionsStatements.map(
             (st: Statement) => statementToSimpleStatement(st),
         );
+        
 
         if (!parentId) throw new Error("parentId is not defined");
 

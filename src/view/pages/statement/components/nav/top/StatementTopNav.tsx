@@ -18,7 +18,8 @@ interface Props {
 
 const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }) => {
 	const { t } = useLanguage();
-	const headerStyle = useStatementColor(statement.statementType);
+	const {deliberativeElement, isResult} = statement;
+	const headerStyle = useStatementColor({deliberativeElement, isResult});
 	
 	const _navArray = showNavElements({ statement, statementSubscription, navArray: allScreens });
 

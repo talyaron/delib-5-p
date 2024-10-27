@@ -13,7 +13,7 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
 import { useLocation } from "react-router-dom";
-import Description from "../solutions/components/description/Description";
+import Description from "../evaluations/components/description/Description";
 
 interface Props {
   statement: Statement;
@@ -72,6 +72,7 @@ const StatementChat: FC<Props> = ({
 
 	//effects
 	useEffect(() => {
+		
 		if (!firstTime) return;
 
 		if (location.hash) {
@@ -79,6 +80,7 @@ const StatementChat: FC<Props> = ({
 		} else {
 			scrollToBottom();
 		}
+		firstTime = false;
 	}, [subStatements]);
 
 	useEffect(() => {
@@ -94,7 +96,7 @@ const StatementChat: FC<Props> = ({
 		} else {
 			scrollToBottom();
 		}
-	}, [subStatements]);
+	}, [subStatements.length]);
 
 	return (
 		<>

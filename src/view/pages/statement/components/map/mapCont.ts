@@ -1,4 +1,4 @@
-import { Statement, ResultsBy, Results, isOptionFn } from "delib-npm";
+import { Statement, ResultsBy, Results, DeliberativeElement } from "delib-npm";
 import { getResultsDB } from "@/controllers/db/results/getResults";
 
 export async function getResults(
@@ -57,7 +57,7 @@ function getResultsByOptions(
 ): Results[] {
 	try {
 		const maxOptions: Statement[] = subStatements
-			.filter((s) => isOptionFn(s))
+			.filter((s) => s.deliberativeElement === DeliberativeElement.option)
 			.sort((b, a) => a.consensus - b.consensus)
 			.slice(0, numberOfResults || 1);
 

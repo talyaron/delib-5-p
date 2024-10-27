@@ -3,7 +3,6 @@ import {
 	NavObject,
 	Vote,
 	Evaluation,
-	StatementType,
 	Screen,
 } from "delib-npm";
 
@@ -21,6 +20,7 @@ import {
 	defaultStatementSettings,
 } from './emptyStatementModel';
 import { NavigateFunction } from 'react-router-dom';
+import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
 
 // Get users that voted on options in this statement
@@ -105,11 +105,12 @@ export async function handleSetStatement({
 	navigate,
 	statementId,
 	statement,
-	parentStatement,
+	parentStatement = "top",
 }: HandleSetStatementParams) {
 	try {
 		// If statement title is empty, don't save
 		if (!statement.statement) return;
+		
 
 		const {
 			hasChildren,
@@ -129,7 +130,7 @@ export async function handleSetStatement({
 				text: statement.statement,
 				description: statement.description,
 				subScreens,
-				statementType: StatementType.question,
+				deliberativeElement:DeliberativeElement.research,
 				parentStatement: "top",
 				resultsBy,
 				numberOfResults,
@@ -162,7 +163,7 @@ export async function handleSetStatement({
 				text: statement.statement,
 				description: statement.description || "",
 				subScreens: subScreens,
-				statementType: StatementType.question,
+				deliberativeElement:statement.deliberativeElement || DeliberativeElement.general,
 				resultsBy,
 				numberOfResults,
 				hasChildren,
@@ -279,29 +280,29 @@ export async function createStatementFromModal({
 }: CreateStatementFromModalParams) {
 	try {
 		if (!title) throw new Error("title is undefined");
-
+		if(!parentStatement) throw new Error("Parent statement is missing")
 		const newStatement = createStatement({
 			...defaultStatementSettings,
 			hasChildren: true,
 			text: title,
 			description,
 			parentStatement,
-			statementType: isOptionSelected
-				? StatementType.option
-				: StatementType.question,
+			deliberativeElement: isOptionSelected
+				? DeliberativeElement.option
+				: DeliberativeElement.research
 		});
 
 		if (!newStatement) throw new Error("newStatement was not created");
 
 		await setStatementToDB({
 			statement: newStatement,
-			parentStatement: parentStatement === "top" ? undefined : parentStatement,
+			parentStatement: parentStatement === "top" ? "top" : parentStatement,
 			addSubscription: true,
 		});
 
 		await setStatementToDB({
 			statement: newStatement,
-			parentStatement: parentStatement === 'top' ? undefined : parentStatement,
+			parentStatement: parentStatement === 'top' ? "top" : parentStatement,
 			addSubscription: true,
 		});
 

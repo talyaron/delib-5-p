@@ -64,26 +64,26 @@ Delib-5 uses a technological stack consisting of React-Redux-PWA (built with Vit
 4. **Set up Firebase configuration**
 
    - In the Firebase console, create a new project named "delib-5" and copy the project ID.
-   - In the `.firebaserc` file, replace the project ID with the one you just created.
+   - Set up the `.firebaserc` file according to template in "firebase-config-files.txt", replace the project ID with the one you just created.
    - Run `firebase use <project-id>` to select the new project.
 
-5. **Create `configKey.ts` file**
+   - Set up your `firebase.json` file by copying the template from "firebase-config-files.txt". You do not have to adjust any attributes.
 
-   Under `src/functions/db/`, create a new file named `configKey.ts` and add the following code, replacing the placeholders with your actual Firebase project configuration:
+5. **Create `.env` files**
 
-   ```typescript
-   export const keys = {
-     apiKey: "your-api-key",
-     authDomain: "your-auth-domain",
-     databaseURL: "your-database-url",
-     projectId: "your-project-id",
-     storageBucket: "your-storage-bucket",
-     messagingSenderId: "your-messaging-sender-id",
-     appId: "your-app-id",
-     measurementId: "your-measurement-id"
-   }
+   In the project root create two files, `.env.development` & `.env.production` (Only if specified by project leader). replacing the placeholders with your actual Firebase project configuration:
 
-   export const vapidKey = 'your-vapid-key';
+   ```env
+      VITE_FIREBASE_API_KEY=__YOUR_CONFIG__
+      VITE_FIREBASE_AUTH_DOMAIN=__YOUR_CONFIG__
+      VITE_FIREBASE_DATABASE_URL=__YOUR_CONFIG__
+      VITE_FIREBASE_PROJECT_ID=__YOUR_CONFIG__
+      VITE_FIREBASE_STORAGE_BUCKET=__YOUR_CONFIG__
+      VITE_FIREBASE_MESSAGING_SENDER_ID=__YOUR_CONFIG__
+      VITE_FIREBASE_APP_ID=__YOUR_CONFIG__
+      VITE_FIREBASE_MEASUREMENT_ID=__YOUR_CONFIG__
+
+      VITE_FIREBASE_VAPID_KEY=__YOUR_CONFIG__
    ```
 
    Note: This file is not uploaded to GitHub, and you'll need to create it yourself.

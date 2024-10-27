@@ -31,14 +31,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/model/store';
 
 interface StatementSettingsFormProps {
-	setIsLoading: (isLoading: boolean) => void;
 	statement: Statement;
 	parentStatement?: Statement | 'top';
 	setStatementToEdit: Dispatch<Statement>;
 }
 
 const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
-	setIsLoading,
 	statement,
 	parentStatement,
 	setStatementToEdit,
@@ -70,7 +68,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-			setIsLoading(true);
 
 			await handleSetStatement({
 				navigate,
@@ -79,7 +76,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				parentStatement,
 			});
 
-			setIsLoading(false);
+			
 		};
 
 		const isNewStatement = !statementId;

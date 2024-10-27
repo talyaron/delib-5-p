@@ -11,7 +11,7 @@ export async function updateVote(event: any) {
     try {
         const newVote = event.data.after.data();
         const { statementId: newVoteOptionId } = newVote;
-
+        console.log(newVoteOptionId)
         //first vote
         if (event.data.before.data() !== undefined) {
             const previousVote = event.data.before.data();
@@ -71,12 +71,12 @@ export async function updateVote(event: any) {
 
         await db
             .doc(`${Collections.statements}/${topVotedId}`)
-            .update({ selected: true });
+            .update({ selected: true }); 
 
         return true;
     } catch (error) {
         logger.error(error);
-        
+
         return false;
     }
 }

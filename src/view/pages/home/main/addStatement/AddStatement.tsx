@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 // Custom components
 import StatementSettings from "@/view/pages/statement/components/settings/StatementSettings";
-import ScreenSlide from "@/view/components/animation/ScreenSlide";
 import BackArrowIcon from "@/assets/icons/chevronLeftIcon.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./AddStatement.scss";
@@ -12,7 +11,7 @@ export const AddStatement = () => {
 	const { t, dir } = useLanguage();
 
 	return (
-		<ScreenSlide className={`page slide-out add-statement`}>
+		<main className={`page slide-out add-statement`}>
 			<div className={`page__header ${dir}`}>
 				<Link
 					to={"/home"}
@@ -25,7 +24,7 @@ export const AddStatement = () => {
 				<h1>{t("Add New Group")}</h1>
 			</div>
 			<StatementSettings />
-		</ScreenSlide>
+		</main>
 	);
 };
 

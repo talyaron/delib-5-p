@@ -6,8 +6,9 @@ import {
 	Statement,
 	Role,
 	StatementSchema,
+	DeliberativeElement,
 } from "delib-npm";
-import { collection, doc, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { and, collection, doc, limit, onSnapshot, or, orderBy, query, where } from "firebase/firestore";
 
 // Redux Store
 import {
@@ -214,8 +215,13 @@ export async function listenToChildStatements(
 		const statementsRef = collection(DB, Collections.statements);
 		const q = query(
 			statementsRef,
-			where("statementType", "!=", StatementType.statement),
-			where("parents", "array-contains", statementId)
+			and(
+				or(
+					where("deliberativeElement", "==", DeliberativeElement.option),
+					where("deliberativeElement", "==", DeliberativeElement.research)
+				),
+				where("parents", "array-contains", statementId)
+			)
 		);
 
 		const unsubscribe = onSnapshot(q, (statementsDB) => {
@@ -233,7 +239,7 @@ export async function listenToChildStatements(
 		return unsubscribe;
 	} catch (error) {
 		console.error(error);
-		
+
 		return null;
 	}
 }
@@ -257,8 +263,8 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 			statementsDB.docChanges().forEach((change) => {
 				const statement = change.doc.data() as Statement;
 				StatementSchema.parse(statement);
-        
-				if(statement.statementId === statementId) return;
+
+				if (statement.statementId === statementId) return;
 
 				switch (change.type) {
 				case "added":
@@ -274,7 +280,40 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 		});
 	} catch (error) {
 		console.error(error);
+
+		return (): void => { return; };
+	}
+}
+export function listenToAllDescendants(statementId: string): Unsubscribe {
+	try {
+		const statementsRef = collection(DB, Collections.statements);
+		const q = query(
+			statementsRef,
+			and(
+				or(
+					where("deliberativeElement", "==", DeliberativeElement.option),
+					where("deliberativeElement", "==", DeliberativeElement.research)
+				),
+				where("parents", "array-contains", statementId)
+			),limit(100)
+		);
 		
-		return ():void => {return;};
+		return onSnapshot(q, (statementsDB) => {
+			statementsDB.docChanges().forEach((change) => {
+				const statement = change.doc.data() as Statement;
+				StatementSchema.parse(statement);
+				if (change.type === "added" || change.type === "modified") {
+					store.dispatch(setStatement(statement));
+
+				} else if (change.type === "removed") {
+					store.dispatch(setStatement(statement));
+				}
+			});
+		});
+
+	} catch (error) {
+		console.error(error);
+		
+		return (): void => { return; };
 	}
 }
