@@ -2,7 +2,7 @@
 import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { isOptionFn, Results, Role, Statement, StatementType } from "delib-npm";
+import { DeliberativeElement, Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
 import ScreenFadeIn from "@/view/components/animation/ScreenFadeIn";
@@ -75,7 +75,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 			statement,
 			...childStatements.filter(
 				(state) =>
-					isOptionFn(state) || state.statementType === StatementType.question
+					statement.deliberativeElement === DeliberativeElement.option || state.statementType === StatementType.question
 			),
 		])[0];
 

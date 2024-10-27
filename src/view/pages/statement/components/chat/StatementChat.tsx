@@ -72,6 +72,7 @@ const StatementChat: FC<Props> = ({
 
 	//effects
 	useEffect(() => {
+		console.log('firstTime', firstTime);
 		if (!firstTime) return;
 
 		if (location.hash) {
@@ -79,6 +80,7 @@ const StatementChat: FC<Props> = ({
 		} else {
 			scrollToBottom();
 		}
+		firstTime = false;
 	}, [subStatements]);
 
 	useEffect(() => {
@@ -94,7 +96,7 @@ const StatementChat: FC<Props> = ({
 		} else {
 			scrollToBottom();
 		}
-	}, [subStatements]);
+	}, [subStatements.length]);
 
 	return (
 		<>

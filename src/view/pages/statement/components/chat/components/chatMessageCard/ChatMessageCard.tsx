@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 
 // Third Party Imports
-import { Statement, User, isOptionFn } from "delib-npm";
+import { Statement, User } from "delib-npm";
 
 // Redux Store
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
@@ -93,7 +93,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
   const isQuestion = deliberativeElement === DeliberativeElement.research;
   const isOption = deliberativeElement === DeliberativeElement.option;
   const isStatement = deliberativeElement === DeliberativeElement.general;
-  const isParentOption = isOptionFn(parentStatement);
+  const isParentOption = parentStatement.deliberativeElement === DeliberativeElement.option;
   const textareaRef = useAutoFocus(isEdit);
 
   const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
