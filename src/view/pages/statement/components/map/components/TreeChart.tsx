@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import "@/view/pages/statement/components/createStatementModal/CreateStatementModal.scss";
 
 // Third party imports
-import { Results } from "delib-npm";
+import { Results, Statement } from "delib-npm";
 
 // React Flow imports
 import ReactFlow, {
@@ -42,20 +42,27 @@ import CustomNode from "./CustomNode";
 import Modal from "../../../../../components/modal/Modal";
 import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
 import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
+import { statementDescendantsSelector } from "@/model/statements/statementsSlice";
+import { useSelector } from "react-redux";
 
 const nodeTypes = {
 	custom: CustomNode,
 };
 
 interface Props {
+	statement: Statement;
   topResult: Results;
   isAdmin: boolean;
 }
 
 export default function TreeChart({
+	statement,
 	topResult,
 	isAdmin
 }: Readonly<Props>) {
+
+	const descendants = useSelector(statementDescendantsSelector(statement.statementId));
+	
 	const { getIntersectingNodes } = useReactFlow();
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);

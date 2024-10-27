@@ -157,7 +157,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 						direction: 'ltr',
 					}}
 				>
-					{results && <TreeChart topResult={results} isAdmin={_isAdmin} />}
+					{results && <TreeChart statement={statement} topResult={results} isAdmin={_isAdmin} />}
 				</div>
 
 				{mapContext.showModal && (

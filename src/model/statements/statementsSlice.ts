@@ -362,6 +362,14 @@ export const subStatementsByTopParentIdMemo = (statementId: string | undefined) 
 		statements.filter((statement) => statement.topParentId === statementId)
 );
 
+export const statementDescendantsSelector = (statementId: string) => createSelector(
+	[statementsSelector],
+	(statements) => {
+		const descendants = statements.filter((statement) => statement.parents?.includes(statementId));
+		return descendants;
+	}
+);
+
 export const statementsRoomSolutions =
 	(statementId: string | undefined) => (state: RootState) =>
 		state.statements.statements
