@@ -2,8 +2,6 @@ import { Collections, Statement } from "delib-npm";
 import { collection, deleteDoc, doc, getDocs, limit, query, where } from "firebase/firestore";
 import { DB } from "../config";
 
-
-
 export async function deleteStatementFromDB (
 	statement: Statement,
 	isAuthorized: boolean,

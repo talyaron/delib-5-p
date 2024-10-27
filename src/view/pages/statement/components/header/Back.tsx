@@ -16,8 +16,6 @@ interface Props {
 const Back: FC<Props> = ({ statement, headerColor }) => {
 	const navigate = useNavigate();
 	const topParentHistory: HistoryTracker | undefined = useAppSelector( historySelect(statement?.parentId || ""));
-	
-
  
 	function handleBack() {
 		try {
@@ -31,7 +29,6 @@ const Back: FC<Props> = ({ statement, headerColor }) => {
 
 			//in case the back should direct to home
 
-
 			if (statement?.parentId === "top" || !statement?.parentId ) {
 				return navigate("/home", {
 					state: { from: window.location.pathname },
@@ -43,7 +40,6 @@ const Back: FC<Props> = ({ statement, headerColor }) => {
 					state: { from: window.location.pathname },
 				});
 			}
-
      
 			if (!topParentHistory || !statement)
 				return  navigate("/home", {

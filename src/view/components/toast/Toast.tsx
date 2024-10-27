@@ -2,7 +2,6 @@ import { FC } from "react";
 import "./Toast.scss";
 import X from "@/assets/icons/x.svg?react";
 
-
 interface Props {
   text: string;
   type: "error" | "success" | "message";

@@ -18,7 +18,6 @@ export function handleSubmitInfo(
 		const description = formData.description;
 
 		//add title and description
-		
 
 		//update statement to DB
 		if (!statement) throw new Error("No statement");

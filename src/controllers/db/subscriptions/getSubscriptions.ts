@@ -98,8 +98,6 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 		const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
 		const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where('statement.parentId', "==", "top"), orderBy("lastUpdate", "desc"), limit(numberOfStatements));
 
-
-
 		return onSnapshot(q, (subscriptionsDB) => {
 			subscriptionsDB.docChanges().forEach((change) => {
 				try {
@@ -109,7 +107,6 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 					StatementSubscriptionSchema.parse(statementSubscription);
 
 					if (change.type === "added") {
-
 
 						const unsubFunction = listenToStatement(statementSubscription.statementId);
 
@@ -145,14 +142,12 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 			});
 		});
 
-
 	} catch (error) {
 		console.error("Listen to statement subscriptions error", error);
 
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		return () => { };
 	}
-
 
 };
 
@@ -254,8 +249,6 @@ export async function getStatementSubscriptionFromDB(
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 
-
-
 		if (!statementSubscriptionId)
 			throw new Error("Statement subscription id is undefined");
 
@@ -320,13 +313,11 @@ export async function getTopParentSubscription(
 			user,
 		);
 
-
 		//get top subscription
 
 		const topParentSubscription = await getParentSubscription(
 			topParentSubscriptionId
 		);
-
 
 		if (topParentSubscription) {
 
@@ -341,7 +332,6 @@ export async function getTopParentSubscription(
 
 		const topParentStatement: Statement | undefined =
 			await getTopParentStatement(topParentId);
-
 
 		return { topParentStatement, topParentSubscription, error: false };
 	} catch (error) {
@@ -405,7 +395,6 @@ export async function getTopParentSubscription(
 		return statement;
 	}
 }
-
 
 export function getNewStatementsFromSubscriptions(): Unsubscribe {
 	try {

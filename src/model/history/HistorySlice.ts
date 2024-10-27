@@ -12,7 +12,6 @@ interface HistoryState {
 	history: HistoryTracker[];
 }
 
-
 const historyState: HistoryState = {
 	history: []
 };
@@ -28,8 +27,6 @@ export const historySlice = createSlice({
         
 	},
 });
-
-
 
 export const { setHistory} = historySlice.actions;
 

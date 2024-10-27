@@ -59,6 +59,3 @@ export async function updateUserAgreement(
 		return false;
 	}
 }
-
-
-

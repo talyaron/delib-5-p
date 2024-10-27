@@ -12,7 +12,6 @@ import Button from "@/view/components/buttons/button/Button";
 
 import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
 
-
 interface Props {
   statement: Statement;
   topics: Statement[];

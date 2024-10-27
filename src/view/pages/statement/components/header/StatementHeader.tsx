@@ -76,7 +76,6 @@ const StatementHeader: FC<Props> = ({
 	
 	const { t, dir } = useLanguage();
 
-
 	// Redux Store
 	const user = store.getState().user.user;
 	const isAdmin = statement?.creatorId === user?.uid || role === Role.admin;
@@ -156,8 +155,6 @@ const StatementHeader: FC<Props> = ({
 		color: headerColor.backgroundColor,
 		width: "24px",
 	};
-	
-	
 
 	return (
 		<div

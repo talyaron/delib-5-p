@@ -2,7 +2,6 @@ import { Collections, Invitation } from "delib-npm";
 import { addDoc, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { DB } from "../config";
 
-
 interface CreateInvitationProps {
     pathname: string;
     statementId: string;
@@ -20,7 +19,6 @@ export async function setInvitationToDB({ pathname, statementId }: CreateInvitat
 		const numbers = await getDocs(q);
 	
 		if (numbers.size === 0) {
-
 
 			const invitation: Invitation = {
 				statementId: statementId,

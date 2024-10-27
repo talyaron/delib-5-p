@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 // Redux
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
-
 interface Props {
 	statement: Statement;
 }
@@ -23,7 +22,6 @@ interface Props {
 const StatementChatMore: FC<Props> = ({ statement }) => {
 	// Hooks
 	const navigate = useNavigate();
-	
 
 	// Redux store
 	const statementSubscription: StatementSubscription | undefined =
@@ -32,11 +30,6 @@ const StatementChatMore: FC<Props> = ({ statement }) => {
 	// Variables
 	const messagesRead = statementSubscription?.totalSubStatementsRead || 0;
 	const messages = statement.totalSubStatements || 0;
-
-	
-	
-
-	
 
 	return (
 		<button

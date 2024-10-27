@@ -28,9 +28,6 @@ import { allowedScreens } from "@/controllers/general/screens";
 import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
-
-
-
 export const updateStatementParents = async (
 	statement: Statement,
 	parentStatement: Statement,
@@ -38,7 +35,6 @@ export const updateStatementParents = async (
 	try {
 		if (!statement) throw new Error("Statement is undefined");
 		if (!parentStatement) throw new Error("Parent statement is undefined");
-	
 
 		const statementRef = doc(
 			DB,
@@ -104,7 +100,6 @@ export const setStatementToDB = async ({
 	try {
 		if (!statement) throw new Error("Statement is undefined");
 		if (!parentStatement) throw new Error("Parent statement is undefined");
-	
 
 		const storeState = store.getState();
 		const user = storeState.user.user;
@@ -242,7 +237,6 @@ export function createStatement({
 }: CreateStatementProps): Statement | undefined {
 	try {
 		
-		
 		const storeState = store.getState();
 		const user = storeState.user.user;
 		if (!user) throw new Error("User is undefined");
@@ -268,7 +262,6 @@ export function createStatement({
 			storeState.statements.statements,
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
-
 
 		const newStatement: Statement = {
 			statement: text,
@@ -479,7 +472,6 @@ export async function updateStatementText(
 	try {
 		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
-		
 
 		if (statement.statement === title && statement.description === description) return;
 
@@ -506,20 +498,16 @@ export async function setStatementIsOption(statement: Statement) {
 			Collections.statements,
 			statement.statementId,
 		);
-		
 
 		//get current statement
 		
 		const statementDB = await getDoc(statementRef)
-		
 
 		if (!statementDB.exists()) throw new Error("Statement not found");
 
 		const statementDBData = statementDB.data() as Statement;
-		
 
 		StatementSchema.parse(statementDBData);
-
 
 		await toggleStatementOption(statementDBData);
 	} catch (error) {
@@ -659,5 +647,3 @@ export async function setFollowMeDB(
 		console.error(error);
 	}
 }
-
-

@@ -8,7 +8,6 @@ import logo from "@/assets/logo/logo-96px.png";
 import { store } from "@/model/store";
 import { deleteInAppNotification, setInAppNotification } from "@/model/notifications/notificationsSlice";
 
-
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string,
 ): Promise<boolean> {
@@ -159,7 +158,6 @@ export async function setStatementSubscriptionNotificationToDB(
 		console.error(error);
 	}
 }
-
 
 export function listenToInAppNotifications(): Unsubscribe {
 	try {

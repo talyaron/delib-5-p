@@ -22,8 +22,6 @@ import "./OptionBar.scss";
 import { getStatementFromDB } from "@/controllers/db/statements/getStatement";
 import { getBarWidth } from "./OptionBarCont";
 
-
-
 interface OptionBarExtendedProps extends OptionBarProps {
     isVertical: boolean;
     screenWidth: number;
@@ -138,4 +136,3 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 };
 
 export default OptionBar;
-

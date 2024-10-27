@@ -7,7 +7,6 @@ export interface StyleProps {
 	color: string;
 }
 
-
 export default function useStatementColor({deliberativeElement, isResult}:{deliberativeElement?: DeliberativeElement, isResult?:boolean}): StyleProps {
 	const initStyle = {
 		backgroundColor: "var(--header-home)",

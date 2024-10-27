@@ -36,7 +36,6 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
 	const navItems = getNavigationScreens(page);
 	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
-  
 
 	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 	const [showSorting, setShowSorting] = useState(false);

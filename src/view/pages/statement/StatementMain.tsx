@@ -198,71 +198,53 @@ const StatementMain: FC = () => {
 		}
 	}, [statement]);
 
-	useEffect(() => {
-		if (user?.uid === statement?.creatorId) {
-			// setPasswordCheck(true);
-		} else {
-			// setPasswordCheck(false);
-		}
-	}, []);
-
 	if (isStatementNotFound) return <Page404 />;
 	if (error) return <UnAuthorizedPage />;
 	if (loading) return <LoadingPage />;
 
 	if (isAuthorized)
 		return (
-			<>
-				{/* {passwordCheck ?
-					( */}
-				<div className='page'>
-					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
-					{talker && (
-						<button
-							onClick={() => {
-								handleShowTalker(null);
-							}}
-						>
-							<ProfileImage user={talker} />
-						</button>
-					)}
-					{askNotifications && (
-						<EnableNotifications
-							statement={statement}
-							setAskNotifications={setAskNotifications}
-							setShowAskPermission={setShowAskPermission}
-						/>
-					)}
+			<div className='page'>
+				{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
+				{talker && (
+					<button
+						onClick={() => {
+							handleShowTalker(null);
+						}}
+					>
+						<ProfileImage user={talker} />
+					</button>
+				)}
+				{askNotifications && (
+					<EnableNotifications
+						statement={statement}
+						setAskNotifications={setAskNotifications}
+						setShowAskPermission={setShowAskPermission}
+					/>
+				)}
 
-					<StatementHeader
+				<StatementHeader
+					statement={statement}
+					statementSubscription={statementSubscription}
+					topParentStatement={topParentStatement}
+					screen={screen ?? Screen.CHAT}
+					showAskPermission={showAskPermission}
+					setShowAskPermission={setShowAskPermission}
+					role={role}
+				/>
+				<MapProvider>
+					<FollowMeToast role={role} statement={statement} />
+
+					<SwitchScreens
+						screen={screen}
 						statement={statement}
 						statementSubscription={statementSubscription}
-						topParentStatement={topParentStatement}
-						screen={screen ?? Screen.CHAT}
-						showAskPermission={showAskPermission}
+						subStatements={subStatements}
+						handleShowTalker={handleShowTalker}
 						setShowAskPermission={setShowAskPermission}
-						role={role}
 					/>
-					<MapProvider>
-						<FollowMeToast role={role} statement={statement} />
-
-						<SwitchScreens
-							screen={screen}
-							statement={statement}
-							statementSubscription={statementSubscription}
-							subStatements={subStatements}
-							handleShowTalker={handleShowTalker}
-							setShowAskPermission={setShowAskPermission}
-						/>
-					</MapProvider>
-				</div>
-				{/* )
-					:
-					<div className="passwordUiComponent">
-						<PasswordUi setPasswordCheck={setPasswordCheck} />
-					</div>
-				} */}
-			</>
+				</MapProvider>
+			</div>
 		);
 
 	return <UnAuthorizedPage />;

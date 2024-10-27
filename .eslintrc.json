@@ -1,6 +1,16 @@
 {
 	"plugins": ["import", "react", "@typescript-eslint", "prettier", "jsx-a11y"],
-	"extends": ["plugin:@typescript-eslint/recommended", "prettier", "plugin:jsx-a11y/recommended"],
+	"extends": [
+		"plugin:@typescript-eslint/recommended",
+		"prettier",
+		"plugin:jsx-a11y/recommended"
+	],
+
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
 	"rules": {
 		"react/display-name": "error",
 		"react/no-unescaped-entities": "off",
@@ -27,12 +37,16 @@
 			}
 		],
 		"no-console": ["error", { "allow": ["warn", "error", "info"] }],
-		"indent": ["error", "tab"]
+		"indent": ["error", "tab"],
+		"no-multiple-empty-lines": [
+			"error",
+			{ "max": 1, "maxEOF": 0, "maxBOF": 0 } // Limit max empty lines
+		]
 	},
 	"settings": {
-    "react": {
-      "version": "18.x" 
-    },
+		"react": {
+			"version": "18.x"
+		},
 		"import/parsers": {
 			"@typescript-eslint/parser": [".ts", ".tsx"]
 		},
@@ -42,13 +56,5 @@
 				"project": ["./tsconfig.json"]
 			}
 		}
-	},
-	"overrides": [
-		{
-			"files": ["src/iconify-bundle/*"],
-			"rules": {
-				"@typescript-eslint/no-var-requires": "off"
-			}
-		}
-	]
+	}
 }

@@ -3,9 +3,6 @@ import { Collections } from "delib-npm";
 import { doc, runTransaction } from "firebase/firestore";
 import { DB } from "../config";
 
-
-
-
 export async function decreesUserSettingsLearningRemain({ evaluation, addOption }: { evaluation?: boolean, addOption?: boolean }): Promise<boolean> {
 	try {
       
@@ -21,7 +18,6 @@ export async function decreesUserSettingsLearningRemain({ evaluation, addOption 
 		if (!user) throw new Error("user is not logged in");
 		if (!user.uid) throw new Error("uid is required");
 
-
 		const userSettingsRef = doc(DB, Collections.usersSettings, user.uid);
 
 		//transaction to update the evaluation number
@@ -32,13 +28,11 @@ export async function decreesUserSettingsLearningRemain({ evaluation, addOption 
 				if (!userSettings.exists()) return;
 				const userSettingsData = userSettings.data();
 
-
 				const _evaluation = Number(userSettingsData.learning.evaluation);
 				const _addOptions = Number(userSettingsData.learning.addOptions);
 				if (!_evaluation && !_addOptions) return;
 				if (evaluation && _evaluation <= 0) return;
 				if (addOption && _addOptions <= 0) return;
-
 
 				transaction.update(userSettingsRef, {
 					learning: {

@@ -4,7 +4,6 @@ import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button, { ButtonType } from "@/view/components/buttons/button/Button";
 import { DisplayStatement } from "./SimilarStatementsSuggestion";
 
-
 interface SimilarStatementsSuggestionProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   newStatementInput: DisplayStatement;
@@ -55,7 +54,6 @@ export default function StepTwoShowSimilarStatements({
 							{statement.description}
 						</p>
 
-
 						<hr />
 					</button>
 				))}
@@ -69,7 +67,6 @@ export default function StepTwoShowSimilarStatements({
         
 				</div>
 			</section>
-
       
 		</>
 	);

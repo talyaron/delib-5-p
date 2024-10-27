@@ -10,7 +10,6 @@ interface Props {
 
 const InfoParser: FC<Props> = ({ statement }) => {
 	const section = getSectionObj(statement.statement, 0);
-  
 
 	if (!section) return null;
 
@@ -24,5 +23,3 @@ const InfoParser: FC<Props> = ({ statement }) => {
 };
 
 export default InfoParser;
-
-

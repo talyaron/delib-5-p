@@ -22,7 +22,6 @@ import {
 import { NavigateFunction } from 'react-router-dom';
 import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
-
 // Get users that voted on options in this statement
 export async function handleGetVoters(
 	parentId: string | undefined,
@@ -110,7 +109,6 @@ export async function handleSetStatement({
 	try {
 		// If statement title is empty, don't save
 		if (!statement.statement) return;
-		
 
 		const {
 			hasChildren,
@@ -305,7 +303,6 @@ export async function createStatementFromModal({
 			parentStatement: parentStatement === 'top' ? "top" : parentStatement,
 			addSubscription: true,
 		});
-
 		
 	} catch (error) {
 		console.error(error);
