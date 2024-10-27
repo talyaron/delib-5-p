@@ -13,7 +13,7 @@ import Modal from "@/view/components/modal/Modal";
 import {
 	FilterType,
 	filterByStatementType,
-	sortStatementsByHirarrchy,
+	sortStatementsByHirarrchy as sortStatementsByHierarchy,
 } from "@/controllers/general/sorting";
 import { getChildStatements } from "@/controllers/db/statements/getStatement";
 import CreateStatementModal from "../createStatementModal/CreateStatementModal";
@@ -50,13 +50,15 @@ const StatementMap: FC<Props> = ({ statement }) => {
 	const handleFilter = (filterBy: FilterType) => {
 		const filteredArray = filterByStatementType(filterBy).types;
 
-		const filterSubStatements = subStatements.filter((state) => {
-			if (!state.statementType) return false;
+		const filterSubStatements = subStatements.filter((st) => {
+			if (!st.deliberativeElement) return false;
 
-			return filteredArray.includes(state.statementType);
+			if(filteredArray.includes("result") && st.isResult) return true;
+
+			return filteredArray.includes(st.deliberativeElement);
 		});
 
-		const sortedResults = sortStatementsByHirarrchy([
+		const sortedResults = sortStatementsByHierarchy([
 			statement,
 			...filterSubStatements,
 		]);
@@ -64,25 +66,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 		setResults(sortedResults[0]);
 	};
 
-	// Get all child statements and set top result to display map
-	// In the future refactor to listen to changes in sub statements
-	const getSubStatements = async () => {
-		const childStatements = await getChildStatements(statement.statementId);
-		console.log(childStatements)
-
-		setSubStatements(childStatements);
-
-		const topResult = sortStatementsByHirarrchy([
-			statement,
-			...childStatements.filter(
-				(state) =>
-					statement.deliberativeElement === DeliberativeElement.option || state.deliberativeElement === DeliberativeElement.research
-			),
-		])[0];
-
-		setResults(topResult);
-	};
-
+	
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -125,7 +109,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 			),
 		];
 
-		const topResult = sortStatementsByHirarrchy([
+		const topResult = sortStatementsByHierarchy([
 			statement,
 			...updatedStatements,
 		])[0];
@@ -177,7 +161,6 @@ const StatementMap: FC<Props> = ({ statement }) => {
 						<TreeChart
 							topResult={results}
 							isAdmin={_isAdmin}
-							getSubStatements={getSubStatements}
 						/>
 					)}
 				</div>
@@ -189,7 +172,6 @@ const StatementMap: FC<Props> = ({ statement }) => {
 							parentStatement={mapContext.parentStatement}
 							isOption={mapContext.isOption}
 							setShowModal={toggleModal}
-							getSubStatements={getSubStatements}
 						/>
 					</Modal>
 				)}
