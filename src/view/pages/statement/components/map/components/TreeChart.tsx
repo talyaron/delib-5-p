@@ -42,26 +42,22 @@ import CustomNode from "./CustomNode";
 import Modal from "../../../../../components/modal/Modal";
 import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
 import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
-import { statementDescendantsSelector } from "@/model/statements/statementsSlice";
-import { useSelector } from "react-redux";
 
 const nodeTypes = {
 	custom: CustomNode,
 };
 
 interface Props {
-	statement: Statement;
-  topResult: Results;
+	descendants: Results[];
   isAdmin: boolean;
 }
 
 export default function TreeChart({
-	statement,
-	topResult,
+	descendants,
 	isAdmin
 }: Readonly<Props>) {
 
-	const descendants = useSelector(statementDescendantsSelector(statement.statementId));
+	
 	
 	const { getIntersectingNodes } = useReactFlow();
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -89,7 +85,7 @@ export default function TreeChart({
 
 	useEffect(() => {
 		const { nodes: createdNodes, edges: createdEdges } =
-      createInitialNodesAndEdges(topResult);
+      createInitialNodesAndEdges(descendants[0]);
 
 		const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 			createdNodes,
@@ -106,7 +102,7 @@ export default function TreeChart({
 		setTimeout(() => {
 			onSave();
 		}, 500);
-	}, [topResult]);
+	}, [descendants[0]]);
 
 	const onLayout = useCallback(
 		(direction: "TB" | "LR") => {
