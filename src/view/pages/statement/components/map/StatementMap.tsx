@@ -51,9 +51,11 @@ const StatementMap: FC<Props> = ({ statement }) => {
 		const filteredArray = filterByStatementType(filterBy).types;
 
 		const filterSubStatements = subStatements.filter((state) => {
-			if (!state.statementType) return false;
+			if (!state.deliberativeElement) return false;
 
-			return filteredArray.includes(state.statementType);
+			if(filteredArray.includes("result") && state.deliberativeElement === DeliberativeElement.option) return true;
+
+			return filteredArray.includes(state.deliberativeElement);
 		});
 
 		const sortedResults = sortStatementsByHirarrchy([

@@ -1,15 +1,15 @@
-import { Results, Statement, StatementType } from "delib-npm";
+import { DeliberativeElement, Results, Statement, StatementType } from "delib-npm";
 
 interface ResultLevel {
-    result: Results;
-    ids: Set<string>;
+	result: Results;
+	ids: Set<string>;
 }
 
 export enum FilterType {
-    all = "all",
-    questionsResults = "questionsResults",
-    questionsResultsOptions = "questionsResultsOptions",
-    questions = "questions",
+	all = "all",
+	questionsResults = "questionsResults",
+	questionsResultsOptions = "questionsResultsOptions",
+	questions = "questions",
 }
 
 //create a function which sorts an array according to results
@@ -115,56 +115,56 @@ function createResultLevel(
 }
 
 interface Filter {
-    types: StatementType[];
+	types: Array<DeliberativeElement | "result">;
 }
 
 export function filterByStatementType(filter: FilterType): Filter {
 	try {
 		switch (filter) {
-		case FilterType.all:
-			return {
-				types: [
-					StatementType.question,
-					StatementType.statement,
-					StatementType.option,
-					StatementType.result,
-				],
-			};
-		case FilterType.questionsResults:
-			return {
-				types: [StatementType.question, StatementType.result],
-			};
-		case FilterType.questionsResultsOptions:
-			return {
-				types: [
-					StatementType.question,
-					StatementType.option,
-					StatementType.result,
-				],
-			};
-		case FilterType.questions:
-			return {
-				types: [StatementType.question],
-			};
-		default:
-			return {
-				types: [
-					StatementType.question,
-					StatementType.statement,
-					StatementType.option,
-					StatementType.result,
-				],
-			};
+			case FilterType.all:
+				return {
+					types: [
+						DeliberativeElement.option,
+						DeliberativeElement.research,
+						"result"
+					],
+				};
+			case FilterType.questionsResults:
+				return {
+					types: [
+						DeliberativeElement.research,
+						"result"
+					],
+				};
+			case FilterType.questionsResultsOptions:
+				return {
+					types: [
+						DeliberativeElement.option,
+						DeliberativeElement.research,
+						"result"
+					],
+				};
+			case FilterType.questions:
+				return {
+					types: [DeliberativeElement.research],
+				};
+			default:
+				return {
+					types: [
+						DeliberativeElement.option,
+						DeliberativeElement.research,
+						"result"
+					],
+				};
 		}
 	} catch (error) {
 		console.error(error);
 
 		return {
 			types: [
-				StatementType.question,
-				StatementType.statement,
-				StatementType.option,
-				StatementType.result,
+				DeliberativeElement.option,
+				DeliberativeElement.research,
+				"result"
 			],
 		};
 	}
