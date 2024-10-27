@@ -8,8 +8,6 @@ import Group from "@/assets/icons/group-filled-in.png";
 import Clock from "@/assets/icons/clock-filled-in.png";
 import Star from "@/assets/icons/star-filled-in.png";
 
-
-
 interface Tab {
     name: string;
     activeIcon: string;

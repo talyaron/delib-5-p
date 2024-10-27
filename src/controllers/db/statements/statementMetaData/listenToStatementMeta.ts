@@ -29,7 +29,6 @@ export function listenToStatementMetaData(statementId: string): Unsubscribe {
 					throw new Error("StatementMetaDataSchema failed to parse");
 				}
 
-
 				dispatch(setStatementMetaData(statementMetaData));
 			} catch (error) {
 				console.error(error);

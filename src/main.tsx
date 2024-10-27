@@ -14,7 +14,6 @@ import {
 } from "./controllers/hooks/useLanguages";
 import { setInitLocation } from "./model/location/locationSlice";
 
-
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
@@ -32,5 +31,3 @@ store.dispatch(
 		window.location.pathname === "/" ? "/home" : window.location.pathname,
 	),
 );
-
-

@@ -276,7 +276,6 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 				}
 			});
 
-
 		});
 	} catch (error) {
 		console.error(error);

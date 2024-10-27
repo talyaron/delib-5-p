@@ -30,7 +30,6 @@ function switchHeaders(text: string, level: number) {
 	const markdown = `${switchLevelToMarkdown(level)} `;
 	text = text.substring(markdown.length-1);
  
- 
 	switch (level) {
 	case 1:
 		return <h1>{text}</h1>;

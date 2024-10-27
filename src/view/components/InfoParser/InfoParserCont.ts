@@ -43,7 +43,6 @@ function getLevelTexts(text: string, level: number): { level: number, title: str
 	}
 }
 
-
 export function getTitle(text: string): string {
 	try {
 		const texts = text.split('\n');
@@ -71,14 +70,12 @@ export function getParagraphs(text: string, level: number): string[] {
 		if (nextSectionIndex !== -1) {
 			texts = texts.splice(0, nextSectionIndex);
 
-
 			return texts;
 
 		} else {
 
 			return texts;
 		}
-
 
 	} catch (error) {
 		console.error(error);
@@ -116,11 +113,3 @@ export function switchLevelToMarkdown(level: number) {
 		return ""
 	}
 }
-
-
-
-
-
-
-
-

@@ -18,7 +18,6 @@ import { deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/ro
 import { Unsubscribe } from 'firebase/auth';
 import { store } from '@/model/store';
 
-
 export function listenToParticipants(
 	statement: Statement,
 ): Unsubscribe {
@@ -63,7 +62,6 @@ export function listenToParticipants(
 }
 
 // TODO: this function is not used. Delete it?
-
 
 export function listenToRoomsSettings(statementId: string): Unsubscribe {
 	try {

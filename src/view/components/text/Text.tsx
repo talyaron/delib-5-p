@@ -18,7 +18,6 @@ const Text: FC<Props> = ({ statement, description }) => {
 				.split("\n")
 				.filter((p) => p)
 				.map((paragraph: string, i: number) => {
-            
 
 					//if paragraph has * at some point and has some * at some other point make the string between the * bold
 					if (paragraph.includes("*")) {

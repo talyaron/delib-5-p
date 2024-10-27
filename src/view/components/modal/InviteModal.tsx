@@ -1,7 +1,6 @@
 import { ComponentProps, FC } from "react";
 import "./inviteModal.scss";
 
-
 type InviteModalProps = ComponentProps<"div">;
 
 const InviteModal: FC<InviteModalProps> = ({ children, className = ""}) => {

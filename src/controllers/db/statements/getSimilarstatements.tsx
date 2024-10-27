@@ -10,7 +10,6 @@ export const findSimilarStatements = async (
 	const localEndPoint =
 		'http://localhost:5001/synthesistalyaron/us-central1/checkForSimilarStatements';
 	const url = () => {
-		
 
 		if (location.hostname !== 'localhost') {
 			return prodEndPoint;

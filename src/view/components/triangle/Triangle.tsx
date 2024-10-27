@@ -10,8 +10,6 @@ interface Props {
   statement: Statement;
 }
 
-
-
 const Triangle: FC<Props> = ({ statement }) => {
 	const {t} = useLanguage();
 	const subStatements:Statement[] = useSelector(

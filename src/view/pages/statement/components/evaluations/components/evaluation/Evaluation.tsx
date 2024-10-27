@@ -14,8 +14,6 @@ const Evaluation: FC<EvaluationProps> = ({ parentStatement, statement }) => {
 		?.showEvaluation
 		? parentStatement.statementSettings?.showEvaluation
 		: false;
- 
- 
 
 	if (parentStatement.statementSettings?.enhancedEvaluation) {
 		return (

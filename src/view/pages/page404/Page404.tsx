@@ -22,7 +22,6 @@ const Page404 = () => {
 		navigate("/", { state: { from: window.location.pathname } });
 	}
 
-
 	return (
 		<div className="page404">
 			<img className="page404__cloud1" src={Cloud1} alt="Cloud 1" />

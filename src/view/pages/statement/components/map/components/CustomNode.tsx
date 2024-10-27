@@ -18,7 +18,6 @@ import {
 import useStatementColor from "@/controllers/hooks/useStatementColor";
 import { Statement } from "delib-npm";
 
-
 const nodeStyle = (
 	parentStatement: Statement | "top",
 	statementColor: { backgroundColor: string; color: string },
@@ -44,7 +43,6 @@ const nodeStyle = (
 
 export default function CustomNode({ data }: NodeProps) {
 	const navigate = useNavigate();
- 
 
 	const { result, parentStatement } = data;
 

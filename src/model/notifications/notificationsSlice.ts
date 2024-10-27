@@ -8,7 +8,6 @@ interface notificationsState {
 	inAppNotifications: NotificationType[];
 }
 
-
 // Define the initial state using that type
 const initialState: notificationsState = {
 	inAppNotifications: []
@@ -63,6 +62,5 @@ export const {
 
 // Other code such as selectors can use the imported `RootState` type
 export const inAppNotificationsSelector = (state: RootState) => state.notifications.inAppNotifications;
-
 
 export default notificationsSlicer.reducer;

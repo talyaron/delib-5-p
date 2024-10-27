@@ -1,4 +1,3 @@
-
 import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
 import ArrowUp from "@/assets/icons/arrowUpIcon.svg?react";
 import EvaluationsIcon from "@/assets/icons/evaluations2Icon.svg?react";

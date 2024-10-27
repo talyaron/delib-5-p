@@ -61,7 +61,6 @@ const SuggestionCards: FC<Props> = ({
 		}
 	}, [currentStage, questionType]);
 
-
 	if (!subStatements) {
 		return (
 			<EmptyScreen currentPage={currentPage} setShowModal={setShowModal} />

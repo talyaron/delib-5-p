@@ -61,14 +61,11 @@ export function getSignature(
 	}
 }
 
-
 export function listenToUserSettings(): Unsubscribe {
 	try {
 
-
 		const user = store.getState().user.user;
 		if (!user) throw new Error("user is not logged in");
-		
 
 		const userSettingsRef = doc(DB, Collections.usersSettings, user.uid);
 		
@@ -82,8 +79,6 @@ export function listenToUserSettings(): Unsubscribe {
 				return
 
 			}
-
-
 
 			store.dispatch(setUserSettings(null));
 

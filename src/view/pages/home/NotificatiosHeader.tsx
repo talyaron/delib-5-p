@@ -4,8 +4,6 @@ import {  useState } from "react";
 import { useSelector } from "react-redux";
 import Bell from "@/assets/icons/bellIcon.svg?react";
 
-
-
 const NotificationHeader = () => {
 	const inAppNotifications = useSelector(inAppNotificationsSelector);
 	const [showNotifications, setShowNotifications] = useState(false);

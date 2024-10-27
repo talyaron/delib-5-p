@@ -19,7 +19,6 @@ export async function updateResultsSettings(
 			numberOfResults,
 			resultsBy,
 		};
-
 		
 		await setDoc(statementRef, { results }, { merge: true });
 	} catch (error) {

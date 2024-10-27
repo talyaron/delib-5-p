@@ -80,8 +80,6 @@ export function useIsAuthorized(statementId: string | undefined): {
 			});
 	}, [statement, topParentStatement]);
 
-
-
 	return {
 		isAuthorized,
 		loading,

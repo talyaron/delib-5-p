@@ -7,8 +7,6 @@ import {
 import { store } from "@/model/store";
 import { updateStatementTop } from "@/model/statements/statementsSlice";
 
-
-
 export function sortSubStatements(
 	subStatements: Statement[],
 	sort: string | undefined,
@@ -119,6 +117,3 @@ export const getEvaluationThumbsToDisplay = ({
 
 	return [selectedThumb || defaultThumb];
 };
-
-
-

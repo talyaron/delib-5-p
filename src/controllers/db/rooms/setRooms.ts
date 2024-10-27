@@ -10,10 +10,7 @@ import {
 import { deleteDoc, doc, getDoc, runTransaction, setDoc, updateDoc, writeBatch } from "firebase/firestore";
 import { DB } from "../config";
 
-
 import { store } from "@/model/store";
-
-
 
 export function setParticipantToDB(
 	statement: Statement,
@@ -61,7 +58,6 @@ export function deleteParticipantToDB(
 		console.error(error);
 	}
 }
-
 
 export async function toggleRoomEditingInDB(statementId: string): Promise<void> {
 	try {
@@ -163,7 +159,6 @@ export async function divideParticipantIntoRoomsToDB(topics: Statement[], partic
 			const topRoomNumber = roomNumber + (numberOfRooms - 1);
 			const initialRoomNumber = roomNumber;
 			let localRoomNumber = roomNumber;
-
 
 			participantsInTopic.forEach((participant) => {
 

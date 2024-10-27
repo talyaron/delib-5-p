@@ -25,7 +25,6 @@ export const handleSetQuestionFromMassCard = ({
 		const title = text.split("\n")[0];
 		const description = text.split("\n").slice(1).join("\n");
 
-
 		if (answer) {
 			//update statement
 			updateStatementText(answer, title, description);
