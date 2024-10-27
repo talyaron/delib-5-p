@@ -90,8 +90,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isQuestion = deliberativeElement === DeliberativeElement.research;
 	const isOption = deliberativeElement === DeliberativeElement.option;
 	const isStatement = deliberativeElement === DeliberativeElement.general;
-	const isParentOption =
-		parentStatement.deliberativeElement === DeliberativeElement.option;
 	const textareaRef = useAutoFocus(isEdit);
 
 	const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;

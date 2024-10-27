@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import "@/view/pages/statement/components/createStatementModal/CreateStatementModal.scss";
 
 // Third party imports
-import { Results, Statement } from "delib-npm";
+import { Results } from "delib-npm";
 
 // React Flow imports
 import ReactFlow, {
@@ -56,8 +56,6 @@ export default function TreeChart({
 	descendants,
 	isAdmin
 }: Readonly<Props>) {
-
-	
 	
 	const { getIntersectingNodes } = useReactFlow();
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
