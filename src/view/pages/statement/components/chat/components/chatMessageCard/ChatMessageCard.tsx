@@ -228,7 +228,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 								}}
 							/>
 						)}
-						{_isAuthorized && !isQuestion && !isParentOption && (
+						{_isAuthorized && (
 							<MenuOption
 								isOptionSelected={isOption}
 								icon={<LightBulbIcon />}
