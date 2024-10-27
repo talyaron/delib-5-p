@@ -1,7 +1,7 @@
 import {
+	DeliberativeElement,
 	Statement,
-	StatementSubscription,
-	isOptionFn,
+	StatementSubscription
 } from "delib-npm";
 import  { FC, useEffect } from "react";
 
@@ -49,7 +49,7 @@ const Rooms: FC<RoomsProps> = ({
 	}, []);
 
 	const topics = subStatements.filter((subStatement: Statement) =>
-		isOptionFn(subStatement)
+		subStatement.deliberativeElement === DeliberativeElement.option
 	);
 
 	const _isAdmin = isAdmin(statementSubscription?.role);

@@ -9,7 +9,7 @@ import {
 	EnhancedEvaluationThumb,
 } from "./EnhancedEvaluationModel";
 import { getEvaluationThumbIdByScore } from "../../../statementsEvaluationCont";
-import "./EnhancedEvaluation.scss";
+import styles from  "./EnhancedEvaluation.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { userSettingsSelector } from "@/model/users/userSlice";
 import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
@@ -29,24 +29,25 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 	const learningEvaluation =
     useAppSelector(userSettingsSelector)?.learning?.evaluation || 0;
-	const { dir, t } = useLanguage();
+	const { t } = useLanguage();
 
 	const { sumPro, sumCon, numberOfEvaluators } = statement.evaluation || {
 		sumPro: 0,
 		sumCon: 0,
 		numberOfEvaluators: 0,
 	};
+	
 
 	return (
 		<div
-			className={`enhanced-evaluation ${dir === "ltr" ? "mirrorReverse" : ""}`}
+			className={styles[`enhanced-evaluation`]}
+			// className={styles[`enhanced-evaluation] ${dir === "ltr" ? "mirrorReverse" : ""}`]}
 		>
-			<div className="evaluation-score">
+			<div className={styles["evaluation-score"]}>
 				{shouldDisplayScore === true ? sumCon : null}
 			</div>
-
 			<div
-				className="evaluation-thumbs"
+				className={styles["evaluation-thumbs"]}
 			>
 				{enhancedEvaluationsThumbs.map((evaluationThumb) => (
 					<EvaluationThumb
@@ -60,21 +61,22 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 			{shouldDisplayScore ? (
 				<div
-					className={`evaluation-score ${statement.consensus < 0 ? "negative" : ""}`}
+					className={`${styles[`evaluation-score`]} ${statement.consensus < 0 ? "negative" : ""}`}
 				>
-					{sumPro}
-					{numberOfEvaluators && numberOfEvaluators > 0 && (
-						<span className="total-evaluators"> ({numberOfEvaluators})</span>
-					)}
+					<span>{sumPro}</span>
+					{(numberOfEvaluators && numberOfEvaluators > 0)? (
+						<span className={styles["total-evaluators"]}> ({numberOfEvaluators})</span>
+					):null}
+					
 				</div>
 			) : (
 				<div />
 			)}
 			<div />
 			{learningEvaluation > 0 && (
-				<div className="evaluation-explain">
-					<span>{t("Disagree")}</span>
-					<span>{t("Agree")}</span>
+				<div className={styles["evaluation-explain"]}>					
+					<span>{t("Disagree")}</span>	
+					<span>{t("Agree")}</span>				
 				</div>
 			)}
 			<div />
@@ -106,7 +108,7 @@ const EvaluationThumb: FC<EvaluationThumbProps> = ({
 
 	return (
 		<button
-			className={`evaluation-thumb ${isThumbActive ? "active" : ""}`}
+			className={`${styles["evaluation-thumb"]} ${isThumbActive ? styles.active : ""}`}
 			style={{
 				backgroundColor: isThumbActive
 					? evaluationThumb.colorSelected

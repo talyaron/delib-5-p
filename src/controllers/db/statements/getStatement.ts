@@ -3,6 +3,7 @@ import { and, collection, doc, getDoc, getDocs, or, query, where } from "firebas
 // Third party imports
 import {
 	Collections,
+	DeliberativeElement,
 	Statement,
 	StatementSchema,
 	StatementType,
@@ -73,8 +74,11 @@ export async function getStatementDepth(
 			const q = query(
 				statementsRef,
 				and(
+					or(
+						where("deliberativeElement", "==", DeliberativeElement.option),
+						where("deliberativeElement", "==", DeliberativeElement.research)
+					),
 					where("parentId", "==", statement.statementId),
-					or(where("statementType", "==", StatementType.result), where("statementType", "==", StatementType.question))
 				)
 			);
 			const statementsDB = await getDocs(q);
@@ -85,6 +89,7 @@ export async function getStatementDepth(
 
 				subStatements.push(statement);
 			});
+			console.log(subStatements)
 
 			return subStatements;
 		} catch (error) {
@@ -97,21 +102,29 @@ export async function getStatementDepth(
 
 export async function getChildStatements(statementId: string): Promise<Statement[]> {
 	try {
+		console.log("getChildStatements", statementId);
 		const statementsRef = collection(DB, Collections.statements);
 		const q = query(
 			statementsRef,
-			where("statementType", "!=", StatementType.statement),
-			where("parents", "array-contains", statementId)
+			and(
+				or(
+					where("deliberativeElement", "==", DeliberativeElement.option),
+					where("deliberativeElement", "==", DeliberativeElement.research)
+				),
+				where("parents", "array-contains", statementId)
+			)
 		);
 		const statementsDB = await getDocs(q);
 
 		const subStatements = statementsDB.docs.map(
 			(doc) => {
 				StatementSchema.parse(doc.data());
-				
+
 				return doc.data() as Statement
 			}
 		);
+
+		console.log(subStatements);
 
 		return subStatements;
 	} catch (error) {

@@ -1,7 +1,7 @@
-import { ChangeEvent, FC, useEffect, useState, useRef } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 // Third Party Imports
-import { Statement, User, isOptionFn } from 'delib-npm';
+import { Statement, User } from 'delib-npm';
 
 // Redux Store
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
@@ -38,6 +38,7 @@ import './ChatMessageCard.scss';
 import { deleteStatementFromDB } from '@/controllers/db/statements/deleteStatements';
 import Evaluation from '../../../evaluations/components/evaluation/Evaluation';
 import { DeliberativeElement } from 'delib-npm/dist/models/statementsModels';
+import useAutoFocus from '@/controllers/hooks/useAutoFocus ';
 
 export interface NewQuestion {
 	statement: Statement;
@@ -78,9 +79,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		`${statement?.statement}\n${statement.description}`
 	);
 
-	// Ref for the textarea input
-	const textareaRef = useRef<HTMLTextAreaElement>(null);
-
 	// Variables
 	const creatorId = statement.creatorId;
 	const _isAuthorized = isAuthorized(
@@ -88,12 +86,13 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		statementSubscription,
 		parentStatement.creatorId
 	);
-
 	const isMe = userId === creatorId;
 	const isQuestion = deliberativeElement === DeliberativeElement.research;
 	const isOption = deliberativeElement === DeliberativeElement.option;
 	const isStatement = deliberativeElement === DeliberativeElement.general;
-	const isParentOption = isOptionFn(parentStatement);
+	const isParentOption =
+		parentStatement.deliberativeElement === DeliberativeElement.option;
+	const textareaRef = useAutoFocus(isEdit);
 
 	const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
 

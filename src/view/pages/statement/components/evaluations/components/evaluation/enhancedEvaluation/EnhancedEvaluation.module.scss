@@ -1,16 +1,20 @@
 .enhanced-evaluation {
+
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 0.5rem;
   grid-template-rows: auto auto;
 
+
   .evaluation-thumbs {
+    
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     width: fit-content;
-    direction: ltr; // Default direction
+    // direction: ltr; // Default direction
     gap: 0.5rem;
 
+  
 
     .evaluation-thumb {
       transition: all 0.3s;
@@ -47,12 +51,22 @@
   }
 
   .evaluation-score {
+   
     display: flex;
     gap:0.2rem;
     align-items: center;
     justify-content: center;
     color:var(--text-paragraph-light);
+    // direction: ltr;
   
+  }
+
+  .evaluation-explain{
+    justify-content: space-between;
+    color:var(--text-paragraph-light);
+    &--ltr{
+     flex-direction: row-reverse;
+    }
   }
 
   .evaluation-bar {
@@ -72,11 +86,7 @@
     direction: ltr;
   }
 
-  &.mirrorReverse {
-    .evaluation-thumbs {
-      transform: scaleX(-1);
-    }
-  }
+ 
 
 
   .evaluation-explain {
@@ -88,4 +98,8 @@
     text-align: center;
     width: 100%;
   }
+}
+
+.active{
+  transform: scale(1.1);
 }

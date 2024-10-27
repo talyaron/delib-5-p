@@ -51,67 +51,6 @@ export async function newEvaluation(event: any) {
         return;
     }
 
-    // function getUpdatedFields(statement: Statement, isFirstTime: boolean, evaluator?: Evaluator) {
-
-    //     const update = { lastUpdate: Timestamp.now().toMillis() }
-    //     //@ts-ignore
-    //     if (isFirstTime) update.numberOfEvaluators = FieldValue.increment(1);
-    //     //@ts-ignore
-    //     if (statement.questionSettings?.currentStage === QuestionStage.suggestion && !evaluator?.suggested) update.numberOfFirstSuggesters = FieldValue.increment(1);
-    //     //@ts-ignore
-    //     if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation && !evaluator?.firstEvaluation) update.numberOfFirstEvaluators = FieldValue.increment(1);
-    //     //@ts-ignore
-    //     if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation && !evaluator?.secondEvaluation) update.numberOfSecondEvaluators = FieldValue.increment(1);
-
-    //     return update;
-    // }
-
-    // async function getEvaluatorData(evaluator: User, statement: Statement):Promise<Evaluator | undefined> {
-    //     try {
-    //         const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-    //         if (!evaluationId) throw new Error("evaluationId is not defined");
-    //         const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
-    //         const evaluatorDB = await evaluatorRef.get();
-    //         const evaluatorData = evaluatorDB.data() as Evaluator;
-    //         if (!evaluatorData) throw new Error("evaluatorData was not found");
-    //         return evaluatorData;
-    //     } catch (error) {
-    //         logger.error(error);
-    //         return undefined;
-    //     }
-    // }
-
-    // async function updateStatementMetaDataAndEvaluator(evaluator: User, evaluatorData: Evaluator | undefined, statement: Statement) {
-    //     try {
-    //         const evaluationId = getStatementSubscriptionId(statement.parentId, evaluator);
-    //         if (!evaluationId) throw new Error("evaluationId is not defined");
-    //         const evaluatorRef = db.collection(Collections.evaluators).doc(evaluationId);
-
-    //         if (!evaluatorData) {
-
-    //             await evaluatorRef.set({ statementId: statement.parentId, evaluated: true, evaluatorId: evaluator.uid });
-
-    //             const update = getUpdatedFields(statement, true);
-    //             await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
-    //         } else {
-
-
-    //             const update = getUpdatedFields(statement, false, evaluatorData);
-    //             await db.collection(Collections.statementsMetaData).doc(statement.parentId).update(update);
-    //         }
-
-    //         const evaluatorUpdate: Evaluator = { evaluated: true };
-    //         if (statement.questionSettings?.currentStage === QuestionStage.suggestion) evaluatorUpdate.suggested = true;
-    //         if (statement.questionSettings?.currentStage === QuestionStage.firstEvaluation) evaluatorUpdate.firstEvaluation = true;
-    //         if (statement.questionSettings?.currentStage === QuestionStage.secondEvaluation) evaluatorUpdate.secondEvaluation = true;
-
-    //         await evaluatorRef.update(evaluatorUpdate);
-    //     } catch (error) {
-    //         logger.error(error);
-
-
-    //     }
-    // }
 }
 
 
@@ -152,6 +91,7 @@ export async function updateEvaluation(event: any) {
         //get statement
         const statement = await _updateStatementEvaluation({ statementId, evaluationDiff, action: ActionTypes.update, newEvaluation: evaluationAfter, oldEvaluation: evaluationBefore });
         if (!statement) throw new Error("statement does not exist");
+        console.log("updated statement", statement.statement);
 
         //update parent statement?
         updateParentStatementWithChildResults(statement.parentId);
@@ -174,7 +114,7 @@ function calcAgreement(newSumEvaluations: number, numberOfEvaluators: number): n
         z.number().parse(numberOfEvaluators);
 
 
-        if (numberOfEvaluators === 0) throw new Error("numberOfEvaluators is 0");
+        if (numberOfEvaluators === 0) numberOfEvaluators = 1;
         const averageEvaluation = newSumEvaluations / numberOfEvaluators; // average evaluation
         const agreement = averageEvaluation * Math.sqrt(numberOfEvaluators)
         //TODO: divide by the number of question members to get a scale of 100% agreement
@@ -220,6 +160,7 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
                     sumCon: proConDiff.conDiff
 
                 };
+                console.log(statement.evaluation);
                 await transaction.update(statementRef, { evaluation: statement.evaluation });
             } else {
                 statement.evaluation.sumEvaluations += evaluationDiff;
