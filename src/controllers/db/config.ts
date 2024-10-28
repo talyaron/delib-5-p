@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator} from 'firebase/firestore';
 import { getMessaging, isSupported } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
@@ -15,6 +15,14 @@ export const analytics = getAnalytics(app);
 export const messaging = async () => (await isSupported()) && getMessaging(app);
 export const storage = getStorage(app);
 const auth = getAuth();
+
+// console.log(firebaseConfig)
+
+// const versionRef = doc(DB, 'version', 'version');
+// getDoc(versionRef).then((doc) => {
+// 	console.log('Current version:', doc.data());
+// });
+
 
 //development
 if (!isProduction()) {

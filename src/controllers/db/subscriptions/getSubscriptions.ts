@@ -32,6 +32,7 @@ import { Unsubscribe } from "@firebase/util";
 import { getStatementSubscriptionId } from "@/controllers/general/helpers";
 import { getStatementFromDB } from "../statements/getStatement";
 import { listenToStatement } from "../statements/listenToStatements";
+import { updateDoc } from "firebase/firestore";
 
 export const listenToStatementSubSubscriptions = (
 	statementId: string,
@@ -103,6 +104,13 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 				try {
 
 					const statementSubscription = change.doc.data() as StatementSubscription;
+					if (!Array.isArray(statementSubscription.statement.results)) {
+						console.log("statementSubscription.statementsSubscribeId", statementSubscription.statementsSubscribeId);
+						console.log("statementSubscription.statement", statementSubscription.statement);
+						const subscriptionRef = doc(DB, Collections.statementsSubscribe, statementSubscription.statementsSubscribeId)
+						updateDoc(subscriptionRef, { "statement.results": [] })
+						statementSubscription.statement.results = [];
+					}
 
 					StatementSubscriptionSchema.parse(statementSubscription);
 
@@ -135,7 +143,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 					}
 
 				} catch (error) {
-					
+
 					console.error("Listen to statement subscriptions each error", error);
 
 				}
@@ -153,7 +161,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 export async function getStatmentsSubsciptions(): Promise<
 	StatementSubscription[]
-	> {
+> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");

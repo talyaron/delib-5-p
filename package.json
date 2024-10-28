@@ -8,16 +8,13 @@
 		"dev:h": "vite --host",
 		"devf": "cd functions && npm run build:watch",
 		"deve": "firebase use dev && firebase emulators:start --only hosting:dev,firestore,auth,functions,storage",
-
 		"build": "tsc && vite build",
 		"build:dev": "tsc && vite build --mode development",
 		"build:test": "tsc && vite build --mode testing",
-
 		"lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
 		"typecheck": "tsc",
 		"check-all": "npm run lint && npm run typecheck && npm run build",
 		"preview": "vite preview",
-		
 		"deploy:h": "npm run build && firebase use prod && firebase deploy --only hosting:prod",
 		"deploy:h:dev": "npm run build:dev && firebase use dev && firebase deploy --only hosting:dev",
 		"deploy:h:test": "npm run build:test && firebase use test && firebase deploy --only hosting:test",
@@ -34,6 +31,7 @@
 		"eslint-import-resolver-typescript": "^3.6.3",
 		"eslint-plugin-import": "^2.29.1",
 		"firebase": "^10.0.0",
+		"firebase-functions": "^6.1.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-redux": "^8.1.1",

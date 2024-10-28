@@ -113,7 +113,7 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
 			where("parentId", "==", statementId),
 			where("statementType", "!=", StatementType.document),
 			orderBy("createdAt", "desc"),
-			limit(20)
+			limit(100)
 		);
 		let isFirstCall = true;
 
@@ -123,6 +123,7 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
 				const statement = change.doc.data() as Statement;
 
 				if (change.type === "added") {
+					
 					if (isFirstCall) {
 						startStatements.push(statement);
 					} else {
@@ -131,10 +132,12 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
 				}
 
 				if (change.type === "modified") {
+					
 					dispatch(setStatement(statement));
 				}
 
 				if (change.type === "removed") {
+					
 					dispatch(deleteStatement(statement.statementId));
 				}
 

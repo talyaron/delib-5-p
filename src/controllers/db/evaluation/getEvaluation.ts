@@ -20,6 +20,7 @@ export const listenToEvaluations = (
 	evaluatorId: string | undefined,
 ): Unsubscribe => {
 	try {
+	
 		const evaluationsRef = collection(DB, Collections.evaluations);
 
 		if (!evaluatorId) throw new Error("User is undefined");
