@@ -7,7 +7,7 @@ import {
 	getDocs,
 	getDoc,
 } from "@firebase/firestore";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { Collections, Evaluation, User, UserSchema } from "delib-npm";
 import { EvaluationSchema } from "@/model/evaluations/evaluationModel";
 import { AppDispatch } from "@/model/store";
@@ -21,7 +21,7 @@ export const listenToEvaluations = (
 ): Unsubscribe => {
 	try {
 	
-		const evaluationsRef = collection(DB, Collections.evaluations);
+		const evaluationsRef = collection(FireStore, Collections.evaluations);
 
 		if (!evaluatorId) throw new Error("User is undefined");
 
@@ -66,7 +66,7 @@ export const listenToEvaluations = (
 
 export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
 	try {
-		const evaluationsRef = collection(DB, Collections.evaluations);
+		const evaluationsRef = collection(FireStore, Collections.evaluations);
 		const q = query(evaluationsRef, where("parentId", "==", parentId));
 
 		const evaluationsDB = await getDocs(q);
@@ -90,7 +90,7 @@ export async function getEvaluations(parentId: string): Promise<Evaluation[]> {
 			.map((evaluation) => {
 				if (!evaluation.evaluator) {
 					const evaluatorRef = doc(
-						DB,
+						FireStore,
 						Collections.users,
 						evaluation.evaluatorId,
 					);

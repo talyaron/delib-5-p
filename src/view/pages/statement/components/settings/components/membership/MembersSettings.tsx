@@ -25,7 +25,7 @@ import { RootState } from "@/model/store";
 import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 import "./MembersSettings.scss";
 import { collection, getDocs } from "firebase/firestore";
-import { DB } from "../../../../../../../controllers/db/config";
+import { FireStore } from "../../../../../../../controllers/db/config";
 import Checkbox from "@/view/components/checkbox/Checkbox";
 
 interface MembersSettingsProps {
@@ -100,7 +100,7 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 	}
 
 	const fetchAwaitingUsers = async (): Promise<void> => {
-		const usersCollection = collection(DB, Collections.awaitingUsers);
+		const usersCollection = collection(FireStore, Collections.awaitingUsers);
 		const usersSnapshot = await getDocs(usersCollection);
 		const count = usersSnapshot.docs.length;
 		

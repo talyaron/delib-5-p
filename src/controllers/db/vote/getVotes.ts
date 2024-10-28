@@ -7,7 +7,7 @@ import {
 	where,
 } from "firebase/firestore";
 import { Collections, Statement, StatementSchema, Vote } from "delib-npm";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { VoteSchema, getVoteId } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { store } from "@/model/store";
@@ -25,7 +25,7 @@ export async function getToVoteOnParent(
 		const voteId = getVoteId(user.uid, parentId);
 		if (!voteId) throw new Error("VoteId not found");
 
-		const parentVoteRef = doc(DB, Collections.votes, voteId);
+		const parentVoteRef = doc(FireStore, Collections.votes, voteId);
 
 		const voteDB = await getDoc(parentVoteRef);
 
@@ -34,7 +34,7 @@ export async function getToVoteOnParent(
 		VoteSchema.parse(vote);
 
 		//get statemtn to update to store
-		const statementRef = doc(DB, Collections.statements, vote.statementId);
+		const statementRef = doc(FireStore, Collections.statements, vote.statementId);
 		const statementDB = await getDoc(statementRef);
 
 		const statement = statementDB.data() as Statement;
@@ -51,7 +51,7 @@ export async function getVoters(parentId: string): Promise<Vote[]> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
-		const votesRef = collection(DB, Collections.votes);
+		const votesRef = collection(FireStore, Collections.votes);
 		const q = query(votesRef, where("parentId", "==", parentId));
 
 		const votersDB = await getDocs(q);

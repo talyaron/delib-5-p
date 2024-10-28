@@ -8,7 +8,7 @@ import {
 	User,
 } from "delib-npm";
 import { AppDispatch, store } from "@/model/store";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import {
 	collection,
 	doc,
@@ -44,7 +44,7 @@ export const listenToStatementSubSubscriptions = (
 		if (!user.uid) throw new Error("User not logged in");
 
 		const statementsSubscribeRef = collection(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 		);
 		const q = query(
@@ -96,7 +96,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
 
-		const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
+		const statementsSubscribeRef = collection(FireStore, Collections.statementsSubscribe);
 		const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where('statement.parentId', "==", "top"), orderBy("lastUpdate", "desc"), limit(numberOfStatements));
 
 		return onSnapshot(q, (subscriptionsDB) => {
@@ -105,9 +105,8 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 					const statementSubscription = change.doc.data() as StatementSubscription;
 					if (!Array.isArray(statementSubscription.statement.results)) {
-						console.log("statementSubscription.statementsSubscribeId", statementSubscription.statementsSubscribeId);
-						console.log("statementSubscription.statement", statementSubscription.statement);
-						const subscriptionRef = doc(DB, Collections.statementsSubscribe, statementSubscription.statementsSubscribeId)
+						
+						const subscriptionRef = doc(FireStore, Collections.statementsSubscribe, statementSubscription.statementsSubscribeId)
 						updateDoc(subscriptionRef, { "statement.results": [] })
 						statementSubscription.statement.results = [];
 					}
@@ -159,15 +158,13 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 };
 
-export async function getStatmentsSubsciptions(): Promise<
-	StatementSubscription[]
-> {
+export async function getStatmentsSubsciptions(): Promise<StatementSubscription[]>{
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
 		const statementsSubscribeRef = collection(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 		);
 		const q = query(
@@ -198,7 +195,7 @@ export async function getSubscriptions() {
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
 		const statementsSubscribeRef = collection(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 		);
 		const q = query(
@@ -234,7 +231,7 @@ export async function getIsSubscribed(
 		if (!user) throw new Error("User not logged in");
 
 		const subscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			`${user.uid}--${statementId}`,
 		);
@@ -261,7 +258,7 @@ export async function getStatementSubscriptionFromDB(
 			throw new Error("Statement subscription id is undefined");
 
 		const subscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementSubscriptionId,
 		);
@@ -412,7 +409,7 @@ export function getNewStatementsFromSubscriptions(): Unsubscribe {
 		if (!user.uid) throw new Error("User not logged in");
 
 		//get the latest created statements 
-		const subscriptionsRef = collection(DB, Collections.statementsSubscribe);
+		const subscriptionsRef = collection(FireStore, Collections.statementsSubscribe);
 		const q = query(subscriptionsRef, and(
 			where("userId", "==", user.uid),
 			where("statement.statementType", "!=", "document"),

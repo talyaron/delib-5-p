@@ -8,7 +8,7 @@ import {
 	roomSettingsSchema,
 } from "delib-npm";
 import { deleteDoc, doc, getDoc, runTransaction, setDoc, updateDoc, writeBatch } from "firebase/firestore";
-import { DB } from "../config";
+import { FireStore } from "../config";
 
 import { store } from "@/model/store";
 
@@ -32,7 +32,7 @@ export function setParticipantToDB(
 
 		ParticipantInRoomSchema.parse(participantInRoom);
 
-		const roomRef = doc(DB, Collections.participants, participantInRoomId);
+		const roomRef = doc(FireStore, Collections.participants, participantInRoomId);
 
 		setDoc(roomRef, participantInRoom, { merge: true });
 	
@@ -51,7 +51,7 @@ export function deleteParticipantToDB(
 		const roomId = getStatementSubscriptionId(statement.parentId, user);
 		if (!roomId) throw new Error("Room id is undefined");
 
-		const roomRef = doc(DB, Collections.participants, roomId);
+		const roomRef = doc(FireStore, Collections.participants, roomId);
 
 		deleteDoc(roomRef);
 	} catch (error) {
@@ -61,10 +61,10 @@ export function deleteParticipantToDB(
 
 export async function toggleRoomEditingInDB(statementId: string): Promise<void> {
 	try {
-		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+		const roomSettingsRef = doc(FireStore, Collections.roomsSettings, statementId);
 
 		//use transaction
-		await runTransaction(DB, async (transaction) => {
+		await runTransaction(FireStore, async (transaction) => {
 			try {
 				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
 				if (!roomSettings) {
@@ -90,7 +90,7 @@ export async function toggleRoomEditingInDB(statementId: string): Promise<void> 
 
 export async function setNewRoomSettingsToDB(statementId: string): Promise<void> {
 	try {
-		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+		const roomSettingsRef = doc(FireStore, Collections.roomsSettings, statementId);
 
 		const roomSettingsDB = await getDoc(roomSettingsRef);
 		if (roomSettingsDB.exists()) return;
@@ -113,7 +113,7 @@ export async function setParticipantsPerRoom({ statementId, add, number }: { sta
 	try {
 		if (!number && !add) throw new Error("number or add must be defined");
 
-		const roomSettingsRef = doc(DB, Collections.roomsSettings, statementId);
+		const roomSettingsRef = doc(FireStore, Collections.roomsSettings, statementId);
 
 		if (number && number >= 1) {
 			updateDoc(roomSettingsRef, { participantsPerRoom: number });
@@ -124,7 +124,7 @@ export async function setParticipantsPerRoom({ statementId, add, number }: { sta
 		if (typeof add !== "number") throw new Error("add is not a number");
 
 		//use transaction
-		await runTransaction(DB, async (transaction) => {
+		await runTransaction(FireStore, async (transaction) => {
 			try {
 				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
 				if (!roomSettings) throw new Error("Room settings not found");
@@ -149,7 +149,7 @@ export async function divideParticipantIntoRoomsToDB(topics: Statement[], partic
 		const _topics = [...topics];
 		const _participants = [...participants];
 
-		const batch = writeBatch(DB);
+		const batch = writeBatch(FireStore);
 		let roomNumber = 1;
 
 		_topics.forEach((topic) => {
@@ -162,7 +162,7 @@ export async function divideParticipantIntoRoomsToDB(topics: Statement[], partic
 
 			participantsInTopic.forEach((participant) => {
 
-				const participantRef = doc(DB, Collections.participants, participant.participantInRoomId);
+				const participantRef = doc(FireStore, Collections.participants, participant.participantInRoomId);
 
 				batch.update(participantRef, { roomNumber: localRoomNumber });
 
@@ -185,9 +185,9 @@ export async function divideParticipantIntoRoomsToDB(topics: Statement[], partic
 export async function clearRoomsToDB(participants: ParticipantInRoom[]): Promise<void> {
 	try {
 
-		const batch = writeBatch(DB);
+		const batch = writeBatch(FireStore);
 		participants.forEach((participant) => {
-			const participantRef = doc(DB, Collections.participants, participant.participantInRoomId);
+			const participantRef = doc(FireStore, Collections.participants, participant.participantInRoomId);
 			batch.update(participantRef, { roomNumber: 0 });
 		});
 

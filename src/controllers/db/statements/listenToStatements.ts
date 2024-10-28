@@ -20,14 +20,14 @@ import {
 	setStatements,
 } from "@/model/statements/statementsSlice";
 import { AppDispatch, store } from "@/model/store";
-import { DB } from "../config";
+import { FireStore } from "../config";
 
 // Helpers
 import { Unsubscribe } from "firebase/auth";
 
 export const listenToStatementSubscription = (statementId: string, user: User, dispatch: AppDispatch): Unsubscribe => {
 	try {
-		const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
+		const statementsSubscribeRef = doc(FireStore, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
 
 		return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
 			try {
@@ -75,7 +75,7 @@ export const listenToStatement = (
 ): Unsubscribe => {
 	try {
 		const dispatch = store.dispatch;
-		const statementRef = doc(DB, Collections.statements, statementId);
+		const statementRef = doc(FireStore, Collections.statements, statementId);
 
 		return onSnapshot(
 			statementRef,
@@ -107,7 +107,7 @@ export const listenToStatement = (
 export const listenToSubStatements = (statementId: string | undefined, dispatch: AppDispatch): Unsubscribe => {
 	try {
 		if (!statementId) throw new Error("Statement id is undefined");
-		const statementsRef = collection(DB, Collections.statements);
+		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			statementsRef,
 			where("parentId", "==", statementId),
@@ -158,7 +158,7 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
 
 export const listenToMembers = (dispatch: AppDispatch) => (statementId: string) => {
 	try {
-		const membersRef = collection(DB, Collections.statementsSubscribe);
+		const membersRef = collection(FireStore, Collections.statementsSubscribe);
 		const q = query(membersRef, where("statementId", "==", statementId), orderBy("createdAt", "desc"));
 
 		return onSnapshot(q, (subsDB) => {
@@ -186,7 +186,7 @@ export async function listenToUserAnswer(questionId: string, cb: (statement: Sta
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
-		const statementsRef = collection(DB, Collections.statements);
+		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			statementsRef,
 			where("statementType", "==", StatementType.option),
@@ -215,7 +215,7 @@ export async function listenToChildStatements(
 	callback: (childStatements: Statement[]) => void
 ): Promise<Unsubscribe | null> {
 	try {
-		const statementsRef = collection(DB, Collections.statements);
+		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			statementsRef,
 			and(
@@ -252,7 +252,7 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 		if (numberOfLastMessages > 25) numberOfLastMessages = 25;
 		if (!statementId) throw new Error("Statement id is undefined");
 
-		const statementsRef = collection(DB, Collections.statements);
+		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			statementsRef,
 			where("topParentId", "==", statementId),
@@ -288,7 +288,7 @@ export function listenToAllSubStatements(statementId: string, numberOfLastMessag
 }
 export function listenToAllDescendants(statementId: string): Unsubscribe {
 	try {
-		const statementsRef = collection(DB, Collections.statements);
+		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			statementsRef,
 			and(

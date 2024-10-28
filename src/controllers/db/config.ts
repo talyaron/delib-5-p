@@ -10,25 +10,17 @@ import { isProduction } from '../general/helpers';
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const DB = getFirestore(app);
+export const FireStore = getFirestore(app);
 export const analytics = getAnalytics(app);
 export const messaging = async () => (await isSupported()) && getMessaging(app);
 export const storage = getStorage(app);
 const auth = getAuth();
 
-// console.log(firebaseConfig)
-
-// const versionRef = doc(DB, 'version', 'version');
-// getDoc(versionRef).then((doc) => {
-// 	console.log('Current version:', doc.data());
-// });
-
-
 //development
 if (!isProduction()) {
 	console.warn('Running on development mode');
 
-	connectFirestoreEmulator(DB, '127.0.0.1', 8080);
+	connectFirestoreEmulator(FireStore, '127.0.0.1', 8080);
 	connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }

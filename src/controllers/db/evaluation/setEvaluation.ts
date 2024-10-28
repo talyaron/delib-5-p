@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
 import { Statement, Collections, EvaluationSchema } from "delib-npm";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { store } from "@/model/store";
 
 export async function setEvaluationToDB(
@@ -26,7 +26,7 @@ export async function setEvaluationToDB(
 
 		//set evaluation to db
 
-		const evaluationRef = doc(DB, Collections.evaluations, evaluationId);
+		const evaluationRef = doc(FireStore, Collections.evaluations, evaluationId);
 		const evaluationData = {
 			parentId,
 			evaluationId,
