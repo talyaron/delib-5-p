@@ -1,4 +1,4 @@
-import { Collections } from "delib-npm";
+import { Collections, DeliberativeElement, StatementType } from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
 
@@ -121,6 +121,57 @@ export async function checkPassword(req:any, res:any){
 
         // if(true) --> res.send({ok:true})
         // else --> res.send({ok:false})
+    } catch (error:any) {
+        res.status(500).send({ error: error.message, ok: false });
+        return;
+    }
+}
+
+export async function maintainRole(req:any, res:any){
+    try {
+        const subscriptionsRef = db.collection(Collections.statementsSubscribe);
+        const q = subscriptionsRef.where("role", "==", "statement-creator");
+        const subscriptionsDB = await q.get();
+        //update the role statement-creator to admin
+        const batch = db.batch();
+        subscriptionsDB.docs.forEach((doc) => {
+            const ref = subscriptionsRef.doc(doc.id);
+            batch.update(ref, { role: "admin" });
+        });
+        await batch.commit();
+res.send({ ok: true });
+    } catch (error:any) {
+        res.status(500).send({ error: error.message, ok: false });
+        return;
+    }
+}
+
+export async function maintainDeliberativeElement(req:any, res:any){
+    try {
+       const statementsRef = db.collection(Collections.statements);
+         const q = statementsRef.where("statementType", "!=", "aa");
+            const statementsDB = await q.get();
+        
+            //update statementType to deliberativeElements
+        const batch = db.batch();
+        statementsDB.docs.forEach((doc) => {
+            const ref = statementsRef.doc(doc.id);
+            if(doc.data().statementType === "option"){
+            batch.update(ref, { deliberativeElement: DeliberativeElement.option });
+            }else if(doc.data().statementType === "result"){
+            batch.update(ref, { deliberativeElement: DeliberativeElement.option, isResult: true });
+            } else if(doc.data().statementType === StatementType.question){
+            batch.update(ref, { deliberativeElement: DeliberativeElement.research });
+
+            } else {
+            batch.update(ref, { deliberativeElement: DeliberativeElement.general });
+            }
+
+
+        });
+
+        await batch.commit();
+        res.send({ ok: true });
     } catch (error:any) {
         res.status(500).send({ error: error.message, ok: false });
         return;

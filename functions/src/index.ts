@@ -35,6 +35,8 @@ import {
 	getTopStatements,
 	getUserOptions,
 	hashPassword,
+	maintainDeliberativeElement,
+	maintainRole,
 } from './fn_httpRequests';
 import { onRequest } from 'firebase-functions/v2/https';
 import { findSimilarStatements } from './fn_findSimilarStatements';
@@ -145,6 +147,8 @@ exports.checkForSimilarStatements = onRequest(
 	cors,
 	findSimilarStatements
 );
+exports.maintainRoles = onRequest(cors, maintainRole);
+exports.maintainDeliberativeElement = onRequest(cors, maintainDeliberativeElement);
 
 exports.app = onRequest(cors, app);
 
