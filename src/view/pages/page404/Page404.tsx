@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import "./page404.scss";
 import { useDispatch } from "react-redux";
 import { setInitLocation } from "@/model/location/locationSlice";
@@ -11,6 +10,7 @@ import img404 from "@/assets/images/404.png";
 import cable from "@/assets/images/Cable.png";
 import cableDog from "@/assets/images/CableDog.png";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { useNavigate } from "react-router-dom";
 
 const Page404 = () => {
 	const navigate = useNavigate();

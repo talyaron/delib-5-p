@@ -8,7 +8,7 @@ import {
 	query,
 	where,
 	orderBy,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 import { FireStore } from "../config";
 import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
 import { z } from "zod";

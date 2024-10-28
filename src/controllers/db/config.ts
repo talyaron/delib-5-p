@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getFirestore, connectFirestoreEmulator} from 'firebase/firestore';
+import { connectFirestoreEmulator, getFirestore} from 'firebase/firestore';
 import { getMessaging, isSupported } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
@@ -8,6 +8,7 @@ import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import firebaseConfig from './configKey';
 import { isProduction } from '../general/helpers';
 
+console.info(firebaseConfig)
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const FireStore = getFirestore(app);

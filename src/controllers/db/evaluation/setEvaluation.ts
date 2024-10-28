@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Timestamp, doc, setDoc } from "@firebase/firestore";
+import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { Statement, Collections, EvaluationSchema } from "delib-npm";
 import { FireStore } from "../config";
 import { store } from "@/model/store";

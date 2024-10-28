@@ -21,14 +21,15 @@ import {
 	orderBy,
 	query,
 	where,
-} from "@firebase/firestore";
+	Unsubscribe,
+} from "firebase/firestore";
 import {
 	deleteSubscribedStatement,
 	setStatementSubscription,
 	setStatementsSubscription,
 } from "@/model/statements/statementsSlice";
 import { listenedStatements } from "@/view/pages/home/Home";
-import { Unsubscribe } from "@firebase/util";
+
 import { getStatementSubscriptionId } from "@/controllers/general/helpers";
 import { getStatementFromDB } from "../statements/getStatement";
 import { listenToStatement } from "../statements/listenToStatements";

@@ -6,7 +6,7 @@ import {
 	doc,
 	getDocs,
 	getDoc,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 import { FireStore } from "../config";
 import { Collections, Evaluation, User, UserSchema } from "delib-npm";
 import { EvaluationSchema } from "@/model/evaluations/evaluationModel";
