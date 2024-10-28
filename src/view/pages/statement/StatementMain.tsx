@@ -8,7 +8,6 @@ import { User, Role, Screen, Access } from 'delib-npm';
 // firestore
 import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
 import {
-	listenToSubStatements,
 	listenToStatement,
 	listenToStatementSubscription,
 	listenToAllDescendants,
@@ -119,7 +118,7 @@ const StatementMain: FC = () => {
 			return;
 		};
 
-		let unSubSubStatements: () => void = () => {
+		const unSubSubStatements: () => void = () => {
 			return;
 		};
 		let unSubStatementSubscription: () => void = () => {
@@ -144,7 +143,6 @@ const StatementMain: FC = () => {
 
 			unSubUserSettings = listenToUserSettings();
 			unSubAllDescendants = listenToAllDescendants(statementId); //used for map
-			unSubSubStatements = listenToSubStatements(statementId, dispatch); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
 
 			unSubStatementSubscription = listenToStatementSubscription(
