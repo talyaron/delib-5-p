@@ -33,7 +33,7 @@ export async function getToVoteOnParent(
 		if (!vote) return;
 		VoteSchema.parse(vote);
 
-		//get statemtn to update to store
+		//get statement to update to store
 		const statementRef = doc(FireStore, Collections.statements, vote.statementId);
 		const statementDB = await getDoc(statementRef);
 
