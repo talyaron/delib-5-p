@@ -36,7 +36,6 @@ const UrlParser: React.FC<UrlParserProps> = ({
 			const url = match[0];
 			const fullUrl = url.startsWith('http') ? url : `${url}`;
 			const textUrl = url.replace(/^https?:\/\//, '');
-			
 
 			// Add the URL as a link
 			parts.push(
