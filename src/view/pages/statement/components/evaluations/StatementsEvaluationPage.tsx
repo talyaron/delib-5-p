@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 // Third party imports
 import { QuestionStage, QuestionType, Statement, StatementType, User } from "delib-npm";
 
-
 // Custom Components
 
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
