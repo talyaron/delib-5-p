@@ -1,4 +1,4 @@
-import { doc, getDoc, onSnapshot,Unsubscribe } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { FireStore } from "../config";
 import { updateVersion } from "@/appCont";
 
@@ -9,7 +9,7 @@ export async function getVersionFromDB(): Promise<string | undefined> {
 		if (!versionDB.exists()) throw new Error("version not found");
 		const version = versionDB.data().version;
 		if (!version) throw new Error("version not found");
-		
+
 		return version;
 	} catch (error) {
 		console.error(error);
@@ -20,15 +20,19 @@ export async function getVersionFromDB(): Promise<string | undefined> {
 }
 export function listenToVersionFromDB(): Unsubscribe {
 	try {
-        
+
 		const versionRef = doc(FireStore, "version", "version");
-		
+
 		return onSnapshot(versionRef, (versionDB) => {
-			if (!versionDB.exists()) throw new Error("version not found");
-			const version = versionDB.data().version;
-			if (!version) throw new Error("version not found");
-         
-			updateVersion(version);
+			try {
+				if (!versionDB.exists()) throw new Error("version not found");
+				const version = versionDB.data().version;
+				if (!version) throw new Error("version not found");
+
+				updateVersion(version);
+			} catch (error) {
+				console.error(error);
+			}
 		})
 
 	} catch (error) {

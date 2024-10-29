@@ -13,6 +13,7 @@ import styles from "./EditTitle.module.scss";
 // Custom components
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Text from "../text/Text";
+import { detectURL } from "@/controllers/general/helpers";
 
 interface Props {
   statement: Statement | undefined;
@@ -30,6 +31,9 @@ const EditTitle: FC<Props> = ({
 }) => {
 	const [description, setDescription] = useState(statement?.description || "");
 	const [title, setTitle] = useState(statement?.statement || "");
+
+	
+
 
 	// Single ref for both textarea and input
 	const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);

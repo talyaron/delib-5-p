@@ -1,5 +1,6 @@
 import { FC } from "react";
 import styles from "./Text.module.scss";
+import UrlParser from "../edit/URLParse";
 
 interface Props {
   statement?: string;
@@ -22,7 +23,7 @@ const Text: FC<Props> = ({ statement, description }) => {
 					//if paragraph has * at some point and has some * at some other point make the string between the * bold
 					if (paragraph.includes("*")) {
 						const boldedParagraph = paragraph.split("*").map((p, i) => {
-							if (i % 2 === 1) return <b key={`${textId}--${i}`}>{p}</b>;
+							if (i % 2 === 1) return <b key={`${textId}--${i}`}><UrlParser text={p}/></b>;
 
 							return p;
 						});
@@ -36,14 +37,14 @@ const Text: FC<Props> = ({ statement, description }) => {
 
 					return (
 						<p className={styles.p} key={`${textId}--${i}`}>
-							{paragraph}
+							<UrlParser text={paragraph}/>
 						</p>
 					);
 				});
 
 		return (
 			<>
-				{statement && <div className={styles.title}>{statement}</div>}
+				{statement && <div className={styles.title}><UrlParser text={statement}/></div>}
 				{(description && paragraphs.length > 0) && (
 					<div className={styles.text}>{paragraphs}</div>
 				)}
