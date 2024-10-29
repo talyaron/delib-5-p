@@ -1,4 +1,3 @@
-
 import styles from './InvitePanel.module.scss';
 
 type Props = {number:number}

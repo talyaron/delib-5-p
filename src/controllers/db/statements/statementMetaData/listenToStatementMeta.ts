@@ -1,6 +1,6 @@
 import { Collections, StatementMetaData, StatementMetaDataSchema } from "delib-npm";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
-import { DB } from "@/controllers/db/config";
+import { FireStore } from "@/controllers/db/config";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setStatementMetaData } from "@/model/statements/statementsMetaSlice";
 import { writeZodError } from "@/controllers/general/helpers";
@@ -13,7 +13,7 @@ export function listenToStatementMetaData(statementId: string): Unsubscribe {
 			throw new Error("Statement ID is missing");
 		}
 
-		const statementMetaDataRef = doc(DB, Collections.statementsMetaData, statementId);
+		const statementMetaDataRef = doc(FireStore, Collections.statementsMetaData, statementId);
 		
 		return onSnapshot(statementMetaDataRef, (statementMetaDataDB) => {
 			try {
@@ -28,7 +28,6 @@ export function listenToStatementMetaData(statementId: string): Unsubscribe {
 					writeZodError(results.error, statementMetaData);
 					throw new Error("StatementMetaDataSchema failed to parse");
 				}
-
 
 				dispatch(setStatementMetaData(statementMetaData));
 			} catch (error) {

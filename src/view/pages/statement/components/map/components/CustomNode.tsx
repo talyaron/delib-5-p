@@ -1,41 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 // Third party
-import { Handle, NodeProps } from "reactflow";
-import { useNavigate } from "react-router-dom";
+import { Handle, NodeProps } from 'reactflow';
+import { useNavigate } from 'react-router-dom';
 
 // Hooks
-import { useMapContext } from "@/controllers/hooks/useMap";
+import { useMapContext } from '@/controllers/hooks/useMap';
 
 // Icons
-import PlusIcon from "@/assets/icons/plusIcon.svg?react";
+import PlusIcon from '@/assets/icons/plusIcon.svg?react';
 
 // Statements functions
 import {
 	calculateFontSize,
 	statementTitleToDisplay,
-} from "@/controllers/general/helpers";
-import useStatementColor from "@/controllers/hooks/useStatementColor";
-import { Statement } from "delib-npm";
-
+} from '@/controllers/general/helpers';
+import useStatementColor from '@/controllers/hooks/useStatementColor';
+import { Statement } from 'delib-npm';
 
 const nodeStyle = (
-	parentStatement: Statement | "top",
+	parentStatement: Statement | 'top',
 	statementColor: { backgroundColor: string; color: string },
 	nodeTitle: string
 ) => {
 	const style = {
 		backgroundColor:
-      parentStatement === "top" ? "darkblue" : statementColor.backgroundColor,
+			parentStatement === 'top' ? 'darkblue' : statementColor.backgroundColor,
 		color: statementColor.color,
 		height: 40,
 		width: 70,
-		borderRadius: "5px",
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		padding: ".5rem",
-		cursor: "pointer",
+		borderRadius: '5px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		padding: '.5rem',
+		cursor: 'pointer',
 		fontSize: calculateFontSize(nodeTitle),
 	};
 
@@ -44,15 +43,13 @@ const nodeStyle = (
 
 export default function CustomNode({ data }: NodeProps) {
 	const navigate = useNavigate();
- 
 
 	const { result, parentStatement } = data;
 
-	const { statementId, statement, statementType } = result.top;
+	const { statementId, statement, deliberativeElement, isResult } =
+		result.top as Statement;
 
 	const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
-
-	const { deliberativeElement, isResult } = statement;
 
 	const statementColor = useStatementColor({ deliberativeElement, isResult });
 
@@ -75,8 +72,6 @@ export default function CustomNode({ data }: NodeProps) {
 			...prev,
 			showModal: true,
 			parentStatement: result.top,
-			isOption: statementType !== "option",
-			isQuestion: statementType !== "question",
 		}));
 	};
 
@@ -85,8 +80,6 @@ export default function CustomNode({ data }: NodeProps) {
 			...prev,
 			showModal: true,
 			parentStatement: parentStatement,
-			isOption: statementType === "option",
-			isQuestion: statementType === "question",
 		}));
 	};
 
@@ -101,38 +94,38 @@ export default function CustomNode({ data }: NodeProps) {
 				data-id={statementId}
 				style={{
 					...nodeStyle(parentStatement, statementColor, nodeTitle),
-					textAlign: "center",
-					wordBreak: "break-word",
+					textAlign: 'center',
+					wordBreak: 'break-word',
 				}}
-				className="node__content"
+				className='node__content'
 			>
 				{nodeTitle}
 			</button>
 			{showBtns && (
 				<>
 					<button
-						className="addIcon"
+						className='addIcon'
 						onClick={handleAddChildNode}
-						aria-label="Add child node" 
+						aria-label='Add child node'
 						style={{
-							position: "absolute",
-							cursor: "pointer",
-							right: mapContext.direction === "TB" ? 0 : "-1.8rem",
-							bottom: mapContext.direction === "TB" ? "-1.8rem" : 0,
+							position: 'absolute',
+							cursor: 'pointer',
+							right: mapContext.direction === 'TB' ? 0 : '-1.8rem',
+							bottom: mapContext.direction === 'TB' ? '-1.8rem' : 0,
 						}}
 					>
 						<PlusIcon />
 					</button>
 
 					<button
-						className="addIcon"
+						className='addIcon'
 						onClick={handleAddSiblingNode}
-						aria-label="Add sibling node" 
+						aria-label='Add sibling node'
 						style={{
-							position: "absolute",
-							cursor: "pointer",
-							left: mapContext.direction === "TB" ? "-1.8rem" : 0,
-							top: mapContext.direction === "TB" ? 0 : "-1.8rem",
+							position: 'absolute',
+							cursor: 'pointer',
+							left: mapContext.direction === 'TB' ? '-1.8rem' : 0,
+							top: mapContext.direction === 'TB' ? 0 : '-1.8rem',
 						}}
 					>
 						<PlusIcon />
@@ -140,8 +133,8 @@ export default function CustomNode({ data }: NodeProps) {
 				</>
 			)}
 
-			<Handle type="target" position={mapContext.targetPosition} />
-			<Handle type="source" position={mapContext.sourcePosition} />
+			<Handle type='target' position={mapContext.targetPosition} />
+			<Handle type='source' position={mapContext.sourcePosition} />
 		</>
 	);
 }

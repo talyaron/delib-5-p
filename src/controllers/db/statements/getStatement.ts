@@ -20,13 +20,13 @@ import {
 
 // Helpers
 // import { listenedStatements } from "../../../view/pages/home/Home";
-import { DB } from '../config';
+import { FireStore } from '../config';
 
 export async function getStatementFromDB(
 	statementId: string
 ): Promise<Statement | undefined> {
 	try {
-		const statementRef = doc(DB, Collections.statements, statementId);
+		const statementRef = doc(FireStore, Collections.statements, statementId);
 		const statementDB = await getDoc(statementRef);
 
 		return statementDB.data() as Statement | undefined;
@@ -85,7 +85,7 @@ export async function getStatementDepth(
 	async function getLevelResults(statement: Statement): Promise<Statement[]> {
 		try {
 			const subStatements: Statement[] = [];
-			const statementsRef = collection(DB, Collections.statements);
+			const statementsRef = collection(FireStore, Collections.statements);
 			const q = query(
 				statementsRef,
 				and(
@@ -118,7 +118,7 @@ export async function getChildStatements(
 	statementId: string
 ): Promise<Statement[]> {
 	try {
-		const statementsRef = collection(DB, Collections.statements);
+		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			statementsRef,
 			and(

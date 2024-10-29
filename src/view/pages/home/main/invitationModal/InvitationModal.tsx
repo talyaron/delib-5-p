@@ -86,7 +86,6 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 		
 		return fullPin;
 	}
-  
 
 	return (
 		<InviteModal>

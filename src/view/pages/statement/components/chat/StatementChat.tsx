@@ -72,7 +72,7 @@ const StatementChat: FC<Props> = ({
 
 	//effects
 	useEffect(() => {
-		
+
 		if (!firstTime) return;
 
 		if (location.hash) {
@@ -94,7 +94,9 @@ const StatementChat: FC<Props> = ({
 				setNewMessages((n) => n + 1);
 			}
 		} else {
+		
 			scrollToBottom();
+	 
 		}
 	}, [subStatements.length]);
 

@@ -1,37 +1,42 @@
-import { useState, FC, useEffect } from 'react';
+import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { Results, Role, Statement, StatementType } from 'delib-npm';
+import { Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
-import TreeChart from './components/TreeChart';
-import Modal from '@/view/components/modal/Modal';
+import TreeChart from "./components/TreeChart";
+import Modal from "@/view/components/modal/Modal";
 
 // Helpers
 import {
 	FilterType,
 	filterByStatementType,
 	sortStatementsByHirarrchy as sortStatementsByHierarchy,
-} from '@/controllers/general/sorting';
-import CreateStatementModal from '../createStatementModal/CreateStatementModal';
+} from "@/controllers/general/sorting";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 
 // Hooks
-import { useLanguage } from '@/controllers/hooks/useLanguages';
-import { useMapContext } from '@/controllers/hooks/useMap';
-import { ReactFlowProvider } from 'reactflow';
-import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
-import { isAdmin } from '@/controllers/general/helpers';
-import { listenToChildStatements } from '@/controllers/db/statements/listenToStatements';
-import { Unsubscribe } from 'firebase/auth';
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { useMapContext } from "@/controllers/hooks/useMap";
+import { ReactFlowProvider } from "reactflow";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import {
+	statementDescendantsSelector,
+	statementSubscriptionSelector,
+} from "@/model/statements/statementsSlice";
+import { isAdmin } from "@/controllers/general/helpers";
+import { useSelector } from "react-redux";
 
 interface Props {
-	statement: Statement;
+  statement: Statement;
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
 	const userSubscription = useAppSelector(
 		statementSubscriptionSelector(statement.statementId)
+	);
+	const descendants = useSelector((state) =>
+		statementDescendantsSelector(state, statement.statementId)
 	);
 
 	const role = userSubscription ? userSubscription.role : Role.member;
@@ -40,84 +45,38 @@ const StatementMap: FC<Props> = ({ statement }) => {
 	const { t } = useLanguage();
 	const { mapContext, setMapContext } = useMapContext();
 
-	const [results, setResults] = useState<Results | undefined>();
-	const [subStatements, setSubStatements] = useState<Statement[]>([]);
+	const [sortedDescendants, setSortedDescendants] = useState<Results[]>([]);
+	const [filterBy, setFilterBy] = useState<FilterType>(
+		FilterType.questionsResultsOptions
+	);
 
-	const handleFilter = (filterBy: FilterType) => {
-		const filteredArray = filterByStatementType(filterBy).types;
+	const handleFilter = (filterBy: FilterType, descendants: Statement[]) => {
+		const _descendants = [...descendants];
+		const filterArray = filterByStatementType(filterBy).types;
 
-		const filterSubStatements = subStatements.filter((st) => {
+		const filterSubStatements = _descendants.filter((st) => {
 			if (!st.deliberativeElement) return false;
 
-			if (filteredArray.includes('result') && st.isResult) return true;
+			if (filterArray.includes("result") && st.isResult) return true;
 
-			return filteredArray.includes(st.deliberativeElement);
+			return filterArray.includes(st.deliberativeElement);
 		});
 
-		const sortedResults = sortStatementsByHierarchy([
+		const sorted: Results[] = sortStatementsByHierarchy([
 			statement,
 			...filterSubStatements,
 		]);
 
-		setResults(sortedResults[0]);
+		setSortedDescendants(sorted);
 	};
 
-	const dispatch = useAppDispatch();
+	useEffect(() => {
+		handleFilter(filterBy, descendants);
+	}, [filterBy]);
 
 	useEffect(() => {
-		let unsubscribe: Unsubscribe | null = null;
-
-		const fetchInitialData = async () => {
-			try {
-				unsubscribe = await listenToChildStatements(
-					dispatch,
-					statement.statementId,
-					(childStatements) => {
-						setSubStatements((prevStatements) => {
-							return updateStatementsAndResults(
-								prevStatements,
-								childStatements,
-								statement
-							);
-						});
-					}
-				);
-			} catch (error) {
-				console.error('Error fetching initial data:', error);
-			}
-		};
-
-		fetchInitialData();
-
-		return () => {
-			if (unsubscribe) {
-				unsubscribe();
-			}
-		};
-	}, [statement.statementId, dispatch]);
-
-	function updateStatementsAndResults(
-		prevStatements: Statement[],
-		childStatements: Statement[],
-		statement: Statement
-	): Statement[] {
-		const updatedStatements = [
-			...prevStatements,
-			...childStatements.filter(
-				(stmt) =>
-					!prevStatements.some((prev) => prev.statementId === stmt.statementId)
-			),
-		];
-
-		const topResult = sortStatementsByHierarchy([
-			statement,
-			...updatedStatements,
-		])[0];
-
-		setResults(topResult);
-
-		return updatedStatements;
-	}
+		handleFilter(filterBy, descendants);
+	}, [descendants]);
 
 	const toggleModal = (show: boolean) => {
 		setMapContext((prev) => ({
@@ -127,37 +86,37 @@ const StatementMap: FC<Props> = ({ statement }) => {
 	};
 
 	return (
-		<main className='page__main'>
+		<main className="page__main">
 			<ReactFlowProvider>
 				<select
-					aria-label='Select filter type for results'
-					onChange={(ev) => handleFilter(ev.target.value as FilterType)}
+					aria-label="Select filter type for "
+					onChange={(ev) => setFilterBy(ev.target.value as FilterType)}
 					defaultValue={FilterType.questionsResultsOptions}
 					style={{
-						width: '100vw',
-						maxWidth: '300px',
-						margin: '1rem auto',
-						position: 'absolute',
-						right: '1rem',
+						width: "100vw",
+						maxWidth: "300px",
+						margin: "1rem auto",
+						position: "absolute",
+						right: "1rem",
 						zIndex: 100,
 					}}
 				>
 					<option value={FilterType.questionsResults}>
-						{t('Questions and Results')}
+						{t("Questions and Results")}
 					</option>
 					<option value={FilterType.questionsResultsOptions}>
-						{t('Questions, options and Results')}
+						{t("Questions, options and Results")}
 					</option>
 				</select>
 				<div
 					style={{
-						flex: 'auto',
-						height: '20vh',
-						width: '100%',
-						direction: 'ltr',
+						flex: "auto",
+						height: "20vh",
+						width: "100%",
+						direction: "ltr",
 					}}
 				>
-					{results && <TreeChart topResult={results} isAdmin={_isAdmin} />}
+					<TreeChart descendants={sortedDescendants} isAdmin={_isAdmin} />
 				</div>
 
 				{mapContext.showModal && (

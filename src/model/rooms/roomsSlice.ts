@@ -3,7 +3,6 @@ import { ParticipantInRoom, RoomSettings } from "delib-npm";
 import { updateArray } from "@/controllers/general/helpers";
 import { RootState } from "../store";
 
-
 interface RoomsState {
 	participants: ParticipantInRoom[];
 	roomsSettings: RoomSettings[];
@@ -106,8 +105,5 @@ export const roomSettingsByStatementId =
 			(rs) => rs.statementId === statementId,
 		)
 	);
-
-
-
 
 export default roomsSlice.reducer;

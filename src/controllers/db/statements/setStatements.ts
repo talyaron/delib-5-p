@@ -15,7 +15,7 @@ import {
 	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { store } from "@/model/store";
 import { setStatementSubscriptionNotificationToDB } from "../notifications/notifications";
 import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
@@ -28,9 +28,6 @@ import { allowedScreens } from "@/controllers/general/screens";
 import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
-
-
-
 export const updateStatementParents = async (
 	statement: Statement,
 	parentStatement: Statement,
@@ -38,10 +35,9 @@ export const updateStatementParents = async (
 	try {
 		if (!statement) throw new Error("Statement is undefined");
 		if (!parentStatement) throw new Error("Parent statement is undefined");
-	
 
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
@@ -82,7 +78,7 @@ export function setSubStatementToDB(statement: Statement, title: string, descrip
 
 		if(!newSubStatement) throw new Error("New newSubStatement is undefined");
 
-		const newSubStatementRef = doc(DB, Collections.statements, newSubStatement.statementId);
+		const newSubStatementRef = doc(FireStore, Collections.statements, newSubStatement.statementId);
 		setDoc(newSubStatementRef, newSubStatement);
 	} catch (error) {
 		console.error(error);
@@ -104,7 +100,6 @@ export const setStatementToDB = async ({
 	try {
 		if (!statement) throw new Error("Statement is undefined");
 		if (!parentStatement) throw new Error("Parent statement is undefined");
-	
 
 		const storeState = store.getState();
 		const user = storeState.user.user;
@@ -167,7 +162,7 @@ export const setStatementToDB = async ({
 
 		//set statement
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
@@ -242,7 +237,6 @@ export function createStatement({
 }: CreateStatementProps): Statement | undefined {
 	try {
 		
-		
 		const storeState = store.getState();
 		const user = storeState.user.user;
 		if (!user) throw new Error("User is undefined");
@@ -268,7 +262,6 @@ export function createStatement({
 			storeState.statements.statements,
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
-
 
 		const newStatement: Statement = {
 			statement: text,
@@ -479,13 +472,12 @@ export async function updateStatementText(
 	try {
 		if (!title) throw new Error("New title is undefined");
 		if (!statement) throw new Error("Statement is undefined");
-		
 
 		if (statement.statement === title && statement.description === description) return;
 
 		StatementSchema.parse(statement);
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
@@ -502,24 +494,20 @@ export async function updateStatementText(
 export async function setStatementIsOption(statement: Statement) {
 	try {
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
-		
 
 		//get current statement
 		
 		const statementDB = await getDoc(statementRef)
-		
 
 		if (!statementDB.exists()) throw new Error("Statement not found");
 
 		const statementDBData = statementDB.data() as Statement;
-		
 
 		StatementSchema.parse(statementDBData);
-
 
 		await toggleStatementOption(statementDBData);
 	} catch (error) {
@@ -531,7 +519,7 @@ export async function setStatementIsOption(statement: Statement) {
 	) {
 		try {
 			const statementRef = doc(
-				DB,
+				FireStore,
 				Collections.statements,
 				statement.statementId,
 			);
@@ -555,7 +543,7 @@ export async function setStatementIsOption(statement: Statement) {
 export async function setStatementGroupToDB(statement: Statement) {
 	try {
 		const statementId = statement.statementId;
-		const statementRef = doc(DB, Collections.statements, statementId);
+		const statementRef = doc(FireStore, Collections.statements, statementId);
 		await setDoc(
 			statementRef,
 			{ statementType: StatementType.statement },
@@ -574,7 +562,7 @@ export function setRoomSizeInStatementDB(
 		z.number().parse(roomSize);
 		StatementSchema.parse(statement);
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
@@ -588,13 +576,13 @@ export function setRoomSizeInStatementDB(
 export async function updateIsQuestion(statement: Statement) {
 	try {
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
 
 		const parentStatementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.parentId,
 		);
@@ -623,7 +611,7 @@ export async function updateStatementMainImage(
 	try {
 		if (!imageURL) throw new Error("Image URL is undefined");
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
@@ -645,7 +633,7 @@ export async function setFollowMeDB(
 		StatementSchema.parse(statement);
 
 		const statementRef = doc(
-			DB,
+			FireStore,
 			Collections.statements,
 			statement.statementId,
 		);
@@ -659,5 +647,3 @@ export async function setFollowMeDB(
 		console.error(error);
 	}
 }
-
-

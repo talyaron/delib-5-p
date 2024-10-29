@@ -2,7 +2,6 @@ import { QuestionStage, QuestionType, Statement, StatementMetaData } from "delib
 import { FC } from "react";
 import "./QuestionDashboard.scss";
 
-
 import UsersIcon from "@/assets/icons/users20px.svg?react";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";

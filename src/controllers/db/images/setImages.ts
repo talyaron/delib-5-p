@@ -1,6 +1,6 @@
 import { Collections, Statement } from "delib-npm";
 import { storage } from "../config";
-import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export function uploadImageToStorage(
 	file: File,

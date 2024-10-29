@@ -64,7 +64,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
 		const joinedMembers = members.filter((member) => member.role !== Role.banned).map(m => m.user);
 
-
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
@@ -75,7 +74,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				statement,
 				parentStatement,
 			});
-
 			
 		};
 

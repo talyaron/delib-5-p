@@ -1,6 +1,6 @@
 // import * as XLSX from "xlsx";
 // import { doc, setDoc } from "firebase/firestore";
-// import { DB } from "../config";
+// import { FireStore } from "../config";
 // import { Statement } from "delib-npm";
 
 // interface User {
@@ -30,7 +30,7 @@ export const SetWaitingListCont = async (
 
 		// 	if (Name && Email && Phone) {
 		// 		const waitingListId = `${statement.statementId}--${Email || Phone || "Error"}`;
-		// 		const newDocRef = doc(DB, Collections.awaitingUsers, waitingListId);
+		// 		const newDocRef = doc(FireStore, Collections.awaitingUsers, waitingListId);
 		// 		await setDoc(newDocRef, {
 		// 			name: Name,
 		// 			email: Email,

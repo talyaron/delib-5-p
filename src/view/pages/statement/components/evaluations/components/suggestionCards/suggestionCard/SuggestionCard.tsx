@@ -118,8 +118,6 @@ const SuggestionCard: FC<Props> = ({
 		}
 	}
 
-
-
 	const statementAge = new Date().getTime() - statement.createdAt;
 
 	return (

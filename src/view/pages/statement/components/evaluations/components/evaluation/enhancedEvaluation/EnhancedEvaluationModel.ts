@@ -13,8 +13,6 @@ export interface EnhancedEvaluationThumb {
     alt: string;
 }
 
-
-
 export const enhancedEvaluationsThumbs: EnhancedEvaluationThumb[] = [
 	{ id: "a", evaluation: 1, svg: evaluation1,color:"rgba(0,0,0, 0.18)", colorSelected: "#70CB9F", alt: "like" },
 	{

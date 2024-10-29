@@ -4,11 +4,12 @@ import {
 	onSnapshot,
 	where,
 	query,
-} from "@firebase/firestore";
+	Unsubscribe,
+} from "firebase/firestore";
 import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { initialTimerArray } from "@/view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
-import { Unsubscribe } from "@firebase/util";
+
 import { updateTimerSettingDB } from "./setTimer";
 import { z } from "zod";
 import { getSetTimerId } from "@/controllers/general/helpers";
@@ -20,7 +21,7 @@ export async function getSetTimersDB(
 	dispatch: AppDispatch,
 ): Promise<SetTimer[]> {
 	try {
-		const timersRef = collection(DB, Collections.timers);
+		const timersRef = collection(FireStore, Collections.timers);
 		const q = query(timersRef, where("statementId", "==", statementId));
 		const timersDB = await getDocs(q);
 
@@ -67,7 +68,7 @@ export function listenToRoomTimers(
 		if (!statementId) throw new Error("Missing statementId");
 		if (!roomNumber) throw new Error("Missing roomNumber");
 
-		const timersRef = collection(DB, Collections.timersRooms);
+		const timersRef = collection(FireStore, Collections.timersRooms);
 		const q = query(
 			timersRef,
 			where("statementId", "==", statementId),
@@ -79,7 +80,6 @@ export function listenToRoomTimers(
 				const timers: RoomTimer[] = roomTimersDB.docs.map(
 					(roomTimer) => roomTimer.data() as RoomTimer,
 				);
-			
 
 				z.array(RoomTimerSchema).parse(timers);
 

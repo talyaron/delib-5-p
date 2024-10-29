@@ -159,7 +159,6 @@ export const statementTitleToDisplay = (
 
 //function which check if the statement can be linked to children
 
-
 export function getPastelColor() {
 	return `hsl(${360 * Math.random()},100%,75%)` || "red";
 }
@@ -279,7 +278,6 @@ export function writeZodError(error: ZodError, object: unknown): void {
 		error.issues.forEach((issue: ZodIssue) => {
 			console.error(`Error at ${issue.path.join('.')}: ${issue.message} (${issue.code})`);
 
-
 			console.info("Object sent:", object)
 		});
 
@@ -334,7 +332,6 @@ export function getTime(time: number): string {
 		return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
 	}
 
-
 	return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
 }
 
@@ -342,15 +339,10 @@ export function truncateString(text: string, maxLength = 20): string {
 	return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
-
-
 export function processHistory({statementId, pathname }:HistoryTracker, state:HistoryTracker[]):HistoryTracker[] {
 	try {
 	
 		const newHistory = [...state];
-
-		
-		
 
 		//add statement id to history only if it is not already there
 		if(newHistory.length === 0) return [{statementId, pathname}];
@@ -372,4 +364,3 @@ export function processHistory({statementId, pathname }:HistoryTracker, state:Hi
 		return state;
 	}
 }
-

@@ -8,7 +8,7 @@ import {
 	User,
 } from "delib-npm";
 import { AppDispatch, store } from "@/model/store";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import {
 	collection,
 	doc,
@@ -21,17 +21,19 @@ import {
 	orderBy,
 	query,
 	where,
-} from "@firebase/firestore";
+	Unsubscribe,
+} from "firebase/firestore";
 import {
 	deleteSubscribedStatement,
 	setStatementSubscription,
 	setStatementsSubscription,
 } from "@/model/statements/statementsSlice";
 import { listenedStatements } from "@/view/pages/home/Home";
-import { Unsubscribe } from "@firebase/util";
+
 import { getStatementSubscriptionId } from "@/controllers/general/helpers";
 import { getStatementFromDB } from "../statements/getStatement";
 import { listenToStatement } from "../statements/listenToStatements";
+import { updateDoc } from "firebase/firestore";
 
 export const listenToStatementSubSubscriptions = (
 	statementId: string,
@@ -43,7 +45,7 @@ export const listenToStatementSubSubscriptions = (
 		if (!user.uid) throw new Error("User not logged in");
 
 		const statementsSubscribeRef = collection(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 		);
 		const q = query(
@@ -95,21 +97,24 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
 
-		const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
+		const statementsSubscribeRef = collection(FireStore, Collections.statementsSubscribe);
 		const q = query(statementsSubscribeRef, where("userId", "==", user.uid), where('statement.parentId', "==", "top"), orderBy("lastUpdate", "desc"), limit(numberOfStatements));
-
-
 
 		return onSnapshot(q, (subscriptionsDB) => {
 			subscriptionsDB.docChanges().forEach((change) => {
 				try {
 
 					const statementSubscription = change.doc.data() as StatementSubscription;
+					if (!Array.isArray(statementSubscription.statement.results)) {
+						
+						const subscriptionRef = doc(FireStore, Collections.statementsSubscribe, statementSubscription.statementsSubscribeId)
+						updateDoc(subscriptionRef, { "statement.results": [] })
+						statementSubscription.statement.results = [];
+					}
 
 					StatementSubscriptionSchema.parse(statementSubscription);
 
 					if (change.type === "added") {
-
 
 						const unsubFunction = listenToStatement(statementSubscription.statementId);
 
@@ -138,13 +143,12 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 					}
 
 				} catch (error) {
-					
+
 					console.error("Listen to statement subscriptions each error", error);
 
 				}
 			});
 		});
-
 
 	} catch (error) {
 		console.error("Listen to statement subscriptions error", error);
@@ -153,18 +157,15 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 		return () => { };
 	}
 
-
 };
 
-export async function getStatmentsSubsciptions(): Promise<
-	StatementSubscription[]
-	> {
+export async function getStatmentsSubsciptions(): Promise<StatementSubscription[]>{
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
 		const statementsSubscribeRef = collection(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 		);
 		const q = query(
@@ -195,7 +196,7 @@ export async function getSubscriptions() {
 		if (!user) throw new Error("User not logged in");
 		if (!user.uid) throw new Error("User not logged in");
 		const statementsSubscribeRef = collection(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 		);
 		const q = query(
@@ -231,7 +232,7 @@ export async function getIsSubscribed(
 		if (!user) throw new Error("User not logged in");
 
 		const subscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			`${user.uid}--${statementId}`,
 		);
@@ -254,13 +255,11 @@ export async function getStatementSubscriptionFromDB(
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");
 
-
-
 		if (!statementSubscriptionId)
 			throw new Error("Statement subscription id is undefined");
 
 		const subscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementSubscriptionId,
 		);
@@ -320,13 +319,11 @@ export async function getTopParentSubscription(
 			user,
 		);
 
-
 		//get top subscription
 
 		const topParentSubscription = await getParentSubscription(
 			topParentSubscriptionId
 		);
-
 
 		if (topParentSubscription) {
 
@@ -341,7 +338,6 @@ export async function getTopParentSubscription(
 
 		const topParentStatement: Statement | undefined =
 			await getTopParentStatement(topParentId);
-
 
 		return { topParentStatement, topParentSubscription, error: false };
 	} catch (error) {
@@ -406,7 +402,6 @@ export async function getTopParentSubscription(
 	}
 }
 
-
 export function getNewStatementsFromSubscriptions(): Unsubscribe {
 	try {
 		const dispatch = store.dispatch;
@@ -415,7 +410,7 @@ export function getNewStatementsFromSubscriptions(): Unsubscribe {
 		if (!user.uid) throw new Error("User not logged in");
 
 		//get the latest created statements 
-		const subscriptionsRef = collection(DB, Collections.statementsSubscribe);
+		const subscriptionsRef = collection(FireStore, Collections.statementsSubscribe);
 		const q = query(subscriptionsRef, and(
 			where("userId", "==", user.uid),
 			where("statement.statementType", "!=", "document"),

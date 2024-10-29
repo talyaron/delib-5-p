@@ -11,7 +11,6 @@ import {
 	StatementSubscription,
 	StatementType} from "delib-npm";
 
-
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
 
@@ -339,7 +338,6 @@ export const {
 // statements
 export const totalMessageBoxesSelector = (state: RootState) => state.statements.statements.length;
 
-
 export const screenSelector = (state: RootState) => state.statements.screen;
 
 export const statementSelectorById = (statementId: string) => (state: RootState) => {
@@ -361,6 +359,12 @@ export const subStatementsByTopParentIdMemo = (statementId: string | undefined) 
 	(statements) =>
 		statements.filter((statement) => statement.topParentId === statementId)
 );
+
+export const statementDescendantsSelector = createSelector(
+	[statementsSelector, (_state, statementId: string) => statementId],
+	(statements, statementId) => 
+	  statements.filter(statement => statement.parents?.includes(statementId))
+  );
 
 export const statementsRoomSolutions =
 	(statementId: string | undefined) => (state: RootState) =>
@@ -482,7 +486,6 @@ export const subscriptionParentStatementSelector = (parentId: string) =>
 			statementSubscription.filter((sub) => sub.statement.topParentId === parentId)
 	);
 
-
 export const myStatementsByStatementIdSelector = (statementId: string) => {
 	const user = store.getState().user.user;
 
@@ -497,7 +500,5 @@ export const statementsOfMultiStepSelectorByStatementId = (statementId: string) 
 	(state: RootState) => state.statements.statements,
 	(statements) => statements.filter((st) => st.isInMultiStage && st.parentId === statementId)
 );
-
-
 
 export default statementsSlicer.reducer;

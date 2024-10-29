@@ -13,18 +13,17 @@ import {
 	query,
 	where,
 } from 'firebase/firestore';
-import { DB } from '../config';
+import { FireStore } from '../config';
 import { deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/roomsSlice';
 import { Unsubscribe } from 'firebase/auth';
 import { store } from '@/model/store';
-
 
 export function listenToParticipants(
 	statement: Statement,
 ): Unsubscribe {
 	try {
 		const dispatch = store.dispatch;
-		const requestRef = collection(DB, Collections.participants);
+		const requestRef = collection(FireStore, Collections.participants);
 		const q = query(requestRef, where('statement.parentId', '==', statement.statementId));
 
 		return onSnapshot(q, (roomsDB) => {
@@ -64,10 +63,9 @@ export function listenToParticipants(
 
 // TODO: this function is not used. Delete it?
 
-
 export function listenToRoomsSettings(statementId: string): Unsubscribe {
 	try {
-		const roomSettingRef = doc(DB, Collections.roomsSettings, statementId);
+		const roomSettingRef = doc(FireStore, Collections.roomsSettings, statementId);
 
 		return onSnapshot(roomSettingRef, (doc) => {
 			if (!doc.exists()) return;

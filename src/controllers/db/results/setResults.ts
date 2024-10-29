@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 import { z } from "zod";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { Collections, ResultsBy } from "delib-npm";
 
 export async function updateResultsSettings(
@@ -13,13 +13,12 @@ export async function updateResultsSettings(
 		z.number().parse(numberOfResults);
 		z.nativeEnum(ResultsBy).parse(resultsBy);
 
-		const statementRef = doc(DB, Collections.statements, statementId);
+		const statementRef = doc(FireStore, Collections.statements, statementId);
 
 		const results = {
 			numberOfResults,
 			resultsBy,
 		};
-
 		
 		await setDoc(statementRef, { results }, { merge: true });
 	} catch (error) {

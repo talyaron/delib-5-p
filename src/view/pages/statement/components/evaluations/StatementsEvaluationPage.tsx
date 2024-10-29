@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { QuestionStage, QuestionType, Statement, StatementType, User } from "delib-npm";
-import { useNavigate } from "react-router";
 
 // Custom Components
 
@@ -20,6 +19,7 @@ import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStat
 import styles from "./statementEvaluationsPage.module.scss";
 import SuggestionCards from "./components/suggestionCards/SuggestionCards";
 import Description from "./components/description/Description";
+import { useNavigate } from "react-router-dom";
 
 interface StatementEvaluationPageProps {
   statement: Statement;

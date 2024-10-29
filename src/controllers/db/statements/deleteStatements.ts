@@ -1,8 +1,6 @@
 import { Collections, Statement } from "delib-npm";
 import { collection, deleteDoc, doc, getDocs, limit, query, where } from "firebase/firestore";
-import { DB } from "../config";
-
-
+import { FireStore } from "../config";
 
 export async function deleteStatementFromDB (
 	statement: Statement,
@@ -18,7 +16,7 @@ export async function deleteStatementFromDB (
 		if (!confirmed) return;
 
 		//check if the statement has children
-		const childrenRef = collection(DB, Collections.statements)
+		const childrenRef = collection(FireStore, Collections.statements)
 		const q = query(childrenRef, where("parentId", "==", statement.statementId), limit(1));
 		const hasChildren = await getDocs(q);
 		if (hasChildren.docs.length > 0) {
@@ -26,7 +24,7 @@ export async function deleteStatementFromDB (
 			
 			return;
 		}
-		const statementRef = doc(DB, Collections.statements, statement.statementId);
+		const statementRef = doc(FireStore, Collections.statements, statement.statementId);
 		await deleteDoc(statementRef);
 	} catch (error) {
 		console.error(error);

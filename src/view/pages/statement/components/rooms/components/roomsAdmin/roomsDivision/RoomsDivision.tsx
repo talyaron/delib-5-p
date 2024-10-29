@@ -9,7 +9,6 @@ import { ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
 import Button from "@/view/components/buttons/button/Button";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
-
 interface Props {
   statement: Statement;
   roomSettings: RoomSettings | undefined;

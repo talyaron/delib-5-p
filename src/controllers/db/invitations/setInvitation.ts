@@ -1,7 +1,6 @@
 import { Collections, Invitation } from "delib-npm";
 import { addDoc, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
-import { DB } from "../config";
-
+import { FireStore } from "../config";
 
 interface CreateInvitationProps {
     pathname: string;
@@ -15,12 +14,11 @@ export async function setInvitationToDB({ pathname, statementId }: CreateInvitat
 		const initialNumber = 1;
 
 		//look for previous invitation with this number in the last 24 hours
-		const invitationsRef = collection(DB, Collections.invitations);
+		const invitationsRef = collection(FireStore, Collections.invitations);
 		const q = query(invitationsRef, where("lastUpdate", ">", new Date().getTime() - 24 * 60 * 60 * 1000), orderBy("number", "desc"), limit(1));
 		const numbers = await getDocs(q);
 	
 		if (numbers.size === 0) {
-
 
 			const invitation: Invitation = {
 				statementId: statementId,

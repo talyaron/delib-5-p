@@ -1,13 +1,12 @@
 import { Statement, Collections, StatementSubscription, NotificationType } from "delib-npm";
 import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy, getDocs, writeBatch } from "firebase/firestore";
 import { getToken, onMessage } from "firebase/messaging";
-import { messaging, DB } from "../config";
+import { messaging, FireStore } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { vapidKey } from "../configKey";
 import logo from "@/assets/logo/logo-96px.png";
 import { store } from "@/model/store";
 import { deleteInAppNotification, setInAppNotification } from "@/model/notifications/notificationsSlice";
-
 
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string,
@@ -103,7 +102,7 @@ export async function setStatementSubscriptionNotificationToDB(
 
 		const statementsSubscribeId = `${user.uid}--${statementId}`;
 		const statementsSubscribeRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementsSubscribeId,
 		);
@@ -160,7 +159,6 @@ export async function setStatementSubscriptionNotificationToDB(
 	}
 }
 
-
 export function listenToInAppNotifications(): Unsubscribe {
 	try {
 		const user = store.getState().user.user;
@@ -168,7 +166,7 @@ export function listenToInAppNotifications(): Unsubscribe {
 
 		const dispatch = store.dispatch;
 
-		const messagesRef = collection(DB, Collections.inAppNotifications);
+		const messagesRef = collection(FireStore, Collections.inAppNotifications);
 		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false), orderBy("createdAt", "desc"));
 		
 		return onSnapshot(q, (messagesDB) => {
@@ -194,16 +192,16 @@ export async function updateNotificationRead(notificationId: string, parentId?: 
 		const user = store.getState().user.user;
 		if (!user) return;
 
-		const notificationRef = doc(DB, Collections.inAppNotifications, notificationId);
+		const notificationRef = doc(FireStore, Collections.inAppNotifications, notificationId);
 		setDoc(notificationRef, { read: true }, { merge: true });
 
 		//set all notifications of this parent to read
 		if (!parentId) return;
-		const notificationsRef = collection(DB, Collections.inAppNotifications);
+		const notificationsRef = collection(FireStore, Collections.inAppNotifications);
 		const q = query(notificationsRef, where("userId", "==", user.uid), where("parentId", "==", parentId));
 		const allParentNotificationsDB = await getDocs(q);
 
-		const batch = writeBatch(DB);
+		const batch = writeBatch(FireStore);
 		allParentNotificationsDB.forEach((doc) => {
 			batch.set(doc.ref, { read: true }, { merge: true });
 		});

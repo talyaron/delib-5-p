@@ -1,7 +1,7 @@
 import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
 import { Statement, User } from "delib-npm";
 import { Collections } from "delib-npm";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { Vote, getVoteId, VoteSchema } from "delib-npm";
 import { store } from "@/model/store";
 
@@ -12,7 +12,7 @@ export async function setVoteToDB(option: Statement) {
 		if (!user) throw new Error("User not logged in");
 		const voteId = getVoteId(user.uid, option.parentId);
 
-		const voteRef = doc(DB, Collections.votes, voteId);
+		const voteRef = doc(FireStore, Collections.votes, voteId);
 
 		// toggle vote
 		const vote: Vote = {

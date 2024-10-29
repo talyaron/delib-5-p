@@ -67,7 +67,3 @@ const VotingArea: FC<VotingAreaProps> = ({
 };
 
 export default VotingArea;
-
-
-
-

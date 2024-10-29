@@ -1,16 +1,16 @@
 import { doc, getDoc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { Agreement, Collections, StatementSchema, User, UserSettings, userSettingsSchema } from "delib-npm";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { store } from "@/model/store";
 import { setUserSettings } from "@/model/users/userSlice";
 
-// get user font size and update document and html with the size in the DB
+// get user font size and update document and html with the size in the FireStore
 export async function getUserFromDB(): Promise<User | undefined> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("user is not logged in");
 
-		const userRef = doc(DB, Collections.users, user.uid);
+		const userRef = doc(FireStore, Collections.users, user.uid);
 		const userDoc = await getDoc(userRef);
 
 		if (!userDoc.exists()) throw new Error("user does not exist");
@@ -61,16 +61,13 @@ export function getSignature(
 	}
 }
 
-
 export function listenToUserSettings(): Unsubscribe {
 	try {
 
-
 		const user = store.getState().user.user;
 		if (!user) throw new Error("user is not logged in");
-		
 
-		const userSettingsRef = doc(DB, Collections.usersSettings, user.uid);
+		const userSettingsRef = doc(FireStore, Collections.usersSettings, user.uid);
 		
 		return onSnapshot(userSettingsRef, (settingsDB) => {
 			const userSettings = settingsDB.data() as UserSettings;
@@ -82,8 +79,6 @@ export function listenToUserSettings(): Unsubscribe {
 				return
 
 			}
-
-
 
 			store.dispatch(setUserSettings(null));
 

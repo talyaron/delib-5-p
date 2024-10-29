@@ -4,7 +4,6 @@ import { isProduction } from "@/controllers/general/helpers";
 import { setCurrentMultiStepOptions } from "@/model/statements/statementsSlice";
 import { store } from "@/model/store";
 
-
 export async function getFirstEvaluationOptions(
 	statement: Statement,
 
@@ -23,14 +22,11 @@ export async function getFirstEvaluationOptions(
 		const { randomStatements, error } = await response.json();
 		if (error) throw new Error(error);
 		z.array(StatementSchema).parse(randomStatements);
-		
 
 		dispatch(setCurrentMultiStepOptions(randomStatements));
 
-
 	} catch (error) {
 		console.error(error);
-
 
 	}
 }

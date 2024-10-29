@@ -5,7 +5,6 @@ import {
 } from "delib-npm";
 import  { FC, useEffect } from "react";
 
-
 // Custom components
 import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
 import ChooseRoom from "./components/choose/ChooseRoom";
@@ -19,7 +18,6 @@ import {
 import { isAdmin } from "@/controllers/general/helpers";
 import { useSelector } from "react-redux";
 import { roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
-
 
 interface RoomsProps {
   statement: Statement;
@@ -36,7 +34,6 @@ const Rooms: FC<RoomsProps> = ({
 		roomSettingsByStatementId(statement.statementId)
 	);
 	const isEditingRoom = roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
-  
 
 	useEffect(() => {
 		const unsubscribe = listenToParticipants(statement);

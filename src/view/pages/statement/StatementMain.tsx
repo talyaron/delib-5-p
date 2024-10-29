@@ -1,48 +1,48 @@
-import { FC, useEffect, useState } from 'react';
-import { createSelector } from 'reselect';
+import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { useNavigate, useParams } from 'react-router-dom';
-import { User, Role, Screen, Access } from 'delib-npm';
+import { useNavigate, useParams } from "react-router-dom";
+import { User, Role, Screen, Access } from "delib-npm";
 
 // firestore
-import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
+import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
 import {
-	listenToSubStatements,
 	listenToStatement,
 	listenToStatementSubscription,
 	listenToAllDescendants,
-} from '@/controllers/db/statements/listenToStatements';
+	listenToSubStatements,
+} from "@/controllers/db/statements/listenToStatements";
 import {
 	updateSubscriberForStatementSubStatements,
 	setStatementSubscriptionToDB,
-} from '@/controllers/db/subscriptions/setSubscriptions';
+} from "@/controllers/db/subscriptions/setSubscriptions";
 
-import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
+import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { RootState } from '@/model/store';
-import { userSelector } from '@/model/users/userSlice';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { RootState } from "@/model/store";
+import { userSelector } from "@/model/users/userSlice";
+import { useSelector } from "react-redux";
 
 // Hooks & Helpers
-import { MapProvider } from '@/controllers/hooks/useMap';
-import { statementTitleToDisplay } from '@/controllers/general/helpers';
-import { availableScreen } from './StatementCont';
-import { useIsAuthorized } from '@/controllers/hooks/authHooks';
+import { MapProvider } from "@/controllers/hooks/useMap";
+import { statementTitleToDisplay } from "@/controllers/general/helpers";
+import { availableScreen } from "./StatementCont";
+import { useIsAuthorized } from "@/controllers/hooks/authHooks";
 
 // Custom components
-import LoadingPage from '../loadingPage/LoadingPage';
-import Page404 from '../page404/Page404';
-import UnAuthorizedPage from '../unAuthorizedPage/UnAuthorizedPage';
-import ProfileImage from '../../components/profileImage/ProfileImage';
-import StatementHeader from './components/header/StatementHeader';
-import SwitchScreens from './components/SwitchScreens';
-import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
-import AskPermission from '@/view/components/askPermission/AskPermission';
-import FollowMeToast from './components/followMeToast/FollowMeToast';
-import { listenToUserSettings } from '@/controllers/db/users/getUserDB';
+import LoadingPage from "../loadingPage/LoadingPage";
+import Page404 from "../page404/Page404";
+import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
+import ProfileImage from "../../components/profileImage/ProfileImage";
+import StatementHeader from "./components/header/StatementHeader";
+import SwitchScreens from "./components/SwitchScreens";
+import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
+import AskPermission from "@/view/components/askPermission/AskPermission";
+import FollowMeToast from "./components/followMeToast/FollowMeToast";
+import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
+import { createSelector } from "@reduxjs/toolkit";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -143,9 +143,9 @@ const StatementMain: FC = () => {
 			);
 
 			unSubUserSettings = listenToUserSettings();
-			unSubAllDescendants = listenToAllDescendants(statementId);
-			unSubSubStatements = listenToSubStatements(statementId, dispatch);
+			unSubAllDescendants = listenToAllDescendants(statementId); //used for map
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
+			unSubSubStatements = listenToSubStatements(statementId, dispatch); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
 
 			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
@@ -204,7 +204,7 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<div className='page'>
+			<div className="page">
 				{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 				{talker && (
 					<button

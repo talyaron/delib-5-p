@@ -11,9 +11,6 @@ import "./SubScreensToDisplay.scss";
 import { toggleSubScreen } from "../../statementSettingsCont";
 import { defaultStatementSubScreens } from "../../emptyStatementModel";
 
-
-
-
 const SubScreensToDisplay: FC<StatementSettingsProps> = ({
 	statement,
 	setStatementToEdit,
@@ -22,14 +19,11 @@ const SubScreensToDisplay: FC<StatementSettingsProps> = ({
 
 	const subScreens = statement.subScreens ?? defaultStatementSubScreens;
 
-
 	return (
 		<div className="sub-screens-to-display">
 			<h3 className="title">{t("Tabs to display")}</h3>
 			{allScreensWithoutSettings.map((screenInfo) => {
 				const checked = subScreens.includes(screenInfo.link) ?? false;
-
-				
 
 				return (
 					<CustomSwitch

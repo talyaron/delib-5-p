@@ -46,8 +46,6 @@ const Button: FC<Props> = ({
 	};
 
 	if(disabled) buttonType = ButtonType.DISABLED;
-	
-	
 
 	return (
 		<button type={type} className={`${styles.button} ${className} ${btnTypes[buttonType]} ${dir === "rtl"?styles.rtl:styles.ltr}`} onClick={!disabled ? onClick : undefined}>

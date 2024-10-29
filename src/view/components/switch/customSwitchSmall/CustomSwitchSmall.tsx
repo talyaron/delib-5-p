@@ -28,9 +28,6 @@ const CustomSwitchSmall: FC<Props> = ({
 		setChecked();
 	};
 
-
-
-
 	//checked means multi-stage question
 
 	return (

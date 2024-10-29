@@ -1,6 +1,6 @@
 import { Statement, Role, StatementSchema, Collections, User, StatementSubscriptionSchema } from "delib-npm";
 import { doc, updateDoc, setDoc, Timestamp, getDoc } from "firebase/firestore";
-import { DB } from "../config";
+import { FireStore } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { getStatementSubscriptionId, writeZodError } from "@/controllers/general/helpers";
 import { store } from "@/model/store";
@@ -29,7 +29,7 @@ export async function setStatementSubscriptionToDB(
 			throw new Error("Error in getting statementsSubscribeId");
 
 		const statementsSubscribeRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementsSubscribeId
 		);
@@ -81,7 +81,7 @@ export async function updateSubscriberForStatementSubStatements(
 		const statementsSubscribeId = `${user.uid}--${statement.statementId}`;
 
 		const statementsSubscribeRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementsSubscribeId
 		);
@@ -111,7 +111,7 @@ export async function setRoleToDB(
 		if (!currentUserStatementSubscriptionId)
 			throw new Error("Error in getting statementSubscriptionId");
 		const currentUserStatementSubscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			currentUserStatementSubscriptionId
 		);
@@ -131,7 +131,7 @@ export async function setRoleToDB(
 		if (!statementSubscriptionId)
 			throw new Error("Error in getting statementSubscriptionId");
 		const statementSubscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementSubscriptionId
 		);
@@ -156,7 +156,7 @@ export async function updateMemberRole(
 			throw new Error("Error in getting statementSubscriptionId");
 
 		const statementSubscriptionRef = doc(
-			DB,
+			FireStore,
 			Collections.statementsSubscribe,
 			statementSubscriptionId
 		);

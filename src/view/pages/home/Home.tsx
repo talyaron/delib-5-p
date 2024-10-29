@@ -65,8 +65,6 @@ export default function Home() {
 		};
 	}, [user]);
 
-
-
 	return (
 		<main className="page slide-in">
 			{displayHeader && <HomeHeader />}     

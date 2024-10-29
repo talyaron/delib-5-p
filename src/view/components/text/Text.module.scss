@@ -8,6 +8,9 @@
     &--bold {
         font-weight: 400;
     }
+    a{
+        color:rgb(31, 121, 238);
+    }
 }
 
 .title {
@@ -17,4 +20,7 @@
     user-select: text;
     color: #3b4f7d;
     margin-bottom: .2rem;
+    a{
+        color:rgb(31, 121, 238);
+    }
 }

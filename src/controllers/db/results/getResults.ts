@@ -1,5 +1,5 @@
 // import { doc, getDoc } from "firebase/firestore";
-// import { DB } from "../config";
+// import { FireStore } from "../config";
 // import { Collections } from "delib-npm";
 import {
 	collection,
@@ -8,8 +8,8 @@ import {
 	query,
 	where,
 	orderBy,
-} from "@firebase/firestore";
-import { DB } from "../config";
+} from "firebase/firestore";
+import { FireStore } from "../config";
 import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
 import { z } from "zod";
 
@@ -43,7 +43,7 @@ export async function getResultsDB(statement: Statement): Promise<Statement[]> {
 
 //         const topStatementId = maxKeyInObject(selections);
 
-//         const statementRef = doc(DB, Collections.statements, topStatementId);
+//         const statementRef = doc(FireStore, Collections.statements, topStatementId);
 //         const statementSnap = await getDoc(statementRef);
 //         const statementData = statementSnap.data() as Statement;
 
@@ -60,7 +60,7 @@ async function getTopOptionsDB(statement: Statement): Promise<Statement[]> {
 		const { resultsSettings } = statement;
 		const numberOfOptions = resultsSettings?.numberOfResults || 1;
 
-		const topOptionsRef = collection(DB, Collections.statements);
+		const topOptionsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			topOptionsRef,
 			where("parentId", "==", statement.statementId),

@@ -124,8 +124,6 @@ export function signAnonymously() {
 // 			try {
 // 				if(!result) throw new Error("Result is undefined after redirect.")
 // 			if (result.user) {
-				
-
 
 // 					// User signed in successfully.
 // 					const user = result.user;

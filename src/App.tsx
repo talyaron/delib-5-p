@@ -28,7 +28,6 @@ import { selectInitLocation } from "./model/location/locationSlice";
 import { setHistory } from "./model/history/HistorySlice";
 import { listenToVersionFromDB } from "./controllers/db/version/getVersion";
 
-
 export default function App() {
 	// Hooks
 	const location = useLocation();
@@ -101,8 +100,6 @@ export default function App() {
 			unsubInAppNotifications()
 		};
 	}, [user]);
-
-
 
 	//handles
 

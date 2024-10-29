@@ -3,7 +3,6 @@ import { FC, useState, useRef } from "react";
 import styles from "./Dot.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
-
 interface Props {
   subStatement: Statement;
   maxEvaluators: number;
