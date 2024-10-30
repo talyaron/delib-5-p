@@ -1,48 +1,56 @@
-import { FC } from "react";
-
+import { FC } from 'react';
+import styles from './StatementTopNav.module.scss';
 // Third party imports
-import { Link } from "react-router-dom";
-import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
+import { Statement } from 'delib-npm';
 
 // Helpers
-import { showNavElements } from "./statementTopNavCont";
-import { allScreens } from "./StatementTopNavModel.tsx";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import useStatementColor from "@/controllers/hooks/useStatementColor.ts";
+import useStatementColor from '@/controllers/hooks/useStatementColor.ts';
+
+//icons
+import Chat from '@/assets/icons/chatTop.svg?react';
+import Bell from '@/assets/icons/bellIcon.svg?react';
+import View from '@/assets/icons/view.svg?react';
+import Burger from '@/assets/icons/burgerIcon.svg?react';
+import Home from '@/assets/icons/homeIcon.svg?react';
+
+//components
+import Back from '../../header/Back';
 
 interface Props {
-	statement: Statement;
-	statementSubscription: StatementSubscription | undefined;
-	screen: Screen;
+	statement?: Statement;
 }
 
-const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }) => {
-	const { t } = useLanguage();
-	const {deliberativeElement, isResult} = statement;
-	const headerStyle = useStatementColor({deliberativeElement, isResult});
-	
-	const _navArray = showNavElements({ statement, statementSubscription, navArray: allScreens });
+const StatementTopNav: FC<Props> = ({ statement }) => {
+	const deliberativeElement = statement?.deliberativeElement;
+	const isResult = statement?.isResult;
+	const headerStyle = useStatementColor({ deliberativeElement, isResult });
 
 	return (
-		<nav className="page__header__nav" data-cy="statement-nav">
-			{_navArray.map((screenInfo: NavObject) => (
-				<Link
-					key={screenInfo.id}
-					aria-label={screenInfo.name}
-					to={`/statement/${statement.statementId}/${screenInfo.link}${screenInfo.link === Screen.VOTE ? "/votes-voted" : ""}`}
-					className={`page__header__nav__button ${screen === screenInfo.link
-						? "page__header__nav__button--selected"
-						: ""
-					}`}
-					style={{ "maxWidth":_navArray.length === 1 ? '90%':"none"}}
-				>
-					<p className="page__header__nav__button__tabTxt" style={{color: headerStyle.backgroundColor}}>
-						{t(screenInfo.name)}
-					</p>					
-					<screenInfo.icon fill={screen === screenInfo.link ? headerStyle.backgroundColor : 'none'} />
-				</Link>
-			))}
-			
+		<nav
+			className={styles.nav}
+			data-cy='statement-nav'
+			style={{ backgroundColor: headerStyle.backgroundColor }}
+		>
+			<div className={styles.wrapper}>
+				<button>
+					<Burger color={headerStyle.color} />
+				</button>
+				<button>
+					<Chat color={headerStyle.color} />
+				</button>
+				<button>
+					<Bell color={headerStyle.color} />
+				</button>
+				<button>
+					<View color={headerStyle.color} />
+				</button>
+				<button className={styles.home}>
+					<Home color={headerStyle.color} />
+				</button>
+				<button className={styles.back}>
+					<Back statement={statement} headerColor={headerStyle}/>
+				</button>
+			</div>
 		</nav>
 	);
 };

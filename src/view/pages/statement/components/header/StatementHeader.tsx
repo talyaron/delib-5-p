@@ -16,7 +16,7 @@ import toggleNotifications from "@/controllers/db/notifications/notificationsHel
 import { store } from "@/model/store";
 
 // Custom components
-import StatementTopNav from "../nav/top/StatementTopNav";
+
 import EditTitle from "@/view/components/edit/EditTitle";
 import BellSlashIcon from "@/assets/icons/bellSlashIcon.svg?react";
 import BellIcon from "@/assets/icons/bellIcon.svg?react";
@@ -55,7 +55,6 @@ interface Props {
 }
 
 const StatementHeader: FC<Props> = ({
-	screen,
 	statement,
 	statementSubscription,
 	topParentStatement,
@@ -234,13 +233,6 @@ const StatementHeader: FC<Props> = ({
 					)}
 				</Menu>
 			</div>
-			{statement && (
-				<StatementTopNav
-					statement={statement}
-					screen={screen}
-					statementSubscription={statementSubscription}
-				/>
-			)}
 			{showInvitationPanel && (
 				<InvitePanel
 					setShowModal={setShowInvitationPanel}

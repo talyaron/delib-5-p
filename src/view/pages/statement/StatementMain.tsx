@@ -43,6 +43,7 @@ import AskPermission from "@/view/components/askPermission/AskPermission";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
 import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 import { createSelector } from "@reduxjs/toolkit";
+import StatementTopNav from "./components/nav/top/StatementTopNav";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -222,7 +223,7 @@ const StatementMain: FC = () => {
 						setShowAskPermission={setShowAskPermission}
 					/>
 				)}
-
+				<StatementTopNav statement={statement} />
 				<StatementHeader
 					statement={statement}
 					statementSubscription={statementSubscription}

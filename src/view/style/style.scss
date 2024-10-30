@@ -40,6 +40,8 @@
   //shadow
   --shadow: rgba(181, 197, 232, 0.486);
   --radius:5px;
+  --radius-XL:28px;
+
 
   //buttons
   --inactive: rgb(207, 207, 207);
@@ -337,7 +339,7 @@
   --text-blue-contrast: #3e61b0;
   --text-crimson-contrast: #ff5b9c;
 
-  --wrapper-max-width: 75ch;
+  --wrapper-max-width: 47rem;
 }
 
 * {
