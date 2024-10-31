@@ -39,10 +39,10 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 	return (
 		<div
-			className={styles[`enhanced-evaluation`]}
+			className={`${styles[`enhanced-evaluation`]} evolution-element`}
 			// className={styles[`enhanced-evaluation] ${dir === "ltr" ? "mirrorReverse" : ""}`]}
 		>
-			<div className={styles["evaluation-score"]}>
+			<div className={`${styles["evaluation-score"]} con-element`}>
 				{shouldDisplayScore === true ? sumCon : null}
 			</div>
 			<div
@@ -73,7 +73,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 			)}
 			<div />
 			{learningEvaluation > 0 && (
-				<div className={styles["evaluation-explain"]}>					
+				<div className={`${styles["evaluation-explain"]}`}>					
 					<span>{t("Disagree")}</span>	
 					<span>{t("Agree")}</span>				
 				</div>

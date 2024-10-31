@@ -268,11 +268,13 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 					</Menu>
 				</div>
 				<div className='bottom-icons'>
-					<StatementChatMore statement={statement} />
+					<div className='chat-more-element'>
+						<StatementChatMore statement={statement} />
+					</div>
 					<Evaluation parentStatement={parentStatement} statement={statement} />
 					{shouldLinkToChildren && (
 						<button
-							className='add-question-btn'
+							className='add-question-btn more-question'
 							aria-label='Add question button'
 							onClick={() => setIsNewStatementModalOpen(true)}
 						>
