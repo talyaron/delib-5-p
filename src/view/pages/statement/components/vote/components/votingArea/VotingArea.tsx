@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import {  Statement } from 'delib-npm';
+import {  DeliberativeElement, Statement } from 'delib-npm';
 import { useParams } from 'react-router-dom';
 import OptionBar from '../optionBar/OptionBar';
 import './VotingArea.scss';
@@ -26,7 +26,7 @@ const VotingArea: FC<VotingAreaProps> = ({
 	//if statementSettings.inVotingGetOnlyResults is true, only show results or selections
 	const _options = statement.statementSettings?.inVotingGetOnlyResults
 		? subStatements.filter((st) => st.isResult)
-		: subStatements;
+		: subStatements.filter(st=>st.deliberativeElement === DeliberativeElement.option);
 
 	const options = getSortedVotingOptions({
 		statement,

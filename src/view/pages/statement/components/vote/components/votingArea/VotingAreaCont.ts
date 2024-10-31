@@ -1,4 +1,4 @@
-import { DeliberativeElement, Statement } from "delib-npm";
+import { Statement } from "delib-npm";
 import { setSelectionsToOptions, sortOptionsIndex } from "../../statementVoteCont";
 
 export function isVerticalOptionBar(width: number, optionsCount: number) {
@@ -24,10 +24,7 @@ export const getSortedVotingOptions = ({
 	subStatements,
 	sort,
 }: GetVotingOptionsParams): Statement[] => {
-	const options = subStatements.filter((subStatement: Statement) =>
-		subStatement.deliberativeElement === DeliberativeElement.option
-	);
-	const optionsWithSelections = setSelectionsToOptions(statement, options);
+	const optionsWithSelections = setSelectionsToOptions(statement, subStatements);
 
 	return sortOptionsIndex(optionsWithSelections, sort);
 };
