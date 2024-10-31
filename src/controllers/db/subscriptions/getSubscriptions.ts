@@ -106,13 +106,18 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 					const statementSubscription = change.doc.data() as StatementSubscription;
 					if (!Array.isArray(statementSubscription.statement.results)) {
-						
+
 						const subscriptionRef = doc(FireStore, Collections.statementsSubscribe, statementSubscription.statementsSubscribeId)
 						updateDoc(subscriptionRef, { "statement.results": [] })
 						statementSubscription.statement.results = [];
 					}
 
-					StatementSubscriptionSchema.parse(statementSubscription);
+					const results = StatementSubscriptionSchema.safeParse(statementSubscription);
+					if (results.success === false) {
+						console.info(statementSubscription)
+						console.error(results.error);
+						throw new Error("Statement subscription schema error");
+					}
 
 					if (change.type === "added") {
 
@@ -159,7 +164,7 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 
 };
 
-export async function getStatmentsSubsciptions(): Promise<StatementSubscription[]>{
+export async function getStatmentsSubsciptions(): Promise<StatementSubscription[]> {
 	try {
 		const user = store.getState().user.user;
 		if (!user) throw new Error("User not logged in");

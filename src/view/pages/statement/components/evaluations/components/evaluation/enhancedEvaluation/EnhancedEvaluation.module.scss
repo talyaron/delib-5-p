@@ -4,6 +4,11 @@
   grid-template-columns: auto 1fr auto;
   gap: 0.5rem;
   grid-template-rows: auto auto;
+  @media screen and (max-width: 500px) {
+   width: fit-content;
+   margin: auto;
+    margin-top: 1rem;
+  }
 
 
   .evaluation-thumbs {

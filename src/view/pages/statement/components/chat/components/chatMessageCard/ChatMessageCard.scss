@@ -128,17 +128,17 @@
     margin-top: auto;
     /* Push icons to the bottom */
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 500px) {
       display: grid;
       align-items: center;
       justify-content: center;
-      grid-template-rows: auto auto;
+      grid-template-rows: auto 30px;
       grid-template-columns: repeat(2, 1fr);
-      row-gap: 25px;
+      row-gap: 0px;
       width: 100%;
 
       grid-template-areas:
-        "evaluation"
+        "evaluation evaluation"
         "more question";
 
       .evolution-element {
