@@ -70,6 +70,41 @@
         width: 24px;
         height: 24px;
       }
+
+      @media screen and (max-width: 500px) {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        grid-template-rows: auto 30px;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 0px;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+  
+        grid-template-areas:
+          "evaluation evaluation"
+          "more question";
+  
+        .evolution-element {
+          grid-area: evaluation;
+          display: flex;
+          justify-content:end;
+          padding: 5px;
+        }
+  
+        .chat-more-element {
+          grid-area: more;
+        }
+  
+        .more-question {
+          grid-area: question;
+          display: flex;
+          justify-content:end;
+          padding: 5px;
+        }
+  
+      }
     }
 
     &:nth-child(-1) {
