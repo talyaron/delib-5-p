@@ -1,49 +1,49 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom";
-import { User, Role, Screen, Access } from "delib-npm";
+import { useNavigate, useParams } from 'react-router-dom';
+import { User, Role, Screen, Access } from 'delib-npm';
 
 // firestore
-import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
+import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
 import {
 	listenToStatement,
 	listenToStatementSubscription,
 	listenToAllDescendants,
 	listenToSubStatements,
-} from "@/controllers/db/statements/listenToStatements";
+} from '@/controllers/db/statements/listenToStatements';
 import {
 	updateSubscriberForStatementSubStatements,
 	setStatementSubscriptionToDB,
-} from "@/controllers/db/subscriptions/setSubscriptions";
+} from '@/controllers/db/subscriptions/setSubscriptions';
 
-import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
+import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { RootState } from "@/model/store";
-import { userSelector } from "@/model/users/userSlice";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { RootState } from '@/model/store';
+import { userSelector } from '@/model/users/userSlice';
+import { useSelector } from 'react-redux';
 
 // Hooks & Helpers
-import { MapProvider } from "@/controllers/hooks/useMap";
-import { statementTitleToDisplay } from "@/controllers/general/helpers";
-import { availableScreen } from "./StatementCont";
-import { useIsAuthorized } from "@/controllers/hooks/authHooks";
+import { MapProvider } from '@/controllers/hooks/useMap';
+import { statementTitleToDisplay } from '@/controllers/general/helpers';
+import { availableScreen } from './StatementCont';
+import { useIsAuthorized } from '@/controllers/hooks/authHooks';
 
 // Custom components
-import LoadingPage from "../loadingPage/LoadingPage";
-import Page404 from "../page404/Page404";
-import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
-import ProfileImage from "../../components/profileImage/ProfileImage";
-import StatementHeader from "./components/header/StatementHeader";
-import SwitchScreens from "./components/SwitchScreens";
-import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
-import AskPermission from "@/view/components/askPermission/AskPermission";
-import FollowMeToast from "./components/followMeToast/FollowMeToast";
-import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
-import { createSelector } from "@reduxjs/toolkit";
-import StatementTopNav from "./components/nav/top/StatementTopNav";
+import LoadingPage from '../loadingPage/LoadingPage';
+import Page404 from '../page404/Page404';
+import UnAuthorizedPage from '../unAuthorizedPage/UnAuthorizedPage';
+import ProfileImage from '../../components/profileImage/ProfileImage';
+import StatementHeader from './components/header/StatementHeader';
+import SwitchScreens from './components/SwitchScreens';
+import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
+import AskPermission from '@/view/components/askPermission/AskPermission';
+import FollowMeToast from './components/followMeToast/FollowMeToast';
+import { listenToUserSettings } from '@/controllers/db/users/getUserDB';
+import { createSelector } from '@reduxjs/toolkit';
+import Title from './components/header/title/Title';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -205,7 +205,7 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<div className="page">
+			<div className='page'>
 				{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 				{talker && (
 					<button
@@ -223,7 +223,6 @@ const StatementMain: FC = () => {
 						setShowAskPermission={setShowAskPermission}
 					/>
 				)}
-				<StatementTopNav statement={statement} />
 				<StatementHeader
 					statement={statement}
 					statementSubscription={statementSubscription}
@@ -232,6 +231,10 @@ const StatementMain: FC = () => {
 					showAskPermission={showAskPermission}
 					setShowAskPermission={setShowAskPermission}
 					role={role}
+				/>
+				<Title
+					statement={statement}
+					statementSubscription={statementSubscription}
 				/>
 				<MapProvider>
 					<FollowMeToast role={role} statement={statement} />

@@ -163,8 +163,9 @@ export function getPastelColor() {
 	return `hsl(${360 * Math.random()},100%,75%)` || "red";
 }
 
-export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
+export function calculateFontSize(text: string|undefined, maxSize = 6, minSize = 14) {
 	// Set the base font size and a multiplier for adjusting based on text length
+	if (!text) return `${minSize}px`;
 	const baseFontSize = minSize;
 	const fontSizeMultiplier = 0.2;
 
