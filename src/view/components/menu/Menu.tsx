@@ -1,18 +1,23 @@
 import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
+import Burger from '@/assets/icons/burgerIcon.svg?react';
 import EllipsisIcon from "@/assets/icons/ellipsisIcon.svg?react";
-import "./Menu.scss";
+import styles from "./Menu.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface MenuProps extends ComponentProps<"div"> {
 	iconColor: string;
 	isMenuOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
+	isHamburger?: boolean;
+	children?: React.ReactNode;
+
 }
 
 const Menu: FC<MenuProps> = ({
 	iconColor,
 	isMenuOpen,
+	isHamburger =false,
 	setIsOpen,
 	children,
 }) => {
@@ -23,16 +28,16 @@ const Menu: FC<MenuProps> = ({
 	}
    
 	return (
-		<div className="menu">
+		<div className={styles.menu}>
 			<IconButton onClick={() => setIsOpen(!isMenuOpen)}>
-				<EllipsisIcon style={{ color: iconColor }} />
+				{isHamburger?<Burger style={{ color: iconColor }}/>:<EllipsisIcon style={{ color: iconColor }} />}
 			</IconButton>
 
 			{isMenuOpen && (
-				<div className={`menu-content ${dir}`}>
+				<div className={`${styles["menu-content"]} ${dir}`}>
 					{children}
 					<button
-						className="invisibleBackground"
+						className={styles.invisibleBackground}
 						onClick={() => setIsOpen(false)}
 						aria-label="Close menu"
 					/>

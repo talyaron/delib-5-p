@@ -12,11 +12,6 @@ import { store } from '@/model/store';
 
 // Custom components
 
-import BellSlashIcon from '@/assets/icons/bellSlashIcon.svg?react';
-import BellIcon from '@/assets/icons/bellIcon.svg?react';
-import FollowMe from '@/assets/icons/follow.svg?react';
-import ShareIcon from '@/assets/icons/shareIcon.svg?react';
-import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
 
 // Hooks
 import useStatementColor from '@/controllers/hooks/useStatementColor';
@@ -27,7 +22,6 @@ import { setFollowMeDB } from '@/controllers/db/statements/setStatements';
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
 import Back from './Back';
-import HomeButton from './HomeButton';
 import InvitePanel from './invitePanel/InvitePanel';
 
 // icons
@@ -119,67 +113,26 @@ const StatementHeader: FC<Props> = ({
 		}
 	}
 
-	const menuIconStyle = {
-		color: headerColor.backgroundColor,
-		width: '24px',
-	};
 
 	return (
 		<div
 			className={`page__header ${dir}`}
 			style={{ ...headerColor, direction: dir }}
 		>
-			<StatementTopNav statement={statement} />
+			<StatementTopNav
+				statement={statement}
+				handleShare={handleShare}
+				handleFollowMe={handleFollowMe}
+				handleToggleNotifications={handleToggleNotifications}
+				handleInvitePanel={handleInvitePanel}
+				handleLogout={handleLogout}
+				setIsHeaderMenuOpen={setIsHeaderMenuOpen}
+				permission={permission}
+				isHeaderMenuOpen={isHeaderMenuOpen}
+
+			/>
 			<div className='page__header__wrapper'>
-				{(enableNavigationalElements || isAdmin) && (
-					<div className='page__header__wrapper__actions'>
-						<Back statement={statement} headerColor={headerColor} />
-						<HomeButton headerColor={headerColor} />
-					</div>
-				)}
-
-				<Menu
-					setIsOpen={setIsHeaderMenuOpen}
-					isMenuOpen={isHeaderMenuOpen}
-					iconColor={headerColor.color}
-				>
-					<MenuOption
-						label={t('Share')}
-						icon={<ShareIcon style={menuIconStyle} />}
-						onOptionClick={handleShare}
-					/>
-
-					<MenuOption
-						label={t(permission ? 'Turn off' : 'Turn on')}
-						icon={
-							permission ? (
-								<BellIcon style={menuIconStyle} />
-							) : (
-								<BellSlashIcon style={menuIconStyle} />
-							)
-						}
-						onOptionClick={handleToggleNotifications}
-					/>
-					<MenuOption
-						label={t('Disconnect')}
-						icon={<DisconnectIcon style={menuIconStyle} />}
-						onOptionClick={handleLogout}
-					/>
-					{isAdmin && (
-						<>
-							<MenuOption
-								label={t('Follow Me')}
-								icon={<FollowMe style={menuIconStyle} />}
-								onOptionClick={handleFollowMe}
-							/>
-							<MenuOption
-								label={t('Invite with PIN number')}
-								icon={<InvitationIcon style={menuIconStyle} />}
-								onOptionClick={handleInvitePanel}
-							/>
-						</>
-					)}
-				</Menu>
+				
 			</div>
 			{showInvitationPanel && (
 				<InvitePanel

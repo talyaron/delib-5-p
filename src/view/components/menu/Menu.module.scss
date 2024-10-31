@@ -1,5 +1,8 @@
 .menu {
     position: relative;
+    
+    z-index: 5;
+    width: fit-content;
     .menu-content {
         position: absolute;
         display: flex;
