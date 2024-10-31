@@ -43,7 +43,6 @@ import AskPermission from '@/view/components/askPermission/AskPermission';
 import FollowMeToast from './components/followMeToast/FollowMeToast';
 import { listenToUserSettings } from '@/controllers/db/users/getUserDB';
 import { createSelector } from '@reduxjs/toolkit';
-import Title from './components/header/title/Title';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -231,10 +230,6 @@ const StatementMain: FC = () => {
 					showAskPermission={showAskPermission}
 					setShowAskPermission={setShowAskPermission}
 					role={role}
-				/>
-				<Title
-					statement={statement}
-					statementSubscription={statementSubscription}
 				/>
 				<MapProvider>
 					<FollowMeToast role={role} statement={statement} />

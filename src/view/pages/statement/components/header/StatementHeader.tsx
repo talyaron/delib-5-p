@@ -7,25 +7,14 @@ import { useLocation } from 'react-router-dom';
 // Helpers
 import toggleNotifications from '@/controllers/db/notifications/notificationsHelpers';
 
-// Redux Store
-import { store } from '@/model/store';
-
-// Custom components
-
-
 // Hooks
-import useStatementColor from '@/controllers/hooks/useStatementColor';
+
 import useNotificationPermission from '@/controllers/hooks/useNotificationPermission';
 import useToken from '@/controllers/hooks/useToken';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { setFollowMeDB } from '@/controllers/db/statements/setStatements';
-import Menu from '@/view/components/menu/Menu';
-import MenuOption from '@/view/components/menu/MenuOption';
-import Back from './Back';
 import InvitePanel from './invitePanel/InvitePanel';
 
-// icons
-import InvitationIcon from '@/assets/icons/invitation.svg?react';
 import { logOut } from '@/controllers/db/auth';
 import StatementTopNav from '../nav/top/StatementTopNav';
 
@@ -43,29 +32,17 @@ const StatementHeader: FC<Props> = ({
 	statement,
 	topParentStatement,
 	setShowAskPermission,
-	role,
 }) => {
 	// Hooks
 	const { pathname } = useLocation();
 
 	const token = useToken();
-	const deliberativeElement = statement?.deliberativeElement;
-	const isResult = statement?.isResult;
-	const headerColor = useStatementColor({ deliberativeElement, isResult });
+
 	const permission = useNotificationPermission(token);
 	const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 	const [showInvitationPanel, setShowInvitationPanel] = useState(false);
 
 	const { t, dir } = useLanguage();
-
-	// Redux Store
-	const user = store.getState().user.user;
-	const isAdmin = statement?.creatorId === user?.uid || role === Role.admin;
-
-	const enableNavigationalElements =
-		statement?.statementSettings?.enableNavigationalElements !== undefined
-			? statement?.statementSettings?.enableNavigationalElements
-			: true;
 
 	function handleShare() {
 		const baseUrl = window.location.origin;
@@ -113,11 +90,9 @@ const StatementHeader: FC<Props> = ({
 		}
 	}
 
-
 	return (
 		<div
 			className={`page__header ${dir}`}
-			style={{ ...headerColor, direction: dir }}
 		>
 			<StatementTopNav
 				statement={statement}
@@ -129,11 +104,7 @@ const StatementHeader: FC<Props> = ({
 				setIsHeaderMenuOpen={setIsHeaderMenuOpen}
 				permission={permission}
 				isHeaderMenuOpen={isHeaderMenuOpen}
-
 			/>
-			<div className='page__header__wrapper'>
-				
-			</div>
 			{showInvitationPanel && (
 				<InvitePanel
 					setShowModal={setShowInvitationPanel}
