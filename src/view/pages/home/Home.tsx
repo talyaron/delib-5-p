@@ -48,7 +48,7 @@ export default function Home() {
 		try {
 			if (user) {
 				unsubscribe = listenToStatementSubscriptions(30);
-				updatesUnsubscribe = getNewStatementsFromSubscriptions();
+				updatesUnsubscribe = ()=>{return};
 			}
 		} catch (error) { }
 

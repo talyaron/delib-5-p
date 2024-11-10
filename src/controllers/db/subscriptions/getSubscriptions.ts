@@ -119,6 +119,10 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 						throw new Error("Statement subscription schema error");
 					}
 
+					//prevent listening to a document statement
+					console.log(statementSubscription.statement.statement, statementSubscription.statement.statementType)
+					if(statementSubscription.statement.statementType === "document") return;
+
 					if (change.type === "added") {
 
 						const unsubFunction = listenToStatement(statementSubscription.statementId);

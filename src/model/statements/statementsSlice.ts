@@ -357,7 +357,7 @@ export const statementsChildSelector =
 export const subStatementsByTopParentIdMemo = (statementId: string | undefined) => createSelector(
 	[statementsSelector],
 	(statements) =>
-		statements.filter((statement) => statement.topParentId === statementId)
+		statements.filter((statement) => statement.topParentId === statementId && statement.statementType !== StatementType.document)
 );
 
 export const statementDescendantsSelector = createSelector(
