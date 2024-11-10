@@ -120,7 +120,6 @@ export function listenToStatementSubscriptions(numberOfStatements = 30): () => v
 					}
 
 					//prevent listening to a document statement
-					console.log(statementSubscription.statement.statement, statementSubscription.statement.statementType)
 					if(statementSubscription.statement.statementType === "document") return;
 
 					if (change.type === "added") {
