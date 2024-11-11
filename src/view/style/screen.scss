@@ -8,6 +8,15 @@
         justify-content: space-between;
     }
 
+    .wrapper {
+        max-width: 75ch;
+
+        @media screen and (max-width: $tablet) {
+            padding: 0 1rem 1rem 1rem;
+
+        }
+    }
+
     h1 {
         text-align: start;
         color: var(--text-headline);

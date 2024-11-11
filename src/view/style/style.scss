@@ -1,3 +1,7 @@
+$mobile:440px;
+$tablet:768px;
+$desktop:1024px;
+
 @import './homePage.scss';
 @import './input.scss';
 @import './start.scss';
@@ -15,6 +19,11 @@
 	--statementBackground: #f2f6ff;
 	--inputBackground: #f5fcff;
 	--mainBackgroundError: #ff0000;
+
+	//sizes
+	--mobile: 440px;
+	--tablet: 768px;
+	--desktop: 1024px;
 
 	//alerts
 	--alert: #dd90b6;

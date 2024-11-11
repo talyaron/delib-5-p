@@ -71,7 +71,7 @@
 	}
 
 	// mobile
-	@media (max-width: 768px) {
+	@media (max-width: var(--tablet)) {
 		width: 95%;
 	}
 
