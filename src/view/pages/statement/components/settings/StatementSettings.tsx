@@ -21,6 +21,7 @@ import { listenToStatementMetaData } from '@/controllers/db/statements/statement
 
 // Custom components
 import Loader from '@/view/components/loaders/Loader';
+import Stages from './components/stages/Stages';
 
 const StatementSettings: FC = () => {
 	// * Hooks * //
@@ -115,11 +116,14 @@ const StatementSettings: FC = () => {
 					<Loader />
 				</div>
 			) : (
-				<StatementSettingsForm
-					statement={statementToEdit}
-					parentStatement={parentStatement}
-					setStatementToEdit={setStatementToEdit}
-				/>
+				<>
+					<StatementSettingsForm
+						statement={statementToEdit}
+						parentStatement={parentStatement}
+						setStatementToEdit={setStatementToEdit}
+					/>
+					<Stages />
+				</>
 			)}
 		</main>
 	);

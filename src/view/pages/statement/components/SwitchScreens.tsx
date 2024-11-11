@@ -5,6 +5,7 @@ import { Screen, Statement, StatementSubscription, User } from 'delib-npm';
 
 // Custom components
 import Explanation from './explanation/Explanation';
+import StatementSettings from './settings/StatementSettings';
 
 interface SwitchScreensProps {
 	screen: string | undefined;
@@ -23,9 +24,11 @@ export default function SwitchScreens({
 
 	switch (screen) {
 		case Screen.EXPLANATION:
-			return <Explanation statement={statement} />;
+			return <Explanation />;
+		case Screen.SETTINGS:
+			return <StatementSettings />;
 
 		default:
-			return <Explanation statement={statement} />;
+			return <Explanation />;
 	}
 }

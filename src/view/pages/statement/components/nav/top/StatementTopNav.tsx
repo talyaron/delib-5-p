@@ -15,6 +15,7 @@ import InvitationIcon from '@/assets/icons/invitation.svg?react';
 import FollowMe from '@/assets/icons/follow.svg?react';
 import ShareIcon from '@/assets/icons/shareIcon.svg?react';
 import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
+import SettingsIcon from '@/assets/icons/settings.svg?react';
 
 //components
 import Back from '../../header/Back';
@@ -24,6 +25,7 @@ import { statementSubscriptionSelector } from '@/model/statements/statementsSlic
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
 	statement?: Statement;
@@ -50,6 +52,7 @@ const StatementTopNav: FC<Props> = ({
 }) => {
 	//hooks
 	const { t } = useLanguage();
+	const navigate = useNavigate();
 
 	// const
 	const deliberativeElement = statement?.deliberativeElement;
@@ -70,6 +73,11 @@ const StatementTopNav: FC<Props> = ({
 			: true;
 	const isAdmin = statementSubscription?.role === Role.admin;
 	const allowNavigation = enableNavigationalElements || isAdmin;
+
+	function handleGoToSettings() {
+		if (statement && statement.statementId)
+			navigate(`/statement/${statement?.statementId}/settings`);
+	}
 
 	return (
 		<nav
@@ -117,6 +125,11 @@ const StatementTopNav: FC<Props> = ({
 									label={t('Invite with PIN number')}
 									icon={<InvitationIcon style={menuIconStyle} />}
 									onOptionClick={handleInvitePanel}
+								/>
+								<MenuOption
+									label={t('Settings')}
+									icon={<SettingsIcon style={menuIconStyle} />}
+									onOptionClick={handleGoToSettings}
 								/>
 							</>
 						)}

@@ -1,14 +1,17 @@
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { statementSelector } from '@/model/statements/statementsSlice';
 import { SetFavorite } from '@/view/components/setFavorite/SetFavorite';
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-interface Props {
-	statement: Statement | undefined;
-}
-
-const Explanation: FC<Props> = ({ statement }) => {
+const Explanation: FC = () => {
 	const { t } = useLanguage();
+	const { statementId } = useParams();
+	const statement: Statement | undefined = useSelector(
+		statementSelector(statementId)
+	);
 
 	return (
 		<div className="screen">
