@@ -75,13 +75,13 @@ export default function StepOneStatementInput({
 
 	return (
 		<>
-			<h4 className='similarities__title'>{t('Compose your suggestion')}</h4>
-			<div className='similarities__titleInput'>
-				<label htmlFor='titleInput'>{t('Title')}</label>
+			<h4 className="similarities__title">{t('Compose your suggestion')}</h4>
+			<div className="similarities__titleInput">
+				<label htmlFor="titleInput">{t('Title')}</label>
 				<input
 					ref={titleInputRef}
-					type='text'
-					id='titleInput'
+					type="text"
+					id="titleInput"
 					placeholder={t(
 						'Suggestion title. What people would see at first sight'
 					)}
@@ -106,12 +106,12 @@ export default function StepOneStatementInput({
 				</>
 			) : (
 				<>
-					<div className='similarities__titleInput'>
-						<label htmlFor='descriptionInput'>{t('Description')}</label>
+					<div className="similarities__titleInput">
+						<label htmlFor="descriptionInput">{t('Description')}</label>
 						<textarea
-							className='similarities__titleInput'
+							className="similarities__titleInput"
 							rows={5}
-							id='descriptionInput'
+							id="descriptionInput"
 							placeholder={t(
 								'Formulate here the description. Add as much detail as you can to help others understand your suggestion'
 							)}
@@ -124,7 +124,7 @@ export default function StepOneStatementInput({
 							}
 						/>
 					</div>
-					<div className='similarities__buttonBox'>
+					<div className="similarities__buttonBox">
 						<Button
 							icon={<SendIcon />}
 							text={t('Submit Suggestion')}

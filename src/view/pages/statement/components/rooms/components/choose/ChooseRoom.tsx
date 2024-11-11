@@ -1,20 +1,20 @@
-import { FC, useState } from "react";
+import { FC, useState } from 'react';
 
 // Third party
-import { Statement, StatementType } from "delib-npm";
+import { Statement, StatementType } from 'delib-npm';
 
 // Custom components
-import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import styles from "./ChooseRoom.module.scss";
+import RoomChoosingCard from './roomChoosingCard/RoomChoosingCard';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import styles from './ChooseRoom.module.scss';
 
-import Button from "@/view/components/buttons/button/Button";
+import Button from '@/view/components/buttons/button/Button';
 
-import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
+import CreateStatementModal from '../../../createStatementModal/CreateStatementModal';
 
 interface Props {
-  statement: Statement;
-  topics: Statement[];
+	statement: Statement;
+	topics: Statement[];
 }
 
 const ChooseRoom: FC<Props> = ({ statement, topics }) => {
@@ -23,15 +23,13 @@ const ChooseRoom: FC<Props> = ({ statement, topics }) => {
 
 	return (
 		<div className={`${styles.wrapper} wrapper`}>
-    
 			<div className="btns">
-				<Button text={t("Create new room")} onClick={() => handleAddRoom()} />
+				<Button text={t('Create new room')} onClick={() => handleAddRoom()} />
 			</div>
 			<div className="roomsCards__wrapper">
 				{topics.map((topic: Statement) => {
 					return <RoomChoosingCard key={topic.statementId} topic={topic} />;
 				})}
-       
 			</div>
 			{showModal && (
 				<CreateStatementModal

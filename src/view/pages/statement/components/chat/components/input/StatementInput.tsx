@@ -70,16 +70,16 @@ const StatementInput: FC<Props> = ({ statement }) => {
 	return (
 		<form
 			onSubmit={(e) => handleSubmitInput(e)}
-			name='theForm'
-			className='page__footer__form'
+			name="theForm"
+			className="page__footer__form"
 			style={{ flexDirection: direction }}
 		>
 			<textarea
 				style={{ borderTop: `2px solid ${statementColor.backgroundColor}` }}
-				data-cy='statement-chat-input'
-				className='page__footer__form__input'
-				aria-label='Form Input'
-				name='newStatement'
+				data-cy="statement-chat-input"
+				className="page__footer__form__input"
+				aria-label="Form Input"
+				name="newStatement"
 				ref={textareaRef}
 				onKeyUp={(e) => handleKeyUp(e)}
 				value={message}
@@ -88,11 +88,11 @@ const StatementInput: FC<Props> = ({ statement }) => {
 				placeholder={t('Type your message here...')}
 			></textarea>
 			<button
-				type='submit'
-				className='page__footer__form__sendBtnBox'
-				aria-label='Submit Button'
+				type="submit"
+				className="page__footer__form__sendBtnBox"
+				aria-label="Submit Button"
 				style={statementColor}
-				data-cy='statement-chat-send-btn'
+				data-cy="statement-chat-send-btn"
 			>
 				<SendIcon color={statementColor.color} />
 			</button>

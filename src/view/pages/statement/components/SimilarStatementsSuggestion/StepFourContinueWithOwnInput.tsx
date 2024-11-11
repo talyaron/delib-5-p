@@ -13,21 +13,21 @@ export default function StepFourContinueWithOwnInput({
 }: Readonly<StepFourContinueWithOwnInput>) {
 	return (
 		<>
-			<h4 className='similarities__title'>Your statement details</h4>
-			<div className='similarities__titleInput'>
-				<label htmlFor='titleInput'>Your statement title</label>
+			<h4 className="similarities__title">Your statement details</h4>
+			<div className="similarities__titleInput">
+				<label htmlFor="titleInput">Your statement title</label>
 				<input
-					type='text'
-					id='titleInput'
+					type="text"
+					id="titleInput"
 					value={newStatementInput.title}
 					disabled
 				/>
 			</div>
-			<div className='similarities__titleInput'>
-				<label htmlFor='descriptionInput'>Your statement description</label>
+			<div className="similarities__titleInput">
+				<label htmlFor="descriptionInput">Your statement description</label>
 				<textarea
 					rows={5}
-					id='descriptionInput'
+					id="descriptionInput"
 					value={newStatementInput.description}
 					disabled
 					placeholder={
@@ -35,11 +35,11 @@ export default function StepFourContinueWithOwnInput({
 					}
 				/>
 			</div>
-			<div className='twoButtonBox'>
+			<div className="twoButtonBox">
 				<SubmitStatementButton
 					icon={SendIcon}
-					text='Submit my Statement'
-					textColor='var(--white)'
+					text="Submit my Statement"
+					textColor="var(--white)"
 					onClick={onFormSubmit}
 				/>
 			</div>

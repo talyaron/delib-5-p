@@ -30,15 +30,15 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 	}, []);
 
 	return (
-		<div className='title-and-description'>
-			<label htmlFor='statement-title'>
+		<div className="title-and-description">
+			<label htmlFor="statement-title">
 				<VisuallyHidden labelName={t('Group Title')}></VisuallyHidden>
 				<input
-					id='statement-title'
-					data-cy='statement-title'
+					id="statement-title"
+					data-cy="statement-title"
 					ref={titleInputRef}
-					type='text'
-					name='statement'
+					type="text"
+					name="statement"
 					placeholder={t('Group Title')}
 					value={title}
 					onChange={(e) => {
@@ -51,11 +51,11 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 					required={true}
 				/>
 			</label>
-			<label htmlFor='statement-description'>
+			<label htmlFor="statement-description">
 				<VisuallyHidden labelName={t('Group Description')}></VisuallyHidden>
 				<textarea
-					id='statement-description'
-					name='description'
+					id="statement-description"
+					name="description"
 					placeholder={t('Group Description')}
 					rows={3}
 					defaultValue={statement.description}
@@ -68,19 +68,19 @@ const TitleAndDescription: FC<StatementSettingsProps> = ({
 					}}
 				/>
 			</label>
-			<div className='btns'>
+			<div className="btns">
 				<Button
 					text={t('Save')}
-					aria-label='Submit button'
-					data-cy='settings-statement-submit-btn'
-					type='submit'
+					aria-label="Submit button"
+					data-cy="settings-statement-submit-btn"
+					type="submit"
 				/>
 				<Button
 					text={t('Cancel')}
-					type='button'
+					type="button"
 					buttonType={ButtonType.SECONDARY}
-					aria-label='Cancel button'
-					data-cy='settings-statement-cancel-btn'
+					aria-label="Cancel button"
+					data-cy="settings-statement-cancel-btn"
 					onClick={() => navigate('/home')}
 				/>
 			</div>

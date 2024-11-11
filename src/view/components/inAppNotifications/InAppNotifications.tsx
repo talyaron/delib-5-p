@@ -24,7 +24,7 @@ const InAppNotifications: FC<Props> = ({ handleShowNotifications }) => {
 		return (
 			<>
 				<button
-					aria-label='Close or open Notifications'
+					aria-label="Close or open Notifications"
 					className={styles.background}
 					onClick={() => {
 						handleShowNotifications(false);

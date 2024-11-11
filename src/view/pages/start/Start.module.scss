@@ -2,244 +2,237 @@
 @import url('https://fonts.cdnfonts.com/css/overused-grotesk');
 
 body {
-    background: #F2F6FF;
+	background: #f2f6ff;
 }
 
 .splashPage {
-    background: #F2F6FF;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: all 0.3s;
-    justify-content: space-between;
+	background: #f2f6ff;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	transition: all 0.3s;
+	justify-content: space-between;
 
-    .version{
-       
-        margin-top: 2rem;
-        color: #5D8FE1;
-        font-size: smaller;
-        font-weight: 200;
-    }
+	.version {
+		margin-top: 2rem;
+		color: #5d8fe1;
+		font-size: smaller;
+		font-weight: 200;
+	}
 
-    &__freediIcon {
-        margin-top: 4rem;
-    }
+	&__freediIcon {
+		margin-top: 4rem;
+	}
 
-    &__subTitle {
-        font-size: 3rem;
-        opacity: 0.7;
-    }
+	&__subTitle {
+		font-size: 3rem;
+		opacity: 0.7;
+	}
 
-    &__loginButton {
-        background: white !important;
-        color: red !important;
-        border-radius: 5px;
-    }
+	&__loginButton {
+		background: white !important;
+		color: red !important;
+		border-radius: 5px;
+	}
 
-    h1,
-    h2 {
-        color: #fff;
-    }
-
+	h1,
+	h2 {
+		color: #fff;
+	}
 }
 
 .number {
-    color: #fadf57;
-    position: relative;
-    top: 0.8rem;
+	color: #fadf57;
+	position: relative;
+	top: 0.8rem;
 }
 
 .h1 {
-    font-size: 4.55rem;
-    color: #fff;
+	font-size: 4.55rem;
+	color: #fff;
 }
 
 .h2 {
-    color: #fff;
-    font-size: 1rem;
-    opacity: 0.7;
+	color: #fff;
+	font-size: 1rem;
+	opacity: 0.7;
 }
 
 .mainLogo {
-    width: 18.5rem;
-    height: fit-content;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+	width: 18.5rem;
+	height: fit-content;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
 
-    &__title {
-        font-size: 4rem;
-        font-weight: 400;
-        font-style: normal;
-        position: absolute;
-        margin-top: 5rem;
-    }
+	&__title {
+		font-size: 4rem;
+		font-weight: 400;
+		font-style: normal;
+		position: absolute;
+		margin-top: 5rem;
+	}
 
-    &__Free {
-        color: #5D8FE1;
-        font-family: "Bruno Ace", sans-serif;
+	&__Free {
+		color: #5d8fe1;
+		font-family: 'Bruno Ace', sans-serif;
+	}
 
-    }
+	&__Di {
+		color: #5bbba9;
+		font-family: 'Bruno Ace', sans-serif;
+	}
 
-    &__Di {
-        color: #5BBBA9;
-        font-family: "Bruno Ace", sans-serif;
-    }
-
-    &__slogan {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Overused Grotesk', sans-serif;
-        margin-top: 2.5rem;
-        font-size: 1.5rem;
-        text-align: center;
-        font-stretch: expanded;
-        white-space: nowrap;
-    }
+	&__slogan {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: 'Overused Grotesk', sans-serif;
+		margin-top: 2.5rem;
+		font-size: 1.5rem;
+		text-align: center;
+		font-stretch: expanded;
+		white-space: nowrap;
+	}
 }
 
 .language {
-    border-radius: 5rem;
-    position: absolute;
-    margin-top: 18rem;
-    color: #668FD1;
-    height: 2.5rem;
-    text-align: center;
-    font-size: 1rem;
+	border-radius: 5rem;
+	position: absolute;
+	margin-top: 18rem;
+	color: #668fd1;
+	height: 2.5rem;
+	text-align: center;
+	font-size: 1rem;
 }
 
 .language option:nth-child(even) {
-    background-color: white;
+	background-color: white;
 }
-
 
 .anonymous {
-    background-color: #739EE4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22rem;
-    height: 2.5rem;
-    border-radius: 3rem;
-    min-width: 30ch;
-    color: white;
-    gap: 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    user-select: none;
-    position: absolute;
-    top: 22rem;
+	background-color: #739ee4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 22rem;
+	height: 2.5rem;
+	border-radius: 3rem;
+	min-width: 30ch;
+	color: white;
+	gap: 1rem;
+	font-size: 1rem;
+	cursor: pointer;
+	user-select: none;
+	position: absolute;
+	top: 22rem;
 
-    &.rowReverse {
-        margin-left: 30rem;
-    }
+	&.rowReverse {
+		margin-left: 30rem;
+	}
 }
 
-
 .anonymous.ltr {
-    margin-right: 13rem;
+	margin-right: 13rem;
 }
 
 .anonymous.rtl {
-    margin-left: 13rem;
+	margin-left: 13rem;
 }
 
 .StratPageImage {
-    position: fixed;
-    bottom: 0;
-    height: 20rem;
-    width: 30rem;
+	position: fixed;
+	bottom: 0;
+	height: 20rem;
+	width: 30rem;
 }
 
 .ddi {
-    position: fixed;
-    bottom: 1rem;
+	position: fixed;
+	bottom: 1rem;
 }
 
 @media only screen and (max-width: 600px) {
-    .anonymous.ltr,
-    .anonymous.rtl {
-        position: absolute;
-        top: 22rem;
-    }
+	.anonymous.ltr,
+	.anonymous.rtl {
+		position: absolute;
+		top: 22rem;
+	}
 
-    .anonymous.ltr {
-        left: 0;
-        width: 21rem;
-        border-radius: 0rem 3rem 3rem 0rem;
-    }
+	.anonymous.ltr {
+		left: 0;
+		width: 21rem;
+		border-radius: 0rem 3rem 3rem 0rem;
+	}
 
-    .anonymous.rtl {
-        right: 0;
-        width: 15rem;
-        border-radius: 3rem 0rem 0rem 3rem;
-    }
+	.anonymous.rtl {
+		right: 0;
+		width: 15rem;
+		border-radius: 3rem 0rem 0rem 3rem;
+	}
 
-    .language {
-        margin-top: 18rem;
-    }
+	.language {
+		margin-top: 18rem;
+	}
 
-    .StratPageImage {
-        width: 26rem;
-        height: 18rem;
-        margin-left: 4rem;
-    }
+	.StratPageImage {
+		width: 26rem;
+		height: 18rem;
+		margin-left: 4rem;
+	}
 
-    .mainLogo__Free,
-    .mainLogo__Di {
-        font-size: 3rem;
-    }
+	.mainLogo__Free,
+	.mainLogo__Di {
+		font-size: 3rem;
+	}
 
-    .freeDiIcon {
-        height: 4.3rem;
-        width: 5.1rem;
-        margin-top: 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+	.freeDiIcon {
+		height: 4.3rem;
+		width: 5.1rem;
+		margin-top: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-    .mainLogo__slogan {
-        font-size: 1.2rem;
-    }
+	.mainLogo__slogan {
+		font-size: 1.2rem;
+	}
 }
 
 @media only screen and (max-height: 750px) {
+	.anonymous.ltr,
+	.anonymous.rtl {
+		position: absolute;
+		top: 19rem;
+	}
 
-    .anonymous.ltr,
-    .anonymous.rtl {
-        position: absolute;
-        top: 19rem;
-    }
+	.language {
+		margin-top: 15rem;
+	}
 
-    .language {
-        margin-top: 15rem;
-    }
-
-    .StratPageImage {
-        width: 18rem;
-        height: 12rem;
-        margin-left: 2rem;
-    }
+	.StratPageImage {
+		width: 18rem;
+		height: 12rem;
+		margin-left: 2rem;
+	}
 }
 
 @media only screen and (max-height: 600px) {
+	.anonymous.ltr,
+	.anonymous.rtl {
+		position: absolute;
+		top: 19rem;
+	}
 
-    .anonymous.ltr,
-    .anonymous.rtl {
-        position: absolute;
-        top: 19rem;
-    }
+	.language {
+		margin-top: 15rem;
+	}
 
-    .language {
-        margin-top: 15rem;
-    }
-
-    .StratPageImage {
-        width: 13rem;
-        height: 9rem;
-        margin-left: 2rem;
-    }
+	.StratPageImage {
+		width: 13rem;
+		height: 9rem;
+		margin-left: 2rem;
+	}
 }

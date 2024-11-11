@@ -1,11 +1,16 @@
-import { colorArr, timePassedColor, transformArr, xPositionArr, yPositionArr } from "./TimerIconModel";
+import {
+	colorArr,
+	timePassedColor,
+	transformArr,
+	xPositionArr,
+	yPositionArr,
+} from './TimerIconModel';
 
 interface Props {
-    percent: number;
+	percent: number;
 }
 
 export default function TimerIcon({ percent }: Props) {
-    
 	const rectArr = xPositionArr
 		.map((x, i) => (
 			<rect
@@ -29,11 +34,7 @@ export default function TimerIcon({ percent }: Props) {
 					height="14.4144"
 					rx="1.60782"
 					transform={rect.props.transform}
-					fill={
-						percent + (i + 1) * 4.3 > 100 
-							? colorArr[i]
-							: timePassedColor
-					}
+					fill={percent + (i + 1) * 4.3 > 100 ? colorArr[i] : timePassedColor}
 				/>
 			);
 		});

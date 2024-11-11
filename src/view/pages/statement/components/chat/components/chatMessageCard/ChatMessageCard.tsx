@@ -159,7 +159,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			className={`chat-message-card ${isAlignedLeft && 'aligned-left'} ${dir}`}
 		>
 			{!isPreviousFromSameAuthor && (
-				<div className='user'>
+				<div className="user">
 					<UserAvatar user={statement.creator} showImage={showImage} />
 					<span>{statement.creator.displayName}</span>
 				</div>
@@ -175,20 +175,20 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 						: statementColor.backgroundColor,
 				}}
 			>
-				{!isPreviousFromSameAuthor && <div className='triangle' />}
+				{!isPreviousFromSameAuthor && <div className="triangle" />}
 
-				<div className='info'>
-					<div className='info-text'>
+				<div className="info">
+					<div className="info-text">
 						{isEdit ? (
 							<div
-								className='input-wrapper'
+								className="input-wrapper"
 								style={{
 									flexDirection: isAlignedLeft ? 'row' : 'row-reverse',
 								}}
 							>
 								<textarea
 									ref={textareaRef} // Ref for managing focus
-									className='edit-input'
+									className="edit-input"
 									value={text}
 									onChange={handleTextChange}
 									style={{ direction: dir }}
@@ -196,8 +196,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 								<button onClick={handleSave}>
 									<img
 										src={SaveTextIcon}
-										className='save-icon'
-										alt='Save Icon'
+										className="save-icon"
+										alt="Save Icon"
 									/>
 								</button>
 							</div>
@@ -214,7 +214,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 					<Menu
 						setIsOpen={setIsCardMenuOpen}
 						isMenuOpen={isCardMenuOpen}
-						iconColor='var(--icon-blue)'
+						iconColor="var(--icon-blue)"
 					>
 						{_isAuthorized && (
 							<MenuOption
@@ -267,15 +267,15 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 						)}
 					</Menu>
 				</div>
-				<div className='bottom-icons'>
-					<div className='chat-more-element'>
+				<div className="bottom-icons">
+					<div className="chat-more-element">
 						<StatementChatMore statement={statement} />
 					</div>
 					<Evaluation parentStatement={parentStatement} statement={statement} />
 					{shouldLinkToChildren && (
 						<button
-							className='add-question-btn more-question'
-							aria-label='Add question button'
+							className="add-question-btn more-question"
+							aria-label="Add question button"
 							onClick={() => setIsNewStatementModalOpen(true)}
 						>
 							<AddQuestionIcon />

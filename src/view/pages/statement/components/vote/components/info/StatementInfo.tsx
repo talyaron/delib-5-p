@@ -1,24 +1,24 @@
-import { Statement } from "delib-npm";
-import { FC, useState } from "react";
-import { isAuthorized } from "@/controllers/general/helpers";
-import Text from "@/view/components/text/Text";
-import { handleSubmitInfo } from "./StatementInfoCont";
+import { Statement } from 'delib-npm';
+import { FC, useState } from 'react';
+import { isAuthorized } from '@/controllers/general/helpers';
+import Text from '@/view/components/text/Text';
+import { handleSubmitInfo } from './StatementInfoCont';
 
 //image
-import infoGraphic from "@/assets/images/infoGraphic.png";
-import EditIcon from "@/assets/icons/editIcon.svg?react";
+import infoGraphic from '@/assets/images/infoGraphic.png';
+import EditIcon from '@/assets/icons/editIcon.svg?react';
 
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import {
 	statementSelector,
 	statementSubscriptionSelector,
-} from "@/model/statements/statementsSlice";
-import "./StatementInfo.scss";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+} from '@/model/statements/statementsSlice';
+import './StatementInfo.scss';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface Props {
-  statement: Statement | null;
-  setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
+	statement: Statement | null;
+	setShowInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
@@ -36,8 +36,8 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 	// Use State
 	const [isInEditMode, setIsInEditMode] = useState(false);
 	const [formData, setFormData] = useState({
-		title: statement.statement || "",
-		description: statement.description || "",
+		title: statement.statement || '',
+		description: statement.description || '',
 	});
 
 	const _isAuthorized = isAuthorized(
@@ -85,7 +85,7 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 									description: e.target.value,
 								})
 							}
-							placeholder={t("description")}
+							placeholder={t('description')}
 						/>
 					</div>
 					<div className="form-buttons">
@@ -94,10 +94,10 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 							className="cancel-button"
 							onClick={() => setIsInEditMode(false)}
 						>
-							{t("Cancel")}
+							{t('Cancel')}
 						</button>
 						<button type="submit" className="save-button">
-							{t("Save")}
+							{t('Save')}
 						</button>
 					</div>
 				</form>
@@ -107,19 +107,22 @@ const StatementInfo: FC<Props> = ({ statement, setShowInfo }) => {
 						<h3>
 							{formData.title}
 							{_isAuthorized && (
-								<button className="edit-icon" onClick={() => setIsInEditMode(true)} aria-label="Edit">
-									<EditIcon
-									/>
+								<button
+									className="edit-icon"
+									onClick={() => setIsInEditMode(true)}
+									aria-label="Edit"
+								>
+									<EditIcon />
 								</button>
 							)}
 						</h3>
 						<div className="text">
-							<Text description={formData.description || ""} />
+							<Text description={formData.description || ''} />
 						</div>
 					</div>
 					<div className="form-buttons">
 						<button className="close-button" onClick={() => setShowInfo(false)}>
-							{t("Close")}
+							{t('Close')}
 						</button>
 					</div>
 				</>

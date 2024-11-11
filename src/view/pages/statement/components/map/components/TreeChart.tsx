@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 // Styles
-import "@/view/pages/statement/components/createStatementModal/CreateStatementModal.scss";
+import '@/view/pages/statement/components/createStatementModal/CreateStatementModal.scss';
 
 // Third party imports
-import { Results } from "delib-npm";
+import { Results } from 'delib-npm';
 
 // React Flow imports
 import ReactFlow, {
@@ -16,32 +16,32 @@ import ReactFlow, {
 	Node,
 	useReactFlow,
 	ReactFlowInstance,
-} from "reactflow";
-import "../mapHelpers/reactFlow.scss";
-import "reactflow/dist/style.css";
+} from 'reactflow';
+import '../mapHelpers/reactFlow.scss';
+import 'reactflow/dist/style.css';
 
 // icons
-import MapSaveIcon from "@/assets/icons/MapSaveIcon.svg";
-import MapRestoreIcon from "@/assets/icons/MapRestoreIcon.svg";
-import MapVerticalLayoutIcon from "@/assets/icons/MapVerticalLayoutIcon.svg";
-import MapHorizontalLayoutIcon from "@/assets/icons/MapHorizontalLayoutIcon.svg";
-import MapCancelIcon from "@/assets/icons/MapCancelIcon.svg";
-import MapHamburgerIcon from "@/assets/icons/MapHamburgerIcon.svg";
+import MapSaveIcon from '@/assets/icons/MapSaveIcon.svg';
+import MapRestoreIcon from '@/assets/icons/MapRestoreIcon.svg';
+import MapVerticalLayoutIcon from '@/assets/icons/MapVerticalLayoutIcon.svg';
+import MapHorizontalLayoutIcon from '@/assets/icons/MapHorizontalLayoutIcon.svg';
+import MapCancelIcon from '@/assets/icons/MapCancelIcon.svg';
+import MapHamburgerIcon from '@/assets/icons/MapHamburgerIcon.svg';
 
 // Helper functions
 import {
 	createInitialNodesAndEdges,
 	getLayoutedElements,
-} from "../mapHelpers/customNodeCont";
+} from '../mapHelpers/customNodeCont';
 
 // Hooks
-import { useMapContext } from "../../../../../../controllers/hooks/useMap";
+import { useMapContext } from '../../../../../../controllers/hooks/useMap';
 
 // Custom components
-import CustomNode from "./CustomNode";
-import Modal from "../../../../../components/modal/Modal";
-import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
-import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
+import CustomNode from './CustomNode';
+import Modal from '../../../../../components/modal/Modal';
+import { updateStatementParents } from '../../../../../../controllers/db/statements/setStatements';
+import { getStatementFromDB } from '../../../../../../controllers/db/statements/getStatement';
 
 const nodeTypes = {
 	custom: CustomNode,
@@ -49,25 +49,21 @@ const nodeTypes = {
 
 interface Props {
 	descendants: Results[];
-  isAdmin: boolean;
+	isAdmin: boolean;
 }
 
-export default function TreeChart({
-	descendants,
-	isAdmin
-}: Readonly<Props>) {
-	
+export default function TreeChart({ descendants, isAdmin }: Readonly<Props>) {
 	const { getIntersectingNodes } = useReactFlow();
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const [tempEdges, setTempEdges] = useState(edges);
 	const [rfInstance, setRfInstance] = useState<null | ReactFlowInstance<
-    unknown,
-    unknown
-  >>(null);
+		unknown,
+		unknown
+	>>(null);
 
-	const [intersectedNodeId, setIntersectedNodeId] = useState("");
-	const [draggedNodeId, setDraggedNodeId] = useState("");
+	const [intersectedNodeId, setIntersectedNodeId] = useState('');
+	const [draggedNodeId, setDraggedNodeId] = useState('');
 
 	const { mapContext, setMapContext } = useMapContext();
 
@@ -83,7 +79,7 @@ export default function TreeChart({
 
 	useEffect(() => {
 		const { nodes: createdNodes, edges: createdEdges } =
-      createInitialNodesAndEdges(descendants[0]);
+			createInitialNodesAndEdges(descendants[0]);
 
 		const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 			createdNodes,
@@ -103,21 +99,21 @@ export default function TreeChart({
 	}, [descendants[0]]);
 
 	const onLayout = useCallback(
-		(direction: "TB" | "LR") => {
-			const width = direction === "TB" ? 50 : 90;
-			const height = direction === "TB" ? 50 : 30;
+		(direction: 'TB' | 'LR') => {
+			const width = direction === 'TB' ? 50 : 90;
+			const height = direction === 'TB' ? 50 : 30;
 
 			setMapContext((prev) => ({
 				...prev,
-				targetPosition: direction === "TB" ? Position.Top : Position.Left,
-				sourcePosition: direction === "TB" ? Position.Bottom : Position.Right,
+				targetPosition: direction === 'TB' ? Position.Top : Position.Left,
+				sourcePosition: direction === 'TB' ? Position.Bottom : Position.Right,
 				nodeWidth: width,
 				nodeHeight: height,
 				direction,
 			}));
 
 			const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges, height, width, direction);
+				getLayoutedElements(nodes, edges, height, width, direction);
 
 			setNodes([...layoutedNodes]);
 			setEdges([...layoutedEdges]);
@@ -151,7 +147,7 @@ export default function TreeChart({
 			setNodes((ns) =>
 				ns.map((n) => ({
 					...n,
-					className: intersections?.id === n.id ? "highlight" : "",
+					className: intersections?.id === n.id ? 'highlight' : '',
 				}))
 			);
 		},
@@ -161,13 +157,13 @@ export default function TreeChart({
 	const onSave = useCallback(() => {
 		if (rfInstance) {
 			const flow = rfInstance.toObject();
-			localStorage.setItem("flowKey", JSON.stringify(flow));
+			localStorage.setItem('flowKey', JSON.stringify(flow));
 		}
 	}, [rfInstance]);
 
 	const onRestore = useCallback(() => {
 		const restoreFlow = async () => {
-			const getFlow = localStorage.getItem("flowKey");
+			const getFlow = localStorage.getItem('flowKey');
 			if (!getFlow) return;
 
 			const flow = JSON.parse(getFlow);
@@ -214,7 +210,7 @@ export default function TreeChart({
 				onInit={(reactFlowInstance) => {
 					setRfInstance(reactFlowInstance);
 					const flow = reactFlowInstance.toObject();
-					localStorage.setItem("flowKey", JSON.stringify(flow));
+					localStorage.setItem('flowKey', JSON.stringify(flow));
 				}}
 			>
 				<Controls />
@@ -227,14 +223,14 @@ export default function TreeChart({
 						</div>
 					)}
 					{isButtonVisible && (
-						<div className={`arc-buttons ${isButtonVisible ? "open" : ""}`}>
+						<div className={`arc-buttons ${isButtonVisible ? 'open' : ''}`}>
 							<button onClick={handleCancelClick}>
 								<img src={MapCancelIcon} alt="Cancel" />
 							</button>
-							<button onClick={() => onLayout("TB")}>
+							<button onClick={() => onLayout('TB')}>
 								<img src={MapVerticalLayoutIcon} alt="vertical layout" />
 							</button>
-							<button onClick={() => onLayout("LR")}>
+							<button onClick={() => onLayout('LR')}>
 								<img src={MapHorizontalLayoutIcon} alt="horizontal layout" />
 							</button>
 							<button onClick={onRestore}>
@@ -249,7 +245,7 @@ export default function TreeChart({
 			</ReactFlow>
 			{mapContext.moveStatementModal && (
 				<Modal>
-					<div style={{ padding: "1rem" }}>
+					<div style={{ padding: '1rem' }}>
 						<h1>Are you sure you want to move statement here?</h1>
 						<br />
 						<div className="btnBox">
@@ -257,13 +253,13 @@ export default function TreeChart({
 								onClick={() => handleMoveStatement(true)}
 								className="btn btn--large btn--add"
 							>
-                Yes
+								Yes
 							</button>
 							<button
 								onClick={() => handleMoveStatement(false)}
 								className="btn btn--large btn--disagree"
 							>
-                No
+								No
 							</button>
 						</div>
 					</div>

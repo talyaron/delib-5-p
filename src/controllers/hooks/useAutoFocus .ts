@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const useAutoFocus = (isEdit: boolean) => {
 	const inputRef = useRef<HTMLTextAreaElement | null>(null);

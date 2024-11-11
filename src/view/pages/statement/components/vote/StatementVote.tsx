@@ -1,7 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
+import {
+	QuestionStage,
+	QuestionType,
+	Statement,
+	StatementType,
+} from 'delib-npm';
 
 // Redux
 import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
@@ -30,15 +35,10 @@ import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStat
 interface Props {
 	statement: Statement;
 	subStatements: Statement[];
-	
 }
 let getVoteFromDB = false;
 
-const StatementVote: FC<Props> = ({
-	statement,
-	subStatements,
-	
-}) => {
+const StatementVote: FC<Props> = ({ statement, subStatements }) => {
 	// * Hooks * //
 	const dispatch = useAppDispatch();
 	const { t } = useLanguage();
@@ -77,12 +77,12 @@ const StatementVote: FC<Props> = ({
 
 	return (
 		<>
-			<div className='page__main'>
-				<div className='statement-vote'>
+			<div className="page__main">
+				<div className="statement-vote">
 					{showMultiStageMessage && (
 						<Toast
 							text={t(`${toastMessage}`)}
-							type='message'
+							type="message"
 							show={showMultiStageMessage}
 							setShow={setShowMultiStageMessage}
 						>
@@ -90,13 +90,13 @@ const StatementVote: FC<Props> = ({
 								text={t('Got it')}
 								iconOnRight={true}
 								icon={<X />}
-								bckColor='var(--crimson)'
-								color='var(--white)'
+								bckColor="var(--crimson)"
+								color="var(--white)"
 								onClick={() => setShowMultiStageMessage(false)}
 							/>
 						</Toast>
 					)}
-					<div className='number-of-votes-mark'>
+					<div className="number-of-votes-mark">
 						<HandIcon /> {totalVotes}
 					</div>
 					<VotingArea
@@ -116,7 +116,6 @@ const StatementVote: FC<Props> = ({
 						parentStatement={statement}
 						isQuestion={false}
 						setShowModal={setIsCreateStatementModalOpen}
-					
 					/>
 				)}
 				{isStatementInfoModalOpen && (
@@ -128,7 +127,7 @@ const StatementVote: FC<Props> = ({
 					</Modal>
 				)}
 			</div>
-			<div className='page__footer'>
+			<div className="page__footer">
 				<StatementBottomNav
 					setShowModal={setIsCreateStatementModalOpen}
 					statement={statement}

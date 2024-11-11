@@ -1,22 +1,22 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from 'react';
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
 import {
 	colorContrastSelector,
 	fontSizeSelector,
 	increaseFontSize,
 	setColorContrast,
 	userSelector,
-} from "@/model/users/userSlice";
-import { updateUserFontSize } from "@/controllers/db/users/setUsersDB";
+} from '@/model/users/userSlice';
+import { updateUserFontSize } from '@/controllers/db/users/setUsersDB';
 
 // Icons
-import AccessibilityIcon from "@/assets/icons/accessibilityIcon.svg?react";
-import { defaultFontSize } from "@/model/fonts/fontsModel";
-import IconButton from "../iconButton/IconButton";
-import "./Accessibility.scss";
-import { colorMappings } from "./colorContrast";
+import AccessibilityIcon from '@/assets/icons/accessibilityIcon.svg?react';
+import { defaultFontSize } from '@/model/fonts/fontsModel';
+import IconButton from '../iconButton/IconButton';
+import './Accessibility.scss';
+import { colorMappings } from './colorContrast';
 
 const Accessibility = () => {
 	const dispatch = useAppDispatch();
@@ -30,12 +30,12 @@ const Accessibility = () => {
 		Object.entries(colorMappings).forEach(([key, contrastKey]) => {
 			document.documentElement.style.setProperty(
 				key,
-				colorContrast ? `var(${contrastKey})` : ""
+				colorContrast ? `var(${contrastKey})` : ''
 			);
 		});
 	}, [colorContrast]);
 
-	const handleToggleContrast = (isContrast:boolean) => {
+	const handleToggleContrast = (isContrast: boolean) => {
 		dispatch(setColorContrast(isContrast));
 	};
 
@@ -44,7 +44,7 @@ const Accessibility = () => {
 
 	useEffect(() => {
 		// document.documentElement.style.fontSize = fontSize + "px";
-		document.documentElement.style.fontSize = fontSize + "px";
+		document.documentElement.style.fontSize = fontSize + 'px';
 	}, [fontSize]);
 
 	function handleChangeFontSize(number: number) {
@@ -80,7 +80,7 @@ const Accessibility = () => {
 		<div
 			className="accessibility"
 			style={
-				!isOpen ? { left: `${-accessibilityPanelWidth}px` } : { left: "0rem" }
+				!isOpen ? { left: `${-accessibilityPanelWidth}px` } : { left: '0rem' }
 			}
 		>
 			<button className="accessibility-button" onClick={handleOpen}>
@@ -93,7 +93,7 @@ const Accessibility = () => {
 						className="change-font-size-button"
 						onClick={() => handleChangeFontSize(1)}
 					>
-            +
+						+
 					</IconButton>
 					<div className="accessibility__fonts__size" role="status">
 						{user ? fontSize : _fontSize}px
@@ -102,13 +102,17 @@ const Accessibility = () => {
 						className="change-font-size-button"
 						onClick={() => handleChangeFontSize(-1)}
 					>
-            -
+						-
 					</IconButton>
 					<span dir="ltr">Fonts:</span>
 				</div>
 				<div className="accessibility-panel__contrast">
-					<button onClick={()=>handleToggleContrast(true)}>High contrast</button>
-					<button onClick={()=>handleToggleContrast(false)}>Light Contrast</button>
+					<button onClick={() => handleToggleContrast(true)}>
+						High contrast
+					</button>
+					<button onClick={() => handleToggleContrast(false)}>
+						Light Contrast
+					</button>
 				</div>
 			</div>
 		</div>

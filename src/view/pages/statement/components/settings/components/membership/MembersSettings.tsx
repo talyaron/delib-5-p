@@ -1,7 +1,7 @@
-import { Dispatch, FC, useEffect, useState } from "react";
+import { Dispatch, FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import {
 	Role,
 	StatementSubscription,
@@ -9,28 +9,28 @@ import {
 	Collections,
 	Access,
 	membersAllowed,
-} from "delib-npm";
+} from 'delib-npm';
 
 // Redux Store
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 // Custom components
-import MembershipLine from "./membershipCard/MembershipCard";
-import ShareIcon from "@/assets/icons/shareIcon.svg?react";
+import MembershipLine from './membershipCard/MembershipCard';
+import ShareIcon from '@/assets/icons/shareIcon.svg?react';
 
 // Hooks & Helpers
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "@/model/store";
-import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
-import "./MembersSettings.scss";
-import { collection, getDocs } from "firebase/firestore";
-import { FireStore } from "../../../../../../../controllers/db/config";
-import Checkbox from "@/view/components/checkbox/Checkbox";
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '@/model/store';
+import SetWaitingList from '../../../../../../../controllers/db/waitingList/SetWaitingList';
+import './MembersSettings.scss';
+import { collection, getDocs } from 'firebase/firestore';
+import { FireStore } from '../../../../../../../controllers/db/config';
+import Checkbox from '@/view/components/checkbox/Checkbox';
 
 interface MembersSettingsProps {
-  statement: Statement;
-  setStatementToEdit: Dispatch<Statement>;
+	statement: Statement;
+	setStatementToEdit: Dispatch<Statement>;
 }
 
 const MembersSettings: FC<MembersSettingsProps> = ({
@@ -65,8 +65,8 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 		const baseUrl = window.location.origin;
 
 		const shareData = {
-			title: t("FreeDi: Empowering Agreements"),
-			text: t("Invited:") + statement?.statement,
+			title: t('FreeDi: Empowering Agreements'),
+			text: t('Invited:') + statement?.statement,
 			url: `${baseUrl}/statement-an/true/${statement?.statementId}/options`,
 		};
 		navigator.share(shareData);
@@ -78,9 +78,9 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 			membership: {
 				...statement.membership,
 				access:
-          statement.membership?.access === Access.open
-          	? Access.close
-          	: Access.open,
+					statement.membership?.access === Access.open
+						? Access.close
+						: Access.open,
 			},
 		});
 	}
@@ -91,10 +91,10 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 			membership: {
 				...statement.membership,
 				typeOfMembersAllowed:
-          statement.membership?.typeOfMembersAllowed ===
-          membersAllowed.nonAnonymous
-          	? membersAllowed.all
-          	: membersAllowed.nonAnonymous,
+					statement.membership?.typeOfMembersAllowed ===
+					membersAllowed.nonAnonymous
+						? membersAllowed.all
+						: membersAllowed.nonAnonymous,
 			},
 		});
 	}
@@ -103,7 +103,7 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 		const usersCollection = collection(FireStore, Collections.awaitingUsers);
 		const usersSnapshot = await getDocs(usersCollection);
 		const count = usersSnapshot.docs.length;
-		
+
 		return setUserCount(count);
 	};
 
@@ -128,14 +128,14 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 				toggleSelection={handleAllowAnonymous}
 			/>
 			<button className="link-anonymous" onClick={() => handleShare(statement)}>
-				{t("Send a link to anonymous users")}
+				{t('Send a link to anonymous users')}
 				<ShareIcon />
 			</button>
 			<div className="upload-waiting-list">
 				<SetWaitingList statement={statement} />
 			</div>
 			<div className="title">
-				{t("Joined members")} ({`${userCount}`})
+				{t('Joined members')} ({`${userCount}`})
 			</div>
 			<div className="members-box">
 				{joinedMembers.map((member) => (
@@ -144,7 +144,7 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 			</div>
 
 			<div className="title">
-				{t("Banned users")} ({bannedUser.length})
+				{t('Banned users')} ({bannedUser.length})
 			</div>
 			<div className="members-box">
 				{bannedUser.map((member) => (

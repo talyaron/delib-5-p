@@ -1,9 +1,9 @@
-import { ParticipantInRoom } from "delib-npm";
-import { FC } from "react";
-import "./RoomParticipantBadge.scss";
+import { ParticipantInRoom } from 'delib-npm';
+import { FC } from 'react';
+import './RoomParticipantBadge.scss';
 
 interface Props {
-    participant: ParticipantInRoom;
+	participant: ParticipantInRoom;
 }
 
 const RoomParticipantBadge: FC<Props> = ({ participant }) => {
@@ -12,7 +12,7 @@ const RoomParticipantBadge: FC<Props> = ({ participant }) => {
 			className="room-participant-badge draggable"
 			draggable={true}
 			onDragStart={(e) => {
-				e.dataTransfer.setData("text/plain", participant.user.uid);
+				e.dataTransfer.setData('text/plain', participant.user.uid);
 			}}
 		>
 			<div className="badge-text">{participant.user.displayName}</div>

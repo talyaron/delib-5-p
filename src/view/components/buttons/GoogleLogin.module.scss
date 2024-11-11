@@ -1,56 +1,56 @@
 .googleLogin {
-    background-color: #85D2C1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    border-radius: 3rem;
-    width: fit-content;
-    width: 22rem;
-    height: 2.5rem;
-    color: white;
-    gap: 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    user-select: none;
-    position: absolute;
-    margin-top: 26rem;
-    margin-left: 13rem;
+	background-color: #85d2c1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem 2rem;
+	border-radius: 3rem;
+	width: fit-content;
+	width: 22rem;
+	height: 2.5rem;
+	color: white;
+	gap: 1rem;
+	font-size: 1rem;
+	cursor: pointer;
+	user-select: none;
+	position: absolute;
+	margin-top: 26rem;
+	margin-left: 13rem;
 
-    &.rowReverse {
-        margin-right: 30rem;
-    }
+	&.rowReverse {
+		margin-right: 30rem;
+	}
 
-    img {
-        width: 1.4rem;
-    }
+	img {
+		width: 1.4rem;
+	}
 }
 
 .googleLogin.rtl {
-    margin-right: 30rem;
+	margin-right: 30rem;
 }
 
 @media only screen and (max-width: 600px) {
-    .googleLogin {
-        position: absolute;
-        margin-top: 26rem;
-        width: 16rem;
-    }
+	.googleLogin {
+		position: absolute;
+		margin-top: 26rem;
+		width: 16rem;
+	}
 
-    .googleLogin.ltr {
-        border-radius: 3rem 0rem 0rem 3rem;
-        right: 0rem;
-    }
+	.googleLogin.ltr {
+		border-radius: 3rem 0rem 0rem 3rem;
+		right: 0rem;
+	}
 
-    .googleLogin.rtl {
-        border-radius: 0rem 3rem 3rem 0rem;
-        left: 0;
-        margin-left: 0rem;
-    }
+	.googleLogin.rtl {
+		border-radius: 0rem 3rem 3rem 0rem;
+		left: 0;
+		margin-left: 0rem;
+	}
 }
 
 @media only screen and (max-height: 750px) {
-    .googleLogin {
-        margin-top: 23rem;
-    }
+	.googleLogin {
+		margin-top: 23rem;
+	}
 }

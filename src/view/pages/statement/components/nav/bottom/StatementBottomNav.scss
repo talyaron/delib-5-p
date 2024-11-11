@@ -1,208 +1,191 @@
-$sortBtnPosition:70px;
+$sortBtnPosition: 70px;
 $sortBtnPositionMobile: 55px;
 $addOptionSize: 60px;
 
-@media screen and (max-width: 600px) {}
+@media screen and (max-width: 600px) {
+}
 
 .statement-bottom-nav {
-    width: 100%;
-    position: relative;
-    z-index: 5;
-    display: flex;
-    justify-content: space-between;
-    bottom: 0px;
-    z-index: 10;
-    padding: 5px 5px 30px 5px;
-    // background-color: teal;
+	width: 100%;
+	position: relative;
+	z-index: 5;
+	display: flex;
+	justify-content: space-between;
+	bottom: 0px;
+	z-index: 10;
+	padding: 5px 5px 30px 5px;
+	// background-color: teal;
 
+	&--show {
+		background: rgb(252, 252, 252);
+		background: linear-gradient(
+			180deg,
+			rgba(252, 252, 252, 0) 0%,
+			rgba(255, 255, 255, 0.8687850140056023) 37%,
+			rgba(255, 255, 255, 1) 100%
+		);
+		animation: showSortMenu 750ms linear 0s 1 forwards normal;
+	}
 
-    &--show {
-        background: rgb(252, 252, 252);
-        background: linear-gradient(180deg, rgba(252, 252, 252, 0) 0%, rgba(255, 255, 255, 0.8687850140056023) 37%, rgba(255, 255, 255, 1) 100%);
-        animation: showSortMenu 750ms linear 0s 1 forwards normal;
-    }
+	@keyframes showSortMenu {
+		0% {
+			opacity: 0;
+		}
 
-    @keyframes showSortMenu {
-        0% {
-            opacity: 0;
-        }
+		100% {
+			opacity: 1;
+		}
+	}
 
-        100% {
-            opacity: 1;
-        }
+	.add-option-button-wrapper {
+		position: relative;
 
-    }
+		.add-option-button {
+			width: $addOptionSize;
+			height: $addOptionSize;
+			border-radius: $addOptionSize;
+			z-index: 10000;
+		}
+	}
 
-    .add-option-button-wrapper {
-        position: relative;
+	.sort-menu {
+		position: relative;
+		flex: auto;
 
+		&__item {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			left: 0;
+			transition: all 1s ease;
 
-        .add-option-button {
-            width: $addOptionSize;
-            height: $addOptionSize;
-            border-radius: $addOptionSize;
-            z-index: 10000;
+			.button-name {
+				display: none;
+				font-size: 0.8rem;
+				opacity: 0;
+				transition: all 1s ease;
+				color: var(--text-headline);
+			}
 
-        }
-    }
+			.open-nav-icon {
+				width: 3rem;
+				height: 3rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: var(--white);
+				box-shadow: 2px 2px 5px var(--shadow);
+				border-radius: 50%;
+				cursor: pointer;
+				transition: all 1s ease;
+				// position: absolute;
+				// left: 0;
 
+				svg {
+					width: 26px;
+				}
+			}
 
-    .sort-menu {
+			&.active {
+				&:nth-child(1) {
+					z-index: 20;
 
-        position: relative;
-        flex: auto;
+					left: $sortBtnPosition;
 
+					@media screen and (max-width: 600px) {
+						left: calc($sortBtnPositionMobile);
+					}
 
-        &__item {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            left: 0;
-            transition: all 1s ease;
+					.open-nav-icon {
+						transform: rotate(360deg);
+					}
 
+					.button-name {
+						opacity: 1;
+						display: block;
+					}
+				}
 
-            .button-name {
-                display: none;
-                font-size: .8rem;
-                opacity: 0;
-                transition: all 1s ease;
-                color: var(--text-headline)
-            }
+				&:nth-child(2) {
+					z-index: 20;
 
-            .open-nav-icon {
-                width: 3rem;
-                height: 3rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: var(--white);
-                box-shadow: 2px 2px 5px var(--shadow);
-                border-radius: 50%;
-                cursor: pointer;
-                transition: all 1s ease;
-                // position: absolute;
-                // left: 0;
+					left: calc($sortBtnPosition * 2);
 
+					@media screen and (max-width: 600px) {
+						left: calc($sortBtnPositionMobile * 2);
+					}
 
-                svg {
-                    width: 26px;
-                }
+					.open-nav-icon {
+						transform: rotate(360deg);
+					}
 
+					.button-name {
+						opacity: 1;
+						display: block;
+					}
+				}
 
+				&:nth-child(3) {
+					z-index: 20;
 
+					left: calc($sortBtnPosition * 3);
 
-            }
+					@media screen and (max-width: 600px) {
+						left: calc($sortBtnPositionMobile * 3);
+					}
 
-            &.active {
+					.open-nav-icon {
+						transform: rotate(360deg);
+					}
 
+					.button-name {
+						opacity: 1;
+						display: block;
+					}
+				}
 
+				&:nth-child(4) {
+					z-index: 20;
 
-                &:nth-child(1) {
-                    z-index: 20;
+					left: calc($sortBtnPosition * 4);
 
-                    left: $sortBtnPosition;
+					@media screen and (max-width: 600px) {
+						left: calc($sortBtnPositionMobile * 4);
+					}
 
-                    @media screen and (max-width: 600px) {
-                        left: calc($sortBtnPositionMobile);
+					.open-nav-icon {
+						transform: rotate(360deg);
+					}
 
-                    }
+					.button-name {
+						opacity: 1;
+						display: block;
+					}
+				}
+			}
+		}
 
-                    .open-nav-icon {
-                        transform: rotate(360deg);
-                    }
+		.sort-button {
+			width: 48px;
+			height: 48px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: var(--btn-fab);
+			color: white;
+			box-shadow: 2px 2px 5px var(--shadow);
+			border-radius: 50%;
+			cursor: pointer;
+			transition: all 1s ease;
+			position: absolute;
+			left: 0;
+			z-index: 10000;
 
-                    .button-name {
-                        opacity: 1;
-                        display: block;
-                    }
-                }
-
-                &:nth-child(2) {
-                    z-index: 20;
-
-                    left: calc($sortBtnPosition * 2);
-
-                    @media screen and (max-width: 600px) {
-                        left: calc($sortBtnPositionMobile *2);
-
-                    }
-
-                    .open-nav-icon {
-                        transform: rotate(360deg);
-                    }
-
-                    .button-name {
-                        opacity: 1;
-                        display: block;
-                    }
-                }
-
-                &:nth-child(3) {
-                    z-index: 20;
-
-                    left: calc($sortBtnPosition * 3);
-
-                    @media screen and (max-width: 600px) {
-                        left: calc($sortBtnPositionMobile * 3);
-
-                    }
-
-                    .open-nav-icon {
-                        transform: rotate(360deg);
-                    }
-
-                    .button-name {
-                        opacity: 1;
-                        display: block;
-                    }
-                }
-
-                &:nth-child(4) {
-                    z-index: 20;
-
-                    left: calc($sortBtnPosition * 4);
-
-                    @media screen and (max-width: 600px) {
-                        left: calc($sortBtnPositionMobile * 4);
-
-                    }
-
-                    .open-nav-icon {
-                        transform: rotate(360deg);
-                    }
-
-                    .button-name {
-                        opacity: 1;
-                        display: block;
-                    }
-                }
-            }
-
-
-        }
-
-        .sort-button {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--btn-fab);
-            color: white;
-            box-shadow: 2px 2px 5px var(--shadow);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 1s ease;
-            position: absolute;
-            left: 0;
-            z-index: 10000;
-
-            svg {
-                width: 26px;
-            }
-        }
-
-    }
+			svg {
+				width: 26px;
+			}
+		}
+	}
 }

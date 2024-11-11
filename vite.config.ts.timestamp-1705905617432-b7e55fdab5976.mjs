@@ -1,74 +1,74 @@
 // vite.config.ts
 import {
-    defineConfig,
-    splitVendorChunkPlugin,
-} from "file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/vite/dist/node/index.js";
+	defineConfig,
+	splitVendorChunkPlugin,
+} from 'file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/vite/dist/node/index.js';
 
-import { VitePWA } from "file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/vite-plugin-pwa/dist/index.js";
+import { VitePWA } from 'file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/vite-plugin-pwa/dist/index.js';
 
-import react from "file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/@vitejs/plugin-react-swc/index.mjs";
+import react from 'file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/@vitejs/plugin-react-swc/index.mjs';
 
-import { visualizer } from "file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/rollup-plugin-visualizer/dist/plugin/index.js";
+import { visualizer } from 'file:///C:/Users/Tal%20Yaron/Documents/gitHub/delib-5-p/node_modules/rollup-plugin-visualizer/dist/plugin/index.js';
 
 var manifestPlugin = {
-    registerType: "autoUpdate",
-    includeAssets: ["favicon.ico"],
-    injectRegister: "inline",
-    devOptions: {
-        enabled: true,
-    },
-    workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-    },
-    manifest: {
-        name: "Delib 5",
-        short_name: "Delib 5",
-        description: "Delib: Building Consensus",
-        theme_color: "#486FFA",
-        background_color: "#486FFA",
-        display: "standalone",
-        orientation: "portrait",
-        icons: [
-            {
-                src: "./assets/logo/logo-48px.png",
-                sizes: "48x48",
-                type: "image/png",
-            },
-            {
-                src: "./assets/logo/logo-72px.png",
-                sizes: "72x72",
-                type: "image/png",
-            },
-            {
-                src: "./assets/logo/logo-96px.png",
-                sizes: "96x96",
-                type: "image/png",
-            },
-            {
-                src: "./assets/logo/logo-128px.png",
-                sizes: "128x128",
-                type: "image/png",
-            },
-            {
-                src: "./assets/logo/logo-192px.png",
-                sizes: "192x192",
-                type: "image/png",
-            },
-            {
-                src: "./assets/logo/logo-512px.png",
-                sizes: "512x512",
-            },
-        ],
-        start_url: "/",
-    },
+	registerType: 'autoUpdate',
+	includeAssets: ['favicon.ico'],
+	injectRegister: 'inline',
+	devOptions: {
+		enabled: true,
+	},
+	workbox: {
+		globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+	},
+	manifest: {
+		name: 'Delib 5',
+		short_name: 'Delib 5',
+		description: 'Delib: Building Consensus',
+		theme_color: '#486FFA',
+		background_color: '#486FFA',
+		display: 'standalone',
+		orientation: 'portrait',
+		icons: [
+			{
+				src: './assets/logo/logo-48px.png',
+				sizes: '48x48',
+				type: 'image/png',
+			},
+			{
+				src: './assets/logo/logo-72px.png',
+				sizes: '72x72',
+				type: 'image/png',
+			},
+			{
+				src: './assets/logo/logo-96px.png',
+				sizes: '96x96',
+				type: 'image/png',
+			},
+			{
+				src: './assets/logo/logo-128px.png',
+				sizes: '128x128',
+				type: 'image/png',
+			},
+			{
+				src: './assets/logo/logo-192px.png',
+				sizes: '192x192',
+				type: 'image/png',
+			},
+			{
+				src: './assets/logo/logo-512px.png',
+				sizes: '512x512',
+			},
+		],
+		start_url: '/',
+	},
 };
 var vite_config_default = defineConfig({
-    plugins: [
-        react(),
-        VitePWA(manifestPlugin),
-        visualizer({ open: true, gzipSize: true, brotliSize: true }),
-        splitVendorChunkPlugin(),
-    ],
+	plugins: [
+		react(),
+		VitePWA(manifestPlugin),
+		visualizer({ open: true, gzipSize: true, brotliSize: true }),
+		splitVendorChunkPlugin(),
+	],
 });
 export { vite_config_default as default };
 

@@ -6,11 +6,19 @@ import {
 	RoomSettings,
 	ParticipantInRoomSchema,
 	roomSettingsSchema,
-} from "delib-npm";
-import { deleteDoc, doc, getDoc, runTransaction, setDoc, updateDoc, writeBatch } from "firebase/firestore";
-import { FireStore } from "../config";
+} from 'delib-npm';
+import {
+	deleteDoc,
+	doc,
+	getDoc,
+	runTransaction,
+	setDoc,
+	updateDoc,
+	writeBatch,
+} from 'firebase/firestore';
+import { FireStore } from '../config';
 
-import { store } from "@/model/store";
+import { store } from '@/model/store';
 
 export function setParticipantToDB(
 	statement: Statement,
@@ -18,38 +26,43 @@ export function setParticipantToDB(
 ): void {
 	try {
 		const user = store.getState().user.user;
-		if (!user) throw new Error("User not logged in");
+		if (!user) throw new Error('User not logged in');
 
-		const participantInRoomId = getStatementSubscriptionId(statement.parentId, user);
-		if (!participantInRoomId) throw new Error("Participant in room id is undefined");
+		const participantInRoomId = getStatementSubscriptionId(
+			statement.parentId,
+			user
+		);
+		if (!participantInRoomId)
+			throw new Error('Participant in room id is undefined');
 
 		const participantInRoom: ParticipantInRoom = {
 			user: user,
 			statement,
-			participantInRoomId
+			participantInRoomId,
 		};
 		if (roomNumber) participantInRoom.roomNumber = roomNumber;
 
 		ParticipantInRoomSchema.parse(participantInRoom);
 
-		const roomRef = doc(FireStore, Collections.participants, participantInRoomId);
+		const roomRef = doc(
+			FireStore,
+			Collections.participants,
+			participantInRoomId
+		);
 
 		setDoc(roomRef, participantInRoom, { merge: true });
-	
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export function deleteParticipantToDB(
-	statement: Statement
-): void {
+export function deleteParticipantToDB(statement: Statement): void {
 	try {
 		const user = store.getState().user.user;
-		if (!user) throw new Error("User not logged in");
+		if (!user) throw new Error('User not logged in');
 
 		const roomId = getStatementSubscriptionId(statement.parentId, user);
-		if (!roomId) throw new Error("Room id is undefined");
+		if (!roomId) throw new Error('Room id is undefined');
 
 		const roomRef = doc(FireStore, Collections.participants, roomId);
 
@@ -59,38 +72,49 @@ export function deleteParticipantToDB(
 	}
 }
 
-export async function toggleRoomEditingInDB(statementId: string): Promise<void> {
+export async function toggleRoomEditingInDB(
+	statementId: string
+): Promise<void> {
 	try {
-		const roomSettingsRef = doc(FireStore, Collections.roomsSettings, statementId);
+		const roomSettingsRef = doc(
+			FireStore,
+			Collections.roomsSettings,
+			statementId
+		);
 
 		//use transaction
 		await runTransaction(FireStore, async (transaction) => {
 			try {
-				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
+				const roomSettings = (
+					await transaction.get(roomSettingsRef)
+				).data() as RoomSettings;
 				if (!roomSettings) {
 					transaction.set(roomSettingsRef, {
 						statementId,
 						isEdit: false,
-						timers: []
-
+						timers: [],
 					});
 				} else {
-
 					transaction.update(roomSettingsRef, { isEdit: !roomSettings.isEdit });
 				}
 			} catch (error) {
 				console.error(error);
 			}
 		});
-
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export async function setNewRoomSettingsToDB(statementId: string): Promise<void> {
+export async function setNewRoomSettingsToDB(
+	statementId: string
+): Promise<void> {
 	try {
-		const roomSettingsRef = doc(FireStore, Collections.roomsSettings, statementId);
+		const roomSettingsRef = doc(
+			FireStore,
+			Collections.roomsSettings,
+			statementId
+		);
 
 		const roomSettingsDB = await getDoc(roomSettingsRef);
 		if (roomSettingsDB.exists()) return;
@@ -102,18 +126,30 @@ export async function setNewRoomSettingsToDB(statementId: string): Promise<void>
 			participantsPerRoom: 7,
 		};
 		roomSettingsSchema.parse(roomSettings);
-		
+
 		setDoc(roomSettingsRef, roomSettings, { merge: true });
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export async function setParticipantsPerRoom({ statementId, add, number }: { statementId: string, add?: number, number?: number }): Promise<void> {
+export async function setParticipantsPerRoom({
+	statementId,
+	add,
+	number,
+}: {
+	statementId: string;
+	add?: number;
+	number?: number;
+}): Promise<void> {
 	try {
-		if (!number && !add) throw new Error("number or add must be defined");
+		if (!number && !add) throw new Error('number or add must be defined');
 
-		const roomSettingsRef = doc(FireStore, Collections.roomsSettings, statementId);
+		const roomSettingsRef = doc(
+			FireStore,
+			Collections.roomsSettings,
+			statementId
+		);
 
 		if (number && number >= 1) {
 			updateDoc(roomSettingsRef, { participantsPerRoom: number });
@@ -121,30 +157,36 @@ export async function setParticipantsPerRoom({ statementId, add, number }: { sta
 			return;
 		}
 
-		if (typeof add !== "number") throw new Error("add is not a number");
+		if (typeof add !== 'number') throw new Error('add is not a number');
 
 		//use transaction
 		await runTransaction(FireStore, async (transaction) => {
 			try {
-				const roomSettings = (await transaction.get(roomSettingsRef)).data() as RoomSettings;
-				if (!roomSettings) throw new Error("Room settings not found");
+				const roomSettings = (
+					await transaction.get(roomSettingsRef)
+				).data() as RoomSettings;
+				if (!roomSettings) throw new Error('Room settings not found');
 				const participantsPerRoom = roomSettings.participantsPerRoom || 7;
 
 				if (participantsPerRoom + add < 1) return;
 
-				transaction.update(roomSettingsRef, { participantsPerRoom: participantsPerRoom + add });
-
+				transaction.update(roomSettingsRef, {
+					participantsPerRoom: participantsPerRoom + add,
+				});
 			} catch (error) {
 				console.error(error);
 			}
 		});
-
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export async function divideParticipantIntoRoomsToDB(topics: Statement[], participants: ParticipantInRoom[], participantsPerRoom: number): Promise<void> {
+export async function divideParticipantIntoRoomsToDB(
+	topics: Statement[],
+	participants: ParticipantInRoom[],
+	participantsPerRoom: number
+): Promise<void> {
 	try {
 		const _topics = [...topics];
 		const _participants = [...participants];
@@ -153,46 +195,55 @@ export async function divideParticipantIntoRoomsToDB(topics: Statement[], partic
 		let roomNumber = 1;
 
 		_topics.forEach((topic) => {
-			const participantsInTopic = _participants.filter((participant) => participant.statement.statementId === topic.statementId);
+			const participantsInTopic = _participants.filter(
+				(participant) => participant.statement.statementId === topic.statementId
+			);
 			participantsInTopic.sort(() => Math.random() - 0.5);
-			const numberOfRooms = Math.ceil(participantsInTopic.length / participantsPerRoom);
+			const numberOfRooms = Math.ceil(
+				participantsInTopic.length / participantsPerRoom
+			);
 			const topRoomNumber = roomNumber + (numberOfRooms - 1);
 			const initialRoomNumber = roomNumber;
 			let localRoomNumber = roomNumber;
 
 			participantsInTopic.forEach((participant) => {
-
-				const participantRef = doc(FireStore, Collections.participants, participant.participantInRoomId);
+				const participantRef = doc(
+					FireStore,
+					Collections.participants,
+					participant.participantInRoomId
+				);
 
 				batch.update(participantRef, { roomNumber: localRoomNumber });
 
 				localRoomNumber++;
 
-				if (localRoomNumber > topRoomNumber) localRoomNumber = initialRoomNumber;
+				if (localRoomNumber > topRoomNumber)
+					localRoomNumber = initialRoomNumber;
 			});
 			roomNumber = topRoomNumber + 1;
-
 		});
 
 		await batch.commit();
-
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
-
 }
 
-export async function clearRoomsToDB(participants: ParticipantInRoom[]): Promise<void> {
+export async function clearRoomsToDB(
+	participants: ParticipantInRoom[]
+): Promise<void> {
 	try {
-
 		const batch = writeBatch(FireStore);
 		participants.forEach((participant) => {
-			const participantRef = doc(FireStore, Collections.participants, participant.participantInRoomId);
+			const participantRef = doc(
+				FireStore,
+				Collections.participants,
+				participant.participantInRoomId
+			);
 			batch.update(participantRef, { roomNumber: 0 });
 		});
 
 		await batch.commit();
-
 	} catch (error) {
 		console.error(error);
 	}

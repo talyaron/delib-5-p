@@ -1,10 +1,10 @@
-import { FC } from "react";
-import LightCogIcon from "@/assets/icons/lightCogIcon.svg?react";
-import "./SectionTitle.scss";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { FC } from 'react';
+import LightCogIcon from '@/assets/icons/lightCogIcon.svg?react';
+import './SectionTitle.scss';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SectionTitleProps {
-    title: string;
+	title: string;
 }
 
 const SectionTitle: FC<SectionTitleProps> = ({ title }) => {

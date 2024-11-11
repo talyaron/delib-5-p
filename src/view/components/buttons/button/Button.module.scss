@@ -1,85 +1,81 @@
 .button {
-  position: relative;
-  display: flex;
-  width:fit-content;
-  align-items: center;
-  min-height: 2rem;
-  border-radius: 50px;
-  color: var(--text-light-btn);
-  box-sizing: border-box  ;
+	position: relative;
+	display: flex;
+	width: fit-content;
+	align-items: center;
+	min-height: 2rem;
+	border-radius: 50px;
+	color: var(--text-light-btn);
+	box-sizing: border-box;
 
-  &--primary {
-    background-color: var(--btn-primary);
-    color: var(--text-light-btn);
-  }
+	&--primary {
+		background-color: var(--btn-primary);
+		color: var(--text-light-btn);
+	}
 
-  &--secondary {
-    background-color: var(--btn-secondary);
-    color: var(--text-dark-btn);
-    border:1px solid var(--text-dark-btn);
-  }
+	&--secondary {
+		background-color: var(--btn-secondary);
+		color: var(--text-dark-btn);
+		border: 1px solid var(--text-dark-btn);
+	}
 
-  &--disabled {
-    background-color: var(--btn-disabled);
-    color: var(--text-light-btn);
-    cursor: not-allowed;
-  }
+	&--disabled {
+		background-color: var(--btn-disabled);
+		color: var(--text-light-btn);
+		cursor: not-allowed;
+	}
 
-  &__text {
-    font-size: 1rem;
-    text-align: center;
-    padding: 0 1rem;
-    
-  }
+	&__text {
+		font-size: 1rem;
+		text-align: center;
+		padding: 0 1rem;
+	}
 
-  &__icon-wrapper {
-    
+	&__icon-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+	&__icon {
+		background-color: var(--button-blue);
+		color: white;
+		height: 100%;
+		min-width: 2rem;
+		padding: 0.35rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 3.25rem;
 
-  &__icon {
-    background-color: var(--button-blue);
-    color: white;
-    height: 100%;
-    min-width: 2rem;
-    padding: 0.35rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 3.25rem;
+		border: solid 2px var(--white);
 
-    border: solid 2px var(--white);
+		svg {
+			width: 1.2rem;
+			height: 1.2rem;
+			margin: 0.2rem;
+		}
 
-    svg {
-      width: 1.2rem;
-      height: 1.2rem;
-      margin: .2rem;
+		&--right {
+			border-radius: 3.25rem;
+		}
+	}
 
-    }
+	&--right {
+		flex-direction: row-reverse;
+	}
 
-    &--right {
-      border-radius: 3.25rem;
-    }
-  }
-
-  &--right {
-    flex-direction: row-reverse;
-  }
-
-  &--with-icon {
-    padding-right: 2.5rem;
-  }
+	&--with-icon {
+		padding-right: 2.5rem;
+	}
 }
 
 .rtl {
-  flex-direction: row-reverse;
-  svg{
-    transform:scaleX(-1);
-  }
+	flex-direction: row-reverse;
+	svg {
+		transform: scaleX(-1);
+	}
 }
 .ltr {
-  flex-direction: row;
+	flex-direction: row;
 }

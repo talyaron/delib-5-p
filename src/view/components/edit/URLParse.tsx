@@ -42,8 +42,8 @@ const UrlParser: React.FC<UrlParserProps> = ({
 				<a
 					key={`link-${match.index}`}
 					href={fullUrl}
-					target='_blank'
-					rel='noopener noreferrer'
+					target="_blank"
+					rel="noopener noreferrer"
 					className={linkClassName}
 				>
 					{textUrl}

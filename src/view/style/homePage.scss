@@ -1,191 +1,191 @@
 .homePage {
-  width: 100vw;
-  height: 100svh;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
+	width: 100vw;
+	height: 100svh;
+	position: fixed;
+	display: flex;
+	flex-direction: column;
 
-  &__header {
-    min-height: 6.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--header-home);
-    background-color: var(--header-home);
-    margin-bottom: -0.5px;
-    z-index: 1;
+	&__header {
+		min-height: 6.25rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--header-home);
+		background-color: var(--header-home);
+		margin-bottom: -0.5px;
+		z-index: 1;
 
-    @media (min-width: 570px) {
-      background-color: #5c8fed;
-    }
+		@media (min-width: 570px) {
+			background-color: #5c8fed;
+		}
 
-    @media (min-width: 870px) {
-      background-color: #5d90effd;
-    }
+		@media (min-width: 870px) {
+			background-color: #5d90effd;
+		}
 
-    &__wrapper {
-      display: grid;
-      grid-template-columns: 70px 1fr 70px;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 0 1rem;
-      max-width: 75ch;
-      margin: auto;
+		&__wrapper {
+			display: grid;
+			grid-template-columns: 70px 1fr 70px;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0 1rem;
+			max-width: 75ch;
+			margin: auto;
 
-      &__notifications {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
-        &__btn {
-         position: relative;
-          min-width: 32px;
-          color: white;
-          .redCircle {
-            position: absolute;
-            top: -7px;
-            right: 0;
-            width: 1rem;
-            height: 1rem;
-            background-color: red;
-            border-radius: 50%;
-          }
-        }
-      }
+			&__notifications {
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 
-      &__title {
-        text-align: center;
-        font-size: 2rem;
-        color: var(--text-white);
-      }
+				&__btn {
+					position: relative;
+					min-width: 32px;
+					color: white;
+					.redCircle {
+						position: absolute;
+						top: -7px;
+						right: 0;
+						width: 1rem;
+						height: 1rem;
+						background-color: red;
+						border-radius: 50%;
+					}
+				}
+			}
 
-      &__icons {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
+			&__title {
+				text-align: center;
+				font-size: 2rem;
+				color: var(--text-white);
+			}
 
-        svg {
-          height: 27px;
-          color: white;
-        }
+			&__icons {
+				position: relative;
+				display: flex;
+				justify-content: space-between;
 
-        .homeMenu {
-          position: absolute;
-          user-select: none;
-          cursor: pointer;
-          top: 2rem;
-          left: 2rem;
-          display: flex;
-          flex-direction: row-reverse;
-          align-items: center;
-          gap: 0.4rem;
-          color: var(--card-menu);
-          padding: 1rem;
-          box-shadow: 0 1px 4px #a9adf49a;
-          border-radius: 0.36rem;
-          z-index: 1003;
-          transform: translateX(-20%);
+				svg {
+					height: 27px;
+					color: white;
+				}
 
-          svg {
-            color: black;
-          }
+				.homeMenu {
+					position: absolute;
+					user-select: none;
+					cursor: pointer;
+					top: 2rem;
+					left: 2rem;
+					display: flex;
+					flex-direction: row-reverse;
+					align-items: center;
+					gap: 0.4rem;
+					color: var(--card-menu);
+					padding: 1rem;
+					box-shadow: 0 1px 4px #a9adf49a;
+					border-radius: 0.36rem;
+					z-index: 1003;
+					transform: translateX(-20%);
 
-          &__background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-          }
-        }
+					svg {
+						color: black;
+					}
 
-        .homeMenu:hover {
-          color: var(--menu-chosen);
-        }
-      }
-    }
-  }
+					&__background {
+						position: fixed;
+						top: 0;
+						left: 0;
+						width: 100vw;
+						height: 100vh;
+						background-color: rgba(0, 0, 0, 0.5);
+					}
+				}
+
+				.homeMenu:hover {
+					color: var(--menu-chosen);
+				}
+			}
+		}
+	}
 }
 
 .peopleLoadingScreen {
-  margin-top: 10rem;
+	margin-top: 10rem;
 }
 
 .main-wrap {
-  gap: 0;
+	gap: 0;
 }
 
 .home-page {
-  &__main {
-    height: 100%;
-    overflow-y: auto;
-    width: 100vw;
-  }
+	&__main {
+		height: 100%;
+		overflow-y: auto;
+		width: 100vw;
+	}
 }
 
 .heroImg {
-  background-size: cover;
-  background-position: bottom;
-  margin-bottom: 2rem;
-  margin-top: -5rem;
-  width: 100vw;
-  background-image: url("../../assets/images/Hero-rectangle.png");
-  height: 30vh;
+	background-size: cover;
+	background-position: bottom;
+	margin-bottom: 2rem;
+	margin-top: -5rem;
+	width: 100vw;
+	background-image: url('../../assets/images/Hero-rectangle.png');
+	height: 30vh;
 
-  @media (max-width: 1200px) {
-    background-image: url("../../assets/images/hero-x4.png");
-    height: 25vh;
-    margin-top: 0;
-  }
+	@media (max-width: 1200px) {
+		background-image: url('../../assets/images/hero-x4.png');
+		height: 25vh;
+		margin-top: 0;
+	}
 
-  @media (max-width: 870px) {
-    background-image: url("../../assets/images/hero-x3.png");
-    height: 24vh;
-    margin-top: 0;
-  }
+	@media (max-width: 870px) {
+		background-image: url('../../assets/images/hero-x3.png');
+		height: 24vh;
+		margin-top: 0;
+	}
 
-  @media (max-width: 570px) {
-    background-image: url("../../assets/images/hero-x1.png");
+	@media (max-width: 570px) {
+		background-image: url('../../assets/images/hero-x1.png');
 
-    height: 15vh;
-  }
+		height: 15vh;
+	}
 
-  @media (max-width: 440px) {
-    background-image: url("../../assets/images/hero-x1.png");
+	@media (max-width: 440px) {
+		background-image: url('../../assets/images/hero-x1.png');
 
-    height: 15vh;
-  }
+		height: 15vh;
+	}
 }
 
 .bikeImg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  width: 240px;
-  height: 160px;
-  margin-bottom: 1.5rem;
-  margin-top: -8.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	width: 240px;
+	height: 160px;
+	margin-bottom: 1.5rem;
+	margin-top: -8.5rem;
 
-  @media (min-width: 870px) {
-    width: 310px;
-    height: 200px;
-    margin-bottom: 1.5rem;
-    margin-top: -10.5rem;
-  }
+	@media (min-width: 870px) {
+		width: 310px;
+		height: 200px;
+		margin-bottom: 1.5rem;
+		margin-top: -10.5rem;
+	}
 }
 
 .passwordUiComponent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  z-index: 2;
-  color: var(--card-menu);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	z-index: 2;
+	color: var(--card-menu);
 }

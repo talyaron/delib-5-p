@@ -1,40 +1,37 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect } from 'react';
 
 // Styles
-import styles from "./setTimers.module.scss";
+import styles from './setTimers.module.scss';
 
 // Third party libraries
-import { SetTimer, Statement } from "delib-npm";
+import { SetTimer, Statement } from 'delib-npm';
 
-import { getSetTimersDB } from "@/controllers/db/timer/getTimer";
+import { getSetTimersDB } from '@/controllers/db/timer/getTimer';
 
 // Redux store
-import {
-	useAppDispatch,
-	useAppSelector,
-} from "@/controllers/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
 import {
 	selectStatementSettingTimers,
 	setSetTimer,
-} from "@/model/timers/timersSlice";
-import SetSetTimerComp from "./setTimer/SetSetTimerComp";
-import { updateTimerSettingDB } from "@/controllers/db/timer/setTimer";
-import { getSetTimerId } from "@/controllers/general/helpers";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+} from '@/model/timers/timersSlice';
+import SetSetTimerComp from './setTimer/SetSetTimerComp';
+import { updateTimerSettingDB } from '@/controllers/db/timer/setTimer';
+import { getSetTimerId } from '@/controllers/general/helpers';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface Props {
-    parentStatement: Statement;
+	parentStatement: Statement;
 }
 
 const SetTimers: FC<Props> = ({ parentStatement }) => {
 	const { t } = useLanguage();
 	try {
-		if (!parentStatement) throw new Error("parentStatement is required");
+		if (!parentStatement) throw new Error('parentStatement is required');
 
 		const dispatch = useAppDispatch();
 
 		const timers: SetTimer[] = useAppSelector(
-			selectStatementSettingTimers(parentStatement.statementId),
+			selectStatementSettingTimers(parentStatement.statementId)
 		).sort((a, b) => a.order - b.order);
 
 		//get timers from DB
@@ -44,15 +41,11 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 
 		return (
 			<section>
-				<h2>{t("Setting Timers")}</h2>
-				<p>{t("You can set the timers for each stage here.")}</p>
+				<h2>{t('Setting Timers')}</h2>
+				<p>{t('You can set the timers for each stage here.')}</p>
 				<div className={styles.timers}>
 					{timers.map((timer, i) => (
-						<SetSetTimerComp
-							key={timer.order}
-							setTimer={timer}
-							index={i}
-						/>
+						<SetSetTimerComp key={timer.order} setTimer={timer} index={i} />
 					))}
 				</div>
 				<button
@@ -61,25 +54,25 @@ const SetTimers: FC<Props> = ({ parentStatement }) => {
 						const newTimer = {
 							statementId: parentStatement.statementId,
 							time: 1000 * 90,
-							title: "Discussion",
+							title: 'Discussion',
 							order: timers.length,
 							timerId: getSetTimerId(
 								parentStatement.statementId,
-								timers.length,
+								timers.length
 							),
 						};
 						dispatch(setSetTimer(newTimer));
 						updateTimerSettingDB(newTimer);
 					}}
 				>
-                    Add Timer
+					Add Timer
 				</button>
 			</section>
 		);
 	} catch (error) {
 		console.error(error);
 
-		return <div>{t("Error")}</div>;
+		return <div>{t('Error')}</div>;
 	}
 };
 

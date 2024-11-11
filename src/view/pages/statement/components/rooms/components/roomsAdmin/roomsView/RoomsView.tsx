@@ -1,16 +1,16 @@
-import { FC } from "react";
-import styles from "./RoomsView.module.scss";
-import Button from "@/view/components/buttons/button/Button";
-import { ParticipantInRoom, Statement } from "delib-npm";
+import { FC } from 'react';
+import styles from './RoomsView.module.scss';
+import Button from '@/view/components/buttons/button/Button';
+import { ParticipantInRoom, Statement } from 'delib-npm';
 import {
 	clearRoomsToDB,
 	toggleRoomEditingInDB,
-} from "@/controllers/db/rooms/setRooms";
-import Room from "../../room/Room";
+} from '@/controllers/db/rooms/setRooms';
+import Room from '../../room/Room';
 
 interface Props {
-  statement: Statement;
-  participants: ParticipantInRoom[];
+	statement: Statement;
+	participants: ParticipantInRoom[];
 }
 
 const RoomsView: FC<Props> = ({ statement, participants }) => {
@@ -45,7 +45,6 @@ function sortIntoRooms(
 ): ParticipantInRoom[][] {
 	const rooms: ParticipantInRoom[][] = [];
 	participants.forEach((participant) => {
-    
 		if (!participant.roomNumber) return;
 
 		const roomIndex = participant.roomNumber - 1;
@@ -54,6 +53,6 @@ function sortIntoRooms(
 		}
 		rooms[roomIndex].push(participant);
 	});
-  
+
 	return rooms;
 }

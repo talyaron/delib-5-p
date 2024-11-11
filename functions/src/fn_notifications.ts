@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as admin from "firebase-admin";
-import { Collections, Statement, StatementSubscription } from "delib-npm";
-import { logger } from "firebase-functions";
-import { FieldValue } from "firebase-admin/firestore";
-import { db } from "./index";
-import { log } from "firebase-functions/logger";
-import { z } from "zod";
+import * as admin from 'firebase-admin';
+import { Collections, Statement, StatementSubscription } from 'delib-npm';
+import { logger } from 'firebase-functions';
+import { FieldValue } from 'firebase-admin/firestore';
+import { db } from './index';
+import { log } from 'firebase-functions/logger';
+import { z } from 'zod';
 
 export async function sendNotificationsCB(e: any) {
 	try {
 		const statement = e.data.data();
-		if (!statement) throw new Error("statement not found");
+		if (!statement) throw new Error('statement not found');
 
 		const parentId = statement.parentId;
 
-		if (!parentId) throw new Error("parentId not found");
+		if (!parentId) throw new Error('parentId not found');
 
 		const parentRef = db.doc(`statements/${parentId}`);
 		const parentDB = await parentRef.get();
 
 		const parent = parentDB.exists ? (parentDB.data() as Statement) : null;
-		const _title = parent ? parent.statement.replace(/\*/g, "") : "Delib-5";
+		const _title = parent ? parent.statement.replace(/\*/g, '') : 'Delib-5';
 
 		//bring only the first paragraph
-		const _titleArr = _title.split("\n");
+		const _titleArr = _title.split('\n');
 		const _titleFirstParagraph = _titleArr[0];
 
 		//limit to 20 chars
@@ -36,8 +36,8 @@ export async function sendNotificationsCB(e: any) {
 		const subscribersRef = db.collection(Collections.statementsSubscribe);
 
 		const q = subscribersRef
-			.where("statementId", "==", parentId)
-			.where("notification", "==", true);
+			.where('statementId', '==', parentId)
+			.where('notification', '==', true);
 
 		const subscribersDB = await q.get();
 
@@ -68,7 +68,6 @@ export async function sendNotificationsCB(e: any) {
 								statementId: parentId,
 								chatId: `${parentId}/chat`,
 								url: `https://freedi.tech/statement/${parentId}/chat`,
-
 							},
 							webpush: {
 								fcm_options: {
@@ -79,17 +78,18 @@ export async function sendNotificationsCB(e: any) {
 						};
 						message.android = {
 							notification: {
-								icon: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0", // Replace with your icon name
+								icon: 'https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0', // Replace with your icon name
 							},
 						};
 						message.apns = {
 							payload: {
 								aps: {
-									"mutable-content": 1,
+									'mutable-content': 1,
 								},
 							},
 							fcm_options: {
-								image: "https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0", // Replace with your icon URL
+								image:
+									'https://firebasestorage.googleapis.com/v0/b/synthesistalyaron.appspot.com/o/logo%2Flogo-48px.png?alt=media&token=e2d11208-2c1c-4c29-a422-42a4e430f9a0', // Replace with your icon URL
 							},
 						};
 						admin
@@ -97,43 +97,32 @@ export async function sendNotificationsCB(e: any) {
 							.send(message)
 							.then((response: any) => {
 								// Response is a message ID string.
-								logger.info(
-									"Successfully sent message:",
-									response,
-								);
+								logger.info('Successfully sent message:', response);
 							})
 							.catch((error: any) => {
-								logger.error(
-									"Error failed to sent notification: ",
-									error,
-								);
+								logger.error('Error failed to sent notification: ', error);
 
 								// Delete token from DB if it is not valid.
 								if (
+									error.code === 'messaging/invalid-registration-token' ||
 									error.code ===
-                                    "messaging/invalid-registration-token" ||
-                                    error.code ===
-                                    "messaging/registration-token-not-registered" ||
-                                    error.message ===
-                                    "The registration token is not a valid FCM registration token"
+										'messaging/registration-token-not-registered' ||
+									error.message ===
+										'The registration token is not a valid FCM registration token'
 								) {
-									logger.info("Deleting token from DB");
+									logger.info('Deleting token from DB');
 
-									db.collection(
-										Collections.statementsSubscribe,
-									)
+									db.collection(Collections.statementsSubscribe)
 										.where(
-											"statementsSubscribeId",
-											"==",
-											subscriber.statementsSubscribeId,
+											'statementsSubscribeId',
+											'==',
+											subscriber.statementsSubscribeId
 										)
 										.get()
 										.then((querySnapshot) => {
 											querySnapshot.forEach((doc) => {
 												doc.ref.update({
-													token: FieldValue.arrayRemove(
-														token,
-													),
+													token: FieldValue.arrayRemove(token),
 												});
 											});
 										});
@@ -141,14 +130,11 @@ export async function sendNotificationsCB(e: any) {
 							});
 					});
 				} catch (error) {
-					logger.error(
-						`send push notifications to all subscriber `,
-						error,
-					);
+					logger.error(`send push notifications to all subscriber `, error);
 				}
 			}
 		});
 	} catch (error) {
-		logger.error("error sending notifications", error);
+		logger.error('error sending notifications', error);
 	}
 }

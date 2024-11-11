@@ -1,17 +1,17 @@
-import React from "react";
-import SendIcon from "@/assets/icons/send-icon-pointing-up-and-right.svg?react";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import Button, { ButtonType } from "@/view/components/buttons/button/Button";
-import { DisplayStatement } from "./SimilarStatementsSuggestion";
+import React from 'react';
+import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button, { ButtonType } from '@/view/components/buttons/button/Button';
+import { DisplayStatement } from './SimilarStatementsSuggestion';
 
 interface SimilarStatementsSuggestionProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  newStatementInput: DisplayStatement;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setViewSimilarStatement: React.Dispatch<
-    React.SetStateAction<DisplayStatement>
-  >;
-  similarStatements:DisplayStatement[];
+	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+	newStatementInput: DisplayStatement;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setViewSimilarStatement: React.Dispatch<
+		React.SetStateAction<DisplayStatement>
+	>;
+	similarStatements: DisplayStatement[];
 }
 
 export default function StepTwoShowSimilarStatements({
@@ -20,12 +20,12 @@ export default function StepTwoShowSimilarStatements({
 	similarStatements,
 }: SimilarStatementsSuggestionProps) {
 	const { t } = useLanguage();
-	const handleViewSimilarStatement = (statement:DisplayStatement) => {
+	const handleViewSimilarStatement = (statement: DisplayStatement) => {
 		const anchor = document.getElementById(statement.statementId);
-	
-		if(anchor) anchor.scrollIntoView({behavior: 'smooth'});
-	
-		setShowModal(false)
+
+		if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
+
+		setShowModal(false);
 	};
 
 	const handleSubmit = () => {
@@ -34,11 +34,9 @@ export default function StepTwoShowSimilarStatements({
 
 	return (
 		<>
-			<h1 className="similarities__title">
-				{t("Similar suggestions")}
-			</h1>
+			<h1 className="similarities__title">{t('Similar suggestions')}</h1>
 			<h4 className="alertText">
-				{t("Here are several results that were found in the following topic")}:
+				{t('Here are several results that were found in the following topic')}:
 			</h4>
 			<section className="similarities__suggestions">
 				{similarStatements.map((statement, index) => (
@@ -47,27 +45,25 @@ export default function StepTwoShowSimilarStatements({
 						className="suggestion"
 						onClick={() => handleViewSimilarStatement(statement)}
 					>
-						<p className="suggestion__title">
-							{statement.title}
-						</p>
-						<p className="suggestion__description">
-							{statement.description}
-						</p>
+						<p className="suggestion__title">{statement.title}</p>
+						<p className="suggestion__description">{statement.description}</p>
 
 						<hr />
 					</button>
 				))}
 				<div className="similarities__buttonBox">
-	  <Button text={t("Back")} onClick={() => setCurrentStep(0)} buttonType={ButtonType.SECONDARY}/>
+					<Button
+						text={t('Back')}
+						onClick={() => setCurrentStep(0)}
+						buttonType={ButtonType.SECONDARY}
+					/>
 					<Button
 						icon={<SendIcon />}
-						text={t("Continue with your original suggestion")}
+						text={t('Continue with your original suggestion')}
 						onClick={handleSubmit}
 					/>
-        
 				</div>
 			</section>
-      
 		</>
 	);
 }

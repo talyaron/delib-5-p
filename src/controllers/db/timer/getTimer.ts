@@ -5,24 +5,24 @@ import {
 	where,
 	query,
 	Unsubscribe,
-} from "firebase/firestore";
-import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
-import { FireStore } from "../config";
-import { initialTimerArray } from "@/view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
+} from 'firebase/firestore';
+import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from 'delib-npm';
+import { FireStore } from '../config';
+import { initialTimerArray } from '@/view/pages/statement/components/rooms/components/setTimers/SetTimersModal';
 
-import { updateTimerSettingDB } from "./setTimer";
-import { z } from "zod";
-import { getSetTimerId } from "@/controllers/general/helpers";
-import { setRoomTimers, setSetTimer } from "@/model/timers/timersSlice";
-import { AppDispatch } from "@/model/store";
+import { updateTimerSettingDB } from './setTimer';
+import { z } from 'zod';
+import { getSetTimerId } from '@/controllers/general/helpers';
+import { setRoomTimers, setSetTimer } from '@/model/timers/timersSlice';
+import { AppDispatch } from '@/model/store';
 
 export async function getSetTimersDB(
 	statementId: string,
-	dispatch: AppDispatch,
+	dispatch: AppDispatch
 ): Promise<SetTimer[]> {
 	try {
 		const timersRef = collection(FireStore, Collections.timers);
-		const q = query(timersRef, where("statementId", "==", statementId));
+		const q = query(timersRef, where('statementId', '==', statementId));
 		const timersDB = await getDocs(q);
 
 		//if no timers exists, create them...
@@ -44,7 +44,7 @@ export async function getSetTimersDB(
 		}
 
 		const timers: SetTimer[] = timersDB.docs.map(
-			(doc) => doc.data() as SetTimer,
+			(doc) => doc.data() as SetTimer
 		);
 		timers.forEach((timer) => {
 			dispatch(setSetTimer(timer));
@@ -62,23 +62,23 @@ export async function getSetTimersDB(
 export function listenToRoomTimers(
 	statementId: string,
 	roomNumber: number | undefined,
-	dispatch: AppDispatch,
+	dispatch: AppDispatch
 ): Unsubscribe {
 	try {
-		if (!statementId) throw new Error("Missing statementId");
-		if (!roomNumber) throw new Error("Missing roomNumber");
+		if (!statementId) throw new Error('Missing statementId');
+		if (!roomNumber) throw new Error('Missing roomNumber');
 
 		const timersRef = collection(FireStore, Collections.timersRooms);
 		const q = query(
 			timersRef,
-			where("statementId", "==", statementId),
-			where("roomNumber", "==", roomNumber),
+			where('statementId', '==', statementId),
+			where('roomNumber', '==', roomNumber)
 		);
 
 		return onSnapshot(q, (roomTimersDB) => {
 			try {
 				const timers: RoomTimer[] = roomTimersDB.docs.map(
-					(roomTimer) => roomTimer.data() as RoomTimer,
+					(roomTimer) => roomTimer.data() as RoomTimer
 				);
 
 				z.array(RoomTimerSchema).parse(timers);

@@ -1,0 +1,8 @@
+.favorite {
+    cursor: pointer;
+    user-select: none;
+
+    svg {
+        color: var(--favorite);
+    }
+}

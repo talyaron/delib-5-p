@@ -1,36 +1,36 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { Statement, StatementSubscription } from "delib-npm";
+import { Statement, StatementSubscription } from 'delib-npm';
 
 // Styles
-import styles from "./MassQuestion.module.scss";
+import styles from './MassQuestion.module.scss';
 
 // Custom Components
-import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
-import EditTitle from "../../../../../../components/edit/EditTitle";
-import SetEdit from "../../../../../../components/edit/SetEdit";
+import { handleSetQuestionFromMassCard } from './MassQuestionCardCont';
+import EditTitle from '../../../../../../components/edit/EditTitle';
+import SetEdit from '../../../../../../components/edit/SetEdit';
 
 // db Functions
-import { listenToUserAnswer } from "../../../../../../../controllers/db/statements/listenToStatements";
-import { isAuthorized } from "../../../../../../../controllers/general/helpers";
+import { listenToUserAnswer } from '../../../../../../../controllers/db/statements/listenToStatements';
+import { isAuthorized } from '../../../../../../../controllers/general/helpers';
 
 // Redux store
-import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
-import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
-import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { useAppSelector } from '../../../../../../../controllers/hooks/reduxHooks';
+import { statementSubscriptionSelector } from '../../../../../../../model/statements/statementsSlice';
+import { useLanguage } from '../../../../../../../controllers/hooks/useLanguages';
 
 interface Props {
-    statement: Statement;
-    setAnswered: React.Dispatch<React.SetStateAction<boolean[]>>;
-    index: number;
+	statement: Statement;
+	setAnswered: React.Dispatch<React.SetStateAction<boolean[]>>;
+	index: number;
 }
 
 const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
 	const { t } = useLanguage();
 
 	const statementSubscription: StatementSubscription | undefined =
-        useAppSelector(statementSubscriptionSelector(statement.statementId));
+		useAppSelector(statementSubscriptionSelector(statement.statementId));
 
 	const [answer, setAnswer] = useState<Statement | null>(null);
 	const [isEdit, setEdit] = useState(false);
@@ -60,11 +60,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
 	return (
 		<div className={styles.card}>
 			<div className={styles.title}>
-				<SetEdit
-					isAuthorized={_isAuthorized}
-					setEdit={setEdit}
-					edit={isEdit}
-				/>
+				<SetEdit isAuthorized={_isAuthorized} setEdit={setEdit} edit={isEdit} />
 
 				<h3>
 					<EditTitle
@@ -75,7 +71,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
 					/>
 				</h3>
 			</div>
-			<label>{t("Answer")}:</label>
+			<label>{t('Answer')}:</label>
 			<textarea
 				onBlur={(ev) => {
 					handleSetQuestionFromMassCard({
@@ -86,7 +82,7 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
 				}}
 				onKeyUp={(ev) => {
 					const target = ev.target as HTMLTextAreaElement;
-					if (ev.key === "Enter" && !ev.shiftKey) {
+					if (ev.key === 'Enter' && !ev.shiftKey) {
 						handleSetQuestionFromMassCard({
 							question: statement,
 							answer,

@@ -1,7 +1,7 @@
 export default function UncheckedIcon({
-	color = "#787FFF",
+	color = '#787FFF',
 }: {
-    color?: string;
+	color?: string;
 }) {
 	return (
 		<svg

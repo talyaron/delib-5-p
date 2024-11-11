@@ -1,32 +1,32 @@
 name: Pull Request Validation
 
 on:
-    pull_request:
-        branches:
-            - dev
-            - main
-            - dev5.4
+  pull_request:
+    branches:
+      - dev
+      - main
+      - dev5.4
 
 jobs:
-    basic-checks:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [18.x]
+  basic-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
 
-        steps:
-            - uses: actions/checkout@v3
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: "npm"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-            - name: Install dependencies
-              run: npm install
+      - name: Install dependencies
+        run: npm install
 
-            - name: Run ESLint
-              run: npm run lint
+      - name: Run ESLint
+        run: npm run lint
 
-            - name: Run TypeScript type checking
-              run: npm run typecheck
+      - name: Run TypeScript type checking
+        run: npm run typecheck

@@ -1,17 +1,17 @@
-import { FC } from "react";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import FollowMeIcon from "../../../../components/icons/FollowMeIcon";
-import { Role, Statement } from "delib-npm";
-import { isAdmin } from "@/controllers/general/helpers";
-import { Link, useLocation } from "react-router-dom";
-import { setFollowMeDB } from "@/controllers/db/statements/setStatements";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { statementSelector } from "@/model/statements/statementsSlice";
-import "./FollowMeToast.scss";
+import { FC } from 'react';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import FollowMeIcon from '../../../../components/icons/FollowMeIcon';
+import { Role, Statement } from 'delib-npm';
+import { isAdmin } from '@/controllers/general/helpers';
+import { Link, useLocation } from 'react-router-dom';
+import { setFollowMeDB } from '@/controllers/db/statements/setStatements';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { statementSelector } from '@/model/statements/statementsSlice';
+import './FollowMeToast.scss';
 
 interface FollowMeToastProps {
-    role: Role | undefined;
-    statement: Statement | undefined;
+	role: Role | undefined;
+	statement: Statement | undefined;
 }
 
 const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
@@ -20,13 +20,13 @@ const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
 	const { pathname } = useLocation();
 
 	const topParentStatement = useAppSelector(
-		statementSelector(statement?.topParentId),
+		statementSelector(statement?.topParentId)
 	);
 
 	function handleRemoveToast() {
 		if (!_isAdmin) return;
 		if (!topParentStatement) return;
-		setFollowMeDB(topParentStatement, "");
+		setFollowMeDB(topParentStatement, '');
 	}
 
 	//in case the followers are in the page, turn off the follow me toast
@@ -35,8 +35,8 @@ const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
 
 	//if the follow me is empty, turn off the follow me toast
 	if (
-		topParentStatement?.followMe === "" ||
-        topParentStatement?.followMe === undefined
+		topParentStatement?.followMe === '' ||
+		topParentStatement?.followMe === undefined
 	)
 		return null;
 
@@ -45,7 +45,7 @@ const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
 	}
 
 	return (
-		<Link to={topParentStatement?.followMe || "/home"}>
+		<Link to={topParentStatement?.followMe || '/home'}>
 			<ToastInner />
 		</Link>
 	);
@@ -53,12 +53,10 @@ const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
 	function ToastInner() {
 		return (
 			<button className="follow-me-toast" onClick={handleRemoveToast}>
-				<span>
-					{t(_isAdmin ? "Follow Mode Active" : "Follow Instructor")}
-				</span>
+				<span>{t(_isAdmin ? 'Follow Mode Active' : 'Follow Instructor')}</span>
 				<div
 					style={{
-						transform: `rotate(${dir === "rtl" ? "180deg" : "0deg"})`,
+						transform: `rotate(${dir === 'rtl' ? '180deg' : '0deg'})`,
 					}}
 				>
 					<FollowMeIcon color="white" />

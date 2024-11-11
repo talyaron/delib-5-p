@@ -1,7 +1,7 @@
 interface GetBarWidthParams {
-    isVertical: boolean;
-    totalOptionsCount: number;
-    screenWidth: number;
+	isVertical: boolean;
+	totalOptionsCount: number;
+	screenWidth: number;
 }
 
 export const getBarWidth = ({

@@ -1,17 +1,17 @@
 .radio-box {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
-    width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	position: relative;
+	width: 100%;
 
-    input[type="radio"] {
-        display: none;
-        background: var(--light-blue);
-    }
+	input[type='radio'] {
+		display: none;
+		background: var(--light-blue);
+	}
 
-    svg {
-        width: 24px;
-        height: 24px;
-    }
+	svg {
+		width: 24px;
+		height: 24px;
+	}
 }

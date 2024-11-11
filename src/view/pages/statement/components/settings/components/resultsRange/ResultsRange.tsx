@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { StatementSettingsProps } from "../../settingsTypeHelpers";
-import { defaultResultsSettings } from "../../emptyStatementModel";
-import "./ResultsRange.scss";
+import { FC } from 'react';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { StatementSettingsProps } from '../../settingsTypeHelpers';
+import { defaultResultsSettings } from '../../emptyStatementModel';
+import './ResultsRange.scss';
 
 const ResultsRange: FC<StatementSettingsProps> = ({
 	statement,
@@ -11,7 +11,7 @@ const ResultsRange: FC<StatementSettingsProps> = ({
 	const { t } = useLanguage();
 	const resultsSettings = statement.resultsSettings ?? defaultResultsSettings;
 
-	const title = `${t("Number of Results to Display")}: `;
+	const title = `${t('Number of Results to Display')}: `;
 
 	return (
 		<section className="results-range">

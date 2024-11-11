@@ -8,10 +8,10 @@ import {
 	query,
 	where,
 	orderBy,
-} from "firebase/firestore";
-import { FireStore } from "../config";
-import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
-import { z } from "zod";
+} from 'firebase/firestore';
+import { FireStore } from '../config';
+import { Collections, ResultsBy, Statement, StatementSchema } from 'delib-npm';
+import { z } from 'zod';
 
 export async function getResultsDB(statement: Statement): Promise<Statement[]> {
 	try {
@@ -21,10 +21,10 @@ export async function getResultsDB(statement: Statement): Promise<Statement[]> {
 		const resultsBy = resultsSettings?.resultsBy || ResultsBy.topOptions;
 
 		switch (resultsBy) {
-		case ResultsBy.topOptions:
-			return await getTopOptionsDB(statement);
-		default:
-			return [];
+			case ResultsBy.topOptions:
+				return await getTopOptionsDB(statement);
+			default:
+				return [];
 		}
 	} catch (error) {
 		console.error(error);
@@ -63,14 +63,14 @@ async function getTopOptionsDB(statement: Statement): Promise<Statement[]> {
 		const topOptionsRef = collection(FireStore, Collections.statements);
 		const q = query(
 			topOptionsRef,
-			where("parentId", "==", statement.statementId),
-			orderBy("consensus", "asc"),
-			limit(numberOfOptions),
+			where('parentId', '==', statement.statementId),
+			orderBy('consensus', 'asc'),
+			limit(numberOfOptions)
 		);
 		const topOptionsSnap = await getDocs(q);
 
 		const topOptions = topOptionsSnap.docs.map(
-			(doc) => doc.data() as Statement,
+			(doc) => doc.data() as Statement
 		);
 
 		z.array(StatementSchema).parse(topOptions);

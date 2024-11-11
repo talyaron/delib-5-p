@@ -1,34 +1,34 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC, useEffect } from 'react';
 
 // Third party imports
-import { Results, Role, Statement, StatementType } from "delib-npm";
+import { Results, Role, Statement, StatementType } from 'delib-npm';
 
 // Custom Components
-import TreeChart from "./components/TreeChart";
-import Modal from "@/view/components/modal/Modal";
+import TreeChart from './components/TreeChart';
+import Modal from '@/view/components/modal/Modal';
 
 // Helpers
 import {
 	FilterType,
 	filterByStatementType,
 	sortStatementsByHirarrchy as sortStatementsByHierarchy,
-} from "@/controllers/general/sorting";
-import CreateStatementModal from "../createStatementModal/CreateStatementModal";
+} from '@/controllers/general/sorting';
+import CreateStatementModal from '../createStatementModal/CreateStatementModal';
 
 // Hooks
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { useMapContext } from "@/controllers/hooks/useMap";
-import { ReactFlowProvider } from "reactflow";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { useMapContext } from '@/controllers/hooks/useMap';
+import { ReactFlowProvider } from 'reactflow';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import {
 	statementDescendantsSelector,
 	statementSubscriptionSelector,
-} from "@/model/statements/statementsSlice";
-import { isAdmin } from "@/controllers/general/helpers";
-import { useSelector } from "react-redux";
+} from '@/model/statements/statementsSlice';
+import { isAdmin } from '@/controllers/general/helpers';
+import { useSelector } from 'react-redux';
 
 interface Props {
-  statement: Statement;
+	statement: Statement;
 }
 
 const StatementMap: FC<Props> = ({ statement }) => {
@@ -57,7 +57,7 @@ const StatementMap: FC<Props> = ({ statement }) => {
 		const filterSubStatements = _descendants.filter((st) => {
 			if (!st.deliberativeElement) return false;
 
-			if (filterArray.includes("result") && st.isResult) return true;
+			if (filterArray.includes('result') && st.isResult) return true;
 
 			return filterArray.includes(st.deliberativeElement);
 		});
@@ -93,27 +93,27 @@ const StatementMap: FC<Props> = ({ statement }) => {
 					onChange={(ev) => setFilterBy(ev.target.value as FilterType)}
 					defaultValue={FilterType.questionsResultsOptions}
 					style={{
-						width: "100vw",
-						maxWidth: "300px",
-						margin: "1rem auto",
-						position: "absolute",
-						right: "1rem",
+						width: '100vw',
+						maxWidth: '300px',
+						margin: '1rem auto',
+						position: 'absolute',
+						right: '1rem',
 						zIndex: 100,
 					}}
 				>
 					<option value={FilterType.questionsResults}>
-						{t("Questions and Results")}
+						{t('Questions and Results')}
 					</option>
 					<option value={FilterType.questionsResultsOptions}>
-						{t("Questions, options and Results")}
+						{t('Questions, options and Results')}
 					</option>
 				</select>
 				<div
 					style={{
-						flex: "auto",
-						height: "20vh",
-						width: "100%",
-						direction: "ltr",
+						flex: 'auto',
+						height: '20vh',
+						width: '100%',
+						direction: 'ltr',
 					}}
 				>
 					<TreeChart descendants={sortedDescendants} isAdmin={_isAdmin} />

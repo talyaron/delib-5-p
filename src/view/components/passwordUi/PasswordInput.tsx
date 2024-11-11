@@ -53,7 +53,7 @@ const PasswordInput = ({
 						inputs.current[index] = element;
 					}}
 					maxLength={1}
-					type='text'
+					type="text"
 					value={val}
 					onChange={(e) => handleChange(e, index)}
 					onKeyDown={(e) => handleKeyDown(e, index)}

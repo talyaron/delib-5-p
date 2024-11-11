@@ -1,24 +1,24 @@
-import { FC, useEffect, useState } from "react";
-import styles from "./InvitationModal.module.scss";
+import { FC, useEffect, useState } from 'react';
+import styles from './InvitationModal.module.scss';
 import {
 	getInvitationPathName,
 	getMaxInvitationDigits,
-} from "@/controllers/db/invitations/getInvitations";
-import { useNavigate } from "react-router-dom";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import XIcon from "@/view/components/icons/XIcon";
-import InvitationModalInputBoxWrapper from "./InvitationModalInputBoxWrapper";
-import InviteModal from "@/view/components/modal/InviteModal";
-import { handleCloseInviteModal } from "@/controllers/general/helpers";
+} from '@/controllers/db/invitations/getInvitations';
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import XIcon from '@/view/components/icons/XIcon';
+import InvitationModalInputBoxWrapper from './InvitationModalInputBoxWrapper';
+import InviteModal from '@/view/components/modal/InviteModal';
+import { handleCloseInviteModal } from '@/controllers/general/helpers';
 
 interface Props {
-  setShowModal: (show: boolean) => void;
+	setShowModal: (show: boolean) => void;
 }
 const InvitationModal: FC<Props> = ({ setShowModal }) => {
 	const navigate = useNavigate();
 	const { t } = useLanguage();
 
-	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [errorMessage, setErrorMessage] = useState<string>('');
 	const [maxInvitation, setMaxInvitation] = useState<number | undefined>(
 		undefined
 	);
@@ -38,7 +38,7 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 
 			const fullPin = settingPins(pins);
 
-			if (!fullPin) throw new Error("No pin value");
+			if (!fullPin) throw new Error('No pin value');
 
 			const pathname = await getInvitationPathName(fullPin);
 			if (!pathname) {
@@ -62,19 +62,19 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 		const pins: number[] = [];
 		const form = ev.target as HTMLFormElement;
 		for (let i = 0; i < maxInvitation!; i++) {
-			const pinValue = (form["pin" + i] as HTMLInputElement).value;
+			const pinValue = (form['pin' + i] as HTMLInputElement).value;
 
 			if (
 				Number.isInteger(Number(pinValue)) &&
-        Number(pinValue) >= 0 &&
-        Number(pinValue) <= 9
+				Number(pinValue) >= 0 &&
+				Number(pinValue) <= 9
 			) {
 				pins.push(Number(pinValue));
 			} else {
 				pins.push(0);
 			}
 		}
-		
+
 		return pins;
 	}
 
@@ -83,7 +83,7 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 		for (let i = 0; i < pins.length; i++) {
 			fullPin += pins[i] * Math.pow(10, i);
 		}
-		
+
 		return fullPin;
 	}
 
@@ -97,12 +97,14 @@ const InvitationModal: FC<Props> = ({ setShowModal }) => {
 					)}
 
 					{maxInvitation === undefined ? (
-						<p className={styles.invitation__form__noRooms}>{t("There are no rooms yet")}</p>
+						<p className={styles.invitation__form__noRooms}>
+							{t('There are no rooms yet')}
+						</p>
 					) : (
 						<input
 							type="submit"
 							className={styles.invitation__form__btn}
-							value={t("Join")}
+							value={t('Join')}
 						></input>
 					)}
 

@@ -97,16 +97,16 @@ export default function CustomNode({ data }: NodeProps) {
 					textAlign: 'center',
 					wordBreak: 'break-word',
 				}}
-				className='node__content'
+				className="node__content"
 			>
 				{nodeTitle}
 			</button>
 			{showBtns && (
 				<>
 					<button
-						className='addIcon'
+						className="addIcon"
 						onClick={handleAddChildNode}
-						aria-label='Add child node'
+						aria-label="Add child node"
 						style={{
 							position: 'absolute',
 							cursor: 'pointer',
@@ -118,9 +118,9 @@ export default function CustomNode({ data }: NodeProps) {
 					</button>
 
 					<button
-						className='addIcon'
+						className="addIcon"
 						onClick={handleAddSiblingNode}
-						aria-label='Add sibling node'
+						aria-label="Add sibling node"
 						style={{
 							position: 'absolute',
 							cursor: 'pointer',
@@ -133,8 +133,8 @@ export default function CustomNode({ data }: NodeProps) {
 				</>
 			)}
 
-			<Handle type='target' position={mapContext.targetPosition} />
-			<Handle type='source' position={mapContext.sourcePosition} />
+			<Handle type="target" position={mapContext.targetPosition} />
+			<Handle type="source" position={mapContext.sourcePosition} />
 		</>
 	);
 }

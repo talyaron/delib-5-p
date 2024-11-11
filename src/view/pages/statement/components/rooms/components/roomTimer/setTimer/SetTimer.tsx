@@ -1,12 +1,12 @@
-import React, { useState, useRef } from "react";
-import "./SetTimer.scss";
+import React, { useState, useRef } from 'react';
+import './SetTimer.scss';
 import {
 	fromFourDigitsToMilliseconds,
 	fromMillisecondsToFourDigits,
-} from "../../setTimers/setTimer/SetTimerCont";
-import { setTimersInitTimeDB } from "@/controllers/db/timer/setTimer";
-import { RoomTimer } from "delib-npm";
-import { getRoomTimerId } from "@/controllers/general/helpers";
+} from '../../setTimers/setTimer/SetTimerCont';
+import { setTimersInitTimeDB } from '@/controllers/db/timer/setTimer';
+import { RoomTimer } from 'delib-npm';
+import { getRoomTimerId } from '@/controllers/general/helpers';
 
 interface TimerProps {
 	roomTimer: RoomTimer;
@@ -20,7 +20,7 @@ function SetTimer({
 	setInitTime,
 }: Readonly<TimerProps>) {
 	const [timeDigits, setTimeDigits] = useState<number[]>(
-		fromMillisecondsToFourDigits(roomTimer.time || 1000 * 90),
+		fromMillisecondsToFourDigits(roomTimer.time || 1000 * 90)
 	);
 
 	// Refs for the inputs
@@ -45,10 +45,7 @@ function SetTimer({
 					</React.Fragment>
 				))}
 			</div>
-			<button
-				className="btn btn--cancel"
-				onClick={handleUpdateTimer}
-			>
+			<button className="btn btn--cancel" onClick={handleUpdateTimer}>
 				SET
 			</button>
 		</div>
@@ -63,7 +60,7 @@ function SetTimer({
 			timerId: getRoomTimerId(
 				roomTimer.statementId,
 				roomTimer.roomNumber,
-				roomTimer.order,
+				roomTimer.order
 			),
 			initTime: newTime,
 		});
@@ -73,16 +70,13 @@ function SetTimer({
 
 	function handleInputDigit(
 		ev: React.KeyboardEvent<HTMLInputElement>,
-		index: number,
+		index: number
 	) {
 		const target = ev.target as HTMLInputElement;
 		const digit = ev.key;
 
 		if (!isNaN(parseInt(digit))) {
-			const newValue = Math.min(
-				parseInt(digit),
-				parseInt(target.max)
-			);
+			const newValue = Math.min(parseInt(digit), parseInt(target.max));
 
 			setTimeDigits((prevDigits) =>
 				prevDigits.map((d, i) => (i === index ? newValue : d))
@@ -93,7 +87,7 @@ function SetTimer({
 				inputRefs.current[index + 1].focus();
 			}
 		} else {
-			target.value = ""; // Clear the input if non-numeric
+			target.value = ''; // Clear the input if non-numeric
 		}
 	}
 }

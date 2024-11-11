@@ -1,29 +1,27 @@
 .title-and-description {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding-block-start: 1rem;
-    padding-block-end: 3rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	padding-block-start: 1rem;
+	padding-block-end: 3rem;
 
-    textarea,
-    input[type="text"] {
-        padding: 1rem;
-        font-size: 1.2rem;
-        width: 100%;
-        outline: none;
-        resize: none;
-        background-color: #f5fcff;
-        box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
-        box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
-    }
+	textarea,
+	input[type='text'] {
+		padding: 1rem;
+		font-size: 1.2rem;
+		width: 100%;
+		outline: none;
+		resize: none;
+		background-color: #f5fcff;
+		box-shadow: 0px 2px 6px 0px rgba(170, 187, 227, 0.253);
+		box-shadow: 0px -2px -4px 0px rgba(193, 204, 229, 0.31);
+	}
 
-    .btns{
-        display:none;
+	.btns {
+		display: none;
 
-        @media screen and (max-width: 768px) {
-            display: flex;
-            
-            
-        }
-    }
+		@media screen and (max-width: 768px) {
+			display: flex;
+		}
+	}
 }

@@ -1,24 +1,24 @@
-import { useState } from "react";
-import pricingImg from "@/assets/images/pricing.png";
+import { useState } from 'react';
+import pricingImg from '@/assets/images/pricing.png';
 
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { userSelector } from '@/model/users/userSlice';
+import { useNavigate } from 'react-router-dom';
 
-import RadioBox from "../../components/radioBox/RadioBox";
-import { pricingPlans } from "./pricingModel";
-import "./PricingPlan.scss";
+import RadioBox from '../../components/radioBox/RadioBox';
+import { pricingPlans } from './pricingModel';
+import './PricingPlan.scss';
 
 export default function PricingPlan() {
 	const navigate = useNavigate();
 
-	const [plan, setPlan] = useState("free");
+	const [plan, setPlan] = useState('free');
 
 	const user = useAppSelector(userSelector);
 
 	const handleChoosePlan = () => {
-		if (plan === "free") {
-			navigate("/home/addStatement", {
+		if (plan === 'free') {
+			navigate('/home/addStatement', {
 				state: { from: window.location.pathname },
 			});
 
@@ -26,7 +26,7 @@ export default function PricingPlan() {
 		}
 
 		if (user?.isAnonymous) {
-			navigate("/login-first", {
+			navigate('/login-first', {
 				state: { from: window.location.pathname },
 			});
 		}
@@ -40,8 +40,8 @@ export default function PricingPlan() {
 				<h1 className="title">Pricing plans</h1>
 				<img src={pricingImg} alt="pricing-illustration" width="40%" />
 				<p className="text">
-                    Select the appropriate plan to maximize your performance and
-                    get better results
+					Select the appropriate plan to maximize your performance and get
+					better results
 				</p>
 				<div className="radio-boxes-container">
 					{pricingPlans.map((item) => (
@@ -57,39 +57,31 @@ export default function PricingPlan() {
 									<p className="range-text">
 										{item.from && item.to ? (
 											<>
-												<span>{item.range}</span>{" "}
-												<b>{item.from}</b>
-												{" to "}
+												<span>{item.range}</span> <b>{item.from}</b>
+												{' to '}
 												<b>{item.to}</b>
 											</>
 										) : item.to ? (
 											<>
-												<span>{item.range}</span>{" "}
-												<b>{item.to}</b>
+												<span>{item.range}</span> <b>{item.to}</b>
 											</>
 										) : (
 											<>
-												<span>{item.range}</span>{" "}
-												<b>{item.from}</b>
+												<span>{item.range}</span> <b>{item.from}</b>
 											</>
-										)}{" "}
-                                        participants
+										)}{' '}
+										participants
 									</p>
 									<p className="price">
-										{item.price === "free"
-											? "Free"
-											: `$${item.price}`}
+										{item.price === 'free' ? 'Free' : `$${item.price}`}
 									</p>
 								</div>
 							</div>
 						</RadioBox>
 					))}
 				</div>
-				<button
-					className="choose-plan-button"
-					onClick={handleChoosePlan}
-				>
-                    Choose your plan
+				<button className="choose-plan-button" onClick={handleChoosePlan}>
+					Choose your plan
 				</button>
 			</div>
 		</div>

@@ -8,8 +8,8 @@ import {
 	query,
 	setDoc,
 	where,
-} from "firebase/firestore";
-import { FireStore } from "../config";
+} from 'firebase/firestore';
+import { FireStore } from '../config';
 import {
 	Collections,
 	RoomTimer,
@@ -19,15 +19,15 @@ import {
 	Statement,
 	TimerStatus,
 	TimerStatusSchema,
-} from "delib-npm";
-import { z } from "zod";
-import { store } from "@/model/store";
-import { getRoomTimerId, getSetTimerId } from "../../general/helpers";
+} from 'delib-npm';
+import { z } from 'zod';
+import { store } from '@/model/store';
+import { getRoomTimerId, getSetTimerId } from '../../general/helpers';
 
 interface setParentTimersProps {
-    parentStatement: Statement;
-    userCanChangeTimer: boolean;
-    timers: SetTimer[];
+	parentStatement: Statement;
+	userCanChangeTimer: boolean;
+	timers: SetTimer[];
 }
 
 export async function updateTimersSettingDB(timers: SetTimer[]): Promise<void> {
@@ -74,7 +74,7 @@ export async function setParentTimersToDB({
 		const timersRef = doc(
 			FireStore,
 			Collections.timers,
-			parentStatement.statementId,
+			parentStatement.statementId
 		);
 		z.array(SetTimerSchema).parse(timers);
 		await setDoc(timersRef, {
@@ -92,9 +92,9 @@ export async function setParentTimersToDB({
 }
 
 interface GetTimerProps {
-    statementId: string;
-    roomNumber: number;
-    stage: string;
+	statementId: string;
+	roomNumber: number;
+	stage: string;
 }
 export function getTimerId({
 	statementId,
@@ -102,10 +102,9 @@ export function getTimerId({
 	stage,
 }: GetTimerProps): string | undefined {
 	try {
-		if (!statementId) throw new Error("Missing statementId");
-		if (typeof roomNumber !== "number")
-			throw new Error("Missing roomNumber");
-		if (!stage) throw new Error("Missing stage");
+		if (!statementId) throw new Error('Missing statementId');
+		if (typeof roomNumber !== 'number') throw new Error('Missing roomNumber');
+		if (!stage) throw new Error('Missing stage');
 
 		return `${statementId}--${roomNumber}--${stage}`;
 	} catch (error) {
@@ -117,18 +116,18 @@ export function getTimerId({
 
 export async function setTimersStatusDB(
 	roomTimer: RoomTimer,
-	newStatus: TimerStatus,
+	newStatus: TimerStatus
 ): Promise<void> {
 	try {
 		const userId = store.getState().user.user?.uid;
-		if (!userId) throw new Error("Missing userId");
+		if (!userId) throw new Error('Missing userId');
 		RoomTimerSchema.parse(roomTimer);
 		TimerStatusSchema.parse(newStatus);
 
 		const timerRef = doc(
 			FireStore,
 			Collections.timersRooms,
-			roomTimer.roomTimerId,
+			roomTimer.roomTimerId
 		);
 
 		await setDoc(timerRef, { state: newStatus }, { merge: true });
@@ -138,10 +137,10 @@ export async function setTimersStatusDB(
 }
 
 interface setTimersInitTimeDBProps {
-    statementId: string;
-    roomNumber: number;
-    timerId: string;
-    initTime: number;
+	statementId: string;
+	roomNumber: number;
+	timerId: string;
+	initTime: number;
 }
 
 export async function setTimersInitTimeDB({
@@ -152,16 +151,15 @@ export async function setTimersInitTimeDB({
 }: setTimersInitTimeDBProps): Promise<void> {
 	try {
 		const userId = store.getState().user.user?.uid;
-		if (!userId) throw new Error("Missing userId");
-		if (!statementId) throw new Error("Missing statementId");
-		if (typeof roomNumber !== "number")
-			throw new Error("Missing roomNumber");
-		if (typeof timerId !== "number") throw new Error("Missing timer");
+		if (!userId) throw new Error('Missing userId');
+		if (!statementId) throw new Error('Missing statementId');
+		if (typeof roomNumber !== 'number') throw new Error('Missing roomNumber');
+		if (typeof timerId !== 'number') throw new Error('Missing timer');
 
 		const timerRef = doc(
 			FireStore,
 			Collections.timersRooms,
-			`${statementId}--${roomNumber}`,
+			`${statementId}--${roomNumber}`
 		);
 
 		await setDoc(
@@ -173,7 +171,7 @@ export async function setTimersInitTimeDB({
 				timers: { [timerId]: { initTime } },
 				updateTime: Timestamp.now(),
 			},
-			{ merge: true },
+			{ merge: true }
 		);
 	} catch (error) {
 		console.error(error);
@@ -181,8 +179,8 @@ export async function setTimersInitTimeDB({
 }
 
 interface InitializeTimersDBParams {
-    statementId: string;
-    rooms: Array<{ roomNumber: number }>;
+	statementId: string;
+	rooms: Array<{ roomNumber: number }>;
 }
 
 export async function initializeTimersDB({
@@ -192,57 +190,52 @@ export async function initializeTimersDB({
 	try {
 		//pre-checks
 		const userId = store.getState().user.user?.uid;
-		if (!userId) throw new Error("Missing userId");
-		if (!statementId) throw new Error("Missing statementId");
-		if (!rooms) throw new Error("Missing rooms");
+		if (!userId) throw new Error('Missing userId');
+		if (!statementId) throw new Error('Missing statementId');
+		if (!rooms) throw new Error('Missing rooms');
 
 		//get timers settings from FireStore
 		const timersRef = collection(FireStore, Collections.timers);
-		const q = query(timersRef, where("statementId", "==", statementId));
+		const q = query(timersRef, where('statementId', '==', statementId));
 		const timersSettingsDB = await getDocs(q);
 
 		if (timersSettingsDB.size === 0) {
-			throw new Error("Timers settings not found");
+			throw new Error('Timers settings not found');
 		}
 
 		const timersSettings = timersSettingsDB.docs.map(
-			(doc) => doc.data() as SetTimer,
+			(doc) => doc.data() as SetTimer
 		);
 
 		//initialize timers
 
 		rooms.forEach((room) => {
 			const roomNumber = room.roomNumber;
-			const roomTimers: RoomTimer[] = timersSettings.map(
-				(timerSetting) => {
-					const roomTimer: RoomTimer = {
+			const roomTimers: RoomTimer[] = timersSettings.map((timerSetting) => {
+				const roomTimer: RoomTimer = {
+					statementId,
+					roomNumber,
+					time: timerSetting.time,
+					order: timerSetting.order,
+					state: TimerStatus.finish,
+					lastUpdated: new Date().getTime(),
+					title: timerSetting.title,
+					roomTimerId: getRoomTimerId(
 						statementId,
 						roomNumber,
-						time: timerSetting.time,
-						order: timerSetting.order,
-						state: TimerStatus.finish,
-						lastUpdated: new Date().getTime(),
-						title: timerSetting.title,
-						roomTimerId: getRoomTimerId(
-							statementId,
-							roomNumber,
-							timerSetting.order,
-						),
-						timerSettingId: getSetTimerId(
-							statementId,
-							timerSetting.order,
-						),
-					};
+						timerSetting.order
+					),
+					timerSettingId: getSetTimerId(statementId, timerSetting.order),
+				};
 
-					return roomTimer;
-				},
-			);
+				return roomTimer;
+			});
 
 			roomTimers.forEach(async (roomTimer) => {
 				const timerRef = doc(
 					FireStore,
 					Collections.timersRooms,
-					`${statementId}--${roomNumber}--${roomTimer.order}`,
+					`${statementId}--${roomNumber}--${roomTimer.order}`
 				);
 
 				await setDoc(timerRef, roomTimer, { merge: true });
@@ -263,15 +256,12 @@ export async function startNextTimer(roomTimer: RoomTimer): Promise<void> {
 			getRoomTimerId(
 				roomTimer.statementId,
 				roomTimer.roomNumber,
-				nextTimerOrder,
-			),
+				nextTimerOrder
+			)
 		);
 		const nextTimer = await getDoc(nextTimerRef);
 		if (nextTimer.exists()) {
-			await setTimersStatusDB(
-                nextTimer.data() as RoomTimer,
-                TimerStatus.start,
-			);
+			await setTimersStatusDB(nextTimer.data() as RoomTimer, TimerStatus.start);
 		}
 	} catch (error) {
 		console.error(error);

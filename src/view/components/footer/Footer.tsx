@@ -1,13 +1,13 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 // icons
-import AddIcon from "@/assets/icons/plusIcon.svg?react";
+import AddIcon from '@/assets/icons/plusIcon.svg?react';
 
-import "./Footer.scss";
-import IconButton from "../iconButton/IconButton";
+import './Footer.scss';
+import IconButton from '../iconButton/IconButton';
 
 interface Props {
-    onclick: () => void;
+	onclick: () => void;
 }
 const Footer: FC<Props> = ({ onclick }) => {
 	return (

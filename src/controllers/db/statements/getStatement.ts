@@ -93,7 +93,7 @@ export async function getStatementDepth(
 						where('deliberativeElement', '==', DeliberativeElement.option),
 						where('deliberativeElement', '==', DeliberativeElement.research)
 					),
-					where("statementType", "!=", "document"),
+					where('statementType', '!=', 'document'),
 					where('parentId', '==', statement.statementId)
 				)
 			);

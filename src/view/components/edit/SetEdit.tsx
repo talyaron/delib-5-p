@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import EditIcon from "@/assets/icons/editIcon.svg?react";
+import React, { FC } from 'react';
+import EditIcon from '@/assets/icons/editIcon.svg?react';
 
 interface Props {
-  isAuthorized: boolean;
-  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  edit: boolean;
-  text?: string;
+	isAuthorized: boolean;
+	setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+	edit: boolean;
+	text?: string;
 }
 
 const SetEdit: FC<Props> = ({ isAuthorized, setEdit, edit, text }) => {
@@ -20,7 +20,7 @@ const SetEdit: FC<Props> = ({ isAuthorized, setEdit, edit, text }) => {
 					role="button"
 					tabIndex={0}
 					onKeyDown={(e) => {
-						if (e.key === "Enter" || e.key === " ") {
+						if (e.key === 'Enter' || e.key === ' ') {
 							setEdit(!edit);
 						}
 					}}
@@ -30,8 +30,12 @@ const SetEdit: FC<Props> = ({ isAuthorized, setEdit, edit, text }) => {
 			)}
 			<div>
 				{isAuthorized && (
-					<button className="clickable" onClick={() => setEdit(!edit)} aria-label="Edit">
-						<EditIcon style={{ color: "#226CBC" }} />
+					<button
+						className="clickable"
+						onClick={() => setEdit(!edit)}
+						aria-label="Edit"
+					>
+						<EditIcon style={{ color: '#226CBC' }} />
 					</button>
 				)}
 			</div>

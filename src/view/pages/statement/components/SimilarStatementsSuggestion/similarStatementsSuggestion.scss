@@ -1,302 +1,294 @@
 .similarities {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    max-width: 70ch;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
-    background-color: #f2f6ff;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-width: 70ch;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	padding: 1rem;
+	background-color: #f2f6ff;
 
-    &__header {
-        display: flex;
-        flex-direction: column;
-        margin-top: 2rem;
+	&__header {
+		display: flex;
+		flex-direction: column;
+		margin-top: 2rem;
 
-        @media screen and (max-width: 768px) {
-            display: none;
+		@media screen and (max-width: 768px) {
+			display: none;
+		}
 
-        }
+		&__top {
+			display: flex;
+			justify-content: space-between;
+			justify-content: center;
 
-        &__top {
-            display: flex;
-            justify-content: space-between;
-            justify-content: center;
+			&__stepOne {
+				position: relative;
+				bottom: 3rem;
+				right: 1rem;
 
-            &__stepOne {
-                position: relative;
-                bottom: 3rem;
-                right: 1rem;
+				&__closeButtonStepOne {
+					position: sticky;
+					bottom: 95%;
+					left: 84%;
+				}
 
-                &__closeButtonStepOne {
-                    position: sticky;
-                    bottom: 95%;
-                    left: 84%;
-                }
+				&__rtl {
+					position: relative;
+					display: flex;
+					justify-content: flex-end;
+					right: 2.5rem;
+					bottom: 3rem;
+					align-items: center;
+				}
+			}
 
-                &__rtl {
-                    position: relative;
-                    display: flex;
-                    justify-content: flex-end;
-                    right: 2.5rem;
-                    bottom: 3rem;
-                    align-items: center;
-                }
-            }
+			&__stepTwo {
+				position: relative;
+				display: flex;
+				bottom: 1rem;
+				margin-bottom: 2.8rem;
+				justify-content: center;
+				align-items: flex-end;
 
-            &__stepTwo {
-                position: relative;
-                display: flex;
-                bottom: 1rem;
-                margin-bottom: 2.8rem;
-                justify-content: center;
-                align-items: flex-end;
+				.types {
+					margin-top: -5rem;
+				}
 
-                .types {
-                    margin-top: -5rem;
-                }
+				&__closeButtonStepTwo {
+					position: sticky;
+					bottom: 98%;
+					left: 95%;
+				}
 
-                &__closeButtonStepTwo {
-                    position: sticky;
-                    bottom: 98%;
-                    left: 95%;
-                }
+				&__rtl {
+					position: relative;
+					display: flex;
+					left: 2rem;
+					bottom: 2rem;
+					justify-content: center;
+					align-items: flex-start;
+				}
+			}
 
-                &__rtl {
-                    position: relative;
-                    display: flex;
-                    left: 2rem;
-                    bottom: 2rem;
-                    justify-content: center;
-                    align-items: flex-start;
-                }
-            }
+			&__stepThree {
+				position: relative;
+				left: 2.5rem;
+				display: flex;
+				bottom: 3rem;
+				margin-bottom: -4rem;
+				justify-content: flex-end;
+				align-items: flex-start;
 
-            &__stepThree {
-                position: relative;
-                left: 2.5rem;
-                display: flex;
-                bottom: 3rem;
-                margin-bottom: -4rem;
-                justify-content: flex-end;
-                align-items: flex-start;
+				&__rtl {
+					position: relative;
+					left: 1rem;
+					bottom: 3rem;
 
-                &__rtl {
-                    position: relative;
-                    left: 1rem;
-                    bottom: 3rem;
+					&__arrowButtonStepThree {
+						position: sticky;
+						right: 100%;
+						bottom: 37rem;
+						color: var(--button-blue);
+					}
+				}
 
-                    &__arrowButtonStepThree {
-                        position: sticky;
-                        right: 100%;
-                        bottom: 37rem;
-                        color: var(--button-blue);
-                    }
-                }
+				&__arrowButtonStepThree {
+					position: relative;
+					right: 103%;
+					top: 1rem;
+					color: var(--button-blue);
+				}
+			}
+		}
 
-                &__arrowButtonStepThree {
-                    position: relative;
-                    right: 103%;
-                    top: 1rem;
-                    color: var(--button-blue);
-                }
-            }
-        }
+		&__types {
+			display: flex;
+			justify-content: center;
+			width: 90%;
 
-        &__types {
-            display: flex;
-            justify-content: center;
-            width: 90%;
+			.type {
+				display: flex;
+				gap: 0.5rem;
+				margin-top: -2rem;
 
-            .type {
-                display: flex;
-                gap: 0.5rem;
-                margin-top: -2rem;
+				.marked {
+					font-size: 1.1rem;
+					font-weight: 500;
+					color: var(--solution-Title);
+				}
 
-                .marked {
-                    font-size: 1.1rem;
-                    font-weight: 500;
-                    color: var(--solution-Title);
-                }
+				.unmarked {
+					font-size: 1.1rem;
+					color: var(--types-color);
+					opacity: 0.5;
+				}
+			}
 
-                .unmarked {
-                    font-size: 1.1rem;
-                    color: var(--types-color);
-                    opacity: 0.5;
-                }
-            }
+			&.hidden {
+				display: none;
+			}
+		}
+	}
 
-            &.hidden {
-                display: none;
-            }
-        }
-    }
+	&__title {
+		color: var(--h2Color);
+		font-size: 1rem;
+		margin-top: -0.5rem;
+	}
 
-    &__title {
-        color: var(--h2Color);
-        font-size: 1rem;
-        margin-top: -0.5rem;
-    }
+	label {
+		position: absolute;
+		left: 2rem;
+		margin-top: -0.6rem;
+		background: #f2f6ff;
+		padding: 0 0.6rem;
+		font-size: 1rem;
+		display: inline-block;
+		z-index: 1;
+	}
 
-    label {
-        position: absolute;
-        left: 2rem;
-        margin-top: -0.6rem;
-        background: #f2f6ff;
-        padding: 0 0.60rem;
-        font-size: 1rem;
-        display: inline-block;
-        z-index: 1;
-    }
+	&__titleInput {
+		display: flex;
+		flex-direction: column;
+		color: var(--similarities-titleInput);
+		gap: 1rem;
+		margin-bottom: -0.5rem;
 
-    &__titleInput {
-        display: flex;
-        flex-direction: column;
-        color: var(--similarities-titleInput);
-        gap: 1rem;
-        margin-bottom: -0.5rem;
+		&.activeTitle {
+			color: var(--settings-voting);
+		}
 
-        &.activeTitle {
-            color: var(--settings-voting);
-        }
+		textarea::placeholder {
+			font-size: 0.8rem;
+			line-height: 1.2rem;
+		}
 
-        textarea::placeholder {
-            font-size: 0.8rem;
-            line-height: 1.2rem;
+		input,
+		textarea {
+			padding: 1rem;
+			border-radius: 0.75rem;
+			font-size: 1rem;
+			border: 1px solid var(--similarities-textarea-border);
+			background: #f2f6ff;
+			position: relative;
+			font-style: italic;
 
-        }
+			&::placeholder {
+				opacity: 0.6;
+			}
 
-        input,
-        textarea {
-            padding: 1rem;
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            border: 1px solid var(--similarities-textarea-border);
-            background: #f2f6ff;
-            position: relative;
-            font-style: italic;
+			&.active {
+				border: 1px solid var(--settings-voting);
+				border-radius: 0.3rem;
+				font-style: normal;
+				color: var(-body-dark);
+				letter-spacing: 0.01rem;
+			}
+		}
 
-            &::placeholder {
-                opacity: 0.6;
-            }
+		input::placeholder {
+			font-size: 0.8rem;
+		}
+	}
 
-            &.active {
-                border: 1px solid var(--settings-voting);
-                border-radius: 0.3rem;
-                font-style: normal;
-                color: var(-body-dark);
-                letter-spacing: 0.01rem;
-            }
+	&__suggestions {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		background-color: rgb(230, 230, 230);
+		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+		height: fit-content;
 
-        }
+		&__statementTitle {
+			font-size: 1rem;
+			font-weight: 600;
+			letter-spacing: 0.01rem;
+		}
 
-        input::placeholder {
-            font-size: 0.8rem;
-        }
+		&__statementDescription {
+			font-size: 1rem;
+			color: var(--body-dark);
+			letter-spacing: 0.01rem;
+		}
 
-    }
+		.suggestion {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			padding: 0.5rem;
+			background-color: rgb(216, 216, 216);
+			border-radius: 0.3rem;
+			cursor: pointer;
+			user-select: none;
 
+			&__title {
+				font-size: 1rem;
+				font-weight: 600;
+				letter-spacing: 0.01rem;
+			}
 
-    &__suggestions {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;       
-        background-color: rgb(230, 230, 230);
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-        height: fit-content;
+			hr {
+				height: 1px;
+				opacity: 0.1;
+				border: 0.01px var(--button-blue) solid;
+			}
+		}
 
-        &__statementTitle {
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.01rem;
-        }
+		&__similarStatement:hover {
+			cursor: pointer;
+		}
 
-        &__statementDescription {
-            font-size: 1rem;
-            color: var(--body-dark);
-            letter-spacing: 0.01rem;
-        }
+		&__rtl {
+			&__similarEyeIcon {
+				width: 2.2rem;
+				position: relative;
+				right: 90%;
+			}
+		}
 
-        .suggestion {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 0.5rem;
-            background-color: rgb(216, 216, 216);
-            border-radius: .3rem;
-            cursor: pointer;
-            user-select: none   ;
+		&__similarEyeIcon {
+			width: 2.2rem;
+			position: relative;
+			left: 90%;
+		}
+	}
 
-            &__title {
-                font-size: 1rem;
-                font-weight: 600;
-                letter-spacing: 0.01rem;
-            }
+	&__buttonBox {
+		display: flex;
+		justify-content: space-around;
+		width: fit-content;
+		margin: 0 auto;
+		padding: none;
+		width: 100%;
+		position: sticky;
+		bottom: 6rem;
+	}
 
-            hr {
-                height: 1px;
-                opacity: 0.1;
-                border: 0.01px var(--button-blue) solid;
-            }
+	.twoButtonBox {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 2rem;
+		margin-left: 1rem;
+		padding-inline: 1rem;
+		width: 100%;
+		margin-top: auto;
 
-        }
+		&__backButton {
+			border: 1px var(--button-blue) solid;
+			color: var(--button-blue);
+			width: 4.2rem;
+			border-radius: 1.5rem;
+		}
+	}
 
-        &__similarStatement:hover {
-            cursor: pointer;
-        }
-
-        &__rtl {
-            &__similarEyeIcon {
-                width: 2.2rem;
-                position: relative;
-                right: 90%;
-            }
-        }
-
-        &__similarEyeIcon {
-            width: 2.2rem;
-            position: relative;
-            left: 90%;
-        }
-
-    }
-
-    &__buttonBox {
-        display: flex;
-        justify-content: space-around;
-        width: fit-content;
-        margin: 0 auto;
-        padding: none;
-        width: 100%;
-        position: sticky;
-        bottom: 6rem;
-
-    }
-
-    .twoButtonBox {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 2rem;
-        margin-left: 1rem;
-        padding-inline: 1rem;
-        width: 100%;
-        margin-top: auto;
-
-        &__backButton {
-            border: 1px var(--button-blue) solid;
-            color: var(--button-blue);
-            width: 4.2rem;
-            border-radius: 1.5rem;
-        }
-    }
-
-    .alertText {
-        color: var(--settings-voting);
-        font-size: 1rem;
-        margin-top: -1rem;
-        font-weight: 500;
-        line-height: 150%;
-    }
+	.alertText {
+		color: var(--settings-voting);
+		font-size: 1rem;
+		margin-top: -1rem;
+		font-weight: 500;
+		line-height: 150%;
+	}
 }

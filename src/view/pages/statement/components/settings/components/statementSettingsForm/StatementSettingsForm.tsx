@@ -62,7 +62,9 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 			statementMembershipSelector(statementId)
 		);
 
-		const joinedMembers = members.filter((member) => member.role !== Role.banned).map(m => m.user);
+		const joinedMembers = members
+			.filter((member) => member.role !== Role.banned)
+			.map((m) => m.user);
 
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,7 +76,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				statement,
 				parentStatement,
 			});
-			
 		};
 
 		const isNewStatement = !statementId;
@@ -87,15 +88,15 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		return (
 			<form
 				onSubmit={handleSubmit}
-				className='statement-settings-form'
-				data-cy='statement-settings-form'
+				className="statement-settings-form"
+				data-cy="statement-settings-form"
 			>
 				<TitleAndDescription
 					statement={statement}
 					setStatementToEdit={setStatementToEdit}
 				/>
 				<SectionTitle title={t('General Settings')} />
-				<section className='switches-area'>
+				<section className="switches-area">
 					<SubScreensToDisplay {...statementSettingsProps} />
 					<AdvancedSettings {...statementSettingsProps} />
 				</section>
@@ -107,21 +108,27 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						<UploadImage {...statementSettingsProps} />
 						<QuestionSettings {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
-						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement} />
-						<section className='get-members-area'>
-							<GetVoters statementId={statementId!} joinedMembers={joinedMembers} />
+						<MembersSettings
+							setStatementToEdit={setStatementToEdit}
+							statement={statement}
+						/>
+						<section className="get-members-area">
+							<GetVoters
+								statementId={statementId!}
+								joinedMembers={joinedMembers}
+							/>
 						</section>
-						<section className='get-members-area'>
+						<section className="get-members-area">
 							<GetEvaluators statementId={statementId!} />
 						</section>
 					</>
 				)}
 
 				<button
-					type='submit'
-					className='submit-button'
+					type="submit"
+					className="submit-button"
 					aria-label="Submit button"
-					data-cy='settings-statement-submit-btn'
+					data-cy="settings-statement-submit-btn"
 				>
 					<SaveIcon />
 				</button>

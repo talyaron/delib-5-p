@@ -71,7 +71,7 @@ export default function PasswordUi({
 
 	return (
 		<div className={styles.passwordUi}>
-			<img alt='Person holding key' src={passwordState.img} />
+			<img alt="Person holding key" src={passwordState.img} />
 
 			<div className={styles.passwordUi__statusSection}>
 				<p className={passwordState.textStyle}>{passwordState.text}</p>
@@ -94,7 +94,7 @@ export default function PasswordUi({
 				<Button
 					text={t('Submit')}
 					onClick={() => handleSubmit()}
-					className='btn btn--affirmation'
+					className="btn btn--affirmation"
 				/>
 			</div>
 		</div>

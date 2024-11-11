@@ -1,10 +1,10 @@
-import { User } from "delib-npm";
-import { FC } from "react";
-import Chip from "@/view/components/chip/Chip";
-import "./MembersChipList.scss";
+import { User } from 'delib-npm';
+import { FC } from 'react';
+import Chip from '@/view/components/chip/Chip';
+import './MembersChipList.scss';
 
 interface MembersChipsListProps {
-    members: User[];
+	members: User[];
 }
 
 const MembersChipsList: FC<MembersChipsListProps> = ({ members }) => {

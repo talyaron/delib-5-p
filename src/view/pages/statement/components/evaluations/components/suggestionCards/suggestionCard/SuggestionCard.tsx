@@ -140,7 +140,7 @@ const SuggestionCard: FC<Props> = ({
 			id={statement.statementId}
 		>
 			<div
-				className='selected-option'
+				className="selected-option"
 				style={{
 					backgroundColor: statement.selected
 						? statementColor.backgroundColor
@@ -156,9 +156,9 @@ const SuggestionCard: FC<Props> = ({
 					{t('Selected')}
 				</div>
 			</div>
-			<div className='main'>
-				<div className='info'>
-					<div className='text'>
+			<div className="main">
+				<div className="info">
+					<div className="text">
 						<EditTitle
 							statement={statement}
 							isEdit={isEdit}
@@ -166,7 +166,7 @@ const SuggestionCard: FC<Props> = ({
 							isTextArea={true}
 						/>
 					</div>
-					<div className='more'>
+					<div className="more">
 						<SolutionMenu
 							statement={statement}
 							isAuthorized={_isAuthorized}
@@ -179,13 +179,13 @@ const SuggestionCard: FC<Props> = ({
 					</div>
 				</div>
 
-				<div className='actions'>
+				<div className="actions">
 					{statement.hasChildren && (
-						<div className='chat chat-more-element'>
+						<div className="chat chat-more-element">
 							<StatementChatMore statement={statement} />
 						</div>
 					)}
-					<div className='evolution-element'>
+					<div className="evolution-element">
 						<Evaluation
 							parentStatement={parentStatement}
 							statement={statement}
@@ -193,7 +193,7 @@ const SuggestionCard: FC<Props> = ({
 					</div>
 					{parentStatement.hasChildren && (
 						<IconButton
-							className='add-sub-question-button more-question'
+							className="add-sub-question-button more-question"
 							onClick={() => setShouldShowAddSubQuestionModal(true)}
 						>
 							<AddQuestionIcon />

@@ -1,11 +1,11 @@
-import { Statement, ResultsBy, Results, DeliberativeElement } from "delib-npm";
-import { getResultsDB } from "@/controllers/db/results/getResults";
+import { Statement, ResultsBy, Results, DeliberativeElement } from 'delib-npm';
+import { getResultsDB } from '@/controllers/db/results/getResults';
 
 export async function getResults(
 	statement: Statement,
 	subStatements: Statement[],
 	resultsBy: ResultsBy,
-	numberOfResults: number,
+	numberOfResults: number
 ): Promise<Results> {
 	try {
 		// const { results } = statement;
@@ -13,24 +13,19 @@ export async function getResults(
 		const result: Results = { top: statement, sub: [] };
 
 		switch (resultsBy) {
-		case ResultsBy.topOptions:
-			result.sub = [
-				...getResultsByOptions(subStatements, numberOfResults),
-			];
-			break;
-		default:
-			result.sub = [];
+			case ResultsBy.topOptions:
+				result.sub = [...getResultsByOptions(subStatements, numberOfResults)];
+				break;
+			default:
+				result.sub = [];
 		}
 
-		const subResultsPromises = result.sub.map(
-			async (subResult: Results) => {
-				const subStatement = subResult.top;
-				const subResults: Statement[] =
-                    await getResultsDB(subStatement);
+		const subResultsPromises = result.sub.map(async (subResult: Results) => {
+			const subStatement = subResult.top;
+			const subResults: Statement[] = await getResultsDB(subStatement);
 
-				return subResults;
-			},
-		);
+			return subResults;
+		});
 
 		const resultsStatements = await Promise.all(subResultsPromises);
 
@@ -53,7 +48,7 @@ export async function getResults(
 }
 function getResultsByOptions(
 	subStatements: Statement[],
-	numberOfResults: number,
+	numberOfResults: number
 ): Results[] {
 	try {
 		const maxOptions: Statement[] = subStatements

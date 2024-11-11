@@ -18,15 +18,15 @@ export default function SubmitStatementButton({
 	reverse = false,
 }: SubmitStatementButtonProps) {
 	const { dir } = useLanguage();
-	
+
 	return (
 		<button
 			onClick={onClick}
 			className={style.similaritiesWrapper}
-			style={{ 
+			style={{
 				direction: dir,
-				flexDirection: dir === "ltr" ? "row" : "row-reverse",
-				textAlign: dir === "ltr" ? "left" : "right",
+				flexDirection: dir === 'ltr' ? 'row' : 'row-reverse',
+				textAlign: dir === 'ltr' ? 'left' : 'right',
 			}}
 		>
 			{reverse ? (
@@ -34,23 +34,29 @@ export default function SubmitStatementButton({
 					<div>
 						<Icon style={{ color: textColor }} />
 					</div>
-					<p style={{backgroundColor: textColor, color: textColor }}>
-						{text}
-					</p>
+					<p style={{ backgroundColor: textColor, color: textColor }}>{text}</p>
 				</>
 			) : (
 				<>
-					<p style={{borderRadius: "2rem 0px 0px 2rem",
-						backgroundColor: "var(--button-blue)", 
-						color: textColor, 
-						justifyContent: dir === 'rtl' ? "flex-end": "flex-start",
-						width: "100%"}}>
+					<p
+						style={{
+							borderRadius: '2rem 0px 0px 2rem',
+							backgroundColor: 'var(--button-blue)',
+							color: textColor,
+							justifyContent: dir === 'rtl' ? 'flex-end' : 'flex-start',
+							width: '100%',
+						}}
+					>
 						{text}
 					</p>
-					<div style={{position: "relative", 
-						border: "2px solid var(--white)" ,
-						borderRadius: "2rem",
-						backgroundColor: "var(--button-blue)" }}>
+					<div
+						style={{
+							position: 'relative',
+							border: '2px solid var(--white)',
+							borderRadius: '2rem',
+							backgroundColor: 'var(--button-blue)',
+						}}
+					>
 						<Icon style={{ color: textColor }} />
 					</div>
 				</>

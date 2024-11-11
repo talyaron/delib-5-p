@@ -1,14 +1,14 @@
-import { FC, useState } from "react";
+import { FC, useState } from 'react';
 
 // Custom components
 
 // Third party imports
-import { ResultsBy } from "delib-npm";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import RadioButtonWithLabel from "@/view/components/radioButtonWithLabel/RadioButtonWithLabel";
-import "./DisplayResultsBy.scss";
-import { StatementSettingsProps } from "../../settingsTypeHelpers";
-import { defaultResultsSettings } from "../../emptyStatementModel";
+import { ResultsBy } from 'delib-npm';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import RadioButtonWithLabel from '@/view/components/radioButtonWithLabel/RadioButtonWithLabel';
+import './DisplayResultsBy.scss';
+import { StatementSettingsProps } from '../../settingsTypeHelpers';
+import { defaultResultsSettings } from '../../emptyStatementModel';
 
 const DisplayResultsBy: FC<StatementSettingsProps> = ({
 	statement,
@@ -18,7 +18,7 @@ const DisplayResultsBy: FC<StatementSettingsProps> = ({
 	const resultsSettings = statement.resultsSettings ?? defaultResultsSettings;
 
 	const [selectedOption, setSelectedOption] = useState(
-		resultsSettings.resultsBy,
+		resultsSettings.resultsBy
 	);
 
 	const toggleSelection = (option: ResultsBy) => {
@@ -34,10 +34,10 @@ const DisplayResultsBy: FC<StatementSettingsProps> = ({
 
 	return (
 		<section className="display-results-by">
-			<h3 className="title">{t("Results By")}</h3>
+			<h3 className="title">{t('Results By')}</h3>
 			<RadioButtonWithLabel
-				id={t("Favorite Option")}
-				labelText={t("Favorite Option")}
+				id={t('Favorite Option')}
+				labelText={t('Favorite Option')}
 				checked={selectedOption === ResultsBy.topOptions}
 				onChange={() => toggleSelection(ResultsBy.topOptions)}
 			/>

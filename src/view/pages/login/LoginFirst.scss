@@ -1,30 +1,30 @@
 .login-first {
-    width: 100svw;
-    height: 100svh;
-    background-color: #f2f6ff;
-    padding-bottom: 2rem;
+	width: 100svw;
+	height: 100svh;
+	background-color: #f2f6ff;
+	padding-bottom: 2rem;
 
-    .content-container {
-        max-width: 75ch;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        margin: 0 auto;
+	.content-container {
+		max-width: 75ch;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		margin: 0 auto;
 
-        p {
-            font-family: Roboto;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
-            width: 60%;
-            color: #3b4f7d;
-        }
+		p {
+			font-family: Roboto;
+			font-size: 1.5rem;
+			font-weight: 700;
+			text-align: center;
+			width: 60%;
+			color: #3b4f7d;
+		}
 
-        button {
-            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-        }
-    }
+		button {
+			box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+		}
+	}
 }

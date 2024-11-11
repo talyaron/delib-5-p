@@ -1,24 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { Agreement, User, UserSchema, UserSettings } from "delib-npm";
-import { defaultFontSize } from "../fonts/fontsModel";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
+import { Agreement, User, UserSchema, UserSettings } from 'delib-npm';
+import { defaultFontSize } from '../fonts/fontsModel';
 
 export enum Status {
-    idle = "idle",
-    loading = "loading",
-    failed = "failed",
+	idle = 'idle',
+	loading = 'loading',
+	failed = 'failed',
 }
 
 // Define a type for the slice state
 interface UserState {
-    user: User | null;
-    status: Status;
-    askToSubscribeToNotifications: {
-        show: boolean;
-    };
+	user: User | null;
+	status: Status;
+	askToSubscribeToNotifications: {
+		show: boolean;
+	};
 	colorContrast: boolean;
-	userSettings: UserSettings |null;	
+	userSettings: UserSettings | null;
 }
 
 // Define the initial state using that type
@@ -33,7 +33,7 @@ const initialState: UserState = {
 };
 
 export const userSlicer = createSlice({
-	name: "user",
+	name: 'user',
 	initialState,
 	reducers: {
 		setUser: (state, action: PayloadAction<User | null>) => {
@@ -42,8 +42,8 @@ export const userSlicer = createSlice({
 					const user = action.payload as User;
 					if (
 						!user.fontSize ||
-                        typeof user.fontSize !== "number" ||
-                        isNaN(user.fontSize)
+						typeof user.fontSize !== 'number' ||
+						isNaN(user.fontSize)
 					)
 						user.fontSize = defaultFontSize;
 
@@ -84,7 +84,7 @@ export const userSlicer = createSlice({
 		},
 		updateAgreementToStore: (
 			state: UserState,
-			action: PayloadAction<Agreement | undefined>,
+			action: PayloadAction<Agreement | undefined>
 		) => {
 			try {
 				if (!state.user) return;
@@ -109,7 +109,7 @@ export const userSlicer = createSlice({
 		},
 		setUserSettings: (state, action: PayloadAction<UserSettings | null>) => {
 			state.userSettings = action.payload;
-		}
+		},
 	},
 });
 
@@ -120,7 +120,7 @@ export const {
 	updateAgreementToStore,
 	toggleColorContrast,
 	setColorContrast,
-	setUserSettings
+	setUserSettings,
 } = userSlicer.actions;
 
 // Other code such as selectors can use the imported `RootState` type

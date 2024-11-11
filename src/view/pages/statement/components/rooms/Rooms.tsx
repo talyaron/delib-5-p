@@ -1,28 +1,28 @@
 import {
 	DeliberativeElement,
 	Statement,
-	StatementSubscription
-} from "delib-npm";
-import  { FC, useEffect } from "react";
+	StatementSubscription,
+} from 'delib-npm';
+import { FC, useEffect } from 'react';
 
 // Custom components
-import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
-import ChooseRoom from "./components/choose/ChooseRoom";
-import InRoom from "./components/inRoom/InRoom";
+import RoomsAdmin from './components/roomsAdmin/RoomsAdmin';
+import ChooseRoom from './components/choose/ChooseRoom';
+import InRoom from './components/inRoom/InRoom';
 
 // database
 import {
 	listenToParticipants,
 	listenToRoomsSettings,
-} from "@/controllers/db/rooms/getRooms";
-import { isAdmin } from "@/controllers/general/helpers";
-import { useSelector } from "react-redux";
-import { roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
+} from '@/controllers/db/rooms/getRooms';
+import { isAdmin } from '@/controllers/general/helpers';
+import { useSelector } from 'react-redux';
+import { roomSettingsByStatementId } from '@/model/rooms/roomsSlice';
 
 interface RoomsProps {
-  statement: Statement;
-  subStatements: Statement[];
-  statementSubscription: StatementSubscription | undefined;
+	statement: Statement;
+	subStatements: Statement[];
+	statementSubscription: StatementSubscription | undefined;
 }
 
 const Rooms: FC<RoomsProps> = ({
@@ -33,7 +33,8 @@ const Rooms: FC<RoomsProps> = ({
 	const roomSettings = useSelector(
 		roomSettingsByStatementId(statement.statementId)
 	);
-	const isEditingRoom = roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
+	const isEditingRoom =
+		roomSettings?.isEdit !== undefined ? roomSettings?.isEdit : true;
 
 	useEffect(() => {
 		const unsubscribe = listenToParticipants(statement);
@@ -45,8 +46,9 @@ const Rooms: FC<RoomsProps> = ({
 		};
 	}, []);
 
-	const topics = subStatements.filter((subStatement: Statement) =>
-		subStatement.deliberativeElement === DeliberativeElement.option
+	const topics = subStatements.filter(
+		(subStatement: Statement) =>
+			subStatement.deliberativeElement === DeliberativeElement.option
 	);
 
 	const _isAdmin = isAdmin(statementSubscription?.role);
@@ -67,7 +69,6 @@ function switchRoomScreens(
 	topics: Statement[],
 	statement: Statement
 ) {
-
 	if (isEditingRoom) {
 		return <ChooseRoom topics={topics} statement={statement} />;
 	} else {

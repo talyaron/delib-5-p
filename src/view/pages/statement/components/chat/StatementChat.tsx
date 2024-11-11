@@ -1,25 +1,25 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef } from 'react';
 
 // Third Party Imports
-import { Statement, User } from "delib-npm";
+import { Statement, User } from 'delib-npm';
 
 // Custom Components
-import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
-import StatementInput from "./components/input/StatementInput";
-import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
+import ChatMessageCard from './components/chatMessageCard/ChatMessageCard';
+import StatementInput from './components/input/StatementInput';
+import useSlideAndSubStatement from '../../../../../controllers/hooks/useSlideAndSubStatement';
 
-import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
-import "./StatementChat.scss";
-import { useLocation } from "react-router-dom";
-import Description from "../evaluations/components/description/Description";
+import NewMessages from './components/newMessages/NewMessages';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { userSelector } from '@/model/users/userSlice';
+import './StatementChat.scss';
+import { useLocation } from 'react-router-dom';
+import Description from '../evaluations/components/description/Description';
 
 interface Props {
-  statement: Statement;
-  subStatements: Statement[];
-  handleShowTalker: (statement: User | null) => void;
-  setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+	statement: Statement;
+	subStatements: Statement[];
+	handleShowTalker: (statement: User | null) => void;
+	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 let firstTime = true;
@@ -58,11 +58,11 @@ const StatementChat: FC<Props> = ({
 		if (location.hash) return;
 		if (firstTime) {
 			//@ts-ignore
-			messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+			messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
 			firstTime = false;
 		} else {
 			//@ts-ignore
-			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
 		}
 	};
 
@@ -72,7 +72,6 @@ const StatementChat: FC<Props> = ({
 
 	//effects
 	useEffect(() => {
-
 		if (!firstTime) return;
 
 		if (location.hash) {
@@ -88,15 +87,13 @@ const StatementChat: FC<Props> = ({
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
 			const isNewMessages =
-        subStatements.length - numberOfSubStatements > 0 ? true : false;
+				subStatements.length - numberOfSubStatements > 0 ? true : false;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
 				setNewMessages((n) => n + 1);
 			}
 		} else {
-		
 			scrollToBottom();
-	 
 		}
 	}, [subStatements.length]);
 

@@ -1,33 +1,52 @@
-import { Collections, Statement } from "delib-npm";
-import { collection, deleteDoc, doc, getDocs, limit, query, where } from "firebase/firestore";
-import { FireStore } from "../config";
+import { Collections, Statement } from 'delib-npm';
+import {
+	collection,
+	deleteDoc,
+	doc,
+	getDocs,
+	limit,
+	query,
+	where,
+} from 'firebase/firestore';
+import { FireStore } from '../config';
 
-export async function deleteStatementFromDB (
+export async function deleteStatementFromDB(
 	statement: Statement,
-	isAuthorized: boolean,
+	isAuthorized: boolean
 ) {
 	try {
-		if(!statement) throw new Error("No statement");
-       
-		if(!isAuthorized) alert("You are not authorized to delete this statement");
-        
-		if (!statement) throw new Error("No statement");
-		const confirmed = confirm(`Are you sure you want to delete ${statement.statement}?`);
+		if (!statement) throw new Error('No statement');
+
+		if (!isAuthorized) alert('You are not authorized to delete this statement');
+
+		if (!statement) throw new Error('No statement');
+		const confirmed = confirm(
+			`Are you sure you want to delete ${statement.statement}?`
+		);
 		if (!confirmed) return;
 
 		//check if the statement has children
-		const childrenRef = collection(FireStore, Collections.statements)
-		const q = query(childrenRef, where("parentId", "==", statement.statementId), limit(1));
+		const childrenRef = collection(FireStore, Collections.statements);
+		const q = query(
+			childrenRef,
+			where('parentId', '==', statement.statementId),
+			limit(1)
+		);
 		const hasChildren = await getDocs(q);
 		if (hasChildren.docs.length > 0) {
-			alert("You cannot delete a statement with children. Please delete the children first.")
-			
+			alert(
+				'You cannot delete a statement with children. Please delete the children first.'
+			);
+
 			return;
 		}
-		const statementRef = doc(FireStore, Collections.statements, statement.statementId);
+		const statementRef = doc(
+			FireStore,
+			Collections.statements,
+			statement.statementId
+		);
 		await deleteDoc(statementRef);
 	} catch (error) {
 		console.error(error);
-
 	}
 }

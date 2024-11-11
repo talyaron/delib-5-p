@@ -1,24 +1,23 @@
-.card{
-    padding: 1rem;
-    background-color: var(--question-header);
-    color: var(--question-header-text);
-    display: flex;
-    flex-direction: column;
-    border-radius: 1rem;
-    h3{
-        margin-bottom: .3rem;
-        font-weight: 500;
-    }
-    label{
-        margin-bottom: .2rem;
-    }
+.card {
+	padding: 1rem;
+	background-color: var(--question-header);
+	color: var(--question-header-text);
+	display: flex;
+	flex-direction: column;
+	border-radius: 1rem;
+	h3 {
+		margin-bottom: 0.3rem;
+		font-weight: 500;
+	}
+	label {
+		margin-bottom: 0.2rem;
+	}
 }
-.title{
-    display: flex;
-    gap:.4rem;
+.title {
+	display: flex;
+	gap: 0.4rem;
 }
 
-.answer{
-    padding: 1rem;
-    
+.answer {
+	padding: 1rem;
 }

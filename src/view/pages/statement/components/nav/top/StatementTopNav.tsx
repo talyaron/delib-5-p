@@ -74,7 +74,7 @@ const StatementTopNav: FC<Props> = ({
 	return (
 		<nav
 			className={styles.nav}
-			data-cy='statement-nav'
+			data-cy="statement-nav"
 			style={{ backgroundColor: headerStyle.backgroundColor }}
 		>
 			<div className={styles.wrapper}>

@@ -1,26 +1,26 @@
 .p {
-    display: block;
-    font-size: .8rem;
-    line-height: 1.2rem;
-    user-select: text;
-    font-weight: 300;
+	display: block;
+	font-size: 0.8rem;
+	line-height: 1.2rem;
+	user-select: text;
+	font-weight: 300;
 
-    &--bold {
-        font-weight: 400;
-    }
-    a{
-        color:var(--header-question);
-    }
+	&--bold {
+		font-weight: 400;
+	}
+	a {
+		color: var(--header-question);
+	}
 }
 
 .title {
-    font-size: .9rem;
-    font-weight: 600;
-    line-height: 1.15rem;
-    user-select: text;
-    color: #3b4f7d;
-    margin-bottom: .2rem;
-    a{
-        color:var(--header-question);
-    }
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.15rem;
+	user-select: text;
+	color: #3b4f7d;
+	margin-bottom: 0.2rem;
+	a {
+		color: var(--header-question);
+	}
 }

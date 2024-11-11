@@ -1,14 +1,13 @@
-.box{
-    background-color: #b4d1ff;
-    color: white;
-    border-radius: 4rem;
-    width:fit-content;
-    padding: .2rem .7rem;
-    display: flex;
-    align-items: center;
-    gap:.5rem;
-    cursor: pointer;
-    user-select: none;
-    font-size: .8rem;
-
+.box {
+	background-color: #b4d1ff;
+	color: white;
+	border-radius: 4rem;
+	width: fit-content;
+	padding: 0.2rem 0.7rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+	user-select: none;
+	font-size: 0.8rem;
 }

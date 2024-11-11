@@ -1,15 +1,15 @@
-import CheckboxCheckedIcon from "@/assets/icons/checkboxCheckedIcon.svg?react";
-import CheckboxEmptyIcon from "@/assets/icons/checkboxEmptyIcon.svg?react";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { FC } from "react";
-import "./Checkbox.scss";
-import VisuallyHidden from "../accessibility/toScreenReaders/VisuallyHidden";
+import CheckboxCheckedIcon from '@/assets/icons/checkboxCheckedIcon.svg?react';
+import CheckboxEmptyIcon from '@/assets/icons/checkboxEmptyIcon.svg?react';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { FC } from 'react';
+import './Checkbox.scss';
+import VisuallyHidden from '../accessibility/toScreenReaders/VisuallyHidden';
 
 interface CheckboxProps {
-  name?: string;
-  label: string;
-  isChecked: boolean;
-  toggleSelection: () => void;
+	name?: string;
+	label: string;
+	isChecked: boolean;
+	toggleSelection: () => void;
 }
 
 const Checkbox: FC<CheckboxProps> = ({
@@ -21,7 +21,7 @@ const Checkbox: FC<CheckboxProps> = ({
 	const { t } = useLanguage();
 
 	return (
-		<div className={`checkbox ${isChecked ? "checked" : ""}`}>
+		<div className={`checkbox ${isChecked ? 'checked' : ''}`}>
 			<label
 				// className={`checkbox ${isChecked ? "checked" : ""}`}
 				htmlFor={`checkbox-${label}`}
@@ -34,12 +34,12 @@ const Checkbox: FC<CheckboxProps> = ({
 				className="checkbox-icon"
 				onClick={toggleSelection}
 				onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
-					if (e.key === "Enter") {
+					if (e.key === 'Enter') {
 						e.preventDefault();
 						toggleSelection();
 					}
 				}}
-				aria-label={isChecked ? "Uncheck" : "Check"}
+				aria-label={isChecked ? 'Uncheck' : 'Check'}
 			>
 				{isChecked ? <CheckboxCheckedIcon /> : <CheckboxEmptyIcon />}
 			</button>

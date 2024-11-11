@@ -1,37 +1,34 @@
-import { SetTimer } from "delib-npm";
-import { useState } from "react";
-import styles from "../setTimers.module.scss";
+import { SetTimer } from 'delib-npm';
+import { useState } from 'react';
+import styles from '../setTimers.module.scss';
 import {
 	fromFourDigitsToMilliseconds,
 	fromMillisecondsToFourDigits,
-} from "./SetTimerCont";
+} from './SetTimerCont';
 
 //images
-import deleteIcon from "@/assets/icons/delete.svg";
-import { deleteTimerSettingDB } from "@/controllers/db/timer/setTimer";
-import { useAppDispatch } from "@/controllers/hooks/reduxHooks";
-import {
-	setSetTimerTime,
-	setSetTimerTitle,
-} from "@/model/timers/timersSlice";
+import deleteIcon from '@/assets/icons/delete.svg';
+import { deleteTimerSettingDB } from '@/controllers/db/timer/setTimer';
+import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
+import { setSetTimerTime, setSetTimerTitle } from '@/model/timers/timersSlice';
 
 interface TimerProps {
-    setTimer: SetTimer;
-    index: number;
+	setTimer: SetTimer;
+	index: number;
 }
 
 function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 	try {
 		if (!setTimer) return null;
-		if (!setTimer.statementId) throw new Error("statementId is required");
+		if (!setTimer.statementId) throw new Error('statementId is required');
 
 		const dispatch = useAppDispatch();
 
 		const [timeDigits, setTimeDigits] = useState<number[]>(
-			fromMillisecondsToFourDigits(setTimer.time || 1000 * 90),
+			fromMillisecondsToFourDigits(setTimer.time || 1000 * 90)
 		);
 		const [title, setTitle] = useState<string>(
-			setTimer.title ? setTimer.title : "Discussion",
+			setTimer.title ? setTimer.title : 'Discussion'
 		);
 
 		return (
@@ -109,9 +106,7 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 
 		function handleDeleteTimer(timerId: string) {
 			try {
-				const isDelete = confirm(
-					`Are you sure you want to delete this timer?`,
-				);
+				const isDelete = confirm(`Are you sure you want to delete this timer?`);
 				if (!isDelete) return;
 
 				deleteTimerSettingDB(timerId);
@@ -132,7 +127,7 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 					setSetTimerTitle({
 						timerId: setTimer.timerId,
 						title: newTitle,
-					}),
+					})
 				);
 			} catch (error) {
 				console.error(error);
@@ -140,18 +135,18 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 		}
 
 		function getKeyNumber(
-			ev: React.KeyboardEvent<HTMLInputElement>,
+			ev: React.KeyboardEvent<HTMLInputElement>
 		): number | false {
 			const target = ev.target as HTMLInputElement;
 			try {
 				let digit: number | false = false;
 
 				if (
-					ev.type === "keyup" &&
-                    (ev.key === "ArrowUp" || ev.key === "ArrowDown")
+					ev.type === 'keyup' &&
+					(ev.key === 'ArrowUp' || ev.key === 'ArrowDown')
 				) {
 					digit = target.valueAsNumber;
-				} else if (ev.type === "keyup" && !isNaN(parseInt(ev.key))) {
+				} else if (ev.type === 'keyup' && !isNaN(parseInt(ev.key))) {
 					digit = parseInt(ev.key);
 				}
 
@@ -168,8 +163,8 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 		}
 
 		function handleInputDigit(ev: React.KeyboardEvent<HTMLInputElement>) {
-			const isTab = ev.key === "Tab";
-			const dontGoNext = ev.key === "ArrowDown" || ev.key === "ArrowUp";
+			const isTab = ev.key === 'Tab';
+			const dontGoNext = ev.key === 'ArrowDown' || ev.key === 'ArrowUp';
 
 			const target = ev.target as HTMLInputElement;
 
@@ -189,7 +184,7 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 					setSetTimerTime({
 						timerId: setTimer.timerId,
 						time: newTime,
-					}),
+					})
 				);
 
 				return;
@@ -206,13 +201,11 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 			setTimeDigits(_digits);
 			const newTime = fromFourDigitsToMilliseconds(_digits);
 
-			dispatch(
-				setSetTimerTime({ timerId: setTimer.timerId, time: newTime }),
-			);
+			dispatch(setSetTimerTime({ timerId: setTimer.timerId, time: newTime }));
 
-			const tabIndex = target.getAttribute("tabindex") as string;
+			const tabIndex = target.getAttribute('tabindex') as string;
 			const nextInput = document.querySelector(
-				`[tabindex="${Number(tabIndex) + 1}"]`,
+				`[tabindex="${Number(tabIndex) + 1}"]`
 			);
 			if (nextInput && !dontGoNext) {
 				//@ts-ignore
@@ -223,7 +216,7 @@ function SetSetTimerComp({ setTimer, index }: Readonly<TimerProps>) {
 				const innerindex = target.dataset.innerindex as string;
 				const _digit: number = digit || target.valueAsNumber;
 				const _digits: number[] = timeDigits.map((d, i) =>
-					i === parseInt(innerindex) ? _digit : d,
+					i === parseInt(innerindex) ? _digit : d
 				);
 
 				return _digits;

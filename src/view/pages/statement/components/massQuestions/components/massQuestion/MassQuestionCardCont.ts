@@ -1,16 +1,16 @@
-import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
-import { DeliberativeElement, Statement, User } from "delib-npm";
-import { store } from "../../../../../../../model/store";
+import { defaultStatementSettings } from './../../../settings/emptyStatementModel';
+import { DeliberativeElement, Statement, User } from 'delib-npm';
+import { store } from '../../../../../../../model/store';
 import {
 	createStatement,
 	setStatementToDB,
 	updateStatementText,
-} from "../../../../../../../controllers/db/statements/setStatements";
+} from '../../../../../../../controllers/db/statements/setStatements';
 
 interface handleSetQuestionFromMassCardProps {
-    question: Statement;
-    text: string;
-    answer: Statement | null;
+	question: Statement;
+	text: string;
+	answer: Statement | null;
 }
 
 export const handleSetQuestionFromMassCard = ({
@@ -20,10 +20,10 @@ export const handleSetQuestionFromMassCard = ({
 }: handleSetQuestionFromMassCardProps) => {
 	try {
 		const user: User | null = store.getState().user.user;
-		if (!user) throw new Error("user not found");
+		if (!user) throw new Error('user not found');
 		if (!text) return;
-		const title = text.split("\n")[0];
-		const description = text.split("\n").slice(1).join("\n");
+		const title = text.split('\n')[0];
+		const description = text.split('\n').slice(1).join('\n');
 
 		if (answer) {
 			//update statement
@@ -39,7 +39,7 @@ export const handleSetQuestionFromMassCard = ({
 				parentStatement: question,
 				deliberativeElement: DeliberativeElement.option,
 			});
-			if (!statement) throw new Error("statement not created");
+			if (!statement) throw new Error('statement not created');
 
 			setStatementToDB({
 				statement,

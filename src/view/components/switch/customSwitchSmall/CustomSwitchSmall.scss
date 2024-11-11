@@ -2,122 +2,117 @@ $SwitchWidth: 6.9rem;
 $SwitchHeight: 2.6729rem;
 
 .custom-switch-small {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    align-items: start;
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	align-items: start;
 
-   
+	input {
+		display: none;
+	}
 
-    input {
-        display: none;
-    }
+	.background {
+		position: relative;
+		width: $SwitchWidth;
+		height: $SwitchHeight;
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
 
-    .background {
-        position: relative;
-        width: $SwitchWidth;
-        height: $SwitchHeight;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
+		&--ltr {
+			transform: scale(-1, 1);
+		}
+	}
 
-        &--ltr{
-            transform: scale(-1, 1);
-        }
+	.text {
+		margin: 5px 0px 0px 0px;
+		font-size: 0.9rem;
+		color: var(--text-disabled-paragraph);
+		position: relative;
+	}
 
-    }
+	.ball {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: $SwitchHeight;
+		width: $SwitchHeight;
+		position: absolute;
 
-    .text {
-        margin: 5px 0px 0px 0px;
-        font-size: .9rem;
-        color: var(--text-disabled-paragraph);
-        position: relative;
-    }
+		border-radius: 100%;
 
-    .ball {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: $SwitchHeight;
-        width: $SwitchHeight;
-        position: absolute;
-       
-        border-radius: 100%;
+		&-background {
+			// color:#9FB1D4;
+			color: var(--text-paragraph-lightest);
 
-        &-background{
-            // color:#9FB1D4;
-            color: var(--text-paragraph-lightest);
-           
+			&-off {
+				position: absolute;
+				left: 0rem;
+			}
+		}
 
-            &-off{
-                position: absolute;
-                left: 0rem;
-            }
-        }
+		&-switch {
+			color: var(--icon-white);
+			animation-duration: 0.15s;
+			animation-timing-function: ease-in-out;
 
+			&--checked {
+				background-color: var(--toggle-green-active);
+				filter: drop-shadow(0px -2.1px 4.2px rgba(90, 174, 159, 0.3))
+					drop-shadow(0px 2.1px 4.2px rgba(90, 174, 159, 0.4));
 
-        &-switch {
-            color: var(--icon-white);
-            animation-duration: 0.15s;
-            animation-timing-function: ease-in-out;
+				left: 4.15rem;
+				animation-name: toChecked;
 
-            &--checked {
-                background-color: var(--toggle-green-active);
-                filter: drop-shadow(0px -2.1px 4.2px rgba(90, 174, 159, 0.30)) drop-shadow(0px 2.1px 4.2px rgba(90, 174, 159, 0.40));
+				animation-fill-mode: forwards;
+				animation-direction: normal;
+			}
 
-                left: 4.15rem;
-                animation-name: toChecked;
+			&--unchecked {
+				background-color: var(--settings-finished);
+				filter: drop-shadow(0px -2.1px 4.2px rgba(223, 136, 136, 0.3))
+					drop-shadow(0px 2.1px 4.2px rgba(223, 136, 136, 0.4));
+				left: 0;
 
-                animation-fill-mode: forwards;
-                animation-direction: normal;
-            }
+				animation-name: toUnchecked;
 
-            &--unchecked {
-                background-color: var(--settings-finished);
-                filter: drop-shadow(0px -2.1px 4.2px rgba(223, 136, 136, 0.30)) drop-shadow(0px 2.1px 4.2px rgba(223, 136, 136, 0.40));
-                left: 0;
+				animation-fill-mode: forwards;
+				animation-direction: reverse;
+			}
 
-                animation-name: toUnchecked;
+			@keyframes toUnchecked {
+				0% {
+					left: 4.15rem;
+					scale: 1;
+				}
 
-                animation-fill-mode: forwards;
-                animation-direction: reverse;
-            }
+				50% {
+					left: 2.07rem;
+					scale: 0.4;
+				}
 
-            @keyframes toUnchecked {
-                0% {
-                    left: 4.15rem;
-                    scale: 1;
-                }
+				100% {
+					left: 0;
+					scale: 1;
+				}
+			}
 
-                50% {
-                    left: 2.07rem;
-                    scale: .4;
-                }
+			@keyframes toChecked {
+				0% {
+					left: 4.15rem;
+					scale: 1;
+				}
 
-                100% {
-                    left: 0;
-                    scale: 1;
-                }
+				50% {
+					left: 2.07rem;
+					scale: 0.4;
+				}
 
-            }
-
-            @keyframes toChecked {
-                0% {
-                    left: 4.15rem;
-                    scale: 1;
-                }
-
-                50% {
-                    left: 2.07rem;
-                    scale: .4;
-                }
-
-                100% {
-                    left: 0;
-                    scale: 1;
-                }
-
-            }
-        }
-    }
+				100% {
+					left: 0;
+					scale: 1;
+				}
+			}
+		}
+	}
 }

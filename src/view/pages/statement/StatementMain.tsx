@@ -204,7 +204,7 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<div className='page'>
+			<div className="page">
 				{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 				{talker && (
 					<button

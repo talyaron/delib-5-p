@@ -1,11 +1,11 @@
-import { ComponentProps, FC } from "react";
-import "./MenuOption.scss";
+import { ComponentProps, FC } from 'react';
+import './MenuOption.scss';
 
-interface MenuOptionProps extends ComponentProps<"button"> {
-    onOptionClick: () => void;
-    label: string;
-    isOptionSelected?: boolean;
-    icon: JSX.Element;
+interface MenuOptionProps extends ComponentProps<'button'> {
+	onOptionClick: () => void;
+	label: string;
+	isOptionSelected?: boolean;
+	icon: JSX.Element;
 }
 
 const MenuOption: FC<MenuOptionProps> = ({
@@ -16,7 +16,7 @@ const MenuOption: FC<MenuOptionProps> = ({
 }) => {
 	return (
 		<button
-			className={`menu-option ${isOptionSelected ? "selected" : ""}`}
+			className={`menu-option ${isOptionSelected ? 'selected' : ''}`}
 			onClick={onOptionClick}
 		>
 			{icon}

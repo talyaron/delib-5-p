@@ -1,31 +1,31 @@
 .members-settings {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding-bottom: 1rem;
 
-    .link-anonymous {
-        width: fit-content;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1.5rem;
-        color: var(--text-headline);
-        background: none;
-        font-size: 1rem;
-        line-height: 150%;
-        margin-bottom: 2rem;
-        font-family: "Roboto", "Open Sans", sans-serif;
+	.link-anonymous {
+		width: fit-content;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1.5rem;
+		color: var(--text-headline);
+		background: none;
+		font-size: 1rem;
+		line-height: 150%;
+		margin-bottom: 2rem;
+		font-family: 'Roboto', 'Open Sans', sans-serif;
 
-        svg {
-            color: var(--icon-blue);
-        }
-    }
+		svg {
+			color: var(--icon-blue);
+		}
+	}
 
-    .members-box {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        width: 100%;
-    }
+	.members-box {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		width: 100%;
+	}
 }

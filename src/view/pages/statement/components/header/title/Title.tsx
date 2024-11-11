@@ -29,7 +29,7 @@ const Title: FC<Props> = ({ statement, statementSubscription }) => {
 						statementSubscription?.role === Role.admin ? 'clickable' : ''
 					}
 					style={{ fontSize: titleFontSize, padding: '0 2rem', color: 'white' }}
-					data-cy='statement-header-title'
+					data-cy="statement-header-title"
 				>
 					{statement?.statement}
 				</h1>

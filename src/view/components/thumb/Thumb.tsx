@@ -1,23 +1,23 @@
-import React, { FC, SetStateAction } from "react";
+import React, { FC, SetStateAction } from 'react';
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { Statement } from 'delib-npm';
 
 // Assets
-import SmileIcon from "@/assets/icons/smileIcon.svg?react";
-import FrownIcon from "@/assets/icons/frownIcon.svg?react";
+import SmileIcon from '@/assets/icons/smileIcon.svg?react';
+import FrownIcon from '@/assets/icons/frownIcon.svg?react';
 
 // Statement helpers
-import { setEvaluationToDB } from "@/controllers/db/evaluation/setEvaluation";
+import { setEvaluationToDB } from '@/controllers/db/evaluation/setEvaluation';
 
-import styles from "./Thumb.module.scss";
+import styles from './Thumb.module.scss';
 
 interface ThumbProps {
-    evaluation: number;
-    upDown: "up" | "down";
-    statement: Statement;
-    setConVote: React.Dispatch<SetStateAction<number>>;
-    setProVote: React.Dispatch<SetStateAction<number>>;
+	evaluation: number;
+	upDown: 'up' | 'down';
+	statement: Statement;
+	setConVote: React.Dispatch<SetStateAction<number>>;
+	setProVote: React.Dispatch<SetStateAction<number>>;
 }
 
 const Thumb: FC<ThumbProps> = ({
@@ -61,12 +61,12 @@ const Thumb: FC<ThumbProps> = ({
 
 	const isSmileActive = evaluation > 0;
 	const isFrownActive = evaluation < 0;
-	const isUpVote = upDown === "up";
+	const isUpVote = upDown === 'up';
 	const isActive = isUpVote ? isSmileActive : isFrownActive;
 
 	return (
 		<button
-			className={`${styles.thumb} ${isActive ? "" : styles.inactive}`}
+			className={`${styles.thumb} ${isActive ? '' : styles.inactive}`}
 			onClick={() => handleVote(isUpVote)}
 		>
 			{isUpVote ? <SmileIcon /> : <FrownIcon />}

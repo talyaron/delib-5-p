@@ -97,12 +97,12 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
 						className={styles.textarea}
 						defaultValue={`${title}\n${description}`}
 						onChange={handleChange}
-						placeholder='Add text'
+						placeholder="Add text"
 					></textarea>
 					<button
 						className={styles.save}
 						onClick={handleSave}
-						aria-label='Save'
+						aria-label="Save"
 					>
 						<Save />
 					</button>
@@ -113,17 +113,17 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
 						ref={inputRef as React.RefObject<HTMLInputElement>}
 						style={{ direction: direction, textAlign: align }}
 						className={styles.input}
-						type='text'
+						type="text"
 						value={title}
 						onChange={handleChange}
 						onKeyUp={handleEnter}
-						data-cy='edit-title-input'
+						data-cy="edit-title-input"
 					/>
 					<button
 						className={styles.save}
 						onClick={handleSave}
 						style={{ left: direction === 'rtl' ? '-1.4rem' : 'none' }}
-						aria-label='Save'
+						aria-label="Save"
 					>
 						<Save />
 					</button>

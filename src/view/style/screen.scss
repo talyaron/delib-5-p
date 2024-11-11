@@ -1,0 +1,22 @@
+.screen {
+    &__title {
+        margin-top: 1rem;
+        color: #191e29;
+        font-size: var(--h2-font-size);
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    h1 {
+        text-align: start;
+        color: var(--text-headline);
+        font-weight: 500;
+        font-size: var(--h1-font-size);
+    }
+
+    p {
+        color: var(--text-paragraph);
+        font-size: var(--p-font-size);
+    }
+}

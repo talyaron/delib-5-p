@@ -1,9 +1,9 @@
 interface Props {
-  onClick: () => void;
-  color?: string;
+	onClick: () => void;
+	color?: string;
 }
 
-export default function PauseIcon({ onClick, color = "#5899E0" }: Props) {
+export default function PauseIcon({ onClick, color = '#5899E0' }: Props) {
 	return (
 		<button onClick={onClick} aria-label="Pause">
 			<svg

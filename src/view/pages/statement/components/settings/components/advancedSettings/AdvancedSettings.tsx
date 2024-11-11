@@ -41,8 +41,8 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 	};
 
 	return (
-		<div className='advanced-settings'>
-			<h3 className='title'>{t('Advanced')}</h3>
+		<div className="advanced-settings">
+			<h3 className="title">{t('Advanced')}</h3>
 			<Checkbox
 				label={'Enable Sub-Conversations'}
 				isChecked={hasChildren}
@@ -75,7 +75,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 				}}
 			/>
 			<Checkbox
-				label='Allow participants to contribute options to the evaluation page'
+				label="Allow participants to contribute options to the evaluation page"
 				isChecked={enableAddEvaluationOption}
 				toggleSelection={() => {
 					setStatementSetting(
@@ -85,7 +85,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 				}}
 			/>
 			<Checkbox
-				label='In Voting page, show only the results of the top options'
+				label="In Voting page, show only the results of the top options"
 				isChecked={inVotingGetOnlyResults}
 				toggleSelection={() => {
 					setStatementSetting(
@@ -95,7 +95,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 				}}
 			/>
 			<Checkbox
-				label='Allow similarity search'
+				label="Allow similarity search"
 				isChecked={enableSimilaritiesSearch}
 				toggleSelection={() => {
 					setStatementSetting(
@@ -105,7 +105,7 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 				}}
 			/>
 			<Checkbox
-				label='Allow removal of navigational elements'
+				label="Allow removal of navigational elements"
 				isChecked={enableNavigationalElements}
 				toggleSelection={() => {
 					setStatementSetting(

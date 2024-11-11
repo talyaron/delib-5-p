@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import "@/view/style/homePage.scss"
+import { useEffect, useState } from 'react';
+import '@/view/style/homePage.scss';
 
 // Third party libraries
-import { useNavigate } from "react-router-dom";
-import { Statement } from "delib-npm";
+import { useNavigate } from 'react-router-dom';
+import { Statement } from 'delib-npm';
 
 // Redux store
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { statementsSelector } from "@/model/statements/statementsSlice";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { statementsSelector } from '@/model/statements/statementsSlice';
 
 // Custom components
-import Footer from "@/view/components/footer/Footer";
-import PeopleLoader from "@/view/components/loaders/PeopleLoader";
-import MainCard from "./mainCard/MainCard";
+import Footer from '@/view/components/footer/Footer';
+import PeopleLoader from '@/view/components/loaders/PeopleLoader';
+import MainCard from './mainCard/MainCard';
 
-import bike from "@/assets/images/bike.png";
+import bike from '@/assets/images/bike.png';
 
 const HomeMain = () => {
 	// Hooks
@@ -22,11 +22,11 @@ const HomeMain = () => {
 	const [loading, setLoading] = useState(true);
 
 	const statements: Statement[] = useAppSelector(statementsSelector)
-		.filter((s) => s.parentId === "top")
+		.filter((s) => s.parentId === 'top')
 		.sort((a, b) => b.lastUpdate - a.lastUpdate);
 
 	function handleAddStatement() {
-		navigate("/home/addStatement", {
+		navigate('/home/addStatement', {
 			state: { from: window.location.pathname },
 		});
 	}
@@ -49,7 +49,7 @@ const HomeMain = () => {
 			<div
 				className="wrapper main-wrap"
 				style={{
-					justifyContent: statements.length > 0 ? "start" : "center",
+					justifyContent: statements.length > 0 ? 'start' : 'center',
 				}}
 			>
 				{!loading ? (
@@ -63,8 +63,7 @@ const HomeMain = () => {
 				)}
 			</div>
 			<Footer onclick={handleAddStatement} />
-
-		</main >
+		</main>
 	);
 };
 

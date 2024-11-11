@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 interface Props {
-    color: string;
+	color: string;
 }
 
-const FollowMeIcon: FC<Props> = ({ color = "#4E88C7" }) => {
+const FollowMeIcon: FC<Props> = ({ color = '#4E88C7' }) => {
 	return (
 		<svg
 			width="24"

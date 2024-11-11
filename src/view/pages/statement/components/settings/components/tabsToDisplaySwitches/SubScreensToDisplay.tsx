@@ -1,15 +1,15 @@
 // custom components
-import CustomSwitch from "@/view/components/switch/customSwitch/CustomSwitch";
+import CustomSwitch from '@/view/components/switch/customSwitch/CustomSwitch';
 
 // HELPERS
-import { allScreensWithoutSettings } from "../../../nav/top/StatementTopNavModel.tsx";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { FC } from "react";
-import TabIcon from "./TabIcon";
-import { StatementSettingsProps } from "../../settingsTypeHelpers";
-import "./SubScreensToDisplay.scss";
-import { toggleSubScreen } from "../../statementSettingsCont";
-import { defaultStatementSubScreens } from "../../emptyStatementModel";
+import { allScreensWithoutSettings } from '../../../nav/top/StatementTopNavModel.tsx';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { FC } from 'react';
+import TabIcon from './TabIcon';
+import { StatementSettingsProps } from '../../settingsTypeHelpers';
+import './SubScreensToDisplay.scss';
+import { toggleSubScreen } from '../../statementSettingsCont';
+import { defaultStatementSubScreens } from '../../emptyStatementModel';
 
 const SubScreensToDisplay: FC<StatementSettingsProps> = ({
 	statement,
@@ -21,7 +21,7 @@ const SubScreensToDisplay: FC<StatementSettingsProps> = ({
 
 	return (
 		<div className="sub-screens-to-display">
-			<h3 className="title">{t("Tabs to display")}</h3>
+			<h3 className="title">{t('Tabs to display')}</h3>
 			{allScreensWithoutSettings.map((screenInfo) => {
 				const checked = subScreens.includes(screenInfo.link) ?? false;
 

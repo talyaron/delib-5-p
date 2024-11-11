@@ -1,19 +1,19 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { RoomTimer, SetTimer } from "delib-npm";
-import { updateArray } from "@/controllers/general/helpers";
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
+import { RoomTimer, SetTimer } from 'delib-npm';
+import { updateArray } from '@/controllers/general/helpers';
 
 export enum Status {
-    idle = "idle",
-    loading = "loading",
-    failed = "failed",
+	idle = 'idle',
+	loading = 'loading',
+	failed = 'failed',
 }
 
 // Define a type for the slice state
 interface TimersState {
-    roomTimers: RoomTimer[];
-    settingTimers: SetTimer[];
+	roomTimers: RoomTimer[];
+	settingTimers: SetTimer[];
 }
 
 // Define the initial state using that type
@@ -23,24 +23,20 @@ const initialState: TimersState = {
 };
 
 export const timersSlice = createSlice({
-	name: "timers",
+	name: 'timers',
 	initialState,
 	reducers: {
 		setSetTimer: (state, action: PayloadAction<SetTimer>) => {
 			const timer = action.payload;
-			state.settingTimers = updateArray(
-				state.settingTimers,
-				timer,
-				"timerId",
-			);
+			state.settingTimers = updateArray(state.settingTimers, timer, 'timerId');
 		},
 		setSetTimerTitle: (
 			state,
-			action: PayloadAction<{ timerId: string; title: string }>,
+			action: PayloadAction<{ timerId: string; title: string }>
 		) => {
 			const { timerId, title } = action.payload;
 			const timer = state.settingTimers.find(
-				(timer) => timer.timerId === timerId,
+				(timer) => timer.timerId === timerId
 			);
 			if (timer) {
 				timer.title = title;
@@ -48,11 +44,11 @@ export const timersSlice = createSlice({
 		},
 		setSetTimerTime: (
 			state,
-			action: PayloadAction<{ timerId: string; time: number }>,
+			action: PayloadAction<{ timerId: string; time: number }>
 		) => {
 			const { timerId, time } = action.payload;
 			const timer = state.settingTimers.find(
-				(timer) => timer.timerId === timerId,
+				(timer) => timer.timerId === timerId
 			);
 			if (timer) {
 				timer.time = time;
@@ -65,7 +61,7 @@ export const timersSlice = createSlice({
 });
 
 export const { setSetTimer, setSetTimerTitle, setSetTimerTime, setRoomTimers } =
-    timersSlice.actions;
+	timersSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectTimersSetting = (state: RootState) =>
@@ -79,6 +75,10 @@ export const selectStatementSettingTimers = (statementId: string) => {
 };
 
 export const selectRoomTimers = (state: RootState) => state.timers.roomTimers;
-export const selectTimerByTimerId = (roomTimerId: string) => (state: RootState) => state.timers.roomTimers.find((timer: RoomTimer | undefined) => timer?.roomTimerId === roomTimerId);
+export const selectTimerByTimerId =
+	(roomTimerId: string) => (state: RootState) =>
+		state.timers.roomTimers.find(
+			(timer: RoomTimer | undefined) => timer?.roomTimerId === roomTimerId
+		);
 
 export default timersSlice.reducer;

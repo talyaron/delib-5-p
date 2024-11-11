@@ -1,19 +1,19 @@
-import { FC, useEffect, useState } from "react";
-import styles from "../RoomsAdmin.module.scss";
+import { FC, useEffect, useState } from 'react';
+import styles from '../RoomsAdmin.module.scss';
 import {
 	divideParticipantIntoRoomsToDB,
 	setParticipantsPerRoom,
 	toggleRoomEditingInDB,
-} from "@/controllers/db/rooms/setRooms";
-import { ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
-import Button from "@/view/components/buttons/button/Button";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+} from '@/controllers/db/rooms/setRooms';
+import { ParticipantInRoom, RoomSettings, Statement } from 'delib-npm';
+import Button from '@/view/components/buttons/button/Button';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface Props {
-  statement: Statement;
-  roomSettings: RoomSettings | undefined;
-  topics: Statement[];
-  participants: ParticipantInRoom[];
+	statement: Statement;
+	roomSettings: RoomSettings | undefined;
+	topics: Statement[];
+	participants: ParticipantInRoom[];
 }
 
 const RoomsDivision: FC<Props> = ({
@@ -42,7 +42,7 @@ const RoomsDivision: FC<Props> = ({
 	}
 
 	function handleSetParticipantsPerRoom(add: number) {
-		_setParticipantsPerRoom(value=>value+add);
+		_setParticipantsPerRoom((value) => value + add);
 		setParticipantsPerRoom({ statementId: statement.statementId, add });
 	}
 
@@ -50,22 +50,22 @@ const RoomsDivision: FC<Props> = ({
 		_setParticipantsPerRoom(number);
 		setParticipantsPerRoom({ statementId: statement.statementId, number });
 	}
-	
+
 	return (
 		<>
 			<div className={`btns ${styles.btns}`}>
 				<Button
-					text={t("Divide participants into rooms")}
+					text={t('Divide participants into rooms')}
 					onClick={handleToggleEdit}
 				/>
 			</div>
-			<div className={styles.title}>{t("Number of participants per room")}</div>
+			<div className={styles.title}>{t('Number of participants per room')}</div>
 			<div className={styles.participantsPerRoom}>
 				<button
 					className={styles.add}
 					onClick={() => handleSetParticipantsPerRoom(1)}
 				>
-          +
+					+
 				</button>
 				<input
 					type="number"
@@ -79,7 +79,7 @@ const RoomsDivision: FC<Props> = ({
 					className={styles.add}
 					onClick={() => handleSetParticipantsPerRoom(-1)}
 				>
-          -
+					-
 				</button>
 			</div>
 		</>

@@ -1,12 +1,12 @@
-import { User } from "delib-npm";
-import { FC } from "react";
-import styles from "./Chip.module.scss";
-import SmileIcon from "@/assets/icons/smileIcon.svg?react";
+import { User } from 'delib-npm';
+import { FC } from 'react';
+import styles from './Chip.module.scss';
+import SmileIcon from '@/assets/icons/smileIcon.svg?react';
 
 // import anonymous from "@/assets/anonymous1.png";
 
 interface Props {
-    user: User | undefined;
+	user: User | undefined;
 }
 const Chip: FC<Props> = ({ user }) => {
 	if (!user) return null;

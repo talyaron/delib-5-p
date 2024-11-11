@@ -1,10 +1,10 @@
-import { ComponentProps } from "react";
-import RadioButtonCheckedIcon from "@/assets/icons/radioButtonChecked.svg?react";
-import RadioButtonEmptyIcon from "@/assets/icons/radioButtonEmpty.svg?react";
-import "./RadioButtonWithLabel.scss";
+import { ComponentProps } from 'react';
+import RadioButtonCheckedIcon from '@/assets/icons/radioButtonChecked.svg?react';
+import RadioButtonEmptyIcon from '@/assets/icons/radioButtonEmpty.svg?react';
+import './RadioButtonWithLabel.scss';
 
-interface RadioButtonWithLabelProps extends ComponentProps<"input"> {
-    labelText: string;
+interface RadioButtonWithLabelProps extends ComponentProps<'input'> {
+	labelText: string;
 }
 
 export default function RadioButtonWithLabel({
@@ -15,15 +15,10 @@ export default function RadioButtonWithLabel({
 	return (
 		<label
 			htmlFor={`${labelText}`}
-			className={`radio-button-with-label ${checked ? "checked" : ""}`}
+			className={`radio-button-with-label ${checked ? 'checked' : ''}`}
 		>
 			{checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
-			<input
-				type="radio"
-				name="resultsBy"
-				checked={checked}
-				{...inputProps}
-			/>
+			<input type="radio" name="resultsBy" checked={checked} {...inputProps} />
 			{labelText}
 		</label>
 	);

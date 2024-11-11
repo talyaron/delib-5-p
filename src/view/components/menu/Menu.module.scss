@@ -1,32 +1,32 @@
 .menu {
-    position: relative;
-    
-    z-index: 5;
-    width: fit-content;
-    .menu-content {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        box-shadow: 0px 3px 9px #00000026;
-        z-index: 5;
+	position: relative;
 
-        &.ltr {
-            right: 0;
-        }
+	z-index: 5;
+	width: fit-content;
+	.menu-content {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		background-color: white;
+		box-shadow: 0px 3px 9px #00000026;
+		z-index: 5;
 
-        &.rtl {
-            left: 0;
-        }
-    }
+		&.ltr {
+			right: 0;
+		}
+
+		&.rtl {
+			left: 0;
+		}
+	}
 }
 
 .invisibleBackground {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100svh;
-    z-index: 4;
-    background-color: transparent;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100svh;
+	z-index: 4;
+	background-color: transparent;
 }

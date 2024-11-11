@@ -1,14 +1,14 @@
-import { FC, useState, useEffect } from "react";
-import SectionTitle from "../sectionTitle/SectionTitle";
-import { StatementSettingsProps } from "../../settingsTypeHelpers";
-import CustomSwitchSmall from "@/view/components/switch/customSwitchSmall/CustomSwitchSmall";
-import { QuestionStage, QuestionType, StatementType } from "delib-npm";
-import QuestionDashboard from "./questionDashboard/QuestionDashboard";
-import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { FC, useState, useEffect } from 'react';
+import SectionTitle from '../sectionTitle/SectionTitle';
+import { StatementSettingsProps } from '../../settingsTypeHelpers';
+import CustomSwitchSmall from '@/view/components/switch/customSwitchSmall/CustomSwitchSmall';
+import { QuestionStage, QuestionType, StatementType } from 'delib-npm';
+import QuestionDashboard from './questionDashboard/QuestionDashboard';
+import QuestionStageRadioBtn from './QuestionStageRadioBtn/QuestionStageRadioBtn';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
-import "./QuestionSettings.scss";
-import { setQuestionType } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
+import './QuestionSettings.scss';
+import { setQuestionType } from '@/controllers/db/statements/statementMetaData/setStatementMetaData';
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
 	statement,
@@ -17,18 +17,19 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 	try {
 		const { t } = useLanguage();
 		const [checked, setChecked] = useState(false);
-		const isMuliStage = statement.questionSettings?.questionType === QuestionType.multipleSteps;
+		const isMuliStage =
+			statement.questionSettings?.questionType === QuestionType.multipleSteps;
 
 		useEffect(() => {
 			if (!statement.questionSettings) {
 				setChecked(false);
-				
+
 				return;
 			}
 			const isChecked =
-        statement.questionSettings?.questionType === QuestionType.multipleSteps
-        	? true
-        	: false;
+				statement.questionSettings?.questionType === QuestionType.multipleSteps
+					? true
+					: false;
 			setChecked(isChecked);
 		}, [statement.questionSettings]);
 
@@ -82,12 +83,11 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 		);
 
 		function _setChecked() {
-		
 			const questionType = checked
 				? QuestionType.singleStep
 				: QuestionType.multipleSteps;
 			const currentStage: QuestionStage =
-        statement.questionSettings?.currentStage || QuestionStage.suggestion;
+				statement.questionSettings?.currentStage || QuestionStage.suggestion;
 
 			setChecked(!checked);
 
@@ -107,7 +107,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 		}
 	} catch (error: unknown) {
 		console.error(error);
-		
+
 		return <p>{(error as Error).message}</p>;
 	}
 };

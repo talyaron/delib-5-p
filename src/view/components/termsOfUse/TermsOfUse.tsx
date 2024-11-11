@@ -1,7 +1,7 @@
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import Button, { ButtonType } from "../buttons/button/Button";
-import Modal from "../modal/Modal";
-import "./TermsOfUse.scss";
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button, { ButtonType } from '../buttons/button/Button';
+import Modal from '../modal/Modal';
+import './TermsOfUse.scss';
 
 interface Props {
 	handleAgreement: (agree: boolean, agreement: string) => void;
@@ -14,7 +14,7 @@ export default function TermsOfUse({ handleAgreement, agreement }: Props) {
 	return (
 		<Modal>
 			<div className="terms-of-use" data-cy="termsOfUse">
-				<h1 className="terms-of-use-title">{t("terms of use")}</h1>
+				<h1 className="terms-of-use-title">{t('terms of use')}</h1>
 				<p>{agreement}</p>
 				<div className="btns">
 					<Button

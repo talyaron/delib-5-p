@@ -1,17 +1,17 @@
-import { membersAllowed, Statement } from "delib-npm";
-import { FC } from "react";
-import Text from "@/view/components/text/Text";
-import Triangle from "@/view/components/triangle/Triangle";
+import { membersAllowed, Statement } from 'delib-npm';
+import { FC } from 'react';
+import Text from '@/view/components/text/Text';
+import Triangle from '@/view/components/triangle/Triangle';
 
 interface Props {
-  statement: Statement;
+	statement: Statement;
 }
 
 const Info: FC<Props> = ({ statement }) => {
 	//detect if local or production
-	const isLocal = process.env.NODE_ENV === "development";
+	const isLocal = process.env.NODE_ENV === 'development';
 	const isAnonymous =
-    statement.membership?.typeOfMembersAllowed === membersAllowed.all;
+		statement.membership?.typeOfMembersAllowed === membersAllowed.all;
 
 	const anonymousUrl = isLocal
 		? `http://localhost:5174/doc-anonymous/${statement.statementId}`
@@ -22,7 +22,6 @@ const Info: FC<Props> = ({ statement }) => {
 		: `https://freedis.web.app/doc/${statement.statementId}`;
 
 	return (
-	
 		<div className="wrapper">
 			{statement.description && (
 				<>
@@ -34,20 +33,19 @@ const Info: FC<Props> = ({ statement }) => {
 				{isAnonymous && (
 					<li>
 						<a href={anonymousUrl} target="_blank">
-                Anonymous Link
+							Anonymous Link
 						</a>
 					</li>
 				)}
 				<li>
 					<a href={memberUrl} target="_blank">
-              members Link
+						members Link
 					</a>
 				</li>
 			</ul>
 
 			<Triangle statement={statement} />
 		</div>
-		
 	);
 };
 

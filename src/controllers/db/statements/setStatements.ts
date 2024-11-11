@@ -1,8 +1,8 @@
 // Firestore
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 // Third Party Imports
-import { z } from "zod";
+import { z } from 'zod';
 import {
 	Access,
 	Membership,
@@ -13,41 +13,38 @@ import {
 	StatementType,
 	UserSchema,
 	writeZodError,
-} from "delib-npm";
-import { Collections, Role } from "delib-npm";
-import { FireStore } from "../config";
-import { store } from "@/model/store";
-import { setStatementSubscriptionNotificationToDB } from "../notifications/notifications";
-import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
-import { getRandomColor } from "@/view/pages/statement/components/vote/votingColors";
+} from 'delib-npm';
+import { Collections, Role } from 'delib-npm';
+import { FireStore } from '../config';
+import { store } from '@/model/store';
+import { setStatementSubscriptionNotificationToDB } from '../notifications/notifications';
+import { setStatementSubscriptionToDB } from '../subscriptions/setSubscriptions';
+import { getRandomColor } from '@/view/pages/statement/components/vote/votingColors';
 import {
 	getExistingOptionColors,
 	getSiblingOptionsByParentId,
-} from "@/view/pages/statement/components/vote/statementVoteCont";
-import { allowedScreens } from "@/controllers/general/screens";
-import { setNewRoomSettingsToDB } from "../rooms/setRooms";
-import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
+} from '@/view/pages/statement/components/vote/statementVoteCont';
+import { allowedScreens } from '@/controllers/general/screens';
+import { setNewRoomSettingsToDB } from '../rooms/setRooms';
+import { DeliberativeElement } from 'delib-npm/dist/models/statementsModels';
 
 export const updateStatementParents = async (
 	statement: Statement,
-	parentStatement: Statement,
+	parentStatement: Statement
 ) => {
 	try {
-		if (!statement) throw new Error("Statement is undefined");
-		if (!parentStatement) throw new Error("Parent statement is undefined");
+		if (!statement) throw new Error('Statement is undefined');
+		if (!parentStatement) throw new Error('Parent statement is undefined');
 
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 
 		const newStatement = {
 			parentId: parentStatement.statementId,
-			parents: [
-				parentStatement.parents,
-				parentStatement.statementId,
-			].flat(1),
+			parents: [parentStatement.parents, parentStatement.statementId].flat(1),
 			topParentId: parentStatement.topParentId,
 		};
 
@@ -59,13 +56,17 @@ export const updateStatementParents = async (
 
 const TextSchema = z.string().min(2);
 
-export function setSubStatementToDB(statement: Statement, title: string, description?: string) {
+export function setSubStatementToDB(
+	statement: Statement,
+	title: string,
+	description?: string
+) {
 	try {
 		const newSubStatement = createStatement({
 			text: title,
 			description: description,
 			parentStatement: statement,
-			deliberativeElement:DeliberativeElement.option,
+			deliberativeElement: DeliberativeElement.option,
 			enableAddEvaluationOption: true,
 			enableAddVotingOption: true,
 			enhancedEvaluation: true,
@@ -76,19 +77,22 @@ export function setSubStatementToDB(statement: Statement, title: string, descrip
 			membership: statement.membership,
 		});
 
-		if(!newSubStatement) throw new Error("New newSubStatement is undefined");
+		if (!newSubStatement) throw new Error('New newSubStatement is undefined');
 
-		const newSubStatementRef = doc(FireStore, Collections.statements, newSubStatement.statementId);
+		const newSubStatementRef = doc(
+			FireStore,
+			Collections.statements,
+			newSubStatement.statementId
+		);
 		setDoc(newSubStatementRef, newSubStatement);
 	} catch (error) {
 		console.error(error);
-		
 	}
 }
 
 interface SetStatementToDBParams {
 	statement: Statement;
-	parentStatement: Statement | "top";
+	parentStatement: Statement | 'top';
 	addSubscription: boolean;
 }
 
@@ -98,19 +102,16 @@ export const setStatementToDB = async ({
 	addSubscription = true,
 }: SetStatementToDBParams): Promise<string | undefined> => {
 	try {
-		if (!statement) throw new Error("Statement is undefined");
-		if (!parentStatement) throw new Error("Parent statement is undefined");
+		if (!statement) throw new Error('Statement is undefined');
+		if (!parentStatement) throw new Error('Parent statement is undefined');
 
 		const storeState = store.getState();
 		const user = storeState.user.user;
-		if (!user) throw new Error("User is undefined");
+		if (!user) throw new Error('User is undefined');
 
 		TextSchema.parse(statement.statement);
 
-		const parentId =
-			parentStatement === "top"
-				? "top"
-				: statement.parentId ;
+		const parentId = parentStatement === 'top' ? 'top' : statement.parentId;
 
 		statement.statementType =
 			statement.statementId === undefined
@@ -122,16 +123,14 @@ export const setStatementToDB = async ({
 		statement.statementId = statement?.statementId || crypto.randomUUID();
 		statement.parentId = parentId;
 		statement.topParentId =
-			parentStatement === "top"
+			parentStatement === 'top'
 				? statement.statementId
-				: statement?.topParentId ||
-				parentStatement?.topParentId ||
-				"top";
+				: statement?.topParentId || parentStatement?.topParentId || 'top';
 		statement.subScreens = allowedScreens(statement, statement.subScreens);
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
-			storeState.statements.statements,
+			storeState.statements.statements
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
 
@@ -164,7 +163,7 @@ export const setStatementToDB = async ({
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 		const statementPromises = [];
 
@@ -183,12 +182,12 @@ export const setStatementToDB = async ({
 		if (addSubscription) {
 			await Notification.requestPermission();
 			statementPromises.push(
-				setStatementSubscriptionToDB(statement, Role.admin),
+				setStatementSubscriptionToDB(statement, Role.admin)
 			);
 
-			if (Notification.permission === "granted")
+			if (Notification.permission === 'granted')
 				statementPromises.push(
-					setStatementSubscriptionNotificationToDB(statement),
+					setStatementSubscriptionNotificationToDB(statement)
 				);
 
 			await Promise.all(statementPromises);
@@ -207,7 +206,7 @@ export const setStatementToDB = async ({
 interface CreateStatementProps {
 	text: string;
 	description?: string;
-	parentStatement: Statement | "top";
+	parentStatement: Statement | 'top';
 	subScreens?: Screen[];
 	deliberativeElement: DeliberativeElement;
 	enableAddEvaluationOption: boolean;
@@ -218,7 +217,6 @@ interface CreateStatementProps {
 	numberOfResults?: number;
 	hasChildren: boolean;
 	membership?: Membership;
-	
 }
 export function createStatement({
 	text,
@@ -233,39 +231,34 @@ export function createStatement({
 	resultsBy = ResultsBy.topOptions,
 	numberOfResults = 1,
 	hasChildren = true,
-	membership
+	membership,
 }: CreateStatementProps): Statement | undefined {
 	try {
-		
 		const storeState = store.getState();
 		const user = storeState.user.user;
-		if (!user) throw new Error("User is undefined");
+		if (!user) throw new Error('User is undefined');
 
 		const statementId = crypto.randomUUID();
 
 		const parentId =
-			parentStatement !== "top" ? parentStatement?.statementId : "top";
+			parentStatement !== 'top' ? parentStatement?.statementId : 'top';
 		const parentsSet: Set<string> =
-			parentStatement !== "top"
-				? new Set(parentStatement?.parents)
-				: new Set();
+			parentStatement !== 'top' ? new Set(parentStatement?.parents) : new Set();
 		parentsSet.add(parentId);
 		const parents: string[] = [...parentsSet];
 
 		const topParentId =
-			parentStatement !== "top"
-				? parentStatement?.topParentId
-				: statementId;
+			parentStatement !== 'top' ? parentStatement?.topParentId : statementId;
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
-			storeState.statements.statements,
+			storeState.statements.statements
 		);
 		const existingColors = getExistingOptionColors(siblingOptions);
 
 		const newStatement: Statement = {
 			statement: text,
-			description: description || "",
+			description: description || '',
 			statementId,
 			parentId,
 			parents,
@@ -280,7 +273,7 @@ export function createStatement({
 				enableAddVotingOption,
 				subScreens,
 			},
-			defaultLanguage: user.defaultLanguage || "en",
+			defaultLanguage: user.defaultLanguage || 'en',
 			createdAt: Timestamp.now().toMillis(),
 			lastUpdate: Timestamp.now().toMillis(),
 			color: getRandomColor(existingColors),
@@ -299,11 +292,15 @@ export function createStatement({
 			subScreens,
 		};
 
-		newStatement.subScreens = allowedScreens(newStatement, newStatement.subScreens);
-		if(deliberativeElement) newStatement.deliberativeElement = deliberativeElement;
+		newStatement.subScreens = allowedScreens(
+			newStatement,
+			newStatement.subScreens
+		);
+		if (deliberativeElement)
+			newStatement.deliberativeElement = deliberativeElement;
 
 		const results = StatementSchema.safeParse(newStatement);
-		if(results.success === false) {
+		if (results.success === false) {
 			writeZodError(results.error, newStatement);
 		}
 
@@ -362,8 +359,7 @@ export function updateStatement({
 			};
 		}
 		if (numberOfResults && newStatement.resultsSettings)
-			newStatement.resultsSettings.numberOfResults =
-				Number(numberOfResults);
+			newStatement.resultsSettings.numberOfResults = Number(numberOfResults);
 		else if (numberOfResults && !newStatement.resultsSettings) {
 			newStatement.resultsSettings = {
 				resultsBy: ResultsBy.topOptions,
@@ -383,7 +379,8 @@ export function updateStatement({
 		});
 
 		newStatement.hasChildren = hasChildren;
-		newStatement.membership = membership || statement.membership || { access: Access.open };
+		newStatement.membership = membership ||
+			statement.membership || { access: Access.open };
 
 		if (deliberativeElement)
 			newStatement.deliberativeElement = deliberativeElement;
@@ -391,14 +388,10 @@ export function updateStatement({
 		newStatement.subScreens =
 			subScreens !== undefined
 				? subScreens
-				: statement.subScreens || [
-					Screen.CHAT,
-					Screen.OPTIONS,
-					Screen.VOTE,
-				];
+				: statement.subScreens || [Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
 
 		const results = StatementSchema.safeParse(newStatement);
-		if(results.success === false) {
+		if (results.success === false) {
 			writeZodError(results.error, newStatement);
 		}
 
@@ -425,7 +418,6 @@ interface UpdateStatementSettingsParams {
 	enhancedEvaluation: boolean;
 	showEvaluation: boolean;
 	subScreens: Screen[] | undefined;
-
 }
 
 function updateStatementSettings({
@@ -435,12 +427,11 @@ function updateStatementSettings({
 	enhancedEvaluation,
 	showEvaluation,
 	subScreens,
-
 }: UpdateStatementSettingsParams): UpdateStatementSettingsReturnType {
 	try {
-		if (!statement) throw new Error("Statement is undefined");
+		if (!statement) throw new Error('Statement is undefined');
 		if (!statement.statementSettings)
-			throw new Error("Statement settings is undefined");
+			throw new Error('Statement settings is undefined');
 
 		subScreens = allowedScreens(statement, subScreens);
 
@@ -467,28 +458,29 @@ function updateStatementSettings({
 export async function updateStatementText(
 	statement: Statement | undefined,
 	title: string,
-	description: string,
+	description: string
 ) {
 	try {
-		if (!title) throw new Error("New title is undefined");
-		if (!statement) throw new Error("Statement is undefined");
+		if (!title) throw new Error('New title is undefined');
+		if (!statement) throw new Error('Statement is undefined');
 
-		if (statement.statement === title && statement.description === description) return;
+		if (statement.statement === title && statement.description === description)
+			return;
 
 		StatementSchema.parse(statement);
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 
 		const newStatement = {
-			statement:title,
+			statement: title,
 			description,
 			lastUpdate: Timestamp.now().toMillis(),
 		};
 		await updateDoc(statementRef, newStatement);
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function setStatementIsOption(statement: Statement) {
@@ -496,14 +488,14 @@ export async function setStatementIsOption(statement: Statement) {
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 
 		//get current statement
-		
-		const statementDB = await getDoc(statementRef)
 
-		if (!statementDB.exists()) throw new Error("Statement not found");
+		const statementDB = await getDoc(statementRef);
+
+		if (!statementDB.exists()) throw new Error('Statement not found');
 
 		const statementDBData = statementDB.data() as Statement;
 
@@ -514,14 +506,12 @@ export async function setStatementIsOption(statement: Statement) {
 		console.error(error);
 	}
 
-	async function toggleStatementOption(
-		statement: Statement
-	) {
+	async function toggleStatementOption(statement: Statement) {
 		try {
 			const statementRef = doc(
 				FireStore,
 				Collections.statements,
-				statement.statementId,
+				statement.statementId
 			);
 
 			if (statement.deliberativeElement === DeliberativeElement.option) {
@@ -529,7 +519,6 @@ export async function setStatementIsOption(statement: Statement) {
 					deliberativeElement: DeliberativeElement.general,
 				});
 			} else {
-
 				await updateDoc(statementRef, {
 					deliberativeElement: DeliberativeElement.option,
 				});
@@ -547,7 +536,7 @@ export async function setStatementGroupToDB(statement: Statement) {
 		await setDoc(
 			statementRef,
 			{ statementType: StatementType.statement },
-			{ merge: true },
+			{ merge: true }
 		);
 	} catch (error) {
 		console.error(error);
@@ -556,7 +545,7 @@ export async function setStatementGroupToDB(statement: Statement) {
 
 export function setRoomSizeInStatementDB(
 	statement: Statement,
-	roomSize: number,
+	roomSize: number
 ) {
 	try {
 		z.number().parse(roomSize);
@@ -564,7 +553,7 @@ export function setRoomSizeInStatementDB(
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 		const newRoomSize = { roomSize };
 		updateDoc(statementRef, newRoomSize);
@@ -578,13 +567,13 @@ export async function updateIsQuestion(statement: Statement) {
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 
 		const parentStatementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.parentId,
+			statement.parentId
 		);
 		const parentStatementDB = await getDoc(parentStatementRef);
 		const parentStatement = parentStatementDB.data() as Statement;
@@ -606,14 +595,14 @@ export async function updateIsQuestion(statement: Statement) {
 
 export async function updateStatementMainImage(
 	statement: Statement,
-	imageURL: string | undefined,
+	imageURL: string | undefined
 ) {
 	try {
-		if (!imageURL) throw new Error("Image URL is undefined");
+		if (!imageURL) throw new Error('Image URL is undefined');
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 
 		await updateDoc(statementRef, {
@@ -626,7 +615,7 @@ export async function updateStatementMainImage(
 
 export async function setFollowMeDB(
 	statement: Statement,
-	path: string | undefined,
+	path: string | undefined
 ): Promise<void> {
 	try {
 		z.string().parse(path);
@@ -635,13 +624,13 @@ export async function setFollowMeDB(
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
-			statement.statementId,
+			statement.statementId
 		);
 
 		if (path) {
 			await updateDoc(statementRef, { followMe: path });
 		} else {
-			await updateDoc(statementRef, { followMe: "" });
+			await updateDoc(statementRef, { followMe: '' });
 		}
 	} catch (error) {
 		console.error(error);

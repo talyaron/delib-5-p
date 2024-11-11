@@ -1,9 +1,9 @@
-import { FC } from "react";
-import { User } from "delib-npm";
-import "./ProfileImage.scss";
+import { FC } from 'react';
+import { User } from 'delib-npm';
+import './ProfileImage.scss';
 
 interface Props {
-    user: User | null;
+	user: User | null;
 }
 const ProfileImage: FC<Props> = ({ user }) => {
 	if (!user) return null;

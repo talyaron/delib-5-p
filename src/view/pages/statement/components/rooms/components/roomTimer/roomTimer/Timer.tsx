@@ -131,18 +131,18 @@ export default function Timer({
 	}
 
 	return (
-		<div className='timer'>
+		<div className="timer">
 			<h2>{roomTimer.title}</h2>
-			<div className='clock'>
+			<div className="clock">
 				<TimerIcon percent={percent} />
 			</div>
-			<div className='digits'>
+			<div className="digits">
 				<p>{`${minutes < 10 ? '0' + minutes : minutes}:${
 					seconds < 10 ? '0' + seconds : seconds
 				}`}</p>
 			</div>
 			<div
-				className='timer-buttons'
+				className="timer-buttons"
 				style={{ opacity: isActiveTimer ? '1' : '0.2' }}
 			>
 				{!isActive && (
@@ -178,8 +178,8 @@ export default function Timer({
 				)}
 			</div>
 			<audio ref={bellRef}>
-				<source src={bell} type='audio/mpeg' />
-				<track kind='captions' />
+				<source src={bell} type="audio/mpeg" />
+				<track kind="captions" />
 				Your browser does not support the audio element.
 			</audio>
 		</div>

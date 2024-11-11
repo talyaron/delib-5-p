@@ -72,10 +72,10 @@ export default function HomeHeader() {
 
 	return (
 		<div className={`homePage__header ${dir}`}>
-			<div className='homePage__header__wrapper'>
+			<div className="homePage__header__wrapper">
 				<NotificationHeader />
-				<h1 className='homePage__header__wrapper__title'>FreeDi</h1>
-				<div className='homePage__header__wrapper__icons'>
+				<h1 className="homePage__header__wrapper__title">FreeDi</h1>
+				<div className="homePage__header__wrapper__icons">
 					{isInstallable && (
 						<IconButton onClick={handleInstallApp}>
 							<InstallIcon />
@@ -84,7 +84,7 @@ export default function HomeHeader() {
 					<Menu
 						isMenuOpen={isHomeMenuOpen}
 						setIsOpen={setIsHomeMenuOpen}
-						iconColor='white'
+						iconColor="white"
 					>
 						<MenuOption
 							icon={<DisconnectIcon style={{ color: '#4E88C7' }} />}

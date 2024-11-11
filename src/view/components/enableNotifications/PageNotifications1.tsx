@@ -32,26 +32,30 @@ export default function PageNotifications1({
 	};
 
 	return (
-		<div className='enableNotifications' data-cy='enable-notifications-popup'>
+		<div className="enableNotifications" data-cy="enable-notifications-popup">
 			{isModalOpen && (
 				<Modal>
-					<div className='popup'>
-						<div className='popup-content'>
-							<div className='popup-header'>
-								<div className='step-group'>
-									<img src={Elipse3} alt='Ellipse' />
-									<img src={Rectangle} alt='Rectangle' className='step' />
+					<div className="popup">
+						<div className="popup-content">
+							<div className="popup-header">
+								<div className="step-group">
+									<img src={Elipse3} alt="Ellipse" />
+									<img src={Rectangle} alt="Rectangle" className="step" />
 									<button
-										className='step'
+										className="step"
 										onClick={onNext}
-										aria-label='Next step'
-										style={{ background: `url(${Frame}) no-repeat center/contain`, border: 'none', cursor: 'pointer' }}
+										aria-label="Next step"
+										style={{
+											background: `url(${Frame}) no-repeat center/contain`,
+											border: 'none',
+											cursor: 'pointer',
+										}}
 									/>
 								</div>
-								<div className='icons-close-false'>
+								<div className="icons-close-false">
 									<button
 										onClick={handleClose}
-										aria-label='Close'
+										aria-label="Close"
 										style={{
 											background: `url(${xicon}) no-repeat center/contain`,
 											border: 'none',
@@ -62,29 +66,29 @@ export default function PageNotifications1({
 									/>
 								</div>
 							</div>
-							<div className='popup-body'>
-								<img src={sentence} alt='Sentence' className='desktop-image' />
+							<div className="popup-body">
+								<img src={sentence} alt="Sentence" className="desktop-image" />
 								<img
 									src={rectangleText}
-									alt='Rectangle'
-									className='mobile-image'
+									alt="Rectangle"
+									className="mobile-image"
 								/>
-								<div className='link-wrapper'>
-									<img src={link} alt='Link' />
+								<div className="link-wrapper">
+									<img src={link} alt="Link" />
 								</div>
-								<div className='pointer-container'>
-									<img src={pointer1} alt='Pointer' />
+								<div className="pointer-container">
+									<img src={pointer1} alt="Pointer" />
 								</div>
-								<p className='option-icon-text'>
-									Select the <span className='option-text'>Option</span> icon in
+								<p className="option-icon-text">
+									Select the <span className="option-text">Option</span> icon in
 									your browser's address bar
 								</p>
 							</div>
-							<div className='popup-footer'>
-								<button className='close-button' onClick={handleClose}>
+							<div className="popup-footer">
+								<button className="close-button" onClick={handleClose}>
 									Close
 								</button>
-								<button className='next-button' onClick={onNext}>
+								<button className="next-button" onClick={onNext}>
 									Next
 								</button>
 							</div>

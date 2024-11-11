@@ -1,9 +1,9 @@
-import React, { FC, useState } from "react";
-import styles from "./UploadImage.module.scss";
-import { Statement } from "delib-npm";
-import { uploadImageToStorage } from "../../../controllers/db/images/setImages";
-import { updateStatementMainImage } from "../../../controllers/db/statements/setStatements";
-import { compressImage } from "./compressImage";
+import React, { FC, useState } from 'react';
+import styles from './UploadImage.module.scss';
+import { Statement } from 'delib-npm';
+import { uploadImageToStorage } from '../../../controllers/db/images/setImages';
+import { updateStatementMainImage } from '../../../controllers/db/statements/setStatements';
+import { compressImage } from './compressImage';
 
 interface Props {
 	statement: Statement;
@@ -29,7 +29,7 @@ const UploadImage: FC<Props> = ({ statement }) => {
 
 	const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
 		try {
-			if (!statement) throw new Error("statement is undefined");
+			if (!statement) throw new Error('statement is undefined');
 			event.preventDefault();
 			const file = event.dataTransfer.files[0];
 			const compressedFile = await compressImage(file, 200);
@@ -50,11 +50,11 @@ const UploadImage: FC<Props> = ({ statement }) => {
 	};
 
 	const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.add(styles.dropZoneActive)
-	}
+		e.currentTarget.classList.add(styles.dropZoneActive);
+	};
 	const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.remove(styles.dropZoneActive)
-	}
+		e.currentTarget.classList.remove(styles.dropZoneActive);
+	};
 
 	return (
 		<div

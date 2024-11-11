@@ -1,11 +1,11 @@
-import { Statement } from "delib-npm";
-import { FC } from "react";
-import { Section } from "./Section";
-import "./InfoParser.scss";
-import { getSectionObj } from "./InfoParserCont";
+import { Statement } from 'delib-npm';
+import { FC } from 'react';
+import { Section } from './Section';
+import './InfoParser.scss';
+import { getSectionObj } from './InfoParserCont';
 
 interface Props {
-  statement: Statement;
+	statement: Statement;
 }
 
 const InfoParser: FC<Props> = ({ statement }) => {
@@ -13,11 +13,7 @@ const InfoParser: FC<Props> = ({ statement }) => {
 
 	if (!section) return null;
 
-	return (
-		<Section
-			section={section}
-		/>
-	);
+	return <Section section={section} />;
 
 	// return <Section sectionText={statement.statement} parentLevel={0} />;
 };

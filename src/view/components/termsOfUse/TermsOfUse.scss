@@ -1,13 +1,13 @@
 .terms-of-use {
-    max-width: 60ch;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem;
+	max-width: 60ch;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	padding: 1rem;
 
-    .terms-of-use-title {
-        color: var(--header);
-    }
+	.terms-of-use-title {
+		color: var(--header);
+	}
 }

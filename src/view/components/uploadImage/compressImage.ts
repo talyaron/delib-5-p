@@ -6,10 +6,10 @@ export const compressImage = (file: File, maxSizeKB: number): Promise<File> => {
 			const img = new Image();
 			img.src = event.target?.result as string;
 			img.onload = () => {
-				const canvas = document.createElement("canvas");
-				const ctx = canvas.getContext("2d");
+				const canvas = document.createElement('canvas');
+				const ctx = canvas.getContext('2d');
 				if (!ctx) {
-					return reject(new Error("Could not get canvas context"));
+					return reject(new Error('Could not get canvas context'));
 				}
 				let width = img.width;
 				let height = img.height;
@@ -32,7 +32,7 @@ export const compressImage = (file: File, maxSizeKB: number): Promise<File> => {
 								tries++;
 								resize();
 							} else {
-								reject(new Error("Unable to compress image below max size"));
+								reject(new Error('Unable to compress image below max size'));
 							}
 						},
 						file.type,

@@ -1,298 +1,299 @@
 .btnBox,
 .btns {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  // width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	// width: 100%;
 }
 
 button {
-  border: none;
-  cursor: pointer;
-  background-color: inherit;
+	border: none;
+	cursor: pointer;
+	background-color: inherit;
 }
 
 .btn {
-  padding: 0.4rem 1rem 0.4rem 1rem;
-  color: var(--btn-primary);
-  cursor: pointer;
-  border-radius: 20px;
-  border: 1px solid var(--btn-primary);
-  text-align: center;
-  box-shadow:
-    0px 3px 6px 0px rgba(115, 138, 191, 0.1),
-    0px 11px 11px 0px rgba(115, 138, 191, 0.09),
-    0px 26px 16px 0px rgba(115, 138, 191, 0.05),
-    0px 46px 18px 0px rgba(115, 138, 191, 0.01),
-    0px 72px 20px 0px rgba(115, 138, 191, 0);
+	padding: 0.4rem 1rem 0.4rem 1rem;
+	color: var(--btn-primary);
+	cursor: pointer;
+	border-radius: 20px;
+	border: 1px solid var(--btn-primary);
+	text-align: center;
+	box-shadow:
+		0px 3px 6px 0px rgba(115, 138, 191, 0.1),
+		0px 11px 11px 0px rgba(115, 138, 191, 0.09),
+		0px 26px 16px 0px rgba(115, 138, 191, 0.05),
+		0px 46px 18px 0px rgba(115, 138, 191, 0.01),
+		0px 72px 20px 0px rgba(115, 138, 191, 0);
 
-  &--icon {
-    background-color: var(--icon-blue);
-    color: var(--white);
-  }
+	&--icon {
+		background-color: var(--icon-blue);
+		color: var(--white);
+	}
 
-  &--affirmation {
-    background-color: var(--button-blue);
-    color: var(--white);
-  }
+	&--affirmation {
+		background-color: var(--button-blue);
+		color: var(--white);
+	}
 
-  &--add {
-    width: fit-content;
-    background-color: var(--question-header);
-    color: var(--white);
-  }
+	&--add {
+		width: fit-content;
+		background-color: var(--question-header);
+		color: var(--white);
+	}
 
-  &--cancel {
-    background-color: var(--red);
-    color: var(--white);
-  }
+	&--cancel {
+		background-color: var(--red);
+		color: var(--white);
+	}
 
-  &--agree {
-    background-color: var(--agree);
-    color: var(--white);
-  }
+	&--agree {
+		background-color: var(--agree);
+		color: var(--white);
+	}
 
-  &--disagree {
-    background-color: var(--disagree);
-    color: var(--white);
-  }
+	&--disagree {
+		background-color: var(--disagree);
+		color: var(--white);
+	}
 
-  &--inactive {
-    background-color: var(--inactive);
-    color: var(--inactive-text);
-  }
+	&--inactive {
+		background-color: var(--inactive);
+		color: var(--inactive-text);
+	}
 
-  &--large {
-    font-size: 1.4rem;
-    padding: 1rem;
-    height: auto;
-  }
+	&--large {
+		font-size: 1.4rem;
+		padding: 1rem;
+		height: auto;
+	}
 
-  &--small {
-    font-size: 0.8rem;
-    padding: 0.5rem;
-  }
+	&--small {
+		font-size: 0.8rem;
+		padding: 0.5rem;
+	}
 
-  &--img {
-    padding: 0.5rem 1rem;
-    display: flex;
-    height: auto;
-    align-items: center;
-    gap: 1rem;
+	&--img {
+		padding: 0.5rem 1rem;
+		display: flex;
+		height: auto;
+		align-items: center;
+		gap: 1rem;
 
-    img {
-      width: 2rem;
-      height: 2rem;
-    }
-  }
+		img {
+			width: 2rem;
+			height: 2rem;
+		}
+	}
 }
 
 .buttonOutlineWhite {
-  background: none;
-  border: 1px solid white;
+	background: none;
+	border: 1px solid white;
 }
 
 .buttonOutlineWhite:active {
-  background: rgba(255, 255, 255, 0.191);
+	background: rgba(255, 255, 255, 0.191);
 }
 
 .buttonOutlineGray {
-  background: rgba(255, 255, 255, 0);
-  border: 1px solid rgb(63, 63, 63);
-  color: rgb(63, 63, 63);
+	background: rgba(255, 255, 255, 0);
+	border: 1px solid rgb(63, 63, 63);
+	color: rgb(63, 63, 63);
 }
 
 .buttonOutlineGray:hover {
-  background: rgba(126, 122, 122, 0.228);
+	background: rgba(126, 122, 122, 0.228);
 }
 
 .confirm {
-  background: #51d051 !important;
+	background: #51d051 !important;
 }
 
 .cancel {
-  background: #e85353;
+	background: #e85353;
 }
 
 .negative {
-  color: red;
+	color: red;
 }
 
 .fav {
-  background: var(--btn-fab);
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: relative;
-  border-radius: 50%;
-  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
-  user-select: none;
-  cursor: pointer;
-  z-index: 200;
+	background: var(--btn-fab);
+	width: 4rem;
+	height: 4rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	position: relative;
+	border-radius: 50%;
+	box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+	user-select: none;
+	cursor: pointer;
+	z-index: 200;
 
-  &:active {
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
+	&:active {
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+	}
 
-  &--blink {
-    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
-    animation: blinkFav 200ms ease-in-out 0s 35 alternate;
-  }
+	&--blink {
+		/* animation: name duration timing-function delay iteration-count direction fill-mode; */
+		animation: blinkFav 200ms ease-in-out 0s 35 alternate;
+	}
 
-  &--fixed {
-    position: absolute;
+	&--fixed {
+		position: absolute;
 
-    @media (max-width: 650px) {
-      right: 1.5rem;
-    }
+		@media (max-width: 650px) {
+			right: 1.5rem;
+		}
 
-    @media (max-width: 300px) {
-      right: calc(50vw - 15ch);
-    }
-  }
+		@media (max-width: 300px) {
+			right: calc(50vw - 15ch);
+		}
+	}
 
-  &--up {
-    bottom: 24vh;
-    right: 5vw;
-  }
+	&--up {
+		bottom: 24vh;
+		right: 5vw;
+	}
 
-  &>div {
-    z-index: 100;
-    background: var(--accent);
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+	& > div {
+		z-index: 100;
+		background: var(--accent);
+		width: 3.2rem;
+		height: 3.2rem;
+		border-radius: 4rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 .mainButton {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  z-index: 10; 
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	z-index: 10;
 }
 
 .arc-buttons {
-  position: absolute;
-  bottom: -0.3rem;
-  right: 0;
-  align-items: center;
+	position: absolute;
+	bottom: -0.3rem;
+	right: 0;
+	align-items: center;
 }
 
 .arc-buttons button {
-  margin: 0.1rem;
-  opacity: 0;
+	margin: 0.1rem;
+	opacity: 0;
 }
 
 .arc-buttons.open button:nth-child(1) {
-  position: relative;
-  opacity: 1;
-  animation: moveToFirstButton 0.5s forwards;
-  left: 0.1rem;
-  top: 19.5rem;
+	position: relative;
+	opacity: 1;
+	animation: moveToFirstButton 0.5s forwards;
+	left: 0.1rem;
+	top: 19.5rem;
 }
 
 .arc-buttons.open button:nth-child(2) {
-  position: relative;
-  opacity: 0;
-  top: 0;
-  animation: moveToSecondButton 0.5s forwards;
-  animation-delay: 0.1s;
+	position: relative;
+	opacity: 0;
+	top: 0;
+	animation: moveToSecondButton 0.5s forwards;
+	animation-delay: 0.1s;
 }
 
 .arc-buttons.open button:nth-child(3) {
-  position: relative;
-  opacity: 0;
-  animation: moveToThirdButton 0.5s forwards;
-  animation-delay: 0.3s;
+	position: relative;
+	opacity: 0;
+	animation: moveToThirdButton 0.5s forwards;
+	animation-delay: 0.3s;
 }
 
 .arc-buttons.open button:nth-child(4) {
-  position: relative;
-  opacity: 0;
-  animation: moveToFourthButton 0.5s forwards;
-  animation-delay: 0.5s;
+	position: relative;
+	opacity: 0;
+	animation: moveToFourthButton 0.5s forwards;
+	animation-delay: 0.5s;
 }
 
 .arc-buttons.open button:nth-child(5) {
-  position: relative;
-  opacity: 0;
-  animation: moveToFifthButton 0.5s forwards;
-  animation-delay: 0.7s;
+	position: relative;
+	opacity: 0;
+	animation: moveToFifthButton 0.5s forwards;
+	animation-delay: 0.7s;
 }
 
-.mainButton:hover, .arc-buttons.open button:hover{
-  opacity: 0.5;
+.mainButton:hover,
+.arc-buttons.open button:hover {
+	opacity: 0.5;
 }
 
 @keyframes moveToSecondButton {
-  0% {
-    opacity: 0;
-    top: 13rem;
-    transform: translate(0, 0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, -75px);
-    top: 20.5rem;
-    right: 5rem;
-  }
+	0% {
+		opacity: 0;
+		top: 13rem;
+		transform: translate(0, 0);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0, -75px);
+		top: 20.5rem;
+		right: 5rem;
+	}
 }
 
 @keyframes moveToThirdButton {
-  0% {
-    opacity: 0;
-    top: 11rem;
-    transform: translate(0, 0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, -50px);
-    top: 10.8rem;
-    right: 5.2rem;
-  }
+	0% {
+		opacity: 0;
+		top: 11rem;
+		transform: translate(0, 0);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0, -50px);
+		top: 10.8rem;
+		right: 5.2rem;
+	}
 }
 
 @keyframes moveToFourthButton {
-  0% {
-    opacity: 0;
-    top: 5rem;
-    transform: translate(0, 0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, -25px) rotate(15deg);
-    top: 1.1rem;
-    right: 3rem;
-  }
+	0% {
+		opacity: 0;
+		top: 5rem;
+		transform: translate(0, 0);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0, -25px) rotate(15deg);
+		top: 1.1rem;
+		right: 3rem;
+	}
 }
 
 @keyframes moveToFifthButton {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0);
-    top: 8rem;
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, -50px);
-    bottom: 3rem;
-    left: 1rem;
-  }
+	0% {
+		opacity: 0;
+		transform: translate(0, 0);
+		top: 8rem;
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0, -50px);
+		bottom: 3rem;
+		left: 1rem;
+	}
 }
 
 @keyframes blinkFav {
-  from {
-    transform: scale(1);
-  }
+	from {
+		transform: scale(1);
+	}
 
-  to {
-    transform: scale(0.9);
-  }
+	to {
+		transform: scale(0.9);
+	}
 }

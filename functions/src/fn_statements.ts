@@ -83,26 +83,31 @@ export async function updateParentWithNewMessageCB(e: any) {
 	}
 }
 
-
 async function setInAppNotifications(parentId: string, statement: Statement) {
 	try {
 		const { creatorId } = statement;
 
 		const parentRef = db.doc(`${Collections.statements}/${parentId}`);
 		const parentDB = await parentRef.get();
-		if(!parentDB.exists) throw new Error('parent not found');
+		if (!parentDB.exists) throw new Error('parent not found');
 		const parent = parentDB.data() as Statement;
 
 		//get subscribers of parent
 		const subscribersRef = db.collection(Collections.statementsSubscribe);
-		const q = subscribersRef.where('statementId', '==', parentId).where('role', 'in', ['admin', 'member']).where('user.isAnonymous', '==', false).where('userId', '!=', creatorId);
+		const q = subscribersRef
+			.where('statementId', '==', parentId)
+			.where('role', 'in', ['admin', 'member'])
+			.where('user.isAnonymous', '==', false)
+			.where('userId', '!=', creatorId);
 		const subscribersDB = await q.get();
 		//get array of subscribers ids
 		const subscribersIds = subscribersDB.docs.map((sub) => sub.data().userId);
 
 		const batch = db.batch();
 		subscribersIds.forEach((userId) => {
-			const notificationRef = db.collection(Collections.inAppNotifications).doc();
+			const notificationRef = db
+				.collection(Collections.inAppNotifications)
+				.doc();
 			const notification: NotificationType = {
 				userId,
 				parentId,
@@ -113,7 +118,7 @@ async function setInAppNotifications(parentId: string, statement: Statement) {
 				createdAt: new Date().getTime(),
 				read: false,
 				notificationId: notificationRef.id,
-			}
+			};
 			batch.set(notificationRef, notification);
 		});
 		await batch.commit();

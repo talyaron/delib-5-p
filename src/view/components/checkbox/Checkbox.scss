@@ -1,43 +1,43 @@
 .checkbox {
-    --text-disabled-paragraph: #a1b0d1;
-    --text-paragraph: #57688f;
+	--text-disabled-paragraph: #a1b0d1;
+	--text-paragraph: #57688f;
 
-    --icon-disabled-filled: #a9d2ff;
-    --icon-blue: #5f88e5;
+	--icon-disabled-filled: #a9d2ff;
+	--icon-blue: #5f88e5;
 
-    font-family: "Roboto", sans-serif;
-    line-height: 150%;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
+	font-family: 'Roboto', sans-serif;
+	line-height: 150%;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	cursor: pointer;
 
-    input {
-        display: none;
-    }
+	input {
+		display: none;
+	}
 
-    .checkbox-icon {
-        min-width: 24px;
+	.checkbox-icon {
+		min-width: 24px;
 
-        svg {
-            color: var(--icon-disabled-filled);
-            width: 24px;
-            height: 24px;
-        }
-    }
+		svg {
+			color: var(--icon-disabled-filled);
+			width: 24px;
+			height: 24px;
+		}
+	}
 
-    .checkbox-label {
-        flex: 1;
-        color: var(--text-disabled-paragraph);
-    }
+	.checkbox-label {
+		flex: 1;
+		color: var(--text-disabled-paragraph);
+	}
 
-    &.checked {
-        .checkbox-label {
-            color: var(--text-paragraph);
-        }
+	&.checked {
+		.checkbox-label {
+			color: var(--text-paragraph);
+		}
 
-        .checkbox-icon svg {
-            color: var(--icon-blue);
-        }
-    }
+		.checkbox-icon svg {
+			color: var(--icon-blue);
+		}
+	}
 }

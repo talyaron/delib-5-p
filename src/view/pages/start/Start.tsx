@@ -91,7 +91,7 @@ const Start = () => {
 			</select>
 			<button
 				style={{ flexDirection: direction }}
-				data-cy='anonymous-login'
+				data-cy="anonymous-login"
 				className={`${styles.anonymous} ${direction === 'row' ? styles.ltr : styles.rtl}`}
 				onClick={() => setShouldShowNameModal((prev) => !prev)}
 			>
@@ -102,8 +102,8 @@ const Start = () => {
 
 			<GoogleLoginButton />
 
-			<img src={StartPageImage} alt='' className={styles.StratPageImage} />
-			<a href='http://delib.org' target='_blank' className={styles.ddi}>
+			<img src={StartPageImage} alt="" className={styles.StratPageImage} />
+			<a href="http://delib.org" target="_blank" className={styles.ddi}>
 				<footer>{t('From the Institute for Deliberative Democracy')}</footer>
 			</a>
 

@@ -1,15 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { statementsSlicer } from "./statements/statementsSlice";
-import { userSlicer } from "./users/userSlice";
-import { evaluationsSlicer } from "./evaluations/evaluationsSlice";
-import { votesSlicer } from "./vote/votesSlice";
-import { resultsSlice } from "./results/resultsSlice";
-import { roomsSlice } from "./rooms/roomsSlice";
-import { timersSlice } from "./timers/timersSlice";
-import { initLocationSlice } from "./location/locationSlice";
-import { historySlice } from "./history/HistorySlice";
-import { statementMetaData } from "./statements/statementsMetaSlice";
-import { notificationsSlicer } from "./notifications/notificationsSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { statementsSlicer } from './statements/statementsSlice';
+import { userSlicer } from './users/userSlice';
+import { evaluationsSlicer } from './evaluations/evaluationsSlice';
+import { votesSlicer } from './vote/votesSlice';
+import { resultsSlice } from './results/resultsSlice';
+import { roomsSlice } from './rooms/roomsSlice';
+import { timersSlice } from './timers/timersSlice';
+import { initLocationSlice } from './location/locationSlice';
+import { historySlice } from './history/HistorySlice';
+import { statementMetaData } from './statements/statementsMetaSlice';
+import { notificationsSlicer } from './notifications/notificationsSlice';
 
 export const store = configureStore({
 	reducer: {

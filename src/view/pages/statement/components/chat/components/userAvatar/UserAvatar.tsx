@@ -1,18 +1,18 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 // Third Party Imports
-import { User } from "delib-npm";
+import { User } from 'delib-npm';
 
 // Helpers
 import {
 	generateRandomLightColor,
 	getInitials,
-} from "@/controllers/general/helpers";
-import "./UserAvatar.scss";
+} from '@/controllers/general/helpers';
+import './UserAvatar.scss';
 
 interface UserAvatarProps {
-    user: User;
-    showImage: (user: User) => void;
+	user: User;
+	showImage: (user: User) => void;
 }
 
 const UserAvatar: FC<UserAvatarProps> = ({ user, showImage }) => {

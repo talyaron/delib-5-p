@@ -1,59 +1,61 @@
 .notification {
-    display: flex;
+	display: flex;
 
-    background-color: var(--white);
-    user-select: none;
-    cursor: pointer;
-    padding: .2rem;
-    width: 80vw;
-    max-width: 45ch;
+	background-color: var(--white);
+	user-select: none;
+	cursor: pointer;
+	padding: 0.2rem;
+	width: 80vw;
+	max-width: 45ch;
 
-    border-radius: 3px;
+	border-radius: 3px;
 
-    &:hover {
-        background-color: rgb(222, 222, 222);
-    }
+	&:hover {
+		background-color: rgb(222, 222, 222);
+	}
 
-    .texts{
-        padding: 0px 1rem;
-        display: flex;
-        flex-direction: column;
-        flex:1;
-        text-align: start;
-        
-    }
+	.texts {
+		padding: 0px 1rem;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		text-align: start;
+	}
 
-    .from{
-        font-size: .8rem;
-        color: black;
-    }
+	.from {
+		font-size: 0.8rem;
+		color: black;
+	}
 
-    .title {
-        font-size: 1rem;
-        font-weight: 500;
-        word-wrap: normal;
-        color: var(--text-black);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      
-        flex: 1;
+	.title {
+		font-size: 1rem;
+		font-weight: 500;
+		word-wrap: normal;
+		color: var(--text-black);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 
-    }
+		flex: 1;
+	}
 
-    .image {
-        width: 50px;
-        height: 50px;
-        border-radius: 50px;
-        margin-right: 1rem;
-        background-position: center;
-        background-size: cover;
-        background-color: rgb(222, 222, 222);
-        background-color: radial-gradient(circle, rgba(222, 222, 222, 1) 0%, rgba(191, 190, 190, 1) 37%, rgba(158, 158, 158, 0.9976365546218487) 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-
-    }
+	.image {
+		width: 50px;
+		height: 50px;
+		border-radius: 50px;
+		margin-right: 1rem;
+		background-position: center;
+		background-size: cover;
+		background-color: rgb(222, 222, 222);
+		background-color: radial-gradient(
+			circle,
+			rgba(222, 222, 222, 1) 0%,
+			rgba(191, 190, 190, 1) 37%,
+			rgba(158, 158, 158, 0.9976365546218487) 100%
+		);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+	}
 }

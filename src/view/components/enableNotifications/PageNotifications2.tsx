@@ -38,31 +38,31 @@ export default function PageNotifications2({
 
 	return (
 		<div
-			className='enableNotificationspage2'
-			data-cy='enable-notifications-popup'
+			className="enableNotificationspage2"
+			data-cy="enable-notifications-popup"
 		>
 			{isModalOpen && (
 				<Modal>
-					<div className='popup'>
-						<div className='popup-content'>
-							<div className='popup-header'>
-								<div className='step-group'>
+					<div className="popup">
+						<div className="popup-content">
+							<div className="popup-header">
+								<div className="step-group">
 									<button
 										onClick={handleBack}
-										aria-label='Green1'
+										aria-label="Green1"
 										style={{
 											background: `url(${Green1}) no-repeat center/contain`,
 											border: 'none',
 											cursor: 'pointer',
 										}}
 									/>
-									<img src={Rectangle} alt='Rectangle' className='step' />
-									<img src={Elipse3} alt='Ellipse' className='step' />
+									<img src={Rectangle} alt="Rectangle" className="step" />
+									<img src={Elipse3} alt="Ellipse" className="step" />
 								</div>
-								<div className='icons-close-false'>
+								<div className="icons-close-false">
 									<button
 										onClick={handleClose}
-										aria-label='Close'
+										aria-label="Close"
 										style={{
 											background: `url(${xicon}) no-repeat center/contain`,
 											border: 'none',
@@ -73,31 +73,31 @@ export default function PageNotifications2({
 									/>
 								</div>
 							</div>
-							<div className='popup-body'>
-								<img src={sentence} alt='Sentence' className='desktop-image' />
+							<div className="popup-body">
+								<img src={sentence} alt="Sentence" className="desktop-image" />
 								<img
 									src={rectangleText}
-									alt='Rectangle'
-									className='mobile-image'
+									alt="Rectangle"
+									className="mobile-image"
 								/>
-								<div className='link-wrapper'>
-									<img src={link} alt='Link' />
+								<div className="link-wrapper">
+									<img src={link} alt="Link" />
 								</div>
-								<div className='reset-permission'>
-									<img src={resetpermission} alt='reset-permission' />
+								<div className="reset-permission">
+									<img src={resetpermission} alt="reset-permission" />
 								</div>
-								<div className='pointer-container'>
-									<img src={pointer1} alt='Pointer' />
+								<div className="pointer-container">
+									<img src={pointer1} alt="Pointer" />
 								</div>
-								<div className='option-icon-text'>
+								<div className="option-icon-text">
 									<p>Turn Notifications on</p>
 								</div>
 							</div>
-							<div className='popup-footer'>
-								<button className='back-button' onClick={handleBack}>
+							<div className="popup-footer">
+								<button className="back-button" onClick={handleBack}>
 									Back
 								</button>
-								<button className='finish-button' onClick={handleClose}>
+								<button className="finish-button" onClick={handleClose}>
 									Finish
 								</button>
 							</div>

@@ -1,26 +1,26 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { Statement } from 'delib-npm';
 
 // Custom components
-import Thumb from "@/view/components/thumb/Thumb";
+import Thumb from '@/view/components/thumb/Thumb';
 
 // Redux Store
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 // Statement helpers
-import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
+import { evaluationSelector } from '@/model/evaluations/evaluationsSlice';
 
 // Custom Hooks
-import useDirection from "@/controllers/hooks/useDirection";
+import useDirection from '@/controllers/hooks/useDirection';
 
 //css
-import "./SimpleEvaluation.scss";
+import './SimpleEvaluation.scss';
 
 interface Props {
-    statement: Statement;
-    shouldDisplayScore?: boolean;
+	statement: Statement;
+	shouldDisplayScore?: boolean;
 }
 
 const SimpleEvaluation: FC<Props> = ({
@@ -38,14 +38,10 @@ const SimpleEvaluation: FC<Props> = ({
 	// number of people who gave a good evaluation
 	const [proVotesCount, setProVotesCount] = useState(initialProVotesCount);
 
-	const evaluation = useAppSelector(
-		evaluationSelector(statement.statementId),
-	);
+	const evaluation = useAppSelector(evaluationSelector(statement.statementId));
 
 	const { consensus } = statement;
-	const consensusToDisplay = consensus
-		? Math.round(consensus * 100) / 100
-		: 0;
+	const consensusToDisplay = consensus ? Math.round(consensus * 100) / 100 : 0;
 
 	useEffect(() => {
 		setConVotesCount(initialContVotesCount);
@@ -54,10 +50,7 @@ const SimpleEvaluation: FC<Props> = ({
 
 	return (
 		<div className="simple-evaluation">
-			<div
-				className="evaluation-box"
-				style={{ flexDirection: direction }}
-			>
+			<div className="evaluation-box" style={{ flexDirection: direction }}>
 				{shouldDisplayScore && <span>{conVotesCount}</span>}
 				<div className="thumb-icon">
 					<Thumb

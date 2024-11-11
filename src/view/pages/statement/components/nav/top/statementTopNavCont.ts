@@ -1,20 +1,25 @@
-import { Statement, NavObject, Screen, StatementSubscription, Role } from "delib-npm";
+import {
+	Statement,
+	NavObject,
+	Screen,
+	StatementSubscription,
+	Role,
+} from 'delib-npm';
 
 interface showNavElementsProps {
-    statement: Statement | undefined,
-    statementSubscription: StatementSubscription | undefined,
-    navArray: NavObject[],
+	statement: Statement | undefined;
+	statementSubscription: StatementSubscription | undefined;
+	navArray: NavObject[];
 }
 export function showNavElements({
 	statement,
 	statementSubscription,
-	navArray
+	navArray,
 }: showNavElementsProps): NavObject[] {
-
 	try {
 		if (!statement) return navArray;
-		if(!navArray) return navArray;
-        
+		if (!navArray) return navArray;
+
 		if (!statement) return navArray;
 		let _navArray = [...navArray];
 		const role = statementSubscription?.role || Role.member;
@@ -24,7 +29,7 @@ export function showNavElements({
 		//show setting page if admin of statement
 		if (role !== Role.admin) {
 			_navArray = navArray.filter(
-				(navObj: NavObject) => navObj.link !== Screen.SETTINGS,
+				(navObj: NavObject) => navObj.link !== Screen.SETTINGS
 			);
 		}
 
@@ -33,12 +38,12 @@ export function showNavElements({
 		}
 		if (subScreens.length > 0) {
 			_navArray = _navArray.filter((navObj: NavObject) =>
-				subScreens.includes(navObj.link),
+				subScreens.includes(navObj.link)
 			);
 
 			if (statementSubscription?.role === Role.admin) {
 				const adminTab = navArray.find(
-					(navObj) => navObj.link === Screen.SETTINGS,
+					(navObj) => navObj.link === Screen.SETTINGS
 				);
 				if (adminTab) _navArray.push(adminTab);
 			}
@@ -47,7 +52,6 @@ export function showNavElements({
 		} else {
 			return _navArray;
 		}
-
 	} catch (error) {
 		console.error(error);
 

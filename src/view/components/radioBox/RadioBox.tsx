@@ -1,12 +1,12 @@
-import RadioButtonCheckedIcon from "@/assets/icons/radioButtonChecked.svg?react";
-import RadioButtonEmptyIcon from "@/assets/icons/radioButtonEmpty.svg?react";
-import "./RadioBox.scss";
+import RadioButtonCheckedIcon from '@/assets/icons/radioButtonChecked.svg?react';
+import RadioButtonEmptyIcon from '@/assets/icons/radioButtonEmpty.svg?react';
+import './RadioBox.scss';
 
 interface Props {
-    currentValue: string;
-    setCurrentValue: React.Dispatch<React.SetStateAction<string>>;
-    radioValue: string;
-    children?: React.ReactNode;
+	currentValue: string;
+	setCurrentValue: React.Dispatch<React.SetStateAction<string>>;
+	radioValue: string;
+	children?: React.ReactNode;
 }
 
 export default function RadioBox({

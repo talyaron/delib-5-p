@@ -1,21 +1,21 @@
-import { useRef, FC } from "react";
-import { Statement } from "delib-npm";
+import { useRef, FC } from 'react';
+import { Statement } from 'delib-npm';
 
 //Custom components
-import Button from "../../../view/components/buttons/button/Button";
-import UploadFileIcon from "../../../view/components/icons/UploadFileIcon";
+import Button from '../../../view/components/buttons/button/Button';
+import UploadFileIcon from '../../../view/components/icons/UploadFileIcon';
 
 // import { SetWaitingListCont } from "./SetWaitingListCont";
 
 //Styles
-import styles from "./setWaitingList.module.scss"
-import VisuallyHidden from "@/view/components/accessibility/toScreenReaders/VisuallyHidden";
+import styles from './setWaitingList.module.scss';
+import VisuallyHidden from '@/view/components/accessibility/toScreenReaders/VisuallyHidden';
 
-	interface Props {
-		statement: Statement
-	}
+interface Props {
+	statement: Statement;
+}
 
-const SetWaitingList: FC<Props> = ({  }) => {
+const SetWaitingList: FC<Props> = ({}) => {
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ const SetWaitingList: FC<Props> = ({  }) => {
 	return (
 		<div>
 			<label htmlFor="uploadFile">
-				<VisuallyHidden labelName={"uploadFile"} />
+				<VisuallyHidden labelName={'uploadFile'} />
 			</label>
 			<input
 				id="uploadFile"
@@ -45,9 +45,9 @@ const SetWaitingList: FC<Props> = ({  }) => {
 			/>
 			<Button
 				icon={<UploadFileIcon />}
-				text={"Upload members list"}
+				text={'Upload members list'}
 				onClick={handleButtonClick}
-				className={"btn btn--affirmation"}
+				className={'btn btn--affirmation'}
 			/>
 		</div>
 	);

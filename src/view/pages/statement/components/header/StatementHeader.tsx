@@ -91,9 +91,7 @@ const StatementHeader: FC<Props> = ({
 	}
 
 	return (
-		<div
-			className={`page__header ${dir}`}
-		>
+		<div className={`page__header ${dir}`}>
 			<StatementTopNav
 				statement={statement}
 				handleShare={handleShare}

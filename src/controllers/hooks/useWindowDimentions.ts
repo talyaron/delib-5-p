@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 function useWindowDimensions() {
 	const [windowDimensions, setWindowDimensions] = useState({
@@ -15,11 +15,11 @@ function useWindowDimensions() {
 		};
 
 		// Listen for window resize events
-		window.addEventListener("resize", handleResize);
+		window.addEventListener('resize', handleResize);
 
 		// Remove the event listener when the component unmounts
 		return () => {
-			window.removeEventListener("resize", handleResize);
+			window.removeEventListener('resize', handleResize);
 		};
 	}, []); // Empty dependency array means this effect runs once after the initial render
 

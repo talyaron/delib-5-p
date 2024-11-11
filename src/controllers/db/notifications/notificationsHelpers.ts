@@ -1,18 +1,18 @@
-import { Statement } from "delib-npm";
+import { Statement } from 'delib-npm';
 import {
 	getUserPermissionToNotifications,
 	setStatementSubscriptionNotificationToDB,
-} from "./notifications";
+} from './notifications';
 
 export default async function toggleNotifications(
 	statement: Statement | undefined,
 	permission: boolean,
 	setShowAskPermission: (show: boolean) => void,
-	t: (key: string) => string,
+	t: (key: string) => string
 ) {
 	try {
 		if (!statement)
-			throw new Error("Statement is undefined in toggleNotifications");
+			throw new Error('Statement is undefined in toggleNotifications');
 
 		const isPermitted = await getUserPermissionToNotifications(t);
 

@@ -1,39 +1,38 @@
 .homebar-main {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 1rem auto 0 auto;
-    width: 340px;
-    height: 24px;
-    font-weight: 600;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 1rem auto 0 auto;
+	width: 340px;
+	height: 24px;
+	font-weight: 600;
 
-    &__tab {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        cursor: pointer;
-    }
+	&__tab {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		cursor: pointer;
+	}
 
-    &__icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 4px;
-    }
+	&__icon {
+		width: 24px;
+		height: 24px;
+		margin-right: 4px;
+	}
 
+	&__tab.active img {
+		color: rgba(35, 47, 74, 1);
+	}
 
-    &__tab.active img {
-        color: rgba(35, 47, 74, 1);
-    }
+	&__tab.inactive img {
+		color: rgba(169, 210, 255, 1);
+	}
 
-    &__tab.inactive img {
-        color: rgba(169, 210, 255, 1);
-    }
+	&__tab .active-title {
+		color: rgba(35, 47, 74, 1);
+	}
 
-    &__tab .active-title {
-        color: rgba(35, 47, 74, 1);
-    }
-
-    &__tab .inactive-title {
-        color: rgba(161, 176, 209, 1);
-    }
+	&__tab .inactive-title {
+		color: rgba(161, 176, 209, 1);
+	}
 }

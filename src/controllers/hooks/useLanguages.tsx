@@ -4,51 +4,51 @@ import React, {
 	useState,
 	useCallback,
 	useEffect,
-} from "react";
+} from 'react';
 
 // Define types
 type LanguageContextType = {
-    currentLanguage: string;
-    changeLanguage: (newLanguage: LanguagesEnum) => void;
-    t: (text: string) => string;
-    dir: "ltr" | "rtl";
+	currentLanguage: string;
+	changeLanguage: (newLanguage: LanguagesEnum) => void;
+	t: (text: string) => string;
+	dir: 'ltr' | 'rtl';
 };
 
 // Create a context to hold the current language and the language change function
 const LanguageContext = createContext<LanguageContextType | undefined>(
-	undefined,
+	undefined
 );
 
 // Custom hook to provide access to the language context
 export function useLanguage() {
 	const context = useContext(LanguageContext);
 	if (!context) {
-		throw new Error("useLanguage must be used within a LanguageProvider");
+		throw new Error('useLanguage must be used within a LanguageProvider');
 	}
 
 	return context;
 }
 
 interface LanguageProviderProps {
-    defaultLanguage: LanguagesEnum;
-    children: React.ReactNode;
+	defaultLanguage: LanguagesEnum;
+	children: React.ReactNode;
 }
 
 export enum LanguagesEnum {
-    en = "en",
-    ar = "ar",
-    de = "de",
-    es = "es",
-    he = "he",
-    nl = "nl",
+	en = 'en',
+	ar = 'ar',
+	de = 'de',
+	es = 'es',
+	he = 'he',
+	nl = 'nl',
 }
 
-import en from "../../assets/Languages/en.json";
-import ar from "../../assets/Languages/ar.json";
-import de from "../../assets/Languages/de.json";
-import es from "../../assets/Languages/es.json";
-import he from "../../assets/Languages/he.json";
-import nl from "../../assets/Languages/nl.json";
+import en from '../../assets/Languages/en.json';
+import ar from '../../assets/Languages/ar.json';
+import de from '../../assets/Languages/de.json';
+import es from '../../assets/Languages/es.json';
+import he from '../../assets/Languages/he.json';
+import nl from '../../assets/Languages/nl.json';
 
 const languages: Record<string, string>[] = [en, ar, de, es, he, nl];
 
@@ -59,9 +59,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 }) => {
 	const [currentLanguage, setCurrentLanguage] = useState(defaultLanguage);
 
-	const [languageData, setLanguageData] = useState<Record<string, string>>(
-		{},
-	);
+	const [languageData, setLanguageData] = useState<Record<string, string>>({});
 
 	// Function to change the language
 	const changeLanguage = useCallback((newLanguage: LanguagesEnum) => {
@@ -73,13 +71,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 		async function fetchLanguageData() {
 			try {
 				const languageIndex =
-                    Object.values(LanguagesEnum).indexOf(currentLanguage);
+					Object.values(LanguagesEnum).indexOf(currentLanguage);
 				if (languageIndex !== -1) {
 					setLanguageData(languages[languageIndex]);
 				} else {
-					console.error(
-						`Language data not found for ${currentLanguage}`,
-					);
+					console.error(`Language data not found for ${currentLanguage}`);
 				}
 			} catch (error) {
 				console.error(`Error fetching language data: ${error}`);
@@ -98,10 +94,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 		currentLanguage,
 		changeLanguage,
 		t,
-		dir:
-            currentLanguage === "ar" || currentLanguage === "he"
-            	? "rtl"
-            	: "ltr",
+		dir: currentLanguage === 'ar' || currentLanguage === 'he' ? 'rtl' : 'ltr',
 	};
 
 	return (

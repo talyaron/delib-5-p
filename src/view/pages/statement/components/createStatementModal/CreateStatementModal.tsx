@@ -59,12 +59,12 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 	};
 
 	return (
-		<Modal className='create-statement-modal'>
-			<form className='overlay' onSubmit={onFormSubmit}>
-				<div className='modal-image'>
+		<Modal className="create-statement-modal">
+			<form className="overlay" onSubmit={onFormSubmit}>
+				<div className="modal-image">
 					<img
 						src={isOptionSelected ? newOptionGraphic : newQuestionGraphic}
-						alt='New Statement'
+						alt="New Statement"
 					/>
 				</div>
 
@@ -75,12 +75,12 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 					allowedTypes={allowedTypes}
 				/>
 
-				<div className='form-inputs'>
+				<div className="form-inputs">
 					<input
-						data-cy='statement-title-simple'
-						autoComplete='off'
+						data-cy="statement-title-simple"
+						autoComplete="off"
 						ref={titleInputRef}
-						type='text'
+						type="text"
 						placeholder={t('Title')}
 						required
 						minLength={3}
@@ -88,7 +88,7 @@ const CreateStatementModal: FC<CreateStatementModalProps> = ({
 						onChange={(ev) => setTitle(ev.target.value)}
 					/>
 					<textarea
-						name='description'
+						name="description"
 						placeholder={t('Description')}
 						rows={4}
 						value={description}
@@ -122,7 +122,7 @@ const Tabs: FC<TabsProps> = ({
 	const { t } = useLanguage();
 
 	return (
-		<div className='tabs'>
+		<div className="tabs">
 			{allowedTypes?.includes(StatementType.option) && (
 				<button
 					onClick={() => setIsOptionChosen(true)}
@@ -130,7 +130,7 @@ const Tabs: FC<TabsProps> = ({
 				>
 					{t('Option')}
 
-					{isOptionChosen && <div className='block' />}
+					{isOptionChosen && <div className="block" />}
 				</button>
 			)}
 			{allowedTypes?.includes(StatementType.question) && (
@@ -139,7 +139,7 @@ const Tabs: FC<TabsProps> = ({
 					className={`tab question ${isOptionChosen ? '' : 'active'}`}
 				>
 					{t('Question')}
-					{!isOptionChosen && <div className='block' />}
+					{!isOptionChosen && <div className="block" />}
 				</button>
 			)}
 		</div>
@@ -158,17 +158,17 @@ const CreateStatementButtons: FC<CreateStatementButtonsProps> = ({
 	const { t } = useLanguage();
 
 	return (
-		<div className='create-statement-buttons'>
+		<div className="create-statement-buttons">
 			<Button
 				text={t('Cancel')}
 				onClick={onCancel}
 				buttonType={ButtonType.SECONDARY}
-				className='cancel-button'
+				className="cancel-button"
 			/>
 			<Button
 				text={t(`Add ${isOption ? 'Option' : 'Question'}`)}
 				buttonType={ButtonType.PRIMARY}
-				data-cy='add-statement-simple'
+				data-cy="add-statement-simple"
 			/>
 		</div>
 	);

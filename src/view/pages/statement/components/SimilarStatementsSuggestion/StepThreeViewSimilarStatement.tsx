@@ -14,28 +14,33 @@ export default function StepThreeViewSimilarStatement({
 	setCurrentStep,
 	setShowModal,
 }: Readonly<StepThreeViewSimilarStatementProps>) {
-
-	const {t} = useLanguage();
+	const { t } = useLanguage();
 	const handleSimilarStatementChosen = () => {
 		setShowModal(false);
 	};
 
 	return (
 		<>
-			<h4 className='alertText'>
-				{t("Would you like to choose this suggestion")}?...
+			<h4 className="alertText">
+				{t('Would you like to choose this suggestion')}?...
 			</h4>
-			<p className='similarities__statementsBox__statementTitle'>{viewSimilarStatement.title}</p>
-			<p className='similarities__statementsBox__statementDescription'>{viewSimilarStatement.description}</p>
-			<div className='twoButtonBox'>
+			<p className="similarities__statementsBox__statementTitle">
+				{viewSimilarStatement.title}
+			</p>
+			<p className="similarities__statementsBox__statementDescription">
+				{viewSimilarStatement.description}
+			</p>
+			<div className="twoButtonBox">
 				<button
-					className='twoButtonBox__backButton'
+					className="twoButtonBox__backButton"
 					onClick={() => setCurrentStep((prev) => prev - 1)}
-				>{t("Back")}</button>
+				>
+					{t('Back')}
+				</button>
 				<SubmitStatementButton
 					icon={SendIcon}
 					text={t('Continue with this suggestion')}
-					textColor='var(--white)'
+					textColor="var(--white)"
 					onClick={handleSimilarStatementChosen}
 				/>
 			</div>

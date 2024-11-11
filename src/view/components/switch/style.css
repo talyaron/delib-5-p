@@ -1,126 +1,126 @@
 CustomSwitch.css :root {
-    --switch-size: 20px;
+	--switch-size: 20px;
 }
 
 .customSwitch {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    user-select: none;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	user-select: none;
 }
 
 .switch {
-    position: relative;
-    width: calc(var(--switch-size) * 2);
-    height: var(--switch-size);
-    background-color: #757575;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+	position: relative;
+	width: calc(var(--switch-size) * 2);
+	height: var(--switch-size);
+	background-color: #757575;
+	border-radius: 15px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
 
 .slider {
-    position: absolute;
-    top: 0;
-    transform: translateY(-50%);
-    width: var(--switch-size);
-    height: var(--switch-size);
-    background-color: #fff;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
+	position: absolute;
+	top: 0;
+	transform: translateY(-50%);
+	width: var(--switch-size);
+	height: var(--switch-size);
+	background-color: #fff;
+	border-radius: 50%;
+	transition: transform 0.3s ease;
 }
 
 .switch.on {
-    background-color: #86b6e7; /* On color */
+	background-color: #86b6e7; /* On color */
 }
 
 .switch.on .slider {
-    transform: translateX(var(--switch-size));
+	transform: translateX(var(--switch-size));
 }
 
 .switch.off .slider {
-    transform: translateX(0);
+	transform: translateX(0);
 }
 
 .switch-container {
-    position: relative;
-    display: inline-block;
+	position: relative;
+	display: inline-block;
 }
 
 .switch-label {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 10px;
-    color: #333;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-left: 10px;
+	color: #333;
 }
 
 .switch-input {
-    display: none;
+	display: none;
 }
 
 .switch-slider {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-    background-color: #ddd;
-    border-radius: 10px;
-    cursor: pointer;
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
+	background-color: #ddd;
+	border-radius: 10px;
+	cursor: pointer;
 }
 
 .switch-thumb {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 18px;
+	height: 18px;
+	background-color: #fff;
+	border-radius: 50%;
+	transition: transform 0.3s ease;
 }
 
 .switch-input:checked + .switch-slider .switch-thumb {
-    transform: translateX(20px);
+	transform: translateX(20px);
 }
 
 /* SwitchInput.css */
 .switch-container {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .switch-input {
-    display: none;
+	display: none;
 }
 
 .switch {
-    width: 40px;
-    height: 20px;
-    background-color: #ccc;
-    border-radius: 10px;
-    position: relative;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+	width: 40px;
+	height: 20px;
+	background-color: #ccc;
+	border-radius: 10px;
+	position: relative;
+	margin-left: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 .switch:before {
-    content: "";
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    transition: transform 0.3s;
+	content: '';
+	width: 18px;
+	height: 18px;
+	background-color: #fff;
+	border-radius: 50%;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	transition: transform 0.3s;
 }
 
 .switch.on {
-    background-color: #4caf50; /* On color */
+	background-color: #4caf50; /* On color */
 }
 
 .switch-input:checked + .switch:before {
-    transform: translateX(20px);
+	transform: translateX(20px);
 }

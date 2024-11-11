@@ -1,11 +1,11 @@
-import { FC } from "react";
-import "./Timers.scss";
-import { RoomTimer, TimerStatus } from "delib-npm";
-import RoomTimerComp from "./roomTimer/Timer";
+import { FC } from 'react';
+import './Timers.scss';
+import { RoomTimer, TimerStatus } from 'delib-npm';
+import RoomTimerComp from './roomTimer/Timer';
 
 interface Props {
-  roomNumber: number | undefined;
-  timers: RoomTimer[];
+	roomNumber: number | undefined;
+	timers: RoomTimer[];
 }
 
 const Timers: FC<Props> = ({ roomNumber, timers }) => {
@@ -18,7 +18,6 @@ const Timers: FC<Props> = ({ roomNumber, timers }) => {
 		return (
 			<div className="timers">
 				{timers.map((timer) => (
-        
 					<RoomTimerComp
 						key={timer.roomTimerId}
 						roomTimer={timer}
@@ -26,7 +25,6 @@ const Timers: FC<Props> = ({ roomNumber, timers }) => {
 
 						// nextTimer={nextTimer}
 					/>
-         
 				))}
 			</div>
 		);

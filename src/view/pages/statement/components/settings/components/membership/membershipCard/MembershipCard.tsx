@@ -1,14 +1,14 @@
-import { Role, StatementSubscription } from "delib-npm";
-import { FC, useState, useEffect } from "react";
-import styles from "./MembershipCard.module.scss";
+import { Role, StatementSubscription } from 'delib-npm';
+import { FC, useState, useEffect } from 'react';
+import styles from './MembershipCard.module.scss';
 
 //icons
-import MemberAdmin from "@/assets/icons/memberAdmin.svg?react";
-import MemberRemove from "@/assets/icons/memberRemove.svg?react";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
-import { updateMemberRole } from "@/controllers/db/subscriptions/setSubscriptions";
-import unBlockImg from "@/assets/icons/Icon-base-46px.png";
+import MemberAdmin from '@/assets/icons/memberAdmin.svg?react';
+import MemberRemove from '@/assets/icons/memberRemove.svg?react';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { userSelector } from '@/model/users/userSlice';
+import { updateMemberRole } from '@/controllers/db/subscriptions/setSubscriptions';
+import unBlockImg from '@/assets/icons/Icon-base-46px.png';
 
 interface Props {
 	member: StatementSubscription;
@@ -50,15 +50,19 @@ const MembershipCard: FC<Props> = ({ member }) => {
 	const isAdmin = role === Role.admin;
 
 	return (
-		<div className={`${styles.card} ${isBanned ? styles.banned : ""}`}>
+		<div className={`${styles.card} ${isBanned ? styles.banned : ''}`}>
 			<div className={styles.card__info}>
 				<div
-					className={`${styles.card__info__img} ${isBanned ? styles.bannedImg : ""}`}
+					className={`${styles.card__info__img} ${isBanned ? styles.bannedImg : ''}`}
 					style={{ backgroundImage: `url(${displayImg})` }}
 				>
 					{!displayImg && firstLetter}
 				</div>
-				<div className={`${styles.card__info__name} ${isBanned ? styles.bannedText : ""}`}>{member.user.displayName}</div>
+				<div
+					className={`${styles.card__info__name} ${isBanned ? styles.bannedText : ''}`}
+				>
+					{member.user.displayName}
+				</div>
 			</div>
 			<div className={styles.card__membership}>
 				{isBanned ? (
@@ -69,13 +73,13 @@ const MembershipCard: FC<Props> = ({ member }) => {
 					<>
 						<button
 							onClick={handleSetRole}
-							className={`${styles["card__membership--admin"]} ${isAdmin ? styles.admin : ""}`}
+							className={`${styles['card__membership--admin']} ${isAdmin ? styles.admin : ''}`}
 						>
 							<MemberAdmin />
 						</button>
 						<button
 							onClick={handleRemoveMember}
-							className={styles["card__membership--remove"]}
+							className={styles['card__membership--remove']}
 						>
 							<MemberRemove />
 						</button>

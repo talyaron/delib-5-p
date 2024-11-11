@@ -1,14 +1,14 @@
 {
-    "compilerOptions": {
-        "module": "CommonJS",
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "outDir": "lib",
-        "sourceMap": true,
-        "strict": true,
-        "target": "es2017"
-    },
-    "compileOnSave": true,
-    "include": ["src"],
-    "exclude": ["node_modules", "lib"]
+	"compilerOptions": {
+		"module": "CommonJS",
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"outDir": "lib",
+		"sourceMap": true,
+		"strict": true,
+		"target": "es2017"
+	},
+	"compileOnSave": true,
+	"include": ["src"],
+	"exclude": ["node_modules", "lib"]
 }

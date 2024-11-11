@@ -10,7 +10,7 @@
 // }
 
 export const SetWaitingListCont = async (
-	file: File, 
+	file: File
 
 	// statement: Statement
 ) => {
@@ -40,7 +40,7 @@ export const SetWaitingListCont = async (
 		// 		});
 		// 	}
 		// }
-		alert("This feature is not available yet");
+		alert('This feature is not available yet');
 	};
 	reader.readAsArrayBuffer(file);
 };

@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 // Third party imports
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 
 // Redux Store
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { userSelector } from '@/model/users/userSlice';
 
 // Helpers
-import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "@/controllers/db/subscriptions/getSubscriptions";
+import {
+	getNewStatementsFromSubscriptions,
+	listenToStatementSubscriptions,
+} from '@/controllers/db/subscriptions/getSubscriptions';
 
 // Custom Components
-import HomeHeader from "./HomeHeader";
+import HomeHeader from './HomeHeader';
 
 interface ListenedStatements {
 	unsubFunction: () => void;
@@ -32,7 +35,7 @@ export default function Home() {
 	const [displayHeader, setDisplayHeader] = useState(true);
 
 	useEffect(() => {
-		if (location.pathname.includes("addStatement") || statementId) {
+		if (location.pathname.includes('addStatement') || statementId) {
 			setDisplayHeader(false);
 		} else {
 			setDisplayHeader(true);
@@ -40,17 +43,16 @@ export default function Home() {
 	}, [location]);
 
 	useEffect(() => {
-
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		let unsubscribe: () => void = () => { };
+		let unsubscribe: () => void = () => {};
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		let updatesUnsubscribe: () => void = () => { };
+		let updatesUnsubscribe: () => void = () => {};
 		try {
 			if (user) {
 				unsubscribe = listenToStatementSubscriptions(30);
 				updatesUnsubscribe = getNewStatementsFromSubscriptions();
 			}
-		} catch (error) { }
+		} catch (error) {}
 
 		return () => {
 			if (unsubscribe) {
@@ -67,7 +69,7 @@ export default function Home() {
 
 	return (
 		<main className="page slide-in">
-			{displayHeader && <HomeHeader />}     
+			{displayHeader && <HomeHeader />}
 			<Outlet />
 		</main>
 	);

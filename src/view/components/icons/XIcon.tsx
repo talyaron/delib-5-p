@@ -1,4 +1,4 @@
-export default function XIcon({ color = "white" }: { color?: string }) {
+export default function XIcon({ color = 'white' }: { color?: string }) {
 	return (
 		<svg
 			width="32"

@@ -1,5 +1,8 @@
-import { Statement } from "delib-npm";
-import { setSelectionsToOptions, sortOptionsIndex } from "../../statementVoteCont";
+import { Statement } from 'delib-npm';
+import {
+	setSelectionsToOptions,
+	sortOptionsIndex,
+} from '../../statementVoteCont';
 
 export function isVerticalOptionBar(width: number, optionsCount: number) {
 	if (width < 350 && optionsCount >= 4) {
@@ -14,9 +17,9 @@ export function isVerticalOptionBar(width: number, optionsCount: number) {
 }
 
 interface GetVotingOptionsParams {
-    statement: Statement;
-    subStatements: Statement[];
-    sort: string | undefined;
+	statement: Statement;
+	subStatements: Statement[];
+	sort: string | undefined;
 }
 
 export const getSortedVotingOptions = ({
@@ -24,7 +27,10 @@ export const getSortedVotingOptions = ({
 	subStatements,
 	sort,
 }: GetVotingOptionsParams): Statement[] => {
-	const optionsWithSelections = setSelectionsToOptions(statement, subStatements);
+	const optionsWithSelections = setSelectionsToOptions(
+		statement,
+		subStatements
+	);
 
 	return sortOptionsIndex(optionsWithSelections, sort);
 };
