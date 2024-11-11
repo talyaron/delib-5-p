@@ -159,7 +159,7 @@ export const listenToSubStatements = (statementId: string | undefined, dispatch:
 export const listenToMembers = (dispatch: AppDispatch) => (statementId: string) => {
 	try {
 		const membersRef = collection(FireStore, Collections.statementsSubscribe);
-		const q = query(membersRef, where("statementId", "==", statementId), orderBy("createdAt", "desc"));
+		const q = query(membersRef, where("statementId", "==", statementId), where("statement.statementType", "!=", StatementType.document), orderBy("createdAt", "desc"));
 
 		return onSnapshot(q, (subsDB) => {
 			subsDB.docChanges().forEach((change) => {

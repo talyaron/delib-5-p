@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable indent */
 import { Collections, DeliberativeElement, StatementType } from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
@@ -197,7 +199,7 @@ export async function maintainStatement(req: any, res: any) {
         const subsDB = await q2.get();
 
         //update statementType to deliberativeElements
-let count = 0;
+        let count = 0;
         subsDB.docs.forEach((doc) => {
             const ref = statementsRef.doc(doc.id);
             batch.update(ref, { 'statement.results': [] });
@@ -208,6 +210,32 @@ let count = 0;
         res.send({ ok: true, count });
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
+    }
+}
+
+export async function maintainSubscriptionToken(req: any, res: any) {
+    try {
+        const subscriptionRef = db.collection(Collections.statementsSubscribe)
+
+        const subscriptionsDB = await subscriptionRef.get();
+        const batch = db.batch();
+        let count = 0;
+        subscriptionsDB.docs.forEach((doc) => {
+            const ref = subscriptionRef.doc(doc.id);
+            if (typeof doc.data().token === "string") {
+                count++;
+                batch.update(ref, { token: [doc.data().token] });
+            }
+
+        });
+        await batch.commit();
+        res.send({ ok: true, size: subscriptionsDB.size, changed: count });
+    } catch (error: any) {
+        res.status(500).send({ error: error.message, ok: false });
+
+        return;
+
     }
 }
