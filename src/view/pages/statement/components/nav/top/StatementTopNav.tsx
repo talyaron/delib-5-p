@@ -75,8 +75,14 @@ const StatementTopNav: FC<Props> = ({
 	const allowNavigation = enableNavigationalElements || isAdmin;
 
 	function handleGoToSettings() {
+		setIsHeaderMenuOpen(false);
 		if (statement && statement.statementId)
 			navigate(`/statement/${statement?.statementId}/settings`);
+	}
+
+	function handleGotToChat() {
+		if (statement && statement.statementId)
+			navigate(`/statement/${statement?.statementId}/chat`);
 	}
 
 	return (
@@ -98,17 +104,6 @@ const StatementTopNav: FC<Props> = ({
 							icon={<ShareIcon style={menuIconStyle} />}
 							onOptionClick={handleShare}
 						/>
-						{/* <MenuOption
-						label={t(permission ? 'Turn off' : 'Turn on')}
-						icon={
-							permission ? (
-								<BellIcon style={menuIconStyle} />
-							) : (
-								<BellSlashIcon style={menuIconStyle} />
-							)
-						}
-						onOptionClick={handleToggleNotifications}
-					/> */}
 						<MenuOption
 							label={t('Disconnect')}
 							icon={<DisconnectIcon style={menuIconStyle} />}
@@ -136,7 +131,7 @@ const StatementTopNav: FC<Props> = ({
 					</Menu>
 				)}
 				{allowNavigation && (
-					<button>
+					<button onClick={handleGotToChat}>
 						<Chat color={headerStyle.color} />
 					</button>
 				)}

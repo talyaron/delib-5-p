@@ -12,12 +12,12 @@ import NewMessages from './components/newMessages/NewMessages';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { userSelector } from '@/model/users/userSlice';
 import './StatementChat.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Description from '../evaluations/components/description/Description';
+import { useSelector } from 'react-redux';
+import { statementSelector, subStatementsByTopParentIdMemo } from '@/model/statements/statementsSlice';
 
 interface Props {
-	statement: Statement;
-	subStatements: Statement[];
 	handleShowTalker: (statement: User | null) => void;
 	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -26,17 +26,18 @@ let firstTime = true;
 let numberOfSubStatements = 0;
 
 const StatementChat: FC<Props> = ({
-	statement,
-	subStatements,
 	handleShowTalker,
 }) => {
+	const {statementId} = useParams();
+	const statement = useSelector(statementSelector(statementId));
+	const subStatements = useSelector(subStatementsByTopParentIdMemo(statementId));
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
 	const location = useLocation();
 
 	const [newMessages, setNewMessages] = useState<number>(0);
 
-	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement.parentId);
+	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement?.parentId);
 
 	function scrollToHash() {
 		if (location.hash) {
@@ -97,11 +98,13 @@ const StatementChat: FC<Props> = ({
 		}
 	}, [subStatements.length]);
 
+	if(!statement) return null;
+
 	return (
 		<>
 			<div
 				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
-				id={`msg-${statement.statementId}`}
+				id={`msg-${statement?.statementId}`}
 			>
 				<div className="statement-chat__description">
 					<Description statement={statement} />

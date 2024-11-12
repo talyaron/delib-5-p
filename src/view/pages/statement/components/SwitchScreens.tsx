@@ -6,6 +6,7 @@ import { Screen, Statement, StatementSubscription, User } from 'delib-npm';
 // Custom components
 import Explanation from './explanation/Explanation';
 import StatementSettings from './settings/StatementSettings';
+import StatementChat from './chat/StatementChat';
 
 interface SwitchScreensProps {
 	screen: string | undefined;
@@ -19,12 +20,16 @@ interface SwitchScreensProps {
 export default function SwitchScreens({
 	screen,
 	statement,
+	handleShowTalker,
+	setShowAskPermission
 }: Readonly<SwitchScreensProps>) {
 	if (!statement) return null;
 
 	switch (screen) {
 		case Screen.EXPLANATION:
 			return <Explanation />;
+			case Screen.CHAT:
+			return <StatementChat handleShowTalker={handleShowTalker} setShowAskPermission={setShowAskPermission} />;
 		case Screen.SETTINGS:
 			return <StatementSettings />;
 

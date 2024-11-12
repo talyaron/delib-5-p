@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const useSlideAndSubStatement = (parentId: string) => {
+const useSlideAndSubStatement = (parentId: string|undefined) => {
 	const location = useLocation();
 	const [toSlide, setToSlide] = useState(false);
 	const [toSubStatement, setToSubStatement] = useState(false);
