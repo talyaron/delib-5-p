@@ -1,0 +1,26 @@
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    {/* Main paper outline */}
+    <path 
+      d="M7 2h7.5L19 6.5V20a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" 
+      stroke="currentColor" 
+      strokeWidth="1"
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    />
+    {/* Folded corner */}
+    <path 
+      d="M14.5 2v4.5H19" 
+      stroke="currentColor" 
+      strokeWidth="1"
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    />
+    {/* Content lines */}
+    <path 
+      d="M8 10h8M8 14h8M8 18h5" 
+      stroke="currentColor" 
+      strokeWidth="1"
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    />
+  </svg>

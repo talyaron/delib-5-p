@@ -1,21 +1,27 @@
 import { FC, useState } from 'react';
 import styles from './selectWithImages.module.scss';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { Method } from 'delib-npm';
+import { DeliberationMethod } from '@/model/deliberation/deliberationMethodsModel';
 
 export interface SelectOption {
 	id: number;
 	title: string;
 	image: JSX.Element;
+    method?:Method;
 }
 
 interface Props {
-	options: SelectOption[];
+	options: DeliberationMethod[];
+	selectedOption: DeliberationMethod | null;
+	setSelectedOption: (option: DeliberationMethod) => void;
 }
 
-const SelectWithImages: FC<Props> = ({ options }) => {
+const SelectWithImages: FC<Props> = ({ options, selectedOption, setSelectedOption }) => {
+	const { t } = useLanguage();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [selectedOption, setSelectedOption] = useState<SelectOption | null>(null);
-
-	const handleSelect = (option: SelectOption) => {
+	
+	const handleSelect = (option: DeliberationMethod) => {
 		setSelectedOption(option);
 		setIsOpen(false);
 	};
@@ -25,11 +31,11 @@ const SelectWithImages: FC<Props> = ({ options }) => {
 			<button onClick={() => setIsOpen(!isOpen)} className={styles.selected}>
 				{selectedOption ? (
 					<div className={styles.button}>
-						<span>{selectedOption.title}</span>
-						{selectedOption.image}
+						<span>{t(selectedOption.title)}</span>
+						<div className={styles.image}>{selectedOption.defaultImage}</div>
 					</div>
 				) : (
-					<span>Select an option</span>
+					<span>{t('Deliberation method')}</span>
 				)}
 				<span>{isOpen ? '▲' : '▼'}</span>
 			</button>
@@ -40,14 +46,14 @@ const SelectWithImages: FC<Props> = ({ options }) => {
 						{options.map((option) => (
 							<button
 								className={styles.button}
-								key={option.id}
+								key={option.title}
 								onClick={() => handleSelect(option)}
 								onKeyUp={(e) => {
 									if (e.key === 'Enter') handleSelect(option);
 								}}
 							>
-								<span>{option.title}</span>
-								{option.image}
+								<span>{t(option.title)}</span>
+								<div className={styles.image}>{option.defaultImage}</div>
 							</button>
 						))}
 					</ul>

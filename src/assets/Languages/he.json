@@ -190,5 +190,15 @@
 	"Disagree": "מתנגד/ת",
 	"Type your message here...": "הקלד/י את ההודעה שלך כאן...",
 	"Explanation": "הסבר",
-	"Stages": "שלבים"
+	"Stages": "שלבים",
+	"explanation": "הסבר",
+	"clustering": "אישכול",
+	"voting": "הצבעה",
+	"suggestions": "הצעות",
+	"questions": "שאלות",
+	"result": "תוצאות",
+	"consultation": "התייעצות",
+	"discussion": "דיון",
+	"summary": "סיכום",
+	"Deliberation method": "שיטת דיון"
 }

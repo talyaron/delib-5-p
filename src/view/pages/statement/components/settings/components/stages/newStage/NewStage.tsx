@@ -1,14 +1,19 @@
 import SelectWithImages from "@/view/components/selectWithImages/SelectWithImages";
-import { fromDelibObjToSelectOptions } from "./newStageCont";
+import { useState } from "react";
+import { DeliberationMethod, getAllDeliberationMethods } from "@/model/deliberation/deliberationMethodsModel";
 
 const NewStage = () => {
-    const selectMethods = fromDelibObjToSelectOptions();    
+    const selectMethods = getAllDeliberationMethods();  
+    const [selectedOption, setSelectedOption] = useState<DeliberationMethod | null>(
+		null
+	);  
+    console.log(selectMethods)
 
 	return (
-		<div>
+		<div className="stage">
 			<h3>New Stage</h3>
-            <label htmlFor="new-stage-method">Method of deliberation</label>
-			<SelectWithImages options={selectMethods} />
+			<SelectWithImages options={selectMethods} selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+            <div className="stage__description">{selectedOption?.description}</div>
 		</div>
 	);
 };
