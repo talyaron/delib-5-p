@@ -2,9 +2,9 @@ import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 const Stages = () => {
 	const { t } = useLanguage();
-	
+
 	return (
-		<div>
+		<div className='wrapper'>
 			<h2>{t('Stages')}</h2>
 		</div>
 	);
