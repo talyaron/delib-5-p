@@ -1,0 +1,42 @@
+.select {
+    display: flex;
+    position:relative;
+    width: fit-content;
+    padding: 5px;
+    
+    .selected{
+        display: flex;
+        font-size: 1.3rem;
+        color:var(--text-paragraph);
+    }
+}
+
+.open {
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    bottom: 0px;
+    box-shadow: 2px 2px 25px 0px rgba(0, 0, 0, 0.143);
+    border-radius: 3px;
+    padding: 3px;
+    z-index: 5;
+
+    
+}
+.button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:4rem;
+    border:1px solid #f6f6f6;
+    padding: .2rem .7rem;
+
+    &:hover {
+        background-color: #cdcdcd;
+    }
+
+    svg {
+        color:var(--tooltip);
+        height: 28px;
+    }
+}
