@@ -5,9 +5,10 @@ import { FireStore } from "../config";
 
 export async function setStageToDB({ statement, deliberationMethod }: { statement: Statement, deliberationMethod: DeliberationMethod }): Promise<Stage | undefined>{
     try {
+       
         const newStage = await createStage({ statement, deliberationMethod });
         if (!newStage) throw new Error("Error creating stage");
-
+console.log(Collections.stages, newStage.stageId);
         const stageRef = doc(FireStore, Collections.stages, newStage.stageId)
         await setDoc(stageRef, newStage);
         
@@ -24,6 +25,7 @@ async function createStage({ statement, deliberationMethod }: { statement: State
     try {
         const stagesRef = collection(FireStore, Collections.stages);
         const stagesDB = await getDocs(stagesRef);
+        console.log(stagesDB.size);
 
         return {
             statementId: statement.statementId,

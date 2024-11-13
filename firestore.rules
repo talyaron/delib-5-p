@@ -30,6 +30,11 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
 
+    match /stages/{stageId=**}{
+        allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
     match /importance/{importanceId=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
