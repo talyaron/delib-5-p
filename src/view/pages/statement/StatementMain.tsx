@@ -43,6 +43,7 @@ import AskPermission from '@/view/components/askPermission/AskPermission';
 import FollowMeToast from './components/followMeToast/FollowMeToast';
 import { listenToUserSettings } from '@/controllers/db/users/getUserDB';
 import { createSelector } from '@reduxjs/toolkit';
+import { listenToStages } from '@/controllers/db/stages/getStages';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -134,7 +135,9 @@ const StatementMain: FC = () => {
 		};
 		let unSubAllDescendants: () => void = () => {
 			return;
-		};
+		}, unsubscribeStages: () => void = () => {
+			return;
+		}
 
 		if (user && statementId) {
 			unSubListenToStatement = listenToStatement(
@@ -146,6 +149,7 @@ const StatementMain: FC = () => {
 			unSubAllDescendants = listenToAllDescendants(statementId); //used for map
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
 			unSubSubStatements = listenToSubStatements(statementId, dispatch); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
+			unsubscribeStages = listenToStages(statementId);
 
 			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
@@ -161,6 +165,7 @@ const StatementMain: FC = () => {
 			unSubStatementSubscription();
 			unSubEvaluations();
 			unSubAllDescendants();
+			unsubscribeStages();
 		};
 	}, [user, statementId]);
 
