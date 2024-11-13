@@ -416,6 +416,11 @@ b {
 	h2{
 		text-align: start;
 	}
+
+	@media screen and (max-width: $tablet) {
+		padding: 20px;
+		
+	}
 }
 
 .card {

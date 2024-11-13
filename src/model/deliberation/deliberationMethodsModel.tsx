@@ -14,6 +14,7 @@ export interface DeliberationMethod {
     title: string;
     defaultImage: JSX.Element;
     description: string;
+    image?: string;
 }
 
 export const getDeliberationMethod = (method: Method): DeliberationMethod | undefined => {

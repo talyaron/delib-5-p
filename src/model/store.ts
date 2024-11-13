@@ -10,6 +10,7 @@ import { initLocationSlice } from './location/locationSlice';
 import { historySlice } from './history/HistorySlice';
 import { statementMetaData } from './statements/statementsMetaSlice';
 import { notificationsSlicer } from './notifications/notificationsSlice';
+import { stagesSlice } from './stages/stagesSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
 		initLocation: initLocationSlice.reducer,
 		history: historySlice.reducer,
 		notifications: notificationsSlicer.reducer,
+		stages: stagesSlice.reducer
 	},
 });
 

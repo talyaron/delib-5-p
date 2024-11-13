@@ -22,14 +22,14 @@
     flex-direction: column;
     position: absolute;
     bottom: 0px;
-    left: 0px;
+    right: 0px;
     box-shadow: 2px 2px 25px 0px rgba(0, 0, 0, 0.143);
     border-radius: 3px;
     padding: 3px;
     z-index: 5;
 
     @media screen and (max-width: 440px) {
-        left: -10%;
+      
         bottom: 40px;
         z-index: 10;
 

@@ -16,7 +16,7 @@ interface Props {
 	className?: string;
 	iconOnRight?: boolean;
 	disabled?: boolean;
-	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined;
+	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void | undefined | Promise<void>;
 	icon?: React.ReactNode;
 }
 
