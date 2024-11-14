@@ -4,11 +4,10 @@
 import { Screen, Statement, StatementSubscription, User } from 'delib-npm';
 
 // Custom components
-import Explanation from './explanation/Explanation';
+
 import StatementSettings from './settings/StatementSettings';
 import StatementChat from './chat/StatementChat';
 import Process from '../process/Process';
-import { useParams } from 'react-router-dom';
 
 interface SwitchScreensProps {
 	screen: string | undefined;
@@ -28,8 +27,6 @@ export default function SwitchScreens({
 	if (!statement) return null;
 
 	switch (screen) {
-		case Screen.EXPLANATION:
-			return <Explanation />;
 		case Screen.CHAT:
 			return (
 				<StatementChat
