@@ -235,7 +235,6 @@ const StatementMain: FC = () => {
 					<FollowMeToast role={role} statement={statement} />
 
 					<SwitchScreens
-						screen={screen}
 						statement={statement}
 						statementSubscription={statementSubscription}
 						subStatements={subStatements}

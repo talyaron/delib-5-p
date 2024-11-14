@@ -1,10 +1,9 @@
-
 import { useParams } from 'react-router-dom';
 
 const Process = () => {
-	const { page, process } = useParams();
+	const { screen, shortProcessId, sort } = useParams();
 
-	return <div>{page}, {process}</div>;
+	return <div>{screen} {shortProcessId}, {sort}</div>;
 };
 
 export default Process;

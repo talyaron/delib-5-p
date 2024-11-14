@@ -69,26 +69,40 @@ export const router = createBrowserRouter([
 				errorElement: <ErrorPage />,
 			},
 			{
-				path: 'statement/:statementId/:process',
+				path: 'statement/:statementId/:screen',
 				element: <StatementMain />,
 				errorElement: <ErrorPage />,
 				children: [
 					{
-						path: ':sort',
+						path: ':shortProcessId',
 						element: <StatementMain />,
 						errorElement: <ErrorPage />,
+						children: [
+							{
+								path: ':sort',
+								element: <StatementMain />,
+								errorElement: <ErrorPage />,
+							},
+						],
 					},
 				],
 			},
 			{
-				path: 'statement-an/:anonymous/:statementId/:process',
+				path: 'statement-an/:anonymous/:statementId/:shortProcessId',
 				element: <StatementMain />,
 				errorElement: <ErrorPage />,
 				children: [
 					{
-						path: ':sort',
+						path: ':shortProcessId',
 						element: <StatementMain />,
 						errorElement: <ErrorPage />,
+						children: [
+							{
+								path: ':sort',
+								element: <StatementMain />,
+								errorElement: <ErrorPage />,
+							},
+						],
 					},
 				],
 			},

@@ -8,9 +8,9 @@ import { Screen, Statement, StatementSubscription, User } from 'delib-npm';
 import StatementSettings from './settings/StatementSettings';
 import StatementChat from './chat/StatementChat';
 import Process from '../process/Process';
+import { useParams } from 'react-router-dom';
 
-interface SwitchScreensProps {
-	screen: string | undefined;
+interface SwitchScreensProps {	
 	statement: Statement | undefined;
 	subStatements: Statement[];
 	statementSubscription: StatementSubscription | undefined;
@@ -19,12 +19,12 @@ interface SwitchScreensProps {
 }
 
 export default function SwitchScreens({
-	screen,
 	statement,
 	handleShowTalker,
 	setShowAskPermission,
 }: Readonly<SwitchScreensProps>) {
 	if (!statement) return null;
+	const {screen} = useParams();
 
 	switch (screen) {
 		case Screen.CHAT:
