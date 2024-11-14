@@ -28,7 +28,6 @@ import { useSelector } from 'react-redux';
 // Hooks & Helpers
 import { MapProvider } from '@/controllers/hooks/useMap';
 import { statementTitleToDisplay } from '@/controllers/general/helpers';
-import { availableScreen } from './StatementCont';
 import { useIsAuthorized } from '@/controllers/hooks/authHooks';
 
 // Custom components
@@ -57,8 +56,9 @@ export const subStatementsSelector = createSelector(
 
 const StatementMain: FC = () => {
 	// Hooks
-	const { statementId } = useParams();
+	const { statementId} = useParams();
 	const page = useParams().page as Screen;
+	const screen = useParams().screen as Screen || Screen.CHAT;
 	const navigate = useNavigate();
 
 	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
@@ -85,11 +85,6 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
-
-	// const [_, setPasswordCheck] = useState<boolean>(false)
-
-	// Constants
-	const screen = availableScreen(statement, statementSubscription, page);
 
 	const handleShowTalker = (_talker: User | null) => {
 		if (!talker) {

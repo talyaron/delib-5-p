@@ -24,7 +24,7 @@
 	"dependencies": {
 		"@dagrejs/dagre": "^1.0.4",
 		"@reduxjs/toolkit": "^1.9.5",
-		"delib-npm": "^5.4.5",
+		"delib-npm": "^5.4.8",
 		"eslint-plugin-import": "^2.29.1",
 		"firebase": "^10.14.1",
 		"firebase-functions": "^6.1.0",

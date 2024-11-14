@@ -36,7 +36,7 @@ export const stageSelector = (stageId: string) => (state: RootState) => {
     return state.stages.stages.find(stage => stage.stageId === stageId);
 }
 
-export const statementStagesSelector = (statementId: string) => createSelector(
+export const statementStagesSelector = (statementId: string|undefined) => createSelector(
     (state: RootState) => state.stages.stages,
     (stages) => stages.filter(stage => stage.statementId === statementId)
 );

@@ -64,7 +64,12 @@ export const router = createBrowserRouter([
 				errorElement: <ErrorPage />,
 			},
 			{
-				path: 'statement/:statementId/:page',
+				path: 'statement/:statementId',
+				element: <StatementMain />,
+				errorElement: <ErrorPage />,
+			},
+			{
+				path: 'statement/:statementId/:process',
 				element: <StatementMain />,
 				errorElement: <ErrorPage />,
 				children: [
@@ -76,7 +81,7 @@ export const router = createBrowserRouter([
 				],
 			},
 			{
-				path: 'statement-an/:anonymous/:statementId/:page',
+				path: 'statement-an/:anonymous/:statementId/:process',
 				element: <StatementMain />,
 				errorElement: <ErrorPage />,
 				children: [

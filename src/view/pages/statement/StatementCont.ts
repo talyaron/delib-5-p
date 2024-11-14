@@ -8,8 +8,9 @@ export function availableScreen(
 	screenLink: Screen | undefined
 ): Screen | undefined {
 	try {
+		
 		if (!statement) return screenLink;
-		if (!screenLink) throw new Error('urlSubPage is undefined');
+		if (!screenLink) screenLink = Screen.CHAT;
 		if (statement.subScreens === undefined)
 			throw new Error('statement.subScreens is undefined');
 		if (statement.subScreens.length === 0)
