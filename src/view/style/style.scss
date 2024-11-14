@@ -15,8 +15,8 @@ $desktop:1024px;
 
 :root {
 
-	writing-mode: horizontal-tb; 
-	direction: rtl; 
+	writing-mode: horizontal-tb;
+	direction: rtl;
 	text-orientation: mixed;
 	// --- MAIN COLORS ---
 	--mainBackground: #1f5895;
@@ -64,6 +64,9 @@ $desktop:1024px;
 	//tooltip
 	--tooltip: #6db0f9;
 	--accent: #7cacf8;
+
+	--disabled: #ADB7CD;
+
 
 	// --- SIZES ---
 	--padding: 1rem;
@@ -383,6 +386,7 @@ h3 {
 	font-weight: 400;
 	font-size: var(--h3-font-size);
 }
+
 h4 {
 	color: var(--subTopic);
 	font-weight: 400;
@@ -426,13 +430,14 @@ b {
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 100px;
-	h2{
+
+	h2 {
 		text-align: start;
 	}
 
 	@media screen and (max-width: $tablet) {
 		padding: 20px;
-		
+
 	}
 }
 
