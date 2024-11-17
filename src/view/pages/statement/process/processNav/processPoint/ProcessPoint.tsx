@@ -61,7 +61,7 @@ const ProcessPoint: FC<Props> = ({
 					style={{ backgroundColor: isEnd ? 'transparent' : 'var(--disabled)' }}
 				></div>
 			</div>
-			<div className={styles.label}>{t(title)}</div>
+			<div className={`${styles.label} ${isEnabled?"":styles['label--disabled']}`}>{t(title)}</div>
 		</button>
 	);
 };

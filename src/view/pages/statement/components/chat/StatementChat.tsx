@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef, useContext } from 'react';
-
+import styles from './StatementChat.module.scss';
 // Third Party Imports
 import { Statement, User } from 'delib-npm';
 
@@ -11,7 +11,6 @@ import useSlideAndSubStatement from '../../../../../controllers/hooks/useSlideAn
 import NewMessages from './components/newMessages/NewMessages';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { userSelector } from '@/model/users/userSlice';
-import './StatementChat.scss';
 import { useLocation } from 'react-router-dom';
 import Description from '../evaluations/components/description/Description';
 import { useSelector } from 'react-redux';
@@ -23,16 +22,20 @@ let numberOfSubStatements = 0;
 
 const StatementChat: FC = () => {
 	const { setTalker } = useContext(MainContext);
-	
+
 	const statement = useContext(MainContext).statement;
-	const subStatements = useSelector(subStatementsByTopParentIdMemo(statement?.statementId));
+	const subStatements = useSelector(
+		subStatementsByTopParentIdMemo(statement?.statementId)
+	);
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
 	const location = useLocation();
 
 	const [newMessages, setNewMessages] = useState<number>(0);
 
-	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement?.parentId);
+	const { toSlide, slideInOrOut } = useSlideAndSubStatement(
+		statement?.parentId
+	);
 
 	function scrollToHash() {
 		if (location.hash) {
@@ -93,7 +96,7 @@ const StatementChat: FC = () => {
 		}
 	}, [subStatements.length]);
 
-	if(!statement) return null;
+	if (!statement) return null;
 
 	function handleShowTalker(_talker: User | null) {
 		if (!_talker) {
@@ -106,22 +109,21 @@ const StatementChat: FC = () => {
 	return (
 		<>
 			<div
-				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
+				className={`${styles.chat} ${toSlide && slideInOrOut}`}
 				id={`msg-${statement?.statementId}`}
 			>
 				<div className="statement-chat__description">
 					<Description statement={statement} />
 				</div>
 				{subStatements?.map((statementSub: Statement, index) => (
-					<div key={statementSub.statementId}>
-						<ChatMessageCard
-							parentStatement={statement}
-							statement={statementSub}
-							showImage={handleShowTalker}
-							index={index}
-							previousStatement={subStatements[index - 1]}
-						/>
-					</div>
+					<ChatMessageCard
+						key={statementSub.statementId}
+						parentStatement={statement}
+						statement={statementSub}
+						showImage={handleShowTalker}
+						index={index}
+						previousStatement={subStatements[index - 1]}
+					/>
 				))}
 
 				<div ref={messagesEndRef} />
