@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from 'react';
+import { FC, useEffect, useState, useRef, useContext } from 'react';
 
 // Third Party Imports
 import { Statement, User } from 'delib-npm';
@@ -12,25 +12,20 @@ import NewMessages from './components/newMessages/NewMessages';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { userSelector } from '@/model/users/userSlice';
 import './StatementChat.scss';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Description from '../evaluations/components/description/Description';
 import { useSelector } from 'react-redux';
-import { statementSelector, subStatementsByTopParentIdMemo } from '@/model/statements/statementsSlice';
-
-interface Props {
-	handleShowTalker: (statement: User | null) => void;
-	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { subStatementsByTopParentIdMemo } from '@/model/statements/statementsSlice';
+import { MainContext } from '../../StatementMain';
 
 let firstTime = true;
 let numberOfSubStatements = 0;
 
-const StatementChat: FC<Props> = ({
-	handleShowTalker,
-}) => {
-	const {statementId} = useParams();
-	const statement = useSelector(statementSelector(statementId));
-	const subStatements = useSelector(subStatementsByTopParentIdMemo(statementId));
+const StatementChat: FC = () => {
+	const { setTalker } = useContext(MainContext);
+	
+	const statement = useContext(MainContext).statement;
+	const subStatements = useSelector(subStatementsByTopParentIdMemo(statement?.statementId));
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
 	const location = useLocation();
@@ -99,6 +94,14 @@ const StatementChat: FC<Props> = ({
 	}, [subStatements.length]);
 
 	if(!statement) return null;
+
+	function handleShowTalker(_talker: User | null) {
+		if (!_talker) {
+			setTalker(_talker);
+		} else {
+			setTalker(null);
+		}
+	}
 
 	return (
 		<>

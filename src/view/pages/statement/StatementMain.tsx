@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+import { createContext, FC, useEffect, useState } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
-import { User, Role, Screen, Access } from 'delib-npm';
+import { User, Role, Screen, Access, Statement, StatementSubscription } from 'delib-npm';
 
 // firestore
 import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
@@ -54,11 +54,31 @@ export const subStatementsSelector = createSelector(
 			.sort((a, b) => a.createdAt - b.createdAt)
 );
 
+interface MainContextType {
+	statement: Statement | null | undefined;
+	statementSubscription: StatementSubscription | null |undefined;
+	topParentStatement: Statement | null | undefined;
+	screen: Screen | null | undefined;
+	role: Role | null | undefined;
+	setTalker: (talker: User | null) => void;
+	setShowAskPermission: (showAskPermission: boolean) => void;
+}
+
+export const MainContext = createContext<MainContextType>({
+	statement: null,
+	statementSubscription: null,
+	topParentStatement: null,
+	screen: null,
+	role: null,
+	setTalker: () => {return},
+	setShowAskPermission: () => {return},
+});
+
 const StatementMain: FC = () => {
 	// Hooks
-	const { statementId} = useParams();
+	const { statementId } = useParams();
 	const page = useParams().page as Screen;
-	const screen = useParams().screen as Screen || Screen.CHAT;
+	const screen = (useParams().screen as Screen) || Screen.CHAT;
 	const navigate = useNavigate();
 
 	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
@@ -129,10 +149,11 @@ const StatementMain: FC = () => {
 			return;
 		};
 		let unSubAllDescendants: () => void = () => {
-			return;
-		}, unsubscribeStages: () => void = () => {
-			return;
-		}
+				return;
+			},
+			unsubscribeStages: () => void = () => {
+				return;
+			};
 
 		if (user && statementId) {
 			unSubListenToStatement = listenToStatement(
@@ -204,45 +225,57 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<div className="page">
-				{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
-				{talker && (
-					<button
-						onClick={() => {
-							handleShowTalker(null);
-						}}
-					>
-						<ProfileImage user={talker} />
-					</button>
-				)}
-				{askNotifications && (
-					<EnableNotifications
-						statement={statement}
-						setAskNotifications={setAskNotifications}
-						setShowAskPermission={setShowAskPermission}
-					/>
-				)}
-				<StatementHeader
-					statement={statement}
-					statementSubscription={statementSubscription}
-					topParentStatement={topParentStatement}
-					screen={screen ?? Screen.CHAT}
-					showAskPermission={showAskPermission}
-					setShowAskPermission={setShowAskPermission}
-					role={role}
-				/>
-				<MapProvider>
-					<FollowMeToast role={role} statement={statement} />
-
-					<SwitchScreens
+			<MainContext.Provider
+				value={{
+					statement,
+					statementSubscription,
+					topParentStatement,
+					screen,
+					role,
+					setTalker,
+					setShowAskPermission,
+				}}
+			>
+				<div className="page">
+					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
+					{talker && (
+						<button
+							onClick={() => {
+								handleShowTalker(null);
+							}}
+						>
+							<ProfileImage user={talker} />
+						</button>
+					)}
+					{askNotifications && (
+						<EnableNotifications
+							statement={statement}
+							setAskNotifications={setAskNotifications}
+							setShowAskPermission={setShowAskPermission}
+						/>
+					)}
+					<StatementHeader
 						statement={statement}
 						statementSubscription={statementSubscription}
-						subStatements={subStatements}
-						handleShowTalker={handleShowTalker}
+						topParentStatement={topParentStatement}
+						screen={screen ?? Screen.CHAT}
+						showAskPermission={showAskPermission}
 						setShowAskPermission={setShowAskPermission}
+						role={role}
 					/>
-				</MapProvider>
-			</div>
+					<MapProvider>
+						<FollowMeToast role={role} statement={statement} />
+
+						<SwitchScreens
+							statement={statement}
+							statementSubscription={statementSubscription}
+							subStatements={subStatements}
+							handleShowTalker={handleShowTalker}
+							setShowAskPermission={setShowAskPermission}
+						/>
+					</MapProvider>
+				</div>
+			</MainContext.Provider>
 		);
 
 	return <UnAuthorizedPage />;

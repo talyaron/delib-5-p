@@ -9,13 +9,15 @@ const ProcessNav = () => {
 	const stages = useSelector(statementStagesSelector(statementId));
 
 	return (
-		<div className={styles.line}>
-			<ProcessPoint isChat={true} isStart={true} />
-			{stages.map((stage, i) => {
-				const isEnd = i === stages.length - 1;
+		<div className="wrapper">
+			<div className={styles.line}>
+				<ProcessPoint isChat={true} isStart={true} />
+				{stages.map((stage, i) => {
+					const isEnd = i === stages.length - 1;
 
-				return <ProcessPoint key={i} stage={stage} isEnd={isEnd} />;
-			})}
+					return <ProcessPoint key={i} stage={stage} isEnd={isEnd} />;
+				})}
+			</div>
 		</div>
 	);
 };

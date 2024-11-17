@@ -336,8 +336,8 @@ $desktop:1024px;
 	--text-blue-contrast: #3e61b0;
 	--text-crimson-contrast: #ff5b9c;
 
-	--wrapper-max-width: 47rem;
-	--wrapper: 47rem;
+	--wrapper-max-width: 75ch;
+	--wrapper: 75ch;
 }
 
 * {
@@ -429,7 +429,7 @@ b {
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	padding-bottom: 100px;
+
 
 	h2 {
 		text-align: start;

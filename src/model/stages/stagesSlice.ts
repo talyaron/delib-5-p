@@ -41,4 +41,9 @@ export const statementStagesSelector = (statementId: string|undefined) => create
     (stages) => stages.filter(stage => stage.statementId === statementId)
 );
 
+export const stageByShortIdSelector = (statementId: string|undefined, shortId: string|undefined) => createSelector(
+    (state: RootState) => state.stages.stages,
+    (stages) => stages.find(stage => stage.shortId.toString() === shortId && stage.statementId === statementId)
+);
+
 export default stagesSlice.reducer;
