@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
-import "./UploadImage.scss";
-import { Statement } from "delib-npm";
-import { handleFileUpload } from "./uploadImageCont";
+import React, { FC, useState } from 'react';
+import './UploadImage.scss';
+import { Statement } from 'delib-npm';
+import { handleFileUpload } from './uploadImageCont';
 
 interface Props {
 	statement: Statement;
@@ -9,59 +9,83 @@ interface Props {
 
 const UploadImage: FC<Props> = ({ statement }) => {
 	const imageUrl = statement.imagesURL?.main ?? null;
-	
 	const [image, setImage] = useState<File | null>(null);
+	const [isDragging, setIsDragging] = useState(false);
+	const [aspectRatio, setAspectRatio] = useState('1/1');
+	const [progress, setProgress] = useState(0);
 
-	// currently changing image is not possible, when we fix it we can remove this
-	if (imageUrl) {
-		return (
-			<div className={"dropZone"}>
-				<div
-					style={{ backgroundImage: `url(${imageUrl})` }}
-					className={"imagePreview"}
-				/>
-			</div>
-		);
-	}
-
-	const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+	const handleFileChange = async (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
 		try {
 			if (!statement) throw new Error('statement is undefined');
-	
-			event.preventDefault();
 
-			const file = event.dataTransfer.files[0];
-
-			handleFileUpload(file, statement, setImage);
-
+			const file = event.target.files?.[0];
+			if (file) {
+				handleFileUpload(file, statement, setImage, setProgress);
+			}
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+	const handleDragEnter = () => setIsDragging(true);
+	const handleDragLeave = () => setIsDragging(false);
+
+	const handleDrop = async (event: React.DragEvent<HTMLLabelElement>) => {
 		event.preventDefault();
+		setIsDragging(false);
+
+		try {
+			if (!statement) throw new Error('statement is undefined');
+
+			const file = event.dataTransfer.files[0];
+
+			if (file) {
+				const img = new Image();
+				const reader = new FileReader();
+
+				reader.onloadend = () => {
+					if (reader.result) {
+						img.src = reader.result as string;
+
+						img.onload = () => {
+							const width = img.naturalWidth;
+							const height = img.naturalHeight;
+
+							setAspectRatio(`${width}/${height}`);
+
+							handleFileUpload(file, statement, setImage, setProgress);
+						};
+					}
+				};
+
+				reader.readAsDataURL(file);
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
-	const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.add("dropZoneActive")
-	}
-	const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.remove("dropZoneActive")
-	}
-
 	return (
-		<div
-			onDrop={handleDrop}
-			onDragOver={handleDragOver}
+		<label
+			className={`dropZone ${isDragging ? 'dropZoneActive' : ''}`}
+			style={{ aspectRatio }}
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
-			className={"dropZone"}
+			onDragOver={(e) => e.preventDefault()}
+			onDrop={handleDrop}
 		>
+			<input
+				type='file'
+				accept='image/*'
+				onChange={handleFileChange}
+				className='fileInput'
+			/>
 			{imageUrl && !image && (
 				<div
 					style={{ backgroundImage: `url(${imageUrl})` }}
-					className={"imagePreview"}
+					className='imagePreview'
 				/>
 			)}
 			{image && (
@@ -69,11 +93,17 @@ const UploadImage: FC<Props> = ({ statement }) => {
 					style={{
 						backgroundImage: `url(${URL.createObjectURL(image)})`,
 					}}
-					className={"imagePreview"}
+					className='imagePreview'
 				/>
 			)}
-			{!image && <p>Drag and drop an image here</p>}
-		</div>
+			{!image && progress == 0 && (
+				<p>Drag and drop an image here or click to upload</p>
+			)}
+			{progress > 0 && progress < 100 && (
+				<p>Uploading: {progress.toFixed(0)}%</p>
+			)}
+			
+		</label>
 	);
 };
 

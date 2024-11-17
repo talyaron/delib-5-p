@@ -1,25 +1,46 @@
 .dropZone {
-  width: 100%;
-  height: 400px;
-  background-color: var(--drag-drop-bg);
-  border: var(--Spacing-2, 2px) dashed var(--Mapped-Color-Icons-Icon-Blue-Light, #739EE450);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3rem;
+	position: relative;
+	width: 50%;
+	margin: 0 auto;
+	border: 2px dashed #ccc;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	cursor: pointer;
+	transition:
+		border-color 0.3s ease,
+		background-color 0.3s ease;
+
+	&:hover {
+		border-color: #888;
+	}
+
+	&Active {
+		background-color: #f0f8ff;
+		border-color: #007bff;
+	}
+
+	.fileInput {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	.imagePreview {
+		width: 100%;
+		height: 100%;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		border-radius: 8px;
+	}
+
+	p {
+		font-size: 16px;
+		color: #666;
+	}
 }
-
-.dropZoneActive {
-  border: var(--Spacing-2, 2px) dashed var(--Mapped-Color-Icons-Icon-Blue-Light, #2196f3);
-  transition: border-color 1s;
-}
-
-.imagePreview {
-  width: 100%;
-  height: 400px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-
