@@ -20,7 +20,7 @@ import {
 import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
 import { RootState } from '@/model/store';
 import { userSelector } from '@/model/users/userSlice';
 import { useSelector } from 'react-redux';
@@ -95,10 +95,6 @@ const StatementMain: FC = () => {
 	// Redux store
 	const dispatch = useAppDispatch();
 	const user = useSelector(userSelector);
-
-	const subStatements = useAppSelector((state: RootState) =>
-		subStatementsSelector(state, statementId)
-	);
 
 	// Use states
 	const [talker, setTalker] = useState<User | null>(null);
@@ -266,13 +262,7 @@ const StatementMain: FC = () => {
 					<MapProvider>
 						<FollowMeToast role={role} statement={statement} />
 
-						<SwitchScreens
-							statement={statement}
-							statementSubscription={statementSubscription}
-							subStatements={subStatements}
-							handleShowTalker={handleShowTalker}
-							setShowAskPermission={setShowAskPermission}
-						/>
+						<SwitchScreens />
 					</MapProvider>
 				</div>
 			</MainContext.Provider>

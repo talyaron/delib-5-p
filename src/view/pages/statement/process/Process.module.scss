@@ -1,0 +1,17 @@
+.process{
+
+    max-width: 75ch;
+    margin: 0 auto 1rem auto;
+    h1{
+        margin: 1rem 0;
+        text-align:start ;
+        max-width: 75ch;
+     
+        
+        @media screen and (max-width: 768px){
+          padding: 0 20px;
+         
+            
+        }
+    }
+}

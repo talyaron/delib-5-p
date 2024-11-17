@@ -1,13 +1,15 @@
-import { useParams } from 'react-router-dom';
 import ProcessNav from './processNav/ProcessNav';
 import Methods from './methods/Methods';
+import styles from './Process.module.scss';
+import { useContext } from 'react';
+import { MainContext } from '../StatementMain';
 
 const Process = () => {
-	const { screen, shortProcessId, sort } = useParams();
+	const {statement} = useContext(MainContext);
 
 	return (
-		<div>
-			{screen} {shortProcessId}, {sort}
+		<div className={styles.process}>
+			<h1>{statement?.statement}</h1>
 			<ProcessNav />
 			<Methods />
 		</div>

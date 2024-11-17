@@ -93,42 +93,44 @@ const StatementTopNav: FC<Props> = ({
 		>
 			<div className={styles.wrapper}>
 				{allowNavigation && (
-					<Menu
-						setIsOpen={setIsHeaderMenuOpen}
-						isMenuOpen={isHeaderMenuOpen}
-						iconColor={headerStyle.color}
-						isHamburger={true}
-					>
-						<MenuOption
-							label={t('Share')}
-							icon={<ShareIcon style={menuIconStyle} />}
-							onOptionClick={handleShare}
-						/>
-						<MenuOption
-							label={t('Disconnect')}
-							icon={<DisconnectIcon style={menuIconStyle} />}
-							onOptionClick={handleLogout}
-						/>
-						{isAdmin && (
-							<>
-								<MenuOption
-									label={t('Follow Me')}
-									icon={<FollowMe style={menuIconStyle} />}
-									onOptionClick={handleFollowMe}
-								/>
-								<MenuOption
-									label={t('Invite with PIN number')}
-									icon={<InvitationIcon style={menuIconStyle} />}
-									onOptionClick={handleInvitePanel}
-								/>
-								<MenuOption
-									label={t('Settings')}
-									icon={<SettingsIcon style={menuIconStyle} />}
-									onOptionClick={handleGoToSettings}
-								/>
-							</>
-						)}
-					</Menu>
+					<div className={styles.button}>
+						<Menu
+							setIsOpen={setIsHeaderMenuOpen}
+							isMenuOpen={isHeaderMenuOpen}
+							iconColor={headerStyle.color}
+							isHamburger={true}
+						>
+							<MenuOption
+								label={t('Share')}
+								icon={<ShareIcon style={menuIconStyle} />}
+								onOptionClick={handleShare}
+							/>
+							<MenuOption
+								label={t('Disconnect')}
+								icon={<DisconnectIcon style={menuIconStyle} />}
+								onOptionClick={handleLogout}
+							/>
+							{isAdmin && (
+								<>
+									<MenuOption
+										label={t('Follow Me')}
+										icon={<FollowMe style={menuIconStyle} />}
+										onOptionClick={handleFollowMe}
+									/>
+									<MenuOption
+										label={t('Invite with PIN number')}
+										icon={<InvitationIcon style={menuIconStyle} />}
+										onOptionClick={handleInvitePanel}
+									/>
+									<MenuOption
+										label={t('Settings')}
+										icon={<SettingsIcon style={menuIconStyle} />}
+										onOptionClick={handleGoToSettings}
+									/>
+								</>
+							)}
+						</Menu>
+					</div>
 				)}
 				{allowNavigation && (
 					<button onClick={handleGotToChat}>
