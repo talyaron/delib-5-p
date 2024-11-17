@@ -20,7 +20,7 @@ root.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<LanguageProvider defaultLanguage={LanguagesEnum.he}>
-				<RouterProvider router={router} />
+				<RouterProvider future={{v7_startTransition: true}} router={router} />
 			</LanguageProvider>
 		</Provider>
 	</React.StrictMode>,
