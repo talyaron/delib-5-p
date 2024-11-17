@@ -9,8 +9,10 @@ import StatementSettings from './settings/StatementSettings';
 import StatementChat from './chat/StatementChat';
 import Process from '../process/Process';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { statementStagesSelector } from '@/model/stages/stagesSlice';
 
-interface SwitchScreensProps {	
+interface SwitchScreensProps {
 	statement: Statement | undefined;
 	subStatements: Statement[];
 	statementSubscription: StatementSubscription | undefined;
@@ -24,27 +26,34 @@ export default function SwitchScreens({
 	setShowAskPermission,
 }: Readonly<SwitchScreensProps>) {
 	if (!statement) return null;
-	const {screen} = useParams();
+	const { screen } = useParams();
+
+	//does it have process?
+	const stages = useSelector(statementStagesSelector(statement.statementId));
+	const hasStages = stages.length > 0;
 
 	switch (screen) {
 		case Screen.CHAT:
-			return (
-				<StatementChat
-					handleShowTalker={handleShowTalker}
-					setShowAskPermission={setShowAskPermission}
-				/>
-			);
+			return redirectTo();
 		case Screen.PROCESS:
 			return <Process />;
 		case Screen.SETTINGS:
 			return <StatementSettings />;
 
 		default:
+			return redirectTo();
+	}
+
+	function redirectTo() {
+		if (hasStages) {
+			return <Process />;
+		} else {
 			return (
 				<StatementChat
 					handleShowTalker={handleShowTalker}
 					setShowAskPermission={setShowAskPermission}
 				/>
 			);
+		}
 	}
 }

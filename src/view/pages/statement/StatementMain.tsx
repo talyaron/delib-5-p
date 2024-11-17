@@ -143,7 +143,7 @@ const StatementMain: FC = () => {
 			unSubUserSettings = listenToUserSettings();
 			unSubAllDescendants = listenToAllDescendants(statementId); //used for map
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
-			unSubSubStatements = listenToSubStatements(statementId, dispatch); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
+			unSubSubStatements = listenToSubStatements(statementId); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
 			unsubscribeStages = listenToStages(statementId);
 
 			unSubStatementSubscription = listenToStatementSubscription(

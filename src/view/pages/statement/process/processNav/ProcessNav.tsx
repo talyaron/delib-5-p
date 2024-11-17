@@ -11,6 +11,7 @@ const ProcessNav = () => {
 	return (
 		<div>
 			<div className={styles.line}>
+				<ProcessPoint isChat={true} isStart={true} />
 				{stages.map((stage, i) => {
 					const isStart = i === 0;
 					const isEnd = i === stages.length - 1;
