@@ -41,27 +41,27 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 	parentStatement,
 	setStatementToEdit,
 }) => {
-	try {
-		// * Hooks * //
-		const navigate = useNavigate();
-		const { statementId } = useParams();
-		const { t } = useLanguage();
+	// * Hooks * //
+	const navigate = useNavigate();
+	const { statementId } = useParams();
+	const { t } = useLanguage();
 
-		// Selector to get the statement memberships
-		const statementMembershipSelector = (statementId: string | undefined) =>
-			createSelector(
-				(state: RootState) => state.statements.statementMembership,
-				(memberships) =>
-					memberships.filter(
-						(membership: StatementSubscription) =>
-							membership.statementId === statementId
-					)
-			);
-
-		const members: StatementSubscription[] = useAppSelector(
-			statementMembershipSelector(statementId)
+	// Selector to get the statement memberships
+	const statementMembershipSelector = (statementId: string | undefined) =>
+		createSelector(
+			(state: RootState) => state.statements.statementMembership,
+			(memberships) =>
+				memberships.filter(
+					(membership: StatementSubscription) =>
+						membership.statementId === statementId
+				)
 		);
 
+	const members: StatementSubscription[] = useAppSelector(
+		statementMembershipSelector(statementId)
+	);
+
+	try {
 		const joinedMembers = members.filter((member) => member.role !== Role.banned).map(m => m.user);
 
 		// * Functions * //
@@ -109,10 +109,10 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 						<SectionTitle title={t('Members')} />
 						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement} />
 						<section className='get-members-area'>
-							<GetVoters statementId={statementId!} joinedMembers={joinedMembers} />
+							<GetVoters statementId={statementId} joinedMembers={joinedMembers} />
 						</section>
 						<section className='get-members-area'>
-							<GetEvaluators statementId={statementId!} />
+							<GetEvaluators statementId={statementId} />
 						</section>
 					</>
 				)}

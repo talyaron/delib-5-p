@@ -42,6 +42,6 @@ export const compressImage = (file: File, maxSizeKB: number): Promise<File> => {
 				resize();
 			};
 		};
-		reader.onerror = (error) => reject(error);
+		reader.onerror = (error) => reject(new Error(`FileReader error: ${error instanceof Error ? error.message : JSON.stringify(error)}`));
 	});
 };

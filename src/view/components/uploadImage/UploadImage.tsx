@@ -1,9 +1,7 @@
 import React, { FC, useState } from "react";
-import styles from "./UploadImage.module.scss";
+import "./UploadImage.scss";
 import { Statement } from "delib-npm";
-import { uploadImageToStorage } from "../../../controllers/db/images/setImages";
-import { updateStatementMainImage } from "../../../controllers/db/statements/setStatements";
-import { compressImage } from "./compressImage";
+import { handleFileUpload } from "./uploadImageCont";
 
 interface Props {
 	statement: Statement;
@@ -11,35 +9,31 @@ interface Props {
 
 const UploadImage: FC<Props> = ({ statement }) => {
 	const imageUrl = statement.imagesURL?.main ?? null;
+	
+	const [image, setImage] = useState<File | null>(null);
 
 	// currently changing image is not possible, when we fix it we can remove this
 	if (imageUrl) {
 		return (
-			<div className={styles.dropZone}>
+			<div className={"dropZone"}>
 				<div
 					style={{ backgroundImage: `url(${imageUrl})` }}
-					className={styles.imagePreview}
+					className={"imagePreview"}
 				/>
 			</div>
 		);
 	}
 
-	const [image, setImage] = useState<File | null>(null);
-	const [percentage, setPercentage] = useState(0);
-
 	const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
 		try {
-			if (!statement) throw new Error("statement is undefined");
+			if (!statement) throw new Error('statement is undefined');
+	
 			event.preventDefault();
+
 			const file = event.dataTransfer.files[0];
-			const compressedFile = await compressImage(file, 200);
-			setImage(compressedFile);
-			const imageURL = await uploadImageToStorage(
-				compressedFile,
-				statement,
-				setPercentage
-			);
-			updateStatementMainImage(statement, imageURL);
+
+			handleFileUpload(file, statement, setImage);
+
 		} catch (error) {
 			console.error(error);
 		}
@@ -50,10 +44,10 @@ const UploadImage: FC<Props> = ({ statement }) => {
 	};
 
 	const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.add(styles.dropZoneActive)
+		e.currentTarget.classList.add("dropZoneActive")
 	}
 	const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.remove(styles.dropZoneActive)
+		e.currentTarget.classList.remove("dropZoneActive")
 	}
 
 	return (
@@ -62,12 +56,12 @@ const UploadImage: FC<Props> = ({ statement }) => {
 			onDragOver={handleDragOver}
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
-			className={styles.dropZone}
+			className={"dropZone"}
 		>
 			{imageUrl && !image && (
 				<div
 					style={{ backgroundImage: `url(${imageUrl})` }}
-					className={styles.imagePreview}
+					className={"imagePreview"}
 				/>
 			)}
 			{image && (
@@ -75,11 +69,10 @@ const UploadImage: FC<Props> = ({ statement }) => {
 					style={{
 						backgroundImage: `url(${URL.createObjectURL(image)})`,
 					}}
-					className={styles.imagePreview}
+					className={"imagePreview"}
 				/>
 			)}
 			{!image && <p>Drag and drop an image here</p>}
-			{percentage > 0 && <progress value={percentage} max="100" />}
 		</div>
 	);
 };
