@@ -4,10 +4,12 @@ import ProcessNav from './processNav/ProcessNav';
 const Process = () => {
 	const { screen, shortProcessId, sort } = useParams();
 
-	return <div>
-        {screen} {shortProcessId}, {sort}
-        <ProcessNav />
-        </div>;
+	return (
+		<div className='wrapper'>
+			{screen} {shortProcessId}, {sort}
+			<ProcessNav />
+		</div>
+	);
 };
 
 export default Process;

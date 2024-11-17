@@ -436,8 +436,7 @@ b {
 	}
 
 	@media screen and (max-width: $tablet) {
-		padding: 20px;
-
+		max-width: calc(100vw - 40px);
 	}
 }
 
