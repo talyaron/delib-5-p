@@ -1,13 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 // Third party imports
-import {
-	QuestionStage,
-	QuestionType,
-	Statement,
-	StatementType,
-	User,
-} from 'delib-npm';
+import { QuestionStage, QuestionType, StatementType } from 'delib-npm';
 
 // Custom Components
 
@@ -24,92 +18,64 @@ import { getTitle } from '@/controllers/general/helpers';
 import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
 import styles from './statementEvaluationsPage.module.scss';
 import SuggestionCards from './components/suggestionCards/SuggestionCards';
-import Description from './components/description/Description';
 import { useNavigate } from 'react-router-dom';
+import { MainContext } from '../../StatementMain';
 
-interface StatementEvaluationPageProps {
-	statement: Statement;
-	handleShowTalker: (talker: User | null) => void;
-	showNav?: boolean;
-	questions?: boolean;
-	currentPage?: string;
-}
-
-const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
-	statement,
-	handleShowTalker,
-	questions = false,
-	currentPage = `suggestion`,
-}) => {
+const StatementSuggestions: FC = () => {
 	try {
 		// Hooks
 
+		const { statement } = useContext(MainContext);
 		const navigate = useNavigate();
 		const { t } = useLanguage();
 		const isMultiStage =
-			statement.questionSettings?.questionType === QuestionType.multipleSteps;
+			statement?.questionSettings?.questionType === QuestionType.multipleSteps;
 
-		const currentStage = statement.questionSettings?.currentStage;
+		const currentStage = statement?.questionSettings?.currentStage;
 		const stageInfo = getStagesInfo(currentStage);
 		const useSearchForSimilarStatements =
-			statement.statementSettings?.enableSimilaritiesSearch || false;
+			statement?.statementSettings?.enableSimilaritiesSearch || false;
 
 		// Use States
 		const [showModal, setShowModal] = useState(false);
 		const [showToast, setShowToast] = useState(false);
 		const [showExplanation, setShowExplanation] = useState(
-			currentStage === QuestionStage.explanation && isMultiStage && !questions
+			currentStage === QuestionStage.explanation && isMultiStage
 		);
 
 		useEffect(() => {
-			if (questions) {
-				setShowToast(false);
-			}
-		}, [questions]);
-
-		useEffect(() => {
-			if (!showToast && !questions) {
+			if (!showToast) {
 				setShowToast(true);
 			}
-			if (
-				currentStage === QuestionStage.explanation &&
-				isMultiStage &&
-				!questions
-			) {
+			if (currentStage === QuestionStage.explanation && isMultiStage) {
 				setShowExplanation(true);
 			}
-			if (currentStage === QuestionStage.voting && !questions) {
+			if (currentStage === QuestionStage.voting) {
 				//redirect us react router dom to voting page
-				navigate(`/statement/${statement.statementId}/vote`);
+				navigate(`/statement/${statement?.statementId}/vote`);
 			}
-		}, [statement.questionSettings?.currentStage, questions]);
+		}, [statement?.questionSettings?.currentStage]);
 
 		const message = stageInfo ? stageInfo.message : false;
 
+		if (!statement) return null;
+
 		return (
 			<>
-				<div className="page__main">
-					<div className={`wrapper ${styles.wrapper}`}>
-						{isMultiStage && message && (
-							<Toast
-								text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ''}`}
-								type="message"
-								show={showToast}
-								setShow={setShowToast}
-							>
-								{getToastButtons(currentStage)}
-							</Toast>
-						)}
-						<Description statement={statement} />
-						<SuggestionCards
-							statement={statement}
-							handleShowTalker={handleShowTalker}
-							questions={questions}
-							currentPage={currentPage}
-							setShowModal={setShowModal}
-						/>
-					</div>
+				<div className={`wrapper ${styles.wrapper}`}>
+					{isMultiStage && message && (
+						<Toast
+							text={`${t(message)}${currentStage === QuestionStage.suggestion ? `: "${getTitle(statement)}` : ''}`}
+							type="message"
+							show={showToast}
+							setShow={setShowToast}
+						>
+							{getToastButtons(currentStage)}
+						</Toast>
+					)}
+					<SuggestionCards />
 				</div>
+
 				<div className="page__footer">
 					<StatementBottomNav
 						setShowModal={setShowModal}
@@ -128,7 +94,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 					<CreateStatementModalSwitch
 						allowedTypes={[StatementType.option]}
 						parentStatement={statement}
-						isQuestion={questions}
+						isQuestion={false}
 						isMultiStage={isMultiStage}
 						setShowModal={setShowModal}
 						useSimilarStatements={useSearchForSimilarStatements}
@@ -210,4 +176,4 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 	}
 };
 
-export default StatementEvaluationPage;
+export default StatementSuggestions;

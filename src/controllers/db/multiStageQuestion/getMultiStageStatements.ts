@@ -5,9 +5,10 @@ import { setCurrentMultiStepOptions } from '@/model/statements/statementsSlice';
 import { store } from '@/model/store';
 
 export async function getFirstEvaluationOptions(
-	statement: Statement
+	statement: Statement|undefined
 ): Promise<void> {
 	try {
+		if(!statement) return undefined;
 		const dispatch = store.dispatch;
 		const urlBase = isProduction()
 			? 'qeesi7aziq-uc.a.run.app'
@@ -31,9 +32,10 @@ export async function getFirstEvaluationOptions(
 }
 
 export async function getSecondEvaluationOptions(
-	statement: Statement
+	statement: Statement|undefined
 ): Promise<void> {
 	try {
+		if(!statement) return undefined;
 		const dispatch = store.dispatch;
 		const urlBase = isProduction()
 			? 'qeesi7aziq-uc.a.run.app'

@@ -3,9 +3,8 @@ import {
 	QuestionStage,
 	QuestionType,
 	Statement,
-	User,
 } from 'delib-npm';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import SuggestionCard from './suggestionCard/SuggestionCard';
 import styles from './SuggestionCards.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,33 +14,22 @@ import {
 	statementsOfMultiStepSelectorByStatementId,
 	statementSubsSelector,
 } from '@/model/statements/statementsSlice';
-import EmptyScreen from '../emptyScreen/EmptyScreen';
+// import EmptyScreen from '../emptyScreen/EmptyScreen';
 import { sortSubStatements } from '../../statementsEvaluationCont';
 import {
 	getFirstEvaluationOptions,
 	getSecondEvaluationOptions,
 } from '@/controllers/db/multiStageQuestion/getMultiStageStatements';
+import { MainContext } from '@/view/pages/statement/StatementMain';
 
-interface Props {
-	statement: Statement;
-	questions: boolean;
-	handleShowTalker: (talker: User | null) => void;
-	currentPage?: string;
-	setShowModal: (show: boolean) => void;
-}
-
-const SuggestionCards: FC<Props> = ({
-	statement,
-	handleShowTalker,
-	currentPage = `suggestion`,
-	setShowModal,
-}) => {
+const SuggestionCards: FC = ({}) => {
+	const { statement } = useContext(MainContext);
 	const { sort } = useParams();
 	const navigate = useNavigate();
 
 	const [totalHeight, setTotalHeight] = useState(0);
 
-	const { questionType, currentStage } = statement.questionSettings || {
+	const { questionType, currentStage } = statement?.questionSettings || {
 		questionType: QuestionType.singleStep,
 		currentStage: QuestionStage.suggestion,
 	};
@@ -52,20 +40,20 @@ const SuggestionCards: FC<Props> = ({
 	//change the source of options from the store based on the question type
 	function switchSubStatements() {
 		if (questionType === QuestionType.singleStep)
-			return useSelector(statementSubsSelector(statement.statementId));
+			return useSelector(statementSubsSelector(statement?.statementId));
 		else if (
 			questionType === QuestionType.multipleSteps &&
 			currentStage !== QuestionStage.suggestion
 		)
 			return useSelector(
-				statementsOfMultiStepSelectorByStatementId(statement.statementId)
+				statementsOfMultiStepSelectorByStatementId(statement?.statementId)
 			);
 		else if (
 			questionType === QuestionType.multipleSteps &&
 			currentStage === QuestionStage.suggestion
 		)
 			return useSelector(
-				myStatementsByStatementIdSelector(statement.statementId)
+				myStatementsByStatementIdSelector(statement?.statementId)
 			);
 		else return [];
 	}
@@ -79,22 +67,22 @@ const SuggestionCards: FC<Props> = ({
 		setTotalHeight(_totalHeight);
 	}, [sort]);
 	useEffect(() => {
+		if (!statement) return;
 		if (questionType == QuestionType.multipleSteps) {
 			if (currentStage === QuestionStage.firstEvaluation)
 				getFirstEvaluationOptions(statement);
 			else if (currentStage === QuestionStage.secondEvaluation)
 				getSecondEvaluationOptions(statement);
 			else if (currentStage === QuestionStage.voting)
-				navigate(`statement/${statement.statementId}/vote`);
+				navigate(`statement/${statement?.statementId}/vote`);
 			else if (currentStage === QuestionStage.finished)
 				getSecondEvaluationOptions(statement);
 		}
 	}, [currentStage, questionType]);
 
 	if (!subStatements) {
-		return (
-			<EmptyScreen currentPage={currentPage} setShowModal={setShowModal} />
-		);
+		return null;
+		// <EmptyScreen currentPage={currentPage} setShowModal={setShowModal} />
 	}
 
 	useEffect(() => {
@@ -110,14 +98,14 @@ const SuggestionCards: FC<Props> = ({
 			className={styles['suggestions-wrapper']}
 			style={{ height: `${totalHeight + 100}px` }}
 		>
-			{subStatements?.map((statementSub: Statement) => {
+			{statement && subStatements?.map((statementSub: Statement) => {
 				return (
 					<SuggestionCard
 						key={statementSub.statementId}
 						parentStatement={statement}
 						siblingStatements={subStatements}
 						statement={statementSub}
-						showImage={handleShowTalker}
+						showImage={()=>{return true}}
 					/>
 				);
 			})}

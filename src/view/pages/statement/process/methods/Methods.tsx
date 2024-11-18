@@ -3,6 +3,7 @@ import { Method } from 'delib-npm';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import StatementChat from '../../components/chat/StatementChat';
+import StatementSuggestions from '../../components/evaluations/StatementSuggestions';
 
 const Methods = () => {
 	const { statementId, shortProcessId } = useParams();
@@ -13,6 +14,8 @@ const Methods = () => {
 		shortProcessId === 'chat' || !shortProcessId ? 'chat' : stage?.method;
 
 	switch(method){
+		case Method.suggestions:
+			return <StatementSuggestions />;
         default:
             return <StatementChat />;
     }
