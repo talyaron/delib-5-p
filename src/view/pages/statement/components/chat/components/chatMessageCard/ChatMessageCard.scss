@@ -4,15 +4,13 @@
 	direction: rtl;
 	max-width: 75ch;
 	margin: auto;
-	padding: 0.3rem;
-	padding-inline: 1rem;
 	color: var(--text-paragraph);
 
 	.user {
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		padding-top: 0.5rem;
+		padding: 0.5rem 0;
 	}
 
 	.message-box {
@@ -23,6 +21,7 @@
 		gap: 0.5rem;
 		background-color: var(--inputBackground);
 		padding: 1rem;
+		margin-bottom: .3rem;
 		border-radius: 10px;
 		box-shadow:
 			1px 0px 9px 0px rgba(66, 123, 158, 0),
@@ -86,8 +85,8 @@
 
 		.message-box {
 			border-right: 0.65rem solid;
-			margin-left: 2rem;
-			margin-right: 1rem;
+			margin-left: 1.4rem;
+			margin-right: 0.3rem;
 
 			&--statement {
 				border-right: 0rem solid !important;
@@ -109,8 +108,9 @@
 
 		.message-box {
 			border-left: 0.65rem solid;
-			margin-right: 1.8rem;
+			margin-right: .8rem;
 			margin-left: 1rem;
+			
 
 			.triangle {
 				clip-path: polygon(0 0, 0% 100%, 70% 0);

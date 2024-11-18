@@ -12,9 +12,8 @@ import NewMessages from './components/newMessages/NewMessages';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { userSelector } from '@/model/users/userSlice';
 import { useLocation } from 'react-router-dom';
-import Description from '../evaluations/components/description/Description';
 import { useSelector } from 'react-redux';
-import { subStatementsByTopParentIdMemo } from '@/model/statements/statementsSlice';
+import { statementSubsSelector } from '@/model/statements/statementsSlice';
 import { MainContext } from '../../StatementMain';
 
 let firstTime = true;
@@ -24,8 +23,9 @@ const StatementChat: FC = () => {
 	const { setTalker } = useContext(MainContext);
 
 	const statement = useContext(MainContext).statement;
+	
 	const subStatements = useSelector(
-		subStatementsByTopParentIdMemo(statement?.statementId)
+		statementSubsSelector(statement?.statementId)
 	);
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
@@ -112,9 +112,7 @@ const StatementChat: FC = () => {
 				className={`${styles.chat} ${toSlide && slideInOrOut}`}
 				id={`msg-${statement?.statementId}`}
 			>
-				<div className="statement-chat__description">
-					<Description statement={statement} />
-				</div>
+
 				{subStatements?.map((statementSub: Statement, index) => (
 					<ChatMessageCard
 						key={statementSub.statementId}
