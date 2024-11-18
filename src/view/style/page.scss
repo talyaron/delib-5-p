@@ -1,9 +1,8 @@
 .page {
 	width: 100%;
 	height: 100svh;
-	display: grid;
-	position: fixed;
-	grid-template-rows: auto 1fr auto;
+	display: flex;
+	flex-direction: column;
 	background-color: var(--bg-screen);
 
 	&__header {
@@ -131,63 +130,18 @@
 
 	&__footer {
 		width: 100%;
-		max-width: 82ch;
+		max-width: 75ch;
 		margin: 0 auto;
 		display: flex;
 		justify-content: center;
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
+		// left: 50%;
+		// transform: translateX(-50%);
 
-		&__form {
-			width: 100%;
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-
-			&__input {
-				padding: 0.3rem 70px 0.2rem 0.2rem;
-				resize: none;
-				outline: none;
-				border: none;
-				color: #232f4a;
-				min-height: 4rem;
-				flex: auto;
-				box-shadow: 0px 2px 4px 0px rgba(181, 197, 232, 0.48);
-				box-shadow: 0px -2px 4px 0px rgba(195, 202, 217, 0.5);
-				font-size: 1rem;
-
-				&::placeholder {
-					color: #979797;
-				}
-			}
-
-			&__sendBtnBox {
-				height: 100%;
-				width: 60px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-direction: column;
-				position: absolute;
-				right: 0rem;
-
-				user-select: none;
-				cursor: pointer;
-				background-color: #4e88c7;
-
-				.sendBtn {
-					display: flex;
-					justify-content: center;
-					align-items: center;
-				}
-			}
-
-			@media only screen and (min-width: 600px) {
-				max-width: 75ch;
-				margin: 0 auto;
-			}
+		@media screen and (max-width: 600px) {
+			max-width: 100vw;
+			
 		}
+
+		
 	}
 }

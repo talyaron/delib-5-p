@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useRef } from 'react';
-
+import styles from './statementInput.module.scss';
 // Third Party Imports
 import { Statement } from 'delib-npm';
 
@@ -71,13 +71,13 @@ const StatementInput: FC<Props> = ({ statement }) => {
 		<form
 			onSubmit={(e) => handleSubmitInput(e)}
 			name="theForm"
-			className="page__footer__form"
+			className={styles.form}
 			style={{ flexDirection: direction }}
 		>
 			<textarea
 				style={{ borderTop: `2px solid ${statementColor.backgroundColor}` }}
 				data-cy="statement-chat-input"
-				className="page__footer__form__input"
+				className={styles.textarea}
 				aria-label="Form Input"
 				name="newStatement"
 				ref={textareaRef}
@@ -89,7 +89,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 			></textarea>
 			<button
 				type="submit"
-				className="page__footer__form__sendBtnBox"
+				className={styles.send}
 				aria-label="Submit Button"
 				style={statementColor}
 				data-cy="statement-chat-send-btn"

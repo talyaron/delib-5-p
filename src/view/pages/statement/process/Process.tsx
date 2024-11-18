@@ -8,13 +8,13 @@ const Process = () => {
 	const { statement } = useContext(MainContext);
 
 	return (
-		<>
+		<div className='page__main'>
 			<div className={styles.process}>
 				<h1>{statement?.statement}</h1>
 				<ProcessNav />
 			</div>
 			<Methods />
-		</>
+		</div>
 	);
 };
 
