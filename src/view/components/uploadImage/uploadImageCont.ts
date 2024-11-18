@@ -3,23 +3,43 @@ import { updateStatementMainImage } from '@/controllers/db/statements/setStateme
 import { Statement } from 'delib-npm';
 import { compressImage } from './compressImage';
 
-export const handleFileUpload = async (
+export async function setImageLocally(
 	file: File,
+	setAspectRatio: React.Dispatch<React.SetStateAction<string>>,
 	statement: Statement,
-	setImage: React.Dispatch<React.SetStateAction<File | null>>,
+	setImage: React.Dispatch<React.SetStateAction<string>>,
 	setProgress: React.Dispatch<React.SetStateAction<number>>
-) => {
-	try {
-		setImage(null);
+) {
+	setImage("");
 
-		const compressedFile = await compressImage(file, 200, setProgress);
+	if (file) {
+		const img = new Image();
+		const reader = new FileReader();
 
-		setImage(compressedFile);
+		reader.onloadend = () => {
+			if (reader.result) {
+				img.src = reader.result as string;
 
-		const imageURL = await uploadImageToStorage(compressedFile, statement);
+				img.onload = async () => {
+					const width = img.naturalWidth;
+					const height = img.naturalHeight;
 
-		updateStatementMainImage(statement, imageURL);
-	} catch (error) {
-		console.error(error);
+					setAspectRatio(`${width}/${height}`);
+
+					const compressedFile = await compressImage(file, 200, setProgress);
+
+					setImage(URL.createObjectURL(compressedFile));
+
+					const imageURL = await uploadImageToStorage(
+						compressedFile,
+						statement
+					);
+
+					updateStatementMainImage(statement, imageURL);
+				};
+			}
+		};
+
+		reader.readAsDataURL(file);
 	}
-};
+}

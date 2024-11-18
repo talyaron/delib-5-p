@@ -134,8 +134,6 @@ export async function handleSetStatement({
 				membership,
 			});
 
-			console.warn('newStatement', newStatement);
-
 			if (!newStatement) throw new Error('newStatement had error in creating');
 
 			await setStatementToDB({
@@ -156,10 +154,10 @@ export async function handleSetStatement({
 			const newStatement = updateStatement({
 				statement,
 				text: statement.statement,
-				description: statement.description || '',
+				description: statement.description ?? '',
 				subScreens: subScreens,
 				deliberativeElement:
-					statement.deliberativeElement || DeliberativeElement.general,
+					statement.deliberativeElement ?? DeliberativeElement.general,
 				resultsBy,
 				numberOfResults,
 				hasChildren,

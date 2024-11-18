@@ -1,4 +1,4 @@
-import { Dispatch, FC } from 'react';
+import { Dispatch, FC, useState } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
@@ -41,6 +41,9 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 	parentStatement,
 	setStatementToEdit,
 }) => {
+	const imageUrl = statement.imagesURL?.main ?? '';
+	const [image, setImage] = useState<string>(imageUrl);
+
 	// * Hooks * //
 	const navigate = useNavigate();
 	const { statementId } = useParams();
@@ -62,7 +65,9 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 	);
 
 	try {
-		const joinedMembers = members.filter((member) => member.role !== Role.banned).map(m => m.user);
+		const joinedMembers = members
+			.filter((member) => member.role !== Role.banned)
+			.map((m) => m.user);
 
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,7 +79,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				statement,
 				parentStatement,
 			});
-			
 		};
 
 		const isNewStatement = !statementId;
@@ -104,12 +108,22 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
 				{!isNewStatement && (
 					<>
-						<UploadImage {...statementSettingsProps} />
+						<UploadImage
+							statement={statementSettingsProps.statement}
+							image={image}
+							setImage={setImage}
+						/>
 						<QuestionSettings {...statementSettingsProps} />
 						<SectionTitle title={t('Members')} />
-						<MembersSettings setStatementToEdit={setStatementToEdit} statement={statement} />
+						<MembersSettings
+							setStatementToEdit={setStatementToEdit}
+							statement={statement}
+						/>
 						<section className='get-members-area'>
-							<GetVoters statementId={statementId} joinedMembers={joinedMembers} />
+							<GetVoters
+								statementId={statementId}
+								joinedMembers={joinedMembers}
+							/>
 						</section>
 						<section className='get-members-area'>
 							<GetEvaluators statementId={statementId} />
@@ -120,7 +134,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				<button
 					type='submit'
 					className='submit-button'
-					aria-label="Submit button"
+					aria-label='Submit button'
 					data-cy='settings-statement-submit-btn'
 				>
 					<SaveIcon />

@@ -40,7 +40,7 @@ import { deleteStatementFromDB } from '@/controllers/db/statements/deleteStateme
 import Evaluation from '../../../evaluations/components/evaluation/Evaluation';
 import { DeliberativeElement } from 'delib-npm/dist/models/statementsModels';
 import useAutoFocus from '@/controllers/hooks/useAutoFocus ';
-import { handleFileUpload } from '@/view/components/uploadImage/uploadImageCont';
+import UploadImage from '@/view/components/uploadImage/UploadImage';
 
 export interface NewQuestion {
 	statement: Statement;
@@ -61,8 +61,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	showImage,
 	previousStatement,
 }) => {
-	const imageUrl = statement.imagesURL?.main ?? null;
-
+	const imageUrl = statement.imagesURL?.main ?? '';
+	const [image, setImage] = useState<string>(imageUrl);
 	// Hooks
 	const { deliberativeElement, isResult } = statement;
 	const statementColor = useStatementColor({ deliberativeElement, isResult });
@@ -81,8 +81,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const [text, setText] = useState(
 		`${statement?.statement}\n${statement.description}`
 	);
-	const [image, setImage] = useState<File | null>(null);
-	const [progress, setProgress] = useState(0);
 
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -119,19 +117,6 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 			}, 5000);
 		}
 	}, [isCardMenuOpen]);
-
-	const onFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		try {
-			if (!statement) throw new Error('statement is undefined');
-
-			const file = event.target.files?.[0];
-			if (file) {
-				handleFileUpload(file, statement, setImage, setProgress);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	function handleSetOption() {
 		try {
@@ -294,32 +279,16 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 						)}
 					</Menu>
 				</div>
-				<label className={`dropZone`}>
-					<input
-						type='file'
-						accept='image/*'
-						onChange={onFileSelect}
-						className='fileInput'
-						ref={fileInputRef}
+
+				<div style={{ display: image ? 'flex' : 'none' }}>
+					<UploadImage
+						statement={statement}
+						fileInputRef={fileInputRef}
+						image={image}
+						setImage={setImage}
 					/>
-					{imageUrl && !image && (
-						<div
-							style={{ backgroundImage: `url(${imageUrl})` }}
-							className='imagePreview'
-						/>
-					)}
-					{image && (
-						<div
-							style={{
-								backgroundImage: `url(${URL.createObjectURL(image)})`,
-							}}
-							className='imagePreview'
-						/>
-					)}
-					{progress > 0 && progress < 100 && (
-						<p>Uploading: {progress.toFixed(0)}%</p>
-					)}
-				</label>
+				</div>
+
 				<div className='bottom-icons'>
 					<div className='chat-more-element'>
 						<StatementChatMore statement={statement} />
