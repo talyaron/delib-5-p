@@ -17,7 +17,6 @@ export default function UploadImage({
 	setImage,
 }: Props) {
 	const [isDragging, setIsDragging] = useState(false);
-	const [aspectRatio, setAspectRatio] = useState('');
 	const [progress, setProgress] = useState(0);
 
 	const handleFileChange = async (
@@ -30,7 +29,6 @@ export default function UploadImage({
 			if (file) {
 				await setImageLocally(
 					file,
-					setAspectRatio,
 					statement,
 					setImage,
 					setProgress
@@ -55,7 +53,6 @@ export default function UploadImage({
 
 			await setImageLocally(
 				file,
-				setAspectRatio,
 				statement,
 				setImage,
 				setProgress
@@ -68,7 +65,7 @@ export default function UploadImage({
 	return (
 		<label
 			className={`dropZone ${isDragging ? 'dropZoneActive' : ''}`}
-			style={{ aspectRatio, border: image === '' ? '2px dashed #ccc' : 'none' }}
+			style={{ border: image === '' ? '2px dashed #ccc' : 'none' }}
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
 			onDragOver={(e) => e.preventDefault()}

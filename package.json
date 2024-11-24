@@ -4,7 +4,7 @@
 	"version": "1.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite --open",
 		"dev:h": "vite --host",
 		"devf": "cd functions && npm run dev",
 		"deve": "firebase use dev && firebase emulators:start --only hosting:dev,firestore,auth,functions,storage",
