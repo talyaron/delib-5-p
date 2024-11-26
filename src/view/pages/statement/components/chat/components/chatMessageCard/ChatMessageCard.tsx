@@ -21,7 +21,7 @@ import UserAvatar from '../userAvatar/UserAvatar';
 import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
 import EditIcon from '@/assets/icons/editIcon.svg?react';
 import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
-import UploadImageIcon from '@/assets/icons/uploadImageIcon.svg?react';
+import UploadImageIcon from '@/assets/icons/updateIcon.svg?react';
 import QuestionMarkIcon from '@/assets/icons/questionIcon.svg?react';
 import DeleteIcon from '@/assets/icons/delete.svg?react';
 import SaveTextIcon from '@/assets/icons/SaveTextIcon.svg';

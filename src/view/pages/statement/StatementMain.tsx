@@ -43,6 +43,7 @@ import AskPermission from "@/view/components/askPermission/AskPermission";
 import FollowMeToast from "./components/followMeToast/FollowMeToast";
 import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 import { createSelector } from "@reduxjs/toolkit";
+import EditTitle from "@/view/components/edit/EditTitle";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -235,7 +236,6 @@ const StatementMain: FC = () => {
 					/>
 					<MapProvider>
 						<FollowMeToast role={role} statement={statement} />
-
 						<SwitchScreens
 							screen={screen}
 							statement={statement}

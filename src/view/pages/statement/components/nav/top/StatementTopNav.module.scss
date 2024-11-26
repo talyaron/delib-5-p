@@ -13,6 +13,7 @@
 		margin: auto;
 		display: flex;
 		justify-content: space-between;
+		max-width: var(--wrapper);
 
 		// @media screen and (min-width: 768px) {
 		// 	max-width: 40ch;
