@@ -1,48 +1,161 @@
-import { FC } from "react";
-
+import { FC } from 'react';
+import styles from './StatementTopNav.module.scss';
 // Third party imports
-import { Link } from "react-router-dom";
-import { NavObject, Statement, Screen, StatementSubscription } from "delib-npm";
+import { Role, Statement } from 'delib-npm';
 
 // Helpers
-import { showNavElements } from "./statementTopNavCont";
-import { allScreens } from "./StatementTopNavModel.tsx";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import useStatementColor from "@/controllers/hooks/useStatementColor.ts";
+import useStatementColor from '@/controllers/hooks/useStatementColor.ts';
+
+//icons
+import Chat from '@/assets/icons/chatTop.svg?react';
+import BellIcon from '@/assets/icons/bellIcon.svg?react';
+import BellSlashIcon from '@/assets/icons/bellSlashIcon.svg?react';
+import View from '@/assets/icons/view.svg?react';
+import InvitationIcon from '@/assets/icons/invitation.svg?react';
+import FollowMe from '@/assets/icons/follow.svg?react';
+import ShareIcon from '@/assets/icons/shareIcon.svg?react';
+import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
+import SettingsIcon from '@/assets/icons/settings.svg?react';
+
+//components
+import Back from '../../header/Back';
+import HomeButton from '../../header/HomeButton';
+import { useSelector } from 'react-redux';
+import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
+import Menu from '@/view/components/menu/Menu';
+import MenuOption from '@/view/components/menu/MenuOption';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
-	statement: Statement;
-	statementSubscription: StatementSubscription | undefined;
-	screen: Screen;
+    statement?: Statement;
+    handleShare: () => void;
+    handleFollowMe: () => void;
+    handleToggleNotifications: () => void;
+    handleInvitePanel: () => void;
+    handleLogout: () => void;
+    setIsHeaderMenuOpen: (value: boolean) => void;
+    isHeaderMenuOpen: boolean;
+    permission: boolean;
 }
 
-const StatementTopNav: FC<Props> = ({ statement, statementSubscription, screen }) => {
+const StatementTopNav: FC<Props> = ({
+	statement,
+	setIsHeaderMenuOpen,
+	handleToggleNotifications,
+	handleLogout,
+	handleFollowMe,
+	handleInvitePanel,
+	permission,
+	isHeaderMenuOpen,
+	handleShare,
+}) => {
+	//hooks
 	const { t } = useLanguage();
-	const {deliberativeElement, isResult} = statement;
-	const headerStyle = useStatementColor({deliberativeElement, isResult});
-	
-	const _navArray = showNavElements({ statement, statementSubscription, navArray: allScreens });
+	const navigate = useNavigate();
+
+	// const
+	const deliberativeElement = statement?.deliberativeElement;
+	const isResult = statement?.isResult;
+	const headerStyle = useStatementColor({ deliberativeElement, isResult });
+	const menuIconStyle = {
+		color: headerStyle.backgroundColor,
+		width: '24px',
+	};
+
+	const statementSubscription = useSelector(
+		statementSubscriptionSelector(statement?.statementId)
+	);
+
+	const enableNavigationalElements =
+        statement?.statementSettings?.enableNavigationalElements !== undefined
+        	? statement?.statementSettings?.enableNavigationalElements
+        	: true;
+	const isAdmin = statementSubscription?.role === Role.admin;
+	const allowNavigation = enableNavigationalElements || isAdmin;
+
+	function handleGoToSettings() {
+		setIsHeaderMenuOpen(false);
+		if (statement && statement.statementId)
+			navigate(`/statement/${statement?.statementId}/settings`);
+	}
+
+	function handleGotToChat() {
+		if (statement && statement.statementId)
+			navigate(`/statement/${statement?.statementId}/chat`);
+	}
 
 	return (
-		<nav className="page__header__nav" data-cy="statement-nav">
-			{_navArray.map((screenInfo: NavObject) => (
-				<Link
-					key={screenInfo.id}
-					aria-label={screenInfo.name}
-					to={`/statement/${statement.statementId}/${screenInfo.link}${screenInfo.link === Screen.VOTE ? "/votes-voted" : ""}`}
-					className={`page__header__nav__button ${screen === screenInfo.link
-						? "page__header__nav__button--selected"
-						: ""
-					}`}
-					style={{ "maxWidth":_navArray.length === 1 ? '90%':"none"}}
-				>
-					<p className="page__header__nav__button__tabTxt" style={{color: headerStyle.backgroundColor}}>
-						{t(screenInfo.name)}
-					</p>					
-					<screenInfo.icon fill={screen === screenInfo.link ? headerStyle.backgroundColor : 'none'} />
-				</Link>
-			))}
-			
+		<nav
+			className={styles.nav}
+			data-cy="statement-nav"
+			style={{ backgroundColor: headerStyle.backgroundColor }}
+		>
+			<div className={styles.wrapper}>
+				{allowNavigation && (
+					<div className={styles.button}>
+						<Menu
+							setIsOpen={setIsHeaderMenuOpen}
+							isMenuOpen={isHeaderMenuOpen}
+							iconColor={headerStyle.color}
+							isHamburger={true}
+						>
+							<MenuOption
+								label={t('Share')}
+								icon={<ShareIcon style={menuIconStyle} />}
+								onOptionClick={handleShare}
+							/>
+							<MenuOption
+								label={t('Disconnect')}
+								icon={<DisconnectIcon style={menuIconStyle} />}
+								onOptionClick={handleLogout}
+							/>
+							{isAdmin && (
+								<>
+									<MenuOption
+										label={t('Follow Me')}
+										icon={<FollowMe style={menuIconStyle} />}
+										onOptionClick={handleFollowMe}
+									/>
+									<MenuOption
+										label={t('Invite with PIN number')}
+										icon={<InvitationIcon style={menuIconStyle} />}
+										onOptionClick={handleInvitePanel}
+									/>
+									<MenuOption
+										label={t('Settings')}
+										icon={<SettingsIcon style={menuIconStyle} />}
+										onOptionClick={handleGoToSettings}
+									/>
+								</>
+							)}
+						</Menu>
+					</div>
+				)}
+				{allowNavigation && (
+					<button onClick={handleGotToChat}>
+						<Chat color={headerStyle.color} />
+					</button>
+				)}
+				<button onClick={handleToggleNotifications}>
+					{permission ? (
+						<BellIcon color={headerStyle.color} />
+					) : (
+						<BellSlashIcon color={headerStyle.color} />
+					)}
+				</button>
+				<button>
+					<View color={headerStyle.color} />
+				</button>
+				{allowNavigation && (
+					<button className={styles.home}>
+						<HomeButton headerColor={headerStyle} />
+					</button>
+				)}
+				{allowNavigation && (
+					<Back statement={statement} headerColor={headerStyle} />
+				)}
+			</div>
 		</nav>
 	);
 };
