@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement, StatementType, User } from "delib-npm";
+import { QuestionStage, QuestionType, Statement, StatementType } from "delib-npm";
 
 // Custom Components
 
@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 
 interface StatementEvaluationPageProps {
   statement: Statement;
-  handleShowTalker: (talker: User | null) => void;
   showNav?: boolean;
   questions?: boolean;
   currentPage?: string;
@@ -31,7 +30,6 @@ interface StatementEvaluationPageProps {
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 	statement,
-	handleShowTalker,
 	questions = false,
 	currentPage = `suggestion`,
 }) => {
@@ -97,7 +95,6 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 						<Description statement={statement} />
 						<SuggestionCards
 							statement={statement}
-							handleShowTalker={handleShowTalker}
 							questions={questions}
 							currentPage={currentPage}
 							setShowModal={setShowModal}

@@ -1,4 +1,4 @@
-import { DeliberativeElement, QuestionStage, QuestionType, Statement, User } from "delib-npm";
+import { DeliberativeElement, QuestionStage, QuestionType, Statement } from "delib-npm";
 import { FC, useEffect, useState } from "react";
 import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
@@ -16,14 +16,12 @@ import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/control
 interface Props {
   statement: Statement;
   questions: boolean;
-  handleShowTalker: (talker: User | null) => void;
   currentPage?: string;
   setShowModal: (show: boolean) => void;
 }
 
 const SuggestionCards: FC<Props> = ({
 	statement,
-	handleShowTalker,
 	currentPage = `suggestion`,
 	setShowModal,
 }) => {
@@ -85,7 +83,6 @@ const SuggestionCards: FC<Props> = ({
 						parentStatement={statement} 
 						siblingStatements={subStatements}
 						statement={statementSub}
-						showImage={handleShowTalker}
 					/>
 				);
 			})}

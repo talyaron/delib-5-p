@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react";
 
 // Third Party Imports
-import { Statement, User } from "delib-npm";
+import { Statement } from "delib-npm";
 
 // Custom Components
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
@@ -18,7 +18,6 @@ import Description from "../evaluations/components/description/Description";
 interface Props {
   statement: Statement;
   subStatements: Statement[];
-  handleShowTalker: (statement: User | null) => void;
 }
 
 let firstTime = true;
@@ -27,7 +26,7 @@ let numberOfSubStatements = 0;
 const StatementChat: FC<Props> = ({
 	statement,
 	subStatements,
-	handleShowTalker,
+
 }) => {
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
@@ -113,7 +112,6 @@ const StatementChat: FC<Props> = ({
 						<ChatMessageCard
 							parentStatement={statement}
 							statement={statementSub}
-							showImage={handleShowTalker}
 							previousStatement={subStatements[index - 1]}
 						/>
 					</div>

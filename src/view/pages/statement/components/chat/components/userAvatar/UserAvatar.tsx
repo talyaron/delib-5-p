@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 
 // Third Party Imports
 import { User } from "delib-npm";
@@ -9,14 +9,15 @@ import {
 	getInitials,
 } from "@/controllers/general/helpers";
 import "./UserAvatar.scss";
+import { StatementContext } from "@/view/pages/statement/StatementCont";
 
 interface UserAvatarProps {
     user: User;
-    showImage: (user: User) => void;
 }
 
-const UserAvatar: FC<UserAvatarProps> = ({ user, showImage }) => {
+const UserAvatar: FC<UserAvatarProps> = ({ user }) => {
 	const { photoURL, displayName, uid } = user;
+	const {handleShowTalker} = useContext(StatementContext);
 
 	const initials = getInitials(displayName);
 	const color = generateRandomLightColor(uid);
@@ -24,7 +25,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, showImage }) => {
 	return (
 		<button
 			className="user-avatar"
-			onClick={() => showImage(user)}
+			onClick={() => handleShowTalker(user)}
 			style={
 				photoURL
 					? { backgroundImage: `url(${photoURL})` }

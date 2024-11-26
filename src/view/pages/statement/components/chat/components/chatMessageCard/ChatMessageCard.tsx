@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 // Third Party Imports
-import { Statement, User } from 'delib-npm';
+import { Statement } from 'delib-npm';
 
 // Redux Store
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
@@ -51,14 +51,13 @@ export interface NewQuestion {
 interface ChatMessageCardProps {
 	parentStatement: Statement;
 	statement: Statement;
-	showImage: (statement: User | null) => void;
+	
 	previousStatement: Statement | undefined;
 }
 
 const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	parentStatement,
 	statement,
-	showImage,
 	previousStatement,
 }) => {
 	const imageUrl = statement.imagesURL?.main ?? '';
@@ -165,7 +164,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		>
 			{!isPreviousFromSameAuthor && (
 				<div className='user'>
-					<UserAvatar user={statement.creator} showImage={showImage} />
+					<UserAvatar user={statement.creator} />
 					<span>{statement.creator.displayName}</span>
 				</div>
 			)}

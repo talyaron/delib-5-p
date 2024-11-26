@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 
 // Third Party
-import { Screen, Statement, StatementType, User } from 'delib-npm';
+import { Screen, Statement, StatementType } from 'delib-npm';
 
 // Redux Store
 import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
@@ -38,7 +38,6 @@ interface Props {
 	statement: Statement;
 	siblingStatements: Statement[];
 	parentStatement: Statement;
-	showImage: (talker: User | null) => void;
 }
 
 const SuggestionCard: FC<Props> = ({

@@ -1,7 +1,7 @@
 // This file contains the SwitchScreens component which is used to switch between the different tabs within statement
 
 // Third party imports
-import { Screen, Statement, StatementSubscription, User } from 'delib-npm';
+import { Screen, Statement, StatementSubscription } from 'delib-npm';
 
 // Custom components
 import Map from './map/StatementMap';
@@ -18,15 +18,13 @@ interface SwitchScreensProps {
 	statement: Statement | undefined;
 	subStatements: Statement[];
 	statementSubscription: StatementSubscription | undefined;
-	handleShowTalker: (statement: User | null) => void;
 }
 
 export default function SwitchScreens({
 	screen,
 	statement,
 	subStatements,
-	statementSubscription,
-	handleShowTalker,
+	statementSubscription
 }: Readonly<SwitchScreensProps>) {
 	if (!statement) return null;
 
@@ -37,7 +35,6 @@ export default function SwitchScreens({
 		return (
 			<StatementEvaluationPage
 				statement={statement}
-				handleShowTalker={handleShowTalker}
 			/>
 		);
 	case Screen.VOTE:
@@ -62,7 +59,6 @@ export default function SwitchScreens({
 		return (
 			<StatementEvaluationPage
 				statement={statement}
-				handleShowTalker={handleShowTalker}
 				questions={true}
 			/>
 		);
@@ -74,7 +70,6 @@ export default function SwitchScreens({
 			<StatementChat
 				statement={statement}
 				subStatements={subStatements}
-				handleShowTalker={handleShowTalker}
 			/>
 		);
 	}

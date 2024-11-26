@@ -1,6 +1,7 @@
-import { Statement, NavObject, Screen, StatementSubscription } from "delib-npm";
+import { Statement, NavObject, Screen, StatementSubscription, User } from "delib-npm";
 import { showNavElements } from "./components/nav/top/statementTopNavCont";
 import { allScreens } from "./components/nav/top/StatementTopNavModel.tsx";
+import { createContext } from "react";
 
 export function availableScreen(
 	statement: Statement | undefined,
@@ -15,7 +16,7 @@ export function availableScreen(
 		if (statement.subScreens.length === 0)
 			throw new Error("statement.subScreens is empty");
 
-		const subScreens: NavObject[] = showNavElements({statement,statementSubscription, navArray:allScreens});
+		const subScreens: NavObject[] = showNavElements({ statement, statementSubscription, navArray: allScreens });
 
 		const subScreensLinks: Screen[] = subScreens.map(
 			(navObj: NavObject) => navObj.link,
@@ -36,3 +37,19 @@ export function availableScreen(
 		return screenLink;
 	}
 }
+
+interface StatementContextProps {
+	statement: Statement | undefined;
+	talker: User | null;
+	handleShowTalker: (talker: User | null) => void;
+}
+
+export const StatementContext = createContext<StatementContextProps>(
+	{
+		statement: undefined,
+		talker: null,
+		handleShowTalker: () => {
+			return;
+		},
+	},
+);
