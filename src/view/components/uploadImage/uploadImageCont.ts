@@ -5,7 +5,6 @@ import { compressImage } from './compressImage';
 
 export async function setImageLocally(
 	file: File,
-	setAspectRatio: React.Dispatch<React.SetStateAction<string>>,
 	statement: Statement,
 	setImage: React.Dispatch<React.SetStateAction<string>>,
 	setProgress: React.Dispatch<React.SetStateAction<number>>
@@ -21,11 +20,6 @@ export async function setImageLocally(
 				img.src = reader.result as string;
 
 				img.onload = async () => {
-					const width = img.naturalWidth;
-					const height = img.naturalHeight;
-
-					setAspectRatio(`${width}/${height}`);
-
 					const compressedFile = await compressImage(file, 200, setProgress);
 
 					setImage(URL.createObjectURL(compressedFile));
