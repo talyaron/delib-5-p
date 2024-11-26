@@ -1,13 +1,15 @@
 import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
 import EllipsisIcon from "@/assets/icons/ellipsisIcon.svg?react";
+import BurgerIcon from "@/assets/icons/burgerIcon.svg?react";
 import "./Menu.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface MenuProps extends ComponentProps<"div"> {
-	iconColor: string;
-	isMenuOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
+    iconColor: string;
+    isMenuOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+	isHamburger?: boolean;
 }
 
 const Menu: FC<MenuProps> = ({
@@ -15,6 +17,7 @@ const Menu: FC<MenuProps> = ({
 	isMenuOpen,
 	setIsOpen,
 	children,
+	isHamburger = false,
 }) => {
 	const { dir } = useLanguage();
 
@@ -25,7 +28,7 @@ const Menu: FC<MenuProps> = ({
 	return (
 		<div className="menu">
 			<IconButton onClick={() => setIsOpen(!isMenuOpen)}>
-				<EllipsisIcon style={{ color: iconColor }} />
+				{isHamburger?<BurgerIcon style={{color: iconColor}} />:<EllipsisIcon style={{ color: iconColor }} />}
 			</IconButton>
 
 			{isMenuOpen && (
