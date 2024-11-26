@@ -1,0 +1,21 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .cls-1 {
+                fill: none;
+                stroke: currentColor;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 2px;
+            }
+        </style>
+    </defs>
+    <title>hammer_1</title>
+    <rect class="cls-1" x="26.34" y="10.34" width="11.31" height="11.31"
+        transform="translate(-1.94 27.31) rotate(-45)" />
+    <rect class="cls-1" x="30.43" y="19.38" width="14.14" height="4.24"
+        transform="translate(-4.22 32.81) rotate(-45)" />
+    <rect class="cls-1" x="19.43" y="8.38" width="14.14" height="4.24" transform="translate(0.34 21.81) rotate(-45)" />
+    <polygon class="cls-1" points="26.5 18.5 30.5 22.5 9 44 4 39 25.5 17.5 26.5 18.5" />
+    <rect class="cls-1" x="-622" y="-78" width="680" height="680" />
+</svg>

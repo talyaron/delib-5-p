@@ -1,0 +1,10 @@
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Left bar (medium) -->
+    <rect x="4" y="8" width="4" height="12" rx="1" stroke="currentColor" strokeWidth="1" fill="none"/>
+    
+    <!-- Middle bar (tallest) -->
+    <rect x="10" y="4" width="4" height="16" rx="1" stroke="currentColor" strokeWidth="1" fill="none"/>
+    
+    <!-- Right bar (shortest) -->
+    <rect x="16" y="12" width="4" height="8" rx="1" stroke="currentColor" strokeWidth="1" fill="none"/>
+  </svg>
