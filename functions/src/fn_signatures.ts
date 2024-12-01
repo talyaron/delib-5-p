@@ -13,7 +13,7 @@ export function updateDocumentSignatures(ev: any) {
 		const signatureAfterData = ev.data.after.data() as Signature;
 		const signatureBeforeData = ev.data.before.data() as Signature;
 		const signatureData = signatureAfterData || signatureBeforeData;
-console.log("action", action);
+		
 		switch (action) {
 		case "create":
 			onCreateSignature(signatureData);
@@ -55,11 +55,13 @@ async function onCreateSignature(signature: Signature) {
 				transaction.set(documentSignatureRef, documentSignature);
 			} else {
 				const documentSignature = documentSignatureDB.data() as DocumentSigns;
+				const sumSignedAndRejected = documentSignature.signed + documentSignature.rejected;
+
 				documentSignature.viewed += 1;
 				documentSignature.signed += signed === SignatureType.signed ? 1 : 0;
-				documentSignature.rejected += signed  === SignatureType.rejected? 1 : 0;
+				documentSignature.rejected += signed === SignatureType.rejected ? 1 : 0;
 				documentSignature.totalSignaturesLevel += signed === SignatureType.signed ? levelOfSignature : 0;
-				documentSignature.avgSignatures = documentSignature.totalSignaturesLevel / documentSignature.viewed;
+				documentSignature.avgSignatures = sumSignedAndRejected > 0 ? documentSignature.totalSignaturesLevel / sumSignedAndRejected : 0;
 				transaction.update(documentSignatureRef, documentSignature);
 
 			}
@@ -102,9 +104,7 @@ async function onUpdateSignature(signatureBeforeData: Signature, signatureAfterD
 
 		const diffSigned = (signedAfter === SignatureType.signed ? 1 : 0) - (signedBefore === SignatureType.signed ? 1 : 0);
 		const diffRejected = (signedAfter === SignatureType.rejected ? 1 : 0) - (signedBefore === SignatureType.rejected ? 1 : 0);
-		console.log("signedBefore",signedBefore,  "signedAfter", signedAfter);
-		console.log("diffSigned",diffSigned,  "diffRejected", diffRejected);
-		console.log("levelOfSignatureBefore",levelOfSignatureBefore,  "levelOfSignatureAfter", levelOfSignatureAfter);
+		
 		const diffSignatureLevel = levelOfSignatureAfter - levelOfSignatureBefore;
 
 		await db.runTransaction(async (transaction) => {
@@ -115,10 +115,13 @@ async function onUpdateSignature(signatureBeforeData: Signature, signatureAfterD
 			if (!documentSignatureDB.exists) throw new Error("Document signature not found");
 
 			const documentSignature = documentSignatureDB.data() as DocumentSigns;
+
+			const sumApprovedAndRejected = documentSignature.signed + documentSignature.rejected;
 			documentSignature.signed += diffSigned;
 			documentSignature.rejected += diffRejected;
 			documentSignature.totalSignaturesLevel += diffSignatureLevel;
-			documentSignature.avgSignatures = documentSignature.totalSignaturesLevel / documentSignature.viewed;
+			documentSignature.avgSignatures = sumApprovedAndRejected > 0 ? (documentSignature.totalSignaturesLevel) / (documentSignature.signed + documentSignature.rejected ) : 0;
+
 			transaction.update(documentSignatureRef, documentSignature);
 
 		});

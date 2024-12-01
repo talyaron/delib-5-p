@@ -46,10 +46,11 @@ import { updateApprovalResults } from './fn_approval';
 import { setImportanceToStatement } from './fn_importance';
 import { updateAgrees } from './fn_agree';
 import { setUserSettings } from './fn_users';
+
 require('dotenv').config()
 
-
 const express = require('express');
+
 const app = express();
 
 initializeApp();
@@ -63,7 +64,6 @@ export const db = getFirestore();
 // );
 
 exports.setUserSettings = onDocumentCreated(`/${Collections.users}/{userId}`, setUserSettings);
-
 
 exports.updateParentWithNewMessage = onDocumentCreated(
 	`/${Collections.statements}/{statementId}`,
@@ -85,7 +85,7 @@ exports.updateNotifications = onDocumentCreated(
 
 //evaluations and results
 exports.newEvaluation = onDocumentCreated(
-	`/${Collections.evaluations}/{evaluationId}`,
+	{ document: `/${Collections.evaluations}/{evaluationId}` },
 	newEvaluation
 );
 exports.deleteEvaluation = onDocumentDeleted(
@@ -106,10 +106,6 @@ exports.updateResultsSettings = onDocumentWritten(
 exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);
 
 // exports.removeVote = onDocumentDeleted('/votes/{voteId}', removeVote);
-
-
-
-
 
 //timers
 exports.cleanTimers = onSchedule('every day 00:00', cleanOldTimers);
@@ -138,8 +134,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 console.info('isProduction', isProduction);
 const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech", "https://delib.web.app"] }
 
-
-
 exports.getRandomStatements = onRequest(cors, getRandomStatements); //first evaluation
 exports.getTopStatements = onRequest(cors, getTopStatements); //second evaluation
 exports.getUserOptions = onRequest(cors, getUserOptions); //suggestions
@@ -155,5 +149,3 @@ exports.checkForSimilarStatements = onRequest(
 // exports.maintainSubscriptionToken = onRequest(cors, maintainSubscriptionToken);
 
 exports.app = onRequest(cors, app);
-
-
