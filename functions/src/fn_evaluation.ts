@@ -60,6 +60,14 @@ export async function deleteEvaluation(event) {
 		const { statementId, evaluation } = statementEvaluation;
 		if (!statementId) throw new Error("statementId is not defined");
 
+//@ts-ignore
+export async function deleteEvaluation(event) {
+	try {
+		//add evaluator to statement
+		const statementEvaluation = event.data.data() as Evaluation;
+		const { statementId, evaluation } = statementEvaluation;
+		if (!statementId) throw new Error("statementId is not defined");
+
 		//add one evaluator to statement
 		const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: (-1 * evaluation), addEvaluator: -1, action: ActionTypes.delete, newEvaluation: 0, oldEvaluation: evaluation });
 		if (!statement) throw new Error("statement does not exist");
@@ -110,7 +118,7 @@ function calcAgreement(newSumEvaluations: number, numberOfEvaluators: number): n
 		if (numberOfEvaluators === 0) numberOfEvaluators = 1;
 		const averageEvaluation = newSumEvaluations / numberOfEvaluators; // average evaluation
 		const agreement = averageEvaluation * Math.sqrt(numberOfEvaluators)
-		//TODO: divide by the number of question members to get a scale of 100% agreement
+		// divide by the number of question members to get a scale of 100% agreement
 
 		return agreement;
 	} catch (error) {
@@ -154,7 +162,6 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
 					sumCon: proConDiff.conDiff
 
 				};
-			
 				await transaction.update(statementRef, { evaluation: statement.evaluation });
 			} else {
 				statement.evaluation.sumEvaluations += evaluationDiff;
@@ -252,7 +259,8 @@ async function updateParentStatementWithChildResults(
 
 		//get results settings
 		const { resultsSettings } = parentStatement;
-		let { resultsBy, numberOfResults = 1 } =
+		let {resultsBy} = getResultsSettings(resultsSettings);
+		const { numberOfResults = 1 } =
             getResultsSettings(resultsSettings);
 		
 
@@ -279,7 +287,7 @@ async function updateParentStatementWithChildResults(
 			.limit(numberOfResults);
 		const topOptionsStatementsDB = await topOptionsStatementsRef.get();
 		const topOptionsStatements = topOptionsStatementsDB.docs.map(
-			(doc: any) => doc.data() as Statement,
+			(doc) => doc.data() as Statement,
 		);
         
 		//get all options of the parent statement and convert them to either result, or an option
@@ -291,7 +299,7 @@ async function updateParentStatementWithChildResults(
 
 		const batch = db.batch();
 
-		optionsDB.forEach((stDB: any) => {
+		optionsDB.forEach((stDB) => {
 			const st = stDB.data() as Statement;
             
 			const statementRef = db.collection(Collections.statements).doc(st.statementId);

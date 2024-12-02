@@ -80,7 +80,7 @@ exports.updateNotifications = onDocumentCreated(
 
 //evaluations and results
 exports.newEvaluation = onDocumentCreated(
-	`/${Collections.evaluations}/{evaluationId}`,
+	{ document: `/${Collections.evaluations}/{evaluationId}` },
 	newEvaluation
 );
 exports.deleteEvaluation = onDocumentDeleted(

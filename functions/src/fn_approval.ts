@@ -29,8 +29,9 @@ export async function updateApprovalResults(event: any) {
 		} else if (action === Action.update) {
 			const { approval: approvalAfter } = approveAfterData;
 			const { approval: approvalBefore } = approveBeforeData;
+
 			approvedDiff = (() => {
-				if (approvalAfter && !approvalBefore) {
+				if (!approvalBefore && approvalAfter) {
 					return 1;
 				} else if (approvalBefore && !approvalAfter) {
 					return -1;
@@ -38,8 +39,7 @@ export async function updateApprovalResults(event: any) {
 				
 				return 0;
 
-			})()
-
+			})();
 		}
 
 		//update paragraph
