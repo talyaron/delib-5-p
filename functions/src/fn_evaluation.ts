@@ -52,13 +52,6 @@ export async function newEvaluation(event) {
 	}
 
 }
-//@ts-ignore
-export async function deleteEvaluation(event) {
-	try {
-		//add evaluator to statement
-		const statementEvaluation = event.data.data() as Evaluation;
-		const { statementId, evaluation } = statementEvaluation;
-		if (!statementId) throw new Error("statementId is not defined");
 
 //@ts-ignore
 export async function deleteEvaluation(event) {
@@ -263,7 +256,6 @@ async function updateParentStatementWithChildResults(
 		const { numberOfResults = 1 } =
             getResultsSettings(resultsSettings);
 		
-
 		// if (numberOfResults === undefined) numberOfResults = 1;
 		if (resultsBy === undefined) resultsBy = ResultsBy.topOptions;
 
