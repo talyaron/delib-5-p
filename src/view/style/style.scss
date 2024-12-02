@@ -415,6 +415,11 @@ b {
   flex-direction: column;
   align-items: center;
   padding-bottom: 100px;
+
+  @media screen and (max-width: 768px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 .card {

@@ -114,7 +114,7 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
 						style={{ direction: direction, textAlign: align }}
 						className={styles.input}
 						type='text'
-						value={title}
+						defaultValue={title}
 						onChange={handleChange}
 						onKeyUp={handleEnter}
 						data-cy='edit-title-input'

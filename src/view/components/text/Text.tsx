@@ -44,7 +44,7 @@ const Text: FC<Props> = ({ statement, description }) => {
 
 		return (
 			<>
-				{statement && <div className={styles.title}><UrlParser text={statement}/></div>}
+				{statement && <span className="statement"><UrlParser text={statement}/></span>}
 				{(description && paragraphs.length > 0) && (
 					<div className={styles.text}>{paragraphs}</div>
 				)}
