@@ -30,8 +30,6 @@ export async function updateApprovalResults(event: any) {
 			const { approval: approvalAfter } = approveAfterData;
 			const { approval: approvalBefore } = approveBeforeData;
 
-            console.log("................. Before", approvalBefore, "after",approvalAfter)
-
 			approvedDiff = (() => {
 				if (!approvalBefore && approvalAfter) {
 					return 1;
@@ -41,10 +39,7 @@ export async function updateApprovalResults(event: any) {
 				
 				return 0;
 
-			})()
-
-            console.log("................. approvedDiff", approvedDiff)
-
+			})();
 		}
 
 		//update paragraph

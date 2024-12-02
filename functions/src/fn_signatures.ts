@@ -4,7 +4,6 @@ import { getAction } from "./fn_approval";
 import { Collections, DocumentSigns, Signature, SignatureType } from "delib-npm";
 
 //functions for FreeDi Sign
-//TODO: deploy this function
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function updateDocumentSignatures(ev: any) {
 	try {
