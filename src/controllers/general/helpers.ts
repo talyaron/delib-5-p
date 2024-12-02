@@ -327,7 +327,7 @@ export function getTime(time: number): string {
 		return `${timeDay}/${timeMonth}/${timeYear} ${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
 	} else if (currentDay !== timeDay && currentMonth === timeMonth && currentYear === timeYear) {
 		return `${timeDay}/${timeMonth} ${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
-		
+
 	} else if (currentDay === timeDay && currentMonth === timeMonth && currentYear === timeYear) {
 		return `${hours}:${minutes?.toString().length === 1 ? "0" + minutes : minutes}`;
 	}
@@ -339,28 +339,39 @@ export function truncateString(text: string, maxLength = 20): string {
 	return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
-export function processHistory({statementId, pathname }:HistoryTracker, state:HistoryTracker[]):HistoryTracker[] {
+export function processHistory({ statementId, pathname }: HistoryTracker, state: HistoryTracker[]): HistoryTracker[] {
 	try {
-	
+
 		const newHistory = [...state];
 
 		//add statement id to history only if it is not already there
-		if(newHistory.length === 0) return [{statementId, pathname}];
-		if(pathname === state[state.length - 1]?.pathname) return newHistory;
-		
+		if (newHistory.length === 0) return [{ statementId, pathname }];
+		if (pathname === state[state.length - 1]?.pathname) return newHistory;
+
 		//in case the the user only navigate between the screens of the statement, just update the pathname
-		if(!statementId) return [...state, {pathname }]
-		if(newHistory[newHistory.length - 1].statementId === statementId){
+		if (!statementId) return [...state, { pathname }]
+		if (newHistory[newHistory.length - 1].statementId === statementId) {
 			newHistory[newHistory.length - 1].pathname = pathname;
-			
+
 			return newHistory;
 		} else {
-			return [...state, {statementId, pathname }];
+			return [...state, { statementId, pathname }];
 		}
 
 	} catch (error) {
 		console.error(error);
-		
+
 		return state;
 	}
+}
+
+export function getRandomUID(numberOfChars = 12): string {
+
+	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-0123456789";
+	let randomString = "";
+	for (let i = 0; i < numberOfChars; i++) {
+		randomString += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+
+	return randomString;
 }

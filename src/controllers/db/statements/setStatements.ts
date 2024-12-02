@@ -27,6 +27,7 @@ import {
 import { allowedScreens } from "@/controllers/general/screens";
 import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
+import { getRandomUID } from "@/controllers/general/helpers";
 
 export const updateStatementParents = async (
 	statement: Statement,
@@ -119,7 +120,7 @@ export const setStatementToDB = async ({
 
 		statement.creatorId = statement?.creator?.uid || user.uid;
 		statement.creator = statement?.creator || user;
-		statement.statementId = statement?.statementId || crypto.randomUUID();
+		statement.statementId = statement?.statementId || getRandomUID();
 		statement.parentId = parentId;
 		statement.topParentId =
 			parentStatement === "top"
@@ -241,7 +242,7 @@ export function createStatement({
 		const user = storeState.user.user;
 		if (!user) throw new Error("User is undefined");
 
-		const statementId = crypto.randomUUID();
+		const statementId = getRandomUID();
 
 		const parentId =
 			parentStatement !== "top" ? parentStatement?.statementId : "top";
