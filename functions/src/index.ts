@@ -46,12 +46,9 @@ import { updateApprovalResults } from './fn_approval';
 import { setImportanceToStatement } from './fn_importance';
 import { updateAgrees } from './fn_agree';
 import { setUserSettings } from './fn_users';
+import { updateStatementWithViews } from './fn_views';
 
 require('dotenv').config()
-
-const express = require('express');
-
-const app = express();
 
 initializeApp();
 export const db = getFirestore();
@@ -128,6 +125,9 @@ exports.updateAgrees = onDocumentWritten(`/${Collections.agrees}/{agreeId}`, upd
 //signatures
 exports.updateDocumentSignatures = onDocumentWritten(`/${Collections.signatures}/{signatureId}`, updateDocumentSignatures);
 
+//views
+exports.updateStatementWithViews = onDocumentCreated(`/${Collections.statementViews}/{viewId}`, updateStatementWithViews);
+
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -147,5 +147,3 @@ exports.checkForSimilarStatements = onRequest(
 // exports.maintainDeliberativeElement = onRequest(cors, maintainDeliberativeElement);
 // exports.maintainStatements = onRequest(cors, maintainStatement);
 // exports.maintainSubscriptionToken = onRequest(cors, maintainSubscriptionToken);
-
-exports.app = onRequest(cors, app);
