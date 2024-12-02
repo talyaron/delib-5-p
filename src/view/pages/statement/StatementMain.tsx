@@ -241,7 +241,6 @@ const StatementMain: FC = () => {
 						statementSubscription={statementSubscription}
 						subStatements={subStatements}
 						handleShowTalker={handleShowTalker}
-						setShowAskPermission={setShowAskPermission}
 					/>
 				</MapProvider>
 			</div>

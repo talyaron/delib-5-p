@@ -5,7 +5,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 export function uploadImageToStorage(
 	file: File,
 	statement: Statement,
-	setProgress: (progress: number) => void,
 ): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const imageRef = ref(
@@ -20,10 +19,7 @@ export function uploadImageToStorage(
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {
-				const progress =
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-				setProgress(progress);
 				switch (snapshot.state) {
 				case "paused":
 					console.info("Upload is paused");

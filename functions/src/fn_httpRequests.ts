@@ -4,9 +4,6 @@ import { Collections, DeliberativeElement, StatementType } from "delib-npm";
 import { db } from ".";
 import { Query } from "firebase-admin/firestore";
 
-
-
-
 export const getUserOptions = async (req: any, res: any) => {
     // cors(req, res, async () => {
     try {
@@ -14,10 +11,12 @@ export const getUserOptions = async (req: any, res: any) => {
         const parentId = req.query.parentId;
         if (!parentId) {
             res.status(400).send({ error: "parentId is required", ok: false });
+
             return;
         }
         if (!userId) {
             res.status(400).send({ error: "userId is required", ok: false });
+
             return;
         }
 
@@ -26,36 +25,35 @@ export const getUserOptions = async (req: any, res: any) => {
         const statements = userOptionsDB.docs.map((doc) => doc.data());
 
         res.send({ statements, ok: true });
+
         return;
 
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
 
 }
 
 export const getRandomStatements = async (req: any, res: any) => {
-
-
     try {
 
         const parentId = req.query.parentId;
         let limit = Number(req.query.limit) || 10 as number;
         if (limit > 50) limit = 50;
 
-
         if (!parentId) {
             res.status(400).send({ error: "parentId is required", ok: false });
+
             return;
         }
 
-
         if (!parentId) {
             res.status(400).send({ error: "parentId is required", ok: false });
+
             return;
         }
-
 
         const allSolutionStatementsRef = db.collection(Collections.statements);
         const q: Query = allSolutionStatementsRef.where("parentId", "==", parentId).where("statementType", "in", ["result", "option"]);
@@ -70,6 +68,7 @@ export const getRandomStatements = async (req: any, res: any) => {
 
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
     // })
@@ -85,6 +84,7 @@ export const getTopStatements = async (req: any, res: any) => {
 
         if (!parentId) {
             res.status(400).send({ error: "parentId is required", ok: false });
+
             return;
         }
 
@@ -94,10 +94,12 @@ export const getTopStatements = async (req: any, res: any) => {
         const topSolutions = topSolutionsDB.docs.map((doc) => doc.data());
 
         res.send({ topSolutions, ok: true });
+
         return;
 
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
     // })
@@ -112,6 +114,7 @@ export async function hashPassword(req: any, res: any) {
         // else --> res.send({ok:false, error:error.message})
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
 }
@@ -125,6 +128,7 @@ export async function checkPassword(req: any, res: any) {
         // else --> res.send({ok:false})
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
 }
@@ -144,6 +148,7 @@ export async function maintainRole(req: any, res: any) {
         res.send({ ok: true });
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
 }
@@ -168,14 +173,13 @@ export async function maintainDeliberativeElement(req: any, res: any) {
             } else {
                 batch.update(ref, { deliberativeElement: DeliberativeElement.general });
             }
-
-
         });
 
         await batch.commit();
         res.send({ ok: true });
     } catch (error: any) {
         res.status(500).send({ error: error.message, ok: false });
+
         return;
     }
 }
@@ -192,7 +196,6 @@ export async function maintainStatement(req: any, res: any) {
             const ref = statementsRef.doc(doc.id);
             batch.update(ref, { "resultsSettings.resultsBy": "topOptions" });
         });
-
 
         const subRef = db.collection(Collections.statements);
         const q2 = subRef.where('statement.results', '!=', []);

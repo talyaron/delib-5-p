@@ -1,87 +1,100 @@
-import React, { FC, useState } from "react";
-import styles from "./UploadImage.module.scss";
-import { Statement } from "delib-npm";
-import { uploadImageToStorage } from "../../../controllers/db/images/setImages";
-import { updateStatementMainImage } from "../../../controllers/db/statements/setStatements";
-import { compressImage } from "./compressImage";
+import React, { useState } from 'react';
+import './UploadImage.scss';
+import { Statement } from 'delib-npm';
+import { setImageLocally } from './uploadImageCont';
 
 interface Props {
-	statement: Statement;
+	readonly statement: Statement;
+	readonly fileInputRef?: React.RefObject<HTMLInputElement> | null;
+	readonly image: string;
+	readonly setImage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const UploadImage: FC<Props> = ({ statement }) => {
-	const imageUrl = statement.imagesURL?.main ?? null;
+export default function UploadImage({
+	statement,
+	fileInputRef,
+	image,
+	setImage,
+}: Props) {
+	const [isDragging, setIsDragging] = useState(false);
+	const [progress, setProgress] = useState(0);
 
-	// currently changing image is not possible, when we fix it we can remove this
-	if (imageUrl) {
-		return (
-			<div className={styles.dropZone}>
-				<div
-					style={{ backgroundImage: `url(${imageUrl})` }}
-					className={styles.imagePreview}
-				/>
-			</div>
-		);
-	}
-
-	const [image, setImage] = useState<File | null>(null);
-	const [percentage, setPercentage] = useState(0);
-
-	const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+	const handleFileChange = async (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
 		try {
-			if (!statement) throw new Error("statement is undefined");
-			event.preventDefault();
-			const file = event.dataTransfer.files[0];
-			const compressedFile = await compressImage(file, 200);
-			setImage(compressedFile);
-			const imageURL = await uploadImageToStorage(
-				compressedFile,
-				statement,
-				setPercentage
-			);
-			updateStatementMainImage(statement, imageURL);
+			if (!statement) throw new Error('statement is undefined');
+
+			const file = event.target.files?.[0];
+			if (file) {
+				await setImageLocally(
+					file,
+					statement,
+					setImage,
+					setProgress
+				);
+			}
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+	const handleDragEnter = () => setIsDragging(true);
+	const handleDragLeave = () => setIsDragging(false);
+
+	const handleDrop = async (event: React.DragEvent<HTMLLabelElement>) => {
 		event.preventDefault();
+		setIsDragging(false);
+
+		try {
+			if (!statement) throw new Error('statement is undefined');
+
+			const file = event.dataTransfer.files[0];
+
+			await setImageLocally(
+				file,
+				statement,
+				setImage,
+				setProgress
+			);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
-	const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.add(styles.dropZoneActive)
-	}
-	const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-		e.currentTarget.classList.remove(styles.dropZoneActive)
-	}
-
 	return (
-		<div
-			onDrop={handleDrop}
-			onDragOver={handleDragOver}
+		<label
+			className={`dropZone ${isDragging ? 'dropZoneActive' : ''}`}
+			style={{ border: image === '' ? '2px dashed #ccc' : 'none' }}
 			onDragEnter={handleDragEnter}
 			onDragLeave={handleDragLeave}
-			className={styles.dropZone}
+			onDragOver={(e) => e.preventDefault()}
+			onDrop={handleDrop}
 		>
-			{imageUrl && !image && (
-				<div
-					style={{ backgroundImage: `url(${imageUrl})` }}
-					className={styles.imagePreview}
-				/>
-			)}
-			{image && (
+			<input
+				ref={fileInputRef}
+				type='file'
+				accept='image/*'
+				onChange={handleFileChange}
+				className='fileInput'
+			/>
+
+			{image !== '' && (
 				<div
 					style={{
-						backgroundImage: `url(${URL.createObjectURL(image)})`,
+						backgroundImage: `url(${image})`,
 					}}
-					className={styles.imagePreview}
+					className='imagePreview'
 				/>
 			)}
-			{!image && <p>Drag and drop an image here</p>}
-			{percentage > 0 && <progress value={percentage} max="100" />}
-		</div>
-	);
-};
 
-export default UploadImage;
+			{!image && progress == 0 && (
+				<p>Drag and drop an image here or click to upload</p>
+			)}
+
+			{progress > 0 && progress < 100 && (
+				<p>Uploading: {progress.toFixed(0)}%</p>
+			)}
+		</label>
+	);
+}

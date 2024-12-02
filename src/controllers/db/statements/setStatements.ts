@@ -265,7 +265,7 @@ export function createStatement({
 
 		const newStatement: Statement = {
 			statement: text,
-			description: description || "",
+			description: description ?? "",
 			statementId,
 			parentId,
 			parents,

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 // Third Party Imports
 import { Statement, User } from 'delib-npm';
@@ -21,6 +21,7 @@ import UserAvatar from '../userAvatar/UserAvatar';
 import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
 import EditIcon from '@/assets/icons/editIcon.svg?react';
 import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
+import UploadImageIcon from '@/assets/icons/uploadImageIcon.svg?react';
 import QuestionMarkIcon from '@/assets/icons/questionIcon.svg?react';
 import DeleteIcon from '@/assets/icons/delete.svg?react';
 import SaveTextIcon from '@/assets/icons/SaveTextIcon.svg';
@@ -39,6 +40,7 @@ import { deleteStatementFromDB } from '@/controllers/db/statements/deleteStateme
 import Evaluation from '../../../evaluations/components/evaluation/Evaluation';
 import { DeliberativeElement } from 'delib-npm/dist/models/statementsModels';
 import useAutoFocus from '@/controllers/hooks/useAutoFocus ';
+import UploadImage from '@/view/components/uploadImage/UploadImage';
 
 export interface NewQuestion {
 	statement: Statement;
@@ -50,7 +52,6 @@ interface ChatMessageCardProps {
 	parentStatement: Statement;
 	statement: Statement;
 	showImage: (statement: User | null) => void;
-	index: number;
 	previousStatement: Statement | undefined;
 }
 
@@ -60,6 +61,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	showImage,
 	previousStatement,
 }) => {
+	const imageUrl = statement.imagesURL?.main ?? '';
+	const [image, setImage] = useState<string>(imageUrl);
 	// Hooks
 	const { deliberativeElement, isResult } = statement;
 	const statementColor = useStatementColor({ deliberativeElement, isResult });
@@ -78,6 +81,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const [text, setText] = useState(
 		`${statement?.statement}\n${statement.description}`
 	);
+
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	// Variables
 	const creatorId = statement.creatorId;
@@ -228,6 +233,13 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 						)}
 						{_isAuthorized && (
 							<MenuOption
+								label={t('Upload Image')}
+								icon={<UploadImageIcon />}
+								onOptionClick={() => fileInputRef.current?.click()}
+							/>
+						)}
+						{_isAuthorized && (
+							<MenuOption
 								isOptionSelected={isOption}
 								icon={<LightBulbIcon />}
 								label={
@@ -267,6 +279,16 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 						)}
 					</Menu>
 				</div>
+
+				<div style={{ display: image ? 'flex' : 'none' }}>
+					<UploadImage
+						statement={statement}
+						fileInputRef={fileInputRef}
+						image={image}
+						setImage={setImage}
+					/>
+				</div>
+
 				<div className='bottom-icons'>
 					<div className='chat-more-element'>
 						<StatementChatMore statement={statement} />
