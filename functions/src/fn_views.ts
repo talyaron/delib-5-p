@@ -5,7 +5,7 @@ import { db } from ".";
 //@ts-ignore
 export async function updateStatementWithViews(ev) {
 	try {
-		console.log('updateStatementWithViews')
+	
 		const view = ev.data.data() as StatementView;
 		const statementId = view.statementId;
 		if (!statementId) throw new Error("StatementId not found");
