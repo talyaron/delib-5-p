@@ -161,6 +161,11 @@ service cloud.firestore {
         allow write: if request.auth.uid != null;
       }
 
+       match /usersData/{userId=**}{
+        allow read: if request.auth.uid != null;
+        allow write: if request.auth.uid == request.resource.data.userId;
+      }
+
       match /usersV2/{userId=**}{
         allow read: if request.auth.uid != null;
         allow write: if request.auth.uid == request.resource.data.uid;
