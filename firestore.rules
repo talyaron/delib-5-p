@@ -1,3 +1,5 @@
+rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
   
@@ -35,9 +37,9 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
 
-     match /statementViews/{statementId=**}{
-     allow write: if request.auth.uid != null;
+    match /statementViews/{statementId=**}{
       allow write: if request.auth.uid != null;
+      allow read: if request.auth.uid != null;
     }
 
       match /approval/{approvalId=**}{
@@ -163,7 +165,7 @@ service cloud.firestore {
 
        match /usersData/{userId=**}{
         allow read: if request.auth.uid != null;
-        allow write: if request.auth.uid == request.resource.data.userId;
+        allow write: if request.auth.uid != null;
       }
 
       match /usersV2/{userId=**}{
