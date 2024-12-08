@@ -36,7 +36,7 @@ service cloud.firestore {
     }
 
      match /statementViews/{statementId=**}{
-     
+     allow write: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
 
