@@ -2,7 +2,6 @@
 import { initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getMessaging, isSupported } from 'firebase/messaging';
-import { getAnalytics } from 'firebase/analytics';
 import {
 	browserLocalPersistence,
 	connectAuthEmulator,
@@ -16,7 +15,6 @@ import { isProduction } from '../general/helpers';
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const FireStore = getFirestore(app);
-export const analytics = getAnalytics(app);
 export const messaging = async () => (await isSupported()) && getMessaging(app);
 export const storage = getStorage(app);
 const auth = getAuth();
