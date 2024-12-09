@@ -1,32 +1,53 @@
-import { Statement, Collections, StatementSubscription, NotificationType } from "delib-npm";
-import { collection, doc, getDoc, onSnapshot, query, setDoc, Timestamp, Unsubscribe, where, orderBy, getDocs, writeBatch } from "firebase/firestore";
-import { getToken, onMessage } from "firebase/messaging";
-import { messaging, FireStore } from "../config";
-import { getUserFromFirebase } from "../users/usersGeneral";
-import { vapidKey } from "../configKey";
-import logo from "@/assets/logo/logo-96px.png";
-import { store } from "@/model/store";
-import { deleteInAppNotification, setInAppNotification } from "@/model/notifications/notificationsSlice";
+import {
+	Statement,
+	Collections,
+	StatementSubscription,
+	NotificationType,
+} from 'delib-npm';
+import {
+	collection,
+	doc,
+	getDoc,
+	onSnapshot,
+	query,
+	setDoc,
+	Timestamp,
+	Unsubscribe,
+	where,
+	orderBy,
+	getDocs,
+	writeBatch,
+} from 'firebase/firestore';
+import { getToken, onMessage } from 'firebase/messaging';
+import { messaging, FireStore } from '../config';
+import { getUserFromFirebase } from '../users/usersGeneral';
+import { vapidKey } from '../configKey';
+import logo from '@/assets/logo/logo-96px.png';
+import { store } from '@/model/store';
+import {
+	deleteInAppNotification,
+	setInAppNotification,
+} from '@/model/notifications/notificationsSlice';
 
 export async function getUserPermissionToNotifications(
-	t: (text: string) => string,
+	t: (text: string) => string
 ): Promise<boolean> {
 	try {
-		if (!window.hasOwnProperty("Notification"))
-			throw new Error("Notification not supported");
-		if (Notification.permission === "granted") return true;
+		if (!window.hasOwnProperty('Notification'))
+			throw new Error('Notification not supported');
+		if (Notification.permission === 'granted') return true;
 
-		if (Notification.permission === "denied") return false;
+		if (Notification.permission === 'denied') return false;
 
 		//in case the user didn't set the notification permission yet
 		alert(
 			t(
-				"Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time",
-			),
+				'Please confirm notifications to receive updates on new comments\nYou can disable notifications at any time'
+			)
 		);
 		const permission = await Notification.requestPermission();
 
-		if (permission !== "granted") throw new Error("Permission not granted");
+		if (permission !== 'granted') throw new Error('Permission not granted');
 
 		return true;
 	} catch (error) {
@@ -37,24 +58,23 @@ export async function getUserPermissionToNotifications(
 export async function onLocalMessage() {
 	try {
 		const msg = await messaging();
-		if (!msg) throw new Error("msg is undefined");
+		if (!msg) throw new Error('msg is undefined');
 
 		return onMessage(msg, (payload) => {
-
 			if (payload.data?.creatorId === getUserFromFirebase()?.uid) return;
 
 			Notification.requestPermission().then((permission) => {
-				if (permission === "granted") {
-					const title = payload.data?.title || "Delib";
+				if (permission === 'granted') {
+					const title = payload.data?.title ?? 'Delib';
 
 					const notification = new Notification(title, {
-						body: payload.data?.body || "",
-						data: { url: payload.data?.url || "" },
+						body: payload.data?.body ?? '',
+						data: { url: payload.data?.url ?? '' },
 						icon: logo,
 					});
 
 					const notificationSound = new Audio(
-						"https://delib-5.web.app/assets/sound/sweet_notification.mp3",
+						'https://delib-5.web.app/assets/sound/sweet_notification.mp3'
 					);
 
 					notificationSound.autoplay = true;
@@ -67,11 +87,10 @@ export async function onLocalMessage() {
 
 						const url = target.data.url;
 
-						// window.open(url, "_blank");
-						window.open(url, "_self");
+						window.open(url, '_self');
 					};
 				} else {
-					console.error("Unable to get permission to notify.");
+					console.error('Unable to get permission to notify.');
 				}
 			});
 		});
@@ -82,34 +101,33 @@ export async function onLocalMessage() {
 
 export async function setStatementSubscriptionNotificationToDB(
 	statement: Statement | undefined,
-	notification = true,
+	notification = true
 ) {
 	try {
 		const msg = await messaging();
-		if (!msg) throw new Error("Notifications not supported");
+		if (!msg) throw new Error('Notifications not supported');
 		const token = await getToken(msg, { vapidKey });
 		if (!token)
 			throw new Error(
-				"Token is undefined in setStatementSubscriptionNotificationToDB.",
+				'Token is undefined in setStatementSubscriptionNotificationToDB.'
 			);
 
-		if (!statement) throw new Error("Statement is undefined");
+		if (!statement) throw new Error('Statement is undefined');
 		const { statementId } = statement;
 
 		const user = getUserFromFirebase();
-		if (!user) throw new Error("User not logged in");
-		if (!user.uid) throw new Error("User not logged in");
+		if (!user) throw new Error('User not logged in');
+		if (!user.uid) throw new Error('User not logged in');
 
 		const statementsSubscribeId = `${user.uid}--${statementId}`;
 		const statementsSubscribeRef = doc(
 			FireStore,
 			Collections.statementsSubscribe,
-			statementsSubscribeId,
+			statementsSubscribeId
 		);
 		const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
 
 		if (!statementSubscriptionDB.exists()) {
-
 			//set new subscription
 			const tokenArr = [token];
 
@@ -125,14 +143,12 @@ export async function setStatementSubscriptionNotificationToDB(
 					statementsSubscribeId,
 					statement,
 				},
-				{ merge: true },
+				{ merge: true }
 			);
 		} else {
 			// update subscription -> Remove notifications
 			const statementSubscription =
 				statementSubscriptionDB.data() as StatementSubscription;
-
-			// StatementSubscriptionSchema.parse(statementSubscription);
 
 			const tokenArr = statementSubscription.token
 				? [...statementSubscription.token]
@@ -151,7 +167,7 @@ export async function setStatementSubscriptionNotificationToDB(
 					token: tokenArr,
 					notification,
 				},
-				{ merge: true },
+				{ merge: true }
 			);
 		}
 	} catch (error) {
@@ -162,43 +178,66 @@ export async function setStatementSubscriptionNotificationToDB(
 export function listenToInAppNotifications(): Unsubscribe {
 	try {
 		const user = store.getState().user.user;
-		if (!user) return () => { return };
+		if (!user)
+			return () => {
+				return;
+			};
 
 		const dispatch = store.dispatch;
 
 		const messagesRef = collection(FireStore, Collections.inAppNotifications);
-		const q = query(messagesRef, where("userId", "==", user.uid), where("read", "==", false), orderBy("createdAt", "desc"));
-		
+		const q = query(
+			messagesRef,
+			where('userId', '==', user.uid),
+			where('read', '==', false),
+			orderBy('createdAt', 'desc')
+		);
+
 		return onSnapshot(q, (messagesDB) => {
 			messagesDB.docChanges().forEach((change) => {
-				if (change.type === "added" || change.type === "modified") {
+				if (change.type === 'added' || change.type === 'modified') {
 					const message = change.doc.data() as NotificationType;
 					dispatch(setInAppNotification(message));
-				} else if (change.type === "removed") {
+				} else if (change.type === 'removed') {
 					dispatch(deleteInAppNotification(change.doc.id));
 				}
 			});
 		});
-
 	} catch (error) {
-		console.error(error)
-		
-		return () => { return }
+		console.error(error);
+
+		return () => {
+			return;
+		};
 	}
 }
 
-export async function updateNotificationRead(notificationId: string, parentId?: string) {
+export async function updateNotificationRead(
+	notificationId: string,
+	parentId?: string
+) {
 	try {
 		const user = store.getState().user.user;
 		if (!user) return;
 
-		const notificationRef = doc(FireStore, Collections.inAppNotifications, notificationId);
+		const notificationRef = doc(
+			FireStore,
+			Collections.inAppNotifications,
+			notificationId
+		);
 		setDoc(notificationRef, { read: true }, { merge: true });
 
 		//set all notifications of this parent to read
 		if (!parentId) return;
-		const notificationsRef = collection(FireStore, Collections.inAppNotifications);
-		const q = query(notificationsRef, where("userId", "==", user.uid), where("parentId", "==", parentId));
+		const notificationsRef = collection(
+			FireStore,
+			Collections.inAppNotifications
+		);
+		const q = query(
+			notificationsRef,
+			where('userId', '==', user.uid),
+			where('parentId', '==', parentId)
+		);
 		const allParentNotificationsDB = await getDocs(q);
 
 		const batch = writeBatch(FireStore);
@@ -206,7 +245,6 @@ export async function updateNotificationRead(notificationId: string, parentId?: 
 			batch.set(doc.ref, { read: true }, { merge: true });
 		});
 		await batch.commit();
-		
 	} catch (error) {
 		console.error(error);
 	}

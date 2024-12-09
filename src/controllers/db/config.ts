@@ -3,7 +3,12 @@ import { initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getMessaging, isSupported } from 'firebase/messaging';
 import { getAnalytics } from 'firebase/analytics';
-import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import {
+	browserLocalPersistence,
+	connectAuthEmulator,
+	getAuth,
+	setPersistence,
+} from 'firebase/auth';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import firebaseConfig from './configKey';
 import { isProduction } from '../general/helpers';
@@ -16,6 +21,14 @@ export const messaging = async () => (await isSupported()) && getMessaging(app);
 export const storage = getStorage(app);
 const auth = getAuth();
 
+setPersistence(auth, browserLocalPersistence)
+	.then(() => {
+		console.info('Persistence set to local storage (cross-site safe).');
+	})
+	.catch((error) => {
+		console.error('Error setting persistence:', error);
+	});
+
 //development
 if (!isProduction()) {
 	console.warn('Running on development mode');
@@ -24,3 +37,5 @@ if (!isProduction()) {
 	connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
+
+export { auth };
