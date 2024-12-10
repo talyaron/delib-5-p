@@ -11,7 +11,7 @@ import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAn
 import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
-import "./StatementChat.scss";
+import styles from "./StatementChat.module.scss";
 import { useLocation, useParams } from "react-router-dom";
 import Description from "../evaluations/components/description/Description";
 import { StatementContext } from "../../StatementCont";
@@ -102,12 +102,12 @@ const StatementChat: FC = () => {
 	}, [subStatements.length]);
 
 	return (
-		<div>
+		<div className={styles.chat}>
 			<div
-				className={`page__main ${toSlide && slideInOrOut}`}
+				className={`${toSlide && slideInOrOut}`}
 				id={`msg-${statement?.statementId}`}
 			>
-				<div className="statement-chat__description">
+				<div className="simple-wrapper">
 					<Description statement={statement} />
 				</div>
 				{subStatements?.map((statementSub: Statement, index) => (

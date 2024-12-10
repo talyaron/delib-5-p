@@ -404,6 +404,11 @@ b {
   padding: 10px;
 }
 
+.simple-wrapper{
+  width:var(--wrapper);
+  margin:auto;
+}
+
 .wrapper {
   flex: auto;
   width: 100%;

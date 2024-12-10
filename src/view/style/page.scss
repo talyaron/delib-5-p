@@ -8,8 +8,8 @@
 
 
     &__header {
-        width: 100%;    
-      
+        width: 100%;
+
 
         &.rtl {
             border-bottom-right-radius: 0;
@@ -123,35 +123,45 @@
     }
 
     &__main {
-       
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        overflow-y: auto;
         width: 100vw;
 
-        h1{
-            text-align: start;
-            margin:2rem 0 0 0;
-            position:sticky;
-            top:0;
-            color: var(--text-headline);
-        }
-        .page__description{
-            margin: 1rem 0;
-            color: var(--text-description)
-        }
-
-        .statement-chat{
+        .statement-inner {
             display: flex;
-            width:200vw;
-            overflow-x: auto;
+            flex-direction: column;
+            height: 100%;
+            width: 100vw;
 
-            >*{
-                width: 100vw;
-                overflow-y: auto;
+
+
+            h1 {
+                text-align: start;
+                margin: 2rem auto 2rem auto;
+                position: sticky;
+                top: 0;
+                color: var(--text-headline);
+                width: var(--wrapper);
+            }
+
+            .page__description {
+                margin: 1rem 0;
+                color: var(--text-description)
+            }
+
+            &__wrapper {
+                display: flex; // Change from grid to flex
+                width: 100vw; // Set explicit width for both panels
+                overflow-x: scroll; // Make sure scroll is enabled
+                scroll-behavior: smooth; // Add smooth scrolling
+
+                >* {
+                    width: 100vw;
+                    flex-shrink: 0; // Prevent shrinking
+                    overflow-y: auto;
+                }
             }
         }
+
+
     }
 
     &__footer {
@@ -170,8 +180,8 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-          
-         
+
+
 
             &__input {
                 padding: 0.3rem 70px 0.2rem 0.2rem;
@@ -183,7 +193,7 @@
                 flex: auto;
                 box-shadow: 0px 2px 4px 0px rgba(181, 197, 232, 0.48);
                 box-shadow: 0px -2px 4px 0px rgba(195, 202, 217, 0.5);
-               font-size: 1rem;
+                font-size: 1rem;
 
                 &::placeholder {
                     color: #979797;
