@@ -13,11 +13,12 @@ import firebaseConfig from './configKey';
 import { isProduction } from '../general/helpers';
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const FireStore = getFirestore(app);
-export const messaging = async () => (await isSupported()) && getMessaging(app);
-export const storage = getStorage(app);
+const app = initializeApp(firebaseConfig);
+const FireStore = getFirestore(app);
+const storage = getStorage(app);
 const auth = getAuth();
+
+const messaging = async () => (await isSupported()) && getMessaging(app);
 
 setPersistence(auth, browserLocalPersistence)
 	.then(() => {
@@ -36,4 +37,4 @@ if (!isProduction()) {
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
 
-export { auth };
+export { auth, FireStore, messaging, storage, app };

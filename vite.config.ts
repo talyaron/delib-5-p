@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
-import fs from 'fs';
 
 const manifestPlugin: Partial<VitePWAOptions> = {
 	registerType: 'autoUpdate',
@@ -84,14 +83,6 @@ export default defineConfig(({ mode }) => {
 		},
 		define: {
 			'process.env': process.env,
-		},
-		server: {
-			https: {
-				key: fs.readFileSync(path.resolve(__dirname, './localhost-key.pem')),
-				cert: fs.readFileSync(path.resolve(__dirname, './localhost.pem')),
-			},
-			host: 'localhost',
-			port: 5173,
 		},
 	};
 });
