@@ -1,4 +1,3 @@
-
 rules_version = '2';
 
 service cloud.firestore {
@@ -32,14 +31,22 @@ service cloud.firestore {
         allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
-    match /usersSign/{userSignId=**}{
-      allow write: if request.auth.uid != null;
-    }
 
     match /importance/{importanceId=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
+
+    match /statementViews/{statementId=**}{
+      allow write: if request.auth.uid != null;
+      allow read: if request.auth.uid != null;
+    }
+
+    match /statementSegments/{segementId=**}{
+      allow write: if request.auth.uid != null;
+      allow read: if request.auth.uid != null;
+    }
+
 
       match /approval/{approvalId=**}{
       allow read;
@@ -65,8 +72,7 @@ service cloud.firestore {
        allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
-    
-    match /admins/{adminStatementId=**}{
+      match /admins/{adminStatementId=**}{
      
       allow write: if request.auth.uid == request.resource.data.user.uid;
     }
@@ -158,10 +164,15 @@ service cloud.firestore {
     	allow write: if request.auth.uid == resource.data.creator.uid
     }
 
-    match /usersSettings/{userId=**}{
+      match /usersSettings/{userId=**}{
         allow read: if request.auth.uid != null;
         allow write: if request.auth.uid != null;
-    }
+      }
+
+       match /usersData/{userId=**}{
+        allow read: if request.auth.uid != null;
+        allow write: if request.auth.uid != null;
+      }
 
       match /usersV2/{userId=**}{
         allow read: if request.auth.uid != null;
