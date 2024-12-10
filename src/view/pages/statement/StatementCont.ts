@@ -1,4 +1,4 @@
-import { Statement, NavObject, Screen, StatementSubscription, User } from "delib-npm";
+import { Statement, NavObject, Screen, StatementSubscription, User,Role} from "delib-npm";
 import { showNavElements } from "./components/nav/top/statementTopNavCont";
 import { allScreens } from "./components/nav/top/StatementTopNavModel.tsx";
 import { createContext } from "react";
@@ -42,12 +42,14 @@ interface StatementContextProps {
 	statement: Statement | undefined;
 	talker: User | null;
 	handleShowTalker: (talker: User | null) => void;
+	role:Role | undefined;
 }
 
 export const StatementContext = createContext<StatementContextProps>(
 	{
 		statement: undefined,
 		talker: null,
+		role: undefined,
 		handleShowTalker: () => {
 			return;
 		},

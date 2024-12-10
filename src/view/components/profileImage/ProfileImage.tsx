@@ -1,12 +1,11 @@
-import { FC } from "react";
-import { User } from "delib-npm";
+import { FC, useContext } from "react";
 import "./ProfileImage.scss";
+import { StatementContext } from "@/view/pages/statement/StatementCont";
 
-interface Props {
-    user: User | null;
-}
-const ProfileImage: FC<Props> = ({ user }) => {
-	if (!user) return null;
+const ProfileImage: FC = () => {
+	const {talker} = useContext(StatementContext);
+
+	if (!talker) return null;
 
 	// const photoURL = user.photoURL ? user.photoURL : anonymous;
 
@@ -14,11 +13,11 @@ const ProfileImage: FC<Props> = ({ user }) => {
 		<>
 			<div className="profile-image">
 				<div className="profile-image-box">
-					{/* <div
-                        className="image"
-                        style={{ backgroundImage: `url(${photoURL})` }}
-                    ></div> */}
-					<h3>{user.displayName}</h3>
+					{talker.photoURL && <div
+						className="image"
+						style={{ backgroundImage: `url(${talker.photoURL})` }}
+					></div>}
+					<h3>{talker.displayName}</h3>
 				</div>
 			</div>
 		</>

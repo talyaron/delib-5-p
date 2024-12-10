@@ -1,20 +1,16 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import FollowMeIcon from "../../../../components/icons/FollowMeIcon";
-import { Role, Statement } from "delib-npm";
 import { isAdmin } from "@/controllers/general/helpers";
 import { Link, useLocation } from "react-router-dom";
 import { setFollowMeDB } from "@/controllers/db/statements/setStatements";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSelector } from "@/model/statements/statementsSlice";
 import "./FollowMeToast.scss";
+import { StatementContext } from "../../StatementCont";
 
-interface FollowMeToastProps {
-    role: Role | undefined;
-    statement: Statement | undefined;
-}
-
-const FollowMeToast: FC<FollowMeToastProps> = ({ role, statement }) => {
+const FollowMeToast: FC = () => {
+	const { statement, role } = useContext(StatementContext);
 	const { dir, t } = useLanguage();
 	const _isAdmin = isAdmin(role);
 	const { pathname } = useLocation();

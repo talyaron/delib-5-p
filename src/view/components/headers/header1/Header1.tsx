@@ -1,13 +1,10 @@
-import { Statement } from "delib-npm";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import styles from "./Header1.module.scss";
 import EditTitle from "../../edit/EditTitle";
+import { StatementContext } from "@/view/pages/statement/StatementCont";
 
-interface Props {
-  statement: Statement | undefined;
-}
-
-const Header1: FC<Props> = ({ statement }) => {
+const Header1: FC = () => {
+	const { statement } = useContext(StatementContext);
 	const [edit, setEdit] = useState(false);
 
 	function handleSetEdit() {

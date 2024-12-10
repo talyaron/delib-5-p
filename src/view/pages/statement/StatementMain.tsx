@@ -44,6 +44,7 @@ import FollowMeToast from "./components/followMeToast/FollowMeToast";
 import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 import { createSelector } from "@reduxjs/toolkit";
 import Header1 from "@/view/components/headers/header1/Header1";
+import Switch from "./components/switch/Switch";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -205,7 +206,7 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<StatementContext.Provider value={{ statement, talker,handleShowTalker }}>
+			<StatementContext.Provider value={{ statement, talker,handleShowTalker, role}}>
 				<div className="page">
 					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 					{talker && (
@@ -214,7 +215,7 @@ const StatementMain: FC = () => {
 								handleShowTalker(null);
 							}}
 						>
-							<ProfileImage user={talker} />
+							<ProfileImage />
 						</button>
 					)}
 					{askNotifications && (
@@ -235,14 +236,8 @@ const StatementMain: FC = () => {
 						role={role}
 					/>
 					<MapProvider>
-						<FollowMeToast role={role} statement={statement} />
-						<Header1 statement={statement} />
-						<SwitchScreens
-							screen={screen}
-							statement={statement}
-							statementSubscription={statementSubscription}
-							subStatements={subStatements}
-						/>
+						
+						<Switch />
 					</MapProvider>
 				</div>
 			</StatementContext.Provider>
