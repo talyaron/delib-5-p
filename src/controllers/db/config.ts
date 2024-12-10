@@ -32,7 +32,7 @@ if (!isProduction()) {
 	console.warn('Running on development mode');
 
 	connectFirestoreEmulator(FireStore, '127.0.0.1', 8080);
-	connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+	connectAuthEmulator(auth, 'http://localhost:9099');
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
 
