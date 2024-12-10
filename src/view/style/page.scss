@@ -129,6 +129,29 @@
         height: 100%;
         overflow-y: auto;
         width: 100vw;
+
+        h1{
+            text-align: start;
+            margin:2rem 0 0 0;
+            position:sticky;
+            top:0;
+            color: var(--text-headline);
+        }
+        .page__description{
+            margin: 1rem 0;
+            color: var(--text-description)
+        }
+
+        .statement-chat{
+            display: flex;
+            width:200vw;
+            overflow-x: auto;
+
+            >*{
+                width: 100vw;
+                overflow-y: auto;
+            }
+        }
     }
 
     &__footer {

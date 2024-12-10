@@ -315,6 +315,7 @@
 
   //text
   --text-headline: #232f4a;
+  --text-description:#191E29;
   --text-paragraph: #57688f;
   --text-paragraph-light: #818fad;
   --text-paragraph-lightest: #a4aec5;
@@ -413,7 +414,6 @@ b {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding-bottom: 100px;
 
   @media screen and (max-width: 768px) {

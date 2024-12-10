@@ -4,11 +4,11 @@ import styles from "./Description.module.scss";
 import Text from "@/view/components/text/Text";
 
 interface Props {
-  statement: Statement;
+  statement: Statement|undefined;
 }
 
 const Description: FC<Props> = ({ statement }) => {
-	if (!statement.description) {
+	if (!statement?.description) {
 		return null;
 	}
 	

@@ -104,8 +104,9 @@ export const listenToStatement = (
 	}
 };
 
-export const listenToSubStatements = (statementId: string | undefined, dispatch: AppDispatch): Unsubscribe => {
+export const listenToSubStatements = (statementId: string | undefined): Unsubscribe => {
 	try {
+		const dispatch = store.dispatch;
 		if (!statementId) throw new Error("Statement id is undefined");
 		const statementsRef = collection(FireStore, Collections.statements);
 		const q = query(

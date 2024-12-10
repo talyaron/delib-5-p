@@ -19,7 +19,8 @@ const Header1: FC = () => {
 						{
 							<EditTitle
 								statement={statement}
-								onlyTitle={true}
+								useTitle={true}
+								useDescription={false}
 								isEdit={edit}
 								setEdit={setEdit}
 							/>

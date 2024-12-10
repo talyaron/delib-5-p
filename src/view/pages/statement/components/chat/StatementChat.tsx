@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef, useContext } from "react";
 
 // Third Party Imports
 import { Statement } from "delib-npm";
@@ -12,22 +12,19 @@ import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 import "./StatementChat.scss";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Description from "../evaluations/components/description/Description";
-
-interface Props {
-  statement: Statement;
-  subStatements: Statement[];
-}
+import { StatementContext } from "../../StatementCont";
+import { listenToSubStatements } from "@/controllers/db/statements/listenToStatements";
+import { statementSubsSelector } from "@/model/statements/statementsSlice";
 
 let firstTime = true;
 let numberOfSubStatements = 0;
 
-const StatementChat: FC<Props> = ({
-	statement,
-	subStatements,
-
-}) => {
+const StatementChat: FC = () => {
+	const {statementId} = useParams();
+	const {statement} = useContext(StatementContext);
+	const subStatements = useAppSelector(statementSubsSelector(statementId));
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
 	const location = useLocation();
@@ -66,6 +63,12 @@ const StatementChat: FC<Props> = ({
 
 	useEffect(() => {
 		firstTime = true;
+
+		const unsubscribe = listenToSubStatements(statementId);
+
+		return () => {
+			unsubscribe();
+		};
 	}, []);
 
 	//effects
@@ -99,10 +102,10 @@ const StatementChat: FC<Props> = ({
 	}, [subStatements.length]);
 
 	return (
-		<>
+		<div>
 			<div
-				className={`page__main statement-chat ${toSlide && slideInOrOut}`}
-				id={`msg-${statement.statementId}`}
+				className={`page__main ${toSlide && slideInOrOut}`}
+				id={`msg-${statement?.statementId}`}
 			>
 				<div className="statement-chat__description">
 					<Description statement={statement} />
@@ -119,7 +122,7 @@ const StatementChat: FC<Props> = ({
 
 				<div ref={messagesEndRef} />
 			</div>
-			<div className="page__footer">
+			<div>
 				<NewMessages
 					newMessages={newMessages}
 					setNewMessages={setNewMessages}
@@ -127,7 +130,7 @@ const StatementChat: FC<Props> = ({
 				/>
 				{statement && <StatementInput statement={statement} />}
 			</div>
-		</>
+		</div>
 	);
 };
 

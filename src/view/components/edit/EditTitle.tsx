@@ -27,10 +27,12 @@ interface Props {
 	isEdit: boolean;
 	setEdit: Dispatch<SetStateAction<boolean>>;
 	isTextArea?: boolean;
-	onlyTitle?: boolean;
+	useTitle?: boolean;
+	useDescription?: boolean;
+	useDescription?: boolean;
 }
 
-const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
+const EditTitle: FC<Props> = ({ useTitle = true, useDescription = true, statement, isEdit, setEdit, isTextArea }) => {
 	const [description, setDescription] = useState(statement?.description || '');
 	const [title, setTitle] = useState(statement?.statement || '');
 
@@ -80,8 +82,8 @@ const EditTitle: FC<Props> = ({ statement, isEdit, setEdit, isTextArea }) => {
 		return (
 			<div style={{ direction: direction, textAlign: align }}>
 				<Text
-					statement={statement.statement}
-					description={statement.description}
+					statement={useTitle && statement.statement}
+					description={useDescription && statement.description}
 				/>
 			</div>
 		);
