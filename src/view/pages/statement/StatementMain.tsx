@@ -228,7 +228,6 @@ const StatementMain: FC = () => {
 					statementSubscription={statementSubscription}
 					topParentStatement={topParentStatement}
 					screen={screen ?? Screen.CHAT}
-					showAskPermission={showAskPermission}
 					setShowAskPermission={setShowAskPermission}
 					role={role}
 				/>

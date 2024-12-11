@@ -27,7 +27,7 @@ export default function MemberRejection() {
                     please get in touch with the group admin for inquiries about
                     your participation status
 				</p>
-				<button className="btn" onClick={() => logOut()}>
+				<button className="btn" onClick={async () => await logOut()}>
                     Back home
 				</button>
 			</div>

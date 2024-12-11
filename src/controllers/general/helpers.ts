@@ -24,7 +24,6 @@ export function updateArray<T>(
 			throw new Error(`Item doesn't have property ${updateByProperty}`);
 		}
 
-		//find in array;
 		const index = arrayTemp.findIndex(
 			(item) => item[updateByProperty] === newItem[updateByProperty],
 		);
@@ -57,7 +56,8 @@ export function isAuthorized(
 		if (!statement) throw new Error("No statement");
 
 		const user = store.getState().user.user;
-		if (!user || !user.uid) throw new Error("No user");
+		if (!user?.uid) throw new Error("No user");
+
 		if (statement.creatorId === user.uid) return true;
 
 		if (parentStatementCreatorId === user.uid) return true;
@@ -70,7 +70,7 @@ export function isAuthorized(
 			return true;
 		}
 
-		if (authorizedRoles && authorizedRoles.includes(role)) return true;
+		if (authorizedRoles?.includes(role)) return true;
 
 		return false;
 	} catch (error) {
@@ -97,11 +97,13 @@ export function navigateToStatementTab(
 		// If chat is a sub screen, navigate to chat.
 		// Otherwise, navigate to the first sub screen.
 
-		const tab = statement.subScreens?.includes(Screen.CHAT)
+		let tab = statement.subScreens?.includes(Screen.CHAT)
 			? Screen.CHAT
-			: statement.subScreens
-				? statement.subScreens[0]
-				: Screen.SETTINGS;
+			: Screen.SETTINGS;
+	
+		if (statement.subScreens) {
+			tab = statement.subScreens[0];
+		}
 
 		navigate(`/statement/${statement.statementId}/${tab}`, {
 			state: { from: window.location.pathname },
@@ -119,8 +121,7 @@ export function getInitials(fullName: string) {
 	let initials = "";
 
 	// Iterate through each word and append the first letter to the initials string
-	for (let i = 0; i < words.length; i++) {
-		const word = words[i];
+	for (const word of words) {
 		if (word.length > 0) {
 			initials += word[0].toUpperCase();
 		}
@@ -160,7 +161,7 @@ export const statementTitleToDisplay = (
 //function which check if the statement can be linked to children
 
 export function getPastelColor() {
-	return `hsl(${360 * Math.random()},100%,75%)` || "red";
+	return `hsl(${360 * Math.random()},100%,75%)`;
 }
 
 export function calculateFontSize(text: string, maxSize = 6, minSize = 14) {
@@ -227,7 +228,7 @@ export function getStatementSubscriptionId(
 	user: User,
 ): string | undefined {
 	try {
-		if (!user || !user.uid) throw new Error("No user");
+		if (!user?.uid) throw new Error("No user");
 		if (!statementId) throw new Error("No statementId");
 
 		return `${user.uid}--${statementId}`;
