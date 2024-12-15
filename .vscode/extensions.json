@@ -1,0 +1,10 @@
+{
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"bierner.markdown-mermaid",
+		"streetsidesoftware.code-spell-checker",
+		"sonarsource.sonarlint-vscode"
+	]
+}
