@@ -50,7 +50,6 @@ interface Props {
   statementSubscription: StatementSubscription | undefined;
   topParentStatement: Statement | undefined;
   role: Role | undefined;
-  showAskPermission: boolean;
   setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -141,14 +140,13 @@ const StatementHeader: FC<Props> = ({
 		}
 	}
 
-	function handleLogout() {
+	async function handleLogout() {
 		try {
-			logOut();
+			setIsHeaderMenuOpen(false);
+			await logOut();
 		} catch (error) {
 			console.error(error);
-		} finally {
-			setIsHeaderMenuOpen(false);
-		}
+		} 
 	}
 
 	const menuIconStyle = {

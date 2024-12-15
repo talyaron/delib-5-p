@@ -1,37 +1,51 @@
 import {
-	getAuth,
-	signOut,
 	signInWithPopup,
 	GoogleAuthProvider,
 	onAuthStateChanged,
 	signInAnonymously,
-	Unsubscribe
-} from "firebase/auth";
-import { app } from "./config";
-import { parseUserFromFirebase, User } from "delib-npm";
-import { NavigateFunction } from "react-router-dom";
+	Unsubscribe,
+} from 'firebase/auth';
+import { auth } from './config';
+import { parseUserFromFirebase, User } from 'delib-npm';
+import { NavigateFunction } from 'react-router-dom';
 
 // Helper functions
-import { setUserToDB } from "./users/setUsersDB";
+import { setUserToDB } from './users/setUsersDB';
 
 // Redux store imports
-import { AppDispatch, store } from "@/model/store";
-import { setFontSize, setUser } from "@/model/users/userSlice";
-import { resetStatements } from "@/model/statements/statementsSlice";
-import { resetEvaluations } from "@/model/evaluations/evaluationsSlice";
-import { resetVotes } from "@/model/vote/votesSlice";
-import { resetResults } from "@/model/results/resultsSlice";
-import { setInitLocation } from "@/model/location/locationSlice";
-import { defaultFontSize } from "@/model/fonts/fontsModel";
-
-const provider = new GoogleAuthProvider();
-
-export const auth = getAuth(app);
+import { AppDispatch, store } from '@/model/store';
+import { setFontSize, setUser } from '@/model/users/userSlice';
+import { resetStatements } from '@/model/statements/statementsSlice';
+import { resetEvaluations } from '@/model/evaluations/evaluationsSlice';
+import { resetVotes } from '@/model/vote/votesSlice';
+import { resetResults } from '@/model/results/resultsSlice';
+import { setInitLocation } from '@/model/location/locationSlice';
+import { defaultFontSize } from '@/model/fonts/fontsModel';
 
 export function googleLogin() {
+	const provider = new GoogleAuthProvider();
 	signInWithPopup(auth, provider)
 		.then(() => {
-			console.info("user signed in with google ");
+			console.info('user signed in with google ');
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+}
+
+export const logOut = async () => {
+	try {
+		await auth.signOut();
+		store.dispatch(setInitLocation('/home'));
+	} catch (error) {
+		console.error('Error during logout:', error);
+	}
+};
+
+export function signAnonymously() {
+	signInAnonymously(auth)
+		.then(() => {
+			console.info('user signed in anonymously');
 		})
 		.catch((error) => {
 			console.error(error);
@@ -42,31 +56,33 @@ export const listenToAuth =
 		(
 			isAnonymous: boolean,
 			navigate: NavigateFunction,
-			initialUrl: string,
+			initialUrl: string
 		): Unsubscribe => {
 			return onAuthStateChanged(auth, async (userFB) => {
 				try {
 					if (!userFB && isAnonymous !== true) {
-						navigate("/");
+						navigate('/');
 					}
 					if (isAnonymous && !userFB) {
 						signAnonymously();
 					}
 					if (userFB) {
-						// User is signed in
+					// User is signed in
 						const user = { ...userFB };
 						if (!user.displayName)
 							user.displayName =
-								localStorage.getItem("displayName") ||
-								`Anonymous ${Math.floor(Math.random() * 10000)}`;
+							localStorage.getItem('displayName') ??
+							`Anonymous ${Math.floor(Math.random() * 10000)}`;
 						const _user = parseUserFromFirebase(user);
 
 						if (_user?.isAnonymous) {
-							_user.displayName = sessionStorage.getItem("displayName") || `Anonymous ${Math.floor(Math.random() * 10000)}`;
+							_user.displayName =
+							sessionStorage.getItem('displayName') ??
+							`Anonymous ${Math.floor(Math.random() * 10000)}`;
 						}
 
 						// console.info("User is signed in")
-						if (!_user) throw new Error("user is undefined");
+						if (!_user) throw new Error('user is undefined');
 
 						const userDB = (await setUserToDB(_user)) as User;
 
@@ -74,14 +90,14 @@ export const listenToAuth =
 
 						dispatch(setFontSize(fontSize));
 
-						document.body.style.fontSize = fontSize + "px";
+						document.body.style.fontSize = fontSize + 'px';
 
-						if (!userDB) throw new Error("userDB is undefined");
+						if (!userDB) throw new Error('userDB is undefined');
 						dispatch(setUser(userDB));
 
 						if (initialUrl) navigate(initialUrl);
 					} else {
-						// User is not logged in.
+					// User is not logged in.
 						dispatch(resetStatements());
 						dispatch(resetEvaluations());
 						dispatch(resetVotes());
@@ -93,63 +109,3 @@ export const listenToAuth =
 				}
 			});
 		};
-
-export function logOut() {
-	const dispatch = store.dispatch;
-	signOut(auth)
-		.then(() => {
-			// Sign-out successful.
-			console.info("Sign-out successful.");
-			dispatch(setInitLocation("/home"));
-		})
-		.catch((error) => {
-			// An error happened.
-			console.error(error);
-		});
-}
-
-export function signAnonymously() {
-	signInAnonymously(auth)
-		.then(() => {
-			console.info("user signed in anounymously");
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-}
-
-// export function listenToRedirectResults() {
-// 	getRedirectResult(auth)
-// 		.then((result) => {
-// 			try {
-// 				if(!result) throw new Error("Result is undefined after redirect.")
-// 			if (result.user) {
-
-// 					// User signed in successfully.
-// 					const user = result.user;
-// 					if(!user) throw new Error("User is undefined after redirect.")
-// 					console.log("User signed in:", user);
-
-// 					// You can access additional information here
-// 					// const credential = result.credential;
-// 					// const accessToken = credential.accessToken;
-
-// 					// Handle the signed-in user information as needed
-// 				} else {
-// 					// No user is signed in.
-// 					console.log("No user signed in after redirect.");
-// 				}
-// 			} catch (error) {
-// 				console.error(error)
-
-// 			}
-// 		})
-// 		.catch((error) => {
-// 			// Handle errors here
-// 			const errorCode = error.code;
-// 			const errorMessage = error.message;
-// 			const email = error.email;
-// 			const credential = error.credential;
-// 			console.error("Error after redirect:", errorCode, errorMessage);
-// 		});
-// }
