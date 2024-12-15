@@ -5,15 +5,12 @@
 		"prettier",
 		"plugin:jsx-a11y/recommended"
 	],
-
 	"env": {
 		"browser": true,
 		"es6": true,
 		"node": true
 	},
 	"rules": {
-		"react/display-name": "error",
-		"react/no-unescaped-entities": "off",
 		"import/no-anonymous-default-export": "error",
 		"@typescript-eslint/no-unused-vars": "error",
 		"@typescript-eslint/ban-ts-comment": "off",
@@ -38,10 +35,7 @@
 		],
 		"no-console": ["error", { "allow": ["warn", "error", "info"] }],
 		"indent": ["error", "tab"],
-		"no-multiple-empty-lines": [
-			"error",
-			{ "max": 1, "maxEOF": 0, "maxBOF": 0 } // Limit max empty lines
-		]
+		"no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0, "maxBOF": 0 }]
 	},
 	"settings": {
 		"react": {

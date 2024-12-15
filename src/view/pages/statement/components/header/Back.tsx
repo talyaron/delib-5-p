@@ -2,13 +2,13 @@ import { Statement } from 'delib-npm';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackArrowIcon from '@/assets/icons/chevronLeftIcon.svg?react';
-import { StyleProps } from '@/controllers/hooks/useStatementColor';
+import { StatementStyleProps } from '@/controllers/hooks/useStatementColor';
 import { historySelect, HistoryTracker } from '@/model/history/HistorySlice';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 interface Props {
 	statement: Statement | undefined;
-	headerColor: StyleProps;
+	headerColor: StatementStyleProps;
 }
 
 const Back: FC<Props> = ({ statement, headerColor }) => {

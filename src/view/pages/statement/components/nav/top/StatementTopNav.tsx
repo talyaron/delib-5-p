@@ -16,10 +16,10 @@ import FollowMe from '@/assets/icons/follow.svg?react';
 import ShareIcon from '@/assets/icons/shareIcon.svg?react';
 import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
 import SettingsIcon from '@/assets/icons/settings.svg?react';
+import HomeIcon from '@/assets/icons/homeIcon.svg?react';
 
 //components
 import Back from '../../header/Back';
-import HomeButton from '../../header/HomeButton';
 import { useSelector } from 'react-redux';
 import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
 import Menu from '@/view/components/menu/Menu';
@@ -28,15 +28,15 @@ import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-    statement?: Statement;
-    handleShare: () => void;
-    handleFollowMe: () => void;
-    handleToggleNotifications: () => void;
-    handleInvitePanel: () => void;
-    handleLogout: () => void;
-    setIsHeaderMenuOpen: (value: boolean) => void;
-    isHeaderMenuOpen: boolean;
-    permission: boolean;
+	statement?: Statement;
+	handleShare: () => void;
+	handleFollowMe: () => void;
+	handleToggleNotifications: () => void;
+	handleInvitePanel: () => void;
+	handleLogout: () => void;
+	setIsHeaderMenuOpen: (value: boolean) => void;
+	isHeaderMenuOpen: boolean;
+	permission: boolean;
 }
 
 const StatementTopNav: FC<Props> = ({
@@ -55,11 +55,13 @@ const StatementTopNav: FC<Props> = ({
 	const navigate = useNavigate();
 
 	// const
-	const deliberativeElement = statement?.deliberativeElement;
-	const isResult = statement?.isResult;
-	const headerStyle = useStatementColor({ deliberativeElement, isResult });
+	const statementColors = useStatementColor({
+		deliberativeElement: statement?.deliberativeElement,
+		isResult: statement?.isResult,
+	});
+
 	const menuIconStyle = {
-		color: headerStyle.backgroundColor,
+		color: statementColors.backgroundColor,
 		width: '24px',
 	};
 
@@ -68,9 +70,9 @@ const StatementTopNav: FC<Props> = ({
 	);
 
 	const enableNavigationalElements =
-        statement?.statementSettings?.enableNavigationalElements !== undefined
-        	? statement?.statementSettings?.enableNavigationalElements
-        	: true;
+		statement?.statementSettings?.enableNavigationalElements !== undefined
+			? statement?.statementSettings?.enableNavigationalElements
+			: true;
 	const isAdmin = statementSubscription?.role === Role.admin;
 	const allowNavigation = enableNavigationalElements || isAdmin;
 
@@ -88,8 +90,8 @@ const StatementTopNav: FC<Props> = ({
 	return (
 		<nav
 			className={styles.nav}
-			data-cy="statement-nav"
-			style={{ backgroundColor: headerStyle.backgroundColor }}
+			data-cy='statement-nav'
+			style={{ backgroundColor: statementColors.backgroundColor }}
 		>
 			<div className={styles.wrapper}>
 				{allowNavigation && (
@@ -97,7 +99,7 @@ const StatementTopNav: FC<Props> = ({
 						<Menu
 							setIsOpen={setIsHeaderMenuOpen}
 							isMenuOpen={isHeaderMenuOpen}
-							iconColor={headerStyle.color}
+							iconColor={statementColors.color}
 							isHamburger={true}
 						>
 							<MenuOption
@@ -134,26 +136,26 @@ const StatementTopNav: FC<Props> = ({
 				)}
 				{allowNavigation && (
 					<button onClick={handleGotToChat}>
-						<Chat color={headerStyle.color} />
+						<Chat color={statementColors.color} />
 					</button>
 				)}
 				<button onClick={handleToggleNotifications}>
 					{permission ? (
-						<BellIcon color={headerStyle.color} />
+						<BellIcon color={statementColors.color} />
 					) : (
-						<BellSlashIcon color={headerStyle.color} />
+						<BellSlashIcon color={statementColors.color} />
 					)}
 				</button>
 				<button>
-					<View color={headerStyle.color} />
+					<View color={statementColors.color} />
 				</button>
 				{allowNavigation && (
-					<button className={styles.home}>
-						<HomeButton headerColor={headerStyle} />
+					<button className={styles.home} onClick={() => navigate('/home')}>
+						<HomeIcon style={{ color: statementColors.color }} />
 					</button>
 				)}
 				{allowNavigation && (
-					<Back statement={statement} headerColor={headerStyle} />
+					<Back statement={statement} headerColor={statementColors} />
 				)}
 			</div>
 		</nav>

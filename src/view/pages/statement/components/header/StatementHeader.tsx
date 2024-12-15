@@ -19,13 +19,13 @@ import { logOut } from '@/controllers/db/auth';
 import StatementTopNav from '../nav/top/StatementTopNav';
 
 interface Props {
-    screen: Screen;
-    statement: Statement | undefined;
-    statementSubscription: StatementSubscription | undefined;
-    topParentStatement: Statement | undefined;
-    role: Role | undefined;
-    showAskPermission: boolean;
-    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+	screen: Screen;
+	statement: Statement | undefined;
+	statementSubscription: StatementSubscription | undefined;
+	topParentStatement: Statement | undefined;
+	role: Role | undefined;
+	showAskPermission: boolean;
+	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatementHeader: FC<Props> = ({
@@ -86,7 +86,7 @@ const StatementHeader: FC<Props> = ({
 			await logOut();
 		} catch (error) {
 			console.error(error);
-		} 
+		}
 	}
 
 	return (

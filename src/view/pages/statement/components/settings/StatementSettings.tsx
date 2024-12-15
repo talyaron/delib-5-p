@@ -108,7 +108,7 @@ const StatementSettings: FC = () => {
 	}, [statementId]);
 
 	return (
-		<div>
+		<div className='page__main'>
 			{isLoading || !statementToEdit ? (
 				<div className='center'>
 					<h2>{t('Updating')}</h2>

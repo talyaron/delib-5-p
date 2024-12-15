@@ -14,16 +14,9 @@ $headerHight: 4.2rem;
 		margin: auto;
 		display: flex;
 		justify-content: space-between;
-		max-width: var(--wrapper);
-
-		// @media screen and (min-width: 768px) {
-		// 	max-width: 40ch;
-
-		// }
 	}
 
 	button {
-		// border:1px solid gray;
 		flex: 1;
 		padding: 0.6rem 1rem;
 		background-color: transparent;
@@ -35,12 +28,5 @@ $headerHight: 4.2rem;
 	}
 	.back {
 		transform: rotate(180deg);
-	}
-
-	.home {
-		display: none;
-		@media screen and (min-width: 768px) {
-			display: block;
-		}
 	}
 }

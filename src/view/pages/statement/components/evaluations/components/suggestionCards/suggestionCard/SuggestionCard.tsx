@@ -15,7 +15,7 @@ import { isAuthorized } from '@/controllers/general/helpers';
 
 // Hooks
 import useStatementColor, {
-	StyleProps,
+	StatementStyleProps,
 } from '@/controllers/hooks/useStatementColor';
 
 // Custom Components
@@ -54,7 +54,7 @@ const SuggestionCard: FC<Props> = ({
 	// Redux Store
 	const dispatch = useAppDispatch();
 	const { deliberativeElement, isResult } = statement;
-	const statementColor: StyleProps = useStatementColor({
+	const statementColor: StatementStyleProps = useStatementColor({
 		deliberativeElement,
 		isResult,
 	});
