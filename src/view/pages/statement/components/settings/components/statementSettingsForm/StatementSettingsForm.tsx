@@ -80,6 +80,8 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
 			// TODO: Set statement.deliberativeElement to the of Group type.
 
+			statement.deliberativeElement = DeliberativeElement.group;
+
 			await handleSetStatement({
 				navigate,
 				statementId,

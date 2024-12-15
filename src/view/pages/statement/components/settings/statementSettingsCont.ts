@@ -293,12 +293,6 @@ export async function createStatementFromModal({
 			parentStatement: parentStatement === 'top' ? 'top' : parentStatement,
 			addSubscription: true,
 		});
-
-		await setStatementToDB({
-			statement: newStatement,
-			parentStatement: parentStatement === 'top' ? 'top' : parentStatement,
-			addSubscription: true,
-		});
 	} catch (error) {
 		console.error(error);
 	}
