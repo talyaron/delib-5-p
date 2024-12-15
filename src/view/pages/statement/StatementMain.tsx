@@ -20,7 +20,7 @@ import {
 import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
 
 // Redux Store
-import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useAppDispatch } from "@/controllers/hooks/reduxHooks";
 import { RootState } from "@/model/store";
 import { userSelector } from "@/model/users/userSlice";
 import { useSelector } from "react-redux";
@@ -37,13 +37,11 @@ import Page404 from "../page404/Page404";
 import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
 import ProfileImage from "../../components/profileImage/ProfileImage";
 import StatementHeader from "./components/header/StatementHeader";
-import SwitchScreens from "./components/SwitchScreens";
 import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
 import AskPermission from "@/view/components/askPermission/AskPermission";
-import FollowMeToast from "./components/followMeToast/FollowMeToast";
+// import FollowMeToast from "./components/followMeToast/FollowMeToast";
 import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 import { createSelector } from "@reduxjs/toolkit";
-import Header1 from "@/view/components/headers/header1/Header1";
 import Switch from "./components/switch/Switch";
 
 // Create selectors
@@ -76,10 +74,6 @@ const StatementMain: FC = () => {
 	// Redux store
 	const dispatch = useAppDispatch();
 	const user = useSelector(userSelector);
-
-	const subStatements = useAppSelector((state: RootState) =>
-		subStatementsSelector(state, statementId)
-	);
 
 	// Use states
 	const [talker, setTalker] = useState<User | null>(null);
@@ -147,7 +141,7 @@ const StatementMain: FC = () => {
 			unSubUserSettings = listenToUserSettings();
 			unSubAllDescendants = listenToAllDescendants(statementId); //used for map
 			unSubEvaluations = listenToEvaluations(dispatch, statementId, user?.uid);
-			unSubSubStatements = listenToSubStatements(statementId, dispatch); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
+			unSubSubStatements = listenToSubStatements(statementId); //TODO: check if this is needed. It can be integrated under listenToAllDescendants
 
 			unSubStatementSubscription = listenToStatementSubscription(
 				statementId,
