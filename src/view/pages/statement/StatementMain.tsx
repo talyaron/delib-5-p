@@ -233,9 +233,11 @@ const StatementMain: FC = () => {
 						setShowAskPermission={setShowAskPermission}
 						role={role}
 					/>
-					<MapProvider>
-						<Switch />
-					</MapProvider>
+					<main className='page__main'>
+						<MapProvider>
+							<Switch />
+						</MapProvider>
+					</main>
 				</div>
 			</StatementContext.Provider>
 		);

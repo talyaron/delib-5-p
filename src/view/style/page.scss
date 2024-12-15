@@ -3,7 +3,6 @@
 	height: 100svh;
 	display: flex;
 	flex-direction: column;
-	position: fixed;
 	background-color: var(--bg-screen);
 
 	&__header {
@@ -120,40 +119,19 @@
 	}
 
 	&__main {
+		width: 100%;
 		overflow-y: auto;
 
-		.statement-inner {
+		&__wrapper {
+			width: 100%;
+			max-width: 75ch;
+			margin: 0 auto;
 			display: flex;
 			flex-direction: column;
-			height: 100%;
-			width: 100vw;
-
-			h1 {
-				text-align: start;
-				margin: 2rem auto 2rem auto;
-				position: sticky;
-				top: 0;
-				color: var(--text-headline);
-				width: var(--wrapper);
-			}
-
-			.page__description {
-				margin: 1rem 0;
-				color: var(--text-description);
-			}
-
-			&__wrapper {
-				display: flex; // Change from grid to flex
-				width: 100vw; // Set explicit width for both panels
-				overflow-x: scroll; // Make sure scroll is enabled
-				scroll-behavior: smooth; // Add smooth scrolling
-
-				> * {
-					width: 100vw;
-					flex-shrink: 0; // Prevent shrinking
-					overflow-y: auto;
-				}
-			}
+			justify-content: center;
+			align-items: center;
+			padding: 0 1rem;
+			gap: 1rem;
 		}
 	}
 

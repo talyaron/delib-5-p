@@ -2,7 +2,12 @@ import { Dispatch, FC, useState } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
-import { Role, Statement, StatementSubscription } from 'delib-npm';
+import {
+	DeliberativeElement,
+	Role,
+	Statement,
+	StatementSubscription,
+} from 'delib-npm';
 
 // Firestore functions
 
@@ -73,6 +78,8 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
+			// TODO: Set statement.deliberativeElement to the of Group type.
+
 			await handleSetStatement({
 				navigate,
 				statementId,
@@ -89,11 +96,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		} as const;
 
 		return (
-			<form
-				onSubmit={handleSubmit}
-				className='statement-settings-form'
-				data-cy='statement-settings-form'
-			>
+			<form onSubmit={handleSubmit} className='statement-settings-form'>
 				<TitleAndDescription
 					statement={statement}
 					setStatementToEdit={setStatementToEdit}

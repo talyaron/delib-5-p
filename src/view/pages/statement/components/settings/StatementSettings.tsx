@@ -108,12 +108,12 @@ const StatementSettings: FC = () => {
 	}, [statementId]);
 
 	return (
-		<div className='page__main'>
+		<div className='page__main__wrapper'>
 			{isLoading || !statementToEdit ? (
-				<div className='center'>
+				<>
 					<h2>{t('Updating')}</h2>
 					<Loader />
-				</div>
+				</>
 			) : (
 				<StatementSettingsForm
 					statement={statementToEdit}
