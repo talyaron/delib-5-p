@@ -48,7 +48,6 @@ import { updateAgrees } from './fn_agree';
 import { setUserSettings } from './fn_users';
 import { updateStatementWithViews } from './fn_views';
 
-require('dotenv').config()
 initializeApp();
 export const db = getFirestore();
 
@@ -59,7 +58,10 @@ export const db = getFirestore();
 //     updateSubscribedListenersCB,
 // );
 
-exports.setUserSettings = onDocumentCreated(`/${Collections.users}/{userId}`, setUserSettings);
+exports.setUserSettings = onDocumentCreated(
+	`/${Collections.users}/{userId}`,
+	setUserSettings
+);
 
 exports.updateParentWithNewMessage = onDocumentCreated(
 	`/${Collections.statements}/{statementId}`,
@@ -113,35 +115,54 @@ exports.setAdminsToNewStatement = onDocumentCreated(
 );
 
 //approval
-exports.updateDocumentApproval = onDocumentWritten(`/${Collections.approval}/{approvalId}`, updateApprovalResults);
+exports.updateDocumentApproval = onDocumentWritten(
+	`/${Collections.approval}/{approvalId}`,
+	updateApprovalResults
+);
 
 //importance
-exports.setImportanceToStatement = onDocumentWritten(`/${Collections.importance}/{importanceId}`, setImportanceToStatement);
+exports.setImportanceToStatement = onDocumentWritten(
+	`/${Collections.importance}/{importanceId}`,
+	setImportanceToStatement
+);
 
 //agree/disagree
-exports.updateAgrees = onDocumentWritten(`/${Collections.agrees}/{agreeId}`, updateAgrees);
+exports.updateAgrees = onDocumentWritten(
+	`/${Collections.agrees}/{agreeId}`,
+	updateAgrees
+);
 
 //signatures
-exports.updateDocumentSignatures = onDocumentWritten(`/${Collections.signatures}/{signatureId}`, updateDocumentSignatures);
+exports.updateDocumentSignatures = onDocumentWritten(
+	`/${Collections.signatures}/{signatureId}`,
+	updateDocumentSignatures
+);
 
 //views
-exports.updateStatementWithViews = onDocumentCreated(`/${Collections.statementViews}/{viewId}`, updateStatementWithViews);
+exports.updateStatementWithViews = onDocumentCreated(
+	`/${Collections.statementViews}/{viewId}`,
+	updateStatementWithViews
+);
 
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
 
 console.info('isProduction', isProduction);
-const cors = { cors: ["https://delib-5.web.app", "https://freedi.tech", "https://delib.web.app"] }
+const cors = {
+	cors: [
+		'https://delib-5.web.app',
+		'https://freedi.tech',
+		'https://delib.web.app',
+		'https://delib-testing.web.app/',
+	],
+};
 
 exports.getRandomStatements = onRequest(cors, getRandomStatements); //first evaluation
 exports.getTopStatements = onRequest(cors, getTopStatements); //second evaluation
 exports.getUserOptions = onRequest(cors, getUserOptions); //suggestions
 exports.checkPassword = onRequest(cors, checkPassword);
 exports.hashPassword = onRequest(cors, hashPassword);
-exports.checkForSimilarStatements = onRequest(
-	cors,
-	findSimilarStatements
-);
+exports.checkForSimilarStatements = onRequest(cors, findSimilarStatements);
 // exports.maintainRoles = onRequest(cors, maintainRole);
 // exports.maintainDeliberativeElement = onRequest(cors, maintainDeliberativeElement);
 // exports.maintainStatements = onRequest(cors, maintainStatement);

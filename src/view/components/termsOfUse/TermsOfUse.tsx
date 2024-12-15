@@ -8,7 +8,7 @@ interface Props {
 	agreement: string;
 }
 
-export default function TermsOfUse({ handleAgreement, agreement }: Props) {
+export default function TermsOfUse({ handleAgreement, agreement }: Readonly<Props>) {
 	const { t } = useLanguage();
 
 	return (

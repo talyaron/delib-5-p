@@ -80,14 +80,13 @@ const StatementHeader: FC<Props> = ({
 		}
 	}
 
-	function handleLogout() {
+	async function handleLogout() {
 		try {
-			logOut();
+			setIsHeaderMenuOpen(false);
+			await logOut();
 		} catch (error) {
 			console.error(error);
-		} finally {
-			setIsHeaderMenuOpen(false);
-		}
+		} 
 	}
 
 	return (
