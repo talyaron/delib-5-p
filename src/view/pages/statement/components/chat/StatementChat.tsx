@@ -1,37 +1,34 @@
-import { FC, useEffect, useState, useRef, useContext } from "react";
+import { FC, useEffect, useState, useRef, useContext } from 'react';
 
 // Third Party Imports
-import { Statement } from "delib-npm";
+import { Statement } from 'delib-npm';
 
 // Custom Components
-import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
-import StatementInput from "./components/input/StatementInput";
-import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
+import ChatMessageCard from './components/chatMessageCard/ChatMessageCard';
+import StatementInput from './components/input/StatementInput';
 
-import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
-import styles from "./StatementChat.module.scss";
-import { useLocation, useParams } from "react-router-dom";
-import Description from "../evaluations/components/description/Description";
-import { StatementContext } from "../../StatementCont";
-import { listenToSubStatements } from "@/controllers/db/statements/listenToStatements";
-import { statementSubsSelector } from "@/model/statements/statementsSlice";
+import NewMessages from './components/newMessages/NewMessages';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { userSelector } from '@/model/users/userSlice';
+import styles from './StatementChat.module.scss';
+import { useLocation, useParams } from 'react-router-dom';
+import Description from '../evaluations/components/description/Description';
+import { StatementContext } from '../../StatementCont';
+import { listenToSubStatements } from '@/controllers/db/statements/listenToStatements';
+import { statementSubsSelector } from '@/model/statements/statementsSlice';
 
 let firstTime = true;
 let numberOfSubStatements = 0;
 
 const StatementChat: FC = () => {
-	const {statementId} = useParams();
-	const {statement} = useContext(StatementContext);
+	const { statementId } = useParams();
+	const { statement } = useContext(StatementContext);
 	const subStatements = useAppSelector(statementSubsSelector(statementId));
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
 	const location = useLocation();
 
 	const [newMessages, setNewMessages] = useState<number>(0);
-
-	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement.parentId);
 
 	function scrollToHash() {
 		if (location.hash) {
@@ -53,11 +50,11 @@ const StatementChat: FC = () => {
 		if (location.hash) return;
 		if (firstTime) {
 			//@ts-ignore
-			messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+			messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
 			firstTime = false;
 		} else {
 			//@ts-ignore
-			messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
 		}
 	};
 
@@ -73,7 +70,6 @@ const StatementChat: FC = () => {
 
 	//effects
 	useEffect(() => {
-
 		if (!firstTime) return;
 
 		if (location.hash) {
@@ -88,26 +84,20 @@ const StatementChat: FC = () => {
 		//if new sub-statement was not created by the user, then set newMessages to the number of new subStatements
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
-			const isNewMessages =
-		subStatements.length - numberOfSubStatements > 0;
+			const isNewMessages = subStatements.length - numberOfSubStatements > 0;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
 				setNewMessages((n) => n + 1);
 			}
 		} else {
-		
 			scrollToBottom();
-	 
 		}
 	}, [subStatements.length]);
 
 	return (
 		<div className={styles.chat}>
-			<div
-				className={`${toSlide && slideInOrOut}`}
-				id={`msg-${statement?.statementId}`}
-			>
-				<div className="simple-wrapper">
+			<div id={`msg-${statement?.statementId}`}>
+				<div className='simple-wrapper'>
 					<Description statement={statement} />
 				</div>
 				{subStatements?.map((statementSub: Statement, index) => (
