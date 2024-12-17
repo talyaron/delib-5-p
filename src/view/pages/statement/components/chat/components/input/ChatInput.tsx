@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useRef } from 'react';
-
+import styles from './ChatInput.module.scss';
 // Third Party Imports
 import { Statement } from 'delib-npm';
 
@@ -18,7 +18,7 @@ interface Props {
 	statement: Statement;
 }
 
-const StatementInput: FC<Props> = ({ statement }) => {
+const ChatInput: FC<Props> = ({ statement }) => {
 	if (!statement) throw new Error('No statement');
 
 	// Redux hooks
@@ -68,36 +68,37 @@ const StatementInput: FC<Props> = ({ statement }) => {
 	};
 
 	return (
-		<form
-			onSubmit={(e) => handleSubmitInput(e)}
-			name='theForm'
-			className='page__footer__form'
-			style={{ flexDirection: direction }}
-		>
-			<textarea
-				style={{ borderTop: `2px solid ${statementColor.backgroundColor}` }}
-				data-cy='statement-chat-input'
-				className='page__footer__form__input'
-				aria-label='Form Input'
-				name='newStatement'
-				ref={textareaRef}
-				onKeyUp={(e) => handleKeyUp(e)}
-				value={message}
-				onChange={(e) => setMessage(e.target.value)}
-				required
-				placeholder={t('Type your message here...')}
-			></textarea>
-			<button
-				type='submit'
-				className='page__footer__form__sendBtnBox'
-				aria-label='Submit Button'
-				style={statementColor}
-				data-cy='statement-chat-send-btn'
+		<div className={styles.chatInput}>
+			<form
+				onSubmit={(e) => handleSubmitInput(e)}
+				name='theForm'
+
+				style={{ flexDirection: direction }}
 			>
-				<SendIcon color={statementColor.color} />
-			</button>
-		</form>
+				<textarea
+					style={{ borderTop: `2px solid ${statementColor.backgroundColor}` }}
+					data-cy='statement-chat-input'
+					className='page__footer__form__input'
+					aria-label='Form Input'
+					name='newStatement'
+					ref={textareaRef}
+					onKeyUp={(e) => handleKeyUp(e)}
+					value={message}
+					onChange={(e) => setMessage(e.target.value)}
+					required
+					placeholder={t('Type your message here...')}
+				></textarea>
+				<button
+					type='submit'
+					aria-label='Submit Button'
+					style={statementColor}
+					data-cy='statement-chat-send-btn'
+				>
+					<SendIcon color={statementColor.color} />
+				</button>
+			</form>
+		</div>
 	);
 };
 
-export default StatementInput;
+export default ChatInput;

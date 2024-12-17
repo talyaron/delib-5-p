@@ -5,7 +5,7 @@ import { Statement } from "delib-npm";
 
 // Custom Components
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
-import StatementInput from "./components/input/StatementInput";
+import ChatInput from "./components/input/ChatInput";
 import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
 
 import NewMessages from "./components/newMessages/NewMessages";
@@ -13,7 +13,6 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 import styles from "./Chat.module.scss";
 import { useLocation, useParams } from "react-router-dom";
-import Description from "../evaluations/components/description/Description";
 import { StatementContext } from "../../StatementCont";
 import { listenToSubStatements } from "@/controllers/db/statements/listenToStatements";
 import { statementSubsSelector } from "@/model/statements/statementsSlice";
@@ -104,12 +103,9 @@ const Chat: FC = () => {
 	return (
 		<div className={styles.chat}>
 			<div
-				className={`${toSlide && slideInOrOut}`}
+				className={`${styles.wrapper} ${toSlide && slideInOrOut}`}
 				id={`msg-${statement?.statementId}`}
 			>
-				<div className="simple-wrapper">
-					<Description statement={statement} />
-				</div>
 				{subStatements?.map((statementSub: Statement, index) => (
 					<div key={statementSub.statementId}>
 						<ChatMessageCard
@@ -122,14 +118,17 @@ const Chat: FC = () => {
 
 				<div ref={messagesEndRef} />
 			</div>
-			<div>
+			{statement && <div className={styles.input}>
+				<ChatInput statement={statement} />
+			</div>}
+			{/* <div>
 				<NewMessages
 					newMessages={newMessages}
 					setNewMessages={setNewMessages}
 					scrollToBottom={scrollToBottom}
 				/>
-				{statement && <StatementInput statement={statement} />}
-			</div>
+
+			</div> */}
 		</div>
 	);
 };

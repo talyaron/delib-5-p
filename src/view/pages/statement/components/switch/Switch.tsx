@@ -71,13 +71,13 @@ function StatementInner({ children }: StatementInnerProps) {
 				<h1>{statement?.statement}</h1>
 			</div>
 			<div className={styles.main} ref={scrollableRef}>
-				<div className={styles.statement} style={{ backgroundColor: 'pink' }}>
+				<div className={styles.statement}>
 					<p className='page__description'>{statement?.description}</p>
 					{children}
 				</div>
-				<div className={styles.chat}>
-					<Chat />
-				</div>
+
+				<Chat />
+
 			</div>
 		</div>
 	);
