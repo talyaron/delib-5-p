@@ -19,6 +19,11 @@
 		width: 100%;
 		text-align: start;
 		max-width: 40rem;
+
+		@media screen and (max-width: 600px) {
+			padding: 0px 20px;
+
+		}
 	}
 }
 
