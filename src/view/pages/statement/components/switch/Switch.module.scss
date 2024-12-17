@@ -1,0 +1,33 @@
+.inner {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100vw;
+
+	.header {
+		padding: 1.5rem 0 1.5rem 0;
+		max-width: var(--wrapper);
+		margin: auto;
+		width: 100%;
+
+		h1 {
+			width: 100%;
+			text-align: start;
+		}
+	}
+
+	.main {
+
+		display: flex;
+		flex: 1;
+		width: 100vw;
+		overflow-x: scroll;
+		scroll-behavior: smooth;
+
+		>* {
+			width: 100vw;
+			flex-shrink: 0;
+			overflow-y: auto;
+		}
+	}
+}

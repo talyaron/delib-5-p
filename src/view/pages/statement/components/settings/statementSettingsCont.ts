@@ -3,7 +3,6 @@ import { Statement, Vote, Evaluation, Screen } from 'delib-npm';
 // Helpers
 import { getVoters } from '@/controllers/db/vote/getVotes';
 import { getEvaluations } from '@/controllers/db/evaluation/getEvaluation';
-import { navigateToStatementTab } from '@/controllers/general/helpers';
 import {
 	createStatement,
 	setStatementToDB,
