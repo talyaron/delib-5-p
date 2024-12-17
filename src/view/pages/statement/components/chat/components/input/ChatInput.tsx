@@ -39,6 +39,13 @@ const ChatInput: FC<Props> = ({ statement }) => {
 		}
 	}, []);
 
+	const adjustTextareaHeight = () => {
+		if (textareaRef.current) {
+			textareaRef.current.style.height = 'auto';
+			textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+		}
+	};
+
 	function handleKeyUp(e: React.KeyboardEvent<HTMLTextAreaElement>) {
 		try {
 			const _isMobile =
@@ -65,6 +72,7 @@ const ChatInput: FC<Props> = ({ statement }) => {
 		handleAddStatement(message, statement, user);
 
 		setMessage('');
+		textareaRef.current.style.height = 'auto';
 	};
 
 	return (
@@ -76,7 +84,12 @@ const ChatInput: FC<Props> = ({ statement }) => {
 				style={{ flexDirection: direction }}
 			>
 				<textarea
-					style={{ borderTop: `2px solid ${statementColor.backgroundColor}` }}
+					style={{
+						borderTop: `2px solid ${statementColor.backgroundColor}`,
+						minHeight: '40px', // Add minimum height
+						resize: 'none',    // Prevent manual resizing since we're handling it
+						overflow: 'hidden' // Hide scrollbar since we're auto-expanding
+					}}
 					data-cy='statement-chat-input'
 					className='page__footer__form__input'
 					aria-label='Form Input'
@@ -84,7 +97,12 @@ const ChatInput: FC<Props> = ({ statement }) => {
 					ref={textareaRef}
 					onKeyUp={(e) => handleKeyUp(e)}
 					value={message}
-					onChange={(e) => setMessage(e.target.value)}
+					onInput={adjustTextareaHeight}
+					onChange={(e) => {
+						setMessage(e.target.value)
+						adjustTextareaHeight(); // Call height adjustment on change
+
+					}}
 					required
 					placeholder={t('Type your message here...')}
 				></textarea>

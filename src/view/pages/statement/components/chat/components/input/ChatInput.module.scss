@@ -29,6 +29,7 @@
 			box-shadow: 0px 2px 4px 0px rgba(181, 197, 232, 0.48);
 			box-shadow: 0px -2px 4px 0px rgba(195, 202, 217, 0.5);
 			font-size: 1rem;
+			transition: all 0.3s ease-in-out;
 
 			&::placeholder {
 				color: #979797;
