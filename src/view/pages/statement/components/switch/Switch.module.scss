@@ -1,34 +1,34 @@
 .inner {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: 100px 1fr;
 	height: 100%;
 	width: 100vw;
 
-	.header {
-		padding: 1.5rem 0 1.5rem 0;
-		max-width: var(--wrapper);
-		margin: auto;
+
+
+}
+
+.header {
+	padding: 1.5rem 0 1.5rem 0;
+	max-width: var(--wrapper);
+
+	width: 100%;
+
+	h1 {
 		width: 100%;
-
-		h1 {
-			width: 100%;
-			text-align: start;
-		}
+		text-align: start;
 	}
+}
 
-	.main {
+.main {
 
-		display: flex;
-		flex-direction: row;
-		flex: 1;
-		width: 100vw;
-		overflow-x: scroll;
-		scroll-behavior: smooth;
+	display: grid;
+	grid-template-columns: 100vw 100vw;
+	width: 100vw;
+	overflow-x: scroll;
+	scroll-behavior: smooth;
 
-		>div {
-			width: 100vw;
-			flex-shrink: 0;
-			overflow-y: auto;
-		}
+	>* {
+		background-color: teal;
 	}
 }

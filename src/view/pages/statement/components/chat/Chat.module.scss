@@ -1,21 +1,26 @@
 .chat {
-
+  border: 5px solid red;
   position: relative;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 100px;
 
 
 
-  .wrapper {
-
-    flex: 1;
-  }
-
-  .input {
-    width: 100%;
-
-  }
 
 
+
+
+}
+
+.wrapper {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.input {
+  width: 100%;
+  height: 100px;
+
+  flex-shrink: 0;
 }
