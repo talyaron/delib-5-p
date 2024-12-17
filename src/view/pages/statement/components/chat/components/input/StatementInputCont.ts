@@ -1,5 +1,5 @@
 import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
-import { DeliberativeElement, Statement, User } from "delib-npm";
+import { DeliberativeElement, Statement, StatementType, User } from "delib-npm";
 import {
 	createStatement,
 	setStatementToDB,
@@ -28,6 +28,7 @@ export function handleAddStatement(
 			hasChildren: true,
 			text: title,
 			description,
+			statementType: StatementType.statement,
 			parentStatement: statement,
 			deliberativeElement: DeliberativeElement.general,
 		});
