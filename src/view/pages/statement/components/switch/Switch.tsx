@@ -6,7 +6,7 @@ import { Screen, Statement, StatementType } from 'delib-npm';
 import StatementSettings from '../settings/StatementSettings';
 import styles from './Switch.module.scss';
 
-import StatementChat from '../chat/StatementChat';
+import Chat from '../chat/Chat';
 import Group from '../statementTypes/group/Group';
 
 const Switch = () => {
@@ -76,7 +76,7 @@ function StatementInner({ children }: StatementInnerProps) {
 					{children}
 				</div>
 				<div className={styles.chat}>
-					<StatementChat />
+					<Chat />
 				</div>
 			</div>
 		</div>

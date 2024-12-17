@@ -11,7 +11,7 @@ import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAn
 import NewMessages from "./components/newMessages/NewMessages";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
-import styles from "./StatementChat.module.scss";
+import styles from "./Chat.module.scss";
 import { useLocation, useParams } from "react-router-dom";
 import Description from "../evaluations/components/description/Description";
 import { StatementContext } from "../../StatementCont";
@@ -21,9 +21,9 @@ import { statementSubsSelector } from "@/model/statements/statementsSlice";
 let firstTime = true;
 let numberOfSubStatements = 0;
 
-const StatementChat: FC = () => {
-	const {statementId} = useParams();
-	const {statement} = useContext(StatementContext);
+const Chat: FC = () => {
+	const { statementId } = useParams();
+	const { statement } = useContext(StatementContext);
 	const subStatements = useAppSelector(statementSubsSelector(statementId));
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
@@ -31,7 +31,7 @@ const StatementChat: FC = () => {
 
 	const [newMessages, setNewMessages] = useState<number>(0);
 
-	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement.parentId);
+	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement?.parentId);
 
 	function scrollToHash() {
 		if (location.hash) {
@@ -89,15 +89,15 @@ const StatementChat: FC = () => {
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
 			const isNewMessages =
-		subStatements.length - numberOfSubStatements > 0;
+				subStatements.length - numberOfSubStatements > 0;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
 				setNewMessages((n) => n + 1);
 			}
 		} else {
-		
+
 			scrollToBottom();
-	 
+
 		}
 	}, [subStatements.length]);
 
@@ -134,4 +134,4 @@ const StatementChat: FC = () => {
 	);
 };
 
-export default StatementChat;
+export default Chat;

@@ -5,7 +5,7 @@ import { Screen, Statement, StatementSubscription } from 'delib-npm';
 
 // Custom components
 import Map from './map/StatementMap';
-import StatementChat from './chat/StatementChat';
+import StatementChat from './chat/Chat';
 import StatementEvaluationPage from './evaluations/StatementsEvaluationPage';
 import StatementVote from './vote/StatementVote';
 import MassQuestions from './massQuestions/MassQuestions';
@@ -29,48 +29,48 @@ export default function SwitchScreens({
 	if (!statement) return null;
 
 	switch (screen) {
-	case Screen.DOC:
-		return <Map statement={statement} />;
-	case Screen.OPTIONS:
-		return (
-			<StatementEvaluationPage
-				statement={statement}
-			/>
-		);
-	case Screen.VOTE:
-		return (
-			<StatementVote statement={statement} subStatements={subStatements} />
-		);
-	case Screen.MASS_QUESTIONS:
-		return (
-			<MassQuestions statement={statement} subStatements={subStatements} />
-		);
-	case Screen.GROUPS:
-		return (
-			<Rooms
-				statement={statement}
-				subStatements={subStatements}
-				statementSubscription={statementSubscription}
-			/>
-		);
-	case Screen.SETTINGS:
-		return <StatementSettings />;
-	case Screen.QUESTIONS:
-		return (
-			<StatementEvaluationPage
-				statement={statement}
-				questions={true}
-			/>
-		);
-	case Screen.INFO:
-		return <Info statement={statement} />;
+		case Screen.DOC:
+			return <Map statement={statement} />;
+		case Screen.OPTIONS:
+			return (
+				<StatementEvaluationPage
+					statement={statement}
+				/>
+			);
+		case Screen.VOTE:
+			return (
+				<StatementVote statement={statement} subStatements={subStatements} />
+			);
+		case Screen.MASS_QUESTIONS:
+			return (
+				<MassQuestions statement={statement} subStatements={subStatements} />
+			);
+		case Screen.GROUPS:
+			return (
+				<Rooms
+					statement={statement}
+					subStatements={subStatements}
+					statementSubscription={statementSubscription}
+				/>
+			);
+		case Screen.SETTINGS:
+			return <StatementSettings />;
+		case Screen.QUESTIONS:
+			return (
+				<StatementEvaluationPage
+					statement={statement}
+					questions={true}
+				/>
+			);
+		case Screen.INFO:
+			return <Info statement={statement} />;
 
-	default:
-		return (
-			<StatementChat
-				statement={statement}
-				subStatements={subStatements}
-			/>
-		);
+		default:
+			return (
+				<StatementChat
+					statement={statement}
+					subStatements={subStatements}
+				/>
+			);
 	}
 }

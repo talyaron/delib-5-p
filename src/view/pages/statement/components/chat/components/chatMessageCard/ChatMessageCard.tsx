@@ -49,9 +49,9 @@ export interface NewQuestion {
 }
 
 interface ChatMessageCardProps {
-	parentStatement: Statement;
+	parentStatement: Statement | undefined;
 	statement: Statement;
-	
+
 	previousStatement: Statement | undefined;
 }
 
@@ -60,6 +60,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	statement,
 	previousStatement,
 }) => {
+
 	const imageUrl = statement.imagesURL?.main ?? '';
 	const [image, setImage] = useState<string>(imageUrl);
 	// Hooks
@@ -88,7 +89,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const _isAuthorized = isAuthorized(
 		statement,
 		statementSubscription,
-		parentStatement.creatorId
+		parentStatement?.creatorId
 	);
 	const isMe = userId === creatorId;
 	const isQuestion = deliberativeElement === DeliberativeElement.research;
@@ -100,7 +101,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
 	const isAlignedLeft = (isMe && dir === 'ltr') || (!isMe && dir === 'rtl');
 
-	const shouldLinkToChildren = parentStatement.hasChildren;
+	const shouldLinkToChildren = parentStatement?.hasChildren;
 
 	// Focus the textarea when in edit mode
 	useEffect(() => {
@@ -157,6 +158,9 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const isGeneral =
 		statement.deliberativeElement === DeliberativeElement.general ||
 		statement.deliberativeElement === undefined;
+
+	if (!statement) return null;
+	if (!parentStatement) return null;
 
 	return (
 		<div
