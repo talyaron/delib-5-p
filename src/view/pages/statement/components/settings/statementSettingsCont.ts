@@ -1,4 +1,4 @@
-import { Statement, NavObject, Vote, Evaluation, Screen } from 'delib-npm';
+import { Statement, Vote, Evaluation, Screen } from 'delib-npm';
 
 // Helpers
 import { getVoters } from '@/controllers/db/vote/getVotes';
@@ -14,7 +14,7 @@ import {
 	defaultStatementSettings,
 } from './emptyStatementModel';
 import { NavigateFunction } from 'react-router-dom';
-import { DeliberativeElement } from 'delib-npm/dist/models/statementsModels';
+import { DeliberativeElement, StatementType } from 'delib-npm/dist/models/statementsModels';
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -62,36 +62,13 @@ export async function handleGetEvaluators(
 	setClicked(true);
 }
 
-// Check if sub-page is checked in stored statement
-export function isSubPageChecked(
-	statement: Statement | undefined,
-	navObj: NavObject
-): boolean {
-	try {
-		//in case of a new statement
-		if (!statement) {
-			if (navObj.default === false) return false;
-			else return true;
-		}
-
-		//in case of an existing statement
-		const { subScreens } = statement;
-		if (!subScreens) return true;
-		if (subScreens.includes(navObj.link)) return true;
-
-		return false;
-	} catch (error) {
-		console.error(error);
-
-		return true;
-	}
-}
 
 interface HandleSetStatementParams {
 	navigate: NavigateFunction;
 	statementId: string | undefined;
 	statement: Statement;
 	parentStatement?: Statement | 'top';
+	statementType?: StatementType;
 }
 
 export async function handleSetStatement({
@@ -99,6 +76,7 @@ export async function handleSetStatement({
 	statementId,
 	statement,
 	parentStatement = 'top',
+	statementType = StatementType.group,
 }: HandleSetStatementParams) {
 	try {
 		// If statement title is empty, don't save
@@ -121,7 +99,7 @@ export async function handleSetStatement({
 			const newStatement = createStatement({
 				text: statement.statement,
 				description: statement.description,
-				subScreens,
+				statementType,
 				deliberativeElement: DeliberativeElement.research,
 				parentStatement: 'top',
 				resultsBy,
@@ -243,18 +221,14 @@ interface ToggleSubScreenParams {
 }
 
 export const toggleSubScreen = ({
-	subScreens,
-	screenLink,
+
 	statement,
 }: ToggleSubScreenParams): Statement => {
-	const checked = subScreens.includes(screenLink) ?? false;
-	const newSubScreens = checked
-		? subScreens.filter((subScreen) => subScreen !== screenLink)
-		: [...subScreens, screenLink];
+
+
 
 	return {
-		...statement,
-		subScreens: newSubScreens,
+		...statement
 	};
 };
 

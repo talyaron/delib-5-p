@@ -12,7 +12,6 @@ import DisplayResultsBy from './../../components/displayResultsBy/DisplayResults
 import ResultsRange from './../../components/resultsRange/ResultsRange';
 import GetVoters from './../../components/GetVoters';
 import GetEvaluators from './../../components/GetEvaluators';
-import SubScreensToDisplay from '../tabsToDisplaySwitches/SubScreensToDisplay';
 
 // Hooks & Helpers
 import { handleSetStatement } from './../../statementSettingsCont';
@@ -100,7 +99,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				/>
 				<SectionTitle title={t('General Settings')} />
 				<section className='switches-area'>
-					<SubScreensToDisplay {...statementSettingsProps} />
+
 					<AdvancedSettings {...statementSettingsProps} />
 				</section>
 				<DisplayResultsBy {...statementSettingsProps} />

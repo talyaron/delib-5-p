@@ -12,6 +12,7 @@
 		"node": true
 	},
 	"rules": {
+		"indent": ["error", 2],
 		"react/display-name": "error",
 		"react/no-unescaped-entities": "off",
 		"import/no-anonymous-default-export": "error",
@@ -36,11 +37,16 @@
 				}
 			}
 		],
-		"no-console": ["error", { "allow": ["warn", "error", "info"] }],
-		"indent": ["error", "tab"],
+		"no-console": ["error", {
+			"allow": ["warn", "error", "info"]
+		}],
 		"no-multiple-empty-lines": [
 			"error",
-			{ "max": 1, "maxEOF": 0, "maxBOF": 0 } // Limit max empty lines
+			{
+				"max": 1,
+				"maxEOF": 0,
+				"maxBOF": 0
+			} // Limit max empty lines
 		]
 	},
 	"settings": {

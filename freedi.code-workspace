@@ -1,15 +1,13 @@
 {
-	"folders": [
-		{
-			"path": ".",
-		},
-	],
+	"folders": [{
+		"path": ".",
+	}, ],
 	"settings": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit",
 		},
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
 		"editor.detectIndentation": true,
 		"editor.insertSpaces": false,
 		"editor.indentSize": "tabSize",
@@ -17,7 +15,17 @@
 		"prettier.singleQuote": true,
 		"prettier.useTabs": true,
 		"eslint.enable": true,
-		"eslint.validate": ["javascript", "html", "typescript"],
+		"eslint.validate": [
+			"javascript",
+			"html",
+			"typescript"
+		],
+		"[typescriptreact]": {
+			"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+		},
+		"cSpell.words": [
+			"Millis"
+		],
 	},
 	"launch": {
 		"configurations": [],
