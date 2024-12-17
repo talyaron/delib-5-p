@@ -72,7 +72,9 @@ const ChatInput: FC<Props> = ({ statement }) => {
 		handleAddStatement(message, statement, user);
 
 		setMessage('');
-		textareaRef.current.style.height = 'auto';
+		if (textareaRef.current) {
+			textareaRef.current.style.height = 'auto';
+		}
 	};
 
 	return (

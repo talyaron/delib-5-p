@@ -139,14 +139,14 @@ const Chat: FC = () => {
 			{statement && <div className={styles.input}>
 				<ChatInput statement={statement} />
 			</div>}
-			{/* <div>
+			<div>
 				<NewMessages
 					newMessages={newMessages}
 					setNewMessages={setNewMessages}
 					scrollToBottom={scrollToBottom}
 				/>
 
-			</div> */}
+			</div>
 		</div>
 	);
 };
