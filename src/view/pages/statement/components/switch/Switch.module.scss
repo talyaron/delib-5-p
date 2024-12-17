@@ -10,13 +10,15 @@
 
 .header {
 	padding: 1.5rem 0 1.5rem 0;
-	max-width: var(--wrapper);
+	display: flex;
+	justify-content: center;
 
 	width: 100%;
 
 	h1 {
 		width: 100%;
 		text-align: start;
+		max-width: 40rem;
 	}
 }
 
@@ -28,7 +30,5 @@
 	overflow-x: scroll;
 	scroll-behavior: smooth;
 
-	>* {
-		background-color: teal;
-	}
+
 }

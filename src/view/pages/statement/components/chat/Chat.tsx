@@ -21,6 +21,7 @@ let firstTime = true;
 let numberOfSubStatements = 0;
 
 const Chat: FC = () => {
+	const chatRef = useRef<HTMLDivElement>(null);
 	const { statementId } = useParams();
 	const { statement } = useContext(StatementContext);
 	const subStatements = useAppSelector(statementSubsSelector(statementId));
@@ -44,6 +45,23 @@ const Chat: FC = () => {
 			}
 		}
 	}
+
+	//update the chat height based on the window height
+
+	useEffect(() => {
+		const updateChatHeight = () => {
+			if (chatRef.current) {
+				chatRef.current.style.height = `${window.innerHeight - chatRef.current.getBoundingClientRect().top}px`; // Adjust 100px as needed
+			}
+		};
+
+		updateChatHeight();
+		window.addEventListener("resize", updateChatHeight);
+
+		return () => {
+			window.removeEventListener("resize", updateChatHeight);
+		};
+	}, []);
 
 	//scroll to bottom
 	const scrollToBottom = () => {
@@ -101,7 +119,7 @@ const Chat: FC = () => {
 	}, [subStatements.length]);
 
 	return (
-		<div className={styles.chat}>
+		<div className={styles.chat} ref={chatRef}>
 			<div
 				className={`${styles.wrapper} ${toSlide && slideInOrOut}`}
 				id={`msg-${statement?.statementId}`}
