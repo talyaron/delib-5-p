@@ -72,12 +72,11 @@ interface HandleSetStatementParams {
 }
 
 export async function handleSetStatement({
-	navigate,
 	statementId,
 	statement,
 	parentStatement = 'top',
 	statementType = StatementType.group,
-}: HandleSetStatementParams) {
+}: HandleSetStatementParams): Promise<Statement | undefined> {
 	try {
 		// If statement title is empty, don't save
 		if (!statement.statement) return;
@@ -119,9 +118,8 @@ export async function handleSetStatement({
 				statement: newStatement,
 				addSubscription: true,
 			});
-			navigateToStatementTab(newStatement, navigate);
 
-			return;
+			return newStatement;
 		}
 
 		// If statementId, user is on Settings tab in statement page
@@ -152,12 +150,13 @@ export async function handleSetStatement({
 				statement: newStatement,
 				addSubscription: true,
 			});
-			navigateToStatementTab(newStatement, navigate);
 
-			return;
+
+			return newStatement;
 		}
 	} catch (error) {
 		console.error(error);
+		return undefined;
 	}
 }
 

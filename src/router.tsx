@@ -64,6 +64,18 @@ const routes = [
 				errorElement: <ErrorPage />,
 			},
 			{
+				path: 'statement/:statementId',
+				element: <StatementMain />,
+				errorElement: <ErrorPage />,
+				children: [
+					{
+						path: ':sort',
+						element: <StatementMain />,
+						errorElement: <ErrorPage />,
+					},
+				],
+			},
+			{
 				path: 'statement/:statementId/:page',
 				element: <StatementMain />,
 				errorElement: <ErrorPage />,

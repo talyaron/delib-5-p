@@ -72,12 +72,14 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
-			await handleSetStatement({
+			const newStatement = await handleSetStatement({
 				navigate,
 				statementId,
 				statement,
 				parentStatement,
 			});
+			if(!newStatement) throw new Error('No new statement');
+			navigate(`/statement/${newStatement.statementId}`);
 		};
 
 		const isNewStatement = !statementId;

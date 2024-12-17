@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { useNavigate, useParams } from "react-router-dom";
-import { User, Role, Screen, Access } from "delib-npm";
+import { useParams } from "react-router-dom";
+import { User, Role, Access } from "delib-npm";
 
 // firestore
 import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
@@ -28,7 +28,6 @@ import { useSelector } from "react-redux";
 // Hooks & Helpers
 import { MapProvider } from "@/controllers/hooks/useMap";
 import { statementTitleToDisplay } from "@/controllers/general/helpers";
-import { availableScreen, StatementContext } from "./StatementCont";
 import { useIsAuthorized } from "@/controllers/hooks/authHooks";
 
 // Custom components
@@ -43,6 +42,7 @@ import AskPermission from "@/view/components/askPermission/AskPermission";
 import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 import { createSelector } from "@reduxjs/toolkit";
 import Switch from "./components/switch/Switch";
+import { StatementContext } from "./StatementCont";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -57,15 +57,13 @@ export const subStatementsSelector = createSelector(
 const StatementMain: FC = () => {
 	// Hooks
 	const { statementId } = useParams();
-	const page = useParams().page as Screen;
-	const navigate = useNavigate();
+
 
 	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
 	const {
 		error,
 		isAuthorized,
 		loading,
-		statementSubscription,
 		statement,
 		topParentStatement,
 		role,
@@ -84,7 +82,6 @@ const StatementMain: FC = () => {
 	// const [_, setPasswordCheck] = useState<boolean>(false)
 
 	// Constants
-	const screen = availableScreen(statement, statementSubscription, page);
 
 	const handleShowTalker = (_talker: User | null) => {
 		if (!talker) {
@@ -95,11 +92,7 @@ const StatementMain: FC = () => {
 	};
 
 	//in case the url is of undefined screen, navigate to the first available screen
-	useEffect(() => {
-		if (screen && screen !== page) {
-			navigate(`/statement/${statementId}/${screen}`);
-		}
-	}, [screen]);
+
 
 	useEffect(() => {
 		if (statement && screen) {
@@ -222,12 +215,8 @@ const StatementMain: FC = () => {
 
 					<StatementHeader
 						statement={statement}
-						statementSubscription={statementSubscription}
 						topParentStatement={topParentStatement}
-						screen={screen ?? Screen.CHAT}
-						showAskPermission={showAskPermission}
 						setShowAskPermission={setShowAskPermission}
-						role={role}
 					/>
 					<MapProvider>
 						
