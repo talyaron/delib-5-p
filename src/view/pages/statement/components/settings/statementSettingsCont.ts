@@ -88,7 +88,6 @@ export async function handleSetStatement({
 			enableAddVotingOption,
 			enhancedEvaluation,
 			showEvaluation,
-			subScreens,
 			membership,
 		} = getSetStatementData(statement);
 
@@ -110,6 +109,7 @@ export async function handleSetStatement({
 				membership,
 			});
 
+
 			if (!newStatement) throw new Error('newStatement had error in creating');
 
 			await setStatementToDB({
@@ -130,7 +130,6 @@ export async function handleSetStatement({
 				statement,
 				text: statement.statement,
 				description: statement.description ?? '',
-				subScreens: subScreens,
 				deliberativeElement:
 					statement.deliberativeElement ?? DeliberativeElement.general,
 				resultsBy,
@@ -181,13 +180,6 @@ export const getStatementSettings = (statement: Statement) => {
 	};
 };
 
-const getStatementSubScreens = (statement: Statement) => {
-	const defaultSubScreens = [Screen.CHAT, Screen.OPTIONS];
-	const subScreens = statement.subScreens ?? defaultSubScreens;
-
-	// don't allow setting sub-screens as an empty array
-	return subScreens.length === 0 ? defaultSubScreens : subScreens;
-};
 
 const getSetStatementData = (statement: Statement) => {
 	const { resultsBy, numberOfResults } =
@@ -201,7 +193,7 @@ const getSetStatementData = (statement: Statement) => {
 
 	return {
 		hasChildren: Boolean(statement.hasChildren),
-		subScreens: getStatementSubScreens(statement),
+
 		resultsBy,
 		numberOfResults,
 		enableAddEvaluationOption,

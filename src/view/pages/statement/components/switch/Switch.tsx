@@ -11,25 +11,26 @@ import Group from '../statementTypes/group/Group';
 
 const Switch = () => {
 	const { statement } = useContext(StatementContext);
-	const { page } = useParams();
+
+	console.log(useParams());
 
 	return (
 		<main className='page__main'>
 			<FollowMeToast />
-			<SwitchInner statement={statement} page={page} />
+			<SwitchInner statement={statement} />
 		</main>
 	);
 };
 
 function SwitchInner({
 	statement,
-	page,
 }: {
 	statement: Statement | undefined;
-	page: string | undefined;
 }) {
+	const { command } = useParams();
 	const statementType = statement?.statementType;
-	if (page === Screen.SETTINGS) {
+	console.log(command);
+	if (command === "settings") {
 		return <StatementSettings />;
 	}
 

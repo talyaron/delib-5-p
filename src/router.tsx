@@ -69,7 +69,7 @@ const routes = [
 				errorElement: <ErrorPage />,
 				children: [
 					{
-						path: ':sort',
+						path: ':command',
 						element: <StatementMain />,
 						errorElement: <ErrorPage />,
 					},
@@ -121,7 +121,7 @@ export const router = createBrowserRouter(routes, {
 		v7_partialHydration: true,
 		v7_normalizeFormMethod: true,
 		v7_fetcherPersist: true,
-		v7_skipActionErrorRevalidation: true,	
+		v7_skipActionErrorRevalidation: true,
 		v7_relativeSplatPath: true,
 	},
 });
