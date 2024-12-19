@@ -1,11 +1,15 @@
-import { ComponentProps, FC } from "react";
+import { FC, ReactNode } from "react";
 import "./Modal.scss";
 
-type ModalProps = ComponentProps<"div">;
+interface Props {
+	className?: string;
+	children: ReactNode;
+	closeModal?: () => void;
+}
 
-const Modal: FC<ModalProps> = ({ children, className = "" }) => {
+const Modal: FC<Props> = ({ children, className = "", closeModal }) => {
 	return (
-		<div className={`modal ${className}`}>
+		<div className={`modal ${className}`} onClick={closeModal}>
 			<div className="modal-content">{children}</div>
 		</div>
 	);

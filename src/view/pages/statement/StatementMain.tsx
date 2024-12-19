@@ -43,6 +43,7 @@ import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
 import { createSelector } from "@reduxjs/toolkit";
 import Switch from "./components/switch/Switch";
 import { StatementContext } from "./StatementCont";
+import Modal from "@/view/components/modal/Modal";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -78,6 +79,7 @@ const StatementMain: FC = () => {
 	const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
+	const [showNewStatement, setShowNewStatement] = useState<boolean>(false);
 
 	// const [_, setPasswordCheck] = useState<boolean>(false)
 
@@ -90,6 +92,14 @@ const StatementMain: FC = () => {
 			setTalker(null);
 		}
 	};
+
+	function handleSetNewStatement(showPopup?: boolean) {
+		if (showPopup === undefined) {
+			setShowNewStatement(!showNewStatement);
+			return;
+		}
+		setShowNewStatement(showPopup);
+	}
 
 	//in case the url is of undefined screen, navigate to the first available screen
 
@@ -193,7 +203,7 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<StatementContext.Provider value={{ statement, talker,handleShowTalker, role}}>
+			<StatementContext.Provider value={{ statement, talker, handleShowTalker, role, handleSetNewStatement }}>
 				<div className="page">
 					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 					{talker && (
@@ -212,14 +222,17 @@ const StatementMain: FC = () => {
 							setShowAskPermission={setShowAskPermission}
 						/>
 					)}
-
+					{showNewStatement && (
+						<Modal closeModal={() => setShowNewStatement(false)}>
+							<div>new statement</div>
+						</Modal>
+					)}
 					<StatementHeader
 						statement={statement}
 						topParentStatement={topParentStatement}
 						setShowAskPermission={setShowAskPermission}
 					/>
 					<MapProvider>
-						
 						<Switch />
 					</MapProvider>
 				</div>

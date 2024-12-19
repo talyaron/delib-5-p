@@ -4,11 +4,14 @@ import { useContext } from 'react';
 import { StatementContext } from '../../../StatementCont';
 
 const Group = () => {
-	const { statement } = useContext(StatementContext);
+	const { handleSetNewStatement } = useContext(StatementContext);
+	function handleAddGroup() {
+		handleSetNewStatement(true);
+	}
 	return (
 		<div className={styles.group}>
-			{statement?.description && <p>{statement.description}</p>}
-			<Button text="add group" ></Button>
+
+			<Button text="add group" onClick={handleAddGroup}></Button>
 			<Button text="add question" ></Button>
 		</div>
 	)
