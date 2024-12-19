@@ -16,6 +16,7 @@ import FollowMe from '@/assets/icons/follow.svg?react';
 import ShareIcon from '@/assets/icons/shareIcon.svg?react';
 import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
 import SettingsIcon from '@/assets/icons/settings.svg?react';
+import MainIcon from '@/assets/icons/evaluations2Icon.svg?react';
 
 //components
 import Back from '../../header/Back';
@@ -25,18 +26,18 @@ import { statementSubscriptionSelector } from '@/model/statements/statementsSlic
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface Props {
-    statement?: Statement;
-    handleShare: () => void;
-    handleFollowMe: () => void;
-    handleToggleNotifications: () => void;
-    handleInvitePanel: () => void;
-    handleLogout: () => void;
-    setIsHeaderMenuOpen: (value: boolean) => void;
-    isHeaderMenuOpen: boolean;
-    permission: boolean;
+	statement?: Statement;
+	handleShare: () => void;
+	handleFollowMe: () => void;
+	handleToggleNotifications: () => void;
+	handleInvitePanel: () => void;
+	handleLogout: () => void;
+	setIsHeaderMenuOpen: (value: boolean) => void;
+	isHeaderMenuOpen: boolean;
+	permission: boolean;
 }
 
 const StatementTopNav: FC<Props> = ({
@@ -53,6 +54,7 @@ const StatementTopNav: FC<Props> = ({
 	//hooks
 	const { t } = useLanguage();
 	const navigate = useNavigate();
+	const { command } = useParams();
 
 	// const
 	const deliberativeElement = statement?.deliberativeElement;
@@ -68,9 +70,9 @@ const StatementTopNav: FC<Props> = ({
 	);
 
 	const enableNavigationalElements =
-        statement?.statementSettings?.enableNavigationalElements !== undefined
-        	? statement?.statementSettings?.enableNavigationalElements
-        	: true;
+		statement?.statementSettings?.enableNavigationalElements !== undefined
+			? statement?.statementSettings?.enableNavigationalElements
+			: true;
 	const isAdmin = statementSubscription?.role === Role.admin;
 	const allowNavigation = enableNavigationalElements || isAdmin;
 
@@ -83,6 +85,10 @@ const StatementTopNav: FC<Props> = ({
 	function handleGotToChat() {
 		if (statement && statement.statementId)
 			navigate(`/statement/${statement?.statementId}/chat`);
+	}
+	function handleGoToMain() {
+		if (statement && statement.statementId)
+			navigate(`/statement/${statement?.statementId}`);
 	}
 
 	return (
@@ -133,9 +139,14 @@ const StatementTopNav: FC<Props> = ({
 					</div>
 				)}
 				{allowNavigation && (
-					<button onClick={handleGotToChat}>
-						<Chat color={headerStyle.color} />
-					</button>
+					command !== 'chat' ?
+						<button onClick={handleGotToChat}>
+							<Chat color={headerStyle.color} />
+						</button>
+						:
+						<button onClick={handleGoToMain}>
+							<MainIcon color={headerStyle.color} />
+						</button>
 				)}
 				<button onClick={handleToggleNotifications}>
 					{permission ? (

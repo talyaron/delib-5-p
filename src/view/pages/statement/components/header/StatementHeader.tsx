@@ -19,9 +19,9 @@ import { logOut } from '@/controllers/db/auth';
 import StatementTopNav from '../nav/top/StatementTopNav';
 
 interface Props {
-    statement: Statement | undefined;
-    topParentStatement: Statement | undefined;
-    setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
+	statement: Statement | undefined;
+	topParentStatement: Statement | undefined;
+	setShowAskPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StatementHeader: FC<Props> = ({
@@ -31,6 +31,7 @@ const StatementHeader: FC<Props> = ({
 }) => {
 	// Hooks
 	const { pathname } = useLocation();
+
 
 	const token = useToken();
 
@@ -82,7 +83,7 @@ const StatementHeader: FC<Props> = ({
 			await logOut();
 		} catch (error) {
 			console.error(error);
-		} 
+		}
 	}
 
 	return (

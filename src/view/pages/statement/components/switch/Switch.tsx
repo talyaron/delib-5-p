@@ -1,8 +1,8 @@
 import { ReactNode, useContext, useEffect, useRef } from 'react';
 import { StatementContext } from '../../StatementCont';
 import FollowMeToast from '../followMeToast/FollowMeToast';
-import { useParams } from 'react-router-dom';
-import { Screen, Statement, StatementType } from 'delib-npm';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Statement, StatementType } from 'delib-npm';
 import StatementSettings from '../settings/StatementSettings';
 import styles from './Switch.module.scss';
 
@@ -11,8 +11,6 @@ import Group from '../statementTypes/group/Group';
 
 const Switch = () => {
 	const { statement } = useContext(StatementContext);
-
-	console.log(useParams());
 
 	return (
 		<main className='page__main'>
@@ -29,7 +27,7 @@ function SwitchInner({
 }) {
 	const { command } = useParams();
 	const statementType = statement?.statementType;
-	console.log(command);
+
 	if (command === "settings") {
 		return <StatementSettings />;
 	}
@@ -55,23 +53,45 @@ interface StatementInnerProps {
 }
 
 function StatementInner({ children }: StatementInnerProps) {
+	let scrollPosition: number | undefined = undefined;
+	const navigate = useNavigate();
 	const scrollableRef = useRef<HTMLDivElement>(null);
 	const { statement } = useContext(StatementContext);
-	const { page } = useParams();
+	const { command } = useParams();
+
+	const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+
+		//Use for scrolling between chat and main and changing the url accordingly
+		const scrollLeft = event.currentTarget.scrollLeft;
+		if (scrollPosition) {
+			if (scrollLeft > scrollPosition) {
+				navigate(`/statement/${statement?.statementId}/main`);
+			} else if (scrollLeft < scrollPosition) {
+				navigate(`/statement/${statement?.statementId}/chat`);
+			}
+		}
+		scrollPosition = scrollLeft;
+
+	};
 
 	useEffect(() => {
-		if (page === Screen.CHAT && scrollableRef.current) {
-			// Use window.innerWidth instead of div width for consistent scrolling
+		if (command === "chat" && scrollableRef.current) {
 			scrollableRef.current.scrollTo(-window.innerWidth, 0);
+		} else {
+			scrollableRef.current?.scrollTo(0, 0);
 		}
-	}, [page]);
+	}, [command]);
+
+	useEffect(() => {
+		scrollPosition = undefined;
+	}, [statement?.statementId]);
 
 	return (
 		<div className={styles.inner}>
 			<div className={styles.header}>
 				<h1>{statement?.statement}</h1>
 			</div>
-			<div className={styles.main} ref={scrollableRef}>
+			<div className={styles.main} ref={scrollableRef} onScrollCapture={handleScroll}>
 				<div className={styles.statement}>
 					<p className='page__description'>{statement?.description}</p>
 					{children}
