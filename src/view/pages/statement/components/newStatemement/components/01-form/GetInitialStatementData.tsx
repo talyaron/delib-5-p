@@ -32,7 +32,7 @@ export default function GetInitialStatementData() {
 			<h4>{t('Compose your suggestion')}</h4>
 			<p>{newStatementType}</p>
 			<form className='similarities__titleInput' onSubmit={handleSubmit}>
-				<Input label="כותרת ההצעה" />
+				<Input label="כותרת ההצעה" placeholder="שם הקבוצה החדשה" />
 				<div className='similarities__titleInput'>
 					<label htmlFor='descriptionInput'>{t('Description')}</label>
 					<textarea

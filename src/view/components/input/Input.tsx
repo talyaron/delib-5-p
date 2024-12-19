@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styles from './Input.module.scss';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface SearchInputProps {
 	label?: string;
 	placeholder?: string;
 	value?: string;
+	image?: string;
 	onChange?: (value: string) => void;
 }
 
@@ -12,8 +14,10 @@ const Input: React.FC<SearchInputProps> = ({
 	label = 'Your name',
 	placeholder = 'Search...',
 	value = '',
+	image,
 	onChange,
 }) => {
+	const { dir } = useLanguage();
 	const [inputValue, setInputValue] = useState(value);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,15 +32,15 @@ const Input: React.FC<SearchInputProps> = ({
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.label}>{label}</div>
+			<div className={`${styles.label} ${dir === "ltr" ? styles["label--ltr"] : styles["label--rtl"]}`}>{label}</div>
 			<div className={styles.inputContainer}>
-				<img
-					src="https://dashboard.codeparrot.ai/api/assets/Z2PctANhjipAogi0"
+				{image && <img
+					src={image}
 					alt="search"
 					className={styles.searchIcon}
 					width={24}
 					height={24}
-				/>
+				/>}
 				<input
 					type="text"
 					value={inputValue}
