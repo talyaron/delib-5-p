@@ -3,6 +3,7 @@ import Button, { ButtonType } from '@/view/components/buttons/button/Button';
 import { useContext } from 'react';
 import { NewStatementContext } from '../../newStatementCont';
 import { StatementContext } from '@/view/pages/statement/StatementCont';
+import Input from '@/view/components/input/Input';
 
 
 
@@ -28,18 +29,10 @@ export default function GetInitialStatementData() {
 
 	return (
 		<>
-			<h4 className='similarities__title'>{t('Compose your suggestion')}</h4>
+			<h4>{t('Compose your suggestion')}</h4>
 			<p>{newStatementType}</p>
 			<form className='similarities__titleInput' onSubmit={handleSubmit}>
-				<label htmlFor='titleInput'>{t('Title')}</label>
-				<input
-					type='text'
-					id='titleInput'
-					placeholder={t(
-						'Suggestion title. What people would see at first sight'
-					)}
-					defaultValue={title}
-				/>
+				<Input label="כותרת ההצעה" />
 				<div className='similarities__titleInput'>
 					<label htmlFor='descriptionInput'>{t('Description')}</label>
 					<textarea

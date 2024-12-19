@@ -4,7 +4,7 @@ import "./Modal.scss";
 interface Props {
 	className?: string;
 	children: ReactNode;
-	closeModal?: () => void;
+	closeModal?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const Modal: FC<Props> = ({ children, className = "", closeModal }) => {

@@ -29,7 +29,9 @@ export default function NewStatement() {
 
 	return (
 		<NewStatementContext.Provider value={{ title, setTitle, description, setDescription, setCurrentStep }}>
-			{CurrenScreen(currentStep)}
+			<div className='newStatement'>
+				{CurrenScreen(currentStep)}
+			</div>
 		</NewStatementContext.Provider>
 	)
 
