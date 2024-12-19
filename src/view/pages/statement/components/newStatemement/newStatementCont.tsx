@@ -9,7 +9,13 @@ interface NewStatementContextProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<0 | 1 | 2 | 3 | 4>>;
 }
 
-export const NewStatementContext = createContext<NewStatementContextProps | undefined>(undefined);
+export const NewStatementContext = createContext<NewStatementContextProps>({
+	title: '',
+	description: '',
+	setTitle: () => { },
+	setDescription: () => { },
+	setCurrentStep: () => { },
+});
 
 // export const NewStatementProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 // 	const [statement, setStatement] = useState<string>('');

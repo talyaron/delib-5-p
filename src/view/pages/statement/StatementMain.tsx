@@ -44,6 +44,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import Switch from "./components/switch/Switch";
 import { StatementContext } from "./StatementCont";
 import Modal from "@/view/components/modal/Modal";
+import NewStatement from "./components/newStatemement/newStatement";
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -225,7 +226,7 @@ const StatementMain: FC = () => {
 					)}
 					{showNewStatement && (
 						<Modal closeModal={() => setShowNewStatement(false)}>
-							<div>new statement</div>
+							<NewStatement />
 						</Modal>
 					)}
 					<StatementHeader

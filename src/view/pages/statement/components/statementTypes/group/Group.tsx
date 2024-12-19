@@ -2,17 +2,21 @@ import Button from '@/view/components/buttons/button/Button';
 import styles from './Group.module.scss';
 import { useContext } from 'react';
 import { StatementContext } from '../../../StatementCont';
+import { StatementType } from 'delib-npm';
 
 const Group = () => {
-	const { handleSetNewStatement } = useContext(StatementContext);
-	function handleAddGroup() {
+	const { handleSetNewStatement, setNewStatementType } = useContext(StatementContext);
+
+	function handleAddStatement(newStatementType: StatementType) {
+		setNewStatementType(newStatementType);
 		handleSetNewStatement(true);
 	}
+
 	return (
 		<div className={styles.group}>
 
-			<Button text="add group" onClick={handleAddGroup}></Button>
-			<Button text="add question" ></Button>
+			<Button text="add group" onClick={() => handleAddStatement(StatementType.group)}></Button>
+			<Button text="add question" onClick={() => handleAddStatement(StatementType.question)}></Button>
 		</div>
 	)
 }

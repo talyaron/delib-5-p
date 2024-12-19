@@ -19,7 +19,7 @@ export interface DisplayStatement {
 
 
 
-export default function newStatement() {
+export default function NewStatement() {
 
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
