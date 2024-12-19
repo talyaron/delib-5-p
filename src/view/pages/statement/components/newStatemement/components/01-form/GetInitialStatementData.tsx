@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { NewStatementContext } from '../../newStatementCont';
 import { StatementContext } from '@/view/pages/statement/StatementCont';
 import Input from '@/view/components/input/Input';
+import Textarea from '@/view/components/textarea/Textarea';
 
 
 
@@ -11,7 +12,7 @@ import Input from '@/view/components/input/Input';
 export default function GetInitialStatementData() {
 	const { t } = useLanguage();
 	const { title, description, setTitle, setDescription } = useContext(NewStatementContext);
-	const { newStatementType } = useContext(StatementContext);
+	const { newStatementType, handleSetNewStatement } = useContext(StatementContext);
 	const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		try {
@@ -32,22 +33,10 @@ export default function GetInitialStatementData() {
 			<h4>{t('Compose your suggestion')}</h4>
 			<p>{newStatementType}</p>
 			<form className='similarities__titleInput' onSubmit={handleSubmit}>
-				<Input label="כותרת ההצעה" placeholder="שם הקבוצה החדשה" />
-				<div className='similarities__titleInput'>
-					<label htmlFor='descriptionInput'>{t('Description')}</label>
-					<textarea
-						className='similarities__titleInput'
-						rows={5}
-						id='descriptionInput'
-						placeholder={t(
-							'Formulate here the description. Add as much detail as you can to help others understand your suggestion'
-						)}
-						defaultValue={description}
-
-					/>
-				</div>
+				<Input label="כותרת ההצעה" placeholder="שם הקבוצה החדשה" value={title} />
+				<Textarea label="תיאור ההצעה" placeholder="תיאור הקבוצה החדשה" value={description} />
 				<Button type='submit' text={t('Continue')} buttonType={ButtonType.PRIMARY} />
-				<Button text={t('Cancel')} buttonType={ButtonType.SECONDARY} />
+				<Button text={t('Cancel')} buttonType={ButtonType.SECONDARY} onClick={() => handleSetNewStatement(false)} />
 			</form>
 
 		</>
