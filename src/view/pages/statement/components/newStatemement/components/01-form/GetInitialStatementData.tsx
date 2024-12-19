@@ -3,74 +3,22 @@ import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import Loader from '@/view/components/loaders/Loader';
 import { findSimilarStatements } from '@/controllers/db/statements/getSimilarstatements';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { subStatementsSelector } from '../../StatementMain';
+import { subStatementsSelector } from '../../../../StatementMain';
 import { RootState } from '@/model/store';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';
-import { DisplayStatement } from './SimilarStatementsSuggestion';
+import { DisplayStatement } from '../../newStatement';
 
-interface SimilarStatementsSuggestionProps {
-	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-	newStatementInput: DisplayStatement;
-	setNewStatementInput: React.Dispatch<React.SetStateAction<DisplayStatement>>;
-	setSimilarStatements: React.Dispatch<
-		React.SetStateAction<DisplayStatement[]>
-	>;
-	onFormSubmit: () => void;
-	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-	statementId: string;
-}
 
-export default function StepOneStatementInput({
-	setCurrentStep,
-	newStatementInput,
-	setNewStatementInput,
-	statementId,
-	setSimilarStatements,
-	setShowModal,
-	onFormSubmit,
-}: Readonly<SimilarStatementsSuggestionProps>) {
+
+export default function GetInitialStatementData() {
 	const { t } = useLanguage();
 	const [isLoading, setIsLoading] = useState(false);
 	const titleInputRef = useRef<HTMLInputElement>(null);
 
-	const subStatements = useAppSelector((state: RootState) =>
-		subStatementsSelector(state, statementId)
-	);
 
-	useEffect(() => {
-		titleInputRef.current?.focus();
-	}, []);
 
 	const handleSubmit = async () => {
-		if (!newStatementInput.title || newStatementInput.title.length < 5) {
-			return;
-		}
-		setIsLoading(true);
-
-		// Search for similar statements
-		const similarStatementsIds = await findSimilarStatements(
-			statementId,
-			newStatementInput.title
-		);
-
-		const getSubStatements = subStatements
-			.filter((subStatement) =>
-				similarStatementsIds.includes(subStatement.statementId)
-			)
-			.map((subState) => ({
-				statementId: subState.statementId,
-				title: subState.statement,
-				description: subState.description || '',
-			}));
-
-		if (getSubStatements.length === 0) {
-			onFormSubmit();
-		}
-
-		setSimilarStatements(getSubStatements);
-		setCurrentStep((prev) => prev + 1);
-		setIsLoading(false);
 	};
 
 	return (

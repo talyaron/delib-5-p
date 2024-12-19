@@ -1,4 +1,4 @@
-import { Statement, User, Role } from "delib-npm";
+import { Statement, User, Role, StatementType } from "delib-npm";
 import { createContext } from "react";
 
 
@@ -9,6 +9,8 @@ interface StatementContextProps {
 	handleShowTalker: (talker: User | null) => void;
 	handleSetNewStatement: (showPopup?: boolean) => void;
 	role: Role | undefined;
+	setNewStatementType: (newStatementType: StatementType) => void;
+	newStatementType: StatementType;
 }
 
 export const StatementContext = createContext<StatementContextProps>(
@@ -20,5 +22,9 @@ export const StatementContext = createContext<StatementContextProps>(
 		handleShowTalker: () => {
 			return;
 		},
+		setNewStatementType: () => {
+			return;
+		},
+		newStatementType: StatementType.group,
 	},
 );

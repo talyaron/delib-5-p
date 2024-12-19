@@ -1,6 +1,6 @@
 import React from 'react';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
-import SubmitStatementButton from './SubmitStatementButton';
+import SubmitStatementButton from '../SubmitStatementButton';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface StepThreeViewSimilarStatementProps {
@@ -15,7 +15,7 @@ export default function StepThreeViewSimilarStatement({
 	setShowModal,
 }: Readonly<StepThreeViewSimilarStatementProps>) {
 
-	const {t} = useLanguage();
+	const { t } = useLanguage();
 	const handleSimilarStatementChosen = () => {
 		setShowModal(false);
 	};

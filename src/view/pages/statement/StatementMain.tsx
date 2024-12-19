@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 
 // Third party imports
 import { useParams } from "react-router-dom";
-import { User, Role, Access } from "delib-npm";
+import { User, Role, Access, StatementType } from "delib-npm";
 
 // firestore
 import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
@@ -80,6 +80,7 @@ const StatementMain: FC = () => {
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 	const [showNewStatement, setShowNewStatement] = useState<boolean>(false);
+	const [newStatementType, setNewStatementType] = useState<StatementType>(StatementType.group);
 
 	// const [_, setPasswordCheck] = useState<boolean>(false)
 
@@ -203,7 +204,7 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<StatementContext.Provider value={{ statement, talker, handleShowTalker, role, handleSetNewStatement }}>
+			<StatementContext.Provider value={{ statement, talker, handleShowTalker, role, handleSetNewStatement, setNewStatementType, newStatementType }}>
 				<div className="page">
 					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 					{talker && (

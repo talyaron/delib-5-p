@@ -2,16 +2,16 @@ import React from "react";
 import SendIcon from "@/assets/icons/send-icon-pointing-up-and-right.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button, { ButtonType } from "@/view/components/buttons/button/Button";
-import { DisplayStatement } from "./SimilarStatementsSuggestion";
+import { DisplayStatement } from "../newStatement";
 
 interface SimilarStatementsSuggestionProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  newStatementInput: DisplayStatement;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setViewSimilarStatement: React.Dispatch<
-    React.SetStateAction<DisplayStatement>
-  >;
-  similarStatements:DisplayStatement[];
+	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+	newStatementInput: DisplayStatement;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setViewSimilarStatement: React.Dispatch<
+		React.SetStateAction<DisplayStatement>
+	>;
+	similarStatements: DisplayStatement[];
 }
 
 export default function StepTwoShowSimilarStatements({
@@ -20,11 +20,11 @@ export default function StepTwoShowSimilarStatements({
 	similarStatements,
 }: SimilarStatementsSuggestionProps) {
 	const { t } = useLanguage();
-	const handleViewSimilarStatement = (statement:DisplayStatement) => {
+	const handleViewSimilarStatement = (statement: DisplayStatement) => {
 		const anchor = document.getElementById(statement.statementId);
-	
-		if(anchor) anchor.scrollIntoView({behavior: 'smooth'});
-	
+
+		if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
+
 		setShowModal(false)
 	};
 
@@ -58,16 +58,16 @@ export default function StepTwoShowSimilarStatements({
 					</button>
 				))}
 				<div className="similarities__buttonBox">
-	  <Button text={t("Back")} onClick={() => setCurrentStep(0)} buttonType={ButtonType.SECONDARY}/>
+					<Button text={t("Back")} onClick={() => setCurrentStep(0)} buttonType={ButtonType.SECONDARY} />
 					<Button
 						icon={<SendIcon />}
 						text={t("Continue with your original suggestion")}
 						onClick={handleSubmit}
 					/>
-        
+
 				</div>
 			</section>
-      
+
 		</>
 	);
 }
