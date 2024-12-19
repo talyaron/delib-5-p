@@ -10,7 +10,7 @@ interface StatementContextProps {
 	handleSetNewStatement: (showPopup?: boolean) => void;
 	role: Role | undefined;
 	setNewStatementType: (newStatementType: StatementType) => void;
-	newStatementType: StatementType;
+	newStatementType: StatementType; //used to determine the type of the new statement when created
 }
 
 export const StatementContext = createContext<StatementContextProps>(

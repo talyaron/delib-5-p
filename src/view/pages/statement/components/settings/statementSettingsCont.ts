@@ -62,7 +62,7 @@ export async function handleGetEvaluators(
 }
 
 
-interface HandleSetStatementParams {
+interface SetNewStatementParams {
 	navigate: NavigateFunction;
 	statementId: string | undefined;
 	statement: Statement;
@@ -70,12 +70,12 @@ interface HandleSetStatementParams {
 	statementType?: StatementType;
 }
 
-export async function handleSetStatement({
+export async function setNewStatement({
 	statementId,
 	statement,
 	parentStatement = 'top',
 	statementType = StatementType.group,
-}: HandleSetStatementParams): Promise<Statement | undefined> {
+}: SetNewStatementParams): Promise<Statement | undefined> {
 	try {
 		// If statement title is empty, don't save
 		if (!statement.statement) return;

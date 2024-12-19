@@ -14,7 +14,7 @@ import GetVoters from './../../components/GetVoters';
 import GetEvaluators from './../../components/GetEvaluators';
 
 // Hooks & Helpers
-import { handleSetStatement } from './../../statementSettingsCont';
+import { setNewStatement } from './../../statementSettingsCont';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import TitleAndDescription from './../../components/titleAndDescription/TitleAndDescription';
 import AdvancedSettings from './../../components/advancedSettings/AdvancedSettings';
@@ -72,13 +72,13 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
-			const newStatement = await handleSetStatement({
+			const newStatement = await setNewStatement({
 				navigate,
 				statementId,
 				statement,
 				parentStatement,
 			});
-			if(!newStatement) throw new Error('No new statement');
+			if (!newStatement) throw new Error('No new statement');
 			navigate(`/statement/${newStatement.statementId}`);
 		};
 

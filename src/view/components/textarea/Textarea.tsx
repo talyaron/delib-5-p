@@ -7,15 +7,14 @@ interface TextAreaProps {
 	placeholder?: string;
 	value?: string;
 	onChange?: (value: string) => void;
-	width?: number;
-	height?: number;
+	name: string;
 }
 
 const Textarea: React.FC<TextAreaProps> = ({
 	label = 'Your description',
 	placeholder = 'Please write the description of your suggestion here...',
 	value = '',
-	onChange
+	name,
 }) => {
 	const { dir } = useLanguage();
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -49,6 +48,7 @@ const Textarea: React.FC<TextAreaProps> = ({
 			</div>
 			<div className={styles.inputContainer}>
 				<textarea
+					name={name}
 					ref={textareaRef}
 					className={styles.textArea}
 					placeholder={placeholder}

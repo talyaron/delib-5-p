@@ -8,6 +8,7 @@ interface SearchInputProps {
 	value?: string;
 	image?: string;
 	onChange?: (value: string) => void;
+	name: string;
 }
 
 const Input: React.FC<SearchInputProps> = ({
@@ -16,6 +17,7 @@ const Input: React.FC<SearchInputProps> = ({
 	value = '',
 	image,
 	onChange,
+	name
 }) => {
 	const { dir } = useLanguage();
 	const [inputValue, setInputValue] = useState(value);
@@ -42,6 +44,7 @@ const Input: React.FC<SearchInputProps> = ({
 					height={24}
 				/>}
 				<input
+					name={name}
 					type="text"
 					value={inputValue}
 					onChange={handleChange}

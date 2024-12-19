@@ -209,15 +209,14 @@ interface CreateStatementProps {
 	text: string;
 	description?: string;
 	parentStatement: Statement | "top";
-	statementType?: StatementType;
-	deliberativeElement: DeliberativeElement;
-	enableAddEvaluationOption: boolean;
-	enableAddVotingOption: boolean;
-	enhancedEvaluation: boolean;
-	showEvaluation: boolean;
+	statementType: StatementType;
+	enableAddEvaluationOption?: boolean;
+	enableAddVotingOption?: boolean;
+	enhancedEvaluation?: boolean;
+	showEvaluation?: boolean;
 	resultsBy?: ResultsBy;
 	numberOfResults?: number;
-	hasChildren: boolean;
+	hasChildren?: boolean;
 	membership?: Membership;
 
 }
@@ -226,7 +225,6 @@ export function createStatement({
 	description,
 	parentStatement,
 	statementType,
-	deliberativeElement,
 	enableAddEvaluationOption = true,
 	enableAddVotingOption = true,
 	enhancedEvaluation = true,
@@ -300,11 +298,11 @@ export function createStatement({
 			results: [],
 		};
 
-		if (deliberativeElement) newStatement.deliberativeElement = deliberativeElement;
 
 		const results = StatementSchema.safeParse(newStatement);
 		if (results.success === false) {
-			writeZodError(results.error, newStatement);
+			console.error(results.error);
+			throw new Error("Statement schema error");
 		}
 
 		return newStatement;

@@ -1,3 +1,4 @@
+import styles from './GetInitialStatementData.module.scss';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';
 import { useContext } from 'react';
@@ -5,22 +6,39 @@ import { NewStatementContext } from '../../newStatementCont';
 import { StatementContext } from '@/view/pages/statement/StatementCont';
 import Input from '@/view/components/input/Input';
 import Textarea from '@/view/components/textarea/Textarea';
-
-
+import { Statement, StatementType } from 'delib-npm';
+import { createStatement, setStatementToDB } from '@/controllers/db/statements/setStatements';
 
 
 export default function GetInitialStatementData() {
 	const { t } = useLanguage();
 	const { title, description, setTitle, setDescription } = useContext(NewStatementContext);
-	const { newStatementType, handleSetNewStatement } = useContext(StatementContext);
+	const { newStatementType, handleSetNewStatement, statement } = useContext(StatementContext);
 	const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		try {
-			const form = new FormData();
-			const title = form.get('titleInput') as string;
-			const description = form.get('descriptionInput') as string;
+			const form = new FormData(ev.target as HTMLFormElement);
+			const title = form.get('title') as string;
+			const description = form.get('description') as string;
 			setTitle(title);
 			setDescription(description);
+			console.log(title, description);
+
+			if (!statement) throw new Error('Statement is not defined');
+
+			const newStatement: Statement | undefined = createStatement({
+				parentStatement: statement,
+				text: title,
+				description,
+				statementType: newStatementType,
+			});
+			if (!newStatement) throw new Error('newStatement is not defined');
+
+			setStatementToDB({
+				parentStatement: statement,
+				statement: newStatement,
+				addSubscription: true,
+			});
 
 		} catch (error) {
 			console.error(error);
@@ -28,17 +46,38 @@ export default function GetInitialStatementData() {
 		}
 	};
 
+	const { title: titleLabel, description: descriptionLabel, placeholder } = getTexts(newStatementType);
+
 	return (
 		<>
 			<h4>{t('Compose your suggestion')}</h4>
 			<p>{newStatementType}</p>
-			<form className='similarities__titleInput' onSubmit={handleSubmit}>
-				<Input label="כותרת ההצעה" placeholder="שם הקבוצה החדשה" value={title} />
-				<Textarea label="תיאור ההצעה" placeholder="תיאור הקבוצה החדשה" value={description} />
-				<Button type='submit' text={t('Continue')} buttonType={ButtonType.PRIMARY} />
-				<Button text={t('Cancel')} buttonType={ButtonType.SECONDARY} onClick={() => handleSetNewStatement(false)} />
+			<form className={styles.form} onSubmit={handleSubmit}>
+				<Input label={titleLabel} placeholder={titleLabel} value={title} name="title" />
+				<Textarea label={descriptionLabel} placeholder={placeholder} value={description} name="description" />
+				<div className="btns">
+					<Button type='submit' text={t('Continue')} buttonType={ButtonType.PRIMARY} />
+					<Button text={t('Cancel')} buttonType={ButtonType.SECONDARY} onClick={() => handleSetNewStatement(false)} />
+				</div>
 			</form>
 
 		</>
 	);
+}
+
+function getTexts(statementType: StatementType): { title: string, description: string, placeholder: string } {
+	try {
+		switch (statementType) {
+			case StatementType.group:
+				return { title: "Group Title", description: 'Group Description', placeholder: 'Describe the group' }
+			case StatementType.question:
+				return { title: 'Question Title', description: 'Question Description', placeholder: 'Describe the question' }
+			default:
+				return { title: 'Title', description: 'Description', placeholder: 'Description' }
+		}
+	}
+	catch (error) {
+		console.error(error);
+		return { title: 'Title', description: 'Description', placeholder: 'Description' }
+	}
 }
