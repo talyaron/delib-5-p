@@ -1,18 +1,18 @@
+import { Statement } from 'delib-npm';
 import { FC, useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.scss';
 // Third Party Imports
-import { Statement } from 'delib-npm';
 
 // Icons
-import SendIcon from '@/view/components/icons/SendIcon';
+import { handleAddStatement } from './StatementInputCont';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 // Redux Store
-import { useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { userSelector } from '@/model/users/userSlice';
 import useDirection from '@/controllers/hooks/useDirection';
-import { handleAddStatement } from './StatementInputCont';
-import useStatementColor from '@/controllers/hooks/useStatementColor';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import useStatementColor from '@/controllers/hooks/useStatementColor';
+import { userSelector } from '@/model/users/userSlice';
+import SendIcon from '@/view/components/icons/SendIcon';
 
 interface Props {
 	statement: Statement;

@@ -6,9 +6,10 @@ import {
 import  { FC, useEffect } from "react";
 
 // Custom components
-import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
+import { useSelector } from "react-redux";
 import ChooseRoom from "./components/choose/ChooseRoom";
 import InRoom from "./components/inRoom/InRoom";
+import RoomsAdmin from "./components/roomsAdmin/RoomsAdmin";
 
 // database
 import {
@@ -16,7 +17,6 @@ import {
 	listenToRoomsSettings,
 } from "@/controllers/db/rooms/getRooms";
 import { isAdmin } from "@/controllers/general/helpers";
-import { useSelector } from "react-redux";
 import { roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
 
 interface RoomsProps {

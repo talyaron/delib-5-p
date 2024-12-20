@@ -1,9 +1,9 @@
+import { ResultsBy } from "delib-npm";
 import { FC, useState } from "react";
 
 // Custom components
 
 // Third party imports
-import { ResultsBy } from "delib-npm";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import RadioButtonWithLabel from "@/view/components/radioButtonWithLabel/RadioButtonWithLabel";
 import "./DisplayResultsBy.scss";

@@ -1,3 +1,4 @@
+import { ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
 import { FC, useEffect, useState } from "react";
 import styles from "../RoomsAdmin.module.scss";
 import {
@@ -5,9 +6,8 @@ import {
 	setParticipantsPerRoom,
 	toggleRoomEditingInDB,
 } from "@/controllers/db/rooms/setRooms";
-import { ParticipantInRoom, RoomSettings, Statement } from "delib-npm";
-import Button from "@/view/components/buttons/button/Button";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Button from "@/view/components/buttons/button/Button";
 
 interface Props {
   statement: Statement;

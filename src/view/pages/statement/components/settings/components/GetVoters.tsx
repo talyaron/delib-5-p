@@ -1,8 +1,8 @@
-import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { User, Vote } from "delib-npm";
 import React, { FC, useEffect } from "react";
 import { handleGetVoters } from "../statementSettingsCont";
 import MembersChipsList from "./membership/membersChipsList/MembersChipList";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface GetVotersProps {
 	statementId: string;

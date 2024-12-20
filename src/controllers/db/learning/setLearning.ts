@@ -1,7 +1,7 @@
-import { store } from "@/model/store";
 import { Collections } from "delib-npm";
 import { doc, runTransaction } from "firebase/firestore";
 import { FireStore } from "../config";
+import { store } from "@/model/store";
 
 export async function decreesUserSettingsLearningRemain({ evaluation, addOption }: { evaluation?: boolean, addOption?: boolean }): Promise<boolean> {
 	try {

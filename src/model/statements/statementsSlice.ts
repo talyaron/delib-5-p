@@ -1,6 +1,5 @@
 /* eslint-disable indent */
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { RootState, store } from "../store";
 
 // Third party imports
 
@@ -13,6 +12,7 @@ import {
 
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
+import { RootState, store } from "../store";
 
 enum StatementScreen {
 	chat = "chat",

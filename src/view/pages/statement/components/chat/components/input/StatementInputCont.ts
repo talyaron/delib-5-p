@@ -1,5 +1,5 @@
-import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { DeliberativeElement, Statement, StatementType, User } from "delib-npm";
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import {
 	createStatement,
 	setStatementToDB,

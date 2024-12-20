@@ -5,12 +5,12 @@ import {
 	StatementSubscription,
 	User
 } from "delib-npm";
-import { store } from "@/model/store";
 import { NavigateFunction } from "react-router-dom";
-import { logOut } from "../db/auth";
-import { setUser } from "@/model/users/userSlice";
 import { ZodError, ZodIssue } from "zod";
+import { logOut } from "../db/auth";
 import { HistoryTracker } from "@/model/history/HistorySlice";
+import { store } from "@/model/store";
+import { setUser } from "@/model/users/userSlice";
 
 export function updateArray<T>(
 	currentArray: Array<T>,

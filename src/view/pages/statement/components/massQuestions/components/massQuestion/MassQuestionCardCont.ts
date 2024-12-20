@@ -1,11 +1,11 @@
-import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 import { DeliberativeElement, Statement, User } from "delib-npm";
-import { store } from "../../../../../../../model/store";
 import {
 	createStatement,
 	setStatementToDB,
 	updateStatementText,
 } from "../../../../../../../controllers/db/statements/setStatements";
+import { store } from "../../../../../../../model/store";
+import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 
 interface handleSetQuestionFromMassCardProps {
     question: Statement;

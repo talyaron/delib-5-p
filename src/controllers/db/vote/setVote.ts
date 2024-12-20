@@ -1,8 +1,8 @@
-import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
 import { Statement, User } from "delib-npm";
 import { Collections } from "delib-npm";
-import { FireStore } from "../config";
 import { Vote, getVoteId, VoteSchema } from "delib-npm";
+import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
+import { FireStore } from "../config";
 import { store } from "@/model/store";
 
 export async function setVoteToDB(option: Statement) {

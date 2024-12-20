@@ -1,14 +1,14 @@
-import { FC, useEffect } from "react";
-import Menu from "@/view/components/menu/Menu";
-import MenuOption from "@/view/components/menu/MenuOption";
-import EditIcon from "@/assets/icons/editIcon.svg?react";
-import DeleteIcon from "@/assets/icons/delete.svg?react";
-import QuestionMarkIcon from '@/assets/icons/questionIcon.svg?react';
-import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
 import { DeliberativeElement, Statement } from "delib-npm";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { FC, useEffect } from "react";
+import DeleteIcon from "@/assets/icons/delete.svg?react";
+import EditIcon from "@/assets/icons/editIcon.svg?react";
+import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
+import QuestionMarkIcon from '@/assets/icons/questionIcon.svg?react';
 import { deleteStatementFromDB } from "@/controllers/db/statements/deleteStatements";
 import { updateIsQuestion } from "@/controllers/db/statements/setStatements";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Menu from "@/view/components/menu/Menu";
+import MenuOption from "@/view/components/menu/MenuOption";
 
 interface Props {
   statement: Statement;

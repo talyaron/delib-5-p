@@ -7,8 +7,6 @@ import {
 	StatementSubscriptionSchema,
 	User,
 } from "delib-npm";
-import { AppDispatch, store } from "@/model/store";
-import { FireStore } from "../config";
 import {
 	collection,
 	doc,
@@ -23,17 +21,18 @@ import {
 	where,
 	Unsubscribe,
 } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
+import { FireStore } from "../config";
+import { getStatementFromDB } from "../statements/getStatement";
+import { listenToStatement } from "../statements/listenToStatements";
+import { getStatementSubscriptionId } from "@/controllers/general/helpers";
 import {
 	deleteSubscribedStatement,
 	setStatementSubscription,
 	setStatementsSubscription,
 } from "@/model/statements/statementsSlice";
+import { AppDispatch, store } from "@/model/store";
 import { listenedStatements } from "@/view/pages/home/Home";
-
-import { getStatementSubscriptionId } from "@/controllers/general/helpers";
-import { getStatementFromDB } from "../statements/getStatement";
-import { listenToStatement } from "../statements/listenToStatements";
-import { updateDoc } from "firebase/firestore";
 
 export const listenToStatementSubSubscriptions = (
 	statementId: string,

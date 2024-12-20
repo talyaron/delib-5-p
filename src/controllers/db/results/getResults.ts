@@ -1,6 +1,7 @@
 // import { doc, getDoc } from "firebase/firestore";
 // import { FireStore } from "../config";
 // import { Collections } from "delib-npm";
+import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
 import {
 	collection,
 	getDocs,
@@ -9,9 +10,8 @@ import {
 	where,
 	orderBy,
 } from "firebase/firestore";
-import { FireStore } from "../config";
-import { Collections, ResultsBy, Statement, StatementSchema } from "delib-npm";
 import { z } from "zod";
+import { FireStore } from "../config";
 
 export async function getResultsDB(statement: Statement): Promise<Statement[]> {
 	try {

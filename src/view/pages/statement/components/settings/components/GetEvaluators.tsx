@@ -1,8 +1,8 @@
-import React, { FC } from "react";
 import { Evaluation, User } from "delib-npm";
+import React, { FC } from "react";
 import { handleGetEvaluators } from "../statementSettingsCont";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
 import MembersChipsList from "./membership/membersChipsList/MembersChipList";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface GetEvaluatorsProps {
     statementId: string;

@@ -1,19 +1,19 @@
-import { FC } from "react";
 import { Statement } from "delib-npm";
+import { FC } from "react";
+import { useSelector } from "react-redux";
+import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
+import styles from "./InRoom.module.scss";
+import RoomImage from "@/assets/images/roomImage.png";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import {
 	participantByIdSelector,
 	participantsByStatementIdAndRoomNumber,
 } from "@/model/rooms/roomsSlice";
 
 // Redux
-import { useSelector } from "react-redux";
 import { userSelector } from "@/model/users/userSlice";
 
 // Styles
-import styles from "./InRoom.module.scss";
-import RoomImage from "@/assets/images/roomImage.png";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
 
 // Custom Components
 

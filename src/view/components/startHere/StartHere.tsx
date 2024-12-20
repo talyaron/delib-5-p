@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import PointDown from "@/assets/images/handPointingDown.png";
 import styles from "./StartHere.module.scss";
+import PointDown from "@/assets/images/handPointingDown.png";
 import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 

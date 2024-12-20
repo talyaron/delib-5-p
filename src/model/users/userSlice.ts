@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { Agreement, User, UserSchema, UserSettings } from "delib-npm";
 import { defaultFontSize } from "../fonts/fontsModel";
+import { RootState } from "../store";
 
 export enum Status {
     idle = "idle",

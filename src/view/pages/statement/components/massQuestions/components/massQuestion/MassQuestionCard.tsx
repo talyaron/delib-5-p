@@ -1,15 +1,10 @@
-import React, { FC, useEffect, useState } from "react";
-
 // Third party imports
 import { Statement, StatementSubscription } from "delib-npm";
+import React, { FC, useEffect, useState } from "react";
 
 // Styles
-import styles from "./MassQuestion.module.scss";
 
 // Custom Components
-import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
-import EditTitle from "../../../../../../components/edit/EditTitle";
-import SetEdit from "../../../../../../components/edit/SetEdit";
 
 // db Functions
 import { listenToUserAnswer } from "../../../../../../../controllers/db/statements/listenToStatements";
@@ -17,8 +12,12 @@ import { isAuthorized } from "../../../../../../../controllers/general/helpers";
 
 // Redux store
 import { useAppSelector } from "../../../../../../../controllers/hooks/reduxHooks";
-import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
 import { useLanguage } from "../../../../../../../controllers/hooks/useLanguages";
+import { statementSubscriptionSelector } from "../../../../../../../model/statements/statementsSlice";
+import EditTitle from "../../../../../../components/edit/EditTitle";
+import SetEdit from "../../../../../../components/edit/SetEdit";
+import styles from "./MassQuestion.module.scss";
+import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
 
 interface Props {
     statement: Statement;

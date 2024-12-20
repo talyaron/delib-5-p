@@ -3,17 +3,17 @@ import { FC } from "react";
 import "./StatementChatMore.scss";
 
 // Icons
+import { useNavigate } from "react-router-dom";
 import ChatIcon from "@/assets/icons/roundedChatDotIcon.svg?react";
 
 // Statements functions
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSubscriptionSelector } from "@/model/statements/statementsSlice";
 
 // Third party
 import { Statement, StatementSubscription } from "delib-npm";
-import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 interface Props {
 	statement: Statement;

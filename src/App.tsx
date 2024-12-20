@@ -1,35 +1,35 @@
+import { Agreement } from 'delib-npm';
+import { Unsubscribe } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
 // Third party imports
+import { useDispatch } from 'react-redux';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // Firebase functions
 import { listenToAuth, logOut } from './controllers/db/auth';
-import { Unsubscribe } from 'firebase/auth';
 
 // Redux Store
+import {
+	listenToInAppNotifications,
+	onLocalMessage,
+} from './controllers/db/notifications/notifications';
+import { getSignature } from './controllers/db/users/getUserDB';
+import { updateUserAgreement } from './controllers/db/users/setUsersDB';
+import { listenToVersionFromDB } from './controllers/db/version/getVersion';
 import { useAppSelector } from './controllers/hooks/reduxHooks';
-import { useDispatch } from 'react-redux';
+import { LanguagesEnum, useLanguage } from './controllers/hooks/useLanguages';
+import { setHistory } from './model/history/HistorySlice';
+import { selectInitLocation } from './model/location/locationSlice';
 import { updateAgreementToStore, userSelector } from './model/users/userSlice';
 
 // Type
-import { Agreement } from 'delib-npm';
 
 // Custom components
 import Accessibility from './view/components/accessibility/Accessibility';
 import TermsOfUse from './view/components/termsOfUse/TermsOfUse';
 
 // Helpers
-import { updateUserAgreement } from './controllers/db/users/setUsersDB';
-import { getSignature } from './controllers/db/users/getUserDB';
-import {
-	listenToInAppNotifications,
-	onLocalMessage,
-} from './controllers/db/notifications/notifications';
-import { LanguagesEnum, useLanguage } from './controllers/hooks/useLanguages';
-import { selectInitLocation } from './model/location/locationSlice';
-import { setHistory } from './model/history/HistorySlice';
-import { listenToVersionFromDB } from './controllers/db/version/getVersion';
 
 export default function App() {
 	// Hooks

@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ParticipantInRoom, RoomSettings } from "delib-npm";
-import { updateArray } from "@/controllers/general/helpers";
 import { RootState } from "../store";
+import { updateArray } from "@/controllers/general/helpers";
 
 interface RoomsState {
 	participants: ParticipantInRoom[];

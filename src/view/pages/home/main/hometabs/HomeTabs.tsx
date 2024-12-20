@@ -1,11 +1,11 @@
 /* eslint-disable indent */
 import React, { useState } from "react";
 import "./home-tabs.scss";
-import GroupActive from "@/assets/icons/group-filled-ac.png"
 import ClockActive from "@/assets/icons/clock-filled-ac.png"
-import StarActive from "@/assets/icons/star-filled-ac.png"
-import Group from "@/assets/icons/group-filled-in.png";
 import Clock from "@/assets/icons/clock-filled-in.png";
+import GroupActive from "@/assets/icons/group-filled-ac.png"
+import Group from "@/assets/icons/group-filled-in.png";
+import StarActive from "@/assets/icons/star-filled-ac.png"
 import Star from "@/assets/icons/star-filled-in.png";
 
 interface Tab {

@@ -1,20 +1,20 @@
 // import { onAuthStateChanged } from 'firebase/auth';
-import { useState, useEffect } from "react";
-import { store } from "@/model/store";
 import {
 	Access,
 	Role,
 	Statement,
 	StatementSubscription,
 } from "delib-npm";
+import { useState, useEffect } from "react";
+import { getStatementFromDB } from "../db/statements/getStatement";
+import {  getTopParentSubscriptionFromDByStatement } from "../db/subscriptions/getSubscriptions";
+import { setStatementSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
 import { useAppSelector } from "./reduxHooks";
 import {
 	statementSelector,
 	statementSubscriptionSelector,
 } from "@/model/statements/statementsSlice";
-import {  getTopParentSubscriptionFromDByStatement } from "../db/subscriptions/getSubscriptions";
-import { setStatementSubscriptionToDB } from "../db/subscriptions/setSubscriptions";
-import { getStatementFromDB } from "../db/statements/getStatement";
+import { store } from "@/model/store";
 
 const useAuth = () => {
 	const [isLogged, setIsLogged] = useState(false);

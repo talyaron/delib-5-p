@@ -1,8 +1,4 @@
 // Firestore
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-
-// Third Party Imports
-import { z } from "zod";
 import {
 	Access,
 	Membership,
@@ -15,19 +11,23 @@ import {
 	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
+import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+
+// Third Party Imports
+import { z } from "zod";
 import { FireStore } from "../config";
-import { store } from "@/model/store";
 import { setStatementSubscriptionNotificationToDB } from "../notifications/notifications";
+import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
-import { getRandomColor } from "@/view/pages/statement/components/vote/votingColors";
+import { getRandomUID } from "@/controllers/general/helpers";
+import { allowedScreens } from "@/controllers/general/screens";
+import { store } from "@/model/store";
 import {
 	getExistingOptionColors,
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
-import { allowedScreens } from "@/controllers/general/screens";
-import { setNewRoomSettingsToDB } from "../rooms/setRooms";
-import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
-import { getRandomUID } from "@/controllers/general/helpers";
+import { getRandomColor } from "@/view/pages/statement/components/vote/votingColors";
 
 export const updateStatementParents = async (
 	statement: Statement,
@@ -128,7 +128,6 @@ export const setStatementToDB = async ({
 				: statement?.topParentId ||
 				parentStatement?.topParentId ||
 				"top";
-
 
 		const siblingOptions = getSiblingOptionsByParentId(
 			parentId,
@@ -298,7 +297,6 @@ export function createStatement({
 			results: [],
 		};
 
-
 		const results = StatementSchema.safeParse(newStatement);
 		if (results.success === false) {
 			console.error(results.error);
@@ -384,7 +382,6 @@ export function updateStatement({
 
 		if (deliberativeElement)
 			newStatement.deliberativeElement = deliberativeElement;
-
 
 		const results = StatementSchema.safeParse(newStatement);
 		if (results.success === false) {

@@ -1,7 +1,4 @@
-import { Dispatch, FC, useEffect, useState } from "react";
-
-// Third party imports
-import { useParams } from "react-router-dom";
+import { createSelector } from "@reduxjs/toolkit";
 import {
 	Role,
 	StatementSubscription,
@@ -10,22 +7,25 @@ import {
 	Access,
 	membersAllowed,
 } from "delib-npm";
+import { collection, getDocs } from "firebase/firestore";
+import { Dispatch, FC, useEffect, useState } from "react";
+
+// Third party imports
+import { useParams } from "react-router-dom";
 
 // Redux Store
+import { FireStore } from "../../../../../../../controllers/db/config";
+import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
+import MembershipLine from "./membershipCard/MembershipCard";
+import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Custom components
-import MembershipLine from "./membershipCard/MembershipCard";
-import ShareIcon from "@/assets/icons/shareIcon.svg?react";
 
 // Hooks & Helpers
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/model/store";
-import SetWaitingList from "../../../../../../../controllers/db/waitingList/SetWaitingList";
 import "./MembersSettings.scss";
-import { collection, getDocs } from "firebase/firestore";
-import { FireStore } from "../../../../../../../controllers/db/config";
 import Checkbox from "@/view/components/checkbox/Checkbox";
 
 interface MembersSettingsProps {

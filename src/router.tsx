@@ -2,18 +2,18 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 // Custom components
-import ErrorPage from './view/pages/error/ErrorPage';
 import App from './App';
-import Start from './view/pages/start/Start';
+import ErrorPage from './view/pages/error/ErrorPage';
 import Home from './view/pages/home/Home';
-import HomeMain from './view/pages/home/main/HomeMain';
 import AddStatement from './view/pages/home/main/addStatement/AddStatement';
-import StatementMain from './view/pages/statement/StatementMain';
-import Page404 from './view/pages/page404/Page404';
-import PricingPlan from './view/pages/pricing/PricingPlan';
+import HomeMain from './view/pages/home/main/HomeMain';
 import LoginPage from './view/pages/login/LoginFirst';
 import MemberRejection from './view/pages/memberRejection/MemberRejection';
 import Page401 from './view/pages/page401/Page401';
+import Page404 from './view/pages/page404/Page404';
+import PricingPlan from './view/pages/pricing/PricingPlan';
+import Start from './view/pages/start/Start';
+import StatementMain from './view/pages/statement/StatementMain';
 
 const routes = [
 	{

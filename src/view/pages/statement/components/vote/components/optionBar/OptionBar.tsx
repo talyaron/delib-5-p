@@ -1,30 +1,24 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 // Redux store
-import {
-	useAppDispatch,
-	useAppSelector,
-} from "@/controllers/hooks/reduxHooks";
-import {
-	parentVoteSelector,
-	setVoteToStore,
-} from "@/model/vote/votesSlice";
+import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 // Statements helpers
-import { setVoteToDB } from "@/controllers/db/vote/setVote";
-import { getSelections } from "../../statementVoteCont";
-import { statementTitleToDisplay } from "@/controllers/general/helpers";
-import InfoIcon from "@/assets/icons/infoCircleIcon.svg?react";
-import HandIcon from "@/assets/icons/handIcon.svg?react";
-import LikeIcon from "@/assets/icons/likeIcon.svg?react";
-import { OptionBarProps } from "../../voteTypesHelper";
-import "./OptionBar.scss";
-import { getStatementFromDB } from "@/controllers/db/statements/getStatement";
-import { getBarWidth } from "./OptionBarCont";
+import { getSelections } from '../../statementVoteCont';
+import InfoIcon from '@/assets/icons/infoCircleIcon.svg?react';
+import HandIcon from '@/assets/icons/handIcon.svg?react';
+import LikeIcon from '@/assets/icons/likeIcon.svg?react';
+import { OptionBarProps } from '../../voteTypesHelper';
+import './OptionBar.scss';
+import { getBarWidth } from './OptionBarCont';
+import { getStatementFromDB } from '@/controllers/db/statements/getStatement';
+import { setVoteToDB } from '@/controllers/db/vote/setVote';
+import { statementTitleToDisplay } from '@/controllers/general/helpers';
+import { parentVoteSelector, setVoteToStore } from '@/model/vote/votesSlice';
 
 interface OptionBarExtendedProps extends OptionBarProps {
-    isVertical: boolean;
-    screenWidth: number;
+	isVertical: boolean;
+	screenWidth: number;
 }
 
 export const OptionBar: FC<OptionBarExtendedProps> = ({
@@ -55,9 +49,9 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 
 	const { shortVersion } = statementTitleToDisplay(option.statement, 30);
 	const barHeight =
-        selections > 0 && totalVotes > 0
-        	? Math.round((selections / totalVotes) * 100)
-        	: 0;
+		selections > 0 && totalVotes > 0
+			? Math.round((selections / totalVotes) * 100)
+			: 0;
 
 	// * Functions * //
 	const handleVotePress = () => {
@@ -70,13 +64,13 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 
 	const containerInset = `${(_optionOrder - order) * barWidth}px`;
 	const containerStyle = {
-		[isVertical ? "right" : "left"]: containerInset,
+		[isVertical ? 'right' : 'left']: containerInset,
 		width: `${barWidth}px`,
 	};
 
 	const voteButtonStyle = {
 		width: `${barWidth - padding}px`,
-		backgroundColor: isOptionSelected ? option.color : "White",
+		backgroundColor: isOptionSelected ? option.color : 'White',
 	};
 
 	const barStyle = {
@@ -89,25 +83,21 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 
 	return (
 		<div
-			className={`option-bar ${isVertical ? "vertical" : "horizontal"}`}
+			className={`option-bar ${isVertical ? 'vertical' : 'horizontal'}`}
 			style={containerStyle}
 		>
-			<div className="column" style={{ width: `${barWidth}px` }}>
-				{shouldShowStat && (
-					<div className="percentage-text">{barHeight}%</div>
-				)}
-				<div className="bar drop-shadow" style={barStyle}>
-					<div className="number-of-selections">{selections}</div>
+			<div className='column' style={{ width: `${barWidth}px` }}>
+				{shouldShowStat && <div className='percentage-text'>{barHeight}%</div>}
+				<div className='bar drop-shadow' style={barStyle}>
+					<div className='number-of-selections'>{selections}</div>
 				</div>
 			</div>
-			<div className="vote-button-container drop-shadow">
+			<div className='vote-button-container drop-shadow'>
 				<button
 					onClick={handleVotePress}
-					aria-label="Vote button"
+					aria-label='Vote button'
 					style={voteButtonStyle}
-					className={`vote-button ${
-						isOptionSelected ? "selected" : ""
-					}`}
+					className={`vote-button ${isOptionSelected ? 'selected' : ''}`}
 				>
 					{isOptionSelected ? (
 						<LikeIcon />
@@ -117,18 +107,16 @@ export const OptionBar: FC<OptionBarExtendedProps> = ({
 				</button>
 			</div>
 			<button
-				className="info-icon"
-				aria-label="Info button"
+				className='info-icon'
+				aria-label='Info button'
 				onClick={() => {
 					setStatementInfo(option);
 					setShowInfo(true);
 				}}
 			>
-				<InfoIcon
-					style={{ color: barHeight > 10 ? "white" : "#6E8AA6" }}
-				/>
+				<InfoIcon style={{ color: barHeight > 10 ? 'white' : '#6E8AA6' }} />
 			</button>
-			<div className={`title ${barWidth < 90 ? "is-bar-small" : ""}`}>
+			<div className={`title ${barWidth < 90 ? 'is-bar-small' : ''}`}>
 				{shortVersion}
 			</div>
 		</div>

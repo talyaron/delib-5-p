@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef } from 'react';
 
 // Hooks & Helpers
-import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { StatementSettingsProps } from '../../settingsTypeHelpers';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import './TitleAndDescription.scss';
 import VisuallyHidden from '@/view/components/accessibility/toScreenReaders/VisuallyHidden';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';

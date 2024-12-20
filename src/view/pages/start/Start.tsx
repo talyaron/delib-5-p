@@ -1,32 +1,32 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import MoreLeft from '../../../assets/icons/moreLeft.svg?react';
+import MoreRight from '../../../assets/icons/moreRight.svg?react';
+import Logo from '../../../assets/logo/106 x 89 SVG.svg?react';
+import GoogleLoginButton from '../../components/buttons/GoogleLoginButton';
+import EnterNameModal from '../../components/enterNameModal/EnterNameModal';
 import styles from './Start.module.scss';
 
 // firestore functions
 
 // Third Party Libraries
-import { useNavigate } from 'react-router-dom';
 
 // Redux
-import { useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { userSelector } from '@/model/users/userSlice';
+import StartPageImage from '@/assets/images/StartPageImage.png';
 
 // icons
-import Logo from '../../../assets/logo/106 x 89 SVG.svg?react';
-import MoreRight from '../../../assets/icons/moreRight.svg?react';
-import MoreLeft from '../../../assets/icons/moreLeft.svg?react';
-import StartPageImage from '@/assets/images/StartPageImage.png';
 
 // Constants
 import { LANGUAGES } from '@/constants/Languages';
-import EnterNameModal from '../../components/enterNameModal/EnterNameModal';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import useDirection from '@/controllers/hooks/useDirection';
 import { LanguagesEnum, useLanguage } from '@/controllers/hooks/useLanguages';
-import GoogleLoginButton from '../../components/buttons/GoogleLoginButton';
 import {
 	selectInitLocation,
 	versionSelector,
 } from '@/model/location/locationSlice';
-import { useSelector } from 'react-redux';
+import { userSelector } from '@/model/users/userSlice';
 
 const Start = () => {
 	const navigate = useNavigate();

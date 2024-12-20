@@ -1,3 +1,4 @@
+import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
 import {
 	collection,
 	getDocs,
@@ -6,15 +7,14 @@ import {
 	query,
 	Unsubscribe,
 } from "firebase/firestore";
-import { Collections, RoomTimer, RoomTimerSchema, SetTimer } from "delib-npm";
+import { z } from "zod";
 import { FireStore } from "../config";
-import { initialTimerArray } from "@/view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
 
 import { updateTimerSettingDB } from "./setTimer";
-import { z } from "zod";
 import { getSetTimerId } from "@/controllers/general/helpers";
-import { setRoomTimers, setSetTimer } from "@/model/timers/timersSlice";
 import { AppDispatch } from "@/model/store";
+import { setRoomTimers, setSetTimer } from "@/model/timers/timersSlice";
+import { initialTimerArray } from "@/view/pages/statement/components/rooms/components/setTimers/SetTimersModal";
 
 export async function getSetTimersDB(
 	statementId: string,

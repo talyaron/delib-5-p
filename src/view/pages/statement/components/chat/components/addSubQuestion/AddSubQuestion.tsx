@@ -1,7 +1,7 @@
+import { Statement } from "delib-npm";
 import React, { FC } from "react";
 
 // Third party
-import { Statement } from "delib-npm";
 
 // Icons
 import AddQuestionIcon from "@/assets/icons/addQuestion.svg?react";

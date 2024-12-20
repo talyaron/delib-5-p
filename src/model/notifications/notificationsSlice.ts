@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import {  NotificationType, updateArray } from "delib-npm";
+import { RootState } from "../store";
 
 // Define a type for the slice state
 interface notificationsState {

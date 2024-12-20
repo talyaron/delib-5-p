@@ -1,6 +1,7 @@
+import { RoomTimer, TimerStatus } from 'delib-npm';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { getMinutesAndSeconds } from '../timerPageController';
-import { RoomTimer, TimerStatus } from 'delib-npm';
+import bell from '@/assets/sounds/bell.mp3';
 import {
 	setTimersStatusDB,
 	startNextTimer,
@@ -12,12 +13,11 @@ import './Timer.scss';
 // icons
 
 import TimerIcon from '../timerIcon/TimerIcon';
-import PlayIcon from '@/view/components/icons/PlayIcon';
 import PauseIcon from '@/view/components/icons/PauseIcon';
+import PlayIcon from '@/view/components/icons/PlayIcon';
 import StopIcon from '@/view/components/icons/StopIcon';
 
 //sound
-import bell from '@/assets/sounds/bell.mp3';
 
 interface Props {
 	roomTimer: RoomTimer;

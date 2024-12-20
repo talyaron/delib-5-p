@@ -1,11 +1,11 @@
 import { Dispatch, FC } from "react";
 import styles from "../../StatementSolutionsPage.module.scss";
+import ideaImage from "@/assets/images/manWithIdeaLamp.png";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import useWindowDimensions from "@/controllers/hooks/useWindowDimentions";
 
 // /graphics
-import ideaImage from "@/assets/images/manWithIdeaLamp.png";
 import WhitePlusIcon from "@/view/components/icons/WhitePlusIcon";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
   currentPage: string;

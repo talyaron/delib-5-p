@@ -2,18 +2,18 @@
 import { useEffect, useState } from 'react';
 
 // icons
-import InstallIcon from '@/assets/icons/installIcon.svg?react';
-import InvitationIcon from '@/assets/icons/invitation.svg?react';
 
 // Components
-import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
-import { handleLogout } from '@/controllers/general/helpers';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
 import IconButton from '../../components/iconButton/IconButton';
 import Menu from '../../components/menu/Menu';
 import MenuOption from '../../components/menu/MenuOption';
 import InvitationModal from './main/invitationModal/InvitationModal';
 import NotificationHeader from './NotificatiosHeader';
+import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
+import InstallIcon from '@/assets/icons/installIcon.svg?react';
+import InvitationIcon from '@/assets/icons/invitation.svg?react';
+import { handleLogout } from '@/controllers/general/helpers';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 export default function HomeHeader() {
 	const [isHomeMenuOpen, setIsHomeMenuOpen] = useState(false);

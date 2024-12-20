@@ -1,3 +1,4 @@
+import { Statement } from 'delib-npm';
 import {
 	ChangeEvent,
 	Dispatch,
@@ -9,18 +10,17 @@ import {
 } from 'react';
 
 // Third party
-import { Statement } from 'delib-npm';
 
 // Statements Helpers
+import Text from '../text/Text';
+import styles from './EditTitle.module.scss';
+import Save from '@/assets/icons/saveIcon.svg?react';
 import { updateStatementText } from '@/controllers/db/statements/setStatements';
 
 // Styles
-import Save from '@/assets/icons/saveIcon.svg?react';
-import styles from './EditTitle.module.scss';
 
 // Custom components
 import { useLanguage } from '@/controllers/hooks/useLanguages';
-import Text from '../text/Text';
 
 interface Props {
 	statement: Statement | undefined;

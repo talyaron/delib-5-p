@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from "react";
-import styles from "./Header1.module.scss";
 import EditTitle from "../../edit/EditTitle";
+import styles from "./Header1.module.scss";
 import { StatementContext } from "@/view/pages/statement/StatementCont";
 
 const Header1: FC = () => {

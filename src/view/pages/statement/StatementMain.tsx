@@ -1,50 +1,49 @@
-import { FC, useEffect, useState } from "react";
+import { createSelector } from '@reduxjs/toolkit';
+import { Access, Role, StatementType, User } from 'delib-npm/index.js';
+import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { useParams } from "react-router-dom";
-import { User, Role, Access, StatementType } from "delib-npm";
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 // firestore
-import { getIsSubscribed } from "@/controllers/db/subscriptions/getSubscriptions";
+import EnableNotifications from '../../components/enableNotifications/EnableNotifications';
+import ProfileImage from '../../components/profileImage/ProfileImage';
+import LoadingPage from '../loadingPage/LoadingPage';
+import Page404 from '../page404/Page404';
+import UnAuthorizedPage from '../unAuthorizedPage/UnAuthorizedPage';
+import StatementHeader from './components/header/StatementHeader';
+import NewStatement from './components/newStatemement/newStatement';
+import Switch from './components/switch/Switch';
+import { StatementContext } from './StatementCont';
+import { listenToEvaluations } from '@/controllers/db/evaluation/getEvaluation';
 import {
 	listenToStatement,
 	listenToStatementSubscription,
 	listenToAllDescendants,
 	listenToSubStatements,
-} from "@/controllers/db/statements/listenToStatements";
+} from '@/controllers/db/statements/listenToStatements';
+import { getIsSubscribed } from '@/controllers/db/subscriptions/getSubscriptions';
 import {
 	updateSubscriberForStatementSubStatements,
 	setStatementSubscriptionToDB,
-} from "@/controllers/db/subscriptions/setSubscriptions";
-
-import { listenToEvaluations } from "@/controllers/db/evaluation/getEvaluation";
+} from '@/controllers/db/subscriptions/setSubscriptions';
 
 // Redux Store
-import { useAppDispatch } from "@/controllers/hooks/reduxHooks";
-import { RootState } from "@/model/store";
-import { userSelector } from "@/model/users/userSlice";
-import { useSelector } from "react-redux";
+import { listenToUserSettings } from '@/controllers/db/users/getUserDB';
+import { statementTitleToDisplay } from '@/controllers/general/helpers';
+import { useIsAuthorized } from '@/controllers/hooks/authHooks';
+import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
+import { MapProvider } from '@/controllers/hooks/useMap';
+import { RootState } from '@/model/store';
+import { userSelector } from '@/model/users/userSlice';
 
 // Hooks & Helpers
-import { MapProvider } from "@/controllers/hooks/useMap";
-import { statementTitleToDisplay } from "@/controllers/general/helpers";
-import { useIsAuthorized } from "@/controllers/hooks/authHooks";
 
 // Custom components
-import LoadingPage from "../loadingPage/LoadingPage";
-import Page404 from "../page404/Page404";
-import UnAuthorizedPage from "../unAuthorizedPage/UnAuthorizedPage";
-import ProfileImage from "../../components/profileImage/ProfileImage";
-import StatementHeader from "./components/header/StatementHeader";
-import EnableNotifications from "../../components/enableNotifications/EnableNotifications";
-import AskPermission from "@/view/components/askPermission/AskPermission";
+import AskPermission from '@/view/components/askPermission/AskPermission';
 // import FollowMeToast from "./components/followMeToast/FollowMeToast";
-import { listenToUserSettings } from "@/controllers/db/users/getUserDB";
-import { createSelector } from "@reduxjs/toolkit";
-import Switch from "./components/switch/Switch";
-import { StatementContext } from "./StatementCont";
-import Modal from "@/view/components/modal/Modal";
-import NewStatement from "./components/newStatemement/newStatement";
+import Modal from '@/view/components/modal/Modal';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
@@ -60,16 +59,9 @@ const StatementMain: FC = () => {
 	// Hooks
 	const { statementId } = useParams();
 
-
 	//TODO:create a check with the parent statement if subscribes. if not subscribed... go according to the rules of authorization
-	const {
-		error,
-		isAuthorized,
-		loading,
-		statement,
-		topParentStatement,
-		role,
-	} = useIsAuthorized(statementId);
+	const { error, isAuthorized, loading, statement, topParentStatement, role } =
+		useIsAuthorized(statementId);
 
 	// Redux store
 	const dispatch = useAppDispatch();
@@ -81,7 +73,9 @@ const StatementMain: FC = () => {
 	const [askNotifications, setAskNotifications] = useState(false);
 	const [isStatementNotFound, setIsStatementNotFound] = useState(false);
 	const [showNewStatement, setShowNewStatement] = useState<boolean>(false);
-	const [newStatementType, setNewStatementType] = useState<StatementType>(StatementType.group);
+	const [newStatementType, setNewStatementType] = useState<StatementType>(
+		StatementType.group
+	);
 
 	// const [_, setPasswordCheck] = useState<boolean>(false)
 
@@ -98,13 +92,13 @@ const StatementMain: FC = () => {
 	function handleSetNewStatement(showPopup?: boolean) {
 		if (showPopup === undefined) {
 			setShowNewStatement(!showNewStatement);
+
 			return;
 		}
 		setShowNewStatement(showPopup);
 	}
 
 	//in case the url is of undefined screen, navigate to the first available screen
-
 
 	useEffect(() => {
 		if (statement && screen) {
@@ -205,8 +199,18 @@ const StatementMain: FC = () => {
 
 	if (isAuthorized)
 		return (
-			<StatementContext.Provider value={{ statement, talker, handleShowTalker, role, handleSetNewStatement, setNewStatementType, newStatementType }}>
-				<div className="page">
+			<StatementContext.Provider
+				value={{
+					statement,
+					talker,
+					handleShowTalker,
+					role,
+					handleSetNewStatement,
+					setNewStatementType,
+					newStatementType,
+				}}
+			>
+				<div className='page'>
 					{showAskPermission && <AskPermission showFn={setShowAskPermission} />}
 					{talker && (
 						<button
@@ -225,9 +229,11 @@ const StatementMain: FC = () => {
 						/>
 					)}
 					{showNewStatement && (
-						<Modal closeModal={(e) => {
-							if (e.target === e.currentTarget) setShowNewStatement(false)
-						}}>
+						<Modal
+							closeModal={(e) => {
+								if (e.target === e.currentTarget) setShowNewStatement(false);
+							}}
+						>
 							<NewStatement />
 						</Modal>
 					)}

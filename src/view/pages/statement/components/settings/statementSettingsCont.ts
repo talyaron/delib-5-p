@@ -1,19 +1,19 @@
 import { Statement, Vote, Evaluation, Screen } from 'delib-npm';
 
 // Helpers
-import { getVoters } from '@/controllers/db/vote/getVotes';
+import { DeliberativeElement, StatementType } from 'delib-npm/dist/models/statementsModels';
+import { NavigateFunction } from 'react-router-dom';
+import {
+	defaultResultsSettings,
+	defaultStatementSettings,
+} from './emptyStatementModel';
 import { getEvaluations } from '@/controllers/db/evaluation/getEvaluation';
 import {
 	createStatement,
 	setStatementToDB,
 	updateStatement,
 } from '@/controllers/db/statements/setStatements';
-import {
-	defaultResultsSettings,
-	defaultStatementSettings,
-} from './emptyStatementModel';
-import { NavigateFunction } from 'react-router-dom';
-import { DeliberativeElement, StatementType } from 'delib-npm/dist/models/statementsModels';
+import { getVoters } from '@/controllers/db/vote/getVotes';
 
 // Get users that voted on options in this statement
 export async function handleGetVoters(
@@ -60,7 +60,6 @@ export async function handleGetEvaluators(
 	setEvaluators(evaluators);
 	setClicked(true);
 }
-
 
 interface SetNewStatementParams {
 	navigate: NavigateFunction;
@@ -109,7 +108,6 @@ export async function setNewStatement({
 				membership,
 			});
 
-
 			if (!newStatement) throw new Error('newStatement had error in creating');
 
 			await setStatementToDB({
@@ -149,12 +147,12 @@ export async function setNewStatement({
 				addSubscription: true,
 			});
 
-
 			return newStatement;
 		}
 	} catch (error) {
 		console.error(error);
-		return undefined;
+		
+return undefined;
 	}
 }
 
@@ -179,7 +177,6 @@ export const getStatementSettings = (statement: Statement) => {
 		),
 	};
 };
-
 
 const getSetStatementData = (statement: Statement) => {
 	const { resultsBy, numberOfResults } =
@@ -214,8 +211,6 @@ export const toggleSubScreen = ({
 
 	statement,
 }: ToggleSubScreenParams): Statement => {
-
-
 
 	return {
 		...statement

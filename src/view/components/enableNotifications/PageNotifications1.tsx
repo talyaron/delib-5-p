@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './pageNotifications1.scss';
-import pointer1 from '@/assets/images/poiner 1.svg';
-import Elipse3 from '@/assets/icons/Group 2.svg';
-import Frame from '@/assets/icons/Frame 1171276030.svg';
-import Rectangle from '@/assets/icons/Rectangle 3.svg';
-import rectangleText from '@/assets/images/Snackbar.svg';
-import sentence from '@/assets/images/sentence.svg';
-import link from '@/assets/images/Web Settings.svg';
-import xicon from '@/assets/icons/x-icon.svg';
 import Modal from '../modal/Modal';
+import Frame from '@/assets/icons/Frame 1171276030.svg';
+import Elipse3 from '@/assets/icons/Group 2.svg';
+import Rectangle from '@/assets/icons/Rectangle 3.svg';
+import xicon from '@/assets/icons/x-icon.svg';
+import pointer1 from '@/assets/images/poiner 1.svg';
+import sentence from '@/assets/images/sentence.svg';
+import rectangleText from '@/assets/images/Snackbar.svg';
+import link from '@/assets/images/Web Settings.svg';
 import { Statement } from 'delib-npm';
 
 interface Props {

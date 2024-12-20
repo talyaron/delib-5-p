@@ -1,19 +1,18 @@
-import { FC, useEffect, useState } from "react";
-
 // Third Party Imports
 import { Statement } from "delib-npm";
+import { FC, useEffect, useState } from "react";
 
 // Custom components
-import Thumb from "@/view/components/thumb/Thumb";
 
 // Redux Store
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 
 // Statement helpers
+import useDirection from "@/controllers/hooks/useDirection";
 import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
 
 // Custom Hooks
-import useDirection from "@/controllers/hooks/useDirection";
+import Thumb from "@/view/components/thumb/Thumb";
 
 //css
 import "./SimpleEvaluation.scss";

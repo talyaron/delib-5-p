@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
 import {  DeliberativeElement, Statement } from 'delib-npm';
+import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import OptionBar from '../optionBar/OptionBar';
 import './VotingArea.scss';
-import useWindowDimensions from '@/controllers/hooks/useWindowDimentions';
 import { getSortedVotingOptions, isVerticalOptionBar } from './VotingAreaCont';
+import useWindowDimensions from '@/controllers/hooks/useWindowDimentions';
 
 interface VotingAreaProps {
 	setStatementInfo: React.Dispatch<React.SetStateAction<Statement | null>>;

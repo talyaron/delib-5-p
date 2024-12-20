@@ -20,14 +20,14 @@ import {
 } from 'firebase/firestore';
 import { getToken, onMessage } from 'firebase/messaging';
 import { messaging, FireStore } from '../config';
-import { getUserFromFirebase } from '../users/usersGeneral';
 import { vapidKey } from '../configKey';
+import { getUserFromFirebase } from '../users/usersGeneral';
 import logo from '@/assets/logo/logo-96px.png';
-import { store } from '@/model/store';
 import {
 	deleteInAppNotification,
 	setInAppNotification,
 } from '@/model/notifications/notificationsSlice';
+import { store } from '@/model/store';
 
 export async function getUserPermissionToNotifications(
 	t: (text: string) => string

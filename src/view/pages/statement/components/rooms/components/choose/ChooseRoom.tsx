@@ -1,16 +1,15 @@
+import { Statement, StatementType } from "delib-npm";
 import { FC, useState } from "react";
 
 // Third party
-import { Statement, StatementType } from "delib-npm";
 
 // Custom components
+import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
+import styles from "./ChooseRoom.module.scss";
 import RoomChoosingCard from "./roomChoosingCard/RoomChoosingCard";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import styles from "./ChooseRoom.module.scss";
 
 import Button from "@/view/components/buttons/button/Button";
-
-import CreateStatementModal from "../../../createStatementModal/CreateStatementModal";
 
 interface Props {
   statement: Statement;

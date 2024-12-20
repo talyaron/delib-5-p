@@ -1,8 +1,8 @@
 import React from "react";
+import { DisplayStatement } from "../newStatement";
 import SendIcon from "@/assets/icons/send-icon-pointing-up-and-right.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button, { ButtonType } from "@/view/components/buttons/button/Button";
-import { DisplayStatement } from "../newStatement";
 
 interface SimilarStatementsSuggestionProps {
 	setCurrentStep: React.Dispatch<React.SetStateAction<number>>;

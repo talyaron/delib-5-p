@@ -1,16 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
-import { getMessaging, isSupported } from 'firebase/messaging';
 import {
 	browserLocalPersistence,
 	connectAuthEmulator,
 	getAuth,
 	setPersistence,
 } from 'firebase/auth';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+import { getMessaging, isSupported } from 'firebase/messaging';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
-import firebaseConfig from './configKey';
 import { isProduction } from '../general/helpers';
+import firebaseConfig from './configKey';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

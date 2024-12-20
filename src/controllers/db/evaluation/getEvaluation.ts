@@ -1,3 +1,5 @@
+import { Collections, Evaluation, User, UserSchema } from "delib-npm";
+import { Unsubscribe } from "firebase/auth";
 import {
 	collection,
 	onSnapshot,
@@ -8,11 +10,9 @@ import {
 	getDoc,
 } from "firebase/firestore";
 import { FireStore } from "../config";
-import { Collections, Evaluation, User, UserSchema } from "delib-npm";
 import { EvaluationSchema } from "@/model/evaluations/evaluationModel";
-import { AppDispatch } from "@/model/store";
 import { setEvaluationToStore } from "@/model/evaluations/evaluationsSlice";
-import { Unsubscribe } from "firebase/auth";
+import { AppDispatch } from "@/model/store";
 
 export const listenToEvaluations = (
 	dispatch: AppDispatch,

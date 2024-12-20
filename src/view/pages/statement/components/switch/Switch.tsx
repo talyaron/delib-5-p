@@ -1,13 +1,12 @@
-import { ReactNode, useContext, useEffect, useRef } from 'react';
-import { StatementContext } from '../../StatementCont';
-import FollowMeToast from '../followMeToast/FollowMeToast';
-import { useNavigate, useParams } from 'react-router-dom';
 import { Statement, StatementType } from 'delib-npm';
-import StatementSettings from '../settings/StatementSettings';
-import styles from './Switch.module.scss';
-
+import { ReactNode, useContext, useEffect, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { StatementContext } from '../../StatementCont';
 import Chat from '../chat/Chat';
+import FollowMeToast from '../followMeToast/FollowMeToast';
+import StatementSettings from '../settings/StatementSettings';
 import Group from '../statementTypes/group/Group';
+import styles from './Switch.module.scss';
 
 const Switch = () => {
 	const { statement } = useContext(StatementContext);

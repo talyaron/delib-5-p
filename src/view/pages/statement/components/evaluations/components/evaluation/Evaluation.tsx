@@ -1,7 +1,7 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
-import SimpleEvaluation from "./simpleEvaluation/SimpleEvaluation";
 import EnhancedEvaluation from "./enhancedEvaluation/EnhancedEvaluation";
+import SimpleEvaluation from "./simpleEvaluation/SimpleEvaluation";
 
 interface EvaluationProps {
   parentStatement: Statement;

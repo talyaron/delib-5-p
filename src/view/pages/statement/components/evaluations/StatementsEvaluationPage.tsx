@@ -1,25 +1,25 @@
+import { QuestionStage, QuestionType, Statement, StatementType } from "delib-npm";
 import { FC, useEffect, useState } from "react";
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement, StatementType } from "delib-npm";
 
 // Custom Components
 
+import { useNavigate } from "react-router-dom";
+import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
 import StatementBottomNav from "../nav/bottom/StatementBottomNav";
-import Toast from "@/view/components/toast/Toast";
-import Modal from "@/view/components/modal/Modal";
+import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import StatementInfo from "../vote/components/info/StatementInfo";
-import Button from "@/view/components/buttons/button/Button";
+import Description from "./components/description/Description";
+import SuggestionCards from "./components/suggestionCards/SuggestionCards";
+import styles from "./statementEvaluationsPage.module.scss";
 import LightBulbIcon from "@/assets/icons/lightBulbIcon.svg?react";
 import X from "@/assets/icons/x.svg?react";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { getStagesInfo } from "../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { getTitle } from "@/controllers/general/helpers";
-import CreateStatementModalSwitch from "../createStatementModalSwitch/CreateStatementModalSwitch";
-import styles from "./statementEvaluationsPage.module.scss";
-import SuggestionCards from "./components/suggestionCards/SuggestionCards";
-import Description from "./components/description/Description";
-import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Button from "@/view/components/buttons/button/Button";
+import Modal from "@/view/components/modal/Modal";
+import Toast from "@/view/components/toast/Toast";
 
 interface StatementEvaluationPageProps {
   statement: Statement;

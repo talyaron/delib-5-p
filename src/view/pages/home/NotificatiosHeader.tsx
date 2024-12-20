@@ -1,8 +1,8 @@
-import { inAppNotificationsSelector } from "@/model/notifications/notificationsSlice";
-import InAppNotifications from "@/view/components/inAppNotifications/InAppNotifications";
 import {  useState } from "react";
 import { useSelector } from "react-redux";
 import Bell from "@/assets/icons/bellIcon.svg?react";
+import { inAppNotificationsSelector } from "@/model/notifications/notificationsSlice";
+import InAppNotifications from "@/view/components/inAppNotifications/InAppNotifications";
 
 const NotificationHeader = () => {
 	const inAppNotifications = useSelector(inAppNotificationsSelector);

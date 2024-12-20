@@ -1,6 +1,6 @@
-import { useLanguage } from "@/controllers/hooks/useLanguages";
 import Button, { ButtonType } from "../buttons/button/Button";
 import Modal from "../modal/Modal";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./TermsOfUse.scss";
 
 interface Props {

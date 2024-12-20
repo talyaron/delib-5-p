@@ -21,27 +21,27 @@ import "../mapHelpers/reactFlow.scss";
 import "reactflow/dist/style.css";
 
 // icons
-import MapSaveIcon from "@/assets/icons/MapSaveIcon.svg";
-import MapRestoreIcon from "@/assets/icons/MapRestoreIcon.svg";
-import MapVerticalLayoutIcon from "@/assets/icons/MapVerticalLayoutIcon.svg";
-import MapHorizontalLayoutIcon from "@/assets/icons/MapHorizontalLayoutIcon.svg";
-import MapCancelIcon from "@/assets/icons/MapCancelIcon.svg";
-import MapHamburgerIcon from "@/assets/icons/MapHamburgerIcon.svg";
-
-// Helper functions
+import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
+import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
+import { useMapContext } from "../../../../../../controllers/hooks/useMap";
+import Modal from "../../../../../components/modal/Modal";
 import {
 	createInitialNodesAndEdges,
 	getLayoutedElements,
 } from "../mapHelpers/customNodeCont";
+import CustomNode from "./CustomNode";
+import MapCancelIcon from "@/assets/icons/MapCancelIcon.svg";
+import MapHamburgerIcon from "@/assets/icons/MapHamburgerIcon.svg";
+import MapHorizontalLayoutIcon from "@/assets/icons/MapHorizontalLayoutIcon.svg";
+import MapRestoreIcon from "@/assets/icons/MapRestoreIcon.svg";
+import MapSaveIcon from "@/assets/icons/MapSaveIcon.svg";
+import MapVerticalLayoutIcon from "@/assets/icons/MapVerticalLayoutIcon.svg";
+
+// Helper functions
 
 // Hooks
-import { useMapContext } from "../../../../../../controllers/hooks/useMap";
 
 // Custom components
-import CustomNode from "./CustomNode";
-import Modal from "../../../../../components/modal/Modal";
-import { updateStatementParents } from "../../../../../../controllers/db/statements/setStatements";
-import { getStatementFromDB } from "../../../../../../controllers/db/statements/getStatement";
 
 const nodeTypes = {
 	custom: CustomNode,

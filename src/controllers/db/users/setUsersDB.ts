@@ -5,8 +5,8 @@ import {
 	User,
 	UserSchema,
 } from "delib-npm";
-import { FireStore } from "../config";
 import { doc, getDoc,  setDoc } from "firebase/firestore";
+import { FireStore } from "../config";
 import { store } from "@/model/store";
 
 export async function setUserToDB(user: User) {

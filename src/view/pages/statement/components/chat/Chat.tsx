@@ -1,21 +1,21 @@
+import { Statement } from "delib-npm";
 import { FC, useEffect, useState, useRef, useContext } from "react";
 
 // Third Party Imports
-import { Statement } from "delib-npm";
 
 // Custom Components
+import { useLocation, useParams } from "react-router-dom";
+import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
+import { StatementContext } from "../../StatementCont";
+import styles from "./Chat.module.scss";
 import ChatMessageCard from "./components/chatMessageCard/ChatMessageCard";
 import ChatInput from "./components/input/ChatInput";
-import useSlideAndSubStatement from "../../../../../controllers/hooks/useSlideAndSubStatement";
 
 import NewMessages from "./components/newMessages/NewMessages";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { userSelector } from "@/model/users/userSlice";
-import styles from "./Chat.module.scss";
-import { useLocation, useParams } from "react-router-dom";
-import { StatementContext } from "../../StatementCont";
 import { listenToSubStatements } from "@/controllers/db/statements/listenToStatements";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSubsSelector } from "@/model/statements/statementsSlice";
+import { userSelector } from "@/model/users/userSlice";
 
 let firstTime = true;
 let numberOfSubStatements = 0;

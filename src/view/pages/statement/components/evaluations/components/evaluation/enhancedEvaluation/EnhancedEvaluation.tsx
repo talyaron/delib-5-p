@@ -1,18 +1,18 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
 
-import { setEvaluationToDB } from "@/controllers/db/evaluation/setEvaluation";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
+import { getEvaluationThumbIdByScore } from "../../../statementsEvaluationCont";
+import styles from  "./EnhancedEvaluation.module.scss";
 import {
 	enhancedEvaluationsThumbs,
 	EnhancedEvaluationThumb,
 } from "./EnhancedEvaluationModel";
-import { getEvaluationThumbIdByScore } from "../../../statementsEvaluationCont";
-import styles from  "./EnhancedEvaluation.module.scss";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { userSettingsSelector } from "@/model/users/userSlice";
+import { setEvaluationToDB } from "@/controllers/db/evaluation/setEvaluation";
 import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
+import { userSettingsSelector } from "@/model/users/userSlice";
 
 interface EnhancedEvaluationProps {
   statement: Statement;

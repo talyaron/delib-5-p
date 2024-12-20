@@ -2,9 +2,9 @@ import { Statement } from 'delib-npm';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackArrowIcon from '@/assets/icons/chevronLeftIcon.svg?react';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { StyleProps } from '@/controllers/hooks/useStatementColor';
 import { historySelect, HistoryTracker } from '@/model/history/HistorySlice';
-import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 
 interface Props {
 	statement: Statement | undefined;

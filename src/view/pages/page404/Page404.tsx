@@ -1,16 +1,16 @@
 import "./page404.scss";
 import { useDispatch } from "react-redux";
-import { setInitLocation } from "@/model/location/locationSlice";
+import { useNavigate } from "react-router-dom";
+import img404 from "@/assets/images/404.png";
 
 //images
+import cable from "@/assets/images/Cable.png";
+import cableDog from "@/assets/images/CableDog.png";
 import Cloud1 from "@/assets/images/Cloud1.png";
 import Cloud2 from "@/assets/images/Cloud2.png";
 import Cloud3 from "@/assets/images/Cloud3.png";
-import img404 from "@/assets/images/404.png";
-import cable from "@/assets/images/Cable.png";
-import cableDog from "@/assets/images/CableDog.png";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import { useNavigate } from "react-router-dom";
+import { setInitLocation } from "@/model/location/locationSlice";
 
 const Page404 = () => {
 	const navigate = useNavigate();

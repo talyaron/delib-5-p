@@ -1,8 +1,8 @@
+import { Statement } from "delib-npm";
 import React, { useState, useEffect } from 'react';
+import Modal from "../modal/Modal";
 import PageNotifications1 from './PageNotifications1';
 import PageNotifications2 from './PageNotifications2';
-import Modal from "../modal/Modal";
-import { Statement } from "delib-npm";
 
 interface Props {
     setAskNotifications: React.Dispatch<React.SetStateAction<boolean>>;

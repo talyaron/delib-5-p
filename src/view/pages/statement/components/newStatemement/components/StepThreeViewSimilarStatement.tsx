@@ -1,6 +1,6 @@
 import React from 'react';
-import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import SubmitStatementButton from '../SubmitStatementButton';
+import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 interface StepThreeViewSimilarStatementProps {

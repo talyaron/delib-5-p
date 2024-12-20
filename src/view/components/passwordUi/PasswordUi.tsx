@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 //styles
-import styles from './passwordUi.module.scss';
 
 //images
 import passwordUiImgBlue from '../../../assets/images/passwordUiImgBlue.png';
-import passwordUiImgRed from '../../../assets/images/passwordUiImgRed.png';
 import passwordUiImgGreen from '../../../assets/images/passwordUiImgGreen.png';
+import passwordUiImgRed from '../../../assets/images/passwordUiImgRed.png';
 
 //custom components
 import Button from '../buttons/button/Button';
 import PasswordInput from './PasswordInput.tsx';
+import styles from './passwordUi.module.scss';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 export default function PasswordUi({

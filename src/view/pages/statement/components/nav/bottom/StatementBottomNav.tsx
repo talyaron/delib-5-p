@@ -1,29 +1,29 @@
+import { Screen, Statement } from "delib-npm";
 import React, { FC, useState } from "react";
 
 // Third party libraries
-import { Screen, Statement } from "delib-npm";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import PlusIcon from "@/assets/icons/plusIcon.svg?react";
-import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
-import NewestIcon from "@/assets/icons/newIcon.svg?react";
-import RandomIcon from "@/assets/icons/randomIcon.svg?react";
-import SortIcon from "@/assets/icons/sort.svg?react";
-import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
-
-import useStatementColor from "@/controllers/hooks/useStatementColor";
 import {
 	NavItem,
 	optionsArray,
 	questionsArray,
 	votesArray,
 } from "./StatementBottomNavModal";
-import "./StatementBottomNav.scss";
-import StartHere from "@/view/components/startHere/StartHere";
-import { useSelector } from "react-redux";
-import { userSettingsSelector } from "@/model/users/userSlice";
+import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
+import NewestIcon from "@/assets/icons/newIcon.svg?react";
+import PlusIcon from "@/assets/icons/plusIcon.svg?react";
+import RandomIcon from "@/assets/icons/randomIcon.svg?react";
+import SortIcon from "@/assets/icons/sort.svg?react";
+import UpdateIcon from "@/assets/icons/updateIcon.svg?react";
+
 import { decreesUserSettingsLearningRemain } from "@/controllers/db/learning/setLearning";
+import useStatementColor from "@/controllers/hooks/useStatementColor";
+import "./StatementBottomNav.scss";
+import { userSettingsSelector } from "@/model/users/userSlice";
+import StartHere from "@/view/components/startHere/StartHere";
 
 interface Props {
   statement: Statement;

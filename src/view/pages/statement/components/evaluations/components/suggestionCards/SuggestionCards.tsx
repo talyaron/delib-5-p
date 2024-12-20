@@ -1,17 +1,17 @@
 import { DeliberativeElement, QuestionStage, QuestionType, Statement } from "delib-npm";
 import { FC, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { sortSubStatements } from "../../statementsEvaluationCont";
+import EmptyScreen from "../emptyScreen/EmptyScreen";
 import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
 import {
 	myStatementsByStatementIdSelector,
 	statementsOfMultiStepSelectorByStatementId,
 	statementSubsSelector,
 } from "@/model/statements/statementsSlice";
-import EmptyScreen from "../emptyScreen/EmptyScreen";
-import { sortSubStatements } from "../../statementsEvaluationCont";
-import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
 
 interface Props {
   statement: Statement;

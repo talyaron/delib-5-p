@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { inAppNotificationsSelector } from '@/model/notifications/notificationsSlice';
 
 import { useSelector } from 'react-redux';
+import InAppNotification from './inAppNotification/InAppNotification';
 import styles from './InAppNotifications.module.scss';
 
 import { useLanguage } from '@/controllers/hooks/useLanguages';
-import InAppNotification from './inAppNotification/InAppNotification';
+import { inAppNotificationsSelector } from '@/model/notifications/notificationsSlice';
 
 interface Props {
 	handleShowNotifications: (show: boolean) => void;

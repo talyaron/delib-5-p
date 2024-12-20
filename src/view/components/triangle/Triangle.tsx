@@ -1,10 +1,10 @@
-import { FC } from "react";
-import styles from "./Triangle.module.scss";
 import { Statement } from "delib-npm";
+import { FC } from "react";
 import { useSelector } from "react-redux";
-import { statementOptionsSelector } from "@/model/statements/statementsSlice";
 import Dot from "./dot/Dot";
+import styles from "./Triangle.module.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { statementOptionsSelector } from "@/model/statements/statementsSlice";
 
 interface Props {
   statement: Statement;

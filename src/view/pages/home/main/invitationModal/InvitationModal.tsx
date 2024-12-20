@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./InvitationModal.module.scss";
+import InvitationModalInputBoxWrapper from "./InvitationModalInputBoxWrapper";
 import {
 	getInvitationPathName,
 	getMaxInvitationDigits,
 } from "@/controllers/db/invitations/getInvitations";
-import { useNavigate } from "react-router-dom";
+import { handleCloseInviteModal } from "@/controllers/general/helpers";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import XIcon from "@/view/components/icons/XIcon";
-import InvitationModalInputBoxWrapper from "./InvitationModalInputBoxWrapper";
 import InviteModal from "@/view/components/modal/InviteModal";
-import { handleCloseInviteModal } from "@/controllers/general/helpers";
 
 interface Props {
   setShowModal: (show: boolean) => void;

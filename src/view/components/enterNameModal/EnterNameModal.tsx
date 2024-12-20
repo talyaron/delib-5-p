@@ -1,15 +1,15 @@
 import { FC, useEffect, useRef, useState } from 'react';
 
 // Styles
+import Button, { ButtonType } from '../buttons/button/Button';
+import Modal from '../modal/Modal';
 import styles from './enterNameModal.module.scss';
 
 // Custom components
-import Modal from '../modal/Modal';
 
 // Functions
 import { signAnonymously } from '@/controllers/db/auth';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
-import Button, { ButtonType } from '../buttons/button/Button';
 
 interface Props {
 	closeModal: VoidFunction;

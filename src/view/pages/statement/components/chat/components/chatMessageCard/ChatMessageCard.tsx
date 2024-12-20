@@ -1,36 +1,36 @@
+import { Statement } from 'delib-npm';
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 // Third Party Imports
-import { Statement } from 'delib-npm';
 
 // Redux Store
-import { useAppSelector } from '@/controllers/hooks/reduxHooks';
-import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
-import { store } from '@/model/store';
-
-// Helper functions
-import { isAuthorized } from '@/controllers/general/helpers';
-
-// Hooks
-import useStatementColor from '@/controllers/hooks/useStatementColor';
-
-// Custom Components
-import EditTitle from '@/view/components/edit/EditTitle';
 import StatementChatMore from '../StatementChatMore';
 import UserAvatar from '../userAvatar/UserAvatar';
 import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
+import DeleteIcon from '@/assets/icons/delete.svg?react';
 import EditIcon from '@/assets/icons/editIcon.svg?react';
 import LightBulbIcon from '@/assets/icons/lightBulbIcon.svg?react';
-import UploadImageIcon from '@/assets/icons/updateIcon.svg?react';
 import QuestionMarkIcon from '@/assets/icons/questionIcon.svg?react';
-import DeleteIcon from '@/assets/icons/delete.svg?react';
 import SaveTextIcon from '@/assets/icons/SaveTextIcon.svg';
+import UploadImageIcon from '@/assets/icons/updateIcon.svg?react';
 import {
 	setStatementIsOption,
 	updateIsQuestion,
 	updateStatementText,
 } from '@/controllers/db/statements/setStatements';
+import { isAuthorized } from '@/controllers/general/helpers';
+import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import useStatementColor from '@/controllers/hooks/useStatementColor';
+import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
+import { store } from '@/model/store';
+
+// Helper functions
+
+// Hooks
+
+// Custom Components
+import EditTitle from '@/view/components/edit/EditTitle';
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
 import CreateStatementModal from '@/view/pages/statement/components/createStatementModal/CreateStatementModal';

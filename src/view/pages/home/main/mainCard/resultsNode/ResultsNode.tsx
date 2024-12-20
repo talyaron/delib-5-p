@@ -1,8 +1,8 @@
 import { Statement, StatementType } from "delib-npm";
 import { FC } from "react";
+import { Link } from "react-router-dom";
 import Text from "@/view/components/text/Text";
 import StatementChatMore from "@/view/pages/statement/components/chat/components/StatementChatMore";
-import { Link } from "react-router-dom";
 import "./ResultsNode.scss";
 import { styleSwitch } from "./ResultsNodeCont";
 

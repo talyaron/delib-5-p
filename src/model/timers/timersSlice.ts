@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { RoomTimer, SetTimer } from "delib-npm";
+import { RootState } from "../store";
 import { updateArray } from "@/controllers/general/helpers";
 
 export enum Status {

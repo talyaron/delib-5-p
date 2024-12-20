@@ -1,10 +1,9 @@
+import { ParticipantInRoom, Statement } from "delib-npm";
 import { FC } from "react";
 
-import { ParticipantInRoom, Statement } from "delib-npm";
-
 // import { useLanguage } from "@/controllers/hooks/useLanguages";
-import styles from "./Room.module.scss";
 import RoomParticipantBadge from "../roomParticipantBadge/RoomParticipantBadge";
+import styles from "./Room.module.scss";
 
 interface Props {
   participants: ParticipantInRoom[];

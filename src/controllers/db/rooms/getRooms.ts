@@ -6,6 +6,7 @@ import {
 	roomSettingsSchema,
 	Statement
 } from 'delib-npm';
+import { Unsubscribe } from 'firebase/auth';
 import {
 	collection,
 	doc,
@@ -15,7 +16,6 @@ import {
 } from 'firebase/firestore';
 import { FireStore } from '../config';
 import { deleteRoom, setRoom, setRooms, setRoomSettings } from '@/model/rooms/roomsSlice';
-import { Unsubscribe } from 'firebase/auth';
 import { store } from '@/model/store';
 
 export function listenToParticipants(

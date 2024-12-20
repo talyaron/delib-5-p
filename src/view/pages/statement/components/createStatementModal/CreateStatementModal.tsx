@@ -1,13 +1,13 @@
+import { Statement, StatementType } from 'delib-npm';
 import { FC, useState, useEffect, useRef } from 'react';
 
 // Third party imports
-import { Statement, StatementType } from 'delib-npm';
 
 // Images
-import newQuestionGraphic from '@/assets/images/newQuestionGraphic.png';
-import newOptionGraphic from '@/assets/images/newOptionGraphic.png';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { createStatementFromModal } from '../settings/statementSettingsCont';
+import newOptionGraphic from '@/assets/images/newOptionGraphic.png';
+import newQuestionGraphic from '@/assets/images/newQuestionGraphic.png';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import Modal from '@/view/components/modal/Modal';
 import './CreateStatementModal.scss';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';

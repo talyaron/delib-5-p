@@ -1,5 +1,5 @@
-import { useRef, FC } from "react";
 import { Statement } from "delib-npm";
+import { useRef, FC } from "react";
 
 //Custom components
 import Button from "../../../view/components/buttons/button/Button";

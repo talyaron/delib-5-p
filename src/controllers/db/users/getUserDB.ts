@@ -1,5 +1,5 @@
-import { doc, getDoc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { Agreement, Collections, StatementSchema, User, UserSettings, userSettingsSchema } from "delib-npm";
+import { doc, getDoc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { FireStore } from "../config";
 import { store } from "@/model/store";
 import { setUserSettings } from "@/model/users/userSlice";

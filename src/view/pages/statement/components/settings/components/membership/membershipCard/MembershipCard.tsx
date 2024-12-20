@@ -3,12 +3,12 @@ import { FC, useState, useEffect } from "react";
 import styles from "./MembershipCard.module.scss";
 
 //icons
+import unBlockImg from "@/assets/icons/Icon-base-46px.png";
 import MemberAdmin from "@/assets/icons/memberAdmin.svg?react";
 import MemberRemove from "@/assets/icons/memberRemove.svg?react";
+import { updateMemberRole } from "@/controllers/db/subscriptions/setSubscriptions";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
-import { updateMemberRole } from "@/controllers/db/subscriptions/setSubscriptions";
-import unBlockImg from "@/assets/icons/Icon-base-46px.png";
 
 interface Props {
 	member: StatementSubscription;

@@ -1,6 +1,6 @@
+import { Collections } from "delib-npm";
 import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { FireStore } from "../config";
-import { Collections } from "delib-npm";
 import { getNumberDigits } from "@/controllers/general/helpers";
 
 export async function getMaxInvitationDigits():Promise<number | undefined>{

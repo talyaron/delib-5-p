@@ -1,31 +1,31 @@
+import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
 import { FC, useEffect, useState } from 'react';
 
 // Third party imports
-import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
 
 // Redux
+import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
+import StatementBottomNav from '../nav/bottom/StatementBottomNav';
+import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
+import StatementInfo from './components/info/StatementInfo';
+import VotingArea from './components/votingArea/VotingArea';
+import { getTotalVoters } from './statementVoteCont';
+import HandIcon from '@/assets/icons/handIcon.svg?react';
+import X from '@/assets/icons/x.svg?react';
+import { getToVoteOnParent } from '@/controllers/db/vote/getVotes';
 import { useAppDispatch } from '@/controllers/hooks/reduxHooks';
 
 // Statements helpers
-import { getToVoteOnParent } from '@/controllers/db/vote/getVotes';
 import { setVoteToStore } from '@/model/vote/votesSlice';
-import { getTotalVoters } from './statementVoteCont';
 
 // Custom components
+import Button from '@/view/components/buttons/button/Button';
 import Modal from '@/view/components/modal/Modal';
-import HandIcon from '@/assets/icons/handIcon.svg?react';
-import StatementInfo from './components/info/StatementInfo';
-import StatementBottomNav from '../nav/bottom/StatementBottomNav';
 import './StatementVote.scss';
-import X from '@/assets/icons/x.svg?react';
 
 // Helpers
-import VotingArea from './components/votingArea/VotingArea';
-import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
 import Toast from '@/view/components/toast/Toast';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
-import Button from '@/view/components/buttons/button/Button';
-import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
 
 interface Props {
 	statement: Statement;

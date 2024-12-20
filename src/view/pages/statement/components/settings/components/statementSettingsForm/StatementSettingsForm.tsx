@@ -1,30 +1,30 @@
+import { Role, Statement, StatementSubscription } from 'delib-npm';
 import { Dispatch, FC, useState } from 'react';
 
 // Third party imports
 import { useNavigate, useParams } from 'react-router-dom';
-import { Role, Statement, StatementSubscription } from 'delib-npm';
 
 // Firestore functions
 
 // Custom components
-import UploadImage from '@/view/components/uploadImage/UploadImage';
+import QuestionSettings from '../QuestionSettings/QuestionSettings';
+import AdvancedSettings from './../../components/advancedSettings/AdvancedSettings';
 import DisplayResultsBy from './../../components/displayResultsBy/DisplayResultsBy';
-import ResultsRange from './../../components/resultsRange/ResultsRange';
-import GetVoters from './../../components/GetVoters';
 import GetEvaluators from './../../components/GetEvaluators';
-
-// Hooks & Helpers
+import GetVoters from './../../components/GetVoters';
+import MembersSettings from './../../components/membership/MembersSettings';
+import ResultsRange from './../../components/resultsRange/ResultsRange';
+import SectionTitle from './../../components/sectionTitle/SectionTitle';
+import TitleAndDescription from './../../components/titleAndDescription/TitleAndDescription';
 import { setNewStatement } from './../../statementSettingsCont';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
-import TitleAndDescription from './../../components/titleAndDescription/TitleAndDescription';
-import AdvancedSettings from './../../components/advancedSettings/AdvancedSettings';
-import MembersSettings from './../../components/membership/MembersSettings';
-import SectionTitle from './../../components/sectionTitle/SectionTitle';
+import UploadImage from '@/view/components/uploadImage/UploadImage';
+
+// Hooks & Helpers
 import './StatementSettingsForm.scss';
 
 // icons
 import SaveIcon from '@/assets/icons/save.svg?react';
-import QuestionSettings from '../QuestionSettings/QuestionSettings';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/model/store';

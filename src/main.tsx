@@ -2,17 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./view/style/style.scss";
 
+import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 
-import { store } from "./model/store";
-import { Provider } from "react-redux";
-
-import { router } from "./router";
 import {
 	LanguageProvider,
 	LanguagesEnum,
 } from "./controllers/hooks/useLanguages";
 import { setInitLocation } from "./model/location/locationSlice";
+import { store } from "./model/store";
+
+import { router } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 

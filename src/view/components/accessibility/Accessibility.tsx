@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 
 // Redux Store
+import IconButton from "../iconButton/IconButton";
+import AccessibilityIcon from "@/assets/icons/accessibilityIcon.svg?react";
+import { updateUserFontSize } from "@/controllers/db/users/setUsersDB";
 import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
+import { defaultFontSize } from "@/model/fonts/fontsModel";
 import {
 	colorContrastSelector,
 	fontSizeSelector,
@@ -9,12 +13,8 @@ import {
 	setColorContrast,
 	userSelector,
 } from "@/model/users/userSlice";
-import { updateUserFontSize } from "@/controllers/db/users/setUsersDB";
 
 // Icons
-import AccessibilityIcon from "@/assets/icons/accessibilityIcon.svg?react";
-import { defaultFontSize } from "@/model/fonts/fontsModel";
-import IconButton from "../iconButton/IconButton";
 import "./Accessibility.scss";
 import { colorMappings } from "./colorContrast";
 

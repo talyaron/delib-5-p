@@ -1,23 +1,23 @@
+import { Statement } from 'delib-npm';
 import { FC, useEffect, useState } from 'react';
 
 // Third party imports
 import { useParams } from 'react-router-dom';
-import { Statement } from 'delib-npm';
 
 // Redux Store
+import StatementSettingsForm from './components/statementSettingsForm/StatementSettingsForm';
+import { defaultEmptyStatement } from './emptyStatementModel';
+import { getStatementFromDB } from '@/controllers/db/statements/getStatement';
+import { listenToMembers } from '@/controllers/db/statements/listenToStatements';
+import { listenToStatementMetaData } from '@/controllers/db/statements/statementMetaData/listenToStatementMeta';
 import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import {
 	setStatement,
 	statementSelector,
 } from '@/model/statements/statementsSlice';
 
 // Hooks & Helpers
-import { useLanguage } from '@/controllers/hooks/useLanguages';
-import StatementSettingsForm from './components/statementSettingsForm/StatementSettingsForm';
-import { listenToMembers } from '@/controllers/db/statements/listenToStatements';
-import { getStatementFromDB } from '@/controllers/db/statements/getStatement';
-import { defaultEmptyStatement } from './emptyStatementModel';
-import { listenToStatementMetaData } from '@/controllers/db/statements/statementMetaData/listenToStatementMeta';
 
 // Custom components
 import Loader from '@/view/components/loaders/Loader';

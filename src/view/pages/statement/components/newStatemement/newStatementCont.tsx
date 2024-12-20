@@ -32,5 +32,6 @@ export const useNewStatement = (): NewStatementContextProps => {
 	if (!context) {
 		throw new Error('useNewStatement must be used within a NewStatementProvider');
 	}
-	return context;
+	
+return context;
 };

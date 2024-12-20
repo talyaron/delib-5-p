@@ -1,14 +1,13 @@
-import styles from './GetInitialStatementData.module.scss';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
-import Button, { ButtonType } from '@/view/components/buttons/button/Button';
+import { Statement, StatementType } from 'delib-npm';
 import { useContext } from 'react';
 import { NewStatementContext } from '../../newStatementCont';
-import { StatementContext } from '@/view/pages/statement/StatementCont';
+import styles from './GetInitialStatementData.module.scss';
+import { createStatement, setStatementToDB } from '@/controllers/db/statements/setStatements';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button, { ButtonType } from '@/view/components/buttons/button/Button';
 import Input from '@/view/components/input/Input';
 import Textarea from '@/view/components/textarea/Textarea';
-import { Statement, StatementType } from 'delib-npm';
-import { createStatement, setStatementToDB } from '@/controllers/db/statements/setStatements';
-
+import { StatementContext } from '@/view/pages/statement/StatementCont';
 
 export default function GetInitialStatementData() {
 	const { t } = useLanguage();
@@ -78,6 +77,7 @@ function getTexts(statementType: StatementType): { title: string, description: s
 	}
 	catch (error) {
 		console.error(error);
-		return { title: 'Title', description: 'Description', placeholder: 'Description' }
+		
+return { title: 'Title', description: 'Description', placeholder: 'Description' }
 	}
 }

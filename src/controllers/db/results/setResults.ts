@@ -1,7 +1,7 @@
+import { Collections, ResultsBy } from "delib-npm";
 import { doc, setDoc } from "firebase/firestore";
 import { z } from "zod";
 import { FireStore } from "../config";
-import { Collections, ResultsBy } from "delib-npm";
 
 export async function updateResultsSettings(
 	statementId: string,

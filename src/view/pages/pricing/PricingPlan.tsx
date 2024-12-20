@@ -1,12 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import RadioBox from "../../components/radioBox/RadioBox";
+import { pricingPlans } from "./pricingModel";
 import pricingImg from "@/assets/images/pricing.png";
 
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
-import { useNavigate } from "react-router-dom";
 
-import RadioBox from "../../components/radioBox/RadioBox";
-import { pricingPlans } from "./pricingModel";
 import "./PricingPlan.scss";
 
 export default function PricingPlan() {

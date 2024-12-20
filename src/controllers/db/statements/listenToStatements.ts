@@ -8,9 +8,11 @@ import {
 	StatementSchema,
 	DeliberativeElement,
 } from "delib-npm";
+import { Unsubscribe } from "firebase/auth";
 import { and, collection, doc, limit, onSnapshot, or, orderBy, query, where } from "firebase/firestore";
 
 // Redux Store
+import { FireStore } from "../config";
 import {
 	deleteStatement,
 	removeMembership,
@@ -20,10 +22,8 @@ import {
 	setStatements,
 } from "@/model/statements/statementsSlice";
 import { AppDispatch, store } from "@/model/store";
-import { FireStore } from "../config";
 
 // Helpers
-import { Unsubscribe } from "firebase/auth";
 
 export const listenToStatementSubscription = (statementId: string, user: User, dispatch: AppDispatch): Unsubscribe => {
 	try {

@@ -1,4 +1,11 @@
 import {
+	Collections,
+	DeliberativeElement,
+	Statement,
+	StatementSchema,
+	StatementType,
+} from 'delib-npm';
+import {
 	and,
 	collection,
 	doc,
@@ -10,13 +17,6 @@ import {
 } from 'firebase/firestore';
 
 // Third party imports
-import {
-	Collections,
-	DeliberativeElement,
-	Statement,
-	StatementSchema,
-	StatementType,
-} from 'delib-npm';
 
 // Helpers
 // import { listenedStatements } from "../../../view/pages/home/Home";

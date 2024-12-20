@@ -1,11 +1,11 @@
 import { FC } from "react";
 import "./CustomSwitchSmall.scss";
+import VisuallyHidden from "../../accessibility/toScreenReaders/VisuallyHidden";
 import BackgroundImage from "./customSwitchSmallBackground.svg";
 
 import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
 import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-import VisuallyHidden from "../../accessibility/toScreenReaders/VisuallyHidden";
 
 interface Props {
   label: string;

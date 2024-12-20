@@ -1,3 +1,4 @@
+import { parseUserFromFirebase, User } from 'delib-npm';
 import {
 	signInWithPopup,
 	GoogleAuthProvider,
@@ -5,22 +6,21 @@ import {
 	signInAnonymously,
 	Unsubscribe,
 } from 'firebase/auth';
-import { auth } from './config';
-import { parseUserFromFirebase, User } from 'delib-npm';
 import { NavigateFunction } from 'react-router-dom';
+import { auth } from './config';
 
 // Helper functions
 import { setUserToDB } from './users/setUsersDB';
 
 // Redux store imports
+import { resetEvaluations } from '@/model/evaluations/evaluationsSlice';
+import { defaultFontSize } from '@/model/fonts/fontsModel';
+import { setInitLocation } from '@/model/location/locationSlice';
+import { resetResults } from '@/model/results/resultsSlice';
+import { resetStatements } from '@/model/statements/statementsSlice';
 import { AppDispatch, store } from '@/model/store';
 import { setFontSize, setUser } from '@/model/users/userSlice';
-import { resetStatements } from '@/model/statements/statementsSlice';
-import { resetEvaluations } from '@/model/evaluations/evaluationsSlice';
 import { resetVotes } from '@/model/vote/votesSlice';
-import { resetResults } from '@/model/results/resultsSlice';
-import { setInitLocation } from '@/model/location/locationSlice';
-import { defaultFontSize } from '@/model/fonts/fontsModel';
 
 export function googleLogin() {
 	const provider = new GoogleAuthProvider();

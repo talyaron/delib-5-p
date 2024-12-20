@@ -1,15 +1,10 @@
 import { useState } from 'react';
 
-
 import './newStatement.scss';
-
 
 import GetInitialStatementData from './components/01-form/GetInitialStatementData';
 
-
 import { NewStatementContext } from './newStatementCont';
-
-
 
 export interface DisplayStatement {
 	title: string;
@@ -17,15 +12,11 @@ export interface DisplayStatement {
 	statementId: string;
 }
 
-
-
 export default function NewStatement() {
 
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [currentStep, setCurrentStep] = useState<0 | 1 | 2 | 3 | 4>(0);
-
-
 
 	return (
 		<NewStatementContext.Provider value={{ title, setTitle, description, setDescription, setCurrentStep }}>
@@ -43,7 +34,6 @@ export default function NewStatement() {
 				return <>Error: Could't fins the step</>;
 		}
 	}
-
 
 	// const stepsComponents = [
 	// 	<GetInitialStatementData

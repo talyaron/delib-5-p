@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // import type { PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from "../store";
 import { Results } from "delib-npm";
+import { RootState } from "../store";
 
 // Define a type for the slice state
 interface ResultsState {

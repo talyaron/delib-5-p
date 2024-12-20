@@ -1,13 +1,13 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
-import styles from "./RoomChoosingCard.module.scss";
 import { useSelector } from "react-redux";
-import { participantsByTopicId, roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
-import { userSelector } from "@/model/users/userSlice";
+import styles from "./RoomChoosingCard.module.scss";
 import {
 	deleteParticipantToDB,
 	setParticipantToDB,
 } from "@/controllers/db/rooms/setRooms";
+import { participantsByTopicId, roomSettingsByStatementId } from "@/model/rooms/roomsSlice";
+import { userSelector } from "@/model/users/userSlice";
 
 interface Props {
   topic: Statement;

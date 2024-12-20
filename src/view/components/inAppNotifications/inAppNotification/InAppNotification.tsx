@@ -1,9 +1,9 @@
 import { NotificationType } from "delib-npm";
 import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styles from "./InAppNotification.module.scss";
 import { updateNotificationRead } from "@/controllers/db/notifications/notifications";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { deleteInAppNotificationsByParentId } from "@/model/notifications/notificationsSlice";
 
 interface Props {

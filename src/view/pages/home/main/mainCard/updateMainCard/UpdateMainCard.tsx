@@ -1,14 +1,14 @@
 import { Statement } from "delib-npm";
 import { FC, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getStatementFromDB } from "@/controllers/db/statements/getStatement";
+import { getTime, truncateString } from "@/controllers/general/helpers";
 import { useAppDispatch, useAppSelector } from "@/controllers/hooks/reduxHooks";
 import {
 	setStatement,
 	statementSelectorById,
 } from "@/model/statements/statementsSlice";
-import { getStatementFromDB } from "@/controllers/db/statements/getStatement";
-import { Link } from "react-router-dom";
 import { getTitle } from "@/view/components/InfoParser/InfoParserCont";
-import { getTime, truncateString } from "@/controllers/general/helpers";
 
 interface Props {
   statement: Statement;

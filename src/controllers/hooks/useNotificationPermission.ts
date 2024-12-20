@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAppSelector } from "./reduxHooks";
 import {
 	hasTokenSelector,
 	statementNotificationSelector,
 } from "@/model/statements/statementsSlice";
-import { useParams } from "react-router-dom";
 
 const useNotificationPermission = (token: string) => {
 	try {

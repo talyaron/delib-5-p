@@ -1,8 +1,8 @@
-import { FC, useState, useEffect } from "react";
-import SectionTitle from "../sectionTitle/SectionTitle";
-import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import CustomSwitchSmall from "@/view/components/switch/customSwitchSmall/CustomSwitchSmall";
 import { QuestionStage, QuestionType, StatementType } from "delib-npm";
+import { FC, useState, useEffect } from "react";
+import { StatementSettingsProps } from "../../settingsTypeHelpers";
+import SectionTitle from "../sectionTitle/SectionTitle";
 import QuestionDashboard from "./questionDashboard/QuestionDashboard";
 import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { useLanguage } from "@/controllers/hooks/useLanguages";

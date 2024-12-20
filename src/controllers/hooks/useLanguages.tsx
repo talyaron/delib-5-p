@@ -43,9 +43,9 @@ export enum LanguagesEnum {
     nl = "nl",
 }
 
-import en from "../../assets/Languages/en.json";
 import ar from "../../assets/Languages/ar.json";
 import de from "../../assets/Languages/de.json";
+import en from "../../assets/Languages/en.json";
 import es from "../../assets/Languages/es.json";
 import he from "../../assets/Languages/he.json";
 import nl from "../../assets/Languages/nl.json";

@@ -1,7 +1,7 @@
 import { Statement, StatementType } from 'delib-npm';
 import React from 'react';
-import SimilarStatementsSuggestion from '../newStatemement/newStatement';
 import CreateStatementModal from '../createStatementModal/CreateStatementModal';
+import SimilarStatementsSuggestion from '../newStatemement/newStatement';
 
 interface CreateStatementModalSwitchProps {
 	useSimilarStatements: boolean;

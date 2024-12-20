@@ -1,8 +1,6 @@
 import { Statement, User, Role, StatementType } from "delib-npm";
 import { createContext } from "react";
 
-
-
 interface StatementContextProps {
 	statement: Statement | undefined;
 	talker: User | null;

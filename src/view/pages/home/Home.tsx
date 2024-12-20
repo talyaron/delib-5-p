@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 
 // Redux Store
+import HomeHeader from "./HomeHeader";
+import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "@/controllers/db/subscriptions/getSubscriptions";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { userSelector } from "@/model/users/userSlice";
 
 // Helpers
-import { getNewStatementsFromSubscriptions, listenToStatementSubscriptions } from "@/controllers/db/subscriptions/getSubscriptions";
 
 // Custom Components
-import HomeHeader from "./HomeHeader";
 
 interface ListenedStatements {
 	unsubFunction: () => void;

@@ -1,5 +1,5 @@
-import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import SubmitStatementButton from '../SubmitStatementButton';
+import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 
 interface StepFourContinueWithOwnInput {
 	newStatementInput: { title: string; description: string };

@@ -1,31 +1,31 @@
+import { Results, Role, Statement, StatementType } from "delib-npm";
 import { useState, FC, useEffect } from "react";
 
 // Third party imports
-import { Results, Role, Statement, StatementType } from "delib-npm";
 
 // Custom Components
+import { useSelector } from "react-redux";
+import { ReactFlowProvider } from "reactflow";
+import CreateStatementModal from "../createStatementModal/CreateStatementModal";
 import TreeChart from "./components/TreeChart";
-import Modal from "@/view/components/modal/Modal";
-
-// Helpers
+import { isAdmin } from "@/controllers/general/helpers";
 import {
 	FilterType,
 	filterByStatementType,
 	sortStatementsByHirarrchy as sortStatementsByHierarchy,
 } from "@/controllers/general/sorting";
-import CreateStatementModal from "../createStatementModal/CreateStatementModal";
+
+// Helpers
 
 // Hooks
+import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { useMapContext } from "@/controllers/hooks/useMap";
-import { ReactFlowProvider } from "reactflow";
-import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import {
 	statementDescendantsSelector,
 	statementSubscriptionSelector,
 } from "@/model/statements/statementsSlice";
-import { isAdmin } from "@/controllers/general/helpers";
-import { useSelector } from "react-redux";
+import Modal from "@/view/components/modal/Modal";
 
 interface Props {
   statement: Statement;

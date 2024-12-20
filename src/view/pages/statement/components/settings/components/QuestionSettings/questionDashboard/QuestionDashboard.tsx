@@ -2,11 +2,11 @@ import { QuestionStage, QuestionType, Statement, StatementMetaData } from "delib
 import { FC } from "react";
 import "./QuestionDashboard.scss";
 
+import { getStageInfo } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
 import UsersIcon from "@/assets/icons/users20px.svg?react";
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
-import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";
-import { getStageInfo } from "../QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
+import { statementMetaDataSelector } from "@/model/statements/statementsMetaSlice";
 
 interface Props {
   statement: Statement;

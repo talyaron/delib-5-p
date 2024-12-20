@@ -1,10 +1,10 @@
-import Button from '@/view/components/buttons/button/Button';
-import styles from './Group.module.scss';
-import { useContext } from 'react';
-import { StatementContext } from '../../../StatementCont';
 import { StatementType } from 'delib-npm';
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { StatementContext } from '../../../StatementCont';
+import styles from './Group.module.scss';
 import { statementSubsSelector } from '@/model/statements/statementsSlice';
+import Button from '@/view/components/buttons/button/Button';
 
 const Group = () => {
 	const { handleSetNewStatement, setNewStatementType, statement } = useContext(StatementContext);

@@ -1,6 +1,6 @@
 import { FC } from "react";
-import styles from "./Text.module.scss";
 import UrlParser from "../edit/URLParse";
+import styles from "./Text.module.scss";
 
 interface Props {
   statement?: string;

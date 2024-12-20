@@ -1,17 +1,17 @@
 import { Statement } from "delib-npm";
 import { FC } from "react";
 
+import { useSelector } from "react-redux";
+import RoomsDivision from "./roomsDivision/RoomsDivision";
+import RoomsView from "./roomsView/RoomsView";
+import { setNewRoomSettingsToDB } from "@/controllers/db/rooms/setRooms";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
-import { setNewRoomSettingsToDB } from "@/controllers/db/rooms/setRooms";
 import {
 	participantsByStatementId,
 	roomSettingsByStatementId,
 } from "@/model/rooms/roomsSlice";
-import { useSelector } from "react-redux";
 import { statementSubsSelector } from "@/model/statements/statementsSlice";
-import RoomsDivision from "./roomsDivision/RoomsDivision";
-import RoomsView from "./roomsView/RoomsView";
 
 interface Props {
   statement: Statement;

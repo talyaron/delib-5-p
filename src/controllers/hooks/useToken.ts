@@ -1,7 +1,7 @@
 import { getToken } from "firebase/messaging";
 import { useEffect, useState } from "react";
-import { vapidKey } from "../db/configKey";
 import { messaging } from "../db/config";
+import { vapidKey } from "../db/configKey";
 
 const useToken = () => {
 	try {

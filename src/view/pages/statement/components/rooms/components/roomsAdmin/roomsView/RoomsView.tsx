@@ -1,12 +1,12 @@
-import { FC } from "react";
-import styles from "./RoomsView.module.scss";
-import Button from "@/view/components/buttons/button/Button";
 import { ParticipantInRoom, Statement } from "delib-npm";
+import { FC } from "react";
+import Room from "../../room/Room";
+import styles from "./RoomsView.module.scss";
 import {
 	clearRoomsToDB,
 	toggleRoomEditingInDB,
 } from "@/controllers/db/rooms/setRooms";
-import Room from "../../room/Room";
+import Button from "@/view/components/buttons/button/Button";
 
 interface Props {
   statement: Statement;

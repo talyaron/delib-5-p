@@ -1,5 +1,5 @@
-import InvitationModalInputBox from "./InvitationModalInputBox";
 import styles from "./InvitationModal.module.scss";
+import InvitationModalInputBox from "./InvitationModalInputBox";
 
 type Props = {
   maxInvitation: number | undefined;

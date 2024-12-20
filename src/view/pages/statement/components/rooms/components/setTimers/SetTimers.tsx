@@ -1,26 +1,26 @@
+import { SetTimer, Statement } from "delib-npm";
 import { FC, useEffect } from "react";
 
 // Styles
+import SetSetTimerComp from "./setTimer/SetSetTimerComp";
 import styles from "./setTimers.module.scss";
 
 // Third party libraries
-import { SetTimer, Statement } from "delib-npm";
 
 import { getSetTimersDB } from "@/controllers/db/timer/getTimer";
 
 // Redux store
+import { updateTimerSettingDB } from "@/controllers/db/timer/setTimer";
+import { getSetTimerId } from "@/controllers/general/helpers";
 import {
 	useAppDispatch,
 	useAppSelector,
 } from "@/controllers/hooks/reduxHooks";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import {
 	selectStatementSettingTimers,
 	setSetTimer,
 } from "@/model/timers/timersSlice";
-import SetSetTimerComp from "./setTimer/SetSetTimerComp";
-import { updateTimerSettingDB } from "@/controllers/db/timer/setTimer";
-import { getSetTimerId } from "@/controllers/general/helpers";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
     parentStatement: Statement;

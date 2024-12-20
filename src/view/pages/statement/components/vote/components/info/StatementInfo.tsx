@@ -1,20 +1,20 @@
 import { Statement } from "delib-npm";
 import { FC, useState } from "react";
-import { isAuthorized } from "@/controllers/general/helpers";
-import Text from "@/view/components/text/Text";
 import { handleSubmitInfo } from "./StatementInfoCont";
 
 //image
-import infoGraphic from "@/assets/images/infoGraphic.png";
 import EditIcon from "@/assets/icons/editIcon.svg?react";
+import infoGraphic from "@/assets/images/infoGraphic.png";
+import { isAuthorized } from "@/controllers/general/helpers";
 
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
+import "./StatementInfo.scss";
+import { useLanguage } from "@/controllers/hooks/useLanguages";
 import {
 	statementSelector,
 	statementSubscriptionSelector,
 } from "@/model/statements/statementsSlice";
-import "./StatementInfo.scss";
-import { useLanguage } from "@/controllers/hooks/useLanguages";
+import Text from "@/view/components/text/Text";
 
 interface Props {
   statement: Statement | null;

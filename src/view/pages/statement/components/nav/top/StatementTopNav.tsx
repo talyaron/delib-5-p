@@ -1,32 +1,32 @@
+import { Role, Statement } from 'delib-npm';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import Back from '../../header/Back';
+import HomeButton from '../../header/HomeButton';
 import styles from './StatementTopNav.module.scss';
 // Third party imports
-import { Role, Statement } from 'delib-npm';
 
 // Helpers
+import BellIcon from '@/assets/icons/bellIcon.svg?react';
+import BellSlashIcon from '@/assets/icons/bellSlashIcon.svg?react';
+import Chat from '@/assets/icons/chatTop.svg?react';
+import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
+import MainIcon from '@/assets/icons/evaluations2Icon.svg?react';
+import FollowMe from '@/assets/icons/follow.svg?react';
+import InvitationIcon from '@/assets/icons/invitation.svg?react';
+import SettingsIcon from '@/assets/icons/settings.svg?react';
+import ShareIcon from '@/assets/icons/shareIcon.svg?react';
+import View from '@/assets/icons/view.svg?react';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 import useStatementColor from '@/controllers/hooks/useStatementColor.ts';
 
 //icons
-import Chat from '@/assets/icons/chatTop.svg?react';
-import BellIcon from '@/assets/icons/bellIcon.svg?react';
-import BellSlashIcon from '@/assets/icons/bellSlashIcon.svg?react';
-import View from '@/assets/icons/view.svg?react';
-import InvitationIcon from '@/assets/icons/invitation.svg?react';
-import FollowMe from '@/assets/icons/follow.svg?react';
-import ShareIcon from '@/assets/icons/shareIcon.svg?react';
-import DisconnectIcon from '@/assets/icons/disconnectIcon.svg?react';
-import SettingsIcon from '@/assets/icons/settings.svg?react';
-import MainIcon from '@/assets/icons/evaluations2Icon.svg?react';
 
 //components
-import Back from '../../header/Back';
-import HomeButton from '../../header/HomeButton';
-import { useSelector } from 'react-redux';
 import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
-import { useNavigate, useParams } from 'react-router-dom';
 
 interface Props {
 	statement?: Statement;

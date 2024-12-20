@@ -1,12 +1,12 @@
+import { Invitation } from "delib-npm";
 import { FC, useEffect, useState } from "react";
 import { setInvitationToDB } from "../../../../../../controllers/db/invitations/setInvitation";
-import { Invitation } from "delib-npm";
 
-import styles from "./InvitePanel.module.scss";
-import XIcon from "../../../../../components/icons/XIcon";
-import InvitePanelBox from "./InvitePanelBox";
-import InviteModal from "../../../../../components/modal/InviteModal";
 import { handleCloseInviteModal } from "../../../../../../controllers/general/helpers";
+import XIcon from "../../../../../components/icons/XIcon";
+import InviteModal from "../../../../../components/modal/InviteModal";
+import styles from "./InvitePanel.module.scss";
+import InvitePanelBox from "./InvitePanelBox";
 
 interface Props {
   setShowModal: (show: boolean) => void;

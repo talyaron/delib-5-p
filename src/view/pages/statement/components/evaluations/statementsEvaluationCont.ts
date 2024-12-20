@@ -4,8 +4,8 @@ import {
 	EnhancedEvaluationThumb,
 	enhancedEvaluationsThumbs,
 } from "./components/evaluation/enhancedEvaluation/EnhancedEvaluationModel";
-import { store } from "@/model/store";
 import { updateStatementTop } from "@/model/statements/statementsSlice";
+import { store } from "@/model/store";
 
 export function sortSubStatements(
 	subStatements: Statement[],

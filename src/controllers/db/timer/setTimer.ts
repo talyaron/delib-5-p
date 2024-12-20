@@ -1,4 +1,14 @@
 import {
+	Collections,
+	RoomTimer,
+	RoomTimerSchema,
+	SetTimer,
+	SetTimerSchema,
+	Statement,
+	TimerStatus,
+	TimerStatusSchema,
+} from "delib-npm";
+import {
 	Timestamp,
 	collection,
 	deleteDoc,
@@ -9,20 +19,10 @@ import {
 	setDoc,
 	where,
 } from "firebase/firestore";
-import { FireStore } from "../config";
-import {
-	Collections,
-	RoomTimer,
-	RoomTimerSchema,
-	SetTimer,
-	SetTimerSchema,
-	Statement,
-	TimerStatus,
-	TimerStatusSchema,
-} from "delib-npm";
 import { z } from "zod";
-import { store } from "@/model/store";
 import { getRoomTimerId, getSetTimerId } from "../../general/helpers";
+import { FireStore } from "../config";
+import { store } from "@/model/store";
 
 interface setParentTimersProps {
     parentStatement: Statement;

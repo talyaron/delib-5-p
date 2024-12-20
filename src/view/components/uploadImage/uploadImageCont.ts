@@ -1,7 +1,7 @@
-import { uploadImageToStorage } from '@/controllers/db/images/setImages';
-import { updateStatementMainImage } from '@/controllers/db/statements/setStatements';
 import { Statement } from 'delib-npm';
 import { compressImage } from './compressImage';
+import { uploadImageToStorage } from '@/controllers/db/images/setImages';
+import { updateStatementMainImage } from '@/controllers/db/statements/setStatements';
 
 export async function setImageLocally(
 	file: File,

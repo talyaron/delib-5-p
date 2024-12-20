@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Modal from "../modal/Modal";
-import notifications from "@/assets/images/notifications.png";
 import styles from "./AskPermission.module.scss";
+import notifications from "@/assets/images/notifications.png";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {

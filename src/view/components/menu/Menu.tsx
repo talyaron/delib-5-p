@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from "react";
 import IconButton from "../iconButton/IconButton";
-import EllipsisIcon from "@/assets/icons/ellipsisIcon.svg?react";
 import BurgerIcon from "@/assets/icons/burgerIcon.svg?react";
+import EllipsisIcon from "@/assets/icons/ellipsisIcon.svg?react";
 import "./Menu.scss";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 

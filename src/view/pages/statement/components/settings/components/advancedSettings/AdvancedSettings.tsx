@@ -1,11 +1,11 @@
 // custom components
-import Checkbox from '@/view/components/checkbox/Checkbox';
 
 // HELPERS
-import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { FC } from 'react';
 import { StatementSettingsProps } from '../../settingsTypeHelpers';
 import { getStatementSettings } from '../../statementSettingsCont';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Checkbox from '@/view/components/checkbox/Checkbox';
 import './AdvancedSettings.scss';
 
 const AdvancedSettings: FC<StatementSettingsProps> = ({

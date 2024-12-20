@@ -1,38 +1,38 @@
+import { Screen, Statement, StatementType } from 'delib-npm';
 import { FC, useEffect, useRef, useState } from 'react';
 
 // Third Party
-import { Screen, Statement, StatementType } from 'delib-npm';
 
 // Redux Store
+import { useParams } from 'react-router-dom';
+import StatementChatMore from '../../../../chat/components/StatementChatMore';
+import CreateStatementModal from '../../../../createStatementModal/CreateStatementModal';
+import { sortSubStatements } from '../../../statementsEvaluationCont';
+import Evaluation from '../../evaluation/Evaluation';
+import SolutionMenu from '../../solutionMenu/SolutionMenu';
+import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
+import { setStatementIsOption } from '@/controllers/db/statements/setStatements';
+import { isAuthorized } from '@/controllers/general/helpers';
 import { useAppDispatch, useAppSelector } from '@/controllers/hooks/reduxHooks';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
+import useStatementColor, {
+	StyleProps,
+} from '@/controllers/hooks/useStatementColor';
 import {
 	setStatementElementHight,
 	statementSubscriptionSelector,
 } from '@/model/statements/statementsSlice';
 
 // Helpers
-import { isAuthorized } from '@/controllers/general/helpers';
 
 // Hooks
-import useStatementColor, {
-	StyleProps,
-} from '@/controllers/hooks/useStatementColor';
 
 // Custom Components
 
-import { setStatementIsOption } from '@/controllers/db/statements/setStatements';
-import { useLanguage } from '@/controllers/hooks/useLanguages';
 import EditTitle from '@/view/components/edit/EditTitle';
 
 import IconButton from '@/view/components/iconButton/IconButton';
-import StatementChatMore from '../../../../chat/components/StatementChatMore';
-import AddQuestionIcon from '@/assets/icons/addQuestion.svg?react';
-import CreateStatementModal from '../../../../createStatementModal/CreateStatementModal';
-import Evaluation from '../../evaluation/Evaluation';
 import './SuggestionCard.scss';
-import SolutionMenu from '../../solutionMenu/SolutionMenu';
-import { sortSubStatements } from '../../../statementsEvaluationCont';
-import { useParams } from 'react-router-dom';
 
 interface Props {
 	statement: Statement;
