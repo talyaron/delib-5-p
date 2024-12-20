@@ -4,6 +4,7 @@
 	"version": "1.0.1",
 	"type": "module",
 	"scripts": {
+		"clean": "rm -rf node_modules package-lock.json dist && git rm -r --cache . && npm install && npm run build",
 		"dev": "vite --open",
 		"dev:h": "vite --host",
 		"devf": "cd functions && npm run dev",
@@ -27,7 +28,7 @@
 	"dependencies": {
 		"@dagrejs/dagre": "^1.0.4",
 		"@reduxjs/toolkit": "^1.9.5",
-		"delib-npm": "^5.4.37",
+		"delib-npm": "^5.4.38",
 		"eslint-plugin-import": "^2.29.1",
 		"firebase": "^11.0.2",
 		"firebase-functions": "^6.1.0",
