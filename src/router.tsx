@@ -11,7 +11,6 @@ import LoginPage from './view/pages/login/LoginFirst';
 import MemberRejection from './view/pages/memberRejection/MemberRejection';
 import Page401 from './view/pages/page401/Page401';
 import Page404 from './view/pages/page404/Page404';
-import PricingPlan from './view/pages/pricing/PricingPlan';
 import Start from './view/pages/start/Start';
 import StatementMain from './view/pages/statement/StatementMain';
 
@@ -41,17 +40,7 @@ const routes = [
 						element: <AddStatement />,
 						errorElement: <ErrorPage />,
 					},
-					{
-						path: 'updateStatement/:statementId',
-						element: <AddStatement />,
-						errorElement: <ErrorPage />,
-					},
 				],
-			},
-			{
-				path: 'pricing-plan',
-				element: <PricingPlan />,
-				errorElement: <ErrorPage />,
 			},
 			{
 				path: 'member-rejection',

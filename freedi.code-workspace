@@ -1,7 +1,9 @@
 {
-	"folders": [{
-		"path": ".",
-	}, ],
+	"folders": [
+		{
+			"path": ".",
+		},
+	],
 	"settings": {
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit",
@@ -15,22 +17,20 @@
 		"prettier.singleQuote": true,
 		"prettier.useTabs": true,
 		"eslint.enable": true,
-		"eslint.validate": [
-			"javascript",
-			"html",
-			"typescript"
-		],
+		"eslint.validate": ["javascript", "html", "typescript"],
 		"[typescriptreact]": {
-			"editor.defaultFormatter": "vscode.typescript-language-features"
+			"editor.defaultFormatter": "vscode.typescript-language-features",
 		},
-		"cSpell.words": [
-			"Millis"
-		],
+		"cSpell.words": ["Millis"],
 	},
 	"launch": {
 		"configurations": [],
 	},
 	"extensions": {
-		"recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+		"recommendations": [
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode",
+			"dsznajder.es7-react-js-snippets",
+		],
 	},
 }

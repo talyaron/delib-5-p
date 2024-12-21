@@ -5,7 +5,7 @@ import { StatementContext } from '../../StatementCont';
 import Chat from '../chat/Chat';
 import FollowMeToast from '../followMeToast/FollowMeToast';
 import StatementSettings from '../settings/StatementSettings';
-import Group from '../statementTypes/group/Group';
+import GroupPage from '../statementTypes/group/GroupPage';
 import styles from './Switch.module.scss';
 
 const Switch = () => {
@@ -35,7 +35,7 @@ function SwitchInner({
 		case StatementType.group:
 			return (
 				<StatementInner>
-					<Group />
+					<GroupPage />
 				</StatementInner>
 			);
 		default:
