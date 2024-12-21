@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { Access, Role, StatementType, User } from 'delib-npm/index.js';
 import { FC, useEffect, useState } from 'react';
 
 // Third party imports
@@ -44,6 +43,7 @@ import { userSelector } from '@/model/users/userSlice';
 import AskPermission from '@/view/components/askPermission/AskPermission';
 // import FollowMeToast from "./components/followMeToast/FollowMeToast";
 import Modal from '@/view/components/modal/Modal';
+import { Access, Role, StatementType, User } from 'delib-npm';
 
 // Create selectors
 export const subStatementsSelector = createSelector(
