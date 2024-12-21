@@ -3,9 +3,6 @@
 	grid-template-rows: 100px 1fr;
 	height: 100%;
 	width: 100vw;
-
-
-
 }
 
 .header {
@@ -22,18 +19,14 @@
 
 		@media screen and (max-width: 600px) {
 			padding: 0px 20px;
-
 		}
 	}
 }
 
 .main {
-
 	display: grid;
 	grid-template-columns: 100vw 100vw;
 	width: 100vw;
 	overflow-x: scroll;
 	scroll-behavior: smooth;
-
-
 }

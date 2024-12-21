@@ -1,2 +1,79 @@
 .groupPage {
+	height: 100%;
+	width: 100%;
+
+	.actions {
+		position: fixed;
+		bottom: 10vh;
+		right: 20vw;
+
+		.action-btn {
+			position: fixed;
+			right: 30vw;
+			bottom: 10vh;
+			background: #5899e0;
+			width: 2.5rem;
+			height: 2.5rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			border-radius: 50%;
+			box-shadow: 0px 10px 30px 0px rgba(52, 103, 157, 0.108);
+			user-select: none;
+			cursor: pointer;
+			z-index: 2;
+
+			svg {
+				color: white;
+				width: 1rem;
+				height: 1rem;
+			}
+		}
+
+		.action-btn:nth-child(2) {
+			bottom: 19vh;
+			right: 27vw;
+		}
+
+		.action-btn:nth-child(3) {
+			bottom: 22vh;
+			right: 20vw;
+		}
+
+		.plus-button {
+			background: #5899e0;
+			width: 3.125rem;
+			height: 3.125rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			border-radius: 50%;
+			box-shadow: 0px 10px 30px 0px rgba(52, 103, 157, 0.108);
+			user-select: none;
+			cursor: pointer;
+			z-index: 2;
+
+			svg {
+				color: white;
+				width: 1.5rem;
+				height: 1.5rem;
+			}
+
+			&:active {
+				box-shadow: 0px 10px 50px 0px #4f5478b2;
+			}
+		}
+	}
+}
+
+.invisibleBackground {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100svh;
+	z-index: 1;
+	background-color: transparent;
 }

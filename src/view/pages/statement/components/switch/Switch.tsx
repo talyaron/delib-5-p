@@ -19,15 +19,11 @@ const Switch = () => {
 	);
 };
 
-function SwitchInner({
-	statement,
-}: {
-	statement: Statement | undefined;
-}) {
+function SwitchInner({ statement }: { statement: Statement | undefined }) {
 	const { command } = useParams();
 	const statementType = statement?.statementType;
 
-	if (command === "settings") {
+	if (command === 'settings') {
 		return <StatementSettings />;
 	}
 
@@ -59,7 +55,6 @@ function StatementInner({ children }: StatementInnerProps) {
 	const { command } = useParams();
 
 	const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-
 		//Use for scrolling between chat and main and changing the url accordingly
 		const scrollLeft = event.currentTarget.scrollLeft;
 		if (scrollPosition) {
@@ -70,11 +65,10 @@ function StatementInner({ children }: StatementInnerProps) {
 			}
 		}
 		scrollPosition = scrollLeft;
-
 	};
 
 	useEffect(() => {
-		if (command === "chat" && scrollableRef.current) {
+		if (command === 'chat' && scrollableRef.current) {
 			scrollableRef.current.scrollTo(-window.innerWidth, 0);
 		} else {
 			scrollableRef.current?.scrollTo(0, 0);
@@ -90,14 +84,16 @@ function StatementInner({ children }: StatementInnerProps) {
 			<div className={styles.header}>
 				<h1>{statement?.statement}</h1>
 			</div>
-			<div className={styles.main} ref={scrollableRef} onScrollCapture={handleScroll}>
+			<div
+				className={styles.main}
+				ref={scrollableRef}
+				onScrollCapture={handleScroll}
+			>
 				<div className={styles.statement}>
 					<p className='page__description'>{statement?.description}</p>
 					{children}
 				</div>
-
 				<Chat />
-
 			</div>
 		</div>
 	);
