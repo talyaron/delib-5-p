@@ -39,7 +39,7 @@
 		"no-console": [
 			"error",
 			{
-				"allow": ["error"]
+				"allow": ["error", "info"]
 			}
 		],
 		"no-multiple-empty-lines": [

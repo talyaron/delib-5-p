@@ -13,10 +13,10 @@ export default function GroupPage() {
 	const subGroups = subStatements.filter(sub => sub.statementType === StatementType.group);
 	const subQuestions = subStatements.filter(sub => sub.statementType === StatementType.question);
 
-	// function handleAddStatement(newStatementType: StatementType) {
-	// 	setNewStatementType(newStatementType);
-	// 	handleSetNewStatement(true);
-	// }
+	function handleAddStatement(newStatementType: StatementType) {
+		setNewStatementType(newStatementType);
+		handleSetNewStatement(true);
+	}
 
 	return (
 		<div className="groupPage">

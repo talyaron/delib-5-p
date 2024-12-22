@@ -30,7 +30,7 @@ setPersistence(auth, browserLocalPersistence)
 
 //development
 if (!isProduction()) {
-	console.warn('Running on development mode');
+	console.info('Running on development mode');
 
 	connectFirestoreEmulator(FireStore, '127.0.0.1', 8080);
 	connectAuthEmulator(auth, 'http://localhost:9099');
