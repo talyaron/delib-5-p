@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
 			react(),
 			VitePWA(manifestPlugin),
 			mode === 'development' &&
-				visualizer({ open: true, gzipSize: true, brotliSize: true }),
+			visualizer({ open: true, gzipSize: true, brotliSize: true }),
 			svgr({ include: '**/*.svg?react' }),
 		],
 		resolve: {
@@ -77,5 +77,12 @@ export default defineConfig(({ mode }) => {
 		define: {
 			'process.env': process.env,
 		},
+		css: {
+			preprocessorOptions: {
+				scss: {
+					api: 'modern'
+				}
+			}
+		}
 	};
 });
