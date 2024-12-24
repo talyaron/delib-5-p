@@ -23,8 +23,8 @@ export default function useStatementColor({ statement }: { statement: Statement 
 		useEffect(() => {
 			if (statementType === StatementType.group) {
 				setStyle({
-					backgroundColor: "var(--question-header)",
-					color: "var(--white)",
+					backgroundColor: "var(--group)",
+					color: "var(--group-text)",
 				});
 			} else if (statementType === StatementType.option && isResult) {
 				setStyle({
@@ -38,8 +38,8 @@ export default function useStatementColor({ statement }: { statement: Statement 
 				});
 			} else if (statementType === StatementType.question) {
 				setStyle({
-					backgroundColor: "var(--header-home)",
-					color: "white",
+					backgroundColor: "var(--question)",
+					color: "var(--question-text)",
 				});
 			} else {
 				setStyle(initStyle);

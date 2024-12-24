@@ -23,6 +23,7 @@ export default function GroupPage() {
 	return (
 		<div className="groupPage">
 			<div className={styles.mainWrapper}>
+				<p>{statement?.description}</p>
 				<h4>Groups</h4>
 				<div className={styles.subElementsWrapper}>
 					{subGroups.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}

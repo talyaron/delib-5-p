@@ -91,7 +91,6 @@ function StatementInner({ children }: StatementInnerProps) {
 				onScrollCapture={handleScroll}
 			>
 				<div className={styles.statement}>
-					<p className='page__description'>{statement?.description}</p>
 					{children}
 				</div>
 				<Chat />
