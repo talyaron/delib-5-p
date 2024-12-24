@@ -26,9 +26,9 @@ import { userSettingsSelector } from "@/model/users/userSlice";
 import StartHere from "@/view/components/startHere/StartHere";
 
 interface Props {
-  statement: Statement;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  showNav?: boolean;
+	statement: Statement;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+	showNav?: boolean;
 }
 
 const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
@@ -42,26 +42,26 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 	const [showStartHere, setShowStartHere] = useState(timesRemainToLearnAddOption > 0);
 
 	const { deliberativeElement, isResult } = statement;
-	const statementColor = useStatementColor({ deliberativeElement, isResult });
+	const statementColor = useStatementColor({ statement });
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
-    statement.statementSettings?.enableAddEvaluationOption;
+		statement.statementSettings?.enableAddEvaluationOption;
 
 	const addVotingOption: boolean | undefined =
-    statement.statementSettings?.enableAddVotingOption;
+		statement.statementSettings?.enableAddVotingOption;
 
 	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
 	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
 	const showAddQuestion = page === Screen.QUESTIONS;
 	const isAddOption =
-    showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
+		showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
 	const handleAddOption = () => {
 		if (isAddOption) {
 			setShowModal(true);
-	  setShowStartHere(false);
-	  decreesUserSettingsLearningRemain({addOption: true});
+			setShowStartHere(false);
+			decreesUserSettingsLearningRemain({ addOption: true });
 
 		}
 	};
@@ -140,34 +140,34 @@ function getNavigationScreens(page: string | undefined): NavItem[] {
 	if (!page) return optionsArray;
 
 	switch (page) {
-	case Screen.VOTE:
-		return votesArray;
-	case Screen.OPTIONS:
-		return optionsArray;
-	case Screen.QUESTIONS:
-		return questionsArray;
-	default:
-		return optionsArray;
+		case Screen.VOTE:
+			return votesArray;
+		case Screen.OPTIONS:
+			return optionsArray;
+		case Screen.QUESTIONS:
+			return questionsArray;
+		default:
+			return optionsArray;
 	}
 }
 
 interface NavIconProps {
-  name: string;
-  color: string;
+	name: string;
+	color: string;
 }
 
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {
 	const props = { style: { color } };
 	switch (name) {
-	case "New":
-		return <NewestIcon {...props} />;
-	case "Update":
-		return <UpdateIcon {...props} />;
-	case "Random":
-		return <RandomIcon {...props} />;
-	case "Agreement":
-		return <AgreementIcon {...props} />;
-	default:
-		return null;
+		case "New":
+			return <NewestIcon {...props} />;
+		case "Update":
+			return <UpdateIcon {...props} />;
+		case "Random":
+			return <RandomIcon {...props} />;
+		case "Agreement":
+			return <AgreementIcon {...props} />;
+		default:
+			return null;
 	}
 };

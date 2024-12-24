@@ -1,0 +1,33 @@
+.card {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	background-color: #fff;
+	border: 1px solid #bdcef4;
+	border-radius: 0.25rem;
+	box-sizing: border-box;
+	border-left: 6px solid #bdcef4;
+}
+
+.text {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 1.75;
+	color: #191e29;
+	flex-grow: 1;
+}
+
+.iconWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+}
+
+.icon {
+	width: 2rem;
+	height: 2rem;
+	object-fit: contain;
+}

@@ -1,4 +1,5 @@
 import { statementSubsSelector } from '@/model/statements/statementsSlice';
+import styles from './GroupPage.module.scss';
 import Button from '@/view/components/buttons/button/Button';
 import { StatementType } from 'delib-npm';
 import { useContext } from 'react'
@@ -21,16 +22,21 @@ export default function GroupPage() {
 
 	return (
 		<div className="groupPage">
-
-			<h4>Groups</h4>
-			{subGroups.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}
-			<h4>Questions</h4>
-			{subQuestions.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}
-			<div className="btns">
-				<Button text="add group" onClick={() => handleAddStatement(StatementType.group)}></Button>
-				<Button text="add question" onClick={() => handleAddStatement(StatementType.question)}></Button>
+			<div className={styles.mainWrapper}>
+				<h4>Groups</h4>
+				<div className={styles.subElementsWrapper}>
+					{subGroups.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}
+				</div>
+				<h4>Questions</h4>
+				<div className={styles.subElementsWrapper}>
+					{subQuestions.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}
+				</div>
+				<div className="btns">
+					<Button text="add group" onClick={() => handleAddStatement(StatementType.group)}></Button>
+					<Button text="add question" onClick={() => handleAddStatement(StatementType.question)}></Button>
+				</div>
+				<AddButton />
 			</div>
-			<AddButton />
 
 		</div>
 	)

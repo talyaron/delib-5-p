@@ -64,8 +64,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const imageUrl = statement.imagesURL?.main ?? '';
 	const [image, setImage] = useState<string>(imageUrl);
 	// Hooks
-	const { deliberativeElement, isResult } = statement;
-	const statementColor = useStatementColor({ deliberativeElement, isResult });
+	const { deliberativeElement } = statement;
+	const statementColor = useStatementColor({ statement });
 	const { t, dir } = useLanguage();
 
 	// Redux store

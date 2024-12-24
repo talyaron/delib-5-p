@@ -46,12 +46,12 @@ export default function CustomNode({ data }: NodeProps) {
 
 	const { result, parentStatement } = data;
 
-	const { statementId, statement, deliberativeElement, isResult } =
+	const { statementId, statement } =
 		result.top as Statement;
 
 	const { shortVersion: nodeTitle } = statementTitleToDisplay(statement, 80);
 
-	const statementColor = useStatementColor({ deliberativeElement, isResult });
+	const statementColor = useStatementColor({ statement: result.top });
 
 	const { mapContext, setMapContext } = useMapContext();
 

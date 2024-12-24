@@ -57,9 +57,7 @@ const StatementTopNav: FC<Props> = ({
 	const { command } = useParams();
 
 	// const
-	const deliberativeElement = statement?.deliberativeElement;
-	const isResult = statement?.isResult;
-	const headerStyle = useStatementColor({ deliberativeElement, isResult });
+	const headerStyle = useStatementColor({ statement });
 	const menuIconStyle = {
 		color: headerStyle.backgroundColor,
 		width: '24px',

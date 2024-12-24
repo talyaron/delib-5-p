@@ -1,4 +1,4 @@
-import { DeliberativeElement } from "delib-npm";
+import { StatementType, Statement } from "delib-npm";
 
 import { useEffect, useState } from "react";
 
@@ -7,32 +7,36 @@ export interface StyleProps {
 	color: string;
 }
 
-export default function useStatementColor({deliberativeElement, isResult}:{deliberativeElement?: DeliberativeElement, isResult?:boolean}): StyleProps {
+export default function useStatementColor({ statement }: { statement: Statement | undefined }): StyleProps {
 	const initStyle = {
 		backgroundColor: "var(--header-home)",
 		color: "white",
 	};
+
+	if (!statement) return initStyle;
+
+	const { statementType, isResult } = statement;
 	const [style, setStyle] = useState(initStyle);
 
 	try {
 
 		useEffect(() => {
-			if (deliberativeElement === DeliberativeElement.research) {
+			if (statementType === StatementType.group) {
 				setStyle({
 					backgroundColor: "var(--question-header)",
 					color: "var(--white)",
 				});
-			} else if (deliberativeElement === DeliberativeElement.option && isResult) {
+			} else if (statementType === StatementType.option && isResult) {
 				setStyle({
 					backgroundColor: "var(--agree)",
 					color: "var(--header)",
 				});
-			} else if (deliberativeElement === DeliberativeElement.option) {
+			} else if (statementType === StatementType.option) {
 				setStyle({
 					backgroundColor: "var(--option)",
 					color: "var(--white)",
 				});
-			} else if (deliberativeElement === DeliberativeElement.general) {
+			} else if (statementType === StatementType.question) {
 				setStyle({
 					backgroundColor: "var(--header-home)",
 					color: "white",
@@ -40,12 +44,12 @@ export default function useStatementColor({deliberativeElement, isResult}:{delib
 			} else {
 				setStyle(initStyle);
 			}
-		}, [deliberativeElement, isResult]);
+		}, [statementType, isResult]);
 
 		return style;
 	} catch (error) {
 		console.error(error);
-		
+
 		return style;
 	}
 }

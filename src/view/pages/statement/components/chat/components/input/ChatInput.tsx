@@ -25,8 +25,7 @@ const ChatInput: FC<Props> = ({ statement }) => {
 	const { t } = useLanguage();
 	const user = useAppSelector(userSelector);
 
-	const { deliberativeElement, isResult } = statement;
-	const statementColor = useStatementColor({ deliberativeElement, isResult });
+	const statementColor = useStatementColor({ statement });
 
 	const direction = useDirection();
 	const [message, setMessage] = useState('');

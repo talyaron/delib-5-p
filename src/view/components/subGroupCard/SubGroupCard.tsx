@@ -8,12 +8,17 @@ interface Props {
 }
 
 const SubGroupCard: FC<Props> = ({ statement }) => {
-
+	const text = statement.statement;
 
 
 	return (
+
 		<Link to={`/statement/${statement.statementId}`} className={styles.card}>
-			<p>{statement.statement}</p>
+			<div className={styles.text}>{text}</div>
+			<div className={styles.iconWrapper}>
+				{/* <img src={iconSrc} alt="group icon" className={styles.icon} /> */}
+			</div>
+
 		</Link>
 	)
 }
