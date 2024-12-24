@@ -2,21 +2,14 @@ import { Statement } from 'delib-npm'
 import { FC } from 'react'
 import styles from './SubGroupCard.module.scss'
 import { Link } from 'react-router-dom';
-import useStatementColor from '@/controllers/hooks/useStatementColor';
-import useSubGroupCard from './SubGroupVM';
-
-
-
+import useSubGroupCard from './SubGroupCardVM';
 interface Props {
 	statement: Statement;
 }
 
 const SubGroupCard: FC<Props> = ({ statement }) => {
-	const text = statement.statement;
-	const { Icon } = useSubGroupCard(statement);
 
-	const { backgroundColor } = useStatementColor({ statement });
-
+	const { Icon, backgroundColor, text } = useSubGroupCard(statement);
 
 	return (
 
