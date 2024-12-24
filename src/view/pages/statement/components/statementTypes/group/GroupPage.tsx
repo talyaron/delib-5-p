@@ -20,14 +20,14 @@ export default function GroupPage() {
 
 	return (
 		<div className="groupPage">
-			<h4>Group</h4>
+			<h4>Groups</h4>
 			{subGroups.map(sub => <p key={sub.statementId}>{sub.statement}</p>)}
 			<h4>Questions</h4>
 			{subQuestions.map(sub => <p key={sub.statementId}>{sub.statement}</p>)}
-			{/* <div className="btns">
+			<div className="btns">
 				<Button text="add group" onClick={() => handleAddStatement(StatementType.group)}></Button>
 				<Button text="add question" onClick={() => handleAddStatement(StatementType.question)}></Button>
-			</div> */}
+			</div>
 			<AddButton />
 		</div>
 	)
