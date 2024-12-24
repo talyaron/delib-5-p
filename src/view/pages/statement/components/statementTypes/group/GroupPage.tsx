@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { StatementContext } from '../../../StatementCont';
 import "./groupPage.scss"
 import AddButton from './AddButton';
+import SubGroupCard from '@/view/components/subGroupCard/SubGroupCard';
 
 export default function GroupPage() {
 	const { handleSetNewStatement, setNewStatementType, statement } = useContext(StatementContext);
@@ -20,15 +21,17 @@ export default function GroupPage() {
 
 	return (
 		<div className="groupPage">
+
 			<h4>Groups</h4>
-			{subGroups.map(sub => <p key={sub.statementId}>{sub.statement}</p>)}
+			{subGroups.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}
 			<h4>Questions</h4>
-			{subQuestions.map(sub => <p key={sub.statementId}>{sub.statement}</p>)}
+			{subQuestions.map(sub => <SubGroupCard key={sub.statementId} statement={sub} />)}
 			<div className="btns">
 				<Button text="add group" onClick={() => handleAddStatement(StatementType.group)}></Button>
 				<Button text="add question" onClick={() => handleAddStatement(StatementType.question)}></Button>
 			</div>
 			<AddButton />
+
 		</div>
 	)
 }
