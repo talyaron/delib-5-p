@@ -20,6 +20,7 @@ const Switch = () => {
 };
 
 function SwitchInner({ statement }: { statement: Statement | undefined }) {
+	console.log('SwitchInner', statement?.statementType);
 	const { command } = useParams();
 	const statementType = statement?.statementType;
 

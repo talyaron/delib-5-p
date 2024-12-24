@@ -10,6 +10,9 @@
 
 
 :root {
+  writing-mode: horizontal-tb;
+  direction: ltr;
+  text-orientation: mixed;
   // --- MAIN COLORS ---
   --mainBackground: #1f5895;
   --statementBackground: #f2f6ff;
@@ -29,8 +32,8 @@
   --result: #a9adf4;
   --result-text: white;
 
-    //question
-    --question: #62beeb;
+  //question
+  --question: #62beeb;
 
 
   //evaluation
@@ -39,7 +42,7 @@
 
   //shadow
   --shadow: rgba(181, 197, 232, 0.486);
-  --radius:5px;
+  --radius: 5px;
 
   //buttons
   --inactive: rgb(207, 207, 207);
@@ -58,7 +61,7 @@
   --h4-font-size: 1.3rem;
   --h5-font-size: 1.2rem;
   --h6-font-size: 1.1rem;
-  --p-font-size:1rem;
+  --p-font-size: 1rem;
 
   --white: white;
   --red: #e8749e;
@@ -110,11 +113,11 @@
   --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
 
-//wights
+  //wights
   --wight-medium: 400;
 
 
-  
+
 
 
 
@@ -202,7 +205,7 @@
 
 
   //headers
-  --header-home:#6394ee;
+  --header-home: #6394ee;
   --header-bg-color: #5899e0;
   --header-question: #62beeb;
   --header-option-chosen: #76c0b3;
@@ -315,7 +318,7 @@
 
   //text
   --text-headline: #232f4a;
-  --text-description:#191E29;
+  --text-description: #191E29;
   --text-paragraph: #57688f;
   --text-paragraph-light: #818fad;
   --text-paragraph-lightest: #a4aec5;
@@ -339,7 +342,7 @@
   --text-crimson-contrast: #ff5b9c;
 
   --wrapper-max-width: 75ch;
-  --wrapper:75ch;
+  --wrapper: 75ch;
 }
 
 * {
@@ -404,9 +407,9 @@ b {
   padding: 10px;
 }
 
-.simple-wrapper{
-  width:var(--wrapper);
-  margin:auto;
+.simple-wrapper {
+  width: var(--wrapper);
+  margin: auto;
 }
 
 .wrapper {
