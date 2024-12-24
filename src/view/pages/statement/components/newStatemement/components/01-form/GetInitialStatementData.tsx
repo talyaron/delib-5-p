@@ -8,10 +8,10 @@ import Button, { ButtonType } from '@/view/components/buttons/button/Button';
 import Input from '@/view/components/input/Input';
 import Textarea from '@/view/components/textarea/Textarea';
 import { StatementContext } from '@/view/pages/statement/StatementCont';
-import { useNavigate } from 'react-router-dom';
+
 
 export default function GetInitialStatementData() {
-	const navigate = useNavigate();
+
 	const { t } = useLanguage();
 	const { title, description, setTitle, setDescription } = useContext(NewStatementContext);
 	const { newStatementType, handleSetNewStatement, statement } = useContext(StatementContext);
@@ -43,7 +43,7 @@ export default function GetInitialStatementData() {
 			});
 
 			handleSetNewStatement(false);
-			navigate(`/statement/${newStatement.statementId}/main`);
+
 
 
 		} catch (error) {

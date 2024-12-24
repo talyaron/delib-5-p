@@ -63,6 +63,8 @@ function StatementInner({ children }: StatementInnerProps) {
 				navigate(`/statement/${statement?.statementId}/main`);
 			} else if (scrollLeft < scrollPosition) {
 				navigate(`/statement/${statement?.statementId}/chat`);
+			} else {
+				navigate(`/statement/${statement?.statementId}/main`);
 			}
 		}
 		scrollPosition = scrollLeft;
@@ -77,7 +79,7 @@ function StatementInner({ children }: StatementInnerProps) {
 	}, [command]);
 
 	useEffect(() => {
-		scrollPosition = undefined;
+		scrollPosition = 0;
 	}, [statement?.statementId]);
 
 	return (
