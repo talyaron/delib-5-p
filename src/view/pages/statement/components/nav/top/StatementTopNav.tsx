@@ -1,5 +1,5 @@
 import { Role, Statement } from 'delib-npm';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Back from '../../header/Back';
@@ -64,7 +64,10 @@ const StatementTopNav: FC<Props> = ({
 	};
 
 	const statementSubscription = useSelector(
-		statementSubscriptionSelector(statement?.statementId)
+		useMemo(
+			() => statementSubscriptionSelector(statement?.statementId),
+			[statement?.statementId]
+		)
 	);
 
 	const enableNavigationalElements =
