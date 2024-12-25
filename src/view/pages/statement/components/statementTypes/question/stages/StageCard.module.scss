@@ -4,6 +4,9 @@
 	background-color: white;
 	border-radius: 5px;
 
+	cursor: pointer;
+	user-select: none;
+
 	p {
 		color: var(--text);
 	}
