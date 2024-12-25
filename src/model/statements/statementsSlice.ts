@@ -5,10 +5,10 @@ import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 
 import {
 	DeliberativeElement,
-	Screen,
 	Statement,
 	StatementSubscription,
-	StatementType} from "delib-npm";
+	StatementType
+} from "delib-npm";
 
 // Helpers
 import { updateArray } from "../../controllers/general/helpers";
@@ -232,31 +232,6 @@ export const statementsSlicer = createSlice({
 				console.error(error);
 			}
 		},
-		toggleSubscreen: (
-			state,
-			action: PayloadAction<{ statement: Statement; screen: Screen }>,
-		) => {
-			try {
-
-				const { statement, screen } = action.payload;
-				const _statement = state.statements.find(
-					(st) => st.statementId === statement.statementId,
-				);
-				if (!_statement) throw new Error("statement not found");
-				const subScreens = _statement?.subScreens;
-				if (subScreens?.length === 0 || subScreens === undefined)
-					throw new Error("no sub screens");
-				if (subScreens.includes(screen)) {
-					_statement.subScreens = subScreens.filter(
-						(subScreen) => subScreen !== screen,
-					);
-				} else {
-					_statement.subScreens = [...subScreens, screen];
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		},
 
 		setMembership: (
 			state,
@@ -327,7 +302,6 @@ export const {
 	deleteSubscribedStatement,
 	setStatementOrder,
 	setScreen,
-	toggleSubscreen,
 	setStatementElementHight,
 	setMembership,
 	removeMembership,
@@ -362,9 +336,9 @@ export const subStatementsByTopParentIdMemo = (statementId: string | undefined) 
 
 export const statementDescendantsSelector = createSelector(
 	[statementsSelector, (_state, statementId: string) => statementId],
-	(statements, statementId) => 
-	  statements.filter(statement => statement.parents?.includes(statementId))
-  );
+	(statements, statementId) =>
+		statements.filter(statement => statement.parents?.includes(statementId))
+);
 
 export const statementsRoomSolutions =
 	(statementId: string | undefined) => (state: RootState) =>
@@ -372,7 +346,7 @@ export const statementsRoomSolutions =
 			.filter(
 				(statement) =>
 					statement.parentId === statementId &&
-					statement.statementType === StatementType.result,
+					statement.statementType === StatementType.option,
 			)
 			.sort((a, b) => a.createdAt - b.createdAt);
 export const statementsSubscriptionsSelector = (

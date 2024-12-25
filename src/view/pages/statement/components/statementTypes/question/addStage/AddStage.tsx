@@ -34,7 +34,7 @@ const AddStage: FC<AddStageProps> = ({ setShowAddStage }) => {
 		setUserEnteredStageName(true)
 	}
 
-	function handleSubmit(ev: any) {
+	async function handleSubmit(ev: any) {
 		ev.preventDefault()
 		const data = new FormData(ev.target)
 		const stageType = data.get("stageType") as StageType
@@ -43,7 +43,9 @@ const AddStage: FC<AddStageProps> = ({ setShowAddStage }) => {
 
 
 		if (!statement || !stageType) return;
-		saveStatementToDB({ text: name, description, stageType, parentStatement: statement, statementType: StatementType.stage })
+		const st = await saveStatementToDB({ text: name, description, stageType, parentStatement: statement, statementType: StatementType.stage })
+		console.log(st)
+		setShowAddStage(false)
 	}
 
 	return (
