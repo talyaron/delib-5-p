@@ -4,6 +4,7 @@ import {
 	Membership,
 	ResultsBy,
 	Screen,
+	StageType,
 	Statement,
 	StatementSchema,
 	StatementType,
@@ -60,13 +61,13 @@ export const updateStatementParents = async (
 
 const TextSchema = z.string().min(2);
 
-export function setSubStatementToDB(statement: Statement, title: string, description?: string) {
+export function setSubStatementToDB(statement: Statement, title: string, description?: string, statementType?: StatementType) {
 	try {
 		const newSubStatement = createStatement({
 			text: title,
 			description: description,
 			parentStatement: statement,
-			deliberativeElement: DeliberativeElement.option,
+			statementType: statementType || StatementType.statement,
 			enableAddEvaluationOption: true,
 			enableAddVotingOption: true,
 			enhancedEvaluation: true,
@@ -83,6 +84,60 @@ export function setSubStatementToDB(statement: Statement, title: string, descrip
 		setDoc(newSubStatementRef, newSubStatement);
 	} catch (error) {
 		console.error(error);
+
+	}
+}
+
+
+
+export async function saveStatementToDB({
+	text,
+	description,
+	parentStatement,
+	statementType,
+	enableAddEvaluationOption,
+	enableAddVotingOption,
+	enhancedEvaluation,
+	showEvaluation,
+	resultsBy,
+	numberOfResults,
+	hasChildren,
+	membership,
+	stageType
+}: CreateStatementProps): Promise<Statement | undefined> {
+	try {
+		const statement = createStatement({
+			text,
+			description,
+			parentStatement,
+			statementType,
+			enableAddEvaluationOption,
+			enableAddVotingOption,
+			enhancedEvaluation,
+			showEvaluation,
+			resultsBy,
+			numberOfResults,
+			hasChildren,
+			membership,
+			stageType
+
+		});
+
+		if (!statement) throw new Error("Statement is undefined");
+
+		setStatementToDB({
+			statement,
+			parentStatement,
+			addSubscription: true,
+		});
+
+		return statement;
+
+
+	} catch (error) {
+		console.error(error);
+
+		return undefined;
 
 	}
 }
@@ -204,7 +259,7 @@ export const setStatementToDB = async ({
 	}
 };
 
-interface CreateStatementProps {
+export interface CreateStatementProps {
 	text: string;
 	description?: string;
 	parentStatement: Statement | "top";
@@ -217,7 +272,7 @@ interface CreateStatementProps {
 	numberOfResults?: number;
 	hasChildren?: boolean;
 	membership?: Membership;
-
+	stageType?: StageType;
 }
 export function createStatement({
 	text,
@@ -231,7 +286,8 @@ export function createStatement({
 	resultsBy = ResultsBy.topOptions,
 	numberOfResults = 1,
 	hasChildren = true,
-	membership
+	membership,
+	stageType
 }: CreateStatementProps): Statement | undefined {
 	try {
 
@@ -301,6 +357,11 @@ export function createStatement({
 		if (results.success === false) {
 			console.error(results.error);
 			throw new Error("Statement schema error");
+		}
+
+		if (stageType) {
+			newStatement.stageType = stageType;
+			newStatement.statementType = StatementType.stage;
 		}
 
 		return newStatement;
