@@ -74,8 +74,9 @@ export function sortOptionsIndex(
 	return _options;
 }
 
-export function getTotalVoters(statement: Statement) {
+export function getTotalVoters(statement: Statement | undefined) {
 	try {
+		if (!statement) return 0;
 		const { selections } = statement;
 
 		if (selections) {

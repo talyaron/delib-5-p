@@ -1,5 +1,5 @@
 import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 // Third party imports
 
@@ -26,29 +26,24 @@ import './StatementVote.scss';
 // Helpers
 import Toast from '@/view/components/toast/Toast';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import { StatementContext } from '../../StatementCont';
 
-interface Props {
-	statement: Statement;
-	subStatements: Statement[];
-	
-}
+
 let getVoteFromDB = false;
 
-const StatementVote: FC<Props> = ({
-	statement,
-	subStatements,
-	
-}) => {
+const StatementVote: FC = () => {
 	// * Hooks * //
 	const dispatch = useAppDispatch();
 	const { t } = useLanguage();
+	const { statement } = useContext(StatementContext);
+	const subStatements: Statement[] = [];
 
-	const currentStage = statement.questionSettings?.currentStage;
+	const currentStage = statement?.questionSettings?.currentStage;
 	const isCurrentStageVoting = currentStage === QuestionStage.voting;
 	const stageInfo = getStagesInfo(currentStage);
 	const toastMessage = stageInfo ? stageInfo.message : '';
 	const useSearchForSimilarStatements =
-		statement.statementSettings?.enableSimilaritiesSearch || false;
+		statement?.statementSettings?.enableSimilaritiesSearch || false;
 
 	// * Use State * //
 	const [showMultiStageMessage, setShowMultiStageMessage] =
@@ -62,11 +57,11 @@ const StatementVote: FC<Props> = ({
 	// * Variables * //
 	const totalVotes = getTotalVoters(statement);
 	const isMuliStage =
-		statement.questionSettings?.questionType === QuestionType.multipleSteps;
+		statement?.questionSettings?.questionType === QuestionType.multipleSteps;
 
 	useEffect(() => {
 		if (!getVoteFromDB) {
-			getToVoteOnParent(statement.statementId, updateStoreWithVoteCB);
+			getToVoteOnParent(statement?.statementId, updateStoreWithVoteCB);
 			getVoteFromDB = true;
 		}
 	}, []);
@@ -102,22 +97,22 @@ const StatementVote: FC<Props> = ({
 					<VotingArea
 						totalVotes={totalVotes}
 						setShowInfo={setIsStatementInfoModalOpen}
-						statement={statement}
 						subStatements={subStatements}
 						setStatementInfo={setStatementInfo}
 					/>
 				</div>
 
 				{isCreateStatementModalOpen && (
-					<CreateStatementModalSwitch
-						allowedTypes={[StatementType.option]}
-						isMultiStage={isMuliStage}
-						useSimilarStatements={useSearchForSimilarStatements}
-						parentStatement={statement}
-						isQuestion={false}
-						setShowModal={setIsCreateStatementModalOpen}
-					
-					/>
+					null
+					// <CreateStatementModalSwitch
+					// 	allowedTypes={[StatementType.option]}
+					// 	isMultiStage={isMuliStage}
+					// 	useSimilarStatements={useSearchForSimilarStatements}
+					// 	parentStatement={statement}
+					// 	isQuestion={false}
+					// 	setShowModal={setIsCreateStatementModalOpen}
+
+					// />
 				)}
 				{isStatementInfoModalOpen && (
 					<Modal>
@@ -131,7 +126,6 @@ const StatementVote: FC<Props> = ({
 			<div className='page__footer'>
 				<StatementBottomNav
 					setShowModal={setIsCreateStatementModalOpen}
-					statement={statement}
 				/>
 			</div>
 		</>

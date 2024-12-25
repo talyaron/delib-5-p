@@ -1,5 +1,5 @@
 import { Screen, Statement } from "delib-npm";
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 
 // Third party libraries
 import { useSelector } from "react-redux";
@@ -24,15 +24,16 @@ import useStatementColor from "@/controllers/hooks/useStatementColor";
 import "./StatementBottomNav.scss";
 import { userSettingsSelector } from "@/model/users/userSlice";
 import StartHere from "@/view/components/startHere/StartHere";
+import { StatementContext } from "../../../StatementCont";
 
 interface Props {
-	statement: Statement;
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	showNav?: boolean;
 }
 
-const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
+const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 	const { page } = useParams();
+	const { statement } = useContext(StatementContext);
 
 	const navItems = getNavigationScreens(page);
 	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
@@ -45,10 +46,10 @@ const StatementBottomNav: FC<Props> = ({ setShowModal, statement }) => {
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 	const addOption: boolean | undefined =
-		statement.statementSettings?.enableAddEvaluationOption;
+		statement?.statementSettings?.enableAddEvaluationOption;
 
 	const addVotingOption: boolean | undefined =
-		statement.statementSettings?.enableAddVotingOption;
+		statement?.statementSettings?.enableAddVotingOption;
 
 	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
 	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
