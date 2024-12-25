@@ -35,9 +35,9 @@ import IconButton from '@/view/components/iconButton/IconButton';
 import './SuggestionCard.scss';
 
 interface Props {
-	statement: Statement;
+	statement: Statement | undefined;
 	siblingStatements: Statement[];
-	parentStatement: Statement;
+	parentStatement: Statement | undefined;
 }
 
 const SuggestionCard: FC<Props> = ({
@@ -53,14 +53,9 @@ const SuggestionCard: FC<Props> = ({
 
 	// Redux Store
 	const dispatch = useAppDispatch();
-	const { deliberativeElement, isResult } = statement;
-	const statementColor: StyleProps = useStatementColor({
-		deliberativeElement,
-		isResult,
-	});
 
 	const statementSubscription = useAppSelector(
-		statementSubscriptionSelector(statement.statementId)
+		statementSubscriptionSelector(statement?.statementId)
 	);
 
 	// Use Refs
@@ -73,11 +68,30 @@ const SuggestionCard: FC<Props> = ({
 		useState(false);
 	const [isCardMenuOpen, setIsCardMenuOpen] = useState(false);
 
+	useEffect(() => {
+		if (sort !== Screen.OPTIONS_RANDOM && sort !== Screen.QUESTIONS_RANDOM) {
+			sortSubStatements(siblingStatements, sort, 30);
+		}
+	}, [statement?.consensus]);
+
+	useEffect(() => {
+		sortSubStatements(siblingStatements, sort, 30);
+	}, [statement?.elementHight]);
+
+
+
+	if (!statement) return null;
+
 	const _isAuthorized = isAuthorized(
 		statement,
 		statementSubscription,
-		parentStatement.creatorId
+		parentStatement?.creatorId
 	);
+
+	const statementColor: StyleProps = useStatementColor({
+		statement
+	});
+
 
 	useEffect(() => {
 		const element = elementRef.current;
@@ -93,19 +107,10 @@ const SuggestionCard: FC<Props> = ({
 		}
 	}, [elementRef.current?.clientHeight]);
 
-	useEffect(() => {
-		if (sort !== Screen.OPTIONS_RANDOM && sort !== Screen.QUESTIONS_RANDOM) {
-			sortSubStatements(siblingStatements, sort, 30);
-		}
-	}, [statement.consensus]);
-
-	useEffect(() => {
-		sortSubStatements(siblingStatements, sort, 30);
-	}, [statement.elementHight]);
 
 	function handleSetOption() {
 		try {
-			if (statement.statementType === 'option') {
+			if (statement?.statementType === 'option') {
 				const cancelOption = window.confirm(
 					'Are you sure you want to cancel this option?'
 				);
@@ -190,7 +195,7 @@ const SuggestionCard: FC<Props> = ({
 							statement={statement}
 						/>
 					</div>
-					{parentStatement.hasChildren && (
+					{parentStatement?.hasChildren && (
 						<IconButton
 							className='add-sub-question-button more-question'
 							onClick={() => setShouldShowAddSubQuestionModal(true)}

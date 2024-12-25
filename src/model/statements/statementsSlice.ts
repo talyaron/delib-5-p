@@ -460,7 +460,7 @@ export const subscriptionParentStatementSelector = (parentId: string) =>
 			statementSubscription.filter((sub) => sub.statement.topParentId === parentId)
 	);
 
-export const myStatementsByStatementIdSelector = (statementId: string) => {
+export const myStatementsByStatementIdSelector = (statementId: string | undefined) => {
 	const user = store.getState().user.user;
 
 	return createSelector(
@@ -470,7 +470,7 @@ export const myStatementsByStatementIdSelector = (statementId: string) => {
 	);
 }
 
-export const statementsOfMultiStepSelectorByStatementId = (statementId: string) => createSelector(
+export const statementsOfMultiStepSelectorByStatementId = (statementId: string | undefined) => createSelector(
 	(state: RootState) => state.statements.statements,
 	(statements) => statements.filter((st) => st.isInMultiStage && st.parentId === statementId)
 );

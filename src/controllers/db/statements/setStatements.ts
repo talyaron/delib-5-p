@@ -529,8 +529,10 @@ export async function updateStatementText(
 	} catch (error) { }
 }
 
-export async function setStatementIsOption(statement: Statement) {
+export async function setStatementIsOption(statement: Statement | undefined) {
 	try {
+		if (!statement) throw new Error("Statement is undefined");
+
 		const statementRef = doc(
 			FireStore,
 			Collections.statements,
