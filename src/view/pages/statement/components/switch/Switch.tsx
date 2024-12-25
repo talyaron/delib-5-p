@@ -7,6 +7,7 @@ import FollowMeToast from '../followMeToast/FollowMeToast';
 import StatementSettings from '../settings/StatementSettings';
 import GroupPage from '../statementTypes/group/GroupPage';
 import styles from './Switch.module.scss';
+import QuestionPage from '../statementTypes/question/QuestionPage';
 
 const Switch = () => {
 	const { statement } = useContext(StatementContext);
@@ -33,6 +34,12 @@ function SwitchInner({ statement }: { statement: Statement | undefined }) {
 			return (
 				<StatementInner>
 					<GroupPage />
+				</StatementInner>
+			);
+		case StatementType.question:
+			return (
+				<StatementInner>
+					<QuestionPage />
 				</StatementInner>
 			);
 		default:
