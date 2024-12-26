@@ -1,3 +1,9 @@
-.stage {
-	background-color: orange;
+.stage {}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	max-width: var(--wrapper);
+	margin: auto;
+	overflow-y: auto;
 }
