@@ -5,6 +5,7 @@ import Button from '@/view/components/buttons/button/Button';
 import SuggestionCards from '../../evaluations/components/suggestionCards/SuggestionCards';
 import StatementVote from '../../vote/StatementVote';
 import styles from './StagePage.module.scss'
+import StatementBottomNav from '../../nav/bottom/StatementBottomNav';
 
 const StagePage = () => {
 	const { statement, handleSetNewStatement, setNewStatementType } = useContext(StatementContext);
@@ -45,7 +46,9 @@ const StagePage = () => {
 				<h2 className="text-2xl font-bold mb-2">Stage</h2>
 				<p className="mb-4">Stage description</p>
 				<StagePageSwitch statement={statement} />
-				<Button text="Add suggestion" onClick={handleCreateNewOption} />
+				<div className={styles.bottomNav}>
+					<StatementBottomNav setShowModal={handleCreateNewOption} />
+				</div>
 			</div>
 		</div>
 	);

@@ -7,3 +7,10 @@
 	margin: auto;
 	overflow-y: auto;
 }
+
+.bottomNav {
+	position: fixed;
+	bottom: 0px;
+	max-width: var(--wrapper);
+	width: 80vw;
+}
