@@ -6,10 +6,6 @@ export enum LanguagesEnum {
 	he = "he",
 	de = "de",
 	es = "es",
-	fr = "fr",
-	it = "it",
-	ja = "ja",
-	ko = "ko",
 	nl = "nl",
 }
 
@@ -21,7 +17,7 @@ import es from "../../assets/Languages/es.json";
 import he from "../../assets/Languages/he.json";
 import nl from "../../assets/Languages/nl.json";
 
-const languages: Record<string, string>[] = [en, ar, de, es, he, nl];
+const languages: Record<string, string>[] = [en, ar, he, de, es, nl];
 
 // LanguageProvider component to wrap your application and provide the language context
 
@@ -79,6 +75,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 
 	useEffect(() => {
 		const languageIndex = Object.values(LanguagesEnum).indexOf(currentLanguage);
+
 		if (languageIndex !== -1) {
 			setLanguageData(languages[languageIndex]);
 		} else {
