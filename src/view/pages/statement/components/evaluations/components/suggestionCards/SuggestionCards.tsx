@@ -1,18 +1,15 @@
-import { DeliberativeElement, QuestionStage, QuestionType, Statement } from "delib-npm";
+import { DeliberativeElement, QuestionStage, QuestionType, Statement, StatementType } from "delib-npm";
 import { FC, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { sortSubStatements } from "../../statementsEvaluationCont";
-import EmptyScreen from "../emptyScreen/EmptyScreen";
 import SuggestionCard from "./suggestionCard/SuggestionCard";
 import styles from "./SuggestionCards.module.scss";
 import { getFirstEvaluationOptions, getSecondEvaluationOptions } from "@/controllers/db/multiStageQuestion/getMultiStageStatements";
-import {
-	myStatementsByStatementIdSelector,
-	statementsOfMultiStepSelectorByStatementId,
-	statementSubsSelector,
-} from "@/model/statements/statementsSlice";
+import { statementSubsSelector } from "@/model/statements/statementsSlice";
 import { StatementContext } from "@/view/pages/statement/StatementCont";
+import EmptyScreen from "../emptyScreen/EmptyScreen";
+
 
 
 
@@ -24,17 +21,9 @@ const SuggestionCards: FC = () => {
 	const [totalHeight, setTotalHeight] = useState(0);
 
 	const { questionType, currentStage } = statement?.questionSettings || { questionType: QuestionType.singleStep, currentStage: QuestionStage.suggestion };
-	const subStatements = switchSubStatements().filter((sub) => sub.deliberativeElement === DeliberativeElement.option);;
+	const subStatements = useSelector(statementSubsSelector(statement?.statementId)).filter((sub: Statement) => sub.statementType === StatementType.option);
 
-	//change the source of options from the store based on the question type
-	function switchSubStatements() {
-		if (questionType === QuestionType.singleStep) return useSelector(
-			statementSubsSelector(statement?.statementId)
-		)
-		else if (questionType === QuestionType.multipleSteps && currentStage !== QuestionStage.suggestion) return useSelector(statementsOfMultiStepSelectorByStatementId(statement?.statementId));
-		else if (questionType === QuestionType.multipleSteps && currentStage === QuestionStage.suggestion) return useSelector(myStatementsByStatementIdSelector(statement?.statementId));
-		else return [];
-	}
+
 
 	useEffect(() => {
 		const { totalHeight: _totalHeight } = sortSubStatements(subStatements, sort, 30);
@@ -52,11 +41,11 @@ const SuggestionCards: FC = () => {
 		}
 	}, [currentStage, questionType]);
 
-	// if (!subStatements) {
-	// 	return (
-	// 		<EmptyScreen currentPage={currentPage} setShowModal={() => { })} />
-	// 	);
-	// }
+	if (!subStatements) {
+		return (
+			<EmptyScreen setShowModal={() => { }} />
+		);
+	}
 
 	useEffect(() => {
 		const _totalHeight = subStatements.reduce((acc: number, sub: Statement) => {

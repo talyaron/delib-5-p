@@ -21,10 +21,9 @@ export default function GetInitialStatementData() {
 		try {
 			const form = new FormData(ev.target as HTMLFormElement);
 			const title = form.get('title') as string;
-			const description = form.get('description') as string;
-			setTitle(title);
+			const description = form.get('description')?.toString() || '';
+			setTitle(title.toString());
 			setDescription(description);
-			console.log(title, description);
 
 			if (!statement) throw new Error('Statement is not defined');
 
@@ -62,7 +61,7 @@ export default function GetInitialStatementData() {
 				<Input label={titleLabel} placeholder={titleLabel} value={title} name="title" />
 				<Textarea label={descriptionLabel} placeholder={placeholder} value={description} name="description" />
 				<div className="btns">
-					<Button type='submit' text={t('Continue')} buttonType={ButtonType.PRIMARY} />
+					<Button type='submit' text={t('Create')} buttonType={ButtonType.PRIMARY} />
 					<Button text={t('Cancel')} buttonType={ButtonType.SECONDARY} onClick={() => handleSetNewStatement(false)} />
 				</div>
 			</form>

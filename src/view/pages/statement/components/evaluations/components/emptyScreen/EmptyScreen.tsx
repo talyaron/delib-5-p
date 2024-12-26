@@ -8,12 +8,13 @@ import useWindowDimensions from "@/controllers/hooks/useWindowDimentions";
 import WhitePlusIcon from "@/view/components/icons/WhitePlusIcon";
 
 interface Props {
-  currentPage: string;
-  setShowModal: Dispatch<boolean>;
+
+	setShowModal: Dispatch<boolean>;
 }
 
-const EmptyScreen: FC<Props> = ({ currentPage, setShowModal }) => {
-	const {t} = useLanguage();
+const EmptyScreen: FC<Props> = ({ setShowModal }) => {
+	const currentPage = "suggestion";
+	const { t } = useLanguage();
 	const { width } = useWindowDimensions();
 	const smallScreen = width < 1024;
 
@@ -67,7 +68,7 @@ const EmptyScreen: FC<Props> = ({ currentPage, setShowModal }) => {
 				</div>
 				<img src={ideaImage} alt="" className={styles.ideaImage} />
 			</div>
-      
+
 		</>
 	);
 };

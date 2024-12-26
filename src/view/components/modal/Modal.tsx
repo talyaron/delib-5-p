@@ -8,9 +8,16 @@ interface Props {
 }
 
 const Modal: FC<Props> = ({ children, className = "", closeModal }) => {
+
+	const handleContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
+	};
+
 	return (
 		<div className={`modal ${className}`} onClick={closeModal}>
-			<div className="modal-content">{children}</div>
+			<div className="modal-content" onClick={handleContentClick}>
+				{children}
+			</div>
 		</div>
 	);
 };
