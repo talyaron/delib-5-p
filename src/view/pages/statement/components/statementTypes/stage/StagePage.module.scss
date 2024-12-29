@@ -1,16 +1,25 @@
-.stage {}
+.stage {
+
+	display: flex;
+	flex-direction: column;
+}
 
 .wrapper {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	max-width: var(--wrapper);
+	width: 100vw;
 	margin: auto;
 	overflow-y: auto;
+	flex: 1;
 }
 
 .bottomNav {
-	position: fixed;
-	bottom: 0px;
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%);
 	max-width: var(--wrapper);
-	width: 80vw;
+	width: 90vw;
 }

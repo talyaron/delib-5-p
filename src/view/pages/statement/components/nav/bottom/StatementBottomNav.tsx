@@ -45,25 +45,14 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 	const statementColor = useStatementColor({ statement });
 
 	//used to check if the user can add a new option in voting and in evaluation screens
-	const addOption: boolean | undefined =
-		statement?.statementSettings?.enableAddEvaluationOption;
-
-	const addVotingOption: boolean | undefined =
-		statement?.statementSettings?.enableAddVotingOption;
-
-	const showAddOptionEvaluation = page === Screen.OPTIONS && addOption;
-	const showAddOptionVoting = page === Screen.VOTE && addVotingOption;
-	const showAddQuestion = page === Screen.QUESTIONS;
-	const isAddOption =
-		showAddOptionEvaluation || showAddOptionVoting || showAddQuestion;
 
 	const handleAddOption = () => {
-		if (isAddOption) {
-			setShowModal(true);
-			setShowStartHere(false);
-			decreesUserSettingsLearningRemain({ addOption: true });
+		console.log("first")
+		setShowModal(true);
+		setShowStartHere(false);
+		decreesUserSettingsLearningRemain({ addOption: true });
 
-		}
+
 	};
 
 	function handleSortingClick() {
@@ -87,7 +76,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 				}
 			>
 				<div className="add-option-button-wrapper">
-					{showStartHere && <StartHere setShow={setShowStartHere} />}
+					{/* {showStartHere && <StartHere setShow={setShowStartHere} />} */}
 					<button
 						className="add-option-button"
 						aria-label="Add option"
@@ -95,40 +84,39 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 						onClick={handleAddOption}
 						data-cy="bottom-nav-mid-icon"
 					>
-						{isAddOption && (
-							<PlusIcon style={{ color: statementColor.color }} />
-						)}
+						<PlusIcon style={{ color: statementColor.color }} />
 					</button>
-				</div>
-				<div className="sort-menu">
-					{navItems.map((navItem, i) => (
-						<div
-							key={`item-id-${i}`}
-							className={`sort-menu__item  ${showSorting ? "active" : ""}`}
-						>
-							<Link
-								className={`open-nav-icon ${showSorting ? "active" : ""}`}
-								to={navItem.link}
-								aria-label="Sorting options"
-								key={navItem.id}
-								onClick={() => setShowSorting(false)}
+					<div className="sort-menu">
+						{navItems.map((navItem, i) => (
+							<div
+								key={`item-id-${i}`}
+								className={`sort-menu__item  ${showSorting ? "active" : ""}`}
 							>
-								<NavIcon
-									name={navItem.name}
-									color={statementColor.backgroundColor}
-								/>
-							</Link>
-							<span className="button-name">{navItem.name}</span>
-						</div>
-					))}
-					<button
-						className="sort-button"
-						onClick={handleSortingClick}
-						aria-label="Sort items"
-					>
-						<SortIcon />
-					</button>
+								<Link
+									className={`open-nav-icon ${showSorting ? "active" : ""}`}
+									to={navItem.link}
+									aria-label="Sorting options"
+									key={navItem.id}
+									onClick={() => setShowSorting(false)}
+								>
+									<NavIcon
+										name={navItem.name}
+										color={statementColor.backgroundColor}
+									/>
+								</Link>
+								<span className="button-name">{navItem.name}</span>
+							</div>
+						))}
+						<button
+							className="sort-button"
+							onClick={handleSortingClick}
+							aria-label="Sort items"
+						>
+							<SortIcon />
+						</button>
+					</div>
 				</div>
+
 			</div>
 		</>
 	);

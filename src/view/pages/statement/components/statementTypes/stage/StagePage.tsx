@@ -1,7 +1,6 @@
 import { DeliberationType, Statement, StatementType } from 'delib-npm';
 import { useContext, useEffect, useRef } from 'react';
 import { StatementContext } from '../../../StatementCont';
-import Button from '@/view/components/buttons/button/Button';
 import SuggestionCards from '../../evaluations/components/suggestionCards/SuggestionCards';
 import StatementVote from '../../vote/StatementVote';
 import styles from './StagePage.module.scss'
