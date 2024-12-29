@@ -1,4 +1,4 @@
-import { Statement, Screen } from "delib-npm";
+import { Statement, Screen, SortType } from "delib-npm";
 
 import {
 	EnhancedEvaluationThumb,
@@ -16,24 +16,21 @@ export function sortSubStatements(
 		const dispatch = store.dispatch;
 		let _subStatements = [...subStatements];
 		switch (sort) {
-			case Screen.OPTIONS_CONSENSUS:
-			case Screen.QUESTIONS_CONSENSUS:
+			case SortType.accepted:
 				_subStatements = subStatements.sort(
 					(a: Statement, b: Statement) => b.consensus - a.consensus,
 				);
 				break;
-			case Screen.OPTIONS_NEW:
-			case Screen.QUESTIONS_NEW:
+			case SortType.newest:
 				_subStatements = subStatements.sort(
 					(a: Statement, b: Statement) => b.createdAt - a.createdAt,
 				);
 				break;
-			case Screen.OPTIONS_RANDOM:
-			case Screen.QUESTIONS_RANDOM:
+
+			case SortType.random:
 				_subStatements = subStatements.sort(() => Math.random() - 0.5);
 				break;
-			case Screen.OPTIONS_UPDATED:
-			case Screen.QUESTIONS_UPDATED:
+			case SortType.mostUpdated:
 				_subStatements = subStatements.sort(
 					(a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate,
 				);
