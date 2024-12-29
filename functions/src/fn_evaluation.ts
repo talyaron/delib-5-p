@@ -2,22 +2,22 @@ import { logger } from "firebase-functions/v1";
 import { db } from "./index";
 import { FieldValue } from "firebase-admin/firestore";
 import {
+	ChoseBy,
+	ChoseByType,
 	Collections,
 	Evaluation,
-	ResultsBy,
-	SimpleStatement,
 	Statement,
 	StatementSchema,
 	User,
+	choseByEvaluationType,
 	statementToSimpleStatement,
 } from "delib-npm";
 import { z } from "zod";
-import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 
 enum ActionTypes {
-    new = "new",
-    update = "update",
-    delete = "delete",
+	new = "new",
+	update = "update",
+	delete = "delete",
 }
 
 //@ts-ignore
@@ -32,12 +32,12 @@ export async function newEvaluation(event) {
 		//add one evaluator to statement, and add evaluation to statement
 		const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: statementEvaluation.evaluation, addEvaluator: 1, action: ActionTypes.new, newEvaluation: statementEvaluation.evaluation, oldEvaluation: 0 });
 		if (!statement) throw new Error("statement does not exist");
-		updateParentStatementWithChildResults(statement.parentId);
+		updateParentStatementWithChosenOptions(statement.parentId);
 
 		//update evaluators that the statement was evaluated
 		const evaluator: User | undefined = statementEvaluation.evaluator;
 		if (!evaluator) throw new Error("evaluator is not defined");
-        
+
 		// const evaluatorData = await getEvaluatorData(evaluator, statement);
 		// if (!evaluatorData) throw new Error("evaluatorData is not defined");
 
@@ -47,7 +47,7 @@ export async function newEvaluation(event) {
 
 	} catch (error) {
 		logger.error(error);
-		
+
 		return;
 	}
 
@@ -64,7 +64,7 @@ export async function deleteEvaluation(event) {
 		//add one evaluator to statement
 		const statement = await _updateStatementEvaluation({ statementId, evaluationDiff: (-1 * evaluation), addEvaluator: -1, action: ActionTypes.delete, newEvaluation: 0, oldEvaluation: evaluation });
 		if (!statement) throw new Error("statement does not exist");
-		updateParentStatementWithChildResults(statement.parentId);
+		updateParentStatementWithChosenOptions(statement.parentId);
 
 	} catch (error) {
 		logger.error(error);
@@ -89,7 +89,7 @@ export async function updateEvaluation(event) {
 		if (!statement) throw new Error("statement does not exist");
 
 		//update parent statement?
-		updateParentStatementWithChildResults(statement.parentId);
+		updateParentStatementWithChosenOptions(statement.parentId);
 	} catch (error) {
 		console.info("error in updateEvaluation");
 		logger.error(error);
@@ -116,18 +116,18 @@ function calcAgreement(newSumEvaluations: number, numberOfEvaluators: number): n
 		return agreement;
 	} catch (error) {
 		logger.error(error);
-		
+
 		return 0;
 	}
 }
 
 interface UpdateStatementEvaluation {
-    statementId: string;
-    evaluationDiff: number;
-    addEvaluator?: number;
-    action: ActionTypes;
-    newEvaluation: number;
-    oldEvaluation: number;
+	statementId: string;
+	evaluationDiff: number;
+	addEvaluator?: number;
+	action: ActionTypes;
+	newEvaluation: number;
+	oldEvaluation: number;
 }
 
 async function _updateStatementEvaluation({ statementId, evaluationDiff, addEvaluator = 0, action, newEvaluation, oldEvaluation }: UpdateStatementEvaluation): Promise<Statement | undefined> {
@@ -180,7 +180,7 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
 			});
 
 			const _st = await statementRef.get();
-			
+
 			return _st.data() as Statement;
 		});
 
@@ -188,7 +188,7 @@ async function _updateStatementEvaluation({ statementId, evaluationDiff, addEval
 
 	} catch (error) {
 		logger.error(error);
-		
+
 		return undefined;
 	}
 }
@@ -201,111 +201,47 @@ function calcDiffEvaluation({ action, newEvaluation, oldEvaluation }: { action: 
 		const negativeDiff = Math.min(newEvaluation, 0) - Math.min(oldEvaluation, 0);
 
 		switch (action) {
-		case ActionTypes.new:
-			return { proDiff: Math.max(newEvaluation, 0), conDiff: Math.max(-newEvaluation, 0) };
-		case ActionTypes.delete:
-			return { proDiff: Math.min(-oldEvaluation, 0), conDiff: Math.max(oldEvaluation, 0) };
-		case ActionTypes.update:
-			return { proDiff: positiveDiff, conDiff: -negativeDiff };
-		default:
-			throw new Error("Action is not defined correctly");
+			case ActionTypes.new:
+				return { proDiff: Math.max(newEvaluation, 0), conDiff: Math.max(-newEvaluation, 0) };
+			case ActionTypes.delete:
+				return { proDiff: Math.min(-oldEvaluation, 0), conDiff: Math.max(oldEvaluation, 0) };
+			case ActionTypes.update:
+				return { proDiff: positiveDiff, conDiff: -negativeDiff };
+			default:
+				throw new Error("Action is not defined correctly");
 		}
 	} catch (error) {
 		logger.error(error);
-		
+
 		return { proDiff: 0, conDiff: 0 };
 	}
 }
-interface ResultsSettings {
-    resultsBy: ResultsBy;
-    numberOfResults?: number;
-    deep?: number;
-    minConsensus?: number;
-    solutions?: SimpleStatement[];
-}
 
-function getResultsSettings(
-	results: ResultsSettings | undefined,
-): ResultsSettings {
-	if (!results) {
-		return {
-			resultsBy: ResultsBy.topOptions,
-		};
-	} else {
-		return results;
-	}
-}
 
-async function updateParentStatementWithChildResults(
+
+
+async function updateParentStatementWithChosenOptions(
 	parentId: string | undefined,
 ) {
 	try {
-        
+
 		if (!parentId) throw new Error("parentId is not defined");
 
-		//get parent statement
-		const parentStatementRef = db.collection("statements").doc(parentId);
-		const parentStatementDB = await parentStatementRef.get();
-		if (!parentStatementDB.exists)
+		// get parent choseBy settings statement
+		const parentStatementChoseBySettingsRef = db.collection(Collections.choseBy).doc(parentId);
+		const parentStatementChoseByDB = await parentStatementChoseBySettingsRef.get();
+		if (!parentStatementChoseByDB.exists)
 			throw new Error("parentStatement does not exist");
-		const parentStatement = parentStatementDB.data() as Statement;
+		const parentStatementChoseBy = parentStatementChoseByDB.data() as ChoseBy;
 
 		//get results settings
-		const { resultsSettings } = parentStatement;
-		let {resultsBy} = getResultsSettings(resultsSettings);
-		const { numberOfResults = 1 } =
-            getResultsSettings(resultsSettings);
-		
-		// if (numberOfResults === undefined) numberOfResults = 1;
-		if (resultsBy === undefined) resultsBy = ResultsBy.topOptions;
+		const { choseByType, number = 1, choseByEvaluationType } = parentStatementChoseBy;
 
-		//this function is responsible for converting the results of evaluation of options
+		const chosenOptions = await choseTopOptions(number, choseByEvaluationType, choseByType);
 
-		if (resultsBy !== ResultsBy.topOptions) {
-			//remove it when other evaluation methods will be added
-			//topVote will be calculated in the votes function
-			return;
-		}
+		if (!chosenOptions) throw new Error("chosenOptions is not found");
 
-		//get all options of the parent statement
-		const allOptionsStatementsRef = db
-			.collection(Collections.statements)
-			.where("parentId", "==", parentId)
-			.where("deliberativeElement", "==", DeliberativeElement.option);
-
-		//get top options
-		const topOptionsStatementsRef = allOptionsStatementsRef
-			.orderBy("consensus", "desc") //TODO: in the future (1st aug 2024), this will be changed to evaluation.agreement
-			.limit(numberOfResults);
-		const topOptionsStatementsDB = await topOptionsStatementsRef.get();
-		const topOptionsStatements = topOptionsStatementsDB.docs.map(
-			(doc) => doc.data() as Statement,
-		);
-        
-		//get all options of the parent statement and convert them to either result, or an option
-		const topOptionsIds = topOptionsStatements.map(
-			(st: Statement) => st.statementId,
-		);
-
-		const optionsDB = await allOptionsStatementsRef.get();
-
-		const batch = db.batch();
-
-		optionsDB.forEach((stDB) => {
-			const st = stDB.data() as Statement;
-            
-			const statementRef = db.collection(Collections.statements).doc(st.statementId);
-
-			if (topOptionsIds.includes(st.statementId)) {
-				batch.update(statementRef, { isResult: true });
-			} else {
-				batch.update(statementRef, { isResult: false });
-			}
-		});
-
-		await batch.commit();
-
-		await updateParentChildren(topOptionsStatements, numberOfResults);
+		await updateParentChildren(chosenOptions);
 
 		//update child statement selected to be of type result
 	} catch (error) {
@@ -314,9 +250,8 @@ async function updateParentStatementWithChildResults(
 
 	async function updateParentChildren(
 		topOptionsStatements: Statement[],
-		numberOfResults = 1,
 	) {
-        
+
 		const childStatementsSimple = topOptionsStatements.map(
 			(st: Statement) => statementToSimpleStatement(st),
 		);
@@ -325,8 +260,69 @@ async function updateParentStatementWithChildResults(
 
 		//update parent with results
 		await db.collection(Collections.statements).doc(parentId).update({
-			totalResults: numberOfResults,
+			totalResults: childStatementsSimple.length,
 			results: childStatementsSimple,
 		});
 	}
 }
+
+async function choseTopOptions(number: number, by: choseByEvaluationType, method: ChoseByType): Promise<Statement[] | undefined> {
+	try {
+
+		const statementsRef = db.collection(Collections.statements);
+
+		//first get previous top options and remove isChosen
+		const previousTopOptionsDB = await statementsRef
+			.where("isChosen", "==", true)
+			.get();
+
+		const batch = db.batch();
+		previousTopOptionsDB.forEach((doc) => {
+			const statementRef = statementsRef.doc(doc.id);
+			batch.update(statementRef, { isChosen: false });
+		});
+
+		//then get the new top options by the new settings
+		const statementsDB = await optionsChosenByMethod(method, by, number);
+
+		if (!statementsDB) throw new Error("statementsDB is not defined");
+
+		const batch2 = db.batch();
+		statementsDB.forEach((doc) => {
+			const statementRef = statementsRef.doc(doc.statementId);
+			batch2.update(statementRef, { isChosen: true });
+		});
+
+		await batch2.commit();
+
+		return statementsDB;
+
+	} catch (error) {
+		console.error(error);
+		return undefined;
+	}
+}
+
+async function optionsChosenByMethod(method: ChoseByType, evaluationType: choseByEvaluationType, number: number): Promise<Statement[] | undefined> {
+	const statementsRef = db.collection(Collections.statements);
+	if (method === ChoseByType.topOptions) {
+		const statementsDB = await statementsRef
+			.orderBy(evaluationType, "desc")
+			.limit(number)
+			.get();
+
+		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);
+		return statements
+	}
+	else if (method === ChoseByType.cutoff) {
+		const statementsDB = await statementsRef
+			.orderBy(evaluationType, "desc")
+			.where(evaluationType, ">=", number)
+			.get();
+
+		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);
+		return statements
+	}
+	return undefined;
+}
+
