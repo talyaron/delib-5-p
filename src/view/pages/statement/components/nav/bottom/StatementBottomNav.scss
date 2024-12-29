@@ -39,6 +39,7 @@ $addOptionSize: 60px;
         top: 0px;
         display: flex;
         justify-content: space-between;
+        width: 100%;
 
 
         .add-option-button {
@@ -188,8 +189,8 @@ $addOptionSize: 60px;
         }
 
         .sort-button {
-            width: 48px;
-            height: 48px;
+            width: 51px;
+            height: 51px;
             display: flex;
             align-items: center;
             justify-content: center;

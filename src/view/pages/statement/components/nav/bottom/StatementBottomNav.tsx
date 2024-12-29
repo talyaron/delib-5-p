@@ -38,7 +38,6 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 	const navItems = getNavigationScreens(page);
 	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
 
-	const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 	const [showSorting, setShowSorting] = useState(false);
 	const [showStartHere, setShowStartHere] = useState(timesRemainToLearnAddOption > 0);
 
@@ -47,7 +46,6 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 	//used to check if the user can add a new option in voting and in evaluation screens
 
 	const handleAddOption = () => {
-		console.log("first")
 		setShowModal(true);
 		setShowStartHere(false);
 		decreesUserSettingsLearningRemain({ addOption: true });
@@ -59,15 +57,10 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 		setShowSorting(!showSorting);
 	}
 
+
 	return (
 		<>
-			{isNavigationOpen && (
-				<button
-					className="invisibleBackground"
-					onClick={() => setIsNavigationOpen(false)}
-					aria-label="Close navigation"
-				/>
-			)}
+			{showStartHere && <StartHere setShow={setShowStartHere} />}
 			<div
 				className={
 					showSorting
@@ -76,7 +69,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 				}
 			>
 				<div className="add-option-button-wrapper">
-					{/* {showStartHere && <StartHere setShow={setShowStartHere} />} */}
+
 					<button
 						className="add-option-button"
 						aria-label="Add option"

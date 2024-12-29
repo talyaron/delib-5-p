@@ -1,25 +1,30 @@
-.wrapper{
-   position: absolute;
-   bottom: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.wrapper {
+    position: absolute;
+    bottom: 100px;
+    transform: translateX(20%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.text{
-   
+
+.text {
+
     text-align: center;
     padding-bottom: 10px;
 }
-.img{
+
+.img {
     width: 80px;
     transform: rotate(350deg);
     animation: emphasize 0.5s ease-in-out 0s infinite alternate;
 }
 
 @keyframes emphasize {
-    from{
+    from {
         transform: rotate(350deg) translateY(0px);
-    } to {
+    }
+
+    to {
         transform: rotate(350deg) translateY(-8px);
     }
 }
