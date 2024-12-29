@@ -1,4 +1,4 @@
-import { Screen, Statement } from "delib-npm";
+import { Screen, SortType } from "delib-npm";
 import React, { FC, useContext, useState } from "react";
 
 // Third party libraries
@@ -6,12 +6,6 @@ import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 // Icons
-import {
-	NavItem,
-	optionsArray,
-	questionsArray,
-	votesArray,
-} from "./StatementBottomNavModal";
 import AgreementIcon from "@/assets/icons/agreementIcon.svg?react";
 import NewestIcon from "@/assets/icons/newIcon.svg?react";
 import PlusIcon from "@/assets/icons/plusIcon.svg?react";
@@ -25,6 +19,7 @@ import "./StatementBottomNav.scss";
 import { userSettingsSelector } from "@/model/users/userSlice";
 import StartHere from "@/view/components/startHere/StartHere";
 import { StatementContext } from "../../../StatementCont";
+import { sortItems } from "./StatementBottomNavModal";
 
 interface Props {
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,10 +27,10 @@ interface Props {
 }
 
 const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
-	const { page } = useParams();
+
+	const { statementId } = useParams();
 	const { statement } = useContext(StatementContext);
 
-	const navItems = getNavigationScreens(page);
 	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
 
 	const [showSorting, setShowSorting] = useState(false);
@@ -80,20 +75,20 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 						<PlusIcon style={{ color: statementColor.color }} />
 					</button>
 					<div className="sort-menu">
-						{navItems.map((navItem, i) => (
+						{sortItems.map((navItem, i) => (
 							<div
 								key={`item-id-${i}`}
 								className={`sort-menu__item  ${showSorting ? "active" : ""}`}
 							>
 								<Link
 									className={`open-nav-icon ${showSorting ? "active" : ""}`}
-									to={navItem.link}
+									to={`/statement/${statementId}/main/${navItem.link}`}
 									aria-label="Sorting options"
 									key={navItem.id}
 									onClick={() => setShowSorting(false)}
 								>
 									<NavIcon
-										name={navItem.name}
+										name={navItem.id}
 										color={statementColor.backgroundColor}
 									/>
 								</Link>
@@ -117,20 +112,7 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 
 export default StatementBottomNav;
 
-function getNavigationScreens(page: string | undefined): NavItem[] {
-	if (!page) return optionsArray;
 
-	switch (page) {
-		case Screen.VOTE:
-			return votesArray;
-		case Screen.OPTIONS:
-			return optionsArray;
-		case Screen.QUESTIONS:
-			return questionsArray;
-		default:
-			return optionsArray;
-	}
-}
 
 interface NavIconProps {
 	name: string;
@@ -140,13 +122,13 @@ interface NavIconProps {
 const NavIcon: FC<NavIconProps> = ({ name, color }) => {
 	const props = { style: { color } };
 	switch (name) {
-		case "New":
+		case SortType.newest:
 			return <NewestIcon {...props} />;
-		case "Update":
+		case SortType.mostUpdated:
 			return <UpdateIcon {...props} />;
-		case "Random":
+		case SortType.random:
 			return <RandomIcon {...props} />;
-		case "Agreement":
+		case SortType.accepted:
 			return <AgreementIcon {...props} />;
 		default:
 			return null;
