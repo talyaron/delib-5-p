@@ -86,7 +86,7 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
 
-      match /choseBy/{statementId=**}{
+    match /choseBy/{statementId=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
@@ -268,5 +268,16 @@ service cloud.firestore {
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid == request.resource.data.creator.uid
     }
+
+    //functions
+
+    function isAdmin(statementId) {
+  let userId = request.auth.uid;
+  let docId = userId + "--" + statementId; // No need for toString() here
+  let adminDocPath = resource.path.parent.parent.collection('statementsSubscribe').doc(docId).path; // Get the path as a string
+  let adminDoc = get(adminDocPath); 
+  return adminDoc.data.role == "admin";
+}
+
   }
 }

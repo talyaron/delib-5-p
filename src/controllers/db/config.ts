@@ -15,6 +15,7 @@ import firebaseConfig from './configKey';
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const FireStore = getFirestore(app);
+const DB = FireStore;
 const storage = getStorage(app);
 const auth = getAuth();
 
@@ -37,4 +38,4 @@ if (!isProduction()) {
 	connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
 
-export { auth, FireStore, messaging, storage, app };
+export { auth, FireStore, messaging, storage, app, DB };

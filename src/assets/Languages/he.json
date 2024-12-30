@@ -189,7 +189,13 @@
   "Continue with this suggestion": "המשך/י עם הפתרון הזה",
   "Back": "חזרה",
   "Disagree": "מתנגד/ת",
-  "Type your message here...": "הקלד/י את ההודעה שלך כאן..."
+  "Type your message here...": "הקלד/י את ההודעה שלך כאן...",
+  "How to evaluate and select top options": "איך להעריך ולבחור את האופציות המובילות",
+  "By Consensus": "על פי מידת ההסכמה",
+  "By Majority": "ברוב",
+  "By most liked": "על פי הרוב",
+  "By sum liked - disliked": "אהבו - לא אהבו"
+
 
 
 

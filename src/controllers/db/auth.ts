@@ -67,18 +67,19 @@ export const listenToAuth =
 						signAnonymously();
 					}
 					if (userFB) {
-					// User is signed in
+
+						// User is signed in
 						const user = { ...userFB };
 						if (!user.displayName)
 							user.displayName =
-							localStorage.getItem('displayName') ??
-							`Anonymous ${Math.floor(Math.random() * 10000)}`;
+								localStorage.getItem('displayName') ??
+								`Anonymous ${Math.floor(Math.random() * 10000)}`;
 						const _user = parseUserFromFirebase(user);
 
 						if (_user?.isAnonymous) {
 							_user.displayName =
-							sessionStorage.getItem('displayName') ??
-							`Anonymous ${Math.floor(Math.random() * 10000)}`;
+								sessionStorage.getItem('displayName') ??
+								`Anonymous ${Math.floor(Math.random() * 10000)}`;
 						}
 
 						// console.info("User is signed in")
@@ -97,7 +98,7 @@ export const listenToAuth =
 
 						if (initialUrl) navigate(initialUrl);
 					} else {
-					// User is not logged in.
+						// User is not logged in.
 						dispatch(resetStatements());
 						dispatch(resetEvaluations());
 						dispatch(resetVotes());

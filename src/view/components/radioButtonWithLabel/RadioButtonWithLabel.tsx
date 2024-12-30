@@ -4,21 +4,24 @@ import RadioButtonEmptyIcon from "@/assets/icons/radioButtonEmpty.svg?react";
 import "./RadioButtonWithLabel.scss";
 
 interface RadioButtonWithLabelProps extends ComponentProps<"input"> {
-    labelText: string;
+	labelText: string;
+	id: string;
 }
 
 export default function RadioButtonWithLabel({
 	labelText,
+	id,
 	checked,
 	...inputProps
 }: RadioButtonWithLabelProps) {
 	return (
 		<label
-			htmlFor={`${labelText}`}
+			htmlFor={id}
 			className={`radio-button-with-label ${checked ? "checked" : ""}`}
 		>
 			{checked ? <RadioButtonCheckedIcon /> : <RadioButtonEmptyIcon />}
 			<input
+				id={id}
 				type="radio"
 				name="resultsBy"
 				checked={checked}
