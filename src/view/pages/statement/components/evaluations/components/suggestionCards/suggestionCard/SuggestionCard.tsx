@@ -136,7 +136,7 @@ const SuggestionCard: FC<Props> = ({
 			}
 			style={{
 				top: `${statement.top || 0}px`,
-				borderLeft: `8px solid ${statementColor.backgroundColor || 'white'}`,
+				borderLeft: `8px solid ${statement.isChosen ? "var(--approve)" : statementColor.backgroundColor || 'white'}`,
 				color: statementColor.color,
 				flexDirection: dir === 'ltr' ? 'row' : 'row-reverse',
 			}}
@@ -146,8 +146,8 @@ const SuggestionCard: FC<Props> = ({
 			<div
 				className='selected-option'
 				style={{
-					backgroundColor: statement.selected
-						? statementColor.backgroundColor
+					backgroundColor: statement.selected === true
+						? "var(--approve)"
 						: '',
 				}}
 			>

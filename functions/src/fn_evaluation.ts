@@ -290,28 +290,32 @@ async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefine
 		//first get previous top options and remove isChosen
 		const previousTopOptionsDB = await statementsRef
 			.where("isChosen", "==", true)
-			.get();
+			.get()
 
 		const batch = db.batch();
 		previousTopOptionsDB.forEach((doc) => {
+			console.log("docId", doc.id);
 			const statementRef = statementsRef.doc(doc.id);
 			batch.update(statementRef, { isChosen: false });
 		});
 
-		//then get the new top options by the new settings
-		const statementsDB = await optionsChosenByMethod(choseBy);
+		await batch.commit();
 
-		if (!statementsDB) throw new Error("statementsDB is not defined");
+		//then get the new top options by the new settings
+		const chosenOptions = await optionsChosenByMethod(choseBy);
+
+		console.log("chosenOptions", chosenOptions);
+		if (!chosenOptions) throw new Error("statementsDB is not defined");
 
 		const batch2 = db.batch();
-		statementsDB.forEach((doc) => {
+		chosenOptions.forEach((doc) => {
 			const statementRef = statementsRef.doc(doc.statementId);
 			batch2.update(statementRef, { isChosen: true });
 		});
 
 		await batch2.commit();
 
-		return statementsDB;
+		return chosenOptions;
 
 	} catch (error: any) {
 		console.error(`At choseTopOptions ${error.message}`);
