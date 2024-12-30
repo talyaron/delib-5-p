@@ -10,6 +10,7 @@ import { statementsSlicer } from "./statements/statementsSlice";
 import { timersSlice } from "./timers/timersSlice";
 import { userSlicer } from "./users/userSlice";
 import { votesSlicer } from "./vote/votesSlice";
+import { choseBySlice } from "./choseBy/choseBySlice";
 
 export const store = configureStore({
 	reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
 		initLocation: initLocationSlice.reducer,
 		history: historySlice.reducer,
 		notifications: notificationsSlicer.reducer,
+		choseBys: choseBySlice.reducer,
 	},
 });
 

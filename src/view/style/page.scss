@@ -125,6 +125,7 @@
     &__main {
         width: 100vw;
         flex: 1;
+        overflow-y: auto;
 
         .statement-inner {
             display: flex;

@@ -21,6 +21,7 @@ import {
 
 // Custom components
 import Loader from '@/view/components/loaders/Loader';
+import { listenToChoseBy } from '@/controllers/db/choseBy/getChoseBy';
 
 const StatementSettings: FC = () => {
 	// * Hooks * //
@@ -43,6 +44,14 @@ const StatementSettings: FC = () => {
 	);
 
 	// * Use Effect * //
+	useEffect(() => {
+		const unsubscribe = listenToChoseBy(statementId);
+		return () => {
+			unsubscribe();
+		};
+	}, []);
+
+
 	useEffect(() => {
 		try {
 			if (statement) {
@@ -108,7 +117,7 @@ const StatementSettings: FC = () => {
 	}, [statementId]);
 
 	return (
-		<div>
+		<div className='test'>
 			{isLoading || !statementToEdit ? (
 				<div className='center'>
 					<h2>{t('Updating')}</h2>

@@ -96,7 +96,6 @@ export async function setNewStatement({
 				text: statement.statement,
 				description: statement.description,
 				statementType,
-				deliberativeElement: DeliberativeElement.research,
 				parentStatement: 'top',
 				resultsBy,
 				numberOfResults,
@@ -151,8 +150,8 @@ export async function setNewStatement({
 		}
 	} catch (error) {
 		console.error(error);
-		
-return undefined;
+
+		return undefined;
 	}
 }
 
@@ -223,6 +222,7 @@ interface CreateStatementFromModalParams {
 	isOptionSelected: boolean;
 	parentStatement: Statement | 'top';
 	isSendToStoreTemp?: boolean;
+	statementType?: StatementType;
 }
 
 export async function createStatementFromModal({
@@ -230,6 +230,7 @@ export async function createStatementFromModal({
 	description,
 	isOptionSelected,
 	parentStatement,
+	statementType
 }: CreateStatementFromModalParams) {
 	try {
 		if (!title) throw new Error('title is undefined');
@@ -240,9 +241,7 @@ export async function createStatementFromModal({
 			text: title,
 			description,
 			parentStatement,
-			deliberativeElement: isOptionSelected
-				? DeliberativeElement.option
-				: DeliberativeElement.research,
+			statementType: statementType || StatementType.group,
 		});
 
 		if (!newStatement) throw new Error('newStatement was not created');

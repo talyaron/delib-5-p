@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 // Custom components
 import QuestionSettings from '../QuestionSettings/QuestionSettings';
 import AdvancedSettings from './../../components/advancedSettings/AdvancedSettings';
-import DisplayResultsBy from './../../components/displayResultsBy/DisplayResultsBy';
+import ChoseBySettings from '../displayResultsBy/ChoseBySettings';
 import GetEvaluators from './../../components/GetEvaluators';
 import GetVoters from './../../components/GetVoters';
 import MembersSettings from './../../components/membership/MembersSettings';
@@ -104,7 +104,7 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 
 					<AdvancedSettings {...statementSettingsProps} />
 				</section>
-				<DisplayResultsBy {...statementSettingsProps} />
+				<ChoseBySettings {...statementSettingsProps} />
 				<ResultsRange {...statementSettingsProps} />
 
 				{!isNewStatement && (
