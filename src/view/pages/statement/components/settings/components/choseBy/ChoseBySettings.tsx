@@ -13,6 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { choseBySelector, setChoseBy } from "@/model/choseBy/choseBySlice";
 import { setChoseByToDB } from "@/controllers/db/choseBy/setChoseBy";
 
+interface RangeProps {
+	maxValue: number;
+	minValue: number;
+	step: number;
+}
+
 const ChoseBySettings: FC<StatementSettingsProps> = ({
 	statement
 }) => {
@@ -20,7 +26,35 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 	const dispatch = useDispatch();
 	const choseBy: ChoseBy | undefined = useSelector(choseBySelector(statement.statementId));
 
-	const [numberTitle, setNumberTitle] = useState<string>(t("Number of Results to Display"));
+	const [rangeProps, setRangeProps] = useState<RangeProps>({
+		maxValue: 20,
+		minValue: 1,
+		step: 1,
+	});
+
+	useEffect(() => {
+		console.log(choseBy?.CutoffType)
+		if (choseBy?.CutoffType === CutoffType.topOptions) {
+
+
+			setRangeProps({
+				maxValue: 20,
+				minValue: 1,
+				step: 1,
+			});
+			console.log(Math.ceil(choseBy.number))
+			dispatch(setChoseBy({ ...choseBy, number: Math.ceil(choseBy.number) }));
+		}
+		else if (choseBy?.CutoffType === CutoffType.cutoffValue) {
+
+			setRangeProps({
+				maxValue: 10,
+				minValue: -10,
+				step: 0.1,
+			});
+		}
+	}, [choseBy?.CutoffType]);
+
 
 	function handleChange(e: any) {
 
@@ -35,10 +69,6 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 
 	}
 
-	useEffect(() => {
-		if (choseBy?.CutoffType === CutoffType.topOptions) setNumberTitle(t("Top Options"))
-		else if (choseBy?.CutoffType === CutoffType.cutoffValue) setNumberTitle(t("Options with Value above Cutoff"));
-	}, [choseBy?.CutoffType]);
 
 	function handleCutoffChange(e: any) {
 		if (!e.target.id) return;
@@ -50,6 +80,24 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 		dispatch(setChoseBy(newChoseBy));
 		setChoseByToDB(newChoseBy);
 	}
+
+	function handleRangeChange(e: any) {
+		console.log("handleRangeChange")
+		if (!choseBy) return;
+		const value = choseBy.CutoffType === CutoffType.topOptions ? parseInt(e.target.value) : parseFloat(e.target.value);
+		const newChoseBy = {
+			...choseBy,
+			number: getValue(value),
+		};
+		dispatch(setChoseBy(newChoseBy));
+		setChoseByToDB(newChoseBy);
+	}
+
+	function getValue(value: number) {
+		return choseBy?.CutoffType === CutoffType.cutoffValue ? value ?? 0 : Math.ceil(value ?? 0);
+	}
+
+	const value = getValue(choseBy?.number ?? 0);
 
 
 	return (
@@ -76,7 +124,7 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 				/>
 			</section>
 			<section className={styles.choseBy}>
-				<h3 className="title">{t("Cutoff method")}</h3>
+				<h3 className="title">{t("Method of selecting leading options")}</h3>
 				<RadioButtonWithLabel
 					id={CutoffType.topOptions}
 					labelText={t("Top X results")}
@@ -91,22 +139,26 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 				/>
 			</section>
 			<section>
-				<div className="title">{numberTitle}</div>
-				<div className="range-box">
+				<div className="title">{t("Value")}</div>
+				<div className={styles.range}>
+					<span>{rangeProps.minValue}</span>
 					<input
 						className="range"
 						type="range"
 						aria-label="Number Of Results"
 						name="numberOfResults"
-						value={choseBy?.number}
-						min="1"
-						max="20"
-						onChange={() => { }}
+						value={value}
+						min={rangeProps.minValue}
+						max={rangeProps.maxValue}
+						step={rangeProps.step}
+						onChange={handleRangeChange}
 
 					/>
-					<span className="number-of-results">
-						{choseBy?.number}
-					</span>
+					<span>{rangeProps.maxValue}</span>
+
+				</div>
+				<div className={styles.cutoffValue}>
+					{value}
 				</div>
 			</section>
 		</>

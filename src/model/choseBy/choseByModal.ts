@@ -1,9 +1,9 @@
-import { ChoseBy, ChoseByEvaluationType, ChoseByType } from "delib-npm";
+import { ChoseBy, ChoseByEvaluationType, CutoffType } from "delib-npm";
 
 export function defaultChoseBySettings(statementId: string): ChoseBy {
 	return {
 		number: 1,
-		choseByType: ChoseByType.topOptions,
+		CutoffType: CutoffType.topOptions,
 		choseByEvaluationType: ChoseByEvaluationType.consensus,
 		statementId: statementId
 	};
