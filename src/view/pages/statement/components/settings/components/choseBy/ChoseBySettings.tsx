@@ -36,7 +36,7 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 
 	useEffect(() => {
 
-		if (choseBy?.CutoffType === CutoffType.topOptions) {
+		if (choseBy?.cutoffType === CutoffType.topOptions) {
 
 
 			setRangeProps({
@@ -47,7 +47,7 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 			});
 			dispatch(setChoseBy({ ...choseBy, number: Math.ceil(choseBy.number) }));
 		}
-		else if (choseBy?.CutoffType === CutoffType.cutoffValue) {
+		else if (choseBy?.cutoffType === CutoffType.cutoffValue) {
 
 			setRangeProps({
 				maxValue: 10,
@@ -56,7 +56,7 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 				value: choseBy?.number ?? 0,
 			});
 		}
-	}, [choseBy?.CutoffType]);
+	}, [choseBy?.cutoffType]);
 
 
 	function handleEvaluationChange(e: any) {
@@ -106,7 +106,7 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 	}
 
 	function getValue(value: number) {
-		return choseBy?.CutoffType === CutoffType.cutoffValue ? value ?? 0 : Math.ceil(value ?? 0);
+		return choseBy?.cutoffType === CutoffType.cutoffValue ? value ?? 0 : Math.ceil(value ?? 0);
 	}
 
 
@@ -140,14 +140,14 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 				<h3 className="title">{t("Method of selecting leading options")}</h3>
 				<RadioButtonWithLabel
 					id={CutoffType.topOptions}
-					labelText={`${t("Top results")}: ${choseBy?.CutoffType === CutoffType.topOptions ? rangeProps.value : ""}`}
-					checked={choseBy?.CutoffType === CutoffType.topOptions}
+					labelText={`${t("Top results")}: ${choseBy?.cutoffType === CutoffType.topOptions ? rangeProps.value : ""}`}
+					checked={choseBy?.cutoffType === CutoffType.topOptions}
 					onChange={handleCutoffChange}
 				/>
 				<RadioButtonWithLabel
 					id={CutoffType.cutoffValue}
-					labelText={`${t("Above specific value")}: ${choseBy?.CutoffType === CutoffType.cutoffValue ? rangeProps.value : ""}`}
-					checked={choseBy?.CutoffType === CutoffType.cutoffValue}
+					labelText={`${t("Above specific value")}: ${choseBy?.cutoffType === CutoffType.cutoffValue ? rangeProps.value : ""}`}
+					checked={choseBy?.cutoffType === CutoffType.cutoffValue}
 					onChange={handleCutoffChange}
 				/>
 			</section>

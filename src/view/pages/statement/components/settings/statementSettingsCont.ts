@@ -228,7 +228,6 @@ interface CreateStatementFromModalParams {
 export async function createStatementFromModal({
 	title,
 	description,
-	isOptionSelected,
 	parentStatement,
 	statementType
 }: CreateStatementFromModalParams) {

@@ -2,6 +2,7 @@ import { Collections } from 'delib-npm';
 import {
 	deleteEvaluation,
 	newEvaluation,
+	updateChosenOptions,
 	updateEvaluation,
 } from './fn_evaluation';
 import { updateResultsSettings } from './fn_results';
@@ -82,6 +83,9 @@ exports.updateNotifications = onDocumentCreated(
 );
 
 //evaluations and results
+
+exports.onSetChoseBySettings = onDocumentWritten(`/${Collections.choseBy}/{statementId}`, updateChosenOptions);
+
 exports.newEvaluation = onDocumentCreated(
 	{ document: `/${Collections.evaluations}/{evaluationId}` },
 	newEvaluation

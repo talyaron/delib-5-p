@@ -1,18 +1,19 @@
-import { logger } from "firebase-functions/v1";
+import { Change, logger } from "firebase-functions/v1";
 import { db } from "./index";
-import { FieldValue } from "firebase-admin/firestore";
+import { DocumentSnapshot, FieldValue } from "firebase-admin/firestore";
 import {
 	ChoseBy,
-	ChoseByType,
 	Collections,
+	CutoffType,
 	Evaluation,
 	Statement,
 	StatementSchema,
 	User,
-	choseByEvaluationType,
+	defaultChoseBySettings,
 	statementToSimpleStatement,
 } from "delib-npm";
 import { z } from "zod";
+import { FirestoreEvent } from "firebase-functions/firestore";
 
 enum ActionTypes {
 	new = "new",
@@ -219,6 +220,19 @@ function calcDiffEvaluation({ action, newEvaluation, oldEvaluation }: { action: 
 
 
 
+export function updateChosenOptions(event: FirestoreEvent<Change<DocumentSnapshot> | undefined>) {
+
+	try {
+		//get parent statementId
+		const statementId = event.params.statementId
+		console.log("statementId", statementId);
+
+		updateParentStatementWithChosenOptions(statementId);
+	} catch (error) {
+		logger.error(error);
+	}
+}
+
 
 async function updateParentStatementWithChosenOptions(
 	parentId: string | undefined,
@@ -230,14 +244,13 @@ async function updateParentStatementWithChosenOptions(
 		// get parent choseBy settings statement
 		const parentStatementChoseBySettingsRef = db.collection(Collections.choseBy).doc(parentId);
 		const parentStatementChoseByDB = await parentStatementChoseBySettingsRef.get();
-		if (!parentStatementChoseByDB.exists)
-			throw new Error("parentStatement does not exist");
-		const parentStatementChoseBy = parentStatementChoseByDB.data() as ChoseBy;
 
-		//get results settings
-		const { choseByType, number = 1, choseByEvaluationType } = parentStatementChoseBy;
+		const parentStatementChoseBy: ChoseBy = !parentStatementChoseByDB.exists ? defaultChoseBySettings(parentId) : parentStatementChoseByDB.data() as ChoseBy;
+		console.log("parentStatementChoseBy", parentStatementChoseBy);
 
-		const chosenOptions = await choseTopOptions(number, choseByEvaluationType, choseByType);
+		//chose top options by the choseBy settings & get the top options
+		const chosenOptions = await choseTopOptions(parentStatementChoseBy);
+		console.log("chosenOptions", chosenOptions);
 
 		if (!chosenOptions) throw new Error("chosenOptions is not found");
 
@@ -248,6 +261,7 @@ async function updateParentStatementWithChosenOptions(
 		logger.error(error);
 	}
 
+	//inner functions
 	async function updateParentChildren(
 		topOptionsStatements: Statement[],
 	) {
@@ -266,8 +280,10 @@ async function updateParentStatementWithChosenOptions(
 	}
 }
 
-async function choseTopOptions(number: number, by: choseByEvaluationType, method: ChoseByType): Promise<Statement[] | undefined> {
+//chose top options by the choseBy settings
+async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefined> {
 	try {
+
 
 		const statementsRef = db.collection(Collections.statements);
 
@@ -283,7 +299,7 @@ async function choseTopOptions(number: number, by: choseByEvaluationType, method
 		});
 
 		//then get the new top options by the new settings
-		const statementsDB = await optionsChosenByMethod(method, by, number);
+		const statementsDB = await optionsChosenByMethod(choseBy);
 
 		if (!statementsDB) throw new Error("statementsDB is not defined");
 
@@ -297,27 +313,28 @@ async function choseTopOptions(number: number, by: choseByEvaluationType, method
 
 		return statementsDB;
 
-	} catch (error) {
-		console.error(error);
+	} catch (error: any) {
+		console.error(`At choseTopOptions ${error.message}`);
 		return undefined;
 	}
 }
 
-async function optionsChosenByMethod(method: ChoseByType, evaluationType: choseByEvaluationType, number: number): Promise<Statement[] | undefined> {
+async function optionsChosenByMethod(choseBy: ChoseBy): Promise<Statement[] | undefined> {
+	const { number, choseByEvaluationType, cutoffType } = choseBy;
 	const statementsRef = db.collection(Collections.statements);
-	if (method === ChoseByType.topOptions) {
+	if (cutoffType === CutoffType.topOptions) {
 		const statementsDB = await statementsRef
-			.orderBy(evaluationType, "desc")
-			.limit(number)
+			.orderBy(choseByEvaluationType, "desc")
+			.limit(Math.ceil(Number(number)))
 			.get();
 
 		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);
 		return statements
 	}
-	else if (method === ChoseByType.cutoff) {
+	else if (cutoffType === CutoffType.cutoffValue) {
 		const statementsDB = await statementsRef
-			.orderBy(evaluationType, "desc")
-			.where(evaluationType, ">=", number)
+			.orderBy(choseByEvaluationType, "desc")
+			.where(choseByEvaluationType, ">=", number)
 			.get();
 
 		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);

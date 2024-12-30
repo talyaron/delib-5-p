@@ -1,7 +1,6 @@
-import { ChoseBy, Collections } from "delib-npm";
+import { ChoseBy, Collections, defaultChoseBySettings } from "delib-npm";
 import { doc } from "firebase/firestore";
 import { FireStore } from "../config";
-import { defaultChoseBySettings } from "@/model/choseBy/choseByModal";
 import { onSnapshot, Unsubscribe } from "firebase/firestore";
 import { setChoseBy } from "@/model/choseBy/choseBySlice";
 import { store } from "@/model/store";
