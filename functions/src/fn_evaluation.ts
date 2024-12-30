@@ -225,7 +225,7 @@ export function updateChosenOptions(event: FirestoreEvent<Change<DocumentSnapsho
 	try {
 		//get parent statementId
 		const statementId = event.params.statementId
-		console.log("statementId", statementId);
+
 
 		updateParentStatementWithChosenOptions(statementId);
 	} catch (error) {
@@ -246,11 +246,9 @@ async function updateParentStatementWithChosenOptions(
 		const parentStatementChoseByDB = await parentStatementChoseBySettingsRef.get();
 
 		const parentStatementChoseBy: ChoseBy = !parentStatementChoseByDB.exists ? defaultChoseBySettings(parentId) : parentStatementChoseByDB.data() as ChoseBy;
-		console.log("parentStatementChoseBy", parentStatementChoseBy);
 
 		//chose top options by the choseBy settings & get the top options
 		const chosenOptions = await choseTopOptions(parentStatementChoseBy);
-		console.log("chosenOptions", chosenOptions);
 
 		if (!chosenOptions) throw new Error("chosenOptions is not found");
 
@@ -294,7 +292,6 @@ async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefine
 
 		const batch = db.batch();
 		previousTopOptionsDB.forEach((doc) => {
-			console.log("docId", doc.id);
 			const statementRef = statementsRef.doc(doc.id);
 			batch.update(statementRef, { isChosen: false });
 		});
@@ -304,7 +301,6 @@ async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefine
 		//then get the new top options by the new settings
 		const chosenOptions = await optionsChosenByMethod(choseBy);
 
-		console.log("chosenOptions", chosenOptions);
 		if (!chosenOptions) throw new Error("statementsDB is not defined");
 
 		const batch2 = db.batch();
