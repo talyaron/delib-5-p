@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { statementSubsSelector } from '@/model/statements/statementsSlice'
 import StageCard from './stages/StageCard'
 import { StageType, Statement, StatementType } from 'delib-npm'
-import { createStatement } from '@/controllers/db/statements/setStatements'
+import { StageC } from '@/model/stages/stagesModel'
 
 const QuestionPage = () => {
 	const { statement } = useContext(StatementContext);
@@ -39,7 +39,7 @@ function createStages({ stages, statement }: { stages: Statement[], statement: S
 	try {
 		const stagesTypes = [StageType.explanation, StageType.needs, StageType.questions, StageType.suggestions, StageType.summary]
 
-		const newStages = stagesTypes.map((stageType) => {
+		const newStages: Statement[] = stagesTypes.map((stageType) => {
 			const existStage = stages.find((stage) => stage.stageType === stageType)
 			const isStageExist = existStage !== undefined
 			if (!isStageExist) {
@@ -47,7 +47,8 @@ function createStages({ stages, statement }: { stages: Statement[], statement: S
 				return newStage.getStage
 			}
 			return existStage
-		})
+		}).filter((stage): stage is Statement => stage !== undefined)
+		if (!newStages) throw new Error("Could not create stages")
 		return newStages
 	} catch (error) {
 		console.error(error);
@@ -57,25 +58,3 @@ function createStages({ stages, statement }: { stages: Statement[], statement: S
 
 }
 
-class StageC {
-	private stage: Statement | undefined;
-	constructor(statement: Statement, stageType: StageType) {
-		try {
-			const newStage = createStatement({
-				text: "",
-				description: "",
-				statementType: StatementType.stage,
-				parentStatement: statement,
-				stageType: stageType
-			})
-			if (!newStage) throw new Error("Could not create stage")
-			this.stage = newStage;
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	get getStage() {
-		return this.stage;
-	}
-}

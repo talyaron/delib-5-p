@@ -5,7 +5,6 @@ import {
 	StatementSubscription,
 	User
 } from "delib-npm";
-import { NavigateFunction } from "react-router-dom";
 import { ZodError, ZodIssue } from "zod";
 import { logOut } from "../db/auth";
 import { HistoryTracker } from "@/model/history/HistorySlice";
@@ -86,32 +85,6 @@ export function isAdmin(role: Role | undefined): boolean {
 	return false;
 }
 
-export function navigateToStatementTab(
-	statement: Statement,
-	navigate: NavigateFunction,
-) {
-	try {
-		if (!statement) throw new Error("No statement");
-		if (!navigate) throw new Error("No navigate function");
-
-		// If chat is a sub screen, navigate to chat.
-		// Otherwise, navigate to the first sub screen.
-
-		let tab = statement.subScreens?.includes(Screen.CHAT)
-			? Screen.CHAT
-			: Screen.SETTINGS;
-	
-		if (statement.subScreens) {
-			tab = statement.subScreens[0];
-		}
-
-		navigate(`/statement/${statement.statementId}/${tab}`, {
-			state: { from: window.location.pathname },
-		});
-	} catch (error) {
-		console.error(error);
-	}
-}
 
 export function getInitials(fullName: string) {
 	// Split the full name into words
