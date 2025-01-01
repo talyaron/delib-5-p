@@ -3,11 +3,13 @@ import { db } from "./index";
 import { DocumentSnapshot, FieldValue } from "firebase-admin/firestore";
 import {
 	ChoseBy,
+	ChoseByEvaluationType,
 	Collections,
 	CutoffType,
 	Evaluation,
 	Statement,
 	StatementSchema,
+	StatementType,
 	User,
 	defaultChoseBySettings,
 	statementToSimpleStatement,
@@ -252,6 +254,11 @@ async function updateParentStatementWithChosenOptions(
 
 		if (!chosenOptions) throw new Error("chosenOptions is not found");
 
+		console.log("updateParentStatementWithChosenOptions", parentId);
+		chosenOptions.forEach((st) => {
+			console.log(st.statement);
+		});
+
 		await updateParentChildren(chosenOptions);
 
 		//update child statement selected to be of type result
@@ -278,6 +285,8 @@ async function updateParentStatementWithChosenOptions(
 	}
 }
 
+
+
 //chose top options by the choseBy settings
 async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefined> {
 	try {
@@ -303,15 +312,17 @@ async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefine
 
 		if (!chosenOptions) throw new Error("statementsDB is not defined");
 
+		const sortedOptions = getSortedOptions(chosenOptions, choseBy);
+
 		const batch2 = db.batch();
-		chosenOptions.forEach((doc) => {
+		sortedOptions.forEach((doc) => {
 			const statementRef = statementsRef.doc(doc.statementId);
 			batch2.update(statementRef, { isChosen: true });
 		});
 
 		await batch2.commit();
 
-		return chosenOptions;
+		return sortedOptions;
 
 	} catch (error: any) {
 		console.error(`At choseTopOptions ${error.message}`);
@@ -319,12 +330,31 @@ async function choseTopOptions(choseBy: ChoseBy): Promise<Statement[] | undefine
 	}
 }
 
+function getSortedOptions(statements: Statement[], choseBy: ChoseBy): Statement[] {
+	const { choseByEvaluationType } = choseBy;
+	if (choseByEvaluationType === ChoseByEvaluationType.consensus) {
+		return statements.sort((b, a) => a.consensus - b.consensus);
+	} else if (choseByEvaluationType === ChoseByEvaluationType.likes) {
+		return statements.sort((b, a) => (a.evaluation?.sumPro ?? 0) - (b.evaluation?.sumPro ?? 0));
+	} else if (choseByEvaluationType === ChoseByEvaluationType.likesDislikes) {
+		return statements.sort((b, a) => (a.evaluation?.sumEvaluations ?? 0) - (b.evaluation?.sumEvaluations ?? 0));
+	}
+	return statements;
+}
+
+
+
 async function optionsChosenByMethod(choseBy: ChoseBy): Promise<Statement[] | undefined> {
 	const { number, choseByEvaluationType, cutoffType } = choseBy;
-	const statementsRef = db.collection(Collections.statements);
+	const evaluationQuery = getEvaluationQuery(choseByEvaluationType);
+
+	const statementsRef = db.collection(Collections.statements)
+		.where("parentId", "==", choseBy.statementId)
+		.where("statementType", "==", StatementType.option)
+		.orderBy(evaluationQuery, "desc");
 	if (cutoffType === CutoffType.topOptions) {
+		console.log("topOptions", evaluationQuery, number);
 		const statementsDB = await statementsRef
-			.orderBy(choseByEvaluationType, "desc")
 			.limit(Math.ceil(Number(number)))
 			.get();
 
@@ -332,14 +362,25 @@ async function optionsChosenByMethod(choseBy: ChoseBy): Promise<Statement[] | un
 		return statements
 	}
 	else if (cutoffType === CutoffType.cutoffValue) {
+		console.log("cutOffValue", choseByEvaluationType, number, choseBy.statementId);
 		const statementsDB = await statementsRef
-			.orderBy(choseByEvaluationType, "desc")
-			.where(choseByEvaluationType, ">=", number)
+			.where(evaluationQuery, ">=", number)
 			.get();
 
 		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);
 		return statements
 	}
 	return undefined;
+}
+
+function getEvaluationQuery(choseByEvaluationType: ChoseByEvaluationType) {
+	if (choseByEvaluationType === ChoseByEvaluationType.consensus) {
+		return "consensus"
+	} else if (choseByEvaluationType === ChoseByEvaluationType.likes) {
+		return "evaluation.sumPro"
+	} else if (choseByEvaluationType === ChoseByEvaluationType.likesDislikes) {
+		return "evaluation.sumEvaluations"
+	}
+	return "consensus"
 }
 

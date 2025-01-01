@@ -10,4 +10,14 @@
 	p {
 		color: var(--text);
 	}
+
+	ul {
+		list-style-type: none;
+		padding: 0;
+
+		li {
+			color: var(--text);
+			margin: .2rem .7rem .2rem .5rem;
+		}
+	}
 }

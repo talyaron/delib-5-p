@@ -1,4 +1,4 @@
-import { Statement } from 'delib-npm'
+import { SimpleStatement, Statement } from 'delib-npm'
 import { FC } from 'react'
 import styles from './StageCard.module.scss';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';
@@ -11,9 +11,11 @@ interface Props {
 
 const StageCard: FC<Props> = ({ statement }) => {
 
+	const chosen = statement.results || []
+
+
 	function suggestNewSuggestion(ev: any) {
 		ev.stopPropagation()
-		console.log("Suggest new suggestion")
 	}
 
 	return (
@@ -22,6 +24,12 @@ const StageCard: FC<Props> = ({ statement }) => {
 
 			<p>No suggestion so far</p>
 			<Link to={`/statement/${statement.statementId}`}><p>See more...</p></Link>
+			<h5>Selected Options</h5>
+			<ul>
+				{chosen.map((opt: SimpleStatement) => (
+					<li key={opt.parentId}>{opt.statement}{opt.description ? ":" : ""} {opt.description}</li>
+				))}
+			</ul>
 			<div className="btns">
 				<Button text="Add Suggestion" buttonType={ButtonType.SECONDARY} onClick={suggestNewSuggestion} />
 			</div>
