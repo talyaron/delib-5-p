@@ -76,10 +76,12 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 	function handleCutoffChange(e: any) {
 		if (!e.target.id) return;
 		if (!choseBy) return;
+
 		const newChoseBy = {
 			...choseBy,
-			CutoffType: e.target.id,
+			cutoffType: e.target.id,
 		};
+
 		dispatch(setChoseBy(newChoseBy));
 		setChoseByToDB(newChoseBy);
 	}
@@ -90,12 +92,12 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 
 		setRangeProps({
 			...rangeProps,
-			value: getValue(e.target.value),
+			value: getValue(e.target.valueAsNumber),
 		});
 
 		const newChoseBy = {
 			...choseBy,
-			number: getValue(e.target.value),
+			number: getValue(e.target.valueAsNumber),
 		};
 
 		if (e.type === "mouseup" || e.type === "touchend") {

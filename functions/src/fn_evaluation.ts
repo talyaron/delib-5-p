@@ -248,16 +248,12 @@ async function updateParentStatementWithChosenOptions(
 		const parentStatementChoseByDB = await parentStatementChoseBySettingsRef.get();
 
 		const parentStatementChoseBy: ChoseBy = !parentStatementChoseByDB.exists ? defaultChoseBySettings(parentId) : parentStatementChoseByDB.data() as ChoseBy;
+		parentStatementChoseBy.number = Number(parentStatementChoseBy.number);
 
 		//chose top options by the choseBy settings & get the top options
 		const chosenOptions = await choseTopOptions(parentStatementChoseBy);
 
 		if (!chosenOptions) throw new Error("chosenOptions is not found");
-
-		console.log("updateParentStatementWithChosenOptions", parentId);
-		chosenOptions.forEach((st) => {
-			console.log(st.statement);
-		});
 
 		await updateParentChildren(chosenOptions);
 
@@ -345,29 +341,33 @@ function getSortedOptions(statements: Statement[], choseBy: ChoseBy): Statement[
 
 
 async function optionsChosenByMethod(choseBy: ChoseBy): Promise<Statement[] | undefined> {
-	const { number, choseByEvaluationType, cutoffType } = choseBy;
+	const { number: numberString, choseByEvaluationType, cutoffType } = choseBy;
+	const number = Number(numberString);
 	const evaluationQuery = getEvaluationQuery(choseByEvaluationType);
 
 	const statementsRef = db.collection(Collections.statements)
 		.where("parentId", "==", choseBy.statementId)
 		.where("statementType", "==", StatementType.option)
-		.orderBy(evaluationQuery, "desc");
+
+
 	if (cutoffType === CutoffType.topOptions) {
-		console.log("topOptions", evaluationQuery, number);
+
 		const statementsDB = await statementsRef
-			.limit(Math.ceil(Number(number)))
+			.orderBy(evaluationQuery, "desc")
+			.limit(Math.ceil(number))
 			.get();
 
 		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);
 		return statements
 	}
 	else if (cutoffType === CutoffType.cutoffValue) {
-		console.log("cutOffValue", choseByEvaluationType, number, choseBy.statementId);
+
 		const statementsDB = await statementsRef
-			.where(evaluationQuery, ">=", number)
+			.where(evaluationQuery, ">", number)
 			.get();
 
 		const statements = statementsDB.docs.map((doc) => doc.data() as Statement);
+
 		return statements
 	}
 	return undefined;

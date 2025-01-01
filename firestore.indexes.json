@@ -1,10 +1,8 @@
 {
-  "indexes": [
-    {
+  "indexes": [{
       "collectionGroup": "chatMessages",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "postId",
           "order": "DESCENDING"
         },
@@ -17,8 +15,7 @@
     {
       "collectionGroup": "consultations",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupType",
           "order": "ASCENDING"
         },
@@ -31,8 +28,7 @@
     {
       "collectionGroup": "consultations",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupType",
           "order": "ASCENDING"
         },
@@ -43,10 +39,43 @@
       ]
     },
     {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [{
+          "fieldPath": "parentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "statementType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "evaluation.sumPro",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [{
+          "fieldPath": "parentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "statementType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "evaluation.sumEvaluations",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "consultations",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupType",
           "order": "ASCENDING"
         },
@@ -59,8 +88,7 @@
     {
       "collectionGroup": "consultations",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "members",
           "arrayConfig": "CONTAINS"
         },
@@ -73,8 +101,7 @@
     {
       "collectionGroup": "messages",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupId",
           "order": "ASCENDING"
         },
@@ -87,8 +114,7 @@
     {
       "collectionGroup": "messages",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupId",
           "order": "ASCENDING"
         },
@@ -101,8 +127,7 @@
     {
       "collectionGroup": "news",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupId",
           "order": "ASCENDING"
         },
@@ -115,8 +140,7 @@
     {
       "collectionGroup": "news",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "groupId",
           "order": "ASCENDING"
         },
@@ -129,8 +153,7 @@
     {
       "collectionGroup": "options",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "searchString",
           "order": "ASCENDING"
         },
@@ -143,8 +166,7 @@
     {
       "collectionGroup": "options",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "type",
           "order": "ASCENDING"
         },
@@ -157,8 +179,7 @@
     {
       "collectionGroup": "posts",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "councilId",
           "order": "ASCENDING"
         },
@@ -171,8 +192,7 @@
     {
       "collectionGroup": "posts",
       "queryScope": "COLLECTION",
-      "fields": [
-        {
+      "fields": [{
           "fieldPath": "councilId",
           "order": "ASCENDING"
         },

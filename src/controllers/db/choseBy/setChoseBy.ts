@@ -5,7 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 export async function setChoseByToDB(choseBy: ChoseBy) {
 	try {
-		console.log("setChoseByToDB", choseBy);
+
 		const choseByRef = doc(DB, Collections.choseBy, choseBy.statementId);
 		await setDoc(choseByRef, choseBy);
 	} catch (error) {
