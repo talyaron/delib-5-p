@@ -70,6 +70,8 @@ const StatementTopNav: FC<Props> = ({
 		)
 	);
 
+	if (!statement) return null;
+
 	const enableNavigationalElements =
 		statement?.statementSettings?.enableNavigationalElements !== undefined
 			? statement?.statementSettings?.enableNavigationalElements

@@ -5,8 +5,10 @@ import SuggestionCards from '../../evaluations/components/suggestionCards/Sugges
 import StatementVote from '../../vote/StatementVote';
 import styles from './StagePage.module.scss'
 import StatementBottomNav from '../../nav/bottom/StatementBottomNav';
+import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 const StagePage = () => {
+	const { t } = useLanguage();
 	const { statement, handleSetNewStatement, setNewStatementType } = useContext(StatementContext);
 	const stageRef = useRef<HTMLDivElement>(null);
 
@@ -36,13 +38,15 @@ const StagePage = () => {
 		handleSetNewStatement(true);
 	}
 
+	const stageName = statement?.statement ? `: ${t(statement.statement)}` : "";
+
 	return (
 		<div
 			ref={stageRef}
 			className={styles.stage}
 		>
 			<div className={styles.wrapper}>
-				<h2 className="text-2xl font-bold mb-2">Stage</h2>
+				<h2>{t("Stage")}{statement?.statement && stageName}</h2>
 				<p className="mb-4">Stage description</p>
 				<StagePageSwitch statement={statement} />
 				<div className={styles.bottomNav}>

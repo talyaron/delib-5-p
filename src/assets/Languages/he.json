@@ -202,7 +202,16 @@
   "Options Selection Criteria": "קריטריוני בחירת אופציות",
   "Needs": "צרכים",
   "Summary": "סיכום",
-  "Explanation": "הסבר"
+  "Explanation": "הסבר",
+  "needs": "צרכים",
+  "summary": "סיכום",
+  "explanation": "הסבר",
+  "questions": "שאלות",
+  "suggestions": "הצעות",
+  "Selected Options": "אופציות נבחרות",
+  "No suggestion so far": "עדיין אין הצעות",
+  "Stage": "שלב",
+  "Answers": "תשובות"
 
 
 

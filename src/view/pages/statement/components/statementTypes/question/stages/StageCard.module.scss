@@ -1,11 +1,12 @@
 .card {
-	border: 1px solid #e0e0e0;
-	padding: 10px;
+
+	padding: var(--padding) var(--padding) 3rem var(--padding);
 	background-color: white;
-	border-radius: 5px;
+
 
 	cursor: pointer;
 	user-select: none;
+
 
 	p {
 		color: var(--text);
@@ -18,6 +19,18 @@
 		li {
 			color: var(--text);
 			margin: .2rem .7rem .2rem .5rem;
+		}
+	}
+
+	.seeMore {
+		padding: 1rem .5rem .7rem 0;
+	}
+
+	a {
+		color: navy;
+
+		.active {
+			color: blue;
 		}
 	}
 }

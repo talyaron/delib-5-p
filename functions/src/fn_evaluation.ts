@@ -7,6 +7,7 @@ import {
 	Collections,
 	CutoffType,
 	Evaluation,
+	StageType,
 	Statement,
 	StatementSchema,
 	StatementType,
@@ -243,19 +244,24 @@ async function updateParentStatementWithChosenOptions(
 
 		if (!parentId) throw new Error("parentId is not defined");
 
-		// get parent choseBy settings statement
-		const parentStatementChoseBySettingsRef = db.collection(Collections.choseBy).doc(parentId);
-		const parentStatementChoseByDB = await parentStatementChoseBySettingsRef.get();
+		// get parent choseBy settings statement and parent statement
+
+		const [parentStatementChoseByDB, parentStatementDB] = await Promise.all([
+			db.collection(Collections.choseBy).doc(parentId).get(),
+			db.collection(Collections.statements).doc(parentId).get()
+		]);
 
 		const parentStatementChoseBy: ChoseBy = !parentStatementChoseByDB.exists ? defaultChoseBySettings(parentId) : parentStatementChoseByDB.data() as ChoseBy;
 		parentStatementChoseBy.number = Number(parentStatementChoseBy.number);
+		const parentStatement = parentStatementDB.data() as Statement;
+
 
 		//chose top options by the choseBy settings & get the top options
 		const chosenOptions = await choseTopOptions(parentStatementChoseBy);
 
 		if (!chosenOptions) throw new Error("chosenOptions is not found");
 
-		await updateParentChildren(chosenOptions);
+		await updateParentChildren({ topOptionsStatements: chosenOptions, parentStatement });
 
 		//update child statement selected to be of type result
 	} catch (error) {
@@ -264,7 +270,7 @@ async function updateParentStatementWithChosenOptions(
 
 	//inner functions
 	async function updateParentChildren(
-		topOptionsStatements: Statement[],
+		{ topOptionsStatements, parentStatement }: { parentStatement: Statement, topOptionsStatements: Statement[] }
 	) {
 
 		const childStatementsSimple = topOptionsStatements.map(
@@ -278,6 +284,17 @@ async function updateParentStatementWithChosenOptions(
 			totalResults: childStatementsSimple.length,
 			results: childStatementsSimple,
 		});
+
+		// If this is a statement under question and the stage is suggestions,
+		// then update also the question (which is the parent of the stage)
+		console.log(parentStatement.parentId, "will update parent statement?", parentStatement.statementType, parentStatement.stageType)
+		if (parentStatement.statementType === StatementType.stage && parentStatement.stageType === StageType.suggestions) {
+			console.log("updating parent statement", parentStatement.statement)
+			await db.collection(Collections.statements).doc(parentStatement.parentId).update({
+				totalResults: childStatementsSimple.length,
+				results: childStatementsSimple,
+			});
+		}
 	}
 }
 

@@ -109,6 +109,9 @@
   //texts
   --header: #3b4f7d;
   --h2Color: #232f4a;
+  --h3Color: #3b4f7d;
+  --h4Color: #3b4f7d;
+  --h5Color: #3b4f7d;
   --subTopic: #7d9dbc;
   --dark-text: #3b4f7d;
   --text: #6e8aa6;
@@ -388,6 +391,21 @@ h1 {
 
 h2 {
   color: var(--h2Color);
+  font-weight: 400;
+}
+
+h3 {
+  color: var(--h3Color);
+  font-weight: 400;
+}
+
+h4 {
+  color: var(--h4Color);
+  font-weight: 400;
+}
+
+h5 {
+  color: var(--h5Color);
   font-weight: 400;
 }
 
