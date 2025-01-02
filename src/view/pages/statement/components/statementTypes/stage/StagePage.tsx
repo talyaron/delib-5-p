@@ -50,7 +50,7 @@ const StagePage = () => {
 				<p className="mb-4">Stage description</p>
 				<StagePageSwitch statement={statement} />
 				<div className={styles.bottomNav}>
-					<StatementBottomNav setShowModal={handleCreateNewOption} />
+					<StatementBottomNav />
 				</div>
 			</div>
 		</div>

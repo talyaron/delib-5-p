@@ -22,4 +22,9 @@
 	transform: translateX(-50%);
 	max-width: var(--wrapper);
 	width: 90vw;
+
+	@media screen and (max-width: 600px) {
+		width: 100vw;
+
+	}
 }
