@@ -1,4 +1,4 @@
-import { Statement } from 'delib-npm';
+import { Statement, StatementType } from 'delib-npm';
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 // Third Party Imports
@@ -38,7 +38,6 @@ import CreateStatementModal from '@/view/pages/statement/components/createStatem
 import './ChatMessageCard.scss';
 import { deleteStatementFromDB } from '@/controllers/db/statements/deleteStatements';
 import Evaluation from '../../../evaluations/components/evaluation/Evaluation';
-import { DeliberativeElement } from 'delib-npm/dist/models/statementsModels';
 import useAutoFocus from '@/controllers/hooks/useAutoFocus ';
 import UploadImage from '@/view/components/uploadImage/UploadImage';
 
@@ -64,7 +63,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	const imageUrl = statement.imagesURL?.main ?? '';
 	const [image, setImage] = useState<string>(imageUrl);
 	// Hooks
-	const { deliberativeElement } = statement;
+	const { statementType } = statement;
 	const statementColor = useStatementColor({ statement });
 	const { t, dir } = useLanguage();
 
@@ -92,9 +91,9 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 		parentStatement?.creatorId
 	);
 	const isMe = userId === creatorId;
-	const isQuestion = deliberativeElement === DeliberativeElement.research;
-	const isOption = deliberativeElement === DeliberativeElement.option;
-	const isStatement = deliberativeElement === DeliberativeElement.general;
+	const isQuestion = statementType === StatementType.question;
+	const isOption = statementType === StatementType.option;
+	const isStatement = statementType === StatementType.statement;
 	const textareaRef = useAutoFocus(isEdit);
 
 	const isPreviousFromSameAuthor = previousStatement?.creatorId === creatorId;
@@ -120,7 +119,7 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 
 	function handleSetOption() {
 		try {
-			if (statement.deliberativeElement === DeliberativeElement.option) {
+			if (statement.statementType === StatementType.option) {
 				const cancelOption = window.confirm(
 					'Are you sure you want to cancel this option?'
 				);
@@ -156,8 +155,8 @@ const ChatMessageCard: FC<ChatMessageCardProps> = ({
 	}
 
 	const isGeneral =
-		statement.deliberativeElement === DeliberativeElement.general ||
-		statement.deliberativeElement === undefined;
+		statement.statementType === StatementType.statement ||
+		statement.statementType === undefined;
 
 	if (!statement) return null;
 	if (!parentStatement) return null;

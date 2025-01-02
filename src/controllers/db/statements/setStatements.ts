@@ -12,7 +12,6 @@ import {
 	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
-import { DeliberativeElement } from "delib-npm/dist/models/statementsModels";
 import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // Third Party Imports
@@ -400,7 +399,7 @@ interface UpdateStatementProps {
 	description?: string;
 	statement: Statement;
 	subScreens?: Screen[];
-	deliberativeElement?: DeliberativeElement;
+	statementType?: StatementType;
 	enableAddEvaluationOption: boolean;
 	enableAddVotingOption: boolean;
 	enhancedEvaluation: boolean;
@@ -415,7 +414,7 @@ export function updateStatement({
 	description,
 	statement,
 	subScreens = [Screen.CHAT],
-	deliberativeElement,
+	statementType,
 	enableAddEvaluationOption,
 	enableAddVotingOption,
 	enhancedEvaluation,
@@ -464,8 +463,8 @@ export function updateStatement({
 		newStatement.hasChildren = hasChildren;
 		newStatement.membership = membership || statement.membership || { access: Access.open };
 
-		if (deliberativeElement)
-			newStatement.deliberativeElement = deliberativeElement;
+		if (statementType)
+			newStatement.statementType = statementType;
 
 		const results = StatementSchema.safeParse(newStatement);
 		if (results.success === false) {
@@ -587,14 +586,14 @@ export async function setStatementIsOption(statement: Statement | undefined) {
 				statement.statementId,
 			);
 
-			if (statement.deliberativeElement === DeliberativeElement.option) {
+			if (statement.statementType === StatementType.option) {
 				await updateDoc(statementRef, {
-					deliberativeElement: DeliberativeElement.general,
+					statementType: StatementType.statement
 				});
 			} else {
 
 				await updateDoc(statementRef, {
-					deliberativeElement: DeliberativeElement.option,
+					statementType: StatementType.option
 				});
 			}
 		} catch (error) {
@@ -653,14 +652,14 @@ export async function updateIsQuestion(statement: Statement) {
 		const parentStatement = parentStatementDB.data() as Statement;
 		StatementSchema.parse(parentStatement);
 
-		let { deliberativeElement } = statement;
-		if (deliberativeElement === DeliberativeElement.research)
-			deliberativeElement = DeliberativeElement.general;
+		let { statementType } = statement;
+		if (statementType === StatementType.question)
+			statementType = StatementType.statement;
 		else {
-			deliberativeElement = DeliberativeElement.research;
+			statementType = StatementType.question;
 		}
 
-		const newStatementType = { deliberativeElement };
+		const newStatementType = { statementType };
 		await updateDoc(statementRef, newStatementType);
 	} catch (error) {
 		console.error(error);

@@ -1,4 +1,4 @@
-import { DeliberativeElement, Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import { FC, useEffect } from "react";
 import DeleteIcon from "@/assets/icons/delete.svg?react";
 import EditIcon from "@/assets/icons/editIcon.svg?react";
@@ -11,13 +11,13 @@ import Menu from "@/view/components/menu/Menu";
 import MenuOption from "@/view/components/menu/MenuOption";
 
 interface Props {
-  statement: Statement;
-  isAuthorized: boolean;
-  isCardMenuOpen: boolean;
-  setIsCardMenuOpen: (isOpen: boolean) => void;
-  isEdit: boolean;
-  setIsEdit: (isEdit: boolean) => void;
-  handleSetOption: () => void;
+	statement: Statement;
+	isAuthorized: boolean;
+	isCardMenuOpen: boolean;
+	setIsCardMenuOpen: (isOpen: boolean) => void;
+	isEdit: boolean;
+	setIsEdit: (isEdit: boolean) => void;
+	handleSetOption: () => void;
 }
 
 const SolutionMenu: FC<Props> = ({
@@ -31,8 +31,8 @@ const SolutionMenu: FC<Props> = ({
 }) => {
 	const { t } = useLanguage();
 
-	const isOption = statement.deliberativeElement === DeliberativeElement.option;
-	const isResearch = statement.deliberativeElement === DeliberativeElement.research;
+	const isOption = statement.statementType === StatementType.option;
+	const isResearch = statement.statementType === StatementType.question;
 
 	if (!isAuthorized) return null;
 
