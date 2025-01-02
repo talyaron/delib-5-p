@@ -8,10 +8,12 @@ const SimpleQuestion = () => {
 
 
 	return (
-		<div>
+		<div className={styles.simpleQuestion}>
 			<div className={styles.wrapper}>
+
 				<SuggestionCards />
-				<div>
+
+				<div className={styles.bottomNav}>
 					<StatementBottomNav />
 				</div>
 			</div>

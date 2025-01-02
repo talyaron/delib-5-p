@@ -2,6 +2,8 @@
 
 	display: flex;
 	flex-direction: column;
+	height: 100%;
+	position: relative;
 }
 
 .wrapper {
@@ -16,8 +18,8 @@
 }
 
 .bottomNav {
-	position: absolute;
-	bottom: 30px;
+	position: fixed;
+	bottom: 0px;
 	left: 50%;
 	transform: translateX(-50%);
 	max-width: var(--wrapper);
