@@ -75,19 +75,10 @@ const StatementTopNav: FC<Props> = ({
 	const isAdmin = role === Role.admin;
 	const allowNavigation = enableNavigationalElements || isAdmin;
 
-	function handleGoToSettings() {
-		setIsHeaderMenuOpen(false);
+	function handleNavigation(path: string) {
+		if (path === "settings") setIsHeaderMenuOpen(false);
 		if (statement && statement.statementId)
-			navigate(`/statement/${statement?.statementId}/settings`);
-	}
-
-	function handleGotToChat() {
-		if (statement && statement.statementId)
-			navigate(`/statement/${statement?.statementId}/chat`);
-	}
-	function handleGoToMain() {
-		if (statement && statement.statementId)
-			navigate(`/statement/${statement?.statementId}/main`);
+			navigate(`/statement/${statement.statementId}/${path}`);
 	}
 
 	return (
@@ -98,76 +89,184 @@ const StatementTopNav: FC<Props> = ({
 		>
 			<div className={styles.wrapper}>
 				{allowNavigation && (
-					<div className={styles.button}>
-						<Menu
-							setIsOpen={setIsHeaderMenuOpen}
-							isMenuOpen={isHeaderMenuOpen}
-							iconColor={headerStyle.color}
-							isHamburger={true}
-						>
-							<MenuOption
-								label={t('Share')}
-								icon={<ShareIcon style={menuIconStyle} />}
-								onOptionClick={handleShare}
-							/>
-							<MenuOption
-								label={t('Disconnect')}
-								icon={<DisconnectIcon style={menuIconStyle} />}
-								onOptionClick={handleLogout}
-							/>
-							{isAdmin && (
-								<>
-									<MenuOption
-										label={t('Follow Me')}
-										icon={<FollowMe style={menuIconStyle} />}
-										onOptionClick={handleFollowMe}
-									/>
-									<MenuOption
-										label={t('Invite with PIN number')}
-										icon={<InvitationIcon style={menuIconStyle} />}
-										onOptionClick={handleInvitePanel}
-									/>
-									<MenuOption
-										label={t('Settings')}
-										icon={<SettingsIcon style={menuIconStyle} />}
-										onOptionClick={handleGoToSettings}
-									/>
-								</>
-							)}
-						</Menu>
-					</div>
+					<HeaderMenu
+						setIsHeaderMenuOpen={setIsHeaderMenuOpen}
+						isHeaderMenuOpen={isHeaderMenuOpen}
+						headerStyle={headerStyle}
+						handleShare={handleShare}
+						handleLogout={handleLogout}
+						handleFollowMe={handleFollowMe}
+						handleInvitePanel={handleInvitePanel}
+						handleNavigation={handleNavigation}
+						isAdmin={isAdmin}
+						menuIconStyle={menuIconStyle}
+						t={t}
+					/>
 				)}
-				{allowNavigation && (
-					screen !== 'chat' ?
-						<button onClick={handleGotToChat}>
-							<Chat color={headerStyle.color} />
-						</button>
-						:
-						<button onClick={handleGoToMain}>
-							<MainIcon color={headerStyle.color} />
-						</button>
-				)}
-				<button onClick={handleToggleNotifications}>
-					{permission ? (
-						<BellIcon color={headerStyle.color} />
-					) : (
-						<BellSlashIcon color={headerStyle.color} />
-					)}
-				</button>
-				<button>
-					<View color={headerStyle.color} />
-				</button>
-				{allowNavigation && (
-					<button className={styles.home}>
-						<HomeButton headerColor={headerStyle} />
-					</button>
-				)}
-				{allowNavigation && (
-					<Back statement={statement} headerColor={headerStyle} />
-				)}
+				<NavButtons
+					statement={statement}
+					screen={screen}
+					handleNavigation={handleNavigation}
+					headerStyle={headerStyle}
+					allowNavigation={allowNavigation}
+					permission={permission}
+					handleToggleNotifications={handleToggleNotifications}
+				/>
 			</div>
 		</nav>
 	);
 };
 
 export default StatementTopNav;
+
+interface NavigationButtonsProps {
+	screen: string | undefined;
+	handleNavigation: (path: string) => void;
+	headerStyle: { color: string; backgroundColor: string };
+}
+
+function NavigationButtons({ screen, handleNavigation, headerStyle }: NavigationButtonsProps) {
+
+	return (
+		<>
+			{(() => {
+				switch (screen) {
+					case 'chat':
+						return (
+							<button onClick={() => handleNavigation("main")}>
+								<MainIcon color={headerStyle.color} />
+							</button>
+						);
+					case "main":
+						return (
+							<button onClick={() => handleNavigation("chat")}>
+								<Chat color={headerStyle.color} />
+							</button>
+						);
+					case "settings":
+						return (
+							<button onClick={() => handleNavigation("main")}>
+								<MainIcon color={headerStyle.color} />
+							</button>
+						);
+					default:
+						return (
+							<button onClick={() => handleNavigation("chat")}>
+								<Chat color={headerStyle.color} />
+							</button>
+						);
+				}
+			})()}
+		</>
+	)
+}
+
+interface NavButtonsProps {
+	screen: string | undefined;
+	handleNavigation: (path: string) => void;
+	headerStyle: { color: string; backgroundColor: string };
+	allowNavigation: boolean;
+	permission: boolean;
+	handleToggleNotifications: () => void;
+	statement?: Statement;
+}
+
+function NavButtons({ screen, handleNavigation, headerStyle, allowNavigation, permission, handleToggleNotifications, statement }: NavButtonsProps) {
+	return (
+		<>
+			{allowNavigation && <NavigationButtons screen={screen} handleNavigation={handleNavigation} headerStyle={headerStyle} />}
+			<button onClick={handleToggleNotifications}>
+				{permission ? (
+					<BellIcon color={headerStyle.color} />
+				) : (
+					<BellSlashIcon color={headerStyle.color} />
+				)}
+			</button>
+			<button>
+				<View color={headerStyle.color} />
+			</button>
+			{
+				allowNavigation && (
+					<button className={styles.home}>
+						<HomeButton headerColor={headerStyle} />
+					</button>
+				)
+			}
+			{
+				allowNavigation && (
+					<Back statement={statement} headerColor={headerStyle} />
+				)
+			}
+		</>
+
+	);
+}
+
+function HeaderMenu(
+	{
+		setIsHeaderMenuOpen,
+		isHeaderMenuOpen,
+		headerStyle,
+		handleShare,
+		handleLogout,
+		handleFollowMe,
+		handleInvitePanel,
+		handleNavigation,
+		isAdmin,
+		menuIconStyle,
+		t
+	}: {
+		setIsHeaderMenuOpen: (value: boolean) => void;
+		isHeaderMenuOpen: boolean;
+		headerStyle: { color: string; backgroundColor: string };
+		handleShare: () => void;
+		handleLogout: () => void;
+		handleFollowMe: () => void;
+		handleInvitePanel: () => void;
+		handleNavigation: (path: string) => void;
+		isAdmin: boolean;
+		menuIconStyle: { color: string; width: string };
+		t: (key: string) => string;
+	}
+) {
+	return (
+		<div className={styles.button}>
+			<Menu
+				setIsOpen={setIsHeaderMenuOpen}
+				isMenuOpen={isHeaderMenuOpen}
+				iconColor={headerStyle.color}
+				isHamburger={true}
+			>
+				<MenuOption
+					label={t('Share')}
+					icon={<ShareIcon style={menuIconStyle} />}
+					onOptionClick={handleShare}
+				/>
+				<MenuOption
+					label={t('Disconnect')}
+					icon={<DisconnectIcon style={menuIconStyle} />}
+					onOptionClick={handleLogout}
+				/>
+				{isAdmin && (
+					<>
+						<MenuOption
+							label={t('Follow Me')}
+							icon={<FollowMe style={menuIconStyle} />}
+							onOptionClick={handleFollowMe}
+						/>
+						<MenuOption
+							label={t('Invite with PIN number')}
+							icon={<InvitationIcon style={menuIconStyle} />}
+							onOptionClick={handleInvitePanel}
+						/>
+						<MenuOption
+							label={t('Settings')}
+							icon={<SettingsIcon style={menuIconStyle} />}
+							onOptionClick={() => handleNavigation("settings")}
+						/>
+					</>
+				)}
+			</Menu>
+		</div>
+	)
+}
