@@ -1,4 +1,4 @@
-import { DeliberativeElement, QuestionStage, QuestionType, Statement, StatementType } from "delib-npm";
+import { QuestionStage, QuestionType, Statement, StatementType } from "delib-npm";
 import { FC, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";

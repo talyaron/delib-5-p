@@ -1,5 +1,5 @@
 import { Role, Statement } from 'delib-npm';
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Back from '../../header/Back';
@@ -27,6 +27,7 @@ import useStatementColor from '@/controllers/hooks/useStatementColor.ts';
 import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
+import { StatementContext } from '../../../StatementCont';
 
 interface Props {
 	statement?: Statement;
@@ -55,7 +56,7 @@ const StatementTopNav: FC<Props> = ({
 	const { t } = useLanguage();
 	const navigate = useNavigate();
 	const { command } = useParams();
-
+	const { role } = useContext(StatementContext);
 	// const
 	const headerStyle = useStatementColor({ statement });
 	const menuIconStyle = {
@@ -63,12 +64,7 @@ const StatementTopNav: FC<Props> = ({
 		width: '24px',
 	};
 
-	const statementSubscription = useSelector(
-		useMemo(
-			() => statementSubscriptionSelector(statement?.statementId),
-			[statement?.statementId]
-		)
-	);
+
 
 	if (!statement) return null;
 
@@ -76,7 +72,7 @@ const StatementTopNav: FC<Props> = ({
 		statement?.statementSettings?.enableNavigationalElements !== undefined
 			? statement?.statementSettings?.enableNavigationalElements
 			: true;
-	const isAdmin = statementSubscription?.role === Role.admin;
+	const isAdmin = role === Role.admin;
 	const allowNavigation = enableNavigationalElements || isAdmin;
 
 	function handleGoToSettings() {

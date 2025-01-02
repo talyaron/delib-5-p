@@ -1,4 +1,4 @@
-import { Screen, SortType } from "delib-npm";
+import { Screen, SortType, StatementType } from "delib-npm";
 import React, { FC, useContext, useState } from "react";
 
 // Third party libraries
@@ -22,14 +22,13 @@ import { StatementContext } from "../../../StatementCont";
 import { sortItems } from "./StatementBottomNavModal";
 
 interface Props {
-	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	showNav?: boolean;
 }
 
-const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
+const StatementBottomNav: FC<Props> = () => {
 
 	const { statementId } = useParams();
-	const { statement } = useContext(StatementContext);
+	const { statement, setNewStatementType, handleSetNewStatement } = useContext(StatementContext);
 
 	const timesRemainToLearnAddOption = useSelector(userSettingsSelector)?.learning?.addOptions || 0;
 
@@ -40,8 +39,13 @@ const StatementBottomNav: FC<Props> = ({ setShowModal }) => {
 
 	//used to check if the user can add a new option in voting and in evaluation screens
 
+	function handleCreateNewOption() {
+		setNewStatementType(StatementType.option);
+		handleSetNewStatement(true);
+	}
+
 	const handleAddOption = () => {
-		setShowModal(true);
+		handleCreateNewOption()
 		setShowStartHere(false);
 		decreesUserSettingsLearningRemain({ addOption: true });
 
