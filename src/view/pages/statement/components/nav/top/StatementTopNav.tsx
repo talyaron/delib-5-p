@@ -1,6 +1,5 @@
 import { Role, Statement } from 'delib-npm';
-import { FC, useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Back from '../../header/Back';
 import HomeButton from '../../header/HomeButton';
@@ -24,7 +23,6 @@ import useStatementColor from '@/controllers/hooks/useStatementColor.ts';
 //icons
 
 //components
-import { statementSubscriptionSelector } from '@/model/statements/statementsSlice';
 import Menu from '@/view/components/menu/Menu';
 import MenuOption from '@/view/components/menu/MenuOption';
 import { StatementContext } from '../../../StatementCont';
