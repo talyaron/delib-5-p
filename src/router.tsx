@@ -58,7 +58,7 @@ const routes = [
 				errorElement: <ErrorPage />,
 				children: [
 					{
-						path: ':command',
+						path: ':screen',
 						element: <StatementMain />,
 						errorElement: <ErrorPage />,
 					},

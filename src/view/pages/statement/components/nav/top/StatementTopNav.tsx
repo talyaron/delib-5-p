@@ -55,7 +55,7 @@ const StatementTopNav: FC<Props> = ({
 	//hooks
 	const { t } = useLanguage();
 	const navigate = useNavigate();
-	const { command } = useParams();
+	const { screen } = useParams();
 	const { role } = useContext(StatementContext);
 	// const
 	const headerStyle = useStatementColor({ statement });
@@ -87,7 +87,7 @@ const StatementTopNav: FC<Props> = ({
 	}
 	function handleGoToMain() {
 		if (statement && statement.statementId)
-			navigate(`/statement/${statement?.statementId}`);
+			navigate(`/statement/${statement?.statementId}/main`);
 	}
 
 	return (
@@ -138,7 +138,7 @@ const StatementTopNav: FC<Props> = ({
 					</div>
 				)}
 				{allowNavigation && (
-					command !== 'chat' ?
+					screen !== 'chat' ?
 						<button onClick={handleGotToChat}>
 							<Chat color={headerStyle.color} />
 						</button>
