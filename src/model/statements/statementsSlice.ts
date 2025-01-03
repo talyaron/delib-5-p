@@ -314,7 +314,7 @@ export const totalMessageBoxesSelector = (state: RootState) => state.statements.
 
 export const screenSelector = (state: RootState) => state.statements.screen;
 
-export const statementSelectorById = (statementId: string) => (state: RootState) => {
+export const statementSelectorById = (statementId: string | undefined) => (state: RootState) => {
 	return state.statements.statements.find((statement) => statement.statementId === statementId);
 
 }

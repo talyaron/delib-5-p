@@ -1,15 +1,13 @@
-import { DeliberationType, Statement, StatementType } from 'delib-npm';
 import { useContext, useEffect, useRef } from 'react';
 import { StatementContext } from '../../../StatementCont';
 import SuggestionCards from '../../evaluations/components/suggestionCards/SuggestionCards';
-import StatementVote from '../../vote/StatementVote';
 import styles from './StagePage.module.scss'
 import StatementBottomNav from '../../nav/bottom/StatementBottomNav';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
 const StagePage = () => {
 	const { t } = useLanguage();
-	const { statement, handleSetNewStatement, setNewStatementType } = useContext(StatementContext);
+	const { statement } = useContext(StatementContext);
 	const stageRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -33,10 +31,6 @@ const StagePage = () => {
 		};
 	}, []);
 
-	function handleCreateNewOption() {
-		setNewStatementType(StatementType.option);
-		handleSetNewStatement(true);
-	}
 
 	const stageName = statement?.statement ? `: ${t(statement.statement)}` : "";
 
@@ -48,7 +42,7 @@ const StagePage = () => {
 			<div className={styles.wrapper}>
 				<h2>{t("Stage")}{statement?.statement && stageName}</h2>
 				<p className="mb-4">Stage description</p>
-				<StagePageSwitch statement={statement} />
+				<SuggestionCards />
 				<div className={styles.bottomNav}>
 					<StatementBottomNav />
 				</div>
@@ -59,18 +53,3 @@ const StagePage = () => {
 
 export default StagePage;
 
-interface StagePageSwitchProps {
-	statement: Statement | undefined;
-}
-
-export function StagePageSwitch({ statement }: StagePageSwitchProps) {
-	if (!statement) return null;
-
-	if (statement.statementSettings?.deliberationType === DeliberationType.options) {
-		return <SuggestionCards />;
-	} else if (statement.statementSettings?.deliberationType === DeliberationType.voting) {
-		return <StatementVote />;
-	} else {
-		return <SuggestionCards />;
-	}
-}

@@ -9,17 +9,18 @@ import GroupPage from '../statementTypes/group/GroupPage';
 import styles from './Switch.module.scss';
 import QuestionPage from '../statementTypes/question/QuestionPage';
 import StagePage from '../statementTypes/stage/StagePage';
+import { useSwitchMV } from './SwitchMV';
 
 const Switch = () => {
 	const { statement } = useContext(StatementContext);
-
+	const { parentStatement } = useSwitchMV();
 
 	return (
 		<main className='page__main'>
 			<FollowMeToast />
 			<div className={styles.inner}>
 				<div className={styles.header}>
-					<h1>{statement?.statement}</h1>
+					<h1>{statement?.statementType === StatementType.stage ? parentStatement?.statement : statement?.statement}</h1>
 				</div>
 				<div
 					className={styles.main}
