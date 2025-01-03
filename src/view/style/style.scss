@@ -75,52 +75,52 @@
 
   // --- Colors ---
 
-  // header -colors
-  --question-header: #62beeb;
-  --question-header-contrast: #476FCA;
+  // // header -colors
+  // --question-header: #62beeb;
+  // --question-header-contrast: #476FCA;
 
-  // main colors
-  --green: #6fc5be;
-  --light-green: #84cccf;
-  --blue: #5899e0;
-  --dark-blue: #4789d1;
-  --light-blue: #8dbef2;
-  --dark-blue: #4789d1;
-  --crimson: #e8749e;
-  --purple: #b1a4fc;
-  --light-purple: #b1a4fc;
-  --body-dark: #57688f;
-  --button-blue: #739EE4;
+  // // main colors
+  // --green: #6fc5be;
+  // --light-green: #84cccf;
+  // --blue: #5899e0;
+  // --dark-blue: #4789d1;
+  // --light-blue: #8dbef2;
+  // --dark-blue: #4789d1;
+  // --crimson: #e8749e;
+  // --purple: #b1a4fc;
+  // --light-purple: #b1a4fc;
+  // --body-dark: #57688f;
+  // --button-blue: #739EE4;
 
 
-  //settings colors
-  --settings-suggestions: #68b4d4;
-  --settings-first-evaluation: #d4abf7;
-  --settings-second-evaluation: #f38ec2;
-  --settings-voting: #EA8222;
-  --settings-finished: #e8749e;
+  // //settings colors
+  // --settings-suggestions: #68b4d4;
+  // --settings-first-evaluation: #d4abf7;
+  // --settings-second-evaluation: #f38ec2;
+  // --settings-voting: #EA8222;
+  // --settings-finished: #e8749e;
 
-  //similarities colors
-  --similarities-textarea-border: #C3D0EA;
-  --similarities-titleInput: #818FAD;
-  --types-color: #668FD1;
-  --solution-Title: #3BB0B0;
+  // //similarities colors
+  // --similarities-textarea-border: #C3D0EA;
+  // --similarities-titleInput: #818FAD;
+  // --types-color: #668FD1;
+  // --solution-Title: #3BB0B0;
 
-  //texts
-  --header: #3b4f7d;
-  --h2Color: #232f4a;
-  --h3Color: #3b4f7d;
-  --h4Color: #3b4f7d;
-  --h5Color: #3b4f7d;
-  --subTopic: #7d9dbc;
-  --dark-text: #3b4f7d;
-  --text: #6e8aa6;
-  --textOnDark: white;
-  --placeHolder: #93b6da;
+  // //texts
+  // --header: #3b4f7d;
+  // --h2Color: #232f4a;
+  // --h3Color: #3b4f7d;
+  // --h4Color: #3b4f7d;
+  // --h5Color: #3b4f7d;
+  // --subTopic: #7d9dbc;
+  // --dark-text: #3b4f7d;
+  // --text: #6e8aa6;
+  // --textOnDark: white;
+  // --placeHolder: #93b6da;
 
-  --incorrectText: #ff3a46;
-  --correctText: #3bb0b0;
-  --background-color-info-text: #F5FCFF;
+  // --incorrectText: #ff3a46;
+  // --correctText: #3bb0b0;
+  // --background-color-info-text: #F5FCFF;
   --info-text-padding: 15px;
 
   //wights
@@ -134,222 +134,718 @@
 
   //FIGMA LIBRARY COLORS
   //agreement-rang
-  --range-positive-100: #46b4a0;
-  --range-positive-60: #78d2c2;
-  --range-positive-30: #9add82;
+  --range-positive-100: #3a7e71;
+  --range-positive-60: #76c0b3;
+  --range-positive-30: #abd8d0;
 
   --range-conflict-100: #ff8401;
-  --range-conflict-60: #ffbd01;
-  --range-conflict-30: #e7de2e;
+  --range-conflict-60: #ef7550;
+  --range-conflict-30: #f9c8b9;
 
-  --range-objections-100: #ff4185;
-  --range-objections-60: #fd8ee5;
-  --range-objections-30: #e6b2ff;
+  --range-objections-100: #ae2891;
+  --range-objections-60: #e281cd;
+  --range-objections-30: #f4cdeb;
+          
   //agreement-rang-contrast
-  --range-positive-100-contrast: #02f483;
-  --range-positive-60-contrast: #2fcfb3b2;
-  --range-positive-30-contrast: #6fd9764d;
+  --range-positive-100-contrast: #3a7e71;
+  --range-positive-60-contrast: #00bd9a;
+  --range-positive-30-contrast: #24ffd7;
 
-  --range-conflict-100-contrast: #ff8401;
-  --range-conflict-60-contrast: #b79016;
-  --range-conflict-30-contrast: #70502d;
+  --range-conflict-100-contrast: #b92504;
+  --range-conflict-60-contrast: #fb6340;
+  --range-conflict-30-contrast: #fdc2b4;
 
-  --range-objections-100-contrast: #c1145b;
-  --range-objections-60-contrast: #ff2b7799;
-  --range-objections-30-contrast: #ff589366;
-
-
-  //base
-  --bg-screen: #f2f6ff;
-  --bg-overlay: rgba(44, 46, 80, 0.8);
-  //base-contrast
-  --bg-screen-contrast: #021832;
+  --range-objections-100-contrast: #b50881;
+  --range-objections-60-contrast: #f746c2;
+  --range-objections-30-contrast: #fcb6e7;
+  
 
 
   //buttons
-  --btn-primary: #739ee4;
-  --btn-secondary: #ffffff;
-  --btn-tertiary: #a2c0f0;
-  --btn-follow-me: #ec8aba;
-  --btn-fab: #739ee4;
-  --btn-disabled: #c6d2de;
+  --btn-primary-default: #5f88e5;
+  --btn-primary-hover: #80a0ea;
+  --btn-primary-selected: #285edc;
+  --btn-primary-disabled: #e2e6ee;
+
+  --btn-secondary-default: #5f88e5;
+  --btn-secondary-hover: #80a0ea;
+  --btn-secondary-selected-border: #285edc;
+  --btn-secondary-selected-fill: #e5edff;
+  --btn-secondary-disabled: #7484a9;
+
+  --btn-white-default: #ffffff;
+  --btn-white-hover: #f2f6ff;
+  --btn-white-selected: #b4e0f8;
+  --btn-white-disabled: #ffffff;
+
+  --btn-orange-default: #ef7550;
+  --btn-orange-hover: #f29173;
+  --btn-orange-selected: #ea4715;
+  
   //buttons-contrast
-  --btn-primary-contrast: #ffffff;
-  --btn-secondary-contrast: #ffffff;
-  --btn-tertiary-contrast: #ffffff;
-  --btn-primary-blue-contrast: ##476fca;
-  --btn-secondary-blue-contrast: #476fca;
-  --btn-tertiary-blue-contrast: #476fca;
-  --btn-follow-me-contrast: #d4428a;
-  --btn-tertiary-red-contrast: #ff5b9c;
+  --btn-primary-default-contrast: #165bfa;
+  --btn-primary-hover-contrast: #467cfb;
+  --btn-primary-selected-contrast: #0544d7;
+  --btn-primary-disabled-contrast: #dce0ea;
 
+  --btn-secondary-default-contrast: #165bfa;
+  --btn-secondary-hover-contrast: #467cfb;
+  --btn-secondary-selected-border-contrast: #0544d7;
+  --btn-secondary-selected-fill-contrast: #e5edff;
+  --btn-secondary-disabled-contrast: #424e6c;
+  
+  --btn-white-default-contrast: #ffffff;
+  --btn-white-hover-contrast: #a9e0fe;
+  --btn-white-selected-contrast: #7cd0fe;
+  --btn-white-disabled-contrast: #dce0ea;
 
-  //card-menu
-  --card-menu: #ffffff;
-  --card-menu-stroke: #c7d7fb;
-  --menu-chosen: #ecf5ff;
-  --added-option: #fdffe0;
-  --added-option-stroke: #ecdbc0;
-  --added-question: #d6f1ff;
-  --added-question-contrast: #a5d6ee;
-  --drag-drop-bg: #e1f0f6;
-  //card-menu-contrast
-  --card-menu-contrast: #476fca;
-  --card-menu-stroke-contrast: #264384;
-  --menu-chosen-contrast: #ffffff;
-  --added-option-contrast: #ffeaa0;
+  --btn-orange-default-contrast: #fb6340;
+  --btn-orange-hover-contrast: #fc8064;
+  --btn-orange-selected-contrast: #f53105;
+  
+   
+  //card
+  --card-default: #ffffff;
+  --card-needs-surface: #c7e5e0;
+  --card-needs-top: #93cdc2;
+  --card-suggestion-added: #fdffe0;
+  --card-question-added: #d9f0fc;
 
+  //card-contrast
+  --card-default-contrast: #ffffff;
+  --card-needs-surface-contrast: #24ffd7;
+  --card-needs-top-contrast: #00bd9a;
+  --card-suggestion-added-contrast: #fffed1;
+  --card-question-added-contrast: #7cd0fe;
+
+  //chips
+  --chips-default:#ffffff;
+  --chips-active:#ffe16a;
+
+  --chips-default-contrast:#ffffff;
+  --chips-active-contrast:#fefa0e;
+   
+  //cluster-progress
+  --cluster-progress-bar-level-1:#4ec0fd;
+  --cluster-progress-bar-level-2:#165bfa;
+
+  //cluster-progress-contrast
+  --cluster-progress-bar-level-1-contrast:#24b1fd;
+  --cluster-progress-bar-level-2-contrast:#0544d7;
+
+  //document tabs
+  --doc-tabs-info:#ffd324;
+  --doc-tabs-research:#5f88e5;
+  --doc-tabs-needs:#ef7550;
+  --doc-tabs-suggestions:#76c0b3;
+  --doc-tabs-voting:#e281cd;
+  --doc-tabs-summary:#f86d6f;
+
+  //document tabs-contrast
+  --doc-tabs-info-contrast:#fefa0e;
+  --doc-tabs-research-contrast:#165bfa;
+  --doc-tabs-needs-contrast:#f53105;
+  --doc-tabs-suggestions-contrast:#00eec4;
+  --doc-tabs-voting-contrast:#f746c2;
+  --doc-tabs-summary-contrast:#ff0207;
+
+  //dropdown-cluster
+  --dropdown-cluster-active:#ffffff;
+
+  //dropdown-cluster-contrast
+  --dropdown-cluster-active-contrast:#165bfa;
+
+  //dropdown-option
+  --dropdown-option-active:#ffffff;
+
+  //dropdown-option-contrast
+  --dropdown-option-active-contrast:#165bfa;
+
+  //dropdown-rooms
+  --dropdown-rooms-active:#ffffff;
+
+  //dropdown-rooms-contrast
+  --dropdown-rooms-active-contrast:#165bfa;
+
+  //dropdown-step
+  --dropdown-step-default:#f2f6ff;
+  --dropdown-step-active:#ffffff;
+
+  //dropdown-step-contrast
+  --dropdown-step-default-contrast:#ffffff;
+  --dropdown-step-active-contrast:#165bfa;
+     
+  //dropdown-step-activity
+  --dropdown-step-activity-active:#f2f6ff;
+     
+  //dropdown-step-activity-contrast
+  --dropdown-step-activity-contrast:#165bfa;
 
   //emojis
-  --emoji-happy: #67b8d1;
-  --emoji-smiley: #7cd4b5;
-  --emoji-neutral: #e7d080;
-  --emoji-thinking: #f6ae92;
-  --emoji-sad: #fc8c9b;
-  //emojis-contrast
-  --emoji-happy-contrast: #25bceb;
-  --emoji-smiley-contrast: #0ed68e;
-  --emoji-neutral-contrast: #e8c23e;
-  --emoji-thinking-contrast: #f97b4b;
-  --emoji-sad-contrast: #ff455e;
+  --emoji-happy: #80a0ea;
+  --emoji-smiley: #93cdc2;
+  --emoji-neutral: #ffd324;
+  --emoji-thinking: #f29173;
+  --emoji-sad: #f86d6f;
 
+  --emoji-happy-inactive: #909ebc;
+  --emoji-smiley-inactive: #adb7cd;
+  --emoji-neutral-inactive: #c6cddc;
+  --emoji-thinking-inactive: #adb7cd;
+  --emoji-sad-inactive: #909ebc;
+
+  //emojis-contrast
+  --emoji-happy-contrast: #149ce6;
+  --emoji-smiley-contrast: #00bd9a;
+  --emoji-neutral-contrast: #d5d201;
+  --emoji-thinking-contrast: #fb6340;
+  --emoji-sad-contrast: #f40b0f;
+
+  --emoji-happy-inactive-contrast: #212736;
+  --emoji-smiley-inactive-contrast: #424e6c;
+  --emoji-neutral-inactive-contrast: #93a0bd;
+  --emoji-thinking-inactive-contrast: #424e6c;
+  --emoji-sad-inactive-contrast: #212736;
 
   //headers
-  --header-home: #6394ee;
-  --header-bg-color: #5899e0;
-  --header-question: #62beeb;
-  --header-option-chosen: #76c0b3;
-  --header-option-non-chosen: #e7d080;
-  --header-search-chips: #f5e3a3;
-  //headers-contrast
-  --header-bg-color-contrast: #476FCA;
-  --header-question-contrast: #476fca;
-  --header-home-contrast: #ffffff;
+  --header-home: #5f88e5;
+  --header-question: #47b4ef;
+  --header-chosen: #76c0b3;
+  --header-not-chosen: #ffe16a;
+  --header-group: #b9a1e8;
 
+  //headers-contrast
+  --header-home-contrast: #165bfa;
+  --header-question-contrast: #1093fd;
+  --header-chosen-contrast: #24ffd7;
+  --header-not-chosen-contrast: #ffd324;
+  --header-group-contrast: #8a62d8;
 
   //icons
-  --icon-white: #ffffff;
-  --icon-blue: #5f88e5;
-  --icon-blue-light: #739ee4;
-  --icon-red: #e8749e;
-  --icon-green: #46b4a0;
-  --icon-disabled-outline: #dbedff;
-  --icon-disabled-filled: #a9d2ff;
-  --icon-disabled-dark: #c1d8f0;
+  --icons-blue: #5f88e5;
+  --icons-blue-dark: #1b45a7;
+  --icons-white: #ffffff;
+  --icons-red: #f74a4d;
+  --icons-green: #4fab9a;
+  --icons-disabled: #adb7cd;
+  --icons-disabled-dark: #909ebc;
+
   //icons-contrast
-  --icon-blue-contrast: #082a53;
-  --icon-disabled-filled-contrast: #2b4170;
-  --icon-disabled-filled-secondary-contrast: #209eac;
-  --icon-disabled-outline-contrast: #a1b0d1;
-  --icon-green-contrast: #00a89a;
-  --icon-red-contrast: #d1004b;
+  --icons-blue-contrast: #165bfa;
+  --icons-blue-dark-contrast: #0332a0;
+  --icons-white-contrast: #ffffff;
+  --icons-red-contrast: #ff0207;
+  --icons-green-contrast: #00bd9a;
+  --icons-disabled-contrast: #93a0bd;
+  --icons-disabled-dark-contrast: #6d7ea6;
+
+  //input
+  --input-active: #ffffff;
+
+  //input-contrast
+  --input-active-contrast: #ffffff;
+
+  //map
+  --map-statement: #ffffff;
+  --map-question: #6ec4f2;
+  --map-suggestion: #abd8d0;
+  --map-statement-current: #ffe16a;
+  --map-question-current: #149ce6;
+  --map-suggestion-current: #4fab9a;
+
+  //map-contrast
+  --map-statement-contrast: #ffffff;
+  --map-question-contrast: #4ec0fd;
+  --map-suggestion-contrast: ##00eec4;
+  --map-statement-current-contrast: #fefc71;
+  --map-question-current-contrast: #1093fd;
+  --map-suggestion-current-contrast: #00bd9a;
+
+  //member
+  --member-awaiting: #b4e0f8;
+  --member-voter: #e7def7;
+  --member-evaluator: #c7e5e0;
+  --member-participant: #8ed1f5;
+  --member-blocked: #f74a4d;
+
+  //member-contrast
+  --member-awaiting-contrast: #ffffff;
+  --member-voter-contrast: #a080e0;
+  --member-evaluator-contrast: #5cffe1;
+  --member-participant-contrast: #165bfa;
+  --member-blocked-contrast: #ff3336;
+
+  //menu
+  --menu-default: #ffffff;
+  --menu-active: #f2f6ff;
+
+  //menu-contrast
+  --menu-default-contrast: #ffffff;
+  --menu-active-contrast: #165bfa;
+
+  //off-canvas
+  --off-canvas-background: #f2f6ff;
+  --off-canvas-header: #5f88e5;
+  --off-canvas-footer: #5f88e5;
+
+  //off-canvas-contrast
+  --off-canvas-background-contrast: #ffffff;
+  --off-canvas-header-contrast: #165bfa;
+  --off-canvas-footer-contrast: #165bfa;
+
+  //popup
+  --popup-default: #f2f6ff;
+
+  //popup-contrast
+  --popup-default-contrast: #ffffff;
+
+  //snackbar
+  --snackbar-default: #5f88e5;
+
+  //snackbar-contrast
+  --snackbar-default-contrast: #165bfa;
+
+  //stepper
+  --stepper-default: #ffffff;
+
+  //stepper-contrast
+  --stepper-default-contrast: #ffffff;
+
+  //surface
+  --surface-background: #f2f6ff;
+  --surface-overlay: #01113766;
+  --surface-edit: #f2f6ff;
+  --surface-Surface-60: #ffffff99;
+  --Surface-tabSys-background-level-1: #f2f6ff00;
+  --Surface-tabSys-background-level-2: #f2f6ff;
+
+  //surface-contrast
+  --surface-background-contrast: #ffffff;
+  --surface-overlay-contrast: #011137cc;
+  --surface-edit-contrast: #165bfa;
+  --surface-Surface-60-contrast: #f2f6ff;
+  --Surface-tabSys-background-level-1-contrast: #ffffff00;
+  --Surface-tabSys-background-level-2-contrast: #ffffff;
+
+  //text  
+  --text-title: #191e29;
+  --text-subtitle: #2a3346;
+  --text-body: #3d4d71;
+  --text-caption: #7484a9;
+  --text-label: #7484a9;
+  --text-negative: #ffffff;
+  --text-disabled: #909ebc;
+  --text-blue: #285edc;
+  --text-success: #4fab9a;
+  --text-error: #f74a4d;
+  --text-warning: #ef7550;
+
+  //text-contrast  
+  --text-title-contrast: #08090d;
+  --text-subtitle-contrast: #11151d;
+  --text-body-contrast: #212736;
+  --text-caption-contrast: #424e6c;
+  --text-Label-contrast: #424e6c;
+  --text-negative-contrast: #ffffff;
+  --text-disabled-contrast: #6d7ea6;
+  --text-blue-contrast: #0544d7;
+  --text-success-contrast: #008f75;
+  --text-error-contrast: #ff0207;
+  --text-warning-contrast: #fb6340;
+
+  //toggle  
+  --toggle-background: #e0e8fa;
+  --toggle-disabled: #f74a4d;
+  --toggle-a: #76c0b3;
+
+  //toggle-contrast  
+  --toggle-background-contrast: #d2dffe;
+  --toggle-disabled-contrast: #ff3336;
+  --toggle-anabled-contrast: #00eec4;
+
+  //triangle-dots 
+  --triangle-dots-agreement-100: #4fab9a;
+  --triangle-dots-agreement-100-disinterest: #abd8d0;
+  --triangle-dots-agreement-50: #ffe16a;
+  --triangle-dots-agreement-50-disinterest: #fff3c2;
+  --triangle-dots-agreement-0: #ef7550;
+  --triangle-dots-agreement-0-disinterest: #f9c8b9;
+  --triangle-dots-objections-50: #d549b7;
+  --triangle-dots-objections-50-disinterest: #eeb4e1;
+  --triangle-dots-objections-100: #7a0507;
+  --triangle-dots-objections-100-disinterest: #8f7200;
+  --triangle-dots-avoidance: #c6cddc;
+   
+  //triangle-dots-contrast 
+  --triangle-dots-agreement-100-contrast: #4fab9a;
+  --triangle-dots-agreement-100-disinterest-contrast: #abd8d0;
+  --triangle-dots-agreement-50-contrast: #ffe16a;
+  --triangle-dots-agreement-50-disinterest-contrast: #fff3c2;
+  --triangle-dots-agreement-0-contrast: #ef7550;
+  --triangle-dots-agreement-0-disinterest-contrast: #f9c8b9;
+  --triangle-dots-objections-50-contrast: #d549b7;
+  --triangle-dots-objections-50-disinterest-contrast: #eeb4e1;
+  --triangle-dots-objections-100-contrast: #7a0507;
+  --triangle-dots-objections-100-disinterest-contrast: #8f7200;
+  --triangle-dots-avoidance-contrast: #c6cddc;
+  
+  //voting palette
+  --voting-palette-pair-1-light: #fc8c9b;
+  --voting-palette-pair-1-dark: #f57c8c;
+
+  --voting-palette-pair-2-light: #f4978d;
+  --voting-palette-pair-2-dark: #ec8b81;
+
+  --voting-palette-pair-3-light: #feb69f;
+  --voting-palette-pair-3-dark: #efa38a;
+
+  --voting-palette-pair-4-light: #f1d075;
+  --voting-palette-pair-4-dark: #ebbd3d;
+
+  --voting-palette-pair-5-light: #85d697;
+  --voting-palette-pair-5-dark: #5fc976;
+
+  --voting-palette-pair-6-light: #a1d3a5;
+  --voting-palette-pair-6-dark: #97c99b;
+  
+  --voting-palette-pair-7-light: #b4ccb9;
+  --voting-palette-pair-7-dark: #9bbaa2;
+
+  --voting-palette-pair-8-light: #b6d89c;
+  --voting-palette-pair-8-dark: #9bca78;
+
+  --voting-palette-pair-9-light: #95d7fe;
+  --voting-palette-pair-9-dark: #73c6f1;
+
+  --voting-palette-pair-10-light: #75c2fa;
+  --voting-palette-pair-10-dark: #4eb1f9;
+
+  --voting-palette-pair-11-light: #98bfff;
+  --voting-palette-pair-11-dark: #83adf3;
+
+  --voting-palette-pair-12-light: #a4dddf;
+  --voting-palette-pair-12-dark: #82c7ca;
+  
+  --voting-palette-pair-13-light: #76d4d0;
+  --voting-palette-pair-13-dark: #64c8c4;
+
+  --voting-palette-pair-14-light: #bbb0f7;
+  --voting-palette-pair-14-dark: #a89be9;
+  
+  --voting-palette-pair-15-light: #bda3ed;
+  --voting-palette-pair-15-dark: #a992d4;
+
+  --voting-palette-pair-16-light: #d99fec;
+  --voting-palette-pair-16-dark: #c38fd4;
+
+  --voting-palette-pair-17-light: #ffb8d1;
+  --voting-palette-pair-17-dark: #fc9cbe;
+
+  --voting-palette-pair-18-light: #ffa3c4;
+  --voting-palette-pair-18-dark: #fb84ae;
+
+  --voting-palette-pair-19-light: #dd90b6;
+  --voting-palette-pair-19-dark: #d578a6;
 
 
-  //info
-  --info-snackbar: #739ee4;
-  --info-massage-counter: #e478f8;
-  --info-tooltip: #739ee4;
-  //info-contrast
-  --info-massage-counter-contrast: #d73484;
-  --info-snackbar-contrast: #476fca;
-  --info-massage-Home-counter-blue-contrast: #4894ff;
-  --info-massage-Home-counter-green-contrast: #34e15c;
+  //voting palette-contrast
+  --voting-palette-pair-1-light-contrast: #ff6b7f;
+  --voting-palette-pair-1-dark-contrast: #ff4760;
+
+  --voting-palette-pair-2-light-contrast: #ff7f7a;
+  --voting-palette-pair-2-dark-contrast: #ff6661;
+ 
+  --voting-palette-pair-3-light-contrast: #ffac8e;
+  --voting-palette-pair-3-dark-contrast: #ff875c;
+ 
+  --voting-palette-pair-4-light-contrast: #f7eb6a;
+  --voting-palette-pair-4-dark-contrast: #edda0d;
+ 
+  --voting-palette-pair-5-light-contrast: #63eb82;
+  --voting-palette-pair-5-dark-contrast: #34e55d;
+ 
+  --voting-palette-pair-6-light-contrast: #a8f26f;
+  --voting-palette-pair-6-dark-contrast: #6fe515;
+   
+  --voting-palette-pair-7-light-contrast: #5fdd79;
+  --voting-palette-pair-7-dark-contrast: #35d455;
+ 
+  --voting-palette-pair-8-light-contrast: #7fe7c2;
+  --voting-palette-pair-8-dark-contrast: #42dca5;
+ 
+  --voting-palette-pair-9-light-contrast: #8acaff;
+  --voting-palette-pair-9-dark-contrast: #70beff;
+  
+  --voting-palette-pair-10-light-contrast: #66bfff;
+  --voting-palette-pair-10-dark-contrast: #33a9ff;
+ 
+  --voting-palette-pair-11-light-contrast: #8acaff;
+  --voting-palette-pair-11-dark-contrast: #57b3ff;
+ 
+  --voting-palette-pair-12-light-contrast: #7bdee5;
+  --voting-palette-pair-12-dark-contrast: #50d4dc;
+   
+  --voting-palette-pair-13-light-contrast: #28e2da;
+  --voting-palette-pair-13-dark-contrast: #1edcd4;
+ 
+  --voting-palette-pair-14-light-contrast: #aa99ff;
+  --voting-palette-pair-14-dark-contrast: #9480ff;
+   
+  --voting-palette-pair-15-light-contrast: #b891ff;
+  --voting-palette-pair-15-dark-contrast: #a270ff;
+ 
+  --voting-palette-pair-16-light-contrast: #bf75d9;
+  --voting-palette-pair-16-dark-contrast: #b652d9;
+ 
+  --voting-palette-pair-17-light-contrast: #fa86b0;
+  --voting-palette-pair-17-dark-contrast: #ed6697;
+ 
+  --voting-palette-pair-18-light-contrast: #fa86b0;
+  --voting-palette-pair-18-dark-contrast: #ed6697;
+ 
+  --voting-palette-pair-19-light-contrast: #ff6eb6;
+  --voting-palette-pair-19-dark-contrast: #ff3d9d;
+ 
+  
+  
+ 
 
 
-  //maps
-  --map-question: #739ee4;
-  --map-option: #ffffff;
-  --map-option-chosen: #78d2c2;
-  --map-option-current: #fdffe0;
-  --map-question-current: #d6f1ff;
-  //maps-contrast
-  --map-star-contrast: #06cebd;
-  --map-question-contrast: #476fca;
-  --map-option-contrast: #20a08a;
 
 
-  //multisteps
-  --step-vote-inactive: #f8bbda;
-  --step-vote-active: #f38ec2;
-  --step-evaluate-inactive: #e5cdfa;
-  --step-evaluate-active: #d4abf7;
-  --step-explanation-inactive: #fdcaa5;
-  --step-explanation-active: #fba669;
-  --step-option-inactive: #a9dcd8;
-  --step-option-active: #6fc5be;
-  --step-top-rank-inactive: #bbd8f7;
-  --step-top-rank-active: #8dbef2;
-  --step-joined-members-active: #ffd48d;
-  --step-summary-active: #e88489;
-  //multisteps-contrast
-  --step-vote-active-contrast: #a8367a;
-  --step-evaluate-active-contrast: #c489f8;
-  --step-explanation-active-contrast: #ff7e20;
-  --step-option-active-contrast: #00dac7;
-  --step-top-rank-active-contrast: #3894f9;
+   
+
+   
+ 
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // //base
+  // --bg-screen: #f2f6ff;
+  // --bg-overlay: rgba(44, 46, 80, 0.8);
+  // //base-contrast
+  // --bg-screen-contrast: #021832;
+  
+  
+  // //buttons
+  // --btn-primary: #739ee4;
+  // --btn-secondary: #ffffff;
+  // --btn-tertiary: #a2c0f0;
+  // --btn-follow-me: #ec8aba;
+  // --btn-fab: #739ee4;
+  // --btn-disabled: #c6d2de;
+  // //buttons-contrast
+  // --btn-primary-contrast: #ffffff;
+  // --btn-secondary-contrast: #ffffff;
+  // --btn-tertiary-contrast: #ffffff;
+  // --btn-primary-blue-contrast: ##476fca;
+  // --btn-secondary-blue-contrast: #476fca;
+  // --btn-tertiary-blue-contrast: #476fca;
+  // --btn-follow-me-contrast: #d4428a;
+  // --btn-tertiary-red-contrast: #ff5b9c;
+  
+  
+  // //card-menu
+  // --card-menu: #ffffff;
+  // --card-menu-stroke: #c7d7fb;
+  // --menu-chosen: #ecf5ff;
+  // --added-option: #fdffe0;
+  // --added-option-stroke: #ecdbc0;
+  // --added-question: #d6f1ff;
+  // --added-question-contrast: #a5d6ee;
+  // --drag-drop-bg: #e1f0f6;
+  // //card-menu-contrast
+  // --card-menu-contrast: #476fca;
+  // --card-menu-stroke-contrast: #264384;
+  // --menu-chosen-contrast: #ffffff;
+  // --added-option-contrast: #ffeaa0;
 
 
-  //settings
-  --member-chip: #68b4d4;
-  --member-voter: #ebeaff;
-  --member-evaluators: #e1fbf9;
-  --member-non-voter: #fbffea;
-  --member-blocked: #e8749e;
-  --section-tab: #739ee4;
-  //settings-contrast
-  --section-tab-contrast: #476fca;
-  --member-chip-contrast: #00a7ee;
-  --member-evaluators-contrast: #73e1d8;
-  --member-voter-contrast: #a6a2ff;
+  // //emojis
+  // --emoji-happy: #67b8d1;
+  // --emoji-smiley: #7cd4b5;
+  // --emoji-neutral: #e7d080;
+  // --emoji-thinking: #f6ae92;
+  // --emoji-sad: #fc8c9b;
+  // //emojis-contrast
+  // --emoji-happy-contrast: #25bceb;
+  // --emoji-smiley-contrast: #0ed68e;
+  // --emoji-neutral-contrast: #e8c23e;
+  // --emoji-thinking-contrast: #f97b4b;
+  // --emoji-sad-contrast: #ff455e;
 
 
-  //toggles
-  --toggle-blue-active: #739ee4;
-  --toggle-green-active: #6fc5be;
-  --toggle-crimson-active: #e8749e;
-  --toggle-inactive: #dbedff;
-  --toggle-inactive-icon: #c1d8f0;
-  //toggles-contrast
-  --toggle-bg-contrast: #2f3545;
-  --toggle-inactive-contrast: #184477;
-  --toggle-active-contrast: #ffffff;
-  --toggle-green-active-contrast: #00dac7;
-  --toggle-crimson-active-contrast: #f63c86;
+  // //headers
+  // --header-home: #6394ee;
+  // --header-bg-color: #5899e0;
+  // --header-question: #62beeb;
+  // --header-option-chosen: #76c0b3;
+  // --header-option-non-chosen: #e7d080;
+  // --header-search-chips: #f5e3a3;
+  // //headers-contrast
+  // --header-bg-color-contrast: #476FCA;
+  // --header-question-contrast: #476fca;
+  // --header-home-contrast: #ffffff;
 
 
-  // triangle dots
-  --dot-agreement-100: #46b4a0;
-  --dot-agreement-50: #e7de2e;
-  --dot-agreement-0: #ff8401;
-  --dot-taboo-50: #ff4185;
-  --dot-taboo-100: #99250e;
-  --dot-disinterest: #dae0e8;
+  // //icons
+  // --icon-white: #ffffff;
+  // --icon-blue: #5f88e5;
+  // --icon-blue-light: #739ee4;
+  // --icon-red: #e8749e;
+  // --icon-green: #46b4a0;
+  // --icon-disabled-outline: #dbedff;
+  // --icon-disabled-filled: #a9d2ff;
+  // --icon-disabled-dark: #c1d8f0;
+  // //icons-contrast
+  // --icon-blue-contrast: #082a53;
+  // --icon-disabled-filled-contrast: #2b4170;
+  // --icon-disabled-filled-secondary-contrast: #209eac;
+  // --icon-disabled-outline-contrast: #a1b0d1;
+  // --icon-green-contrast: #00a89a;
+  // --icon-red-contrast: #d1004b;
 
 
-  //text
-  --text-headline: #232f4a;
-  --text-description: #191E29;
-  --text-paragraph: #57688f;
-  --text-paragraph-light: #818fad;
-  --text-paragraph-lightest: #a4aec5;
-  --text-white: #ffffff;
-  --text-blue: #5f88e5;
-  --text-green: #3bb0b0;
-  --text-red: #ff3a46;
-  --text-crimson: #e8749e;
-  --text-emphasis: #ea8222;
-  --text-dark-btn: #57688f;
-  --text-light-btn: #ffffff;
-  --text-disabled-paragraph: #a1b0d1;
-  --text-disabled-light: #c7cedd;
-  --text-disabled-digit: #adcbed;
-  --text-triangle-taboo: #99250e;
-  //text-contrast
-  --text-emphasis-contrast: #ffa463;
-  --text-dark-contrast: #021832;
-  --text-disabled-contrast: #6379a7;
-  --text-blue-contrast: #3e61b0;
-  --text-crimson-contrast: #ff5b9c;
+  // //info
+  // --info-snackbar: #739ee4;
+  // --info-massage-counter: #e478f8;
+  // --info-tooltip: #739ee4;
+  // //info-contrast
+  // --info-massage-counter-contrast: #d73484;
+  // --info-snackbar-contrast: #476fca;
+  // --info-massage-Home-counter-blue-contrast: #4894ff;
+  // --info-massage-Home-counter-green-contrast: #34e15c;
+
+
+  // //maps
+  // --map-question: #739ee4;
+  // --map-option: #ffffff;
+  // --map-option-chosen: #78d2c2;
+  // --map-option-current: #fdffe0;
+  // --map-question-current: #d6f1ff;
+  // //maps-contrast
+  // --map-star-contrast: #06cebd;
+  // --map-question-contrast: #476fca;
+  // --map-option-contrast: #20a08a;
+
+
+  // //multisteps
+  // --step-vote-inactive: #f8bbda;
+  // --step-vote-active: #f38ec2;
+  // --step-evaluate-inactive: #e5cdfa;
+  // --step-evaluate-active: #d4abf7;
+  // --step-explanation-inactive: #fdcaa5;
+  // --step-explanation-active: #fba669;
+  // --step-option-inactive: #a9dcd8;
+  // --step-option-active: #6fc5be;
+  // --step-top-rank-inactive: #bbd8f7;
+  // --step-top-rank-active: #8dbef2;
+  // --step-joined-members-active: #ffd48d;
+  // --step-summary-active: #e88489;
+  // //multisteps-contrast
+  // --step-vote-active-contrast: #a8367a;
+  // --step-evaluate-active-contrast: #c489f8;
+  // --step-explanation-active-contrast: #ff7e20;
+  // --step-option-active-contrast: #00dac7;
+  // --step-top-rank-active-contrast: #3894f9;
+
+
+  // //settings
+  // --member-chip: #68b4d4;
+  // --member-voter: #ebeaff;
+  // --member-evaluators: #e1fbf9;
+  // --member-non-voter: #fbffea;
+  // --member-blocked: #e8749e;
+  // --section-tab: #739ee4;
+  // //settings-contrast
+  // --section-tab-contrast: #476fca;
+  // --member-chip-contrast: #00a7ee;
+  // --member-evaluators-contrast: #73e1d8;
+  // --member-voter-contrast: #a6a2ff;
+
+
+  // //toggles
+  // --toggle-blue-active: #739ee4;
+  // --toggle-green-active: #6fc5be;
+  // --toggle-crimson-active: #e8749e;
+  // --toggle-inactive: #dbedff;
+  // --toggle-inactive-icon: #c1d8f0;
+  // //toggles-contrast
+  // --toggle-bg-contrast: #2f3545;
+  // --toggle-inactive-contrast: #184477;
+  // --toggle-active-contrast: #ffffff;
+  // --toggle-green-active-contrast: #00dac7;
+  // --toggle-crimson-active-contrast: #f63c86;
+
+
+  // // triangle dots
+  // --dot-agreement-100: #46b4a0;
+  // --dot-agreement-50: #e7de2e;
+  // --dot-agreement-0: #ff8401;
+  // --dot-taboo-50: #ff4185;
+  // --dot-taboo-100: #99250e;
+  // --dot-disinterest: #dae0e8;
+
+
+  // //text
+  // --text-headline: #232f4a;
+  // --text-description: #191E29;
+  // --text-paragraph: #57688f;
+  // --text-paragraph-light: #818fad;
+  // --text-paragraph-lightest: #a4aec5;
+  // --text-white: #ffffff;
+  // --text-blue: #5f88e5;
+  // --text-green: #3bb0b0;
+  // --text-red: #ff3a46;
+  // --text-crimson: #e8749e;
+  // --text-emphasis: #ea8222;
+  // --text-dark-btn: #57688f;
+  // --text-light-btn: #ffffff;
+  // --text-disabled-paragraph: #a1b0d1;
+  // --text-disabled-light: #c7cedd;
+  // --text-disabled-digit: #adcbed;
+  // --text-triangle-taboo: #99250e;
+  // //text-contrast
+  // --text-emphasis-contrast: #ffa463;
+  // --text-dark-contrast: #021832;
+  // --text-disabled-contrast: #6379a7;
+  // --text-blue-contrast: #3e61b0;
+  // --text-crimson-contrast: #ff5b9c;
 
   --wrapper-max-width: 75ch;
   --wrapper: 75ch;
