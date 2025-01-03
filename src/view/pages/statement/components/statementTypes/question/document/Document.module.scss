@@ -10,7 +10,6 @@
 	margin: 2rem 0;
 
 	>div {
-
 		&:first-child {
 			border-radius: var(--radius) var(--radius) 0 0;
 		}
@@ -18,7 +17,47 @@
 		&:last-child {
 			border-radius: 0 0 var(--radius) var(--radius);
 		}
+	}
+}
 
+.stageContainer {
+	display: flex;
+	align-items: center;
+	background: white;
+	cursor: grab;
 
+	&.dragging {
+		opacity: 0.5;
+	}
+}
+
+.dragHandle {
+	width: 24px;
+	height: 24px;
+	margin-right: 12px;
+	position: relative;
+	cursor: grab;
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		width: 2px;
+		height: 2px;
+		background: #666;
+		box-shadow:
+			0 4px 0 #666,
+			0 8px 0 #666;
+	}
+
+	&::before {
+		top: 6px;
+		transform: translateX(-4px);
+	}
+
+	&::after {
+		top: 6px;
+		transform: translateX(2px);
 	}
 }

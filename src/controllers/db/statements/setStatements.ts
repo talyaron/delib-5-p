@@ -12,7 +12,7 @@ import {
 	writeZodError,
 } from "delib-npm";
 import { Collections, Role } from "delib-npm";
-import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { Timestamp, doc, getDoc, setDoc, updateDoc, writeBatch } from "firebase/firestore";
 
 // Third Party Imports
 import { z } from "zod";
@@ -705,6 +705,29 @@ export async function setFollowMeDB(
 		} else {
 			await updateDoc(statementRef, { followMe: "" });
 		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+
+export async function updateStatementsOrderToDB(statements: Statement[]) {
+	try {
+		const batch = writeBatch(FireStore);
+
+		for (const statement of statements) {
+			StatementSchema.parse(statement);
+
+			const statementRef = doc(
+				FireStore,
+				Collections.statements,
+				statement.statementId
+			);
+
+			batch.update(statementRef, { order: statement.order });
+		}
+
+		await batch.commit();
 	} catch (error) {
 		console.error(error);
 	}
