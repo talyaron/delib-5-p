@@ -1,0 +1,24 @@
+.wrapper {
+	max-width: var(--wrapper);
+	margin: 1rem auto;
+}
+
+.stagesWrapper {
+	display: flex;
+	flex-direction: column;
+	border-radius: var(--radius);
+	margin: 2rem 0;
+
+	>div {
+
+		&:first-child {
+			border-radius: var(--radius) var(--radius) 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 var(--radius) var(--radius);
+		}
+
+
+	}
+}

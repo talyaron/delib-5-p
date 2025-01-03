@@ -2,7 +2,7 @@ import { SimpleStatement, Statement } from 'delib-npm'
 import { FC } from 'react'
 import styles from './StageCard.module.scss';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { convertToStageTitle } from '@/model/stages/stagesModel';
 
@@ -14,12 +14,14 @@ interface Props {
 const StageCard: FC<Props> = ({ statement }) => {
 
 	const { t } = useLanguage()
+	const navigate = useNavigate();
 
 	const chosen = statement.results || []
 
 
 	function suggestNewSuggestion(ev: any) {
 		ev.stopPropagation()
+		navigate(`/statement/${statement.statementId}/main`)
 	}
 
 	return (
@@ -31,12 +33,12 @@ const StageCard: FC<Props> = ({ statement }) => {
 					<h4>{t("Selected Options")}</h4>
 					<ul>
 						{chosen.map((opt: SimpleStatement) => (
-							<li key={opt.statementId}>{opt.statement}{opt.description ? ":" : ""} {opt.description}</li>
+							<NavLink key={opt.statementId} to={`/statement/${opt.statementId}`}><li >{opt.statement}{opt.description ? ":" : ""} {opt.description}</li></NavLink>
 						))}
 					</ul>
 				</>
 			}
-			<NavLink to={`/statement/${statement.statementId}`} ><p className={styles.seeMore}>See more...</p></NavLink>
+			<NavLink to={`/statement/${statement.statementId}/main`} ><p className={styles.seeMore}>See more...</p></NavLink>
 			<div className="btns">
 				<Button text="Add Suggestion" buttonType={ButtonType.SECONDARY} onClick={suggestNewSuggestion} />
 			</div>
