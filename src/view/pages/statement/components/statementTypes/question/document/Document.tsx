@@ -17,7 +17,7 @@ const Document: FC = () => {
 	const { statement } = useContext(StatementContext);
 	const initialStages = useSelector(statementSubsSelector(statement?.statementId))
 		.filter((sub: Statement) => sub.statementType === StatementType.stage).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-	console.log(initialStages)
+
 	const [stages, setStages] = useState<Statement[]>(initialStages);
 	const [showAddStage, setShowAddStage] = useState<boolean>(false);
 	const [draggedIndex, setDraggedIndex] = useState<number | null>(null);

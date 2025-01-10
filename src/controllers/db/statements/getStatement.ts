@@ -45,14 +45,14 @@ export async function getStatementDepth(
 	try {
 		const statements: Statement[][] = [[statement]];
 
-		//level 1 is allready in store
+		//level 1 is already in store
 		//find second level
-		const levleOneStatements: Statement[] = subStatements.filter(
+		const levelOneStatements: Statement[] = subStatements.filter(
 			(s) =>
 				s.parentId === statement.statementId &&
 				s.statementType === StatementType.result
 		);
-		statements.push(levleOneStatements);
+		statements.push(levelOneStatements);
 
 		//get the next levels
 
