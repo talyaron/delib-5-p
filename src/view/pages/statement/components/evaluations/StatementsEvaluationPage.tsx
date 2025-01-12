@@ -22,16 +22,15 @@ import Modal from "@/view/components/modal/Modal";
 import Toast from "@/view/components/toast/Toast";
 
 interface StatementEvaluationPageProps {
-  statement: Statement;
-  showNav?: boolean;
-  questions?: boolean;
-  currentPage?: string;
+	statement: Statement;
+	showNav?: boolean;
+	questions?: boolean;
+	currentPage?: string;
 }
 
 const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 	statement,
 	questions = false,
-	currentPage = `suggestion`,
 }) => {
 	try {
 		// Hooks
@@ -39,12 +38,12 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		const navigate = useNavigate();
 		const { t } = useLanguage();
 		const isMultiStage =
-      statement.questionSettings?.questionType === QuestionType.multipleSteps;
+			statement.questionSettings?.questionType === QuestionType.multipleSteps;
 
 		const currentStage = statement.questionSettings?.currentStage;
 		const stageInfo = getStagesInfo(currentStage);
 		const useSearchForSimilarStatements =
-      statement.statementSettings?.enableSimilaritiesSearch || false;
+			statement.statementSettings?.enableSimilaritiesSearch || false;
 
 		// Use States
 		const [showModal, setShowModal] = useState(false);
@@ -65,8 +64,8 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 			}
 			if (
 				currentStage === QuestionStage.explanation &&
-        isMultiStage &&
-        !questions
+				isMultiStage &&
+				!questions
 			) {
 				setShowExplanation(true);
 			}
@@ -93,19 +92,11 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 							</Toast>
 						)}
 						<Description statement={statement} />
-						<SuggestionCards
-							statement={statement}
-							questions={questions}
-							currentPage={currentPage}
-							setShowModal={setShowModal}
-						/>
+						<SuggestionCards />
 					</div>
 				</div>
 				<div className="page__footer">
-					<StatementBottomNav
-						setShowModal={setShowModal}
-						statement={statement}
-					/>
+					<StatementBottomNav />
 				</div>
 				{showExplanation && (
 					<Modal>
@@ -131,26 +122,12 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 		function getToastButtons(questionStage: QuestionStage | undefined) {
 			try {
 				switch (questionStage) {
-				case QuestionStage.voting:
-				case QuestionStage.firstEvaluation:
-				case QuestionStage.secondEvaluation:
-				case QuestionStage.finished:
-				case QuestionStage.explanation:
-					return (
-						<Button
-							text={t("Close")}
-							iconOnRight={false}
-							onClick={() => {
-								setShowToast(false);
-							}}
-							icon={<X />}
-							color="white"
-							bckColor="var(--crimson)"
-						/>
-					);
-				case QuestionStage.suggestion:
-					return (
-						<>
+					case QuestionStage.voting:
+					case QuestionStage.firstEvaluation:
+					case QuestionStage.secondEvaluation:
+					case QuestionStage.finished:
+					case QuestionStage.explanation:
+						return (
 							<Button
 								text={t("Close")}
 								iconOnRight={false}
@@ -161,32 +138,46 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 								color="white"
 								bckColor="var(--crimson)"
 							/>
+						);
+					case QuestionStage.suggestion:
+						return (
+							<>
+								<Button
+									text={t("Close")}
+									iconOnRight={false}
+									onClick={() => {
+										setShowToast(false);
+									}}
+									icon={<X />}
+									color="white"
+									bckColor="var(--crimson)"
+								/>
+								<Button
+									text={t("Add a solution")}
+									iconOnRight={true}
+									onClick={() => {
+										setShowToast(false);
+										setShowModal(true);
+									}}
+									icon={<LightBulbIcon />}
+									color="white"
+									bckColor="var(--green)"
+								/>
+							</>
+						);
+					default:
+						return (
 							<Button
-								text={t("Add a solution")}
-								iconOnRight={true}
+								text={t("Close")}
+								iconOnRight={false}
 								onClick={() => {
 									setShowToast(false);
-									setShowModal(true);
 								}}
-								icon={<LightBulbIcon />}
+								icon={<X />}
 								color="white"
-								bckColor="var(--green)"
+								bckColor="var(--crimson)"
 							/>
-						</>
-					);
-				default:
-					return (
-						<Button
-							text={t("Close")}
-							iconOnRight={false}
-							onClick={() => {
-								setShowToast(false);
-							}}
-							icon={<X />}
-							color="white"
-							bckColor="var(--crimson)"
-						/>
-					);
+						);
 				}
 			} catch (error) {
 				console.error(error);

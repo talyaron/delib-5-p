@@ -29,7 +29,6 @@ interface Props {
 	isTextArea?: boolean;
 	useTitle?: boolean;
 	useDescription?: boolean;
-	useDescription?: boolean;
 }
 
 const EditTitle: FC<Props> = ({ useTitle = true, useDescription = true, statement, isEdit, setEdit, isTextArea }) => {
@@ -82,8 +81,8 @@ const EditTitle: FC<Props> = ({ useTitle = true, useDescription = true, statemen
 		return (
 			<div style={{ direction: direction, textAlign: align }}>
 				<Text
-					statement={useTitle && statement.statement}
-					description={useDescription && statement.description}
+					statement={useTitle ? statement.statement : undefined}
+					description={useDescription ? statement.description : undefined}
 				/>
 			</div>
 		);

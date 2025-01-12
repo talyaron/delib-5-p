@@ -1,4 +1,4 @@
-import { DeliberativeElement, Statement, User } from "delib-npm";
+import { Statement, StatementType, User } from "delib-npm";
 import {
 	createStatement,
 	setStatementToDB,
@@ -8,9 +8,9 @@ import { store } from "../../../../../../../model/store";
 import { defaultStatementSettings } from "./../../../settings/emptyStatementModel";
 
 interface handleSetQuestionFromMassCardProps {
-    question: Statement;
-    text: string;
-    answer: Statement | null;
+	question: Statement;
+	text: string;
+	answer: Statement | null;
 }
 
 export const handleSetQuestionFromMassCard = ({
@@ -37,7 +37,7 @@ export const handleSetQuestionFromMassCard = ({
 				hasChildren: true,
 				text,
 				parentStatement: question,
-				deliberativeElement: DeliberativeElement.option,
+				statementType: StatementType.question
 			});
 			if (!statement) throw new Error("statement not created");
 

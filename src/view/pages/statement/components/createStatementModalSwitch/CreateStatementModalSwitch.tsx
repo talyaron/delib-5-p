@@ -23,12 +23,7 @@ export default function CreateStatementModalSwitch({
 
 }: CreateStatementModalSwitchProps) {
 	return useSimilarStatements ? (
-		<SimilarStatementsSuggestion
-			setShowModal={setShowModal}
-			isQuestion={isQuestion}
-			parentStatement={parentStatement}
-			isSendToStoreTemp={isMultiStage}
-		/>
+		<SimilarStatementsSuggestion />
 	) : (
 		<CreateStatementModal
 			parentStatement={parentStatement}

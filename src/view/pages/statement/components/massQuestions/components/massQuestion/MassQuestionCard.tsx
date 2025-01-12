@@ -20,16 +20,16 @@ import styles from "./MassQuestion.module.scss";
 import { handleSetQuestionFromMassCard } from "./MassQuestionCardCont";
 
 interface Props {
-    statement: Statement;
-    setAnswered: React.Dispatch<React.SetStateAction<boolean[]>>;
-    index: number;
+	statement: Statement;
+	setAnswered: React.Dispatch<React.SetStateAction<boolean[]>>;
+	index: number;
 }
 
 const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
 	const { t } = useLanguage();
 
 	const statementSubscription: StatementSubscription | undefined =
-        useAppSelector(statementSubscriptionSelector(statement.statementId));
+		useAppSelector(statementSubscriptionSelector(statement.statementId));
 
 	const [answer, setAnswer] = useState<Statement | null>(null);
 	const [isEdit, setEdit] = useState(false);
@@ -70,7 +70,6 @@ const MassQuestionCard: FC<Props> = ({ statement, setAnswered, index }) => {
 						statement={statement}
 						isEdit={isEdit}
 						setEdit={setEdit}
-						onlyTitle={true}
 					/>
 				</h3>
 			</div>

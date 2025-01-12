@@ -50,7 +50,7 @@ export async function getStatementDepth(
 		const levelOneStatements: Statement[] = subStatements.filter(
 			(s) =>
 				s.parentId === statement.statementId &&
-				s.statementType === StatementType.result
+				s.statementType !== StatementType.statement
 		);
 		statements.push(levelOneStatements);
 
