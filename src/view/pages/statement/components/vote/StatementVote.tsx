@@ -1,10 +1,10 @@
-import { QuestionStage, QuestionType, Statement, StatementType } from 'delib-npm';
+import { QuestionStage, Statement } from 'delib-npm';
 import { FC, useContext, useEffect, useState } from 'react';
 
 // Third party imports
 
 // Redux
-import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
+// import CreateStatementModalSwitch from '../createStatementModalSwitch/CreateStatementModalSwitch';
 import StatementBottomNav from '../nav/bottom/StatementBottomNav';
 import { getStagesInfo } from '../settings/components/QuestionSettings/QuestionStageRadioBtn/QuestionStageRadioBtn';
 import StatementInfo from './components/info/StatementInfo';
@@ -28,7 +28,6 @@ import Toast from '@/view/components/toast/Toast';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { StatementContext } from '../../StatementCont';
 
-
 let getVoteFromDB = false;
 
 const StatementVote: FC = () => {
@@ -42,13 +41,13 @@ const StatementVote: FC = () => {
 	const isCurrentStageVoting = currentStage === QuestionStage.voting;
 	const stageInfo = getStagesInfo(currentStage);
 	const toastMessage = stageInfo ? stageInfo.message : '';
-	const useSearchForSimilarStatements =
-		statement?.statementSettings?.enableSimilaritiesSearch || false;
+	// const useSearchForSimilarStatements =
+	// 	statement?.statementSettings?.enableSimilaritiesSearch || false;
 
 	// * Use State * //
 	const [showMultiStageMessage, setShowMultiStageMessage] =
 		useState(isCurrentStageVoting);
-	const [isCreateStatementModalOpen, setIsCreateStatementModalOpen] =
+	const [isCreateStatementModalOpen] =
 		useState(false);
 	const [isStatementInfoModalOpen, setIsStatementInfoModalOpen] =
 		useState(false);
@@ -56,8 +55,6 @@ const StatementVote: FC = () => {
 
 	// * Variables * //
 	const totalVotes = getTotalVoters(statement);
-	const isMuliStage =
-		statement?.questionSettings?.questionType === QuestionType.multipleSteps;
 
 	useEffect(() => {
 		if (!getVoteFromDB) {
@@ -124,9 +121,7 @@ const StatementVote: FC = () => {
 				)}
 			</div>
 			<div className='page__footer'>
-				<StatementBottomNav
-					setShowModal={setIsCreateStatementModalOpen}
-				/>
+				<StatementBottomNav />
 			</div>
 		</>
 	);

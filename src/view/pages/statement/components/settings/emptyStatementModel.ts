@@ -1,4 +1,4 @@
-import { ResultsBy, Screen, Statement } from 'delib-npm';
+import { ResultsBy, Screen, Statement, StatementType } from 'delib-npm';
 
 export const defaultStatementSettings = {
 	enhancedEvaluation: true,
@@ -40,12 +40,11 @@ export const defaultEmptyStatement: Statement = {
 		agreement: undefined,
 		role: undefined,
 	},
+	statementType: StatementType.statement,
 	lastUpdate: 0,
 	createdAt: 0,
 	consensus: 0,
-
 	// default values
-	subScreens: defaultStatementSubScreens,
 	resultsSettings: defaultResultsSettings,
 	statementSettings: defaultStatementSettings,
 	hasChildren: true,

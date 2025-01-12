@@ -21,6 +21,7 @@
 		"deploy:h:dev": "npm run build:dev && firebase use dev && firebase deploy --only hosting:dev",
 		"deploy:h:test": "npm run build:test && firebase use test && firebase deploy --only hosting:test",
 		"deploy:f": "cd functions && npm run build && firebase use prod && firebase deploy --only functions",
+		"deploy:f:dev": "cd functions && npm run build && firebase use dev && firebase deploy --only functions",
 		"deploy": "npm run deploy:h && npm run deploy:f",
 		"deploy:dev": "npm run deploy:h:dev && npm run deploy:f",
 		"deploy:test": "npm run deploy:h:test && npm run deploy:f"

@@ -35,7 +35,8 @@ const Evaluation: FC<EvaluationProps> = ({ parentStatement, statement }) => {
 		);
 	} catch (error) {
 		console.error(error);
-		return null;
+		
+return null;
 	}
 };
 

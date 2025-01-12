@@ -31,7 +31,6 @@ const StagePage = () => {
 		};
 	}, []);
 
-
 	const stageName = statement?.statement ? `: ${t(statement.statement)}` : "";
 
 	return (
@@ -52,4 +51,3 @@ const StagePage = () => {
 };
 
 export default StagePage;
-

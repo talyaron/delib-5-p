@@ -62,8 +62,6 @@ const StatementTopNav: FC<Props> = ({
 		width: '24px',
 	};
 
-
-
 	if (!statement) return null;
 
 	const enableNavigationalElements =

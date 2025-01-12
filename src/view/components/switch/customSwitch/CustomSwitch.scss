@@ -37,7 +37,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--text-paragraph-lightest);
+        color: var(--text-bodyest);
         left: 0;
     }
 
@@ -45,7 +45,7 @@
         width: 200px;
         background-color: var(--toggle-inactive);
         transition: all 0.25s linear;
-        color: var(--text-paragraph-lightest);
+        color: var(--text-bodyest);
         font-size: 13px;
         border-radius: 20px;
         display: flex;

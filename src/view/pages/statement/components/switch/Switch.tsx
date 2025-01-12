@@ -54,9 +54,7 @@ function SwitchScreen({ statement }: SwitchScreenProps): ReactNode {
 
 function SwitchStatementType({ statement }: { statement: Statement | undefined }): ReactNode {
 
-
 	const statementType = statement?.statementType;
-
 
 	switch (statementType) {
 		case StatementType.group:

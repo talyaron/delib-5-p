@@ -1,5 +1,5 @@
-import SubmitStatementButton from '../SubmitStatementButton';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
+import Button from '@/view/components/buttons/button/Button';
 
 interface StepFourContinueWithOwnInput {
 	newStatementInput: { title: string; description: string };
@@ -36,10 +36,9 @@ export default function StepFourContinueWithOwnInput({
 				/>
 			</div>
 			<div className='twoButtonBox'>
-				<SubmitStatementButton
-					icon={SendIcon}
+				<Button
+					icon={<SendIcon />}
 					text='Submit my Statement'
-					textColor='var(--white)'
 					onClick={onFormSubmit}
 				/>
 			</div>

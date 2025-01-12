@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ChangeEvent } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './Textarea.module.scss';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
@@ -34,7 +34,7 @@ const Textarea: React.FC<TextAreaProps> = ({
 		adjustHeight();
 	}, [value]);
 
-	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleChange = () => {
 		adjustHeight();
 		// onChange?.(e.target.value);
 	};

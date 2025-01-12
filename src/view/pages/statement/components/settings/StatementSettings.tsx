@@ -46,11 +46,11 @@ const StatementSettings: FC = () => {
 	// * Use Effect * //
 	useEffect(() => {
 		const unsubscribe = listenToChoseBy(statementId);
-		return () => {
+		
+return () => {
 			unsubscribe();
 		};
 	}, []);
-
 
 	useEffect(() => {
 		try {

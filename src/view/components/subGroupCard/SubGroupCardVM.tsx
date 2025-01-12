@@ -34,7 +34,8 @@ export default function useSubGroupCard(statement: Statement): SubGroupCardRetur
 		};
 	} catch (error) {
 		console.error('Error in useSubGroupCard:', error);
-		return {
+		
+return {
 			Icon: <DocumentIcon />,
 			backgroundColor: 'var(--header-home)',
 			text: ''

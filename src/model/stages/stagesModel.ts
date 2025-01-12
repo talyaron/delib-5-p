@@ -21,7 +21,6 @@ export function convertToStageTitle(stageType: StageType | undefined): string {
 
 export const basicStagesTypes = [StageType.explanation, StageType.needs, StageType.questions, StageType.suggestions, StageType.summary]
 
-
 export class StageC {
 	private stage: Statement | undefined;
 	constructor(statement: Statement, stageType: StageType) {

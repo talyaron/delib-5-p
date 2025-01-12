@@ -6,7 +6,6 @@ import { StageType, StatementType } from 'delib-npm';
 import { saveStatementToDB } from '@/controllers/db/statements/setStatements';
 import { StatementContext } from '@/view/pages/statement/StatementCont';
 
-
 interface AddStageProps {
 	setShowAddStage: (showAddStage: boolean) => void
 }
@@ -15,7 +14,6 @@ const AddStage: FC<AddStageProps> = ({ setShowAddStage }) => {
 	const { t } = useLanguage()
 	const { statement } = useContext(StatementContext)
 
-
 	const [defaultStageName, setDefaultStageName] = useState<string>("")
 	const [userEnteredStageName, setUserEnteredStageName] = useState<boolean>(false)
 
@@ -23,7 +21,7 @@ const AddStage: FC<AddStageProps> = ({ setShowAddStage }) => {
 		setShowAddStage(false)
 	}
 
-	function handleChangeStageName(ev: any) {
+	function handleChangeStageName(ev: React.ChangeEvent<HTMLSelectElement>) {
 		if (userEnteredStageName) return;
 		const stageType = ev.target.value as StageType;
 		const stageName = getDefaultStageName(stageType)
@@ -34,17 +32,16 @@ const AddStage: FC<AddStageProps> = ({ setShowAddStage }) => {
 		setUserEnteredStageName(true)
 	}
 
-	async function handleSubmit(ev: any) {
+	async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
 		ev.preventDefault()
-		const data = new FormData(ev.target)
+		const data = new FormData(ev.target as HTMLFormElement)
 		const stageType = data.get("stageType") as StageType
 		const name = data.get("stageName") as string
 		const description = data.get("stageDescription") as string || ""
 
-
 		if (!statement || !stageType) return;
-		const st = await saveStatementToDB({ text: name, description, stageType, parentStatement: statement, statementType: StatementType.stage })
-		console.log(st)
+		await saveStatementToDB({ text: name, description, stageType, parentStatement: statement, statementType: StatementType.stage })
+
 		setShowAddStage(false)
 	}
 

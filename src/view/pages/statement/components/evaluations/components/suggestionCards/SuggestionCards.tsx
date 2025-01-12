@@ -10,9 +10,6 @@ import { statementSubsSelector } from "@/model/statements/statementsSlice";
 import { StatementContext } from "@/view/pages/statement/StatementCont";
 import EmptyScreen from "../emptyScreen/EmptyScreen";
 
-
-
-
 const SuggestionCards: FC = () => {
 	const { sort } = useParams();
 	const navigate = useNavigate();
@@ -22,8 +19,6 @@ const SuggestionCards: FC = () => {
 
 	const { questionType, currentStage } = statement?.questionSettings || { questionType: QuestionType.singleStep, currentStage: QuestionStage.suggestion };
 	const subStatements = useSelector(statementSubsSelector(statement?.statementId)).filter((sub: Statement) => sub.statementType === StatementType.option);
-
-
 
 	useEffect(() => {
 		const { totalHeight: _totalHeight } = sortSubStatements(subStatements, sort, 30);
@@ -43,7 +38,7 @@ const SuggestionCards: FC = () => {
 
 	if (!subStatements) {
 		return (
-			<EmptyScreen setShowModal={() => { }} />
+			<EmptyScreen setShowModal={() => { return }} />
 		);
 	}
 

@@ -2,10 +2,9 @@ import { SimpleStatement, Statement } from 'delib-npm'
 import { FC } from 'react'
 import styles from './StageCard.module.scss';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import { convertToStageTitle } from '@/model/stages/stagesModel';
-
 
 interface Props {
 	statement: Statement
@@ -18,8 +17,7 @@ const StageCard: FC<Props> = ({ statement }) => {
 
 	const chosen = statement.results || []
 
-
-	function suggestNewSuggestion(ev: any) {
+	function suggestNewSuggestion(ev: React.MouseEvent<HTMLButtonElement>) {
 		ev.stopPropagation()
 		navigate(`/statement/${statement.statementId}/main`)
 	}
@@ -47,5 +45,3 @@ const StageCard: FC<Props> = ({ statement }) => {
 }
 
 export default StageCard
-
-

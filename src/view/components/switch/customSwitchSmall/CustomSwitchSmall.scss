@@ -7,7 +7,7 @@ $SwitchHeight: 2.6729rem;
     width: fit-content;
     align-items: start;
 
-   
+
 
     input {
         display: none;
@@ -21,7 +21,7 @@ $SwitchHeight: 2.6729rem;
         background-size: cover;
         background-repeat: no-repeat;
 
-        &--ltr{
+        &--ltr {
             transform: scale(-1, 1);
         }
 
@@ -41,15 +41,15 @@ $SwitchHeight: 2.6729rem;
         height: $SwitchHeight;
         width: $SwitchHeight;
         position: absolute;
-       
+
         border-radius: 100%;
 
-        &-background{
+        &-background {
             // color:#9FB1D4;
-            color: var(--text-paragraph-lightest);
-           
+            color: var(--text-bodyest);
 
-            &-off{
+
+            &-off {
                 position: absolute;
                 left: 0rem;
             }

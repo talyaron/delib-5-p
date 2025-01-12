@@ -12,9 +12,9 @@ interface NewStatementContextProps {
 export const NewStatementContext = createContext<NewStatementContextProps>({
 	title: '',
 	description: '',
-	setTitle: () => { },
-	setDescription: () => { },
-	setCurrentStep: () => { },
+	setTitle: () => { return; },
+	setDescription: () => { return; },
+	setCurrentStep: () => { return; },
 });
 
 // export const NewStatementProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -32,6 +32,6 @@ export const useNewStatement = (): NewStatementContextProps => {
 	if (!context) {
 		throw new Error('useNewStatement must be used within a NewStatementProvider');
 	}
-	
-return context;
+
+	return context;
 };

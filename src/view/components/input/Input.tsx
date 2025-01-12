@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import styles from './Input.module.scss';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 
@@ -20,29 +20,36 @@ const Input: React.FC<SearchInputProps> = ({
 	name
 }) => {
 	const { dir } = useLanguage();
-	const [inputValue, setInputValue] = useState(value);
+	const [inputValue, setInputValue] = useState<string>(value);
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setInputValue(e.target.value);
 		onChange?.(e.target.value);
 	};
 
-	const handleClear = () => {
+	const handleClear = (): void => {
 		setInputValue('');
 		onChange?.('');
 	};
 
 	return (
 		<div className={styles.container}>
-			<div className={`${styles.label} ${dir === "ltr" ? styles["label--ltr"] : styles["label--rtl"]}`}>{label}</div>
+			<div
+				className={`${styles.label} ${dir === "ltr" ? styles["label--ltr"] : styles["label--rtl"]
+					}`}
+			>
+				{label}
+			</div>
 			<div className={styles.inputContainer}>
-				{image && <img
-					src={image}
-					alt="search"
-					className={styles.searchIcon}
-					width={24}
-					height={24}
-				/>}
+				{image && (
+					<img
+						src={image}
+						alt="search"
+						className={styles.searchIcon}
+						width={24}
+						height={24}
+					/>
+				)}
 				<input
 					name={name}
 					type="text"
@@ -52,14 +59,20 @@ const Input: React.FC<SearchInputProps> = ({
 					className={styles.input}
 				/>
 				{inputValue && (
-					<img
-						src="https://dashboard.codeparrot.ai/api/assets/Z2PctANhjipAogi1"
-						alt="clear"
-						className={styles.clearIcon}
+					<button
 						onClick={handleClear}
-						width={24}
-						height={24}
-					/>
+						className={styles.clearButton}
+						type="button"
+						aria-label="Clear input"
+					>
+						<img
+							src="https://dashboard.codeparrot.ai/api/assets/Z2PctANhjipAogi1"
+							alt=""
+							className={styles.clearIcon}
+							width={24}
+							height={24}
+						/>
+					</button>
 				)}
 			</div>
 		</div>

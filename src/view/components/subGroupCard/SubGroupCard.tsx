@@ -4,6 +4,7 @@ import styles from './SubGroupCard.module.scss'
 import { Link, NavLink } from 'react-router-dom';
 import useSubGroupCard from './SubGroupCardVM';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+
 interface Props {
 	statement: Statement;
 }

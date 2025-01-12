@@ -2,7 +2,6 @@ import { ChoseBy, Collections } from "delib-npm";
 import { DB } from "../config";
 import { doc, setDoc } from "firebase/firestore";
 
-
 export async function setChoseByToDB(choseBy: ChoseBy) {
 	try {
 

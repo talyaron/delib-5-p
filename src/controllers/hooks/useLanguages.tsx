@@ -9,7 +9,6 @@ export enum LanguagesEnum {
 	nl = "nl",
 }
 
-
 import ar from "../../assets/Languages/ar.json";
 import de from "../../assets/Languages/de.json";
 import en from "../../assets/Languages/en.json";
@@ -20,7 +19,6 @@ import nl from "../../assets/Languages/nl.json";
 const languages: Record<string, string>[] = [en, ar, he, de, es, nl];
 
 // LanguageProvider component to wrap your application and provide the language context
-
 
 type LanguageContextType = {
 	currentLanguage: string;

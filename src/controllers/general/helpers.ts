@@ -85,7 +85,6 @@ export function isAdmin(role: Role | undefined): boolean {
 	return false;
 }
 
-
 export function getInitials(fullName: string) {
 	// Split the full name into words
 	const words = fullName.split(" ");

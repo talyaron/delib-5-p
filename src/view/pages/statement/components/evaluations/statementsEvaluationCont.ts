@@ -1,4 +1,4 @@
-import { Statement, Screen, SortType } from "delib-npm";
+import { Statement, SortType } from "delib-npm";
 
 import {
 	EnhancedEvaluationThumb,

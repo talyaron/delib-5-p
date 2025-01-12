@@ -16,7 +16,7 @@ export const StatementContext = createContext<StatementContextProps>(
 		statement: undefined,
 		talker: null,
 		role: undefined,
-		handleSetNewStatement: () => { },
+		handleSetNewStatement: () => { return },
 		handleShowTalker: () => {
 			return;
 		},

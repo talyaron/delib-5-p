@@ -1,5 +1,5 @@
-import { Screen, SortType, StatementType } from "delib-npm";
-import React, { FC, useContext, useState } from "react";
+import { SortType, StatementType } from "delib-npm";
+import { FC, useContext, useState } from "react";
 
 // Third party libraries
 import { useSelector } from "react-redux";
@@ -49,13 +49,11 @@ const StatementBottomNav: FC<Props> = () => {
 		setShowStartHere(false);
 		decreesUserSettingsLearningRemain({ addOption: true });
 
-
 	};
 
 	function handleSortingClick() {
 		setShowSorting(!showSorting);
 	}
-
 
 	return (
 		<>
@@ -115,8 +113,6 @@ const StatementBottomNav: FC<Props> = () => {
 };
 
 export default StatementBottomNav;
-
-
 
 interface NavIconProps {
 	name: string;

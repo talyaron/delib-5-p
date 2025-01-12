@@ -1,7 +1,7 @@
 import { Statement, Vote, Evaluation, Screen } from 'delib-npm';
 
 // Helpers
-import { DeliberativeElement, StatementType } from 'delib-npm/dist/models/statementsModels';
+import { StatementType } from 'delib-npm/dist/models/statementsModels';
 import { NavigateFunction } from 'react-router-dom';
 import {
 	defaultResultsSettings,
@@ -127,8 +127,6 @@ export async function setNewStatement({
 				statement,
 				text: statement.statement,
 				description: statement.description ?? '',
-				deliberativeElement:
-					statement.deliberativeElement ?? DeliberativeElement.general,
 				resultsBy,
 				numberOfResults,
 				hasChildren,

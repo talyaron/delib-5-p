@@ -10,18 +10,18 @@
 
   &--primary {
     background-color: var(--btn-primary-default);
-    color: var(--text-light-btn);
+    color: white;
   }
 
   &--secondary {
-    background-color: var(--btn-secondary);
-    color: var(--text-dark-btn);
-    border: 1px solid var(--text-dark-btn);
+    background-color: white;
+    color: var(--btn-secondary-default);
+    border: 1px solid var(--btn-secondary-default);
   }
 
   &--disabled {
-    background-color: var(--btn-disabled);
-    color: var(--text-light-btn);
+    background-color: var(--btn-primary-disabled);
+    color: var(--btn-white-selected);
     cursor: not-allowed;
   }
 

@@ -78,8 +78,6 @@ const SuggestionCard: FC<Props> = ({
 		sortSubStatements(siblingStatements, sort, 30);
 	}, [statement?.elementHight]);
 
-
-
 	if (!statement) return null;
 
 	const _isAuthorized = isAuthorized(
@@ -91,7 +89,6 @@ const SuggestionCard: FC<Props> = ({
 	const statementColor: StyleProps = useStatementColor({
 		statement
 	});
-
 
 	useEffect(() => {
 		const element = elementRef.current;
@@ -106,7 +103,6 @@ const SuggestionCard: FC<Props> = ({
 			}, 0);
 		}
 	}, [elementRef.current?.clientHeight]);
-
 
 	function handleSetOption() {
 		try {

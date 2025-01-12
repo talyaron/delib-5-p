@@ -105,7 +105,6 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 				</section>
 				<ChoseBySettings {...statementSettingsProps} />
 
-
 				{!isNewStatement && (
 					<>
 						<UploadImage

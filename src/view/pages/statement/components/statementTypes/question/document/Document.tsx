@@ -10,9 +10,6 @@ import StageCard from './stages/StageCard'
 import { Statement, StatementType } from 'delib-npm'
 import { updateStatementsOrderToDB } from '@/controllers/db/statements/setStatements'
 
-
-
-
 const Document: FC = () => {
 	const { statement } = useContext(StatementContext);
 	const initialStages = useSelector(statementSubsSelector(statement?.statementId))

@@ -3,7 +3,6 @@ import {
 	Access,
 	Membership,
 	ResultsBy,
-	Screen,
 	StageType,
 	Statement,
 	StatementSchema,
@@ -21,7 +20,6 @@ import { setStatementSubscriptionNotificationToDB } from "../notifications/notif
 import { setNewRoomSettingsToDB } from "../rooms/setRooms";
 import { setStatementSubscriptionToDB } from "../subscriptions/setSubscriptions";
 import { getRandomUID } from "@/controllers/general/helpers";
-import { allowedScreens } from "@/controllers/general/screens";
 import { store } from "@/model/store";
 import {
 	getExistingOptionColors,
@@ -88,8 +86,6 @@ export function setSubStatementToDB(statement: Statement, title: string, descrip
 	}
 }
 
-
-
 export async function saveStatementToDB({
 	text,
 	description,
@@ -132,7 +128,6 @@ export async function saveStatementToDB({
 		});
 
 		return statement;
-
 
 	} catch (error) {
 		console.error(error);
@@ -398,7 +393,6 @@ interface UpdateStatementProps {
 	text: string;
 	description?: string;
 	statement: Statement;
-	subScreens?: Screen[];
 	statementType?: StatementType;
 	enableAddEvaluationOption: boolean;
 	enableAddVotingOption: boolean;
@@ -413,7 +407,6 @@ export function updateStatement({
 	text,
 	description,
 	statement,
-	subScreens = [Screen.CHAT],
 	statementType,
 	enableAddEvaluationOption,
 	enableAddVotingOption,
@@ -449,8 +442,6 @@ export function updateStatement({
 				numberOfResults: numberOfResults,
 			};
 		}
-
-		subScreens = allowedScreens(statement, subScreens);
 
 		newStatement.statementSettings = updateStatementSettings({
 			statement,
@@ -709,7 +700,6 @@ export async function setFollowMeDB(
 		console.error(error);
 	}
 }
-
 
 export async function updateStatementsOrderToDB(statements: Statement[]) {
 	try {

@@ -38,7 +38,6 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 
 		if (choseBy?.cutoffType === CutoffType.topOptions) {
 
-
 			setRangeProps({
 				maxValue: 20,
 				minValue: 1,
@@ -58,46 +57,46 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 		}
 	}, [choseBy?.cutoffType]);
 
-
-	function handleEvaluationChange(e: any) {
+	function handleEvaluationChange(e: React.ChangeEvent<HTMLInputElement>) {
 
 		if (!e.target.id) return;
 		if (!choseBy) return;
 		const newChoseBy = {
 			...choseBy,
-			choseByEvaluationType: e.target.id,
+			choseByEvaluationType: e.target.id as ChoseByEvaluationType,
 		};
 		dispatch(setChoseBy(newChoseBy));
 		setChoseByToDB(newChoseBy);
 
 	}
 
-
-	function handleCutoffChange(e: any) {
+	function handleCutoffChange(e: React.ChangeEvent<HTMLInputElement>) {
 		if (!e.target.id) return;
 		if (!choseBy) return;
 
 		const newChoseBy = {
 			...choseBy,
-			cutoffType: e.target.id,
+			cutoffType: e.target.id as CutoffType,
 		};
 
 		dispatch(setChoseBy(newChoseBy));
 		setChoseByToDB(newChoseBy);
 	}
 
-	function handleRangeChange(e: any) {
+	function handleRangeChange(e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLInputElement> | React.TouchEvent<HTMLInputElement>) {
 
 		if (!choseBy) return;
+
+		const valueAsNumber = (e.target as HTMLInputElement).valueAsNumber;
 
 		setRangeProps({
 			...rangeProps,
-			value: getValue(e.target.valueAsNumber),
+			value: getValue(valueAsNumber),
 		});
 
 		const newChoseBy = {
 			...choseBy,
-			number: getValue(e.target.valueAsNumber),
+			number: getValue(valueAsNumber),
 		};
 
 		if (e.type === "mouseup" || e.type === "touchend") {
@@ -110,9 +109,6 @@ const ChoseBySettings: FC<StatementSettingsProps> = ({
 	function getValue(value: number) {
 		return choseBy?.cutoffType === CutoffType.cutoffValue ? value ?? 0 : Math.ceil(value ?? 0);
 	}
-
-
-
 
 	return (
 		<div className={styles.choseBy}>

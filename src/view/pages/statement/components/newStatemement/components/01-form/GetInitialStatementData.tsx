@@ -9,7 +9,6 @@ import Input from '@/view/components/input/Input';
 import Textarea from '@/view/components/textarea/Textarea';
 import { StatementContext } from '@/view/pages/statement/StatementCont';
 
-
 export default function GetInitialStatementData() {
 
 	const { t } = useLanguage();
@@ -42,8 +41,6 @@ export default function GetInitialStatementData() {
 			});
 
 			handleSetNewStatement(false);
-
-
 
 		} catch (error) {
 			console.error(error);

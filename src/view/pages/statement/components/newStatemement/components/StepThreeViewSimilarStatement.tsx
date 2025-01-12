@@ -1,7 +1,7 @@
 import React from 'react';
-import SubmitStatementButton from '../SubmitStatementButton';
 import SendIcon from '@/assets/icons/send-icon-pointing-up-and-right.svg?react';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
+import Button from '@/view/components/buttons/button/Button';
 
 interface StepThreeViewSimilarStatementProps {
 	viewSimilarStatement: { title: string; description: string };
@@ -32,10 +32,9 @@ export default function StepThreeViewSimilarStatement({
 					className='twoButtonBox__backButton'
 					onClick={() => setCurrentStep((prev) => prev - 1)}
 				>{t("Back")}</button>
-				<SubmitStatementButton
-					icon={SendIcon}
+				<Button
+					icon={<SendIcon />}
 					text={t('Continue with this suggestion')}
-					textColor='var(--white)'
 					onClick={handleSimilarStatementChosen}
 				/>
 			</div>

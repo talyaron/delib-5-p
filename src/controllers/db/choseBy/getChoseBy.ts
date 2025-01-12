@@ -9,24 +9,27 @@ export function listenToChoseBy(statementId: string | undefined): Unsubscribe {
 	try {
 
 		if (!statementId) {
-			return () => { };
+			return () => { return; };
 		}
 
 		const dispatch = store.dispatch;
 		const choseByRef = doc(FireStore, Collections.choseBy, statementId);
+
 		return onSnapshot(choseByRef, (choseBySnap) => {
 			if (!choseBySnap.exists()) {
 				dispatch(setChoseBy(defaultChoseBySettings(statementId)));
+
 				return;
 			}
 
-
 			dispatch(setChoseBy(choseBySnap.data() as ChoseBy));
+
 			return
 		});
 
 	} catch (error) {
 		console.error(error);
-		return () => { };
+
+		return () => { return; };
 	}
 }

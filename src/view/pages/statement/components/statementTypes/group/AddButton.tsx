@@ -13,15 +13,15 @@ export default function AddButton() {
 	}
 
 	const addDocumentAction = () => {
-		console.warn('Add document')
+		return;
 	}
 
 	const addClusterAction = () => {
-		console.warn('Add cluster')
+		return;
 	}
 
 	const addSubGroupAction = () => {
-		console.warn('Add sub group')
+		return;
 	}
 
 	return (
