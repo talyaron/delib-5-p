@@ -1,22 +1,22 @@
 .button {
   position: relative;
   display: flex;
-  width:fit-content;
+  width: fit-content;
   align-items: center;
   min-height: 2rem;
   border-radius: 50px;
   color: var(--text-light-btn);
-  box-sizing: border-box  ;
+  box-sizing: border-box;
 
   &--primary {
-    background-color: var(--btn-primary);
+    background-color: var(--btn-primary-default);
     color: var(--text-light-btn);
   }
 
   &--secondary {
     background-color: var(--btn-secondary);
     color: var(--text-dark-btn);
-    border:1px solid var(--text-dark-btn);
+    border: 1px solid var(--text-dark-btn);
   }
 
   &--disabled {
@@ -29,11 +29,11 @@
     font-size: 1rem;
     text-align: center;
     padding: 0 1rem;
-    
+
   }
 
   &__icon-wrapper {
-    
+
 
     display: flex;
     align-items: center;
@@ -76,10 +76,12 @@
 
 .rtl {
   flex-direction: row-reverse;
-  svg{
-    transform:scaleX(-1);
+
+  svg {
+    transform: scaleX(-1);
   }
 }
+
 .ltr {
   flex-direction: row;
 }
