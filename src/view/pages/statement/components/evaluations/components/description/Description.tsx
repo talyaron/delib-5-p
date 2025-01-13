@@ -1,17 +1,16 @@
-import { Statement } from "delib-npm";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import styles from "./Description.module.scss";
 import Text from "@/view/components/text/Text";
+import { StatementContext } from "@/view/pages/statement/StatementCont";
 
-interface Props {
-  statement: Statement|undefined;
-}
 
-const Description: FC<Props> = ({ statement }) => {
+const Description: FC = () => {
+
+	const { statement } = useContext(StatementContext);
 	if (!statement?.description) {
 		return null;
 	}
-	
+
 	return (
 		<div className={styles.description}>
 			<Text description={statement.description} />

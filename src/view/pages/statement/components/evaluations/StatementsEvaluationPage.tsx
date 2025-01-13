@@ -91,7 +91,7 @@ const StatementEvaluationPage: FC<StatementEvaluationPageProps> = ({
 								{getToastButtons(currentStage)}
 							</Toast>
 						)}
-						<Description statement={statement} />
+						<Description />
 						<SuggestionCards />
 					</div>
 				</div>

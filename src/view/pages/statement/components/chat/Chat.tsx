@@ -16,6 +16,7 @@ import { listenToSubStatements } from "@/controllers/db/statements/listenToState
 import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { statementSubsSelector } from "@/model/statements/statementsSlice";
 import { userSelector } from "@/model/users/userSlice";
+import Description from "../evaluations/components/description/Description";
 
 let firstTime = true;
 let numberOfSubStatements = 0;
@@ -124,6 +125,9 @@ const Chat: FC = () => {
 				className={`${styles.wrapper} ${toSlide && slideInOrOut}`}
 				id={`msg-${statement?.statementId}`}
 			>
+				<div className="wrapper">
+					<Description />
+				</div>
 				{subStatements?.map((statementSub: Statement, index) => (
 					<div key={statementSub.statementId}>
 						<ChatMessageCard

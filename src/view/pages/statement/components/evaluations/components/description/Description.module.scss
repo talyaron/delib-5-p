@@ -1,10 +1,17 @@
 .description {
   margin-top: 20px;
   margin-bottom: 20px;
- 
+
+  p {
+    font-size: var(--h4-font-size);
+    color: var(--text-subtitle);
+    font-weight: 300;
+    line-height: 1.2;
+  }
+
 
   @media screen and (max-width: 768px) {
-   padding: 0 20px;
-    
+    padding: 0 20px;
+
   }
 }

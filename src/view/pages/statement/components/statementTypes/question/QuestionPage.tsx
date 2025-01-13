@@ -1,15 +1,14 @@
 import { useContext } from 'react'
 import { StatementContext } from '../../../StatementCont'
 import Document from './document/Document'
-import { QuestionStagesType } from 'delib-npm'
 import SimpleQuestion from './simpleQuestion/SimpleQuestion'
 
 const QuestionPage = () => {
 	const { statement } = useContext(StatementContext);
-	const questionType: QuestionStagesType | undefined = statement?.questionSettings?.stagesType;
+	const isDocument: boolean | undefined = statement?.questionSettings?.isDocument;
 
-	if (questionType === QuestionStagesType.document) return <Document />
-	if (!questionType || questionType === QuestionStagesType.singleStage) return <SimpleQuestion />
+	if (isDocument) return <Document />
+	return <SimpleQuestion />
 
 	return null
 }
