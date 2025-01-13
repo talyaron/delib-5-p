@@ -24,10 +24,14 @@
         align-items: center;
         flex-direction: column;
 
+
         @media screen and (min-width: 768px) {
             animation-name: rise;
             animation-duration: 0.4s;
             animation-timing-function: ease-in-out;
+            min-width: none;
+            max-width: 75ch;
+
 
         }
 

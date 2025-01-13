@@ -1,12 +1,26 @@
 // Input.module.scss
 .container {
+	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	font-family: 'Roboto',
+		sans-serif;
+	width: 100%;
 }
 
 .label {
 	font-size: 14px;
+	position: relative;
+	top: 0.875rem;
+	left: -0.5rem;
+	z-index: 1;
+	background-color: #ffffff;
+	width: fit-content;
+	color: #7484a9;
+	padding: 0 0.5rem;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+
 
 	&--ltr {
 		text-align: left;
@@ -18,9 +32,15 @@
 }
 
 .inputContainer {
-	position: relative;
+	flex: 1;
+	border: 1px solid #bdcef4;
+	border-radius: 0.5rem;
+	padding: 1.25rem 1rem;
+	height: 100%;
 	display: flex;
 	align-items: center;
+	flex-direction: row-reverse;
+
 }
 
 .searchIcon {
@@ -31,9 +51,23 @@
 
 .input {
 	width: 100%;
-	padding: 8px 40px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+	height: 100%;
+	border: none;
+	resize: none;
+	background: transparent;
+	font-family: 'Roboto',
+		sans-serif;
+	font-size: 1rem;
+	line-height: 150%;
+	font-weight: 300;
+	font-style: italic;
+	color: #7484a9;
+	padding: 0;
+	min-height: 40px; // Or whatever minimum height you want
+	resize: none; // Optional: prevents manual resizing
+	overflow: hidden; // Prevents scrollbar from appearing
+	box-sizing: border-box;
+	width: 100%;
 
 	&:focus {
 		outline: none;
@@ -42,8 +76,6 @@
 }
 
 .clearButton {
-	position: absolute;
-	right: 12px;
 	background: none;
 	border: none;
 	padding: 0;
@@ -51,6 +83,16 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding: .5rem;
+
+	@media screen and (max-width: 768px) {
+		padding: .25rem;
+
+	}
+
+	svg {
+		transform: scale(.8);
+	}
 
 	&:hover {
 		opacity: 0.8;
@@ -64,4 +106,7 @@
 
 .clearIcon {
 	display: block;
+
+
+
 }
