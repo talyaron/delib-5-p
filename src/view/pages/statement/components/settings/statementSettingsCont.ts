@@ -1,7 +1,7 @@
 import { Statement, Vote, Evaluation, Screen } from 'delib-npm';
 
 // Helpers
-import { StatementType } from 'delib-npm/dist/models/statementsModels';
+import { StatementSettings, StatementType } from 'delib-npm/dist/models/statementsModels';
 import { NavigateFunction } from 'react-router-dom';
 import {
 	defaultResultsSettings,
@@ -154,7 +154,7 @@ export async function setNewStatement({
 }
 
 export const getStatementSettings = (statement: Statement) => {
-	const statementSettings =
+	const statementSettings: StatementSettings =
 		statement.statementSettings ?? defaultStatementSettings;
 
 	return {
@@ -172,6 +172,8 @@ export const getStatementSettings = (statement: Statement) => {
 		enableNavigationalElements: Boolean(
 			statementSettings.enableNavigationalElements
 		),
+		hasChat: Boolean(statementSettings.hasChat),
+		hasChildren: Boolean(statementSettings.hasChildren),
 	};
 };
 

@@ -37,6 +37,7 @@ const StatementSettings: FC = () => {
 		Statement | undefined
 	>();
 
+
 	// * Redux * //
 	const dispatch = useAppDispatch();
 	const statement: Statement | undefined = useAppSelector(
@@ -46,8 +47,8 @@ const StatementSettings: FC = () => {
 	// * Use Effect * //
 	useEffect(() => {
 		const unsubscribe = listenToChoseBy(statementId);
-		
-return () => {
+
+		return () => {
 			unsubscribe();
 		};
 	}, []);

@@ -350,7 +350,8 @@ export function createStatement({
 				enhancedEvaluation,
 				showEvaluation,
 				enableAddEvaluationOption,
-				enableAddVotingOption
+				enableAddVotingOption,
+				hasChildren
 			},
 			defaultLanguage: user.defaultLanguage || "en",
 			createdAt: Timestamp.now().toMillis(),

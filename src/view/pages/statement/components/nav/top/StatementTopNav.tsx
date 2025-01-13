@@ -116,12 +116,15 @@ const StatementTopNav: FC<Props> = ({
 export default StatementTopNav;
 
 interface NavigationButtonsProps {
+	statement?: Statement;
 	screen: string | undefined;
 	handleNavigation: (path: string) => void;
 	headerStyle: { color: string; backgroundColor: string };
 }
 
-function NavigationButtons({ screen, handleNavigation, headerStyle }: NavigationButtonsProps) {
+function NavigationButtons({ screen, handleNavigation, headerStyle, statement }: NavigationButtonsProps) {
+	const { hasChat } = statement?.statementSettings || { hasChat: false };
+	if (!hasChat) return null;
 
 	return (
 		<>
@@ -168,9 +171,10 @@ interface NavButtonsProps {
 }
 
 function NavButtons({ screen, handleNavigation, headerStyle, allowNavigation, permission, handleToggleNotifications, statement }: NavButtonsProps) {
+
 	return (
 		<>
-			{allowNavigation && <NavigationButtons screen={screen} handleNavigation={handleNavigation} headerStyle={headerStyle} />}
+			{allowNavigation && <NavigationButtons statement={statement} screen={screen} handleNavigation={handleNavigation} headerStyle={headerStyle} />}
 			<button onClick={handleToggleNotifications}>
 				{permission ? (
 					<BellIcon color={headerStyle.color} />

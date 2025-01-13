@@ -7,6 +7,7 @@ import { getStatementSettings } from '../../statementSettingsCont';
 import { useLanguage } from '@/controllers/hooks/useLanguages';
 import Checkbox from '@/view/components/checkbox/Checkbox';
 import './AdvancedSettings.scss';
+import { StatementSettings } from 'delib-npm';
 
 const AdvancedSettings: FC<StatementSettingsProps> = ({
 	statement,
@@ -14,23 +15,26 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 }) => {
 	const { t } = useLanguage();
 
-	const hasChildren = statement.hasChildren ?? true;
 
-	const statementSettings = getStatementSettings(statement);
+	const statementSettings: StatementSettings = getStatementSettings(statement);
 	const {
-		inVotingGetOnlyResults,
-		enhancedEvaluation,
-		showEvaluation,
-		enableAddVotingOption,
-		enableAddEvaluationOption,
-		enableSimilaritiesSearch,
-		enableNavigationalElements,
+		inVotingGetOnlyResults = false,
+		enhancedEvaluation = false,
+		showEvaluation = false,
+		enableAddVotingOption = false,
+		enableAddEvaluationOption = false,
+		enableSimilaritiesSearch = false,
+		enableNavigationalElements = false,
+		hasChat = false,
+		hasChildren = false
 	} = statementSettings;
+
 
 	const setStatementSetting = (
 		key: keyof typeof statementSettings,
 		newValue: boolean
 	) => {
+
 		setStatementToEdit({
 			...statement,
 			statementSettings: {
@@ -44,13 +48,17 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 		<div className='advanced-settings'>
 			<h3 className='title'>{t('Advanced')}</h3>
 			<Checkbox
+				label={'Chat'}
+				isChecked={hasChat}
+				toggleSelection={() => {
+					setStatementSetting('hasChat', !hasChat);
+				}}
+			/>
+			<Checkbox
 				label={'Enable Sub-Conversations'}
 				isChecked={hasChildren}
 				toggleSelection={() => {
-					setStatementToEdit({
-						...statement,
-						hasChildren: !hasChildren,
-					});
+					setStatementSetting("hasChildren", !hasChildren);
 				}}
 			/>
 			<Checkbox

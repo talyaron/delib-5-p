@@ -1,4 +1,4 @@
-import { Statement, StatementType } from 'delib-npm';
+import { Role, Statement, StatementType } from 'delib-npm';
 import { ReactNode, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { StatementContext } from '../../StatementCont';
@@ -12,7 +12,7 @@ import StagePage from '../statementTypes/stage/StagePage';
 import { useSwitchMV } from './SwitchMV';
 
 const Switch = () => {
-	const { statement } = useContext(StatementContext);
+	const { statement, role } = useContext(StatementContext);
 	const { parentStatement } = useSwitchMV();
 
 	return (
@@ -26,7 +26,7 @@ const Switch = () => {
 					className={styles.main}
 				>
 					<div className={styles.statement}>
-						<SwitchScreen statement={statement} />
+						<SwitchScreen statement={statement} role={role} />
 					</div>
 				</div>
 			</div>
@@ -36,10 +36,23 @@ const Switch = () => {
 
 interface SwitchScreenProps {
 	statement: Statement | undefined;
+	role: Role | undefined;
 }
 
-function SwitchScreen({ statement }: SwitchScreenProps): ReactNode {
-	const { screen } = useParams();
+function SwitchScreen({ statement, role }: SwitchScreenProps): ReactNode {
+	let { screen } = useParams();
+	const { hasChat } = statement?.statementSettings || { hasChat: false };
+
+	//allowed screens
+	const hasPermission = role === Role.admin;
+	if (!hasPermission && screen === 'settings') {
+		screen = 'main';
+	}
+	if (!hasChat && screen === 'chat') {
+		screen = 'main';
+	}
+
+
 	switch (screen) {
 		case 'chat':
 			return <Chat />;

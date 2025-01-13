@@ -1,4 +1,4 @@
-import { Statement } from "delib-npm";
+import { Statement, StatementType } from "delib-npm";
 import { FC, useEffect, useState, useRef, useContext } from "react";
 
 // Third Party Imports
@@ -24,12 +24,12 @@ const Chat: FC = () => {
 	const chatRef = useRef<HTMLDivElement>(null);
 	const { statementId } = useParams();
 	const { statement } = useContext(StatementContext);
-	const subStatements = useAppSelector(statementSubsSelector(statementId));
+	const subStatements = useAppSelector(statementSubsSelector(statementId)).filter(s => s.statementType !== StatementType.stage);
 	const user = useAppSelector(userSelector);
 	const messagesEndRef = useRef(null);
 	const location = useLocation();
 
-	const [newMessages, setNewMessages] = useState<number>(0);
+	const [numberOfNewMessages, setNumberOfNewMessages] = useState<number>(0);
 
 	const { toSlide, slideInOrOut } = useSlideAndSubStatement(statement?.parentId);
 
@@ -102,14 +102,14 @@ const Chat: FC = () => {
 	}, [subStatements]);
 
 	useEffect(() => {
-		//if new sub-statement was not created by the user, then set newMessages to the number of new subStatements
+		//if new sub-statement was not created by the user, then set numberOfNewMessages to the number of new subStatements
 		const lastMessage = subStatements[subStatements.length - 1];
 		if (lastMessage?.creatorId !== user?.uid) {
 			const isNewMessages =
 				subStatements.length - numberOfSubStatements > 0;
 			numberOfSubStatements = subStatements.length;
 			if (isNewMessages) {
-				setNewMessages((n) => n + 1);
+				setNumberOfNewMessages((n) => n + 1);
 			}
 		} else {
 
@@ -141,8 +141,8 @@ const Chat: FC = () => {
 			</div>}
 			<div>
 				<NewMessages
-					newMessages={newMessages}
-					setNewMessages={setNewMessages}
+					newMessages={numberOfNewMessages}
+					setNewMessages={setNumberOfNewMessages}
 					scrollToBottom={scrollToBottom}
 				/>
 

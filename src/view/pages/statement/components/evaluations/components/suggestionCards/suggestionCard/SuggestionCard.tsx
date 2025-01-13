@@ -122,6 +122,8 @@ const SuggestionCard: FC<Props> = ({
 	}
 
 	const statementAge = new Date().getTime() - statement.createdAt;
+	const hasChildren = parentStatement?.statementSettings?.hasChildren;
+
 
 	return (
 		<div
@@ -180,7 +182,7 @@ const SuggestionCard: FC<Props> = ({
 				</div>
 
 				<div className='actions'>
-					{statement.hasChildren && (
+					{hasChildren && (
 						<div className='chat chat-more-element'>
 							<StatementChatMore statement={statement} />
 						</div>
