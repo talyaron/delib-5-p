@@ -2,6 +2,15 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /freediSignFeedback/{feedbackId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null 
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.stars is number
+        && request.resource.data.stars >= 0
+        && request.resource.data.stars <= 5
+        && request.resource.data.feedback is string;
+    }
   
     match /awaitingUsers/{document=**} {
       allow read, write: if request.auth != null;
