@@ -27,6 +27,7 @@ import SaveIcon from '@/assets/icons/save.svg?react';
 import { useAppSelector } from '@/controllers/hooks/reduxHooks';
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/model/store';
+import Loader from '@/view/components/loaders/Loader';
 
 interface StatementSettingsFormProps {
 	statement: Statement;
@@ -40,12 +41,14 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 	setStatementToEdit,
 }) => {
 	const imageUrl = statement.imagesURL?.main ?? '';
-	const [image, setImage] = useState<string>(imageUrl);
 
 	// * Hooks * //
 	const navigate = useNavigate();
 	const { statementId } = useParams();
 	const { t } = useLanguage();
+
+	const [image, setImage] = useState<string>(imageUrl);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	// Selector to get the statement memberships
 	const statementMembershipSelector = (statementId: string | undefined) =>
@@ -70,13 +73,14 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 		// * Functions * //
 		const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
-
+			setLoading(true);
 			const newStatement = await setNewStatement({
 				navigate,
 				statementId,
 				statement,
 				parentStatement,
 			});
+			setLoading(false);
 			if (!newStatement) throw new Error('No new statement');
 			navigate(`/statement/${newStatement.statementId}`);
 		};
@@ -87,6 +91,8 @@ const StatementSettingsForm: FC<StatementSettingsFormProps> = ({
 			statement,
 			setStatementToEdit,
 		} as const;
+
+		if (loading) return <div className='statement-settings-form'><div className='loader-box'><Loader /></div></div>;
 
 		return (
 			<form

@@ -43,6 +43,7 @@
         .evaluators-button {
             color: var(--text-blue);
         }
+
         .voters-button {
             color: var(--text-blue);
         }
@@ -51,13 +52,14 @@
     .submit-button {
         transform: scale(1.25);
         transition: all 0.13s ease-in-out;
-        color:var(--white);
+        color: var(--white);
         margin: auto;
         cursor: pointer;
         position: fixed;
         bottom: 2%;
         left: 63%;
         z-index: 1000;
+
         &:hover {
             transform: scale(1.4);
         }
@@ -71,5 +73,14 @@
         gap: 0.625rem;
         border-radius: var(--Radius-Radius-L, 1.25rem);
         border: var(--Spacing-0, 1px) solid var(--btn-tertiary);
+    }
+
+    .loader-box {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+
     }
 }
