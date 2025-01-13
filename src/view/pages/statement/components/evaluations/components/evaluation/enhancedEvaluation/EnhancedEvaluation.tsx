@@ -2,7 +2,7 @@ import { Statement } from "delib-npm";
 import { FC } from "react";
 
 import { getEvaluationThumbIdByScore } from "../../../statementsEvaluationCont";
-import styles from  "./EnhancedEvaluation.module.scss";
+import styles from "./EnhancedEvaluation.module.scss";
 import {
 	enhancedEvaluationsThumbs,
 	EnhancedEvaluationThumb,
@@ -15,8 +15,8 @@ import { evaluationSelector } from "@/model/evaluations/evaluationsSlice";
 import { userSettingsSelector } from "@/model/users/userSlice";
 
 interface EnhancedEvaluationProps {
-  statement: Statement;
-  shouldDisplayScore: boolean;
+	statement: Statement;
+	shouldDisplayScore: boolean;
 }
 
 const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
@@ -28,7 +28,7 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 	);
 
 	const learningEvaluation =
-    useAppSelector(userSettingsSelector)?.learning?.evaluation || 0;
+		useAppSelector(userSettingsSelector)?.learning?.evaluation || 0;
 	const { t } = useLanguage();
 
 	const { sumPro, sumCon, numberOfEvaluators } = statement.evaluation || {
@@ -39,9 +39,10 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 
 	return (
 		<div
-			className={`${styles[`enhanced-evaluation`]} evolution-element`}
-			// className={styles[`enhanced-evaluation] ${dir === "ltr" ? "mirrorReverse" : ""}`]}
+			className={`${styles[`enhanced-evaluation`]}`}
+		// className={styles[`enhanced-evaluation] ${dir === "ltr" ? "mirrorReverse" : ""}`]}
 		>
+
 			<div className={`${styles["evaluation-score"]} con-element`}>
 				{shouldDisplayScore === true ? sumCon : null}
 			</div>
@@ -57,27 +58,23 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 					/>
 				))}
 			</div>
+			<div
+				className={`${styles[`evaluation-score`]} ${statement.consensus < 0 ? "negative" : ""}`}
+			>
+				{shouldDisplayScore && <span>{sumPro}</span>}
+				{(numberOfEvaluators && numberOfEvaluators > 0) ? (
+					<span className={styles["total-evaluators"]}> ({numberOfEvaluators})</span>
+				) : null}
 
-			{shouldDisplayScore ? (
-				<div
-					className={`${styles[`evaluation-score`]} ${statement.consensus < 0 ? "negative" : ""}`}
-				>
-					<span>{sumPro}</span>
-					{(numberOfEvaluators && numberOfEvaluators > 0)? (
-						<span className={styles["total-evaluators"]}> ({numberOfEvaluators})</span>
-					):null}
-					
-				</div>
-			) : (
-				<div />
-			)}
+			</div>
 			<div />
-			{learningEvaluation > 0 && (
-				<div className={`${styles["evaluation-explain"]}`}>					
-					<span>{t("Disagree")}</span>	
-					<span>{t("Agree")}</span>				
-				</div>
-			)}
+			<div className={styles.explain}>
+				{learningEvaluation > 0 && (<div className={`${styles["evaluation-explain"]}`}>
+					<span>{t("Disagree")}</span>
+					<span>{t("Agree")}</span>
+				</div>)
+				}
+			</div>
 			<div />
 		</div>
 	);
@@ -86,9 +83,9 @@ const EnhancedEvaluation: FC<EnhancedEvaluationProps> = ({
 export default EnhancedEvaluation;
 
 interface EvaluationThumbProps {
-  statement: Statement;
-  evaluationScore: number | undefined;
-  evaluationThumb: EnhancedEvaluationThumb;
+	statement: Statement;
+	evaluationScore: number | undefined;
+	evaluationThumb: EnhancedEvaluationThumb;
 }
 
 const EvaluationThumb: FC<EvaluationThumbProps> = ({
@@ -102,8 +99,8 @@ const EvaluationThumb: FC<EvaluationThumbProps> = ({
 	};
 
 	const isThumbActive =
-    evaluationScore !== undefined &&
-    evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
+		evaluationScore !== undefined &&
+		evaluationThumb.id === getEvaluationThumbIdByScore(evaluationScore);
 
 	return (
 		<button

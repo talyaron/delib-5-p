@@ -64,10 +64,8 @@ const StatementTopNav: FC<Props> = ({
 
 	if (!statement) return null;
 
-	const enableNavigationalElements =
-		statement?.statementSettings?.enableNavigationalElements !== undefined
-			? statement?.statementSettings?.enableNavigationalElements
-			: true;
+	const enableNavigationalElements = Boolean(statement?.statementSettings?.enableNavigationalElements)
+
 	const isAdmin = role === Role.admin;
 	const allowNavigation = enableNavigationalElements || isAdmin;
 

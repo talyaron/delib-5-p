@@ -193,7 +193,7 @@ const SuggestionCard: FC<Props> = ({
 							statement={statement}
 						/>
 					</div>
-					{parentStatement?.hasChildren && (
+					{hasChildren && (
 						<IconButton
 							className='add-sub-question-button more-question'
 							onClick={() => setShouldShowAddSubQuestionModal(true)}
