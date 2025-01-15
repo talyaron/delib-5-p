@@ -16,5 +16,9 @@ export function getTopSelectionKeys(
     return sortedSelections.map(([key]) => key);
 }
 
+export const isEqualObjects = (objA: Object | undefined, objB: Object | undefined) => {
+    return JSON.stringify(objA) === JSON.stringify(objB);
+}
+
 
 

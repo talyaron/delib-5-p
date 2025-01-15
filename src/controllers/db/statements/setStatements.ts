@@ -26,7 +26,7 @@ import {
 	getSiblingOptionsByParentId,
 } from "@/view/pages/statement/components/vote/statementVoteCont";
 import { getRandomColor } from "@/view/pages/statement/components/vote/votingColors";
-import { basicStagesTypes } from "@/model/stages/stagesModel";
+
 
 export const updateStatementParents = async (
 	statement: Statement,
@@ -246,27 +246,6 @@ export const setStatementToDB = async ({
 			await Promise.all(statementPromises);
 		}
 
-		if (statement.statementType === StatementType.question) {
-			//create the basic stages
-			basicStagesTypes.forEach((stageType) => {
-				const newStage = createStatement({
-					text: stageType,
-					description: "",
-					statementType: StatementType.stage,
-					parentStatement: statement,
-					stageType,
-				});
-
-				if (!newStage) throw new Error("Could not create stage");
-
-				setStatementToDB({
-					statement: newStage,
-					parentStatement: statement,
-					addSubscription: true,
-				});
-			});
-
-		}
 
 		return statement.statementId;
 	} catch (error) {
@@ -291,6 +270,7 @@ export interface CreateStatementProps {
 	membership?: Membership;
 	stageType?: StageType;
 }
+
 export function createStatement({
 	text,
 	description,
@@ -389,6 +369,7 @@ export function createStatement({
 		return undefined;
 	}
 }
+
 
 interface UpdateStatementProps {
 	text: string;

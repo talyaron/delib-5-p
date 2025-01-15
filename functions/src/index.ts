@@ -48,6 +48,7 @@ import { setImportanceToStatement } from './fn_importance';
 import { updateAgrees } from './fn_agree';
 import { setUserSettings } from './fn_users';
 import { updateStatementWithViews } from './fn_views';
+import { updateSettings } from './fn_statementsSettings';
 
 initializeApp();
 export const db = getFirestore();
@@ -147,6 +148,10 @@ exports.updateStatementWithViews = onDocumentCreated(
 	`/${Collections.statementViews}/{viewId}`,
 	updateStatementWithViews
 );
+
+//statements settings
+exports.writeStatementSettings = onDocumentCreated(`/${Collections.statementsSettings}/{statementId}`, updateSettings);
+
 
 //http requests
 const isProduction = process.env.NODE_ENV === 'production';
