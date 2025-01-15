@@ -8,7 +8,12 @@ export async function getVersionFromDB(): Promise<string | undefined> {
 		const versionDB = await getDoc(versionRef);
 		if (!versionDB.exists()) throw new Error("version not found");
 		const version = versionDB.data().version;
-		if (!version) throw new Error("version not found");
+		if (!version) {
+			console.warn("version not found");
+			return undefined;
+		}
+
+
 
 		return version;
 	} catch (error) {
@@ -25,9 +30,13 @@ export function listenToVersionFromDB(): Unsubscribe {
 
 		return onSnapshot(versionRef, (versionDB) => {
 			try {
-				if (!versionDB.exists()) throw new Error("version not found");
+				if (!versionDB.exists()) {
+					console.warn("version not found");
+					return undefined
+				}
+
 				const version = versionDB.data().version;
-				if (!version) throw new Error("version not found");
+				if (!version) console.warn("version not found");
 
 				updateVersion(version);
 			} catch (error) {
