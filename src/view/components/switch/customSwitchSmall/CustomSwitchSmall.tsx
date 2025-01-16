@@ -30,6 +30,7 @@ const CustomSwitchSmall: FC<Props> = ({
 	const [_checked, _setChecked] = useState<boolean>(checked);
 	const handleChange = () => {
 		_setChecked(!_checked);
+		setChecked(!_checked);
 	};
 
 	//checked means multi-stage question

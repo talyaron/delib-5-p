@@ -14,6 +14,7 @@ import DocumentIcon from "@/assets/icons/document.svg?react";
 import SimpleIcon from "@/assets/icons/navQuestionsIcon.svg?react";
 import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
 import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
+import { setStatementSettingToDB } from "@/controllers/db/statementSettings/setStatementSettings";
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
 	statement,
@@ -28,6 +29,12 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 
 		function handleSetDocumentQuestion(isDocument: boolean) {
 			console.log(isDocument);
+			setStatementSettingToDB({
+				statement,
+				property: "isDocument",
+				newValue: isDocument,
+				settingsSection: "questionSettings",
+			});
 		}
 
 		return (

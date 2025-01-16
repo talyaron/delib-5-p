@@ -2,6 +2,7 @@ import { Collections, Statement } from "delib-npm";
 import { db } from "./index";
 import { isEqualObjects } from "./helpers";
 import { createStagesForQuestionDocument } from "./fn_questionDocuments";
+import { logger } from "firebase-functions/v1";
 
 
 /**
@@ -40,7 +41,7 @@ export async function updateSettings(e: any) {
 		//get statement after update and before update
 
 		const statementId = e.params.statementId;
-		console.log('updateSettings.....', statementId);
+
 
 		if (!statementId) throw new Error('No statementId provided');
 
@@ -51,7 +52,7 @@ export async function updateSettings(e: any) {
 		//Update question settings
 		if (!isEqualObjects(before?.questionSettings, after?.questionSettings)) {
 			//update question settings with new settings
-			if (after) {
+			if (after?.questionSettings) {
 				db.collection(Collections.statements).doc(statementId).update({
 					questionSettings: after.questionSettings,
 				});
@@ -60,7 +61,7 @@ export async function updateSettings(e: any) {
 			//if question is a document, create stages
 			if (!before?.questionSettings?.isDocument && after?.questionSettings?.isDocument) {
 				//create stages for the question-document
-				createStagesForQuestionDocument(after);
+				createStagesForQuestionDocument(statementId);
 			}
 		}
 
@@ -69,7 +70,6 @@ export async function updateSettings(e: any) {
 			//update statement with new settings
 
 			if (after?.statementSettings) {
-				console.log("save statement settings")
 				await db.collection(Collections.statements).doc(statementId).update({
 					statementSettings: after?.statementSettings,
 				})
@@ -77,7 +77,7 @@ export async function updateSettings(e: any) {
 		}
 		return;
 	} catch (error) {
-		console.error(error);
+		logger.error(error);
 		return;
 
 	}
