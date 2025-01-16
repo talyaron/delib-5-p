@@ -38,3 +38,23 @@ export async function createStagesForQuestionDocument(statementId: string): Prom
 	}
 
 }
+
+export async function deleteStagesForQuestionDocument(statementId: string): Promise<void> {
+	//delete stages for the question-document
+	const stagesDB = await db
+		.collection(Collections.statements)
+		.where("parentId", "==", statementId)
+		.where("statementType", "==", StatementType.stage)
+		.get()
+
+	//if stages exists, delete them
+
+	if (stagesDB.docs.length > 0) {
+		console.log("deleting stages", stagesDB.docs.length);
+		const batch = db.batch();
+		stagesDB.docs.forEach((stage) => {
+			batch.delete(stage.ref);
+		});
+		await batch.commit();
+	}
+}

@@ -1,29 +1,29 @@
 import CustomSwitchSmall from "@/view/components/switch/customSwitchSmall/CustomSwitchSmall";
-import { QuestionStage, QuestionType, StatementType } from "delib-npm";
+import { StatementType } from "delib-npm";
 import { FC } from "react";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import SectionTitle from "../sectionTitle/SectionTitle";
-import QuestionDashboard from "./questionDashboard/QuestionDashboard";
-import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
+// import QuestionDashboard from "./questionDashboard/QuestionDashboard";
+// import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import "./QuestionSettings.scss";
-import { setQuestionType } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
+// import { setQuestionType } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
 
 //icons
 import DocumentIcon from "@/assets/icons/document.svg?react";
 import SimpleIcon from "@/assets/icons/navQuestionsIcon.svg?react";
-import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
-import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
+// import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
+// import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
 import { setStatementSettingToDB } from "@/controllers/db/statementSettings/setStatementSettings";
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
 	statement,
-	setStatementToEdit,
+	// setStatementToEdit,
 }) => {
 	try {
 		const { t } = useLanguage();
 		const { questionSettings } = statement;
-		const isMultistepes = questionSettings?.questionType === QuestionType.multipleSteps;
+		// const isMultistepes = questionSettings?.questionType === QuestionType.multipleSteps;
 
 		if (statement.statementType !== StatementType.question) return null;
 
@@ -51,7 +51,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 					textUnchecked={t("Simple Question")}
 				/>
 
-				<CustomSwitchSmall
+				{/* <CustomSwitchSmall
 					label="Multi-Stage Question"
 					checked={isMultistepes}
 					setChecked={_setChecked}
@@ -93,34 +93,34 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 							/>
 						</>
 					)}
-				</div>
+				</div> */}
 			</div>
 		);
 
-		function _setChecked() {
+		// function _setChecked() {
 
-			const questionType = checked
-				? QuestionType.singleStep
-				: QuestionType.multipleSteps;
-			const currentStage: QuestionStage =
-				statement.questionSettings?.currentStage || QuestionStage.suggestion;
+		// 	const questionType = checked
+		// 		? QuestionType.singleStep
+		// 		: QuestionType.multipleSteps;
+		// 	const currentStage: QuestionStage =
+		// 		statement.questionSettings?.currentStage || QuestionStage.suggestion;
 
-			setChecked(!checked);
+		// 	setChecked(!checked);
 
-			setQuestionType({
-				statementId: statement.statementId,
-				type: questionType,
-				stage: currentStage,
-			});
-			setStatementToEdit({
-				...statement,
-				questionSettings: {
-					...statement.questionSettings,
-					questionType,
-					currentStage,
-				},
-			});
-		}
+		// 	setQuestionType({
+		// 		statementId: statement.statementId,
+		// 		type: questionType,
+		// 		stage: currentStage,
+		// 	});
+		// 	setStatementToEdit({
+		// 		...statement,
+		// 		questionSettings: {
+		// 			...statement.questionSettings,
+		// 			questionType,
+		// 			currentStage,
+		// 		},
+		// 	});
+		// }
 	} catch (error: unknown) {
 		console.error(error);
 
