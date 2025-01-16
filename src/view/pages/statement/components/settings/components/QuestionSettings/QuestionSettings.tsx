@@ -1,14 +1,19 @@
 import CustomSwitchSmall from "@/view/components/switch/customSwitchSmall/CustomSwitchSmall";
 import { QuestionStage, QuestionType, StatementType } from "delib-npm";
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import { StatementSettingsProps } from "../../settingsTypeHelpers";
 import SectionTitle from "../sectionTitle/SectionTitle";
 import QuestionDashboard from "./questionDashboard/QuestionDashboard";
 import QuestionStageRadioBtn from "./QuestionStageRadioBtn/QuestionStageRadioBtn";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
-
 import "./QuestionSettings.scss";
 import { setQuestionType } from "@/controllers/db/statements/statementMetaData/setStatementMetaData";
+
+//icons
+import DocumentIcon from "@/assets/icons/document.svg?react";
+import SimpleIcon from "@/assets/icons/navQuestionsIcon.svg?react";
+import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
+import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
 
 const QuestionSettings: FC<StatementSettingsProps> = ({
 	statement,
@@ -16,40 +21,44 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 }) => {
 	try {
 		const { t } = useLanguage();
-		const [checked, setChecked] = useState(false);
-		const isMuliStage = statement.questionSettings?.questionType === QuestionType.multipleSteps;
-
-		useEffect(() => {
-			if (!statement.questionSettings) {
-				setChecked(false);
-				
-				return;
-			}
-			const isChecked =
-        statement.questionSettings?.questionType === QuestionType.multipleSteps
-        	? true
-        	: false;
-			setChecked(isChecked);
-		}, [statement.questionSettings]);
+		const { questionSettings } = statement;
+		const isMultistepes = questionSettings?.questionType === QuestionType.multipleSteps;
 
 		if (statement.statementType !== StatementType.question) return null;
+
+		function handleSetDocumentQuestion(isDocument: boolean) {
+			console.log(isDocument);
+		}
 
 		return (
 			<div className="question-settings">
 				<SectionTitle title="Question Settings" />
+
+				<CustomSwitchSmall
+					label="Document Question"
+					checked={questionSettings?.isDocument || false}
+					setChecked={handleSetDocumentQuestion}
+					textChecked={t("Document Question")}
+					imageChecked={<DocumentIcon />}
+					imageUnchecked={<SimpleIcon />}
+					textUnchecked={t("Simple Question")}
+				/>
+
 				<CustomSwitchSmall
 					label="Multi-Stage Question"
-					checked={checked}
+					checked={isMultistepes}
 					setChecked={_setChecked}
 					textChecked={t(QuestionType.multipleSteps)}
 					textUnchecked={t(QuestionType.singleStep)}
+					imageChecked={<StepsIcon />}
+					imageUnchecked={<StepsNoIcon />}
 				/>
 
 				<div className="question-settings__wrapper">
 					<div className="question-settings-dashboard">
 						<QuestionDashboard statement={statement} />
 					</div>
-					{isMuliStage && (
+					{questionSettings?.steps && (
 						<>
 							<QuestionStageRadioBtn
 								stage={QuestionStage.explanation}
@@ -82,12 +91,12 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 		);
 
 		function _setChecked() {
-		
+
 			const questionType = checked
 				? QuestionType.singleStep
 				: QuestionType.multipleSteps;
 			const currentStage: QuestionStage =
-        statement.questionSettings?.currentStage || QuestionStage.suggestion;
+				statement.questionSettings?.currentStage || QuestionStage.suggestion;
 
 			setChecked(!checked);
 
@@ -107,7 +116,7 @@ const QuestionSettings: FC<StatementSettingsProps> = ({
 		}
 	} catch (error: unknown) {
 		console.error(error);
-		
+
 		return <p>{(error as Error).message}</p>;
 	}
 };

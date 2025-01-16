@@ -1,18 +1,19 @@
-import { FC } from "react";
+import React, { FC, useState } from "react";
 import "./CustomSwitchSmall.scss";
 import VisuallyHidden from "../../accessibility/toScreenReaders/VisuallyHidden";
 import BackgroundImage from "./customSwitchSmallBackground.svg";
 
-import StepsIcon from "@/assets/icons/stepsIcon.svg?react";
-import StepsNoIcon from "@/assets/icons/stepsNoIcon.svg?react";
+
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 
 interface Props {
-  label: string;
-  textChecked: string;
-  textUnchecked: string;
-  checked: boolean;
-  setChecked: () => void;
+	label: string;
+	textChecked: string;
+	textUnchecked: string;
+	imageChecked: React.ReactNode;
+	imageUnchecked: React.ReactNode;
+	checked: boolean;
+	setChecked: (check: boolean) => void;
 }
 
 const CustomSwitchSmall: FC<Props> = ({
@@ -20,44 +21,47 @@ const CustomSwitchSmall: FC<Props> = ({
 	checked,
 	textChecked,
 	textUnchecked,
+	imageChecked,
+	imageUnchecked,
 	setChecked,
 }) => {
 
-	const {dir} = useLanguage();
+	const { dir } = useLanguage();
+	const [_checked, _setChecked] = useState<boolean>(checked);
 	const handleChange = () => {
-		setChecked();
+		_setChecked(!_checked);
 	};
 
 	//checked means multi-stage question
 
 	return (
-		<div className="custom-switch-small">
+		<div className="custom-switch-small" onClick={handleChange}>
 			<div
-				className={dir==="rtl"?"background":"background background--ltr"}
+				className={dir === "rtl" ? "background" : "background background--ltr"}
 				style={{ backgroundImage: `url(${BackgroundImage})` }}
 			>
-				<div className="ball ball-background" style={{left:"4.15rem"}}>
-					<StepsNoIcon /> 
+				<div className="ball ball-background" style={{ left: "4.15rem" }}>
+					{imageUnchecked}
 				</div>
 				<div className="ball ball-background ball-background-off">
-					<StepsIcon />
+					{imageChecked}
 				</div>
 				<button
-					className={`ball ball-switch ball-switch--${checked ? "checked" : "unchecked"}`}
+					className={`ball ball-switch ball-switch--${_checked ? "checked" : "unchecked"}`}
 					type="button"
-					style={{ left: `${checked ? 0 : 4.15}rem` }}
-					aria-label={checked ? "Turn off" : "Turn on"}
+					style={{ left: `${_checked ? 0 : 4.15}rem` }}
+					aria-label={_checked ? "Turn off" : "Turn on"}
 					onKeyDown={(e) => {
-						if (e.key === 'Enter' || e.key === ' ') { 
-							e.preventDefault(); 
-							handleChange(); 
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							handleChange();
 						}
 					}}
 				>
-					{checked ? <StepsIcon /> : <StepsNoIcon />}
+					{_checked ? imageChecked : imageUnchecked}
 				</button>
 			</div>
-			<div className="text">{checked ? textChecked : textUnchecked}</div>
+			<div className="text">{_checked ? textChecked : textUnchecked}</div>
 			<label htmlFor={`toggleSwitchSimple-${label}`}>
 				<VisuallyHidden labelName={label} />
 			</label>
@@ -67,8 +71,8 @@ const CustomSwitchSmall: FC<Props> = ({
 				id={`toggleSwitchSimple-${label}`}
 				className="switch-input"
 				onChange={handleChange}
-				value={checked ? "on" : "off"}
-				checked={checked}
+				value={_checked ? "on" : "off"}
+				checked={_checked}
 				data-cy={`toggleSwitch-input-${label}`}
 			/>
 		</div>

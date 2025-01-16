@@ -30,7 +30,7 @@ $SwitchHeight: 2.6729rem;
     .text {
         margin: 5px 0px 0px 0px;
         font-size: .9rem;
-        color: var(--text-disabled-paragraph);
+        color: var(--text-label);
         position: relative;
     }
 
@@ -46,7 +46,7 @@ $SwitchHeight: 2.6729rem;
 
         &-background {
             // color:#9FB1D4;
-            color: var(--text-bodyest);
+            color: var(--toggle-background);
 
 
             &-off {
@@ -57,12 +57,12 @@ $SwitchHeight: 2.6729rem;
 
 
         &-switch {
-            color: var(--icon-white);
+            color: var(--icons-white);
             animation-duration: 0.15s;
             animation-timing-function: ease-in-out;
 
             &--checked {
-                background-color: var(--toggle-green-active);
+                background-color: var(--toggle-enabled);
                 filter: drop-shadow(0px -2.1px 4.2px rgba(90, 174, 159, 0.30)) drop-shadow(0px 2.1px 4.2px rgba(90, 174, 159, 0.40));
 
                 left: 4.15rem;
@@ -73,7 +73,7 @@ $SwitchHeight: 2.6729rem;
             }
 
             &--unchecked {
-                background-color: var(--settings-finished);
+                background-color: rgb(206, 206, 206);
                 filter: drop-shadow(0px -2.1px 4.2px rgba(223, 136, 136, 0.30)) drop-shadow(0px 2.1px 4.2px rgba(223, 136, 136, 0.40));
                 left: 0;
 
