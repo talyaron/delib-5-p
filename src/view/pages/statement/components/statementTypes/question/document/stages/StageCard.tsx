@@ -1,4 +1,4 @@
-import { SimpleStatement, Statement, StageClass, StageType } from 'delib-npm'
+import { SimpleStatement, Statement, StageClass } from 'delib-npm'
 import { FC } from 'react'
 import styles from './StageCard.module.scss';
 import Button, { ButtonType } from '@/view/components/buttons/button/Button';

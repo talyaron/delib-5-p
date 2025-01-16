@@ -12,7 +12,7 @@ import { setStatementSettingToDB } from '@/controllers/db/statementSettings/setS
 
 const AdvancedSettings: FC<StatementSettingsProps> = ({
 	statement,
-	setStatementToEdit,
+	// setStatementToEdit,
 }) => {
 	const { t } = useLanguage();
 
@@ -29,21 +29,6 @@ const AdvancedSettings: FC<StatementSettingsProps> = ({
 		hasChat = false,
 		hasChildren = false
 	} = statementSettings;
-
-
-	const setStatementSetting = (
-		key: keyof typeof statementSettings,
-		newValue: boolean
-	) => {
-
-		setStatementToEdit({
-			...statement,
-			statementSettings: {
-				...statementSettings,
-				[key]: newValue,
-			},
-		});
-	};
 
 	function handleAdvancedSettingChange(property: keyof StatementSettings, newValue: boolean) {
 		console.log(newValue)

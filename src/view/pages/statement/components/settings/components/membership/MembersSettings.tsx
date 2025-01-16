@@ -4,8 +4,8 @@ import {
 	StatementSubscription,
 	Statement,
 	Collections,
-	Access,
-	membersAllowed,
+	// Access,
+	// membersAllowed,
 } from "delib-npm";
 import { collection, getDocs } from "firebase/firestore";
 import { Dispatch, FC, useEffect, useState } from "react";
@@ -26,16 +26,16 @@ import { useAppSelector } from "@/controllers/hooks/reduxHooks";
 import { useLanguage } from "@/controllers/hooks/useLanguages";
 import { RootState } from "@/model/store";
 import "./MembersSettings.scss";
-import Checkbox from "@/view/components/checkbox/Checkbox";
+// import Checkbox from "@/view/components/checkbox/Checkbox";
 
 interface MembersSettingsProps {
-  statement: Statement;
-  setStatementToEdit: Dispatch<Statement>;
+	statement: Statement;
+	setStatementToEdit: Dispatch<Statement>;
 }
 
 const MembersSettings: FC<MembersSettingsProps> = ({
 	statement,
-	setStatementToEdit,
+	// setStatementToEdit,
 }) => {
 	// * Hooks * //
 	const { statementId } = useParams();
@@ -72,38 +72,38 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 		navigator.share(shareData);
 	}
 
-	function handleOpenGroup() {
-		setStatementToEdit({
-			...statement,
-			membership: {
-				...statement.membership,
-				access:
-          statement.membership?.access === Access.open
-          	? Access.close
-          	: Access.open,
-			},
-		});
-	}
+	// function handleOpenGroup() {
+	// 	setStatementToEdit({
+	// 		...statement,
+	// 		membership: {
+	// 			...statement.membership,
+	// 			access:
+	// 				statement.membership?.access === Access.open
+	// 					? Access.close
+	// 					: Access.open,
+	// 		},
+	// 	});
+	// }
 
-	function handleAllowAnonymous() {
-		setStatementToEdit({
-			...statement,
-			membership: {
-				...statement.membership,
-				typeOfMembersAllowed:
-          statement.membership?.typeOfMembersAllowed ===
-          membersAllowed.nonAnonymous
-          	? membersAllowed.all
-          	: membersAllowed.nonAnonymous,
-			},
-		});
-	}
+	// function handleAllowAnonymous() {
+	// 	setStatementToEdit({
+	// 		...statement,
+	// 		membership: {
+	// 			...statement.membership,
+	// 			typeOfMembersAllowed:
+	// 				statement.membership?.typeOfMembersAllowed ===
+	// 					membersAllowed.nonAnonymous
+	// 					? membersAllowed.all
+	// 					: membersAllowed.nonAnonymous,
+	// 		},
+	// 	});
+	// }
 
 	const fetchAwaitingUsers = async (): Promise<void> => {
 		const usersCollection = collection(FireStore, Collections.awaitingUsers);
 		const usersSnapshot = await getDocs(usersCollection);
 		const count = usersSnapshot.docs.length;
-		
+
 		return setUserCount(count);
 	};
 
@@ -113,7 +113,7 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 
 	return (
 		<div className="members-settings">
-			<Checkbox
+			{/* <Checkbox
 				name="openGroup"
 				label="Open Group"
 				isChecked={statement.membership?.access === Access.open}
@@ -126,7 +126,7 @@ const MembersSettings: FC<MembersSettingsProps> = ({
 					statement.membership?.typeOfMembersAllowed === membersAllowed.all
 				}
 				toggleSelection={handleAllowAnonymous}
-			/>
+			/> */}
 			<button className="link-anonymous" onClick={() => handleShare(statement)}>
 				{t("Send a link to anonymous users")}
 				<ShareIcon />
