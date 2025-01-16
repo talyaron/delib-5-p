@@ -1,6 +1,7 @@
 import { Collections, Statement } from "delib-npm";
 import { db } from "./index";
 import { isEqualObjects } from "./helpers";
+import { createStagesForQuestionDocument } from "./fn_questionDocuments";
 
 
 /**
@@ -37,20 +38,40 @@ import { isEqualObjects } from "./helpers";
 export function updateSettings(e: any) {
 	try {
 		//get statement after update and before update
-		const before = e.before.data() as Statement;
-		const after = e.after.data() as Statement;
+		console.log('updateSettings.....');
+		const statementId = e.params.statementId;
 
-		if (!isEqualObjects(before.questionSettings, after.questionSettings)) {
+		if (!statementId) throw new Error('No statementId provided');
+
+
+		const before = e.data.before.data() as Statement | undefined;
+		const after = e.data.after.data() as Statement | undefined;
+
+		//Update question settings
+		if (!isEqualObjects(before?.questionSettings, after?.questionSettings)) {
 			//update question settings with new settings
-			db.collection(Collections.statements).doc(e.after.statementId).update({
-				questionSettings: after.questionSettings,
-			});
+			if (after) {
+				db.collection(Collections.statements).doc(statementId).update({
+					questionSettings: after.questionSettings,
+				});
+			}
+
+			//if question is a document, create stages
+			if (!before?.questionSettings?.isDocument && after?.questionSettings?.isDocument) {
+				//create stages for the question-document
+				createStagesForQuestionDocument(after);
+			}
 		}
-		if (!isEqualObjects(before.statementSettings, after.statementSettings)) {
+
+		//Update statement settings
+		if (!isEqualObjects(before?.statementSettings, after?.statementSettings)) {
 			//update statement with new settings
-			db.collection(Collections.statements).doc(e.after.statementId).update({
-				evaluationSettings: after.statementSettings,
-			});
+			if (after)
+				db.collection(Collections.statements).doc(statementId).update({
+					evaluationSettings: after?.statementSettings,
+				});
+		} else {
+			console.log("no settings to update	");
 		}
 		return;
 	} catch (error) {

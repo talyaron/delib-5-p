@@ -150,7 +150,7 @@ exports.updateStatementWithViews = onDocumentCreated(
 );
 
 //statements settings
-exports.writeStatementSettings = onDocumentCreated(`/${Collections.statementsSettings}/{statementId}`, updateSettings);
+exports.writeStatementSettings = onDocumentWritten(`/${Collections.statementsSettings}/{statementId}`, updateSettings);
 
 
 //http requests

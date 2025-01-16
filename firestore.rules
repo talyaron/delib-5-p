@@ -2,6 +2,7 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
   
     match /awaitingUsers/{document=**} {
       allow read, write: if request.auth != null;
@@ -18,8 +19,23 @@ service cloud.firestore {
     }
 
       match /statements/{statementId=**}{
+
+        function hasProtectedFieldChanges(beforeData, afterData) {
+          return (beforeData != null && (
+          // Check if questionSettings is being modified
+          (afterData.questionSettings != beforeData.questionSettings) ||
+          // Check if statementSettings is being modified
+          (afterData.statementSettings != beforeData.statementSettings)
+        ));
+      }
+
       allow read;
-      allow write: if request.auth.uid != null;
+      allow update: if request.auth.uid != null && !hasProtectedFieldChanges(resource.data, request.resource.data);
+      allow create: if request.auth.uid != null;
+    }
+     
+     match /statementsSettings/{statementId=**}{
+      allow write: if request.auth.uid != null && isAdmin(statementId);
     }
 
     match /inAppNotifications/{inAppNotificationId=**}{
@@ -270,14 +286,17 @@ service cloud.firestore {
     }
 
     //functions
-
     function isAdmin(statementId) {
-  let userId = request.auth.uid;
-  let docId = userId + "--" + statementId; // No need for toString() here
-  let adminDocPath = resource.path.parent.parent.collection('statementsSubscribe').doc(docId).path; // Get the path as a string
-  let adminDoc = get(adminDocPath); 
-  return adminDoc.data.role == "admin";
-}
+      let subId = string(request.auth.uid) + '--' + cleanPath(string(statementId));
+      let subscription = get(/databases/$(database)/documents/statementsSubscribe/$(subId)).data;
+      return subscription != null && subscription.role == 'admin';
+    }
+
+    function cleanPath(path) {
+      return path.replace('/', '');
+    }
+
+    
 
   }
 }
