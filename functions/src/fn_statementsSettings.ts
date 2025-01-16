@@ -35,11 +35,12 @@ import { createStagesForQuestionDocument } from "./fn_questionDocuments";
  * - [Add other protected settings fields here]
  */
 
-export function updateSettings(e: any) {
+export async function updateSettings(e: any) {
 	try {
 		//get statement after update and before update
-		console.log('updateSettings.....');
+
 		const statementId = e.params.statementId;
+		console.log('updateSettings.....', statementId);
 
 		if (!statementId) throw new Error('No statementId provided');
 
@@ -66,12 +67,13 @@ export function updateSettings(e: any) {
 		//Update statement settings
 		if (!isEqualObjects(before?.statementSettings, after?.statementSettings)) {
 			//update statement with new settings
-			if (after)
-				db.collection(Collections.statements).doc(statementId).update({
-					evaluationSettings: after?.statementSettings,
-				});
-		} else {
-			console.log("no settings to update	");
+
+			if (after?.statementSettings) {
+				console.log("save statement settings")
+				await db.collection(Collections.statements).doc(statementId).update({
+					statementSettings: after?.statementSettings,
+				})
+			}
 		}
 		return;
 	} catch (error) {
